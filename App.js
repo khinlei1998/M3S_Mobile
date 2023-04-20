@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -18,25 +17,35 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import SQLite from 'react-native-sqlite-storage';
-import { NavigationContainer } from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import AuthNavigation from './src/navigations/AuthNavigation';
+import {store} from './src/redux/store';
+import {Provider} from 'react-redux';
+import SplashScreen from './src/screens/SplashScreen';
 const App = () => {
+  const [show_splash, showSplash] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      showSplash(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   global.db = SQLite.openDatabase(
     {
       name: 'M3SDB.db',
       createFromLocation: '~M3SDB.db',
-      location: 'Library'
+      location: 'Library',
     },
     success => {
-      console.log("DB Connection Created",);
-
+      console.log('DB Connection Created');
     },
     error => {
       console.log('Error', error);
-    }
+    },
   );
-
 
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -45,11 +54,11 @@ const App = () => {
   };
 
   return (
-
-    <NavigationContainer>
-      <AuthNavigation></AuthNavigation>
-      {/* Rest of your app code */}
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        {show_splash ? <SplashScreen /> : <AuthNavigation />}
+      </NavigationContainer>
+    </Provider>
   );
 };
 

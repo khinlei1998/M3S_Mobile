@@ -4,7 +4,7 @@ import { Button } from 'react-native-paper';
 
 export default function ButtonFile() {
     return (
-        <View style={{marginTop:10}}>
+        <View style={{marginTop:20}}>
             <Button mode="contained" onPress={() => console.log('Pressed')} buttonColor={'#6870C3'} style={{borderRadius:0}}>
               Login
             </Button>
