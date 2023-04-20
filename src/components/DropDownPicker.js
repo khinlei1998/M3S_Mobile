@@ -1,11 +1,9 @@
-import {View, Text} from 'react-native';
 import React, {useState} from 'react';
 import {Picker} from '@react-native-picker/picker';
 import {languages} from '../common';
-export default function DropDownPicker() {
+export default function DropDownPicker(props) {
+  const {data} = props;
   const [selectedLanguage, setSelectedLanguage] = useState();
-
-  console.log('languages',languages);
 
   return (
     <Picker
@@ -13,15 +11,10 @@ export default function DropDownPicker() {
       mode="dropdown"
       selectedValue={selectedLanguage}
       onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}>
-
-      {languages.length>0 && languages.map(val => (
-        <Picker.Item
-          label={val.label}
-          value={val.value}
-          key={val.id}
-          
-        />
-      ))}
+      {data.length > 0 &&
+        data.map(val => (
+          <Picker.Item label={val.label} value={val.value} key={val.id} />
+        ))}
     </Picker>
   );
 }

@@ -6,7 +6,7 @@ import {
   Keyboard,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
 import ButtonFile from '../../components/ButtonFile';
@@ -15,21 +15,12 @@ import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import DropDownPicker from '../../components/DropDownPicker';
 import SettingScreen from '../Setting/SettingScreen';
-import {Modal, Portal, Button, Provider} from 'react-native-paper';
-
+import { languages } from '../../common';
 function LoginScreen(props) {
   const {navigation} = props;
 
-  const modalfun = () => {
-    navigation.navigate('Setting');
-    setVisible(true);
-  };
-
   const [modalVisible, setModalVisible] = React.useState(false);
-
-  const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
-  const containerStyle = {padding: 20};
 
   return (
     <>
@@ -103,9 +94,11 @@ function LoginScreen(props) {
                   name={'password'}
                   title={'Password'}
                   component={TextInputFile}
+                  password
+
                 />
 
-                <Field component={DropDownPicker} name={'lng'} />
+                <Field component={DropDownPicker} name={'lng'} data={languages}/>
 
                 <Field
                   name={'btnlogin'}
@@ -147,7 +140,6 @@ function LoginScreen(props) {
   );
 }
 
-const formwrapp = reduxForm({
-  form: 'LoginForm',
-})(LoginScreen);
-export default connect(null, null)(formwrapp);
+
+export default reduxForm({form: 'LoginForm'})(LoginScreen);
+
