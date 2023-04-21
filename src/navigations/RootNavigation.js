@@ -15,7 +15,7 @@ function CustomDrawerContent(props) {
       <DrawerContentScrollView {...props}>
         <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
           <Image source={require('../../assets/images/logo_shin_02.png')} style={{ height: 100, resizeMode: 'contain', alignSelf: 'center', marginTop: 20 }} />
-          <DrawerItemList {...props} />
+          {/* <DrawerItemList {...props} /> */}
 
           <DrawerItem
             labelStyle={{ color: '#fff' }}
@@ -152,7 +152,7 @@ export default function RootNavigation() {
       }}
       drawerContent={CustomDrawerContent}
     >
-      <Drawer.Screen name="dd" component={Home}
+      <Drawer.Screen name="Home" component={Home}
       />
     </Drawer.Navigator>
   );
