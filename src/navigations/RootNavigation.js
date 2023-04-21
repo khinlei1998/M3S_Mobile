@@ -4,7 +4,10 @@ import Home from '../screens/Dashboard/Home';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/Feather';
 import { Divider } from 'react-native-paper';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
 
 function CustomDrawerContent(props) {
   return (
@@ -12,7 +15,7 @@ function CustomDrawerContent(props) {
       <DrawerContentScrollView {...props}>
         <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
           <Image source={require('../../assets/images/logo_shin_02.png')} style={{ height: 100, resizeMode: 'contain', alignSelf: 'center', marginTop: 20 }} />
-          {/* <DrawerItemList {...props} activeBackgroundColor="white"/> */}
+          <DrawerItemList {...props} />
 
           <DrawerItem
             labelStyle={{ color: '#fff' }}
@@ -122,23 +125,84 @@ function CustomDrawerContent(props) {
   );
 }
 
+const StackNavigationData = [
+
+  {
+    name: 'Home',
+    title: 'gg',
+    component: Home,
+    // headerLeft: headerLeftComponent,
+    // headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      // fontFamily: fonts.primaryRegular,
+      color: 'white',
+      fontSize: 18,
+    }
+
+  }
+]
+
+function NavigatorView() {
+  return (
+    <Stack.Navigator>
+      {StackNavigationData.map((item, idx) => (
+        <Stack.Screen
+          key={`stack_item-${idx + 1}`}
+          name={item.name}
+
+          component={item.component}
+          options={{
+            headerStyl: { backgroundColor: 'red' },
+            title: item.title,
+            // headerLeft: item.headerLeft || headerLeftComponentMenu,
+            headerTintColor: 'red',
+            // headerRight: item.name == 'TeleHealth Myanmar' ? headerRigthComponentMenu : null,
+            // headerRight: false,
+            // headerBackground: () => (
+            //   <Image style={styles.headerImage} source={item.headerBackground.source} />
+            // ),
+            headerTitleStyle: item.headerTitleStyle,
+          }}
+        />
+      ))}
+    </Stack.Navigator>
+  )
+}
+
 export default function RootNavigation() {
   return (
 
     <Drawer.Navigator
       initialRouteName="Home"
       screenOptions={{
+        headerRight: () => <></>,
         drawerStyle: {
           backgroundColor: '#273050',
           activeTintColor: 'white',
           inactiveTintColor: 'white'
         },
+        headerTintColor: '#fff',
+        headerShown: true,
+        headerStyle: {
+          backgroundColor: '#232D57',
+        },
+        headerTitleStyle: {
+          color: '#fff',
+          alignSelf: 'center',
+        },
+        headerTitleAlign: "center",
+
+        headerTitle: 'BC NEO Sales System'
+        // drawerLabelStyle: {
+        //   marginLeft: -25,
+        //   fontSize: 15,
+        // },
       }}
       drawerContent={CustomDrawerContent}
     >
       <Drawer.Screen name="Home" component={Home}
 
-        options={{ activeTintColor: 'white', drawerIcon: () => <Icon name="user" size={23} color={'white'} /> }} />
+      />
     </Drawer.Navigator>
   );
 }

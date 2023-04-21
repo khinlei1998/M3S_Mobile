@@ -2,20 +2,18 @@ import { View, Text, Image } from 'react-native'
 import React from 'react'
 export default function Home() {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1,}}>
       <View style={{ backgroundColor: '#232D57', flexDirection: 'row', justifyContent: 'space-around', height: 300 }}>
         <View style={{ flexDirection: 'row', padding: 30, justifyContent: 'center', alignItems: 'center' }}>
           <Image source={require('../../../assets/images/default-user.png')} style={{ width: 30, height: 30 }}
           />
-          <View>
-            <Text style={{ color: '#fff' }}>Team leader</Text>
+          <View style={{marginLeft:20}}>
+            <Text style={{ color: '#c7c7c7' }}>Team leader</Text>
             <Text style={{ color: '#fff' }}>San San Tint</Text>
 
           </View>
-
-
         </View>
-        
+
         <View style={{
 
           width: 250,
@@ -71,7 +69,7 @@ export default function Home() {
           alignSelf: 'center'
         }}>
           <Text style={{
-            fontSize: 25,
+            fontSize: 18,
             color: '#fff',
             padding: 5
           }}>Amount of new loan Applications</Text>
