@@ -18,16 +18,16 @@ export default function AuthNavigation() {
                     fontSize: 20,
                 },
             }}>
-            {/* <Stack.Screen
+            <Stack.Screen
                 name="Login"
                 component={LoginScreen}
                 options={{ headerShown: false }}
-            /> */}
-            <Stack.Screen
+            />
+            {/* <Stack.Screen
                 name="Splash"
                 component={SplashScreen}
                 options={{ headerShown: false }}
-            />
+            /> */}
         </Stack.Navigator>
     )
 }
