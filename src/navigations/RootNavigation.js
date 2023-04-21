@@ -125,57 +125,13 @@ function CustomDrawerContent(props) {
   );
 }
 
-const StackNavigationData = [
-
-  {
-    name: 'Home',
-    title: 'gg',
-    component: Home,
-    // headerLeft: headerLeftComponent,
-    // headerBackground: { source: headerBackground },
-    headerTitleStyle: {
-      // fontFamily: fonts.primaryRegular,
-      color: 'white',
-      fontSize: 18,
-    }
-
-  }
-]
-
-function NavigatorView() {
-  return (
-    <Stack.Navigator>
-      {StackNavigationData.map((item, idx) => (
-        <Stack.Screen
-          key={`stack_item-${idx + 1}`}
-          name={item.name}
-
-          component={item.component}
-          options={{
-            headerStyl: { backgroundColor: 'red' },
-            title: item.title,
-            // headerLeft: item.headerLeft || headerLeftComponentMenu,
-            headerTintColor: 'red',
-            // headerRight: item.name == 'TeleHealth Myanmar' ? headerRigthComponentMenu : null,
-            // headerRight: false,
-            // headerBackground: () => (
-            //   <Image style={styles.headerImage} source={item.headerBackground.source} />
-            // ),
-            headerTitleStyle: item.headerTitleStyle,
-          }}
-        />
-      ))}
-    </Stack.Navigator>
-  )
-}
-
 export default function RootNavigation() {
   return (
 
     <Drawer.Navigator
       initialRouteName="Home"
       screenOptions={{
-        headerRight: () => <></>,
+        headerRight: () => <Icon name="home" size={20} color="#fff" style={{marginRight:20}} />,
         drawerStyle: {
           backgroundColor: '#273050',
           activeTintColor: 'white',
@@ -193,15 +149,10 @@ export default function RootNavigation() {
         headerTitleAlign: "center",
 
         headerTitle: 'BC NEO Sales System'
-        // drawerLabelStyle: {
-        //   marginLeft: -25,
-        //   fontSize: 15,
-        // },
       }}
       drawerContent={CustomDrawerContent}
     >
-      <Drawer.Screen name="Home" component={Home}
-
+      <Drawer.Screen name="dd" component={Home}
       />
     </Drawer.Navigator>
   );

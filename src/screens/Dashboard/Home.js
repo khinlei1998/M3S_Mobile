@@ -1,13 +1,15 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, FlatList } from 'react-native'
 import React from 'react'
+import Viewloan from '../Loan/Viewloan'
 export default function Home() {
+
   return (
-    <View style={{ flex: 1,}}>
+    <View style={{ flex: 1, }}>
       <View style={{ backgroundColor: '#232D57', flexDirection: 'row', justifyContent: 'space-around', height: 300 }}>
         <View style={{ flexDirection: 'row', padding: 30, justifyContent: 'center', alignItems: 'center' }}>
           <Image source={require('../../../assets/images/default-user.png')} style={{ width: 30, height: 30 }}
           />
-          <View style={{marginLeft:20}}>
+          <View style={{ marginLeft: 20 }}>
             <Text style={{ color: '#c7c7c7' }}>Team leader</Text>
             <Text style={{ color: '#fff' }}>San San Tint</Text>
 
@@ -45,7 +47,7 @@ export default function Home() {
               fontSize: 25,
               textAlign: 'right',
               color: 'red'
-            }}>14 <Text style={{ color: '#c7c7c7',fontSize:15 }}>PCS</Text></Text>
+            }}>14 <Text style={{ color: '#c7c7c7', fontSize: 15 }}>PCS</Text></Text>
 
           </View>
         </View>
@@ -81,11 +83,26 @@ export default function Home() {
               fontSize: 25,
               textAlign: 'right',
               color: '#73DEF7'
-            }}>2,633,346 <Text style={{ color: '#c7c7c7',fontSize:15 }}>MMK</Text></Text>
+            }}>2,633,346 <Text style={{ color: '#c7c7c7', fontSize: 15 }}>MMK</Text></Text>
 
           </View>
         </View>
+
+
       </View>
+
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
+        <Text style={{ marginLeft: 10, color: '#8B92AD', fontWeight: 'bold', fontSize: 17 }}>Today New Application</Text>
+        <Text style={{
+          marginRight: 10,
+          fontSize: 17,
+          color: 'red'
+        }}>14 <Text style={{ color: '#c7c7c7', fontSize: 17 }}>Pcs</Text></Text>
+
+
+      </View>
+
+      <Viewloan />
     </View>
   )
 }
