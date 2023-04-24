@@ -1,10 +1,11 @@
-import { View, Text, Image, SafeAreaView } from 'react-native';
+import { View, Text, Image, SafeAreaView, ToastAndroid } from 'react-native';
 import React from 'react';
 import Home from '../screens/Dashboard/Home';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/Feather';
 import { Divider } from 'react-native-paper';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -126,12 +127,18 @@ function CustomDrawerContent(props) {
 }
 
 export default function RootNavigation() {
+
+  const showToast = () => {
+    ToastAndroid.show('Hello, World!', ToastAndroid.SHORT);
+  };
   return (
 
     <Drawer.Navigator
       initialRouteName="Home"
       screenOptions={{
-        headerRight: () => <Icon name="home" size={20} color="#fff" style={{marginRight:20}} />,
+        headerRight: () => <TouchableOpacity onPress={showToast}>
+          <Icon name="home" size={20} color="#fff" style={{ marginRight: 20 }} />
+        </TouchableOpacity>,
         drawerStyle: {
           backgroundColor: '#273050',
           activeTintColor: 'white',

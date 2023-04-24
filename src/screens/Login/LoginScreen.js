@@ -17,14 +17,42 @@ import DropDownPicker from '../../components/DropDownPicker';
 import SettingScreen from '../Setting/SettingScreen';
 import { languages } from '../../common';
 import { Button } from 'react-native-paper';
+import { useNetInfo, NetInfo } from '@react-native-community/netinfo'
+import { getEemployee_info } from '../../query/Employee_query';
 function LoginScreen(props) {
+  const netInfo = useNetInfo()
   const { navigation } = props;
 
   const [modalVisible, setModalVisible] = React.useState(false);
   const hideModal = () => setModalVisible(false);
 
-  const btnlogin=()=>{
+  const btnlogin = () => {
     navigation.navigate('Home')
+  }
+
+  const doSomethingElse = () => {
+    console.log(
+      'reach'
+    );
+  }
+
+  const btnSync = () => {
+    if (!netInfo.isConnected) {
+      alert('Internet Connection is need')
+    } else {
+
+      alert('Online')
+      getEemployee_info()
+        .then((result) => {
+          console.log('doSomething completed successfully with result:', result);
+          // Call the second function
+          doSomethingElse();
+        })
+        .catch((error) => {
+          // This code will be executed if doSomething throws an error
+          console.log('doSomething failed with error:', error);
+        });
+    }
   }
 
   return (
@@ -41,12 +69,15 @@ function LoginScreen(props) {
                 marginTop: 20,
                 marginRight: 10,
               }}>
-              <Icon
-                name="download"
-                size={25}
-                color="#fff"
-                style={{ marginLeft: 20 }}
-              />
+              <TouchableOpacity onPress={() => btnSync()}>
+                <Icon
+                  name="download"
+                  size={25}
+                  color="#fff"
+                  style={{ marginLeft: 20 }}
+                />
+              </TouchableOpacity>
+
               <TouchableOpacity onPress={() => setModalVisible(true)}>
                 <Icon
                   name="settings"

@@ -57,8 +57,8 @@ const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        {/* {show_splash ? <SplashScreen /> : <AuthNavigation />} */}
-        {show_splash ? <SplashScreen /> : <RootNavigation />}
+        {show_splash ? <SplashScreen /> : <AuthNavigation />}
+        {/* {show_splash ? <SplashScreen /> : <RootNavigation />} */}
       </NavigationContainer>
     </Provider>
   );

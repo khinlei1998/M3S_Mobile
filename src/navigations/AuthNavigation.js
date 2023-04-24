@@ -1,6 +1,6 @@
-import {View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/Login/LoginScreen';
 import SplashScreen from '../screens/SplashScreen';
 import SettingScreen from '../screens/Setting/SettingScreen';
@@ -22,18 +22,18 @@ export default function AuthNavigation() {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Setting"
         component={SettingScreen}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
-      {/* <Stack.Screen
-                name="Splash"
-                component={SplashScreen}
-                options={{ headerShown: false }}
-            /> */}
+      <Stack.Screen
+        name="Splash"
+        component={SplashScreen}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }
