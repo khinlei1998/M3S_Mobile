@@ -6,7 +6,7 @@ import {
   Keyboard,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
 import ButtonFile from '../../components/ButtonFile';
@@ -19,15 +19,33 @@ import { languages } from '../../common';
 import { Button } from 'react-native-paper';
 import { useNetInfo, NetInfo } from '@react-native-community/netinfo'
 import { getEemployee_info } from '../../query/Employee_query';
+import { selectUser } from '../../query/Employee_query';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from '../../components/context';
 function LoginScreen(props) {
   const netInfo = useNetInfo()
-  const { navigation } = props;
+  const { navigation, handleSubmit } = props;
+  const { saveUserID, } = useContext(AuthContext)
 
   const [modalVisible, setModalVisible] = React.useState(false);
   const hideModal = () => setModalVisible(false);
 
-  const btnlogin = () => {
-    navigation.navigate('Home')
+
+
+  const onSubmit = async (values) => {
+    try {
+      const user = await selectUser(values.email, values.password);
+      console.log('user', user.user_id);
+      saveUserID(user.user_id)
+      alert(JSON.stringify(values))
+
+      // Login successful
+    } catch (error) {
+      // Login failed
+      console.log('Error:', error);
+    }
+
+    // navigation.navigate('Home')
   }
 
   const doSomethingElse = () => {
@@ -137,7 +155,7 @@ function LoginScreen(props) {
                 <Field component={DropDownPicker} name={'lng'} data={languages} />
 
                 <View style={{ marginTop: 20 }}>
-                  <Button mode="contained" onPress={() => btnlogin()} buttonColor={'#6870C3'} style={{ borderRadius: 0 }}>
+                  <Button mode="contained" onPress={handleSubmit(onSubmit)} buttonColor={'#6870C3'} style={{ borderRadius: 0 }}>
                     Login
                   </Button>
                 </View>

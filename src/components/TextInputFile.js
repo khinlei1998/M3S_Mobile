@@ -7,11 +7,8 @@ export default function TextInputFile(props) {
   const [isPassword, setIsPassword] = useState(true);
 
   const { defaultData, showValue, password, title, input, meta, ...inputProps } = props;
-  console.log('password', password);
-
 
   const togglePasswordIcon = () => {
-    console.log('passwordIcon', passwordIcon);
     if (passwordIcon == 'eye') {
       setPasswordIcon('eye-off-outline');
       setIsPassword(false);
@@ -21,7 +18,6 @@ export default function TextInputFile(props) {
     }
   };
 
-  console.log('isPassword', isPassword);
   return (
     <View style={{ marginTop: 20 }}>
       <TextInput
@@ -29,7 +25,7 @@ export default function TextInputFile(props) {
         label={title}
         onChangeText={input.onChange}
         style={{ backgroundColor: 'white' }}
-        secureTextEntry={isPassword ? true : false} //for android
+        secureTextEntry={isPassword && password ? true : false} //for android
         placeholder={showValue ? defaultData : ''}
         right={
           password ? (

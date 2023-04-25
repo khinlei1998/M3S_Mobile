@@ -1,12 +1,11 @@
-import { View, Text } from 'react-native';
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/Login/LoginScreen';
 import SplashScreen from '../screens/SplashScreen';
 import SettingScreen from '../screens/Setting/SettingScreen';
-export default function AuthNavigation() {
-  const Stack = createNativeStackNavigator();
+export default function AuthNavigation(props) {
 
+  const Stack = createNativeStackNavigator();
   return (
     <Stack.Navigator
       screenOptions={{

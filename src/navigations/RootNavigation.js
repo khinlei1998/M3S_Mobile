@@ -103,7 +103,7 @@ function CustomDrawerContent(props) {
             icon={() => <Icon name="log-out" size={20} color="#fff" />} // Set the icon to an Ionicons icon
             label="Logout "
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
-            onPress={() => props.navigation.navigate('Home')}
+            onPress={() => btnlogout()}
           />
         </SafeAreaView>
 

@@ -1,7 +1,15 @@
 import { View, Text, FlatList } from 'react-native'
-import React from 'react'
-
+import React, { useEffect, useState } from 'react'
+import { Button } from 'react-native-paper';
+import { getAllLoan } from '../../query/AllLoan_query';
 export default function Viewloan() {
+    const [count, setCount] = useState(0)
+
+    useEffect(() => {
+        console.log('count', count);
+        getAllLoan()
+    }, [count])
+
 
     const data = [
         {
@@ -134,6 +142,12 @@ export default function Viewloan() {
     }
     return (
         <>
+            {/* <Text>{count}</Text>
+            <Button mode="contained" onPress={() =>setCount(count+1)}>
+                Press me
+            </Button> */}
+
+
             <View style={{
                 flexDirection: 'row',
                 backgroundColor: '#D7D8DC',
