@@ -1,16 +1,18 @@
 import { View, Text, Image, SafeAreaView, ToastAndroid } from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
 import Home from '../screens/Dashboard/Home';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/Feather';
 import { Divider } from 'react-native-paper';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import { AuthContext } from '../components/context';
+import NewLoan from '../screens/NewLoan/NewLoan';
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
 function CustomDrawerContent(props) {
+  console.log('drawe props',props);
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
@@ -51,8 +53,9 @@ function CustomDrawerContent(props) {
             labelStyle={{ color: '#fff', }}
             icon={() => <Icon name="dollar-sign" size={20} color="#fff" />} // Set the icon to an Ionicons icon
             label="New Loan Application"
+            screenName="NewLoan"
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
-            onPress={() => props.navigation.navigate('Home')}
+            onPress={() => props.navigation.navigate('NewLoan')}
           />
 
           <DrawerItem
@@ -103,7 +106,7 @@ function CustomDrawerContent(props) {
             icon={() => <Icon name="log-out" size={20} color="#fff" />} // Set the icon to an Ionicons icon
             label="Logout "
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
-            onPress={() => btnlogout()}
+          onPress={() =>props.removeUserID() }
           />
         </SafeAreaView>
 
@@ -126,7 +129,8 @@ function CustomDrawerContent(props) {
   );
 }
 
-export default function RootNavigation() {
+export default function RootNavigation(props) {
+  const { removeUserID } = useContext(AuthContext)
 
   const showToast = () => {
     ToastAndroid.show('Hello, World!', ToastAndroid.SHORT);
@@ -157,7 +161,10 @@ export default function RootNavigation() {
 
         headerTitle: 'BC NEO Sales System'
       }}
-      drawerContent={CustomDrawerContent}
+      // drawerContent={CustomDrawerContent}
+      drawerContent={(props) =>
+        <CustomDrawerContent removeUserID={removeUserID} {...props}/>}
+
     >
       <Drawer.Screen name="Home" component={Home}
       />

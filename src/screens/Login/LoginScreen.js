@@ -20,7 +20,6 @@ import { Button } from 'react-native-paper';
 import { useNetInfo, NetInfo } from '@react-native-community/netinfo'
 import { getEemployee_info } from '../../query/Employee_query';
 import { selectUser } from '../../query/Employee_query';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../../components/context';
 function LoginScreen(props) {
   const netInfo = useNetInfo()
@@ -31,13 +30,13 @@ function LoginScreen(props) {
   const hideModal = () => setModalVisible(false);
 
 
-
   const onSubmit = async (values) => {
     try {
       const user = await selectUser(values.email, values.password);
       console.log('user', user.user_id);
       saveUserID(user.user_id)
-      alert(JSON.stringify(values))
+      // alert(JSON.stringify(values))
+      alert('Login Success')
 
       // Login successful
     } catch (error) {

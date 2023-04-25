@@ -23,6 +23,16 @@ export default function App() {
     }
   }
 
+
+  const removeUserID = async () => {
+    try {
+      await AsyncStorage.removeItem('user_id');
+      setUserID(await AsyncStorage.getItem('user_id'))
+
+    } catch (e) {
+      console.log('error ::', e)
+    }
+  }
   global.db = SQLite.openDatabase(
     {
       name: 'M3SDB.db',
@@ -57,7 +67,7 @@ export default function App() {
 
             </AuthContext.Provider>
           ) : (
-            <AuthContext.Provider value={userID} >
+            <AuthContext.Provider value={{removeUserID}} >
               <RootNavigation />
             </AuthContext.Provider>
           )}
