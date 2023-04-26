@@ -6,7 +6,7 @@ export default function TextInputFile(props) {
   const [passwordIcon, setPasswordIcon] = useState('eye');
   const [isPassword, setIsPassword] = useState(true);
 
-  const { defaultData, showValue, password, title, input, meta, ...inputProps } = props;
+  const { defaultData, showValue, password, title, input, meta: { touched, error }, ...inputProps } = props;
 
   const togglePasswordIcon = () => {
     if (passwordIcon == 'eye') {
@@ -33,6 +33,8 @@ export default function TextInputFile(props) {
           ) : null
         }
       />
+          {touched && error && <Text style={{color:"red"}}>{error}</Text>}
+
     </View>
   );
 }

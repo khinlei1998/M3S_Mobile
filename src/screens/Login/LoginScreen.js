@@ -21,6 +21,8 @@ import { useNetInfo, NetInfo } from '@react-native-community/netinfo'
 import { getEemployee_info } from '../../query/Employee_query';
 import { selectUser } from '../../query/Employee_query';
 import { AuthContext } from '../../components/context';
+import validate from './Validate';
+
 function LoginScreen(props) {
   const netInfo = useNetInfo()
   const { navigation, handleSubmit } = props;
@@ -138,7 +140,7 @@ function LoginScreen(props) {
                   padding: 20,
                 }}>
                 <Field
-                  name={'email'}
+                  name={'user_id'}
                   title={'ID or Email'}
                   component={TextInputFile}
                 />
@@ -194,5 +196,5 @@ function LoginScreen(props) {
 }
 
 
-export default reduxForm({ form: 'LoginForm' })(LoginScreen);
+export default reduxForm({ form: 'LoginForm',validate })(LoginScreen);
 
