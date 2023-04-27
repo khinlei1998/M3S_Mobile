@@ -5,41 +5,48 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
 import ButtonFile from '../../components/ButtonFile';
 import CheckBoxFile from '../../components/CheckBoxFile';
-import { Field, reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
+import {Field, reduxForm} from 'redux-form';
+import {connect} from 'react-redux';
 import DropDownPicker from '../../components/DropDownPicker';
 import SettingScreen from '../Setting/SettingScreen';
-import { languages } from '../../common';
-import { Button } from 'react-native-paper';
-import { useNetInfo, NetInfo } from '@react-native-community/netinfo'
-import { getEemployee_info } from '../../query/Employee_query';
-import { selectUser } from '../../query/Employee_query';
-import { AuthContext } from '../../components/context';
+import {languages} from '../../common';
+import {Button} from 'react-native-paper';
+import {useNetInfo, NetInfo} from '@react-native-community/netinfo';
+import {getEemployee_info} from '../../query/Employee_query';
+import {selectUser} from '../../query/Employee_query';
+import {AuthContext} from '../../components/context';
 import validate from './Validate';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {sha256} from 'react-native-sha256';
+import {encode} from 'base-64';
 
 function LoginScreen(props) {
-  const netInfo = useNetInfo()
-  const { navigation, handleSubmit } = props;
-  const { saveUserID, } = useContext(AuthContext)
+  const netInfo = useNetInfo();
+  const {navigation, handleSubmit} = props;
+  const {saveUserID} = useContext(AuthContext);
 
   const [modalVisible, setModalVisible] = React.useState(false);
   const hideModal = () => setModalVisible(false);
 
-
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     try {
+      let hashedPassword = await sha256('admin');
+      let encodedString = encode(hashedPassword);
+      // const user = await selectUser(values.email, encodedString);
       const user = await selectUser(values.email, values.password);
-      console.log('user', user.user_id);
-      saveUserID(user.user_id)
-      // alert(JSON.stringify(values))
-      alert('Login Success')
 
+      await saveUserID(user.user_id);
+      const user_id = await AsyncStorage.getItem('user_id');
+      // alert(JSON.stringify(values))
+      // alert('Login Success')
+      ToastAndroid.show(`Welocome,[${user_id}]!`, ToastAndroid.SHORT);
       // Login successful
     } catch (error) {
       // Login failed
@@ -47,32 +54,32 @@ function LoginScreen(props) {
     }
 
     // navigation.navigate('Home')
-  }
+  };
 
   const doSomethingElse = () => {
-    console.log(
-      'reach'
-    );
-  }
+    console.log('reach');
+  };
 
   const btnSync = () => {
     if (!netInfo.isConnected) {
-      alert('Internet Connection is need')
+      alert('Internet Connection is need');
     } else {
-
-      alert('Online')
+      alert('Online');
       getEemployee_info()
-        .then((result) => {
-          console.log('doSomething completed successfully with result:', result);
+        .then(result => {
+          console.log(
+            'doSomething completed successfully with result:',
+            result,
+          );
           // Call the second function
           doSomethingElse();
         })
-        .catch((error) => {
+        .catch(error => {
           // This code will be executed if doSomething throws an error
           console.log('doSomething failed with error:', error);
         });
     }
-  }
+  };
 
   return (
     <>
@@ -80,7 +87,7 @@ function LoginScreen(props) {
         <SettingScreen visible={modalVisible} hideModal={hideModal} />
       ) : (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{ backgroundColor: '#232D57', flex: 1 }}>
+          <View style={{backgroundColor: '#232D57', flex: 1}}>
             <View
               style={{
                 flexDirection: 'row',
@@ -93,7 +100,7 @@ function LoginScreen(props) {
                   name="download"
                   size={25}
                   color="#fff"
-                  style={{ marginLeft: 20 }}
+                  style={{marginLeft: 20}}
                 />
               </TouchableOpacity>
 
@@ -102,26 +109,26 @@ function LoginScreen(props) {
                   name="settings"
                   size={25}
                   color="#fff"
-                  style={{ marginLeft: 20 }}
+                  style={{marginLeft: 20}}
                 />
               </TouchableOpacity>
             </View>
-            <View style={{ alignItems: 'center', marginTop: 20 }}>
+            <View style={{alignItems: 'center', marginTop: 20}}>
               <Image
                 source={require('../../../assets/images/logo_shin_02.png')}
-                style={{ width: 90, height: 90 }}
+                style={{width: 90, height: 90}}
               />
               <View
-                style={{ flexDirection: 'row', marginTop: 30, marginBottom: 20 }}>
-                <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20 }}>
+                style={{flexDirection: 'row', marginTop: 30, marginBottom: 20}}>
+                <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 20}}>
                   BC NeO{' '}
                 </Text>
-                <Text style={{ color: '#fff', fontSize: 20 }}>Sales System</Text>
+                <Text style={{color: '#fff', fontSize: 20}}>Sales System</Text>
               </View>
 
               <Image
                 source={require('../../../assets/images/default-user.png')}
-                style={{ width: 50, height: 50, marginTop: 20 }}
+                style={{width: 50, height: 50, marginTop: 20}}
               />
             </View>
             <View
@@ -150,13 +157,20 @@ function LoginScreen(props) {
                   title={'Password'}
                   component={TextInputFile}
                   password
-
                 />
 
-                <Field component={DropDownPicker} name={'lng'} data={languages} />
+                <Field
+                  component={DropDownPicker}
+                  name={'lng'}
+                  data={languages}
+                />
 
-                <View style={{ marginTop: 20 }}>
-                  <Button mode="contained" onPress={handleSubmit(onSubmit)} buttonColor={'#6870C3'} style={{ borderRadius: 0 }}>
+                <View style={{marginTop: 20}}>
+                  <Button
+                    mode="contained"
+                    onPress={handleSubmit(onSubmit)}
+                    buttonColor={'#6870C3'}
+                    style={{borderRadius: 0}}>
                     Login
                   </Button>
                 </View>
@@ -169,12 +183,12 @@ function LoginScreen(props) {
                     marginTop: 10,
                   }}>
                   <CheckBoxFile />
-                  <Text style={{ color: '#fff' }}>Save login Information</Text>
+                  <Text style={{color: '#fff'}}>Save login Information</Text>
                 </View>
               </View>
             </View>
 
-            <Text style={{ color: '#fff', textAlign: 'center', marginTop: 25 }}>
+            <Text style={{color: '#fff', textAlign: 'center', marginTop: 25}}>
               v 0.1.19
             </Text>
 
@@ -190,11 +204,8 @@ function LoginScreen(props) {
           </View>
         </TouchableWithoutFeedback>
       )}
-
     </>
   );
 }
 
-
-export default reduxForm({ form: 'LoginForm',validate })(LoginScreen);
-
+export default reduxForm({form: 'LoginForm', validate})(LoginScreen);
