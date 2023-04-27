@@ -63,7 +63,7 @@ function LoginScreen(props) {
       alert('Online')
       getEemployee_info()
         .then((result) => {
-          console.log('doSomething completed successfully with result:', result);
+          // console.log('doSomething completed successfully with result:', result);
           // Call the second function
           doSomethingElse();
         })

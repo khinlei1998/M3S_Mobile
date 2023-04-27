@@ -12,7 +12,6 @@ const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
 function CustomDrawerContent(props) {
-  console.log('drawe props',props);
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
