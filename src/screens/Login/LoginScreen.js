@@ -6,13 +6,13 @@ import {
   Keyboard,
   TouchableOpacity,
 } from 'react-native';
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
 import ButtonFile from '../../components/ButtonFile';
 import CheckBoxFile from '../../components/CheckBoxFile';
-import { Field, reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
+import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
 import DropDownPicker from '../../components/DropDownPicker';
 import SettingScreen from '../Setting/SettingScreen';
 import { languages } from '../../common';
@@ -22,23 +22,67 @@ import { getEemployee_info } from '../../query/Employee_query';
 import { selectUser } from '../../query/Employee_query';
 import { AuthContext } from '../../components/context';
 import validate from './Validate';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { reset,change  } from 'redux-form';
+
 
 function LoginScreen(props) {
+  const dispatch = useDispatch();
+  const [id, setID] = useState()
+  const [rememberMe, setRememberMe] = useState(false);
+
+  const [initialValues, setInitialValues] = useState({ user_id: '', });
+
   const netInfo = useNetInfo()
-  const { navigation, handleSubmit } = props;
-  const { saveUserID, } = useContext(AuthContext)
+  const { navigation, handleSubmit, } = props;
+  const { saveUserID } = useContext(AuthContext)
 
   const [modalVisible, setModalVisible] = React.useState(false);
   const hideModal = () => setModalVisible(false);
 
+  useEffect(() => {
+    async function fetchData() {
+      // You can await here
+      const data = await AsyncStorage.getItem('login_info')
+      const userid= await AsyncStorage.getItem('user_id')
+      console.log('login data', userid);
+      if (data == 'true') {
+        const userid= await AsyncStorage.getItem('user_id')
+        // console.log('data',userid);
+        setID(userid)
 
-  const onSubmit = async (values) => {
+        // dispatch(initialize('LoginForm', { user_id: 'MMUUu', }));
+        // dispatch(change('LoginForm', 'user_id', 'myDefaultUsername'));
+
+      } else {
+        // dispatch(initialize('LoginForm', { user_id: '', }));
+        // dispatch(change('LoginForm', 'user_id', ''));
+
+      }
+    }
+    fetchData();
+
+  }, [])
+
+  const saveLoginInfo = async (login_info) => {
     try {
-      const user = await selectUser(values.email, values.password);
-      console.log('user', user.user_id);
+      await AsyncStorage.setItem('login_info', login_info);
+
+
+    } catch (e) {
+      console.log('error ::', e)
+    }
+  }
+
+  const onSubmit = async (values, dispatch) => {
+    try {
+      const user = await selectUser(values.user_id, values.password);
+      console.log('jjjddsd',user.user_id);
       saveUserID(user.user_id)
-      // alert(JSON.stringify(values))
-      alert('Login Success')
+
+      saveLoginInfo(JSON.stringify(values.save_login_info))
+
+      // reset('LoginForm');
 
       // Login successful
     } catch (error) {
@@ -74,6 +118,18 @@ function LoginScreen(props) {
     }
   }
 
+  const btncheck = () => {
+    setRememberMe(true)
+  }
+
+  const initialValue='ll'
+  // const btncheck=(values)=>{
+  //   alert('kk')
+  //   dispatch(setInitialValues('LoginForm', { user_id: 'tt', }));
+
+  // }
+
+  console.log('id',id);
   return (
     <>
       {modalVisible ? (
@@ -143,6 +199,9 @@ function LoginScreen(props) {
                   name={'user_id'}
                   title={'ID or Email'}
                   component={TextInputFile}
+                  defaultValue={id}
+
+
                 />
 
                 <Field
@@ -168,7 +227,10 @@ function LoginScreen(props) {
                     justifyContent: 'center',
                     marginTop: 10,
                   }}>
-                  <CheckBoxFile />
+
+                  <Field component={CheckBoxFile} name={'save_login_info'}
+                    testcheck={() => btncheck()}
+                  />
                   <Text style={{ color: '#fff' }}>Save login Information</Text>
                 </View>
               </View>
@@ -195,6 +257,18 @@ function LoginScreen(props) {
   );
 }
 
+const mapStateToProps = (state, ownProps) => {
+  return {
+    // initialValues: ownProps.initialValues
+  };
+};
+export default reduxForm({
+  form: 'LoginForm',
+  // enableReinitialize: true,
 
-export default reduxForm({ form: 'LoginForm',validate })(LoginScreen);
+  // initialValues: {
+  //   user_id:'no',
+  // },
+  // validate
+})(connect(mapStateToProps)(LoginScreen));
 

@@ -12,6 +12,7 @@ import SplashScreen from './src/screens/SplashScreen';
 export default function App() {
   const [show_splash, showSplash] = useState(true);
   const [userID, setUserID] = React.useState(null);
+  const [login_info, setLoginInfo] = React.useState(null);
 
   const saveUserID = async (user_id) => {
     try {
@@ -33,6 +34,18 @@ export default function App() {
       console.log('error ::', e)
     }
   }
+
+  // const saveLoginInfo = async (login_info) => {
+  //   try {
+  //     await AsyncStorage.setItem('login_info', login_info);
+  //     setLoginInfo(await AsyncStorage.getItem('login_info'))
+
+  //   } catch (e) {
+  //     console.log('error ::', e)
+  //   }
+  // }
+
+
   global.db = SQLite.openDatabase(
     {
       name: 'M3SDB.db',
@@ -62,12 +75,12 @@ export default function App() {
         {show_splash ? <SplashScreen />
           :
           userID == null ? (
-            <AuthContext.Provider value={{ saveUserID, }}>
+            <AuthContext.Provider value={{ saveUserID,login_info,userID }}>
               <AuthNavigation />
 
             </AuthContext.Provider>
           ) : (
-            <AuthContext.Provider value={{removeUserID}} >
+            <AuthContext.Provider value={{ removeUserID }} >
               <RootNavigation />
             </AuthContext.Provider>
           )}
