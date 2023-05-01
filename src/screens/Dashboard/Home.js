@@ -1,15 +1,60 @@
 import {View, Text, Image, FlatList} from 'react-native';
-import React, {useEffect,useState}from 'react';
+import React, {useEffect, useState} from 'react';
 import Viewloan from '../Loan/Viewloan';
-import { fetchEmpName } from '../../query/Employee_query';
-
+import {fetchEmpName} from '../../query/Employee_query';
+import {getAllLoan} from '../../query/AllLoan_query';
 export default function Home() {
-  const [emp_name, setEmpName] = useState()
+  const [emp_name, setEmpName] = useState();
+  const [loan_data, setAllLoan] = useState([]);
 
-  useEffect(() => {
-    fetchEmpName()
+  const loadData = async () => {
+    await fetchEmpName()
       .then(data => setEmpName(data[0].employee_name))
       .catch(error => console.log(error));
+
+    await getAllLoan()
+      .then(setAllLoan)
+      .catch(error => console.log(error));
+  };
+
+  const data = [
+    {
+      id: 1,
+      type: 'Individual loan Type',
+      no: '2000000000',
+      name: 'Tun Tun',
+      amount: 500000,
+      sync: '00',
+    },
+
+    {
+      id: 2,
+      type: 'Cover loan ',
+      no: '2000000000',
+      name: 'Tun Tun',
+      amount: 900000,
+      sync: '00',
+    },
+    {
+      id: 3,
+      type: 'Individual loan Type',
+      no: '2000000000',
+      name: 'Tun Tun',
+      amount: 250000,
+      sync: '00',
+    },
+  ];
+
+  const totalAmount = data.reduce(
+    (accumulator, currentValue) => accumulator + currentValue.amount,
+    0,
+  );
+  const formattedPrice = totalAmount
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Output: "1,000"
+
+  useEffect(() => {
+    loadData();
   }, []);
   return (
     <View style={{flex: 1}}>
@@ -74,7 +119,8 @@ export default function Home() {
                 textAlign: 'right',
                 color: 'red',
               }}>
-              14 <Text style={{color: '#c7c7c7', fontSize: 15}}>PCS</Text>
+              {loan_data.length}{' '}
+              <Text style={{color: '#c7c7c7', fontSize: 15}}>PCS</Text>
             </Text>
           </View>
         </View>
@@ -116,7 +162,7 @@ export default function Home() {
                 textAlign: 'right',
                 color: '#73DEF7',
               }}>
-              2,633,346{' '}
+              {formattedPrice}{' '}
               <Text style={{color: '#c7c7c7', fontSize: 15}}>MMK</Text>
             </Text>
           </View>
@@ -144,11 +190,12 @@ export default function Home() {
             fontSize: 17,
             color: 'red',
           }}>
-          14 <Text style={{color: '#c7c7c7', fontSize: 17}}>Pcs</Text>
+          {loan_data.length}
+          <Text style={{color: '#c7c7c7', fontSize: 17}}>Pcs</Text>
         </Text>
       </View>
 
-      <Viewloan />
+      <Viewloan loan_data={loan_data} />
     </View>
   );
 }

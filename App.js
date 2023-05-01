@@ -33,6 +33,8 @@ export default function App() {
       console.log('error ::', e)
     }
   }
+
+
   global.db = SQLite.openDatabase(
     {
       name: 'M3SDB.db',
@@ -62,12 +64,12 @@ export default function App() {
         {show_splash ? <SplashScreen />
           :
           userID == null ? (
-            <AuthContext.Provider value={{ saveUserID, }}>
+            <AuthContext.Provider value={{ saveUserID,userID }}>
               <AuthNavigation />
 
             </AuthContext.Provider>
           ) : (
-            <AuthContext.Provider value={{removeUserID}} >
+            <AuthContext.Provider value={{ removeUserID }} >
               <RootNavigation />
             </AuthContext.Provider>
           )}

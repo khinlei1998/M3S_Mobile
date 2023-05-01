@@ -5,15 +5,14 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
-  ToastAndroid,
+  ToastAndroid
 } from 'react-native';
-import React, {useContext} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
-import ButtonFile from '../../components/ButtonFile';
 import CheckBoxFile from '../../components/CheckBoxFile';
-import {Field, reduxForm} from 'redux-form';
-import {connect} from 'react-redux';
+import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
 import DropDownPicker from '../../components/DropDownPicker';
 import SettingScreen from '../Setting/SettingScreen';
 import {languages} from '../../common';
@@ -24,30 +23,62 @@ import {selectUser} from '../../query/Employee_query';
 import {AuthContext} from '../../components/context';
 import validate from './Validate';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {reset, change} from 'redux-form';
 import {sha256} from 'react-native-sha256';
 import {encode} from 'base-64';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 function LoginScreen(props) {
+  const dispatch = useDispatch();
+  const [id, setID] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [rememberMe, setRememberMe] = useState(false);
+
   const netInfo = useNetInfo();
   const {navigation, handleSubmit} = props;
-  const {saveUserID} = useContext(AuthContext);
+  const {saveUserID, userID} = useContext(AuthContext);
 
   const [modalVisible, setModalVisible] = React.useState(false);
   const hideModal = () => setModalVisible(false);
 
-  const onSubmit = async values => {
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const userid = await AsyncStorage.getItem('user_id');
+  //     const data = await AsyncStorage.getItem('login_info');
+
+  //     if (data == 'true') {
+  //       // dispatch(initialize('LoginForm', { user_id: 'MMUUu', }));
+  //       // dispatch(change('LoginForm', 'user_id', 'myDefaultUsername'));
+  //     } else {
+  //       // dispatch(initialize('LoginForm', { user_id: '', }));
+  //       // dispatch(change('LoginForm', 'user_id', ''));
+  //     }
+  //   }
+  //   fetchData();
+  // }, []);
+
+  const saveLoginInfo = async login_info => {
+    try {
+      await AsyncStorage.setItem('login_info', login_info);
+    } catch (e) {
+      console.log('error ::', e);
+    }
+  };
+
+  const onSubmit = async (values, dispatch) => {
     try {
       let hashedPassword = await sha256('admin');
       let encodedString = encode(hashedPassword);
-      // const user = await selectUser(values.email, encodedString);
-      const user = await selectUser(values.email, values.password);
-
+      console.log('encodedString', encodedString);
+      const user = await selectUser(values.user_id, encodedString);
+      // console.log('success user',user);
       await saveUserID(user.user_id);
+      // values.save_login_info &&
+      //   saveLoginInfo(JSON.stringify(values.save_login_info));
+      // // reset('LoginForm');
       const user_id = await AsyncStorage.getItem('user_id');
-      // alert(JSON.stringify(values))
-      // alert('Login Success')
       ToastAndroid.show(`Welocome,[${user_id}]!`, ToastAndroid.SHORT);
-      // Login successful
     } catch (error) {
       // Login failed
       console.log('Error:', error);
@@ -64,23 +95,26 @@ function LoginScreen(props) {
     if (!netInfo.isConnected) {
       alert('Internet Connection is need');
     } else {
-      alert('Online');
+      setIsLoading(true);
       getEemployee_info()
         .then(result => {
-          console.log(
-            'doSomething completed successfully with result:',
-            result,
-          );
-          // Call the second function
-          doSomethingElse();
+          console.log('emp result>>>', result);
+          if (result == 'success') {
+            doSomethingElse().then(result => {
+              setIsLoading(false);
+            });
+          }
         })
         .catch(error => {
-          // This code will be executed if doSomething throws an error
+          setIsLoading(false);
           console.log('doSomething failed with error:', error);
         });
     }
   };
 
+  const btncheck = () => {
+    setRememberMe(true);
+  };
   return (
     <>
       {modalVisible ? (
@@ -150,6 +184,7 @@ function LoginScreen(props) {
                   name={'user_id'}
                   title={'ID or Email'}
                   component={TextInputFile}
+                  defaultValue={id}
                 />
 
                 <Field
@@ -182,7 +217,11 @@ function LoginScreen(props) {
                     justifyContent: 'center',
                     marginTop: 10,
                   }}>
-                  <CheckBoxFile />
+                  <Field
+                    component={CheckBoxFile}
+                    name={'save_login_info'}
+                    testcheck={() => btncheck()}
+                  />
                   <Text style={{color: '#fff'}}>Save login Information</Text>
                 </View>
               </View>
@@ -204,8 +243,19 @@ function LoginScreen(props) {
           </View>
         </TouchableWithoutFeedback>
       )}
+
+      <View style={{position: 'absolute', top: '50%', right: 0, left: 0}}>
+        {isLoading ? (
+          <Spinner visible={isLoading} textContent={'Please Wait'} />
+        ) : (
+          <Text></Text>
+        )}
+      </View>
     </>
   );
 }
 
-export default reduxForm({form: 'LoginForm', validate})(LoginScreen);
+export default reduxForm({
+  form: 'LoginForm',
+  validate,
+})(connect(null)(LoginScreen));

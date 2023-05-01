@@ -2,17 +2,19 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { Checkbox } from 'react-native-paper';
 
-export default function CheckBoxFile() {
-    const [checked, setChecked] = React.useState(false);
+export default function CheckBoxFile(props) {
+    const { testcheck, input } = props
 
     return (
         <View>
             <Checkbox
                 uncheckedColor='white'
                 color="white"
-                status={checked ? 'checked' : 'unchecked'}
+                // status={checked ? 'checked' : 'unchecked'}
+                status={input.value ? 'checked' : 'unchecked'}
                 onPress={() => {
-                    setChecked(!checked);
+                    testcheck()
+                    input.onChange(!input.value)
                 }}
             />
         </View>

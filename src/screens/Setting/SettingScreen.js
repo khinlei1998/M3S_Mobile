@@ -43,7 +43,7 @@ function SettingScreen(props) {
 
   const btndefault = () => {
     setShowDefault(true);
-    dispatch(change('SettingForm', 'ip', 'imbs.iptime.org'));
+    dispatch(change('SettingForm', 'ip', '1157-103-231-92-61.ngrok-free.app/skylark-m3s/api/employees.m3s'));
     dispatch(change('SettingForm', 'port', '443'));
 
   }
@@ -79,7 +79,7 @@ function SettingScreen(props) {
                   <Text>ex)192.160.0.148, imbs.iptime.org</Text>
                 </View>
                 <View style={{ width: '40%' }}>
-                  <Field component={TextInputFile} name='ip' showValue={showDefault} defaultData={'imbs.iptime.org'} />
+                  <Field component={TextInputFile} name='ip' showValue={showDefault} defaultData={'1157-103-231-92-61.ngrok-free.app/skylark-m3s/api/employees.m3s'} />
                 </View>
               </View>
 

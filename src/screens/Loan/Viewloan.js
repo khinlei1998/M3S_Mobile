@@ -1,104 +1,8 @@
 import { View, Text, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Button } from 'react-native-paper';
-import { getAllLoan } from '../../query/AllLoan_query';
-export default function Viewloan() {
-
-    useEffect(() => {
-        getAllLoan()
-    }, [count])
-
-
-    const data = [
-        {
-            id: 1,
-            type: 'Individual loan Type',
-            no: '2000000000',
-            name: 'Tun Tun',
-            amount: '20000',
-            sync: '00'
-        },
-
-        {
-            id: 2,
-            type: 'Cover loan ',
-            no: '2000000000',
-            name: 'Tun Tun',
-            amount: '20000',
-            sync: '00'
-        },
-        {
-            id: 3,
-            type: 'Individual loan Type',
-            no: '2000000000',
-            name: 'Tun Tun',
-            amount: '20000',
-            sync: '00'
-        },
-
-        {
-            id: 4,
-            type: 'Cover loan ',
-            no: '2000000000',
-            name: 'Tun Tun',
-            amount: '20000',
-            sync: '00'
-        },
-
-        {
-            id: 5,
-            type: 'Individual loan Type',
-            no: '2000000000',
-            name: 'Tun Tun',
-            amount: '20000',
-            sync: '00'
-        },
-
-        {
-            id: 6,
-            type: 'Cover loan ',
-            no: '2000000000',
-            name: 'Tun Tun',
-            amount: '20000',
-            sync: '00'
-        },
-
-        {
-            id: 7,
-            type: 'Individual loan Type',
-            no: '2000000000',
-            name: 'Tun Tun',
-            amount: '20000',
-            sync: '00'
-        },
-
-        {
-            id: 8,
-            type: 'Cover loan ',
-            no: '2000000000',
-            name: 'Tun Tun',
-            amount: '20000',
-            sync: '00'
-        },
-
-        {
-            id: 9,
-            type: 'Individual loan Type',
-            no: '2000000000',
-            name: 'Tun Tun',
-            amount: '20000',
-            sync: '00'
-        },
-
-        {
-            id: 10,
-            type: 'Cover loan ',
-            no: '2000000000',
-            name: 'Tun Tun',
-            amount: '20000',
-            sync: '00'
-        }
-    ]
+export default function Viewloan(props) {
+    const {loan_data}=props
 
     const item = ({ item }) => {
         return (
@@ -140,11 +44,6 @@ export default function Viewloan() {
     }
     return (
         <>
-            {/* <Text>{count}</Text>
-            <Button mode="contained" onPress={() =>setCount(count+1)}>
-                Press me
-            </Button> */}
-
 
             <View style={{
                 flexDirection: 'row',
@@ -192,7 +91,7 @@ export default function Viewloan() {
                 }}>Sync</Text>
             </View>
 
-            <FlatList data={data} renderItem={item}
+            <FlatList data={loan_data} renderItem={item}
                 keyExtractor={(item, index) => index.toString()}
 
             />
