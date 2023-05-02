@@ -66,7 +66,7 @@ function LoginScreen(props) {
   const onSubmit = async (values, dispatch) => {
     try {
       let hashedPassword = await sha256(values.password);
-      let changed_cap_password=hashedPassword.toUpperCase()
+      let changed_cap_password = hashedPassword.toUpperCase()
       let encodedString = encode(changed_cap_password);
       const user = await selectUser(values.user_id, encodedString);
       await saveUserID(user.user_id);
@@ -82,10 +82,6 @@ function LoginScreen(props) {
     }
   };
 
-  const doSomethingElse = () => {
-    console.log('reach');
-  };
-
   const btnSync = () => {
     if (!netInfo.isConnected) {
       alert('Internet Connection is need');
@@ -95,8 +91,12 @@ function LoginScreen(props) {
         .then(result => {
           console.log('emp result>>>', result);
           if (result == 'success') {
-            doSomethingElse().then(result => {
-              setIsLoading(false);
+            getCustomer_info().then(result => {
+              console.log('Customer result>>', result);
+              if (result == 'success') {
+                setIsLoading(false);
+
+              }
             });
           }
         })
