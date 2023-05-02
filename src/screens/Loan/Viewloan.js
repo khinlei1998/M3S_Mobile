@@ -1,6 +1,5 @@
 import { View, Text, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Button } from 'react-native-paper';
 export default function Viewloan(props) {
     const {loan_data}=props
 
