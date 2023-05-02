@@ -5,6 +5,7 @@ export function getEemployee_info() {
   return new Promise(async (resolve, reject) => {
     let ip = await AsyncStorage.getItem('ip');
     let port = await AsyncStorage.getItem('port');
+    console.log('hello');
     axios
       // .get(`https://${ip}`, {})
       .get(`https://api.thedogapi.com/v1/breeds?limit=10&page=0`)
