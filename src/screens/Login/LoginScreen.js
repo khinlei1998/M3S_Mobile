@@ -27,7 +27,8 @@ import { reset, change } from 'redux-form';
 import { sha256 } from 'react-native-sha256';
 import { encode } from 'base-64';
 import Spinner from 'react-native-loading-spinner-overlay';
-
+import { getCustomer_info } from '../../query/Customer_query';
+import { getNRC_info } from '../../query/NRCinfo_query';
 function LoginScreen(props) {
   const dispatch = useDispatch();
   const [id, setID] = useState('');
@@ -64,6 +65,7 @@ function LoginScreen(props) {
   };
 
   const onSubmit = async (values, dispatch) => {
+    console.log(JSON.stringify(values));
     try {
       let hashedPassword = await sha256(values.password);
       let changed_cap_password = hashedPassword.toUpperCase()
@@ -92,7 +94,7 @@ function LoginScreen(props) {
           console.log('emp result>>>', result);
           if (result == 'success') {
             getCustomer_info().then(result => {
-              console.log('Customer result>>', result);
+              console.log('Cus result>>', result);
               if (result == 'success') {
                 setIsLoading(false);
 
