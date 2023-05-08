@@ -32,6 +32,7 @@ import {getNRC_info} from '../../query/NRCinfo_query';
 function LoginScreen(props) {
   const dispatch = useDispatch();
   const [id, setID] = useState('');
+  const [selectedItemValue, setSelectedItemValue] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const netInfo = useNetInfo();
@@ -41,26 +42,24 @@ function LoginScreen(props) {
   const hideModal = () => setModalVisible(false);
 
   useEffect(() => {
-    db.transaction(tx => {
-      tx.executeSql('SELECT * FROM Customer', [], (tx, results) => {
-        const len = results.rows.length;
-        console.log('len',len);
-        const rows = [];
-      });
-    });
-    async function fetchData() {
-      const userid = await AsyncStorage.getItem('user_id');
-      const data = await AsyncStorage.getItem('login_info');
-
-      if (data == 'true') {
-        // dispatch(initialize('LoginForm', { user_id: 'MMUUu', }));
-        // dispatch(change('LoginForm', 'user_id', 'myDefaultUsername'));
-      } else {
-        // dispatch(initialize('LoginForm', { user_id: '', }));
-        // dispatch(change('LoginForm', 'user_id', ''));
-      }
-    }
-    fetchData();
+    // global.db.transaction(tx => {
+    //   tx.executeSql('SELECT * FROM Employee', [], (tx, results) => {
+    //     const len = results.rows.length;
+    //     const rows = [];
+    //   });
+    // });
+    // async function fetchData() {
+    //   const userid = await AsyncStorage.getItem('user_id');
+    //   const data = await AsyncStorage.getItem('login_info');
+    //   if (data == 'true') {
+    //     // dispatch(initialize('LoginForm', { user_id: 'MMUUu', }));
+    //     // dispatch(change('LoginForm', 'user_id', 'myDefaultUsername'));
+    //   } else {
+    //     // dispatch(initialize('LoginForm', { user_id: '', }));
+    //     // dispatch(change('LoginForm', 'user_id', ''));
+    //   }
+    // }
+    // fetchData();
   }, []);
 
   const saveLoginInfo = async login_info => {
@@ -71,8 +70,8 @@ function LoginScreen(props) {
     }
   };
 
+
   const onSubmit = async (values, dispatch) => {
-    console.log(JSON.stringify(values));
     try {
       let hashedPassword = await sha256(values.password);
       let changed_cap_password = hashedPassword.toUpperCase();

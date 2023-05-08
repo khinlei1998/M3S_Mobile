@@ -1,12 +1,20 @@
-import { View, Text } from 'react-native';
-import React, { useState } from 'react';
-import { TextInput } from 'react-native-paper';
+import {View, Text} from 'react-native';
+import React, {useState} from 'react';
+import {TextInput} from 'react-native-paper';
 
 export default function TextInputFile(props) {
   const [passwordIcon, setPasswordIcon] = useState('eye');
   const [isPassword, setIsPassword] = useState(true);
-  const {defaultData, showValue, password, title, input, meta: { touched, error }, ...inputProps } = props;
-
+  const {
+    defaultData,
+    showValue,
+    password,
+    title,
+    input,
+    meta: {touched, error},
+    // ...inputProps
+  } = props;
+  
   const togglePasswordIcon = () => {
     if (passwordIcon == 'eye') {
       setPasswordIcon('eye-off-outline');
@@ -18,13 +26,13 @@ export default function TextInputFile(props) {
   };
 
   return (
-    <View style={{ marginTop: 20 }}>
+    <View style={{marginTop: 20}}>
       <TextInput
-        {...inputProps}
+        // {...inputProps}
         label={title}
-        onChangeText={(text) => input.onChange(text)}
+        onChangeText={text => input.onChange(text)}
         // onChangeText={input.onChange}
-        style={{ backgroundColor: 'white' }}
+        style={{backgroundColor: 'white'}}
         secureTextEntry={isPassword && password ? true : false} //for android
         placeholder={showValue ? defaultData : ''}
         // defaultValue={input.value}
@@ -35,8 +43,7 @@ export default function TextInputFile(props) {
           ) : null
         }
       />
-          {touched && error && <Text style={{color:"red"}}>{error}</Text>}
-
+      {touched && error && <Text style={{color: 'red'}}>{error}</Text>}
     </View>
   );
 }

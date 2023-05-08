@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, {useState, useEffect} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
 import RootNavigation from './src/navigations/RootNavigation';
 import AuthNavigation from './src/navigations/AuthNavigation';
-import { store } from './src/redux/store';
-import { Provider } from 'react-redux';
-import { AuthContext } from './src/components/context';
+import {store} from './src/redux/store';
+import {Provider} from 'react-redux';
+import {AuthContext} from './src/components/context';
 import SQLite from 'react-native-sqlite-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './src/screens/SplashScreen';
@@ -13,27 +13,23 @@ export default function App() {
   const [show_splash, showSplash] = useState(true);
   const [userID, setUserID] = React.useState(null);
 
-  const saveUserID = async (user_id) => {
+  const saveUserID = async user_id => {
     try {
       await AsyncStorage.setItem('user_id', user_id);
-      setUserID(await AsyncStorage.getItem('user_id'))
-
+      setUserID(await AsyncStorage.getItem('user_id'));
     } catch (e) {
-      console.log('error ::', e)
+      console.log('error ::', e);
     }
-  }
-
+  };
 
   const removeUserID = async () => {
     try {
       await AsyncStorage.removeItem('user_id');
-      setUserID(await AsyncStorage.getItem('user_id'))
-
+      setUserID(await AsyncStorage.getItem('user_id'));
     } catch (e) {
-      console.log('error ::', e)
+      console.log('error ::', e);
     }
-  }
-
+  };
 
   global.db = SQLite.openDatabase(
     {
@@ -50,29 +46,38 @@ export default function App() {
   );
 
   useEffect(() => {
+    const saveIp = async user_id => {
+      try {
+        await AsyncStorage.setItem('ip','sample-rest.onrender.com');
+        await AsyncStorage.setItem('port','443');
+
+      } catch (e) {
+        console.log('error ::', e);
+      }
+    };
     const timer = setTimeout(() => {
       showSplash(false);
     }, 3000);
 
+    saveIp();
+
     return () => clearTimeout(timer);
   }, []);
-
 
   return (
     <Provider store={store}>
       <NavigationContainer>
-        {show_splash ? <SplashScreen />
-          :
-          userID == null ? (
-            <AuthContext.Provider value={{ saveUserID,userID }}>
-              <AuthNavigation />
-
-            </AuthContext.Provider>
-          ) : (
-            <AuthContext.Provider value={{ removeUserID }} >
-              <RootNavigation />
-            </AuthContext.Provider>
-          )}
+        {show_splash ? (
+          <SplashScreen />
+        ) : userID == null ? (
+          <AuthContext.Provider value={{saveUserID, userID}}>
+            <AuthNavigation />
+          </AuthContext.Provider>
+        ) : (
+          <AuthContext.Provider value={{removeUserID}}>
+            <RootNavigation />
+          </AuthContext.Provider>
+        )}
       </NavigationContainer>
     </Provider>
   );
