@@ -1,5 +1,5 @@
 import {View, Text, TouchableWithoutFeedback, Keyboard} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {cus_filter_item} from '../../common';
 import ViewCustomer from './ViewCustomer';
 import {TextInput} from 'react-native-paper';
@@ -9,7 +9,16 @@ import {Picker} from '@react-native-picker/picker';
 export default function CustomerSearch() {
   const [searchTerm, setSearchTerm] = useState();
   const [all_customer, setAllCustomer] = useState([]);
-  const [selectedItemValue, setSelectedItemValue] = useState(null);
+  const [selectedItemValue, setSelectedItemValue] = useState('cu_name');
+
+  useEffect(() => {
+    
+  
+    return () => {
+      setAllCustomer([]);
+    }
+  }, [])
+  
 
   const handleSearch = async () => {
     await filterCustomer(selectedItemValue, searchTerm)

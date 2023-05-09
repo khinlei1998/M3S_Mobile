@@ -14,6 +14,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {AuthContext} from '../components/context';
 import NewLoan from '../screens/NewLoan/NewLoan';
 import CustomerSearch from '../screens/Customer/CustomerSearch';
+import Customer_Management from '../screens/CustomerManagement/Customer_Management';
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -52,7 +53,7 @@ function CustomDrawerContent(props) {
             labelStyle={{color: '#c7c7c7', marginLeft: 50}}
             label="Customer Management"
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
-            onPress={() => props.navigation.navigate('Home')}
+            onPress={() => props.navigation.navigate('Customer Management')}
           />
 
           <DrawerItem
@@ -188,8 +189,6 @@ export default function RootNavigation(props) {
           alignSelf: 'center',
         },
         headerTitleAlign: 'center',
-
-        headerTitle: 'BC NEO Sales System',
       }}
       // drawerContent={CustomDrawerContent}
       drawerContent={props => (
@@ -200,6 +199,8 @@ export default function RootNavigation(props) {
       <Drawer.Screen name="NewLoan" component={NewLoan} />
 
       <Drawer.Screen name="Customer Serach" component={CustomerSearch} />
+
+      <Drawer.Screen name="Customer Management" component={Customer_Management} />
 
     </Drawer.Navigator>
   );

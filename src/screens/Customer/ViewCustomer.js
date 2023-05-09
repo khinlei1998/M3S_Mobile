@@ -4,7 +4,7 @@ import React from 'react';
 export default function ViewCustomer(props) {
   const {customer_data} = props;
 
-  const item = ({item}) => {
+  const item = ({item,index}) => {
     return (
       <View
         style={{
@@ -18,7 +18,7 @@ export default function ViewCustomer(props) {
             padding: 10,
             flex: 1,
           }}>
-          1
+          {index+1}
         </Text>
         <Text
           style={{
