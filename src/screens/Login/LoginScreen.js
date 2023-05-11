@@ -135,7 +135,7 @@ function LoginScreen(props) {
               <TouchableOpacity onPress={() => btnSync()}>
                 <Icon
                   name="download"
-                  size={25}
+                  size={35}
                   color="#fff"
                   style={{marginLeft: 20}}
                 />
@@ -144,7 +144,7 @@ function LoginScreen(props) {
               <TouchableOpacity onPress={() => setModalVisible(true)}>
                 <Icon
                   name="settings"
-                  size={25}
+                  size={35}
                   color="#fff"
                   style={{marginLeft: 20}}
                 />

@@ -1,4 +1,4 @@
-import {View, ToastAndroid} from 'react-native';
+import { View, ToastAndroid } from 'react-native';
 import {
   Modal,
   Portal,
@@ -8,15 +8,20 @@ import {
   Divider,
 } from 'react-native-paper';
 import TextInputFile from '../../components/TextInputFile';
-import React, {useState} from 'react';
-import {Field, reduxForm, change} from 'redux-form';
+import React, { useState, useEffect } from 'react';
+import { Field, reduxForm, change } from 'redux-form';
 import Icon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function SettingScreen(props) {
   const [showDefault, setShowDefault] = useState(false);
+  const [ip, setIP] = useState();
 
-  const {visible, hideModal, handleSubmit, dispatch} = props;
+  const [port, setPort] = useState();
+
+
+
+  const { visible, hideModal, handleSubmit, dispatch } = props;
 
   const containerStyle = {
     backgroundColor: 'white',
@@ -41,13 +46,34 @@ function SettingScreen(props) {
       change(
         'SettingForm',
         'ip',
-        'sample-rest.onrender.com',
+        ip,
       ),
     );
-    dispatch(change('SettingForm', 'port', '443'));
+    dispatch(change('SettingForm', 'port', port));
   };
+
+  useEffect(() => {
+    
+    const getData = async () => {
+      try {
+        const ip = await AsyncStorage.getItem('ip');
+        if (ip !== null) {
+          setIP(ip)
+        }
+
+        const port = await AsyncStorage.getItem('port');
+        if (port !== null) {
+          setPort(port)
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    getData();
+  }, []);
+
   return (
-    <View style={{backgroundColor: 'black', flex: 1}}>
+    <View style={{ backgroundColor: 'black', flex: 1 }}>
       <Provider>
         <Portal>
           <Modal
@@ -62,7 +88,7 @@ function SettingScreen(props) {
             onDismiss={hideModal}
             contentContainerStyle={containerStyle}>
             <View
-              style={{backgroundColor: '#232D57', padding: 25}}
+              style={{ backgroundColor: '#232D57', padding: 25 }}
               onStartShouldSetResponder={() => hideModal()}>
               <Icon
                 name="x-circle"
@@ -77,35 +103,35 @@ function SettingScreen(props) {
                 }}
               />
             </View>
-            <View style={{backgroundColor: '#ededed', padding: 10}}>
+            <View style={{ backgroundColor: '#ededed', padding: 10 }}>
               <View
-                style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-                <View style={{width: '40%', marginTop: 20}}>
+                style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                <View style={{ width: '40%', marginTop: 20 }}>
                   <Text>IP Address</Text>
                   <Text>ex)192.160.0.148, imbs.iptime.org</Text>
                 </View>
-                <View style={{width: '40%'}}>
+                <View style={{ width: '40%' }}>
                   <Field
                     component={TextInputFile}
                     name="ip"
                     showValue={showDefault}
-                    defaultData={'sample-rest.onrender.com'}
+                    defaultData={ip}
                   />
                 </View>
               </View>
 
               <View
-                style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-                <View style={{width: '40%', marginTop: 20}}>
+                style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                <View style={{ width: '40%', marginTop: 20 }}>
                   <Text>Port</Text>
                   <Text>Please Enter the Port Number</Text>
                 </View>
-                <View style={{width: '40%'}}>
+                <View style={{ width: '40%' }}>
                   <Field
                     component={TextInputFile}
                     name="port"
                     showValue={showDefault}
-                    defaultData={'443'}
+                    defaultData={port}
                   />
                 </View>
               </View>
@@ -117,14 +143,14 @@ function SettingScreen(props) {
                   marginTop: 20,
                 }}>
                 <Button
-                  style={{borderRadius: 0}}
+                  style={{ borderRadius: 0 }}
                   mode="contained"
                   onPress={handleSubmit(onSubmit)}>
                   Save
                 </Button>
 
                 <Button
-                  style={{marginLeft: 10, borderRadius: 0}}
+                  style={{ marginLeft: 10, borderRadius: 0 }}
                   mode="outlined"
                   onPress={() => btndefault()}>
                   Default
@@ -138,4 +164,4 @@ function SettingScreen(props) {
   );
 }
 
-export default reduxForm({form: 'SettingForm'})(SettingScreen);
+export default reduxForm({ form: 'SettingForm' })(SettingScreen);
