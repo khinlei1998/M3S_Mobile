@@ -386,8 +386,8 @@ export function getCustomer_info() {
       tx.executeSql('DELETE FROM Customer', [], (tx, results) => {
         axios
           .get(
-            `https://sample-rest.onrender.com:443/skylark-m3s/api/customers.m3s`
-            // `https://${ip}:${port}/skylark-m3s/api/customers.m3s`,
+            // `https://sample-rest.onrender.com:443/skylark-m3s/api/customers.m3s`
+            `https://${ip}:${port}/skylark-m3s/api/customers.m3s`,
             // { responseType: 'json' }
           )
           .then(({ data }) => {

@@ -15,7 +15,7 @@ export const cus_filter_item = [
   {
     id: 1,
     label: 'Customer Name',
-    value: 'cu_name',
+    value: 'customer_nm',
   },
   {
     id: 2,
@@ -25,12 +25,12 @@ export const cus_filter_item = [
   {
     id: 3,
     label: 'NRC',
-    value: 'nrc',
+    value: 'nrc_no',
   },
   {
     id: 4,
     label: 'Phone No',
-    value: 'phone_no',
+    value: 'tel_no',
   },
 ];
 

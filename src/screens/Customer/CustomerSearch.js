@@ -9,7 +9,7 @@ import {Picker} from '@react-native-picker/picker';
 export default function CustomerSearch() {
   const [searchTerm, setSearchTerm] = useState();
   const [all_customer, setAllCustomer] = useState([]);
-  const [selectedItemValue, setSelectedItemValue] = useState('cu_name');
+  const [selectedItemValue, setSelectedItemValue] = useState('customer_nm');
 
   useEffect(() => {
     
@@ -23,7 +23,7 @@ export default function CustomerSearch() {
   const handleSearch = async () => {
     await filterCustomer(selectedItemValue, searchTerm)
       .then(data => (data.length > 0 ? setAllCustomer(data) : alert('No data')))
-      .catch(error => console.log(error));
+      .catch(error => console.log('error',error));
   };
 
   const handleItemValueChange = itemValue => {
