@@ -42,13 +42,6 @@ function LoginScreen(props) {
   const hideModal = () => setModalVisible(false);
 
   useEffect(() => {
-    global.db.transaction(tx => {
-      tx.executeSql('SELECT * FROM Employee', [], (tx, results) => {
-        const len = results.rows.length;
-        console.log('Emp  length', len);
-        const rows = [];
-      });
-    });
     // async function fetchData() {
     //   const userid = await AsyncStorage.getItem('user_id');
     //   const data = await AsyncStorage.getItem('login_info');
@@ -98,12 +91,14 @@ function LoginScreen(props) {
       getEemployee_info()
         .then(result => {
           if (result == 'success') {
-            // setIsLoading(false);
-
             getCustomer_info().then(result => {
               if (result == 'success') {
-                setIsLoading(false);
-                alert('Sync success');
+                getNRC_info().then(result => {
+                  if (result == 'success') {
+                    setIsLoading(false);
+                    alert('Sync success');
+                  }
+                });
               }
             });
           }
@@ -135,7 +130,7 @@ function LoginScreen(props) {
               <TouchableOpacity onPress={() => btnSync()}>
                 <Icon
                   name="download"
-                  size={25}
+                  size={35}
                   color="#fff"
                   style={{marginLeft: 20}}
                 />
@@ -144,7 +139,7 @@ function LoginScreen(props) {
               <TouchableOpacity onPress={() => setModalVisible(true)}>
                 <Icon
                   name="settings"
-                  size={25}
+                  size={35}
                   color="#fff"
                   style={{marginLeft: 20}}
                 />
@@ -195,6 +190,7 @@ function LoginScreen(props) {
                   title={'Password'}
                   component={TextInputFile}
                   password
+                  icon={'eye'}
                 />
 
                 <Field

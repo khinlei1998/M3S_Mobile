@@ -34,6 +34,19 @@ export const cus_filter_item = [
   },
 ];
 
+export const emp_filter_item = [
+  {
+    id: 1,
+    label: 'Employee Name',
+    value: 'employee_name',
+  },
+  {
+    id: 2,
+    label: 'Employee No',
+    value: 'employee_no',
+  },
+];
+
 export const operations = [
   {
     id: 1,
@@ -55,6 +68,111 @@ export const operations = [
     label: 'Delete',
     value: '4',
   },
+];
+
+export const address_type = [
+  {
+    id: 1,
+    label: 'Home',
+    value: 'Home',
+  },
+  {
+    id: 2,
+    label: 'Business',
+    value: 'Business',
+  },
+  {
+    id: 3,
+    label: 'Other',
+    value: 'Other',
+  },
+];
+
+export const business_situation = [
+  {
+    id: 1,
+    name: 'Start Up',
+  },
+  {
+    id: 2,
+    name: 'Extend',
+  },
+];
+
+export const owner_shipratio = [
+  {
+    id: 1,
+    label: 'Own',
+    value: 'Own',
+  },
+  {
+    id: 2,
+    label: 'Rent',
+    value: 'Rent',
+  },
+  {
+    id: 3,
+    label: 'Share',
+    value: 'Share',
+  },
+];
+export const business_type = [
+  {
+    id: 1,
+    label: 'Unknown',
+    value: '000',
+  },
+  {
+    id: 2,
+    label: 'Trading',
+    value: '001',
+  },
+  {
+    id: 3,
+    label: 'Service',
+    value: '002',
+  },
+  {
+    id: 4,
+    label: 'Service',
+    value: '003',
+  },
+  {
+    id: 5,
+    label: 'Employee',
+    value: '004',
+  },
+  {
+    id: 6,
+    label: 'LiveStock',
+    value: '005',
+  },
+  {
+    id: 7,
+    label: 'Agriculture Crop-Farming',
+    value: '006',
+  },
+  {
+    id: 8,
+    label: 'Fishery',
+    value: '007',
+  },
+  {
+    id: 9,
+    label: 'Retail Business',
+    value: '008',
+  },
+  {
+    id: 10,
+    label: 'Small Industrial',
+    value: '009',
+  },
+  {
+    id: 11,
+    label: 'Agriculture Animal-Husbandary',
+    value: '010',
+  },
+  
 ];
 
 // export const BASE_URL='https://8582-103-231-92-61.ngrok-free.app/'
