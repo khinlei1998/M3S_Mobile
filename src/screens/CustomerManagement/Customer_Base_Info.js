@@ -1,20 +1,22 @@
-import {View, Text, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import Collapsible from 'react-native-collapsible';
-import {RadioButton, Button, TextInput} from 'react-native-paper';
-import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
+import { RadioButton, Button, TextInput } from 'react-native-paper';
+import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
 import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
-import { business_situation ,owner_shipratio} from '../../common';
+import { business_situation, owner_shipratio, gender } from '../../common';
 import RadioButtonFile from '../../components/RadioButtonFile';
+import DividerLine from '../../components/DividerLine';
+import DatePicker from '../../components/DatePicker';
 export default function Customer_Base_Info() {
   const [open_cusinfo, setCusInfo] = useState(false);
   const [show_nrc, setNRC] = useState('new');
   const [show_businessdate, setBusiness] = useState('estimated');
 
   const CusInfoFun = () => {
-    setCusInfo(!open_empinfo);
+    setCusInfo(!open_cusinfo);
   };
   const test = [
     {
@@ -29,7 +31,7 @@ export default function Customer_Base_Info() {
     },
   ];
 
-  const numbers = Array.from({length: 60}, (_, i) => i + 1);
+  const numbers = Array.from({ length: 60 }, (_, i) => i + 1);
   return (
     <>
       <View
@@ -41,11 +43,11 @@ export default function Customer_Base_Info() {
           marginRight: 20,
           marginTop: 15,
         }}>
-        <Text style={{fontWeight: 'bold', fontSize: 20}}>
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
           Customer Base Information
         </Text>
         <TouchableOpacity onPress={CusInfoFun}>
-          <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
+          <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
         </TouchableOpacity>
       </View>
 
@@ -67,11 +69,13 @@ export default function Customer_Base_Info() {
               <View
                 style={{
                   flexDirection: 'row',
+                  marginLeft: 10,
+                  marginTop: 10
                 }}>
-                <Text style={{marginTop: 5}}>New </Text>
+                <Text style={{ marginTop: 5 }}>New </Text>
                 <RadioButton value="new" />
 
-                <Text style={{marginTop: 5}}>Old</Text>
+                <Text style={{ marginTop: 5 }}>Old</Text>
                 <RadioButton value="old" />
               </View>
             </RadioButton.Group>
@@ -82,14 +86,13 @@ export default function Customer_Base_Info() {
                   flexDirection: 'row',
                   justifyContent: 'space-around',
                 }}>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{ flexDirection: 'row', }}>
                   <Field
                     data={test}
                     name={'employeeNo'}
-                    title={'New NRC'}
                     component={DropDownPicker}
                     pickerStyle={{
-                      width: 140,
+                      width: 148,
                       backgroundColor: 'white',
                       marginRight: 8,
                     }}
@@ -98,17 +101,16 @@ export default function Customer_Base_Info() {
                   <Field
                     data={test}
                     name={'employeeNo'}
-                    title={'New NRC'}
                     component={DropDownPicker}
-                    pickerStyle={{width: 140, backgroundColor: 'white'}}
+                    pickerStyle={{ width: 148, backgroundColor: 'white', marginRight: 10 }}
                   />
                 </View>
 
                 <Field
                   name={'employeeNo'}
-                  title={'New NRC'}
+                  title={'Customer No'}
                   component={TextInputFile}
-                  cus_width
+
                   input_mode
                 />
               </View>
@@ -132,7 +134,6 @@ export default function Customer_Base_Info() {
               name={'employeeNo'}
               title={'Customer Name'}
               component={TextInputFile}
-              cus_width
               input_mode
             />
 
@@ -142,6 +143,24 @@ export default function Customer_Base_Info() {
               component={TextInputFile}
               cus_width
               input_mode
+            />
+          </View>
+          {/* OK */}
+
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+            <Field
+              num_data={gender}
+              name={'employeeNo'}
+              title={'New NRC'}
+              component={DropDownPicker}
+              pickerStyle={{
+                width: 300,
+                backgroundColor: 'white',
+              }}
+            />
+            <Field
+              name={'employeeNo'}
+              component={DatePicker}
             />
           </View>
 
@@ -159,10 +178,10 @@ export default function Customer_Base_Info() {
                   marginTop: 10,
                   marginLeft: 10,
                 }}>
-                <Text style={{marginTop: 5}}>Estimated </Text>
+                <Text style={{ marginTop: 5 }}>Estimated </Text>
                 <RadioButton value="estimated" />
 
-                <Text style={{marginTop: 5}}>Exact Date</Text>
+                <Text style={{ marginTop: 5 }}>Exact Date</Text>
                 <RadioButton value="exact" />
               </View>
             </RadioButton.Group>
@@ -195,20 +214,50 @@ export default function Customer_Base_Info() {
                 />
               )}
               <View>
-                <Text style={{marginLeft: 10}}>Business Situation</Text>
+                <Text style={{ marginLeft: 10 }}>Business Situation</Text>
                 <Field
                   data={business_situation}
                   name={'employeeNo'}
                   title={'New NRC'}
                   component={RadioButtonFile}
-                  //   pickerStyle={{
-                  //     width: 300,
-                  //     backgroundColor: 'white',
-                  //     // margin: 10,
-                  //   }}
+                //   pickerStyle={{
+                //     width: 300,
+                //     backgroundColor: 'white',
+                //     // margin: 10,
+                //   }}
                 />
               </View>
             </View>
+          </View>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+            }}>
+            <Field
+              data={gender}
+              name={'employeeNo'}
+              title={'Saving Code'}
+              component={DropDownPicker}
+              pickerStyle={{
+                width: '40%',
+                backgroundColor: 'white',
+                marginRight: 8,
+              }}
+            />
+
+            <Field
+              data={owner_shipratio}
+              name={'employeeNo'}
+              title={'Saving Code'}
+              component={DropDownPicker}
+              pickerStyle={{
+                width: '40%',
+                backgroundColor: 'white',
+                marginRight: 8,
+              }}
+            />
           </View>
 
           <View
@@ -238,6 +287,7 @@ export default function Customer_Base_Info() {
           </View>
         </View>
       </Collapsible>
+      <DividerLine />
     </>
   );
 }

@@ -35,7 +35,7 @@ export default function Monthly_Income() {
           style={{
             width: '90%',
             alignSelf: 'center',
-            backgroundColor: '#FAFBFA',
+            backgroundColor: '#FAF8F8',
             margin: 10,
           }}>
           <View style={{flexDirection: 'row'}}>
@@ -55,6 +55,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
 
                 <Field
@@ -63,6 +64,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
 
                 <Field
@@ -71,6 +73,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
 
                 <Field
@@ -79,6 +82,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
 
                 <Field
@@ -87,6 +91,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
 
                 <Field
@@ -95,6 +100,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
                 <Field
                   name={'employeeNo'}
@@ -102,6 +108,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
 
                 <Field
@@ -110,6 +117,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
                 <Field
                   name={'employeeNo'}
@@ -117,6 +125,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
 
                 <Field
@@ -125,6 +134,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
                 <Field
                   name={'employeeNo'}
@@ -132,6 +142,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
 
                 <Field
@@ -140,6 +151,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
                 <View
                   style={{
@@ -173,6 +185,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
 
                 <Field
@@ -181,6 +194,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
 
                 <Field
@@ -189,6 +203,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
 
                 <Field
@@ -197,6 +212,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
 
                 <Field
@@ -205,6 +221,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
 
                 <Field
@@ -213,6 +230,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
                 <Field
                   name={'employeeNo'}
@@ -220,6 +238,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
 
                 <Field
@@ -228,6 +247,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
                 <Field
                   name={'employeeNo'}
@@ -235,6 +255,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
 
                 <Field
@@ -243,6 +264,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
                 <Field
                   name={'employeeNo'}
@@ -250,6 +272,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
 
                 <Field
@@ -258,6 +281,7 @@ export default function Monthly_Income() {
                   component={TextInputFile}
                   cus_width
                   input_mode
+                  inputmax={28}
                 />
                 <View
                   style={{
@@ -280,6 +304,8 @@ export default function Monthly_Income() {
             title={'Remark'}
             component={TextInputFile}
             input_mode
+            input_cusstyle
+            inputmax={10000}
           />
           <View style={{marginTop: 10, padding: 10,justifyContent:'space-between',flexDirection:'row'}}>
             <View>

@@ -110,9 +110,9 @@ function LoginScreen(props) {
     }
   };
 
-  const btncheck = () => {
-    setRememberMe(true);
-  };
+  // const btncheck = () => {
+  //   setRememberMe(true);
+  // };
   return (
     <>
       {modalVisible ? (
@@ -183,6 +183,7 @@ function LoginScreen(props) {
                   title={'ID or Email'}
                   component={TextInputFile}
                   defaultValue={id}
+                  input_cusstyle
                 />
 
                 <Field
@@ -190,6 +191,7 @@ function LoginScreen(props) {
                   title={'Password'}
                   component={TextInputFile}
                   password
+                  input_cusstyle
                   icon={'eye'}
                 />
 
@@ -216,11 +218,11 @@ function LoginScreen(props) {
                     justifyContent: 'center',
                     marginTop: 10,
                   }}>
-                  <Field
+                  {/* <Field
                     component={CheckBoxFile}
                     name={'save_login_info'}
                     testcheck={() => btncheck()}
-                  />
+                  /> */}
                   <Text style={{color: '#fff'}}>Save login Information</Text>
                 </View>
               </View>

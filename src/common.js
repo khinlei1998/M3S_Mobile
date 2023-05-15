@@ -175,5 +175,53 @@ export const business_type = [
   
 ];
 
+export const property_type = [
+  {
+    id: 1,
+    name: 'House',
+  },
+  {
+    id: 2,
+    name: 'Apartment',
+  },
+  {
+    id: 3,
+    name: 'Car',
+  },
+  {
+    id: 4,
+    name: 'MotorCycle',
+  },
+  {
+    id: 5,
+    name: 'Machines',
+  },
+  {
+    id: 6,
+    name: 'Farmland',
+  },
+  
+  
+]
+
+export const gender = [
+  {
+    id: 1,
+    label: 'Male',
+    value: '000',
+  },
+  {
+    id: 2,
+    label: 'Female',
+    value: '001',
+  },
+  {
+    id: 3,
+    label: 'Other',
+    value: '002',
+  },
+ 
+];
+
 // export const BASE_URL='https://8582-103-231-92-61.ngrok-free.app/'
 export const BASE_URL = 'https://sample-rest.onrender.com/skylark-m3s/'; // static

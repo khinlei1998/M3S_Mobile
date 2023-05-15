@@ -7,20 +7,21 @@ import {
   TouchableOpacity,
   LayoutAnimation,
 } from 'react-native';
-import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
-import {RadioButton, Button, TextInput} from 'react-native-paper';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
+import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
+import { RadioButton, Button, TextInput } from 'react-native-paper';
 import DividerLine from '../../components/DividerLine';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
 import Employee_Search from './Employee_Search';
 import Collapsible from 'react-native-collapsible';
 import DropDownPicker from '../../components/DropDownPicker';
-import {fetchNRCinfo} from '../../query/NRCinfo_query';
-import {Picker} from '@react-native-picker/picker';
+import { fetchNRCinfo } from '../../query/NRCinfo_query';
+import { Picker } from '@react-native-picker/picker';
 import Customer_Base_Info from './Customer_Base_Info';
 import Monthly_Income from './Monthly_Income';
+import Property_Info from './Property_Info';
 import {
   address_type,
   business_situation,
@@ -30,7 +31,7 @@ import {
 import RadioButtonFile from '../../components/RadioButtonFile';
 import Busines_Info from './Busines_Info';
 function Customer_Management(props) {
-  const {handleSubmit} = props;
+  const { handleSubmit } = props;
   const [modalVisible, setModalVisible] = useState(false);
   const [open_empinfo, setEmpInfo] = useState(false);
   const [open_cusinfo, setCusInfo] = useState(false);
@@ -86,7 +87,7 @@ function Customer_Management(props) {
     },
   ]);
 
-  const ExpandableComponent = ({item, onCLicfun}) => {
+  const ExpandableComponent = ({ item, onCLicfun }) => {
     return (
       <View>
         <View
@@ -96,14 +97,14 @@ function Customer_Management(props) {
             marginLeft: 20,
             marginRight: 40,
           }}>
-          <TouchableOpacity style={{padding: 20}}>
-            <Text style={{fontSize: 16, fontWeight: '100', color: '#000'}}>
+          <TouchableOpacity style={{ padding: 20 }}>
+            <Text style={{ fontSize: 16, fontWeight: '100', color: '#000' }}>
               {item.category_name}
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => onCLicfun()}>
-            <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
+            <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
           </TouchableOpacity>
         </View>
       </View>
@@ -158,7 +159,7 @@ function Customer_Management(props) {
     },
   ];
 
-  const numbers = Array.from({length: 60}, (_, i) => i + 1);
+  const numbers = Array.from({ length: 60 }, (_, i) => i + 1);
 
   return (
     <>
@@ -169,7 +170,7 @@ function Customer_Management(props) {
           <TouchableWithoutFeedback
             onPress={Keyboard.dismiss}
             accessible={false}>
-            <View style={{flex: 1, backgroundColor: '#fff'}}>
+            <View style={{ flex: 1, backgroundColor: '#fff' }}>
               <Text
                 style={{
                   textAlign: 'center',
@@ -203,7 +204,7 @@ function Customer_Management(props) {
                           label={option.label}
                           value={option.value}
                           color="#000"
-                          labelStyle={{marginLeft: 5}}
+                          labelStyle={{ marginLeft: 5 }}
                         />
                       </View>
                     </RadioButton.Group>
@@ -233,11 +234,11 @@ function Customer_Management(props) {
                   marginRight: 20,
                   marginTop: 15,
                 }}>
-                <Text style={{fontWeight: 'bold', fontSize: 20}}>
+                <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
                   Employee Information
                 </Text>
                 <TouchableOpacity onPress={EmpInfoFun}>
-                  <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
+                  <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
                 </TouchableOpacity>
               </View>
 
@@ -309,8 +310,9 @@ function Customer_Management(props) {
                   </View>
                 </View>
               </Collapsible>
-
+              <DividerLine />
               <Customer_Base_Info />
+              <Property_Info />
               <Busines_Info />
               <Monthly_Income />
             </View>

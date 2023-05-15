@@ -1,4 +1,4 @@
-import { View, ToastAndroid } from 'react-native';
+import { View, ToastAndroid, } from 'react-native';
 import {
   Modal,
   Portal,
@@ -6,18 +6,20 @@ import {
   Button,
   Provider,
   Divider,
+  TextInput
 } from 'react-native-paper';
 import TextInputFile from '../../components/TextInputFile';
 import React, { useState, useEffect } from 'react';
 import { Field, reduxForm, change } from 'redux-form';
 import Icon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import TextInputTest from '../../components/TextInputTest';
 function SettingScreen(props) {
   const [showDefault, setShowDefault] = useState(false);
   const [ip, setIP] = useState();
 
   const [port, setPort] = useState();
+  const [text, setText] = React.useState("");
 
 
 
@@ -53,7 +55,7 @@ function SettingScreen(props) {
   };
 
   useEffect(() => {
-    
+
     const getData = async () => {
       try {
         const ip = await AsyncStorage.getItem('ip');
@@ -111,13 +113,17 @@ function SettingScreen(props) {
                   <Text>ex)192.160.0.148, imbs.iptime.org</Text>
                 </View>
                 <View style={{ width: '40%' }}>
+
+
                   <Field
                     component={TextInputFile}
                     name="ip"
                     showValue={showDefault}
                     defaultData={ip}
+                    input_cusstyle
                   />
                 </View>
+
               </View>
 
               <View
@@ -132,6 +138,7 @@ function SettingScreen(props) {
                     name="port"
                     showValue={showDefault}
                     defaultData={port}
+                    input_cusstyle
                   />
                 </View>
               </View>
