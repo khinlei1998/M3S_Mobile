@@ -9,10 +9,13 @@ export default function RadioButtonFile(props) {
       style={{
         flexDirection: 'row',
       }}>
-      {data.map((val, key) => {
+      {data.map((val, index) => {
         return (
-          <RadioButton.Group onValueChange={input.onChange} value={input.value}>
-            <View style={{flexDirection: 'row'}}>
+          <RadioButton.Group
+            onValueChange={input.onChange}
+            value={input.value}
+            key={index}>
+            <View style={{flexDirection: 'row',}}>
               <RadioButton.Item
                 key={val.id}
                 label={val.name}

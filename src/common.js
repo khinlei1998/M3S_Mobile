@@ -223,5 +223,60 @@ export const gender = [
  
 ];
 
+export const maritail_status = [
+  {
+    id: 1,
+    label: 'Single',
+    value: '000',
+  },
+  {
+    id: 2,
+    label: 'Married',
+    value: '001',
+  },
+  {
+    id: 3,
+    label: 'Divorced',
+    value: '002',
+  },
+  {
+    id: 4,
+    label: 'Windower/Window',
+    value: '002',
+  },
+  
+ 
+];
+
+export const condition_house = [
+  {
+    id: 1,
+    label: 'None',
+    value: '00',
+  },
+  {
+    id: 2,
+    label: 'Own House',
+    value: '01',
+  },
+  {
+    id: 3,
+    label: 'Rental House',
+    value: '02',
+  },
+  {
+    id: 4,
+    label: 'Living with Parents',
+    value: '03',
+  },
+  {
+    id: 5,
+    label: 'Living with Relative',
+    value: '04',
+  },
+  
+ 
+];
+
 // export const BASE_URL='https://8582-103-231-92-61.ngrok-free.app/'
 export const BASE_URL = 'https://sample-rest.onrender.com/skylark-m3s/'; // static

@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
-import { TextInput } from 'react-native-paper';
+import {View, Text, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {TextInput} from 'react-native-paper';
 
 export default function TextInputFile(props) {
   const [passwordIcon, setPasswordIcon] = useState('eye');
@@ -21,7 +21,7 @@ export default function TextInputFile(props) {
     inputmax,
     words_count,
     input,
-    meta: { touched, error },
+    meta: {touched, error},
     // ...inputProps
   } = props;
 
@@ -34,14 +34,52 @@ export default function TextInputFile(props) {
       setIsPassword(true);
     }
   };
-  const handleTextChange = (text) => {
+  const handleTextChange = text => {
     input.onChange(text);
     setWordCount(text.length);
   };
   return (
+    // <View>
+    //   <TextInput
+    //     maxLength={inputmax}
+    //     theme={{
+    //       colors: {
+    //         onSurfaceVariant: input_mode ? '#818be3' : '',
+    //         text: 'pink',
+    //         underlineColor: 'pink',
+    //         background: 'red',
+    //         border: 'red',
+    //       },
+    //     }}
+    //     onFocus={focusTextInput && handleTextInputFocus}
+    //     mode={input_mode ? 'outlined' : ''}
+    //     label={title}
+    //     onChangeText={handleTextChange}
+    //     style={{
+    //       backgroundColor: '#fff',
+    //       marginTop: 10,
+    //       width: input_cusstyle ? '100%' : 300,
+    //       marginRight: 10,
+    //     }}
+    //     secureTextEntry={isPassword && password ? true : false} //for android
+    //     placeholder={showValue ? defaultData : ''}
+    //     right={
+    //       icon == 'eye' ? (
+    //         <TextInput.Icon icon={icon} onPress={togglePasswordIcon} />
+    //       ) : (
+    //         <TextInput.Icon icon={icon} />
+    //       )
+    //     }
+    //   />
+    //   {inputmax && (
+    //     <Text style={{alignSelf: 'flex-end', color: '#818be3'}}>
+    //       {wordCount}/{inputmax}
+    //     </Text>
+    //   )}
+    //   {touched && error && <Text style={{color: 'red'}}>{error}</Text>}
+    // </View>
     <View>
       <TextInput
-
         maxLength={inputmax}
         theme={{
           colors: {
@@ -54,21 +92,22 @@ export default function TextInputFile(props) {
         }}
         onFocus={focusTextInput && handleTextInputFocus}
         mode={input_mode ? 'outlined' : ''}
-        // {...inputProps}
         label={title}
-        // onChangeText={text => input.onChange(text)}
         onChangeText={handleTextChange}
-        // onChangeText={input.onChange}
+        // style={{
+        //   backgroundColor: '#fff',
+        //   marginTop: 10,
+        //   width: 300,
+        //   marginRight: 10,
+        // }}
         style={{
           backgroundColor: '#fff',
-          marginTop: 20,
-          width: input_cusstyle ? '100%' : 300, marginRight: 10
+          marginTop: 10,
+          width: input_cusstyle ? '100%' : 300,
+          marginRight: 10,
         }}
-
         secureTextEntry={isPassword && password ? true : false} //for android
         placeholder={showValue ? defaultData : ''}
-        // defaultValue={input.value}
-        // value={input.value}
         right={
           icon == 'eye' ? (
             <TextInput.Icon icon={icon} onPress={togglePasswordIcon} />
@@ -77,11 +116,13 @@ export default function TextInputFile(props) {
           )
         }
       />
-      {inputmax && <Text style={{ alignSelf: "flex-end", color: '#818be3' }}>{wordCount}/{inputmax}</Text>}
-      {touched && error && <Text style={{ color: 'red' }}>{error}</Text>}
+      {/* {inputmax ? (
+        <Text style={{alignSelf: 'flex-end', color: '#818be3'}}>
+          {wordCount}/{inputmax}
+        </Text>
+      ):
+      <></>} */}
+      {touched && error && <Text style={{color: 'red'}}>{error}</Text>}
     </View>
   );
 }
-
-
-

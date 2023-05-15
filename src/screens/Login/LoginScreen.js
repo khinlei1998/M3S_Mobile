@@ -195,11 +195,11 @@ function LoginScreen(props) {
                   icon={'eye'}
                 />
 
-                <Field
+                {/* <Field
                   component={DropDownPicker}
                   name={'lng'}
                   data={languages}
-                />
+                /> */}
 
                 <View style={{marginTop: 20}}>
                   <Button

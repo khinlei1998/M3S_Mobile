@@ -35,25 +35,18 @@ export default function DatePicker(props) {
 
   return (
     <>
-      <View style={{ flex: 1, flexDirection: 'row' }}>
+      <View style={{  flexDirection: 'row',height:66,marginLeft:10 }}>
         <TextInput
           {...input}
           mode={'outlined'}
           value={date ? moment(date).format('YYYY-MM-DD') : ''}
-          // style={{
-          //   width: 300,
-          //   borderColor: '#000000',
-          //   backgroundColor: '#FFF',
-          //   marginBottom: 10,
-          // }}
           style={{
             backgroundColor: '#FFF',
-            borderRadius: 5,
-            fontSize: 16,
-            width: 300,
             marginTop: 10,
-            marginLeft: 10
+            width:  300, 
+            marginRight: 10,
           }}
+
           onFocus={() => showcalendar()}
           activeUnderlineColor="red"
           right={
@@ -62,6 +55,7 @@ export default function DatePicker(props) {
 
           }
         />
+         
 
         <DateTimePickerModal
           onCancel={hidedate}

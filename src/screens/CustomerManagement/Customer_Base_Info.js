@@ -1,18 +1,28 @@
-import { View, Text, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import Collapsible from 'react-native-collapsible';
-import { RadioButton, Button, TextInput } from 'react-native-paper';
-import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
+import {RadioButton, Button, TextInput} from 'react-native-paper';
+import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
 import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
-import { business_situation, owner_shipratio, gender } from '../../common';
+import {
+  business_situation,
+  owner_shipratio,
+  gender,
+  maritail_status,
+  address_type,
+  condition_house,
+} from '../../common';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import DividerLine from '../../components/DividerLine';
 import DatePicker from '../../components/DatePicker';
+import {Picker} from '@react-native-picker/picker';
+
 export default function Customer_Base_Info() {
   const [open_cusinfo, setCusInfo] = useState(false);
   const [show_nrc, setNRC] = useState('new');
+  const [show_village, setVillage] = useState('village');
   const [show_businessdate, setBusiness] = useState('estimated');
 
   const CusInfoFun = () => {
@@ -31,7 +41,7 @@ export default function Customer_Base_Info() {
     },
   ];
 
-  const numbers = Array.from({ length: 60 }, (_, i) => i + 1);
+  const numbers = Array.from({length: 60}, (_, i) => i + 1);
   return (
     <>
       <View
@@ -43,11 +53,11 @@ export default function Customer_Base_Info() {
           marginRight: 20,
           marginTop: 15,
         }}>
-        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+        <Text style={{fontWeight: 'bold', fontSize: 20}}>
           Customer Base Information
         </Text>
         <TouchableOpacity onPress={CusInfoFun}>
-          <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
+          <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
         </TouchableOpacity>
       </View>
 
@@ -61,8 +71,16 @@ export default function Customer_Base_Info() {
           <View
             style={{
               padding: 5,
-              //   margin: 10,
             }}>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                fontSize: 15,
+                marginLeft: 15,
+                marginTop: 10,
+              }}>
+              NRC Type
+            </Text>
             <RadioButton.Group
               onValueChange={newValue => setNRC(newValue)}
               value={show_nrc}>
@@ -70,49 +88,52 @@ export default function Customer_Base_Info() {
                 style={{
                   flexDirection: 'row',
                   marginLeft: 10,
-                  marginTop: 10
+                  marginTop: 10,
                 }}>
-                <Text style={{ marginTop: 5 }}>New </Text>
+                <Text style={{marginTop: 5}}>New </Text>
                 <RadioButton value="new" />
 
-                <Text style={{ marginTop: 5 }}>Old</Text>
+                <Text style={{marginTop: 5}}>Old</Text>
                 <RadioButton value="old" />
               </View>
             </RadioButton.Group>
 
-            {show_nrc == 'new' ? (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                }}>
-                <View style={{ flexDirection: 'row', }}>
+            {/* {show_nrc == 'new' ? (
+              <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
                   <Field
-                    data={test}
+                    data={gender}
                     name={'employeeNo'}
+                    title={'Marial Status'}
                     component={DropDownPicker}
                     pickerStyle={{
-                      width: 148,
-                      backgroundColor: 'white',
-                      marginRight: 8,
+                      width: 170,
+                      // height: 30,
                     }}
                   />
 
                   <Field
-                    data={test}
+                    data={gender}
                     name={'employeeNo'}
+                    title={'Marial Status'}
                     component={DropDownPicker}
-                    pickerStyle={{ width: 148, backgroundColor: 'white', marginRight: 10 }}
+                    pickerStyle={{
+                      width: 170,
+                      // height: 30,
+                    }}
+                  />
+                  <Field
+                    name={'employeeNo'}
+                    title={'Customer Name'}
+                    component={TextInputFile}
+                    input_mode
+                    inputmax={100}
                   />
                 </View>
-
-                <Field
-                  name={'employeeNo'}
-                  title={'Customer No'}
-                  component={TextInputFile}
-
-                  input_mode
-                />
               </View>
             ) : (
               <Field
@@ -122,53 +143,187 @@ export default function Customer_Base_Info() {
                 cus_width
                 input_mode
               />
+            )} */}
+
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+              }}>
+              <Field
+                name={'employeeNo'}
+                title={'Customer Name'}
+                component={TextInputFile}
+                input_mode
+                inputmax={100}
+              />
+
+              <Field
+                name={'employeeNo'}
+                title={'Saving Code'}
+                component={TextInputFile}
+                cus_width
+                input_mode
+                inputmax={20}
+              />
+            </View>
+
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+              <Field
+                data={gender}
+                name={'employeeNo'}
+                title={'Gender'}
+                component={DropDownPicker}
+                pickerStyle={{
+                  width: 300,
+                }}
+              />
+              <Field
+                data={maritail_status}
+                name={'employeeNo'}
+                title={'Maritial Status'}
+                component={DropDownPicker}
+                pickerStyle={{
+                  width: 300,
+                }}
+              />
+            </View>
+
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+              <Field
+                data={address_type}
+                name={'employeeNo'}
+                title={'Address Type'}
+                component={DropDownPicker}
+                pickerStyle={{
+                  width: 300,
+                }}
+              />
+              <Field
+                name={'employeeNo'}
+                title={'No,Street '}
+                component={TextInputFile}
+                input_mode
+                inputmax={100}
+              />
+            </View>
+
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+              <Field
+                name={'employeeNo'}
+                title={'City Code '}
+                component={TextInputFile}
+                input_mode
+                inputmax={100}
+                icon={'magnify'}
+              />
+              <Field
+                name={'employeeNo'}
+                title={'City Name '}
+                component={TextInputFile}
+                input_mode
+                inputmax={100}
+              />
+            </View>
+
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+              <Field
+                name={'employeeNo'}
+                title={'Village Code '}
+                component={TextInputFile}
+                input_mode
+                inputmax={100}
+                icon={'magnify'}
+              />
+              <Field
+                name={'employeeNo'}
+                title={'Village Name '}
+                component={TextInputFile}
+                input_mode
+                inputmax={100}
+              />
+            </View>
+
+            <RadioButton.Group
+              onValueChange={newValue => setVillage(newValue)}
+              value={show_village}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginLeft: 20,
+                  marginTop: 20,
+                }}>
+                <Text style={{marginTop: 5}}>Village </Text>
+                <RadioButton value="village" />
+
+                <Text style={{marginTop: 5}}>Ward</Text>
+                <RadioButton value="ward" />
+              </View>
+            </RadioButton.Group>
+
+            {show_village == 'village' ? (
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+                <Field
+                  name={'employeeNo'}
+                  title={'Village Code '}
+                  component={TextInputFile}
+                  input_mode
+                  inputmax={100}
+                  icon={'magnify'}
+                />
+                <Field
+                  name={'employeeNo'}
+                  title={'Village Name '}
+                  component={TextInputFile}
+                  input_mode
+                  inputmax={100}
+                />
+              </View>
+            ) : (
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+                <Field
+                  name={'employeeNo'}
+                  title={'Ward Code '}
+                  component={TextInputFile}
+                  input_mode
+                  inputmax={100}
+                  icon={'magnify'}
+                />
+                <Field
+                  name={'employeeNo'}
+                  title={'Ward Name '}
+                  component={TextInputFile}
+                  input_mode
+                  inputmax={100}
+                />
+              </View>
             )}
-          </View>
 
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-            }}>
-            <Field
-              name={'employeeNo'}
-              title={'Customer Name'}
-              component={TextInputFile}
-              input_mode
-            />
-
-            <Field
-              name={'employeeNo'}
-              title={'Saving Code'}
-              component={TextInputFile}
-              cus_width
-              input_mode
-            />
-          </View>
-          {/* OK */}
-
-          <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-            <Field
-              num_data={gender}
-              name={'employeeNo'}
-              title={'New NRC'}
-              component={DropDownPicker}
-              pickerStyle={{
-                width: 300,
-                backgroundColor: 'white',
-              }}
-            />
-            <Field
-              name={'employeeNo'}
-              component={DatePicker}
-            />
-          </View>
-
-          <View
-            style={{
-              padding: 5,
-              //   margin: 10,
-            }}>
+            <View style={{marginLeft: 10, marginRight: 10}}>
+              <Field
+                name={'employeeNo'}
+                title={'Postal Code '}
+                component={TextInputFile}
+                input_mode
+                inputmax={100}
+                input_cusstyle
+              />
+            </View>
+            <Text
+              style={{
+                marginTop: 10,
+                fontWeight: 'bold',
+                marginLeft: 20,
+                fontSize: 15,
+              }}>
+              Start Living Date Current Address
+            </Text>
             <RadioButton.Group
               onValueChange={newValue => setBusiness(newValue)}
               value={show_businessdate}>
@@ -176,12 +331,12 @@ export default function Customer_Base_Info() {
                 style={{
                   flexDirection: 'row',
                   marginTop: 10,
-                  marginLeft: 10,
+                  marginLeft: 20,
                 }}>
-                <Text style={{ marginTop: 5 }}>Estimated </Text>
+                <Text style={{marginTop: 5}}>Estimated </Text>
                 <RadioButton value="estimated" />
 
-                <Text style={{ marginTop: 5 }}>Exact Date</Text>
+                <Text style={{marginTop: 5}}>Exact Date</Text>
                 <RadioButton value="exact" />
               </View>
             </RadioButton.Group>
@@ -189,101 +344,99 @@ export default function Customer_Base_Info() {
             <View
               style={{
                 flexDirection: 'row',
-                // marginLeft: 15,
                 justifyContent: 'space-around',
               }}>
               {show_businessdate == 'estimated' ? (
                 <Field
                   num_data={numbers}
                   name={'employeeNo'}
-                  title={'New NRC'}
+                  title={'Select a Value'}
                   component={DropDownPicker}
                   pickerStyle={{
                     width: 300,
-                    backgroundColor: 'white',
-                    // margin: 10,
                   }}
                 />
               ) : (
-                <Field
-                  name={'employeeNo'}
-                  title={'NRC'}
-                  component={TextInputFile}
-                  cus_width
-                  input_mode
-                />
+                <Field name={'ModifiedOn'} component={DatePicker} />
               )}
-              <View>
-                <Text style={{ marginLeft: 10 }}>Business Situation</Text>
-                <Field
-                  data={business_situation}
-                  name={'employeeNo'}
-                  title={'New NRC'}
-                  component={RadioButtonFile}
-                //   pickerStyle={{
-                //     width: 300,
-                //     backgroundColor: 'white',
-                //     // margin: 10,
-                //   }}
-                />
-              </View>
+              <Field
+                name={'employeeNo'}
+                title={'Phone Number'}
+                component={TextInputFile}
+                input_mode
+                inputmax={20}
+              />
             </View>
-          </View>
 
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-            }}>
-            <Field
-              data={gender}
-              name={'employeeNo'}
-              title={'Saving Code'}
-              component={DropDownPicker}
-              pickerStyle={{
-                width: '40%',
-                backgroundColor: 'white',
-                marginRight: 8,
-              }}
-            />
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+              <Field
+                name={'employeeNo'}
+                title={'Mobile Phone Number '}
+                component={TextInputFile}
+                input_mode
+                inputmax={100}
+              />
+              <Field
+                name={'employeeNo'}
+                title={'Number of family Number '}
+                component={TextInputFile}
+                input_mode
+                inputmax={100}
+              />
+            </View>
 
-            <Field
-              data={owner_shipratio}
-              name={'employeeNo'}
-              title={'Saving Code'}
-              component={DropDownPicker}
-              pickerStyle={{
-                width: '40%',
-                backgroundColor: 'white',
-                marginRight: 8,
-              }}
-            />
-          </View>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+              <Field
+                name={'employeeNo'}
+                title={'Number of Students '}
+                component={TextInputFile}
+                input_mode
+                inputmax={100}
+              />
+              <Field
+                name={'employeeNo'}
+                title={'Number of Students '}
+                component={TextInputFile}
+                input_mode
+                inputmax={100}
+              />
+            </View>
 
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-            }}>
-            <Field
-              name={'employeeNo'}
-              title={'Argiture-Lands'}
-              component={TextInputFile}
-              cus_width
-              input_mode
-            />
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+              <Field
+                data={condition_house}
+                name={'employeeNo'}
+                title={'Condition of House'}
+                component={DropDownPicker}
+                pickerStyle={{
+                  width: 300,
+                }}
+              />
+              <Field
+                data={owner_shipratio}
+                name={'employeeNo'}
+                title={'Ownership of Business'}
+                component={DropDownPicker}
+                pickerStyle={{
+                  width: 300,
+                }}
+              />
+            </View>
 
-            <Field
-              data={owner_shipratio}
-              name={'employeeNo'}
-              title={'Saving Code'}
-              component={DropDownPicker}
-              pickerStyle={{
-                width: '40%',
-                backgroundColor: 'white',
-                marginRight: 8,
-              }}
-            />
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+              <Field
+                name={'employeeNo'}
+                title={'Occupation'}
+                component={TextInputFile}
+                input_mode
+                inputmax={100}
+              />
+              <Field name={'ModifiedOn'} component={DatePicker} />
+            </View>
           </View>
         </View>
       </Collapsible>
