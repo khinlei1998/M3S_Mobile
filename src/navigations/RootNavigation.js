@@ -15,6 +15,7 @@ import {AuthContext} from '../components/context';
 import NewLoan from '../screens/NewLoan/NewLoan';
 import CustomerSearch from '../screens/Customer/CustomerSearch';
 import Customer_Management from '../screens/CustomerManagement/Customer_Management';
+import Survey from '../screens/Survey/Survey';
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -60,7 +61,7 @@ function CustomDrawerContent(props) {
             labelStyle={{color: '#c7c7c7', marginLeft: 50}}
             label="Survey"
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
-            onPress={() => props.navigation.navigate('Home')}
+            onPress={() => props.navigation.navigate('Survey')}
           />
           <DrawerItem
             labelStyle={{color: '#fff'}}
@@ -162,6 +163,7 @@ export default function RootNavigation(props) {
   };
   return (
     <Drawer.Navigator
+    // overlayColor="rgba(0, 0, 0, 0.5)"
       initialRouteName="Home"
       screenOptions={{
         headerRight: () => (
@@ -178,6 +180,7 @@ export default function RootNavigation(props) {
           backgroundColor: '#273050',
           activeTintColor: 'white',
           inactiveTintColor: 'white',
+          // zIndex: 999
         },
         headerTintColor: '#fff',
         headerShown: true,
@@ -201,6 +204,8 @@ export default function RootNavigation(props) {
       <Drawer.Screen name="Customer Serach" component={CustomerSearch} />
 
       <Drawer.Screen name="Customer Management" component={Customer_Management} />
+
+      <Drawer.Screen name="Survey" component={Survey} />
 
     </Drawer.Navigator>
   );

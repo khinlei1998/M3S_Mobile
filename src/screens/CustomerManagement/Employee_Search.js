@@ -17,53 +17,7 @@ import {filterEmp} from '../../query/Employee_query';
 import ViewEmployee from './ViewEmployee';
 
 function Employee_Search(props) {
-  const testdata = [
-    {
-      id: 1,
-      employee_name: 'ds',
-      employee_no: '33',
-    },
-    {
-      id: 2,
-      employee_name: 'ds',
-      employee_no: '33',
-    },
-    {
-      id: 3,
-      employee_name: 'ds',
-      employee_no: '33',
-    },
-    {
-      id: 4,
-      employee_name: 'ds',
-      employee_no: '33',
-    },
-    {
-      id: 5,
-      employee_name: 'ds',
-      employee_no: '33',
-    },
-    {
-      id: 6,
-      employee_name: 'ds',
-      employee_no: '33',
-    },
-    {
-      id: 7,
-      employee_name: 'ds',
-      employee_no: '33',
-    },
-    {
-      id: 8,
-      employee_name: 'ds',
-      employee_no: '33',
-    },
-    {
-      id: 9,
-      employee_name: 'ds',
-      employee_no: '33',
-    },
-  ];
+  
   const containerStyle = {
     backgroundColor: '#e8e8e8',
     width: '80%',
@@ -168,7 +122,7 @@ function Employee_Search(props) {
               </View>
               <ViewEmployee emp_data={all_emp} />
 
-              <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+              {/* <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                 <Button
                   mode="contained"
                   buttonColor={'#6870C3'}
@@ -194,7 +148,7 @@ function Employee_Search(props) {
                   }}>
                   Cancel
                 </Button>
-              </View>
+              </View> */}
             </View>
           </Modal>
         </Portal>

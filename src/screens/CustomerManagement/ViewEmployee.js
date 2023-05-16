@@ -1,9 +1,29 @@
 import {View, Text, FlatList} from 'react-native';
-import React from 'react';
-import RadioButton from '../../components/RadioButtonFile';
+import React, {useState} from 'react';
+import {RadioButton} from 'react-native-paper';
+import {useDispatch} from 'react-redux';
+// import RadioButton from '../../components/RadioButtonFile';
 import {Field} from 'redux-form';
-export default function ViewEmployee(props) {
-  const {emp_data} = props;
+import {addEmpFilter} from '../../redux/EmployeeReducer';
+import {connect} from 'react-redux';
+import {reduxForm} from 'redux-form';
+function ViewEmployee(props) {
+  const [checked, setChecked] = useState(false);
+  const [selectedValue, setSelectedValue] = useState(null);
+  const dispatch = useDispatch();
+
+  const {emp_data, addEmpFilter} = props;
+
+  const btnSelectEmployee = item => {
+    setSelectedValue(item.employee_no)
+    let emp_data = {
+      branchCode: item.branch_code,
+      employeeNo: item.employee_no,
+      entryDate: item.entry_date,
+      positionTitleNm: item.position_title_nm,
+    };
+    addEmpFilter(emp_data);
+  };
 
   const item = ({item, index}) => {
     return (
@@ -41,8 +61,24 @@ export default function ViewEmployee(props) {
             padding: 10,
             flex: 1,
           }}>
-          {item.tel_no == null ? 'No Data' : item.tel_no}
+          {item.position_title_nm == null ? 'No Data' : item.position_title_nm}
         </Text>
+        
+        <View >
+          {/* <RadioButton
+            value={item.employee_name}
+            status={checked ? 'checked' : 'unchecked'}
+            onPress={(item) => console.log(item)}
+          /> */}
+
+          <RadioButton
+            value={item.employee_no}
+            status={
+              selectedValue === item.employee_no ? 'checked' : 'unchecked'
+            }
+            onPress={() => btnSelectEmployee(item)}
+          />
+        </View>
 
         {/* <Field component={RadioButton}/> */}
       </View>
@@ -91,9 +127,12 @@ export default function ViewEmployee(props) {
             padding: 10,
             fontWeight: 'bold',
           }}>
-          Phone Number
+          Positon Name
         </Text>
-        <Text
+
+        
+        
+        {/* <Text
           style={{
             flex: 1,
 
@@ -101,7 +140,7 @@ export default function ViewEmployee(props) {
             fontWeight: 'bold',
           }}>
           Action
-        </Text>
+        </Text> */}
       </View>
 
       <FlatList
@@ -112,3 +151,7 @@ export default function ViewEmployee(props) {
     </>
   );
 }
+
+export default connect(null, {addEmpFilter})(
+  reduxForm({form: 'ViewEmpForm'})(ViewEmployee),
+);

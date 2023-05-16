@@ -6,13 +6,13 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import React, { useCallback, useState } from 'react';
-import { TextInput } from 'react-native-paper';
+import React, {useCallback, useState} from 'react';
+import {TextInput} from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/Feather';
 import moment from 'moment';
 export default function DatePicker(props) {
-  const { onAgeChange, meta, input } = props;
+  const {label, onAgeChange, meta, input} = props;
 
   const [showdate, setShowDate] = useState(false);
   const [date, setDate] = useState('');
@@ -35,27 +35,24 @@ export default function DatePicker(props) {
 
   return (
     <>
-      <View style={{  flexDirection: 'row',height:66,marginLeft:10 }}>
+      <View style={{flexDirection: 'row', height: 66}}>
         <TextInput
           {...input}
+          label={label}
           mode={'outlined'}
           value={date ? moment(date).format('YYYY-MM-DD') : ''}
           style={{
             backgroundColor: '#FFF',
             marginTop: 10,
-            width:  300, 
-            marginRight: 10,
+            width: 300,
+            // marginRight: 10,
           }}
-
           onFocus={() => showcalendar()}
           activeUnderlineColor="red"
           right={
-
             <TextInput.Icon icon={'calendar'} onPress={() => showcalendar()} />
-
           }
         />
-         
 
         <DateTimePickerModal
           onCancel={hidedate}

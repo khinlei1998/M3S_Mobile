@@ -172,7 +172,6 @@ export const business_type = [
     label: 'Agriculture Animal-Husbandary',
     value: '010',
   },
-  
 ];
 
 export const property_type = [
@@ -200,27 +199,24 @@ export const property_type = [
     id: 6,
     name: 'Farmland',
   },
-  
-  
-]
+];
 
 export const gender = [
   {
     id: 1,
     label: 'Male',
-    value: '000',
+    value: 'M',
   },
   {
     id: 2,
     label: 'Female',
-    value: '001',
+    value: 'F',
   },
   {
     id: 3,
     label: 'Other',
-    value: '002',
+    value: '0',
   },
- 
 ];
 
 export const maritail_status = [
@@ -244,8 +240,6 @@ export const maritail_status = [
     label: 'Windower/Window',
     value: '002',
   },
-  
- 
 ];
 
 export const condition_house = [
@@ -274,8 +268,34 @@ export const condition_house = [
     label: 'Living with Relative',
     value: '04',
   },
-  
- 
+];
+
+export const salary_grade = [
+  {
+    id: 1,
+    label: '1st Grade',
+    value: '01',
+  },
+  {
+    id: 2,
+    label: '2nd  Grade',
+    value: '02',
+  },
+  {
+    id: 3,
+    label: '3rd  Grade',
+    value: '03',
+  },
+  {
+    id: 4,
+    label: '4th Grade',
+    value: '04',
+  },
+  {
+    id: 5,
+    label: '5th  Grade',
+    value: '05',
+  },
 ];
 
 // export const BASE_URL='https://8582-103-231-92-61.ngrok-free.app/'

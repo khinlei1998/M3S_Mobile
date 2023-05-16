@@ -12,9 +12,9 @@ export default function DropDownPicker(props) {
     onValueChange,
     num_data,
     pickerStyle,
+    enabled,
     ...pickerProps
   } = props;
-console.log('pickerStyle',pickerStyle);
   return num_data ? (
     // <View
     //   style={{
@@ -77,10 +77,11 @@ console.log('pickerStyle',pickerStyle);
         marginTop: 10,
         // marginLeft: 10,
         width: pickerStyle.width,
-        borderRadius:5
+        borderRadius:2
       }}>
       <Picker
         {...pickerProps}
+        enabled={enabled?false:true}
         selectedValue={value}
         onValueChange={onChange}
         style={[pickerStyle, styles.picker]}
