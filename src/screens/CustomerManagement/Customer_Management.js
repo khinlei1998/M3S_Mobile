@@ -33,6 +33,7 @@ import RadioButtonFile from '../../components/RadioButtonFile';
 import Busines_Info from './Busines_Info';
 import { style } from '../../style/Customer_Mang_style';
 import ShowNRC_Modal from './ShowNRC_Modal';
+import validate from './Validate';
 function Customer_Management(props) {
   const { handleSubmit, emp_filter_data } = props;
   const [modalVisible, setModalVisible] = useState(false);
@@ -42,7 +43,7 @@ function Customer_Management(props) {
   const [show_operation, setOperation] = useState('1');
 
   const onSubmit = values => {
-    // alert('ll',JSON.stringify(values));
+    alert('ll',JSON.stringify(values));
     console.log(JSON.stringify(values));
   };
   const hideModal = () => setModalVisible(false);
@@ -250,4 +251,5 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Customer_ManagementForm',
+  validate
 })(connect(mapStateToProps, {})(Customer_Management));

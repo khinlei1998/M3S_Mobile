@@ -15,7 +15,7 @@ export default function DropDownPicker(props) {
     enabled,
     ...pickerProps
   } = props;
-  console.log('input',props);
+  // console.log('input',props);
   return num_data ? (
 
     <View
