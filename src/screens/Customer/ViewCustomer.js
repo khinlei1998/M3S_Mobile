@@ -1,10 +1,11 @@
-import {View, Text,FlatList} from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import React from 'react';
+import { Button } from 'react-native-paper';
 
 export default function ViewCustomer(props) {
-  const {customer_data} = props;
+  const { customer_data } = props;
 
-  const item = ({item,index}) => {
+  const item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -18,7 +19,7 @@ export default function ViewCustomer(props) {
             padding: 10,
             flex: 1,
           }}>
-          {index+1}
+          {index + 1}
         </Text>
         <Text
           style={{
@@ -40,7 +41,7 @@ export default function ViewCustomer(props) {
             padding: 10,
             flex: 1,
           }}>
-          {item.nrc_no==null? 'No Data':item.nrc_no}
+          {item.nrc_no == null ? 'No Data' : item.nrc_no}
         </Text>
 
         <Text
@@ -48,7 +49,7 @@ export default function ViewCustomer(props) {
             padding: 10,
             flex: 1,
           }}>
-          {item.tel_no==null?'No Data':item.tel_no}
+          {item.tel_no == null ? 'No Data' : item.tel_no}
         </Text>
 
         <Text
@@ -56,7 +57,7 @@ export default function ViewCustomer(props) {
             padding: 10,
             flex: 1,
           }}>
-          {item.mobile_tel_no==null?'NO Data':item.mobile_tel_no}
+          {item.mobile_tel_no == null ? 'NO Data' : item.mobile_tel_no}
         </Text>
       </View>
     );
@@ -134,6 +135,8 @@ export default function ViewCustomer(props) {
         renderItem={item}
         keyExtractor={(item, index) => index.toString()}
       />
+     
+    
     </>
   );
 }

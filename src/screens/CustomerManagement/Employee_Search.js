@@ -20,7 +20,7 @@ function Employee_Search(props) {
   
   const containerStyle = {
     backgroundColor: '#e8e8e8',
-    width: '80%',
+    width: '85%',
     alignSelf: 'center',
   };
   const {visible, hideModal, handleSubmit, dispatch} = props;
@@ -50,14 +50,14 @@ function Employee_Search(props) {
   };
 
   return (
-    <View style={{backgroundColor: 'black', flex: 1}}>
+    // /
       <Provider>
         <Portal>
           <Modal
             theme={{
-              colors: {
-                backdrop: 'transparent',
-              },
+              // colors: {
+              //   backdrop: '',
+              // },
             }}
             animationType="fade"
             visible={visible}
@@ -67,7 +67,7 @@ function Employee_Search(props) {
               style={{backgroundColor: '#232D57', padding: 25}}
               onStartShouldSetResponder={() => hideModal()}>
               <Icon
-                name="x-circle"
+                name="x-circle" 
                 size={25}
                 color="#fff"
                 style={{
@@ -120,7 +120,7 @@ function Employee_Search(props) {
                   />
                 </View>
               </View>
-              <ViewEmployee emp_data={all_emp} />
+              <ViewEmployee emp_data={all_emp} hideModal={hideModal} />
 
               {/* <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                 <Button
@@ -153,7 +153,7 @@ function Employee_Search(props) {
           </Modal>
         </Portal>
       </Provider>
-    </View>
+    // </View>
   );
 }
 

@@ -90,11 +90,11 @@ export const address_type = [
 
 export const business_situation = [
   {
-    id: 1,
+    id: 'S',
     name: 'Start Up',
   },
   {
-    id: 2,
+    id: 'E',
     name: 'Extend',
   },
 ];
@@ -103,17 +103,17 @@ export const owner_shipratio = [
   {
     id: 1,
     label: 'Own',
-    value: 'Own',
+    value: '01',
   },
   {
     id: 2,
     label: 'Rent',
-    value: 'Rent',
+    value: '02',
   },
   {
     id: 3,
     label: 'Share',
-    value: 'Share',
+    value: '03',
   },
 ];
 export const business_type = [
@@ -205,17 +205,17 @@ export const gender = [
   {
     id: 1,
     label: 'Male',
-    value: 'M',
+    value: '1',
   },
   {
     id: 2,
     label: 'Female',
-    value: 'F',
+    value: '2',
   },
   {
     id: 3,
     label: 'Other',
-    value: '0',
+    value: '3',
   },
 ];
 
@@ -223,22 +223,22 @@ export const maritail_status = [
   {
     id: 1,
     label: 'Single',
-    value: '000',
+    value: '01',
   },
   {
     id: 2,
     label: 'Married',
-    value: '001',
+    value: '02',
   },
   {
     id: 3,
     label: 'Divorced',
-    value: '002',
+    value: '03',
   },
   {
     id: 4,
     label: 'Windower/Window',
-    value: '002',
+    value: '04',
   },
 ];
 
@@ -246,27 +246,27 @@ export const condition_house = [
   {
     id: 1,
     label: 'None',
-    value: '00',
+    value: '01',
   },
   {
     id: 2,
     label: 'Own House',
-    value: '01',
+    value: '02',
   },
   {
     id: 3,
     label: 'Rental House',
-    value: '02',
+    value: '03',
   },
   {
     id: 4,
     label: 'Living with Parents',
-    value: '03',
+    value: '04',
   },
   {
     id: 5,
     label: 'Living with Relative',
-    value: '04',
+    value: '05',
   },
 ];
 

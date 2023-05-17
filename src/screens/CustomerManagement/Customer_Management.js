@@ -7,21 +7,22 @@ import {
   TouchableOpacity,
   LayoutAnimation,
 } from 'react-native';
-import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
-import {RadioButton, Button, TextInput} from 'react-native-paper';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
+import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
+import { RadioButton, Button, TextInput, Modal, Provider, Portal } from 'react-native-paper';
 import DividerLine from '../../components/DividerLine';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
 import Employee_Search from './Employee_Search';
 import Collapsible from 'react-native-collapsible';
 import DropDownPicker from '../../components/DropDownPicker';
-import {fetchNRCinfo} from '../../query/NRCinfo_query';
+import { fetchNRCinfo } from '../../query/NRCinfo_query';
 import Customer_Base_Info from './Customer_Base_Info';
 import Property_Info from './Property_Info';
-import {salary_grade} from '../../common';
+import { salary_grade } from '../../common';
 import Monthly_Income from './Monthly_Income'
+import { gender } from '../../common';
 import {
   address_type,
   business_situation,
@@ -31,17 +32,18 @@ import {
 import RadioButtonFile from '../../components/RadioButtonFile';
 import Busines_Info from './Busines_Info';
 import { style } from '../../style/Customer_Mang_style';
+import ShowNRC_Modal from './ShowNRC_Modal';
 function Customer_Management(props) {
-  const {handleSubmit, emp_filter_data} = props;
-  console.log('emp_filter_data',emp_filter_data);
-
+  const { handleSubmit, emp_filter_data } = props;
   const [modalVisible, setModalVisible] = useState(false);
+  const [nrc_visible, setNRC_Visible] = useState(false);
   const [open_empinfo, setEmpInfo] = useState(false);
-
+  const [show_nrc, setNRC] = useState('old');
   const [show_operation, setOperation] = useState('1');
 
   const onSubmit = values => {
-    alert(JSON.stringify(values));
+    // alert('ll',JSON.stringify(values));
+    console.log(JSON.stringify(values));
   };
   const hideModal = () => setModalVisible(false);
 
@@ -53,6 +55,10 @@ function Customer_Management(props) {
     setModalVisible(true);
   };
 
+  const hideNRCModal = () => {
+    setNRC_Visible(!nrc_visible),
+      setNRC('old');
+  };
   const loadData = async () => {
     // await fetchNRCinfo()
     //   .then(data => console.log('data', data))
@@ -64,19 +70,31 @@ function Customer_Management(props) {
   }, []);
 
   useEffect(() => {
+    console.log('emp_filter_data',emp_filter_data);
     props.initialize(emp_filter_data);
   }, [emp_filter_data]);
 
+  // useLayoutEffect(() => {
+  //   alert('Touch')
+  //   props.initialize(emp_filter_data);
+  // }, [emp_filter_data]);
+
+
+  const Show_NRC = newValue => {
+    setNRC(newValue);
+    if (newValue == 'new') {
+      setNRC_Visible(true);
+    }
+  };
+
   return (
     <>
-      {modalVisible ? (
-        <Employee_Search visible={modalVisible} hideModal={hideModal} />
-      ) : (
+     
         <ScrollView>
           <TouchableWithoutFeedback
             onPress={Keyboard.dismiss}
             accessible={false}>
-            <View style={{flex: 1, backgroundColor: '#fff'}}>
+            <View style={{ flex: 1, backgroundColor: '#fff' }}>
               <Text
                 style={style.title_style}>
                 Customer Information Management
@@ -104,7 +122,7 @@ function Customer_Management(props) {
                           label={option.label}
                           value={option.value}
                           color="#000"
-                          labelStyle={{marginLeft: 5}}
+                          labelStyle={{ marginLeft: 5 }}
                         />
                       </View>
                     </RadioButton.Group>
@@ -122,11 +140,11 @@ function Customer_Management(props) {
               {/* EMployee Information */}
               <View
                 style={style.title_emp_style}>
-                <Text style={{fontWeight: 'bold', fontSize: 20}}>
+                <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
                   Employee Information
                 </Text>
                 <TouchableOpacity onPress={EmpInfoFun}>
-                  <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
+                  <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
                 </TouchableOpacity>
               </View>
 
@@ -143,7 +161,7 @@ function Customer_Management(props) {
                       // margin: 10,
                     }}>
                     <Field
-                      name="employeeNo"
+                      name={'employeeNo'}
                       title={'Employee No'}
                       component={TextInputFile}
                       cus_width
@@ -164,7 +182,8 @@ function Customer_Management(props) {
                         component={TextInputFile}
                         editable
                       />
-                      <View style={{marginRight: 10}}>
+                      <View style={{ marginRight: 10 }}>
+                     
                         <Field
                           data={salary_grade}
                           name={'positionTitleNm'}
@@ -191,7 +210,7 @@ function Customer_Management(props) {
                         input_mode
                         editable
                       />
-                      <View style={{marginRight: 10}}>
+                      <View style={{ marginRight: 10 }}>
                         <Field
                           data={salary_grade}
                           name={'employeeNo'}
@@ -207,14 +226,18 @@ function Customer_Management(props) {
                 </View>
               </Collapsible>
               <DividerLine />
-              <Customer_Base_Info />
+              <Customer_Base_Info showNrcFun={Show_NRC} show_nrc={show_nrc} />
               <Property_Info />
               <Busines_Info />
               <Monthly_Income />
             </View>
           </TouchableWithoutFeedback>
         </ScrollView>
-      )}
+      {/* )} */}
+
+      <ShowNRC_Modal nrc_visible={nrc_visible} hideNRCModal={hideNRCModal} />
+      <Employee_Search visible={modalVisible} hideModal={hideModal} />
+
     </>
   );
 }

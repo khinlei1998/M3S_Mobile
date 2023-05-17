@@ -77,7 +77,7 @@ export default function Monthly_Income() {
                 />
 
                 <Field
-                  name={'employeeNo'}
+                  name={'wrkpRentExpns'}
                   title={'Business Building Renting'}
                   component={TextInputFile}
                   cus_width
@@ -103,7 +103,7 @@ export default function Monthly_Income() {
                   inputmax={28}
                 />
                 <Field
-                  name={'employeeNo'}
+                  name={'busutlbilexpns'}
                   title={'Electricity Bill Expense'}
                   component={TextInputFile}
                   cus_width
@@ -129,8 +129,8 @@ export default function Monthly_Income() {
                 />
 
                 <Field
-                  name={'employeeNo'}
-                  title={'Loss of Gods'}
+                  name={'goodsLossExpns'}
+                  title={'Loss of Goods'}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -242,7 +242,7 @@ export default function Monthly_Income() {
                 />
 
                 <Field
-                  name={'employeeNo'}
+                  name={'fmlyTotNetincome'}
                   title={'Transportation'}
                   component={TextInputFile}
                   cus_width
@@ -250,7 +250,7 @@ export default function Monthly_Income() {
                   inputmax={28}
                 />
                 <Field
-                  name={'employeeNo'}
+                  name={'fmlyTaxExpns'}
                   title={'Taxes'}
                   component={TextInputFile}
                   cus_width
@@ -259,15 +259,15 @@ export default function Monthly_Income() {
                 />
 
                 <Field
-                  name={'employeeNo'}
-                  title={'Loss of Gods'}
+                  name={'goodsLossExpns'}
+                  title={'Loss of Goods'}
                   component={TextInputFile}
                   cus_width
                   input_mode
                   inputmax={28}
                 />
                 <Field
-                  name={'employeeNo'}
+                  name={'financeExpns'}
                   title={'Other debt/Saving'}
                   component={TextInputFile}
                   cus_width
@@ -276,7 +276,7 @@ export default function Monthly_Income() {
                 />
 
                 <Field
-                  name={'employeeNo'}
+                  name={'fmlyOtrExpns'}
                   title={'Other Expense'}
                   component={TextInputFile}
                   cus_width
@@ -300,7 +300,7 @@ export default function Monthly_Income() {
           </View>
 
           <Field
-            name={'employeeNo'}
+            name={'remark'}
             title={'Remark'}
             component={TextInputFile}
             input_mode

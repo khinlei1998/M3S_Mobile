@@ -1,6 +1,6 @@
 import {View, Text, FlatList} from 'react-native';
 import React, {useState} from 'react';
-import {RadioButton} from 'react-native-paper';
+import {RadioButton,Button} from 'react-native-paper';
 import {useDispatch} from 'react-redux';
 // import RadioButton from '../../components/RadioButtonFile';
 import {Field} from 'redux-form';
@@ -10,9 +10,10 @@ import {reduxForm} from 'redux-form';
 function ViewEmployee(props) {
   const [checked, setChecked] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
+  const [filter_emp, setFilterEmp] = useState()
   const dispatch = useDispatch();
 
-  const {emp_data, addEmpFilter} = props;
+  const {emp_data, addEmpFilter,hideModal} = props;
 
   const btnSelectEmployee = item => {
     setSelectedValue(item.employee_no)
@@ -65,12 +66,6 @@ function ViewEmployee(props) {
         </Text>
         
         <View >
-          {/* <RadioButton
-            value={item.employee_name}
-            status={checked ? 'checked' : 'unchecked'}
-            onPress={(item) => console.log(item)}
-          /> */}
-
           <RadioButton
             value={item.employee_no}
             status={
@@ -148,6 +143,25 @@ function ViewEmployee(props) {
         renderItem={item}
         keyExtractor={(item, index) => index.toString()}
       />
+       <View style={{ flexDirection: 'row',justifyContent:'center' }}>
+          <Button
+            contentStyle={{ width: 100, padding: 3 }}
+            mode="contained"
+            onPress={hideModal}
+            buttonColor={'#6870C3'}
+            style={{ borderRadius: 0,margin:10, }}>
+            OK
+          </Button>
+          <Button
+            contentStyle={{ width: 100, padding: 3 }}
+            mode="contained"
+            onPress={hideModal}
+            buttonColor={'#6870C3'}
+            style={{ borderRadius: 0,margin:10 }}>
+            Cancel
+          </Button>
+        </View>
+
     </>
   );
 }

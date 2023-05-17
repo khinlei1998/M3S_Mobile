@@ -8,6 +8,7 @@ import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
 import TextInputFile from '../../components/TextInputFile';
 import DividerLine from '../../components/DividerLine';
 import { style } from '../../style/Property_Info_style';
+import SingleCheckBox from '../../components/SingleCheckBox';
 export default function Property_Info() {
     const [show_propertyinfo, setOpenPropertyInfo] = useState(false)
 
@@ -27,36 +28,75 @@ export default function Property_Info() {
             <Collapsible collapsed={show_propertyinfo}>
                 <View
                     style={style.collasible_container}>
-                    <View style={{ flexDirection: 'row', }}>
-                        <Field
-                            data={property_type}
-                            name={'password'}
-                            title={'Business Name'}
-                            component={CheckBoxFile}
-                          
-                        />
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginLeft: 15, marginRight: 16 }}>
 
-                    </View>
-                    <View style={{marginRight:20,marginLeft:15}}>
+                        <View style={{ padding: 5, flexDirection: 'row' }}>
+                            <View>
+                                <Field
+                                    label={'House'}
+                                    name={'propHouseYn'}
+                                    component={SingleCheckBox}
+
+                                />
+                                <Field
+                                    label={'Motorcycle'}
+                                    name={'propMotorcycleYn'}
+                                    component={SingleCheckBox}
+
+                                />
+                            </View>
+
+                            <View>
+                                <Field
+                                    label={'Apartment'}
+                                    name={'propApartmentYn'}
+                                    component={SingleCheckBox}
+
+                                />
+                                <Field
+                                    label={'Machines'}
+                                    name={'propMachinesYn'}
+                                    component={SingleCheckBox}
+
+                                />
+                            </View>
+
+                            <View>
+                                <Field
+                                    label={'Car'}
+                                    name={'propCarYn'}
+                                    component={SingleCheckBox}
+
+                                />
+                                <Field
+                                    label={'Farmland'}
+                                    name={'propFarmlandYn'}
+                                    component={SingleCheckBox}
+
+                                />
+                            </View>
+                        </View>
+
+
                         <Field
-                            name={'employeeNo'}
+                            name={'otrPropEstmtdVal'}
                             title={'Estimated Value'}
                             component={TextInputFile}
                             input_mode
-                            input_cusstyle
+
                         />
                     </View>
 
                     <View style={style.input_container_style}>
                         <Field
-                            name={'employeeNo'}
+                            name={'ohtrOwnProperty'}
                             title={'Other Property'}
                             component={TextInputFile}
                             input_mode
 
                         />
                         <Field
-                            name={'employeeNo'}
+                            name={'totPropEstmtdVal'}
                             title={'Estimated Value'}
                             component={TextInputFile}
                             input_mode

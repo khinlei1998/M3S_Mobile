@@ -37,7 +37,7 @@ export default function Busines_Info() {
           style={style.collapsible_container}>
           <View style={style.input_container_style}>
             <Field
-              name={'employeeNo'}
+              name={'workplaceName'}
               title={'Business Name '}
               component={TextInputFile}
               input_mode
@@ -84,7 +84,7 @@ export default function Busines_Info() {
               {show_businessdate == 'estimated' ? (
                 <Field
                   num_data={numbers}
-                  name={'employeeNo'}
+                  name={'workplacePeriod'}
                   title={'Select a Value'}
                   component={DropDownPicker}
                   pickerStyle={{
@@ -92,11 +92,11 @@ export default function Busines_Info() {
                   }}
                 />
               ) : (
-                <Field name={'employeeNo'} component={DatePicker} title={'Select Date'}/>
+                <Field name={'workplacePeriod'} component={DatePicker} title={'Select Date'}/>
               )}
 
               <Field
-                name={'employeeNo'}
+                name={'employeeNum'}
                 title={'Numbers of workers '}
                 component={TextInputFile}
                 input_mode
@@ -142,7 +142,7 @@ export default function Busines_Info() {
                 {show_business_date == 'estimated' ? (
                   <Field
                     num_data={numbers}
-                    name={'employeeNo'}
+                    name={'currWorkplacePerd'}
                     title={'Select a Value'}
                     component={DropDownPicker}
                     pickerStyle={{
@@ -151,7 +151,7 @@ export default function Busines_Info() {
                     }}
                   />
                 ) : (
-                  <Field name={'ModifiedOn'} component={DatePicker} />
+                  <Field name={'currWorkplacePerd'} component={DatePicker} />
                 )}
                 <View>
                   <Text
@@ -160,8 +160,7 @@ export default function Busines_Info() {
                   </Text>
                   <Field
                     data={business_situation}
-                    name={'employeeNo'}
-                    title={'New NRC'}
+                    name={'businessSttnFlg'}
                     component={RadioButtonFile}
                   />
                 </View>
@@ -170,7 +169,7 @@ export default function Busines_Info() {
               <View
                 style={style.input_container_style}>
                 <Field
-                  name={'password'}
+                  name={'landScale'}
                   title={'Agriculture Land'}
                   component={TextInputFile}
                   input_mode
@@ -180,7 +179,7 @@ export default function Busines_Info() {
 
                 <Field
                   data={owner_shipratio}
-                  name={'employeeNo'}
+                  name={'landOwnType'}
                   title={'OwnerShip Ratio'}
                   component={DropDownPicker}
                   pickerStyle={{

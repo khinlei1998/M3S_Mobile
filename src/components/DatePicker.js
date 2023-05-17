@@ -40,7 +40,7 @@ export default function DatePicker(props) {
           {...input}
           label={label}
           mode={'outlined'}
-          value={date ? moment(date).format('YYYY-MM-DD') : ''}
+          value={date && moment(date).format('YYYY-MM-DD') }
           style={{
             backgroundColor: '#FFF',
             marginTop: 10,

@@ -162,24 +162,26 @@ export default function RootNavigation(props) {
     ToastAndroid.show('Hello, World!', ToastAndroid.SHORT);
   };
   return (
-    <Drawer.Navigator
+    <Drawer.Navigator useLegacyImplementation={false}
     // overlayColor="rgba(0, 0, 0, 0.5)"
       initialRouteName="Home"
       screenOptions={{
-        headerRight: () => (
-          <TouchableOpacity onPress={showToast}>
-            <Icon
-              name="home"
-              size={20}
-              color="#fff"
-              style={{marginRight: 20}}
-            />
-          </TouchableOpacity>
-        ),
+        drawerPosition:'right',
+        // headerRight: () => (
+        //   <TouchableOpacity onPress={showToast}>
+        //     <Icon
+        //       name="home"
+        //       size={20}
+        //       color="#fff"
+        //       style={{marginRight: 20}}
+        //     />
+        //   </TouchableOpacity>
+        // ),
         drawerStyle: {
           backgroundColor: '#273050',
           activeTintColor: 'white',
           inactiveTintColor: 'white',
+          // right:0
           // zIndex: 999
         },
         headerTintColor: '#fff',
