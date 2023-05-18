@@ -174,6 +174,7 @@ export const business_type = [
   },
 ];
 
+
 export const property_type = [
   {
     id: 1,
@@ -205,17 +206,17 @@ export const gender = [
   {
     id: 1,
     label: 'Male',
-    value: '1',
+    value: 'M',
   },
   {
     id: 2,
     label: 'Female',
-    value: '2',
+    value: 'F',
   },
   {
     id: 3,
     label: 'Other',
-    value: '3',
+    value: '0',
   },
 ];
 

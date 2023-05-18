@@ -16,6 +16,7 @@ import NewLoan from '../screens/NewLoan/NewLoan';
 import CustomerSearch from '../screens/Customer/CustomerSearch';
 import Customer_Management from '../screens/CustomerManagement/Customer_Management';
 import Survey from '../screens/Survey/Survey';
+import TestScreen from '../screens/CustomerManagement/TestScreen';
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -207,7 +208,7 @@ export default function RootNavigation(props) {
 
       <Drawer.Screen name="Customer Management" component={Customer_Management} />
 
-      <Drawer.Screen name="Survey" component={Survey} />
+      <Drawer.Screen name="Survey" component={TestScreen} />
 
     </Drawer.Navigator>
   );

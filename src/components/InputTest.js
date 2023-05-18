@@ -1,33 +1,31 @@
-import {Text, View, } from 'react-native';
+import {Text, View,TextInput} from 'react-native';
 import React from 'react';
-import { TextInput } from 'react-native-paper';
+import { DefaultTheme} from 'react-native-paper';
 
 export default function InputFile(props) {
   const {
+    editable,
     input: {onChange, value, ...restInput},
     ...rest
   } = props;
-
   return (
     <View>
-      <>
-        <TextInput
+      <TextInput
+        {...restInput}
+        {...rest}
+        editable={editable ? false : true}
+        style={{borderWidth: 1}}
+        defaultValue={value}
+        onChangeText={text => onChange(text)}
         theme={{
           colors: {
-            text: 'pink',
-            underlineColor: 'pink',
-            border: 'red',
+            ...DefaultTheme.colors,
+            // onSurfaceVariant: input_mode ? '#818be3' : '',
+            placeholder: 'red',
+            primary: '#878787',
           },
         }}
-          style={{width: 300, }}
-          mode={'flat'}
-          onChangeText={onChange}
-          defaultValue={value}
-          label={'title'}
-          {...restInput}
-          {...rest}
-        />
-      </>
+      />
     </View>
   );
 }

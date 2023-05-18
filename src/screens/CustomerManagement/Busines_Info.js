@@ -87,6 +87,7 @@ export default function Busines_Info() {
                   name={'workplacePeriod'}
                   title={'Select a Value'}
                   component={DropDownPicker}
+                  keyboardType={'numeric'}
                   pickerStyle={{
                     width: 280,
                   }}
@@ -172,6 +173,7 @@ export default function Busines_Info() {
                   name={'landScale'}
                   title={'Agriculture Land'}
                   component={TextInputFile}
+                  keyboardType={'numeric'}
                   input_mode
                   words_count
                   inputmax={50}

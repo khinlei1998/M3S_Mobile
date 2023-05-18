@@ -1,4 +1,10 @@
-import {View, Text, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableWithoutFeedback,
+  Keyboard,
+  TouchableOpacity,
+} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Field, reduxForm, change} from 'redux-form';
 import Icon from 'react-native-vector-icons/Feather';
@@ -15,9 +21,12 @@ import {Picker} from '@react-native-picker/picker';
 import {emp_filter_item} from '../../common';
 import {filterEmp} from '../../query/Employee_query';
 import ViewEmployee from './ViewEmployee';
+import {TestAction} from '../../redux/EmployeeReducer';
+import {connect, useDispatch} from 'react-redux';
 
 function Employee_Search(props) {
-  
+  const {TestAction} = props;
+
   const containerStyle = {
     backgroundColor: '#e8e8e8',
     width: '85%',
@@ -51,110 +60,122 @@ function Employee_Search(props) {
 
   return (
     // /
-      <Provider>
-        <Portal>
-          <Modal
-            theme={{
-              // colors: {
-              //   backdrop: '',
-              // },
-            }}
-            animationType="fade"
-            visible={visible}
-            onDismiss={hideModal}
-            contentContainerStyle={containerStyle}>
+    <Provider>
+      <Portal>
+        <Modal
+          // theme={
+          //   {
+          //     colors: {
+          //       backdrop: 'tra',
+          //     },
+          //   }
+          // }
+          // animationType="fade"
+          // transparent={true}
+          // backdrop={false}
+          //  onBackdropPress={() => {}}
+
+          dismissable={false}
+          visible={visible}
+          onDismiss={hideModal}
+          contentContainerStyle={containerStyle}>
+          <View
+            style={{backgroundColor: '#232D57', padding: 25}}
+            onStartShouldSetResponder={() => hideModal()}>
+            <Icon
+              name="x-circle"
+              size={25}
+              color="#fff"
+              style={{
+                marginLeft: 20,
+                position: 'absolute',
+                top: 0,
+                right: 10,
+                top: 10,
+              }}
+            />
+          </View>
+          <View style={{padding: 10, height: 550}}>
             <View
-              style={{backgroundColor: '#232D57', padding: 25}}
-              onStartShouldSetResponder={() => hideModal()}>
-              <Icon
-                name="x-circle" 
-                size={25}
-                color="#fff"
-                style={{
-                  marginLeft: 20,
-                  position: 'absolute',
-                  top: 0,
-                  right: 10,
-                  top: 10,
-                }}
-              />
-            </View>
-            <View style={{padding: 10, height: 550}}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{marginRight: 10}}>Search Item:</Text>
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+              }}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
-                  <Picker
-                    selectedValue={selectedItemValue}
-                    onValueChange={handleItemValueChange}
-                    style={{width: 200, backgroundColor: 'white'}}
-                    mode="dropdown">
-                    {emp_filter_item.length > 0 &&
-                      emp_filter_item.map(val => (
-                        <Picker.Item
-                          label={val.label}
-                          value={val.value}
-                          key={val.id}
-                        />
-                      ))}
-                  </Picker>
-                </View>
-
-                <View style={{width: '50%'}}>
-                  <TextInput
-                    value={searchTerm}
-                    onChangeText={handleChangeText}
-                    right={
-                      <TextInput.Icon
-                        icon={'magnify'}
-                        onPress={() => handleSearch()}
+                <Picker
+                  selectedValue={selectedItemValue}
+                  onValueChange={handleItemValueChange}
+                  style={{width: 200, backgroundColor: 'white'}}
+                  mode="dropdown">
+                  {emp_filter_item.length > 0 &&
+                    emp_filter_item.map(val => (
+                      <Picker.Item
+                        label={val.label}
+                        value={val.value}
+                        key={val.id}
                       />
-                    }
-                    style={{
-                      backgroundColor: 'white',
-                    }}
-                  />
-                </View>
+                    ))}
+                </Picker>
               </View>
-              <ViewEmployee emp_data={all_emp} hideModal={hideModal} />
 
-              {/* <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                <Button
-                  mode="contained"
-                  buttonColor={'#6870C3'}
+              <View style={{width: '50%'}}>
+                <TextInput
+                  value={searchTerm}
+                  onChangeText={handleChangeText}
+                  right={
+                    <TextInput.Icon
+                      icon={'magnify'}
+                      onPress={() => handleSearch()}
+                    />
+                  }
                   style={{
-                    borderRadius: 0,
-                    width: 100,
-                    marginTop: 10,
-                    color: 'black',
-                    marginLeft: 5,
-                  }}>
-                  OK
-                </Button>
-                <Button
-                  onPress={() => hideModal()}
-                  mode="contained"
-                  buttonColor={'#6870C3'}
-                  style={{
-                    borderRadius: 0,
-                    width: 100,
-                    marginTop: 10,
-                    color: 'black',
-                    marginLeft: 5,
-                  }}>
-                  Cancel
-                </Button>
-              </View> */}
+                    backgroundColor: 'white',
+                  }}
+                />
+              </View>
             </View>
-          </Modal>
-        </Portal>
-      </Provider>
+            <ViewEmployee emp_data={all_emp} hideModal={hideModal} />
+
+            {/* <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+              <Button
+                onPress={() => hideModal()}
+                mode="contained"
+                buttonColor={'#6870C3'}
+                style={{
+                  borderRadius: 0,
+                  width: 100,
+                  marginTop: 10,
+                  color: 'black',
+                  marginLeft: 5,
+                }}>
+                OK
+              </Button>
+              <Button
+                onPress={() => hideModal()}
+                mode="contained"
+                buttonColor={'#6870C3'}
+                style={{
+                  borderRadius: 0,
+                  width: 100,
+                  marginTop: 10,
+                  color: 'black',
+                  marginLeft: 5,
+                }}>
+                Cancel
+              </Button>
+            </View> */}
+          </View>
+        </Modal>
+      </Portal>
+    </Provider>
     // </View>
   );
 }
 
-export default reduxForm({form: 'EmployeeSearch'})(Employee_Search);
+// export default reduxForm({form: 'Customer_ManagementForm'})(Employee_Search);
+
+export default reduxForm({
+  form: 'Customer_ManagementForm',
+})(connect(null, {TestAction})(Employee_Search));

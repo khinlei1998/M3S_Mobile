@@ -1,14 +1,12 @@
-import { View, Text, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import Collapsible from 'react-native-collapsible';
-import {
-  RadioButton,
-} from 'react-native-paper';
-import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
+import {RadioButton} from 'react-native-paper';
+import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
 import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import {
   owner_shipratio,
   gender,
@@ -18,10 +16,20 @@ import {
 } from '../../common';
 import DividerLine from '../../components/DividerLine';
 import DatePicker from '../../components/DatePicker';
-import { style } from '../../style/Customer_Base_style';
+import {style} from '../../style/Customer_Base_style';
+import {setCusFormInitialValues} from '../../redux/CustomerReducer';
+// const initialValues = {CustomerNo: '0000'};
 
 function Customer_Base_Info(props) {
-  const { showNrcFun, show_nrc } = props
+  const {
+    showNrcFun,
+    show_nrc,
+    nrc_statecode,
+    initializeForm,
+    setCusFormInitialValues,
+    // cus_initialvalues,
+    initialValues
+  } = props;
   const [open_cusinfo, setCusInfo] = useState(false);
   const [show_village, setVillage] = useState('village');
   const [show_businessdate, setBusiness] = useState('estimated');
@@ -29,16 +37,15 @@ function Customer_Base_Info(props) {
     setCusInfo(!open_cusinfo);
   };
 
-  const numbers = Array.from({ length: 60 }, (_, i) => i + 1);
-
+  const numbers = Array.from({length: 60}, (_, i) => i + 1);
   return (
     <>
       <View style={style.container}>
-        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+        <Text style={{fontWeight: 'bold', fontSize: 20}}>
           Customer Base Information
         </Text>
         <TouchableOpacity onPress={CusInfoFun}>
-          <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
+          <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
         </TouchableOpacity>
       </View>
 
@@ -54,10 +61,10 @@ function Customer_Base_Info(props) {
               onValueChange={newValue => showNrcFun(newValue)}
               value={show_nrc}>
               <View style={style.child_radio_title_style}>
-                <Text style={{ marginTop: 5 }}>Old </Text>
+                <Text style={{marginTop: 5}}>Old </Text>
                 <RadioButton value="old" />
 
-                <Text style={{ marginTop: 5 }}>New</Text>
+                <Text style={{marginTop: 5}}>New</Text>
                 <RadioButton value="new" />
               </View>
             </RadioButton.Group>
@@ -70,15 +77,17 @@ function Customer_Base_Info(props) {
                   component={TextInputFile}
                   cus_width
                   input_mode
-                />)
-                :
+                />
+              ) : (
                 <></>
-
-              }
+              )}
               <Field
-                name={'birthDate'}
-                component={DatePicker}
-                label={'date of birth'}
+                name={'CustomerNo'}
+                title={'Customer No'}
+                component={TextInputFile}
+                input_mode
+                inputmax={100}
+                // editable
               />
             </View>
 
@@ -112,13 +121,9 @@ function Customer_Base_Info(props) {
                 }}
               />
               <Field
-                data={maritail_status}
-                name={'maritalStatus'}
-                title={'Maritial Status'}
-                component={DropDownPicker}
-                pickerStyle={{
-                  width: 300,
-                }}
+                name={'birthDate'}
+                component={DatePicker}
+                label={'date of birth'}
               />
             </View>
 
@@ -181,10 +186,10 @@ function Customer_Base_Info(props) {
               onValueChange={newValue => setVillage(newValue)}
               value={show_village}>
               <View style={style.child_radio_title_style}>
-                <Text style={{ marginTop: 5 }}>Village </Text>
+                <Text style={{marginTop: 5}}>Village </Text>
                 <RadioButton value="village" />
 
-                <Text style={{ marginTop: 5 }}>Ward</Text>
+                <Text style={{marginTop: 5}}>Ward</Text>
                 <RadioButton value="ward" />
               </View>
             </RadioButton.Group>
@@ -244,10 +249,10 @@ function Customer_Base_Info(props) {
               onValueChange={newValue => setBusiness(newValue)}
               value={show_businessdate}>
               <View style={style.child_radio_title_style}>
-                <Text style={{ marginTop: 5 }}>Estimated </Text>
+                <Text style={{marginTop: 5}}>Estimated </Text>
                 <RadioButton value="estimated" />
 
-                <Text style={{ marginTop: 5 }}>Exact Date</Text>
+                <Text style={{marginTop: 5}}>Exact Date</Text>
                 <RadioButton value="exact" />
               </View>
             </RadioButton.Group>
@@ -276,6 +281,7 @@ function Customer_Base_Info(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={20}
+                keyboardType={'numeric'}
               />
             </View>
 
@@ -286,6 +292,7 @@ function Customer_Base_Info(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
+                keyboardType={'numeric'}
               />
               <Field
                 name={'familyNum'}
@@ -293,6 +300,7 @@ function Customer_Base_Info(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
+                keyboardType={'numeric'}
               />
             </View>
 
@@ -303,6 +311,7 @@ function Customer_Base_Info(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
+                keyboardType={'numeric'}
               />
               <Field
                 name={'universityNum'}
@@ -310,6 +319,7 @@ function Customer_Base_Info(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
+                keyboardType={'numeric'}
               />
             </View>
 
@@ -340,6 +350,16 @@ function Customer_Base_Info(props) {
                 title={'Occupation'}
                 component={TextInputFile}
               />
+
+              <Field
+                data={maritail_status}
+                name={'maritalStatus'}
+                title={'Maritial Status'}
+                component={DropDownPicker}
+                pickerStyle={{
+                  width: 300,
+                }}
+              />
             </View>
           </View>
         </View>
@@ -349,6 +369,12 @@ function Customer_Base_Info(props) {
   );
 }
 
+function mapStateToProps(state) {
+  return {
+  };
+} 
+
 export default reduxForm({
   form: 'Customer_ManagementForm',
-})(connect(null, {})(Customer_Base_Info));
+  // initialValues,
+})(connect(mapStateToProps, {setCusFormInitialValues})(Customer_Base_Info));

@@ -2,13 +2,13 @@ import React, {useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import RootNavigation from './src/navigations/RootNavigation';
 import AuthNavigation from './src/navigations/AuthNavigation';
-import {store} from './src/redux/store';
+// import {store} from './src/redux/store';
 import {Provider} from 'react-redux';
 import {AuthContext} from './src/components/context';
 import SQLite from 'react-native-sqlite-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './src/screens/SplashScreen';
-
+import store from './src/redux/store';
 export default function App() {
   const [show_splash, showSplash] = useState(true);
   const [userID, setUserID] = React.useState(null);

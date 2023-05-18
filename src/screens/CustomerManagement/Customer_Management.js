@@ -7,22 +7,35 @@ import {
   TouchableOpacity,
   LayoutAnimation,
 } from 'react-native';
-import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
-import { RadioButton, Button, TextInput, Modal, Provider, Portal } from 'react-native-paper';
+import React, {useState, useEffect, useLayoutEffect, useRef} from 'react';
+import {
+  Field,
+  reduxForm,
+  setInitialValues,
+  initialize,
+  reset,
+} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
+import {
+  RadioButton,
+  Button,
+  TextInput,
+  Modal,
+  Provider,
+  Portal,
+} from 'react-native-paper';
 import DividerLine from '../../components/DividerLine';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
 import Employee_Search from './Employee_Search';
 import Collapsible from 'react-native-collapsible';
 import DropDownPicker from '../../components/DropDownPicker';
-import { fetchNRCinfo } from '../../query/NRCinfo_query';
+import {fetchNRCinfo} from '../../query/NRCinfo_query';
 import Customer_Base_Info from './Customer_Base_Info';
 import Property_Info from './Property_Info';
-import { salary_grade } from '../../common';
-import Monthly_Income from './Monthly_Income'
-import { gender } from '../../common';
+import {salary_grade} from '../../common';
+import Monthly_Income from './Monthly_Income';
+import {gender} from '../../common';
 import {
   address_type,
   business_situation,
@@ -31,20 +44,51 @@ import {
 } from '../../common';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import Busines_Info from './Busines_Info';
-import { style } from '../../style/Customer_Mang_style';
+import {style} from '../../style/Customer_Mang_style';
 import ShowNRC_Modal from './ShowNRC_Modal';
 import validate from './Validate';
+import ButtonFile from './ButtonFile';
+import InputFile from '../../components/InputTest';
+import {storeCustomerData} from '../../query/Customer_query';
+import moment from 'moment';
+import {fetchEmpName} from '../../query/Employee_query';
+import {setCusFormInitialValues} from '../../redux/CustomerReducer';
 function Customer_Management(props) {
-  const { handleSubmit, emp_filter_data } = props;
+  const dispatch = useDispatch();
+
+  const {
+    handleSubmit,
+    emp_filter_data,
+    setCusFormInitialValues,
+    initialValues,
+  } = props;
   const [modalVisible, setModalVisible] = useState(false);
   const [nrc_visible, setNRC_Visible] = useState(false);
   const [open_empinfo, setEmpInfo] = useState(false);
   const [show_nrc, setNRC] = useState('old');
   const [show_operation, setOperation] = useState('1');
+  const [nrc_statecode, setNRCStateCode] = useState([]);
+  const [nrc_prefix_code, setNRCPrefixCode] = useState([]);
+  const [empname, setEmpName] = useState('');
+  var count = 0;
+  const onSubmit = async values => {
+    let data = Object.assign(values, emp_filter_data, {
+      createUserId: empname,
+      residentRgstId:
+        values.nrc_stateCode && values.nrc_prefix
+          ? values.nrc_stateCode + values.nrc_prefix + values.nrcNo
+          : '',
+    });
+    alert(JSON.stringify(data));
+    await storeCustomerData(data).then(result => {
+      if (result == 'success') {
+        props.navigation.navigate('Home');
+      }
+      console.log('result', result);
+    });
 
-  const onSubmit = values => {
-    alert('ll',JSON.stringify(values));
-    console.log(JSON.stringify(values));
+    console.log('all Customer data>>>>>', values);
+    dispatch(reset('Customer_ManagementForm'));
   };
   const hideModal = () => setModalVisible(false);
 
@@ -57,29 +101,39 @@ function Customer_Management(props) {
   };
 
   const hideNRCModal = () => {
-    setNRC_Visible(!nrc_visible),
-      setNRC('old');
+    setNRC_Visible(!nrc_visible), setNRC('old');
   };
   const loadData = async () => {
-    // await fetchNRCinfo()
-    //   .then(data => console.log('data', data))
-    //   .catch(error => console.log(error));
+    await fetchNRCinfo()
+      .then(result => {
+        {
+          const [nrc_state_code, nrc_prefixdata] = result;
+          setNRCStateCode(nrc_state_code);
+          setNRCPrefixCode(nrc_prefixdata);
+        }
+      })
+      .catch(error => console.log(error));
+    await fetchEmpName().then(emp_name => {
+      setEmpName(emp_name[0].employee_name);
+    });
   };
 
+  const renderCountRef = useRef(0);
+
   useEffect(() => {
+    // props.initialize(initialValues)
+    renderCountRef.current++;
+    console.log('Component render count:', renderCountRef.current);
     loadData();
   }, []);
 
   useEffect(() => {
-    console.log('emp_filter_data',emp_filter_data);
     props.initialize(emp_filter_data);
+
+    return () => {
+      emp_filter_data;
+    };
   }, [emp_filter_data]);
-
-  // useLayoutEffect(() => {
-  //   alert('Touch')
-  //   props.initialize(emp_filter_data);
-  // }, [emp_filter_data]);
-
 
   const Show_NRC = newValue => {
     setNRC(newValue);
@@ -90,20 +144,20 @@ function Customer_Management(props) {
 
   return (
     <>
-     
+      {modalVisible ? (
+        <Employee_Search visible={modalVisible} hideModal={hideModal} />
+      ) : (
         <ScrollView>
           <TouchableWithoutFeedback
             onPress={Keyboard.dismiss}
             accessible={false}>
-            <View style={{ flex: 1, backgroundColor: '#fff' }}>
-              <Text
-                style={style.title_style}>
+            <View style={{flex: 1, backgroundColor: '#fff'}}>
+              <Text style={style.title_style}>
                 Customer Information Management
               </Text>
-              <DividerLine />
+              {/* <DividerLine /> */}
 
-              <View
-                style={style.continer}>
+              {/* <View style={style.continer}>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -123,7 +177,7 @@ function Customer_Management(props) {
                           label={option.label}
                           value={option.value}
                           color="#000"
-                          labelStyle={{ marginLeft: 5 }}
+                          labelStyle={{marginLeft: 5}}
                         />
                       </View>
                     </RadioButton.Group>
@@ -136,16 +190,15 @@ function Customer_Management(props) {
                   style={style.btnStyle}>
                   OK
                 </Button>
-              </View>
+              </View> */}
               <DividerLine />
               {/* EMployee Information */}
-              <View
-                style={style.title_emp_style}>
-                <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+              <View style={style.title_emp_style}>
+                <Text style={{fontWeight: 'bold', fontSize: 20}}>
                   Employee Information
                 </Text>
                 <TouchableOpacity onPress={EmpInfoFun}>
-                  <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
+                  <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
                 </TouchableOpacity>
               </View>
 
@@ -172,6 +225,7 @@ function Customer_Management(props) {
                       focusTextInput
                       editable
                     />
+
                     <View
                       style={{
                         flexDirection: 'row',
@@ -183,17 +237,12 @@ function Customer_Management(props) {
                         component={TextInputFile}
                         editable
                       />
-                      <View style={{ marginRight: 10 }}>
-                     
+                      <View style={{marginRight: 10}}>
                         <Field
-                          data={salary_grade}
                           name={'positionTitleNm'}
                           title={'Current Position'}
-                          component={DropDownPicker}
-                          pickerStyle={{
-                            width: 300,
-                          }}
-                          enabled
+                          component={TextInputFile}
+                          editable
                         />
                       </View>
                     </View>
@@ -211,10 +260,10 @@ function Customer_Management(props) {
                         input_mode
                         editable
                       />
-                      <View style={{ marginRight: 10 }}>
+                      <View style={{marginRight: 10}}>
                         <Field
                           data={salary_grade}
-                          name={'employeeNo'}
+                          name={'salaryRatingCode'}
                           title={'Salary Grade'}
                           component={DropDownPicker}
                           pickerStyle={{
@@ -227,18 +276,38 @@ function Customer_Management(props) {
                 </View>
               </Collapsible>
               <DividerLine />
-              <Customer_Base_Info showNrcFun={Show_NRC} show_nrc={show_nrc} />
+              <Customer_Base_Info
+                showNrcFun={Show_NRC}
+                show_nrc={show_nrc}
+                nrc_statecode={nrc_statecode}
+              />
               <Property_Info />
               <Busines_Info />
               <Monthly_Income />
+
+              <Button
+                onPress={handleSubmit(onSubmit)}
+                mode="contained"
+                buttonColor={'#6870C3'}
+                style={{borderRadius: 0,
+                  width: '90%',
+                  marginTop: 10,
+                  color: 'black',
+                  marginBottom:20,alignSelf:'center'}}>
+                Submit
+              </Button>
             </View>
           </TouchableWithoutFeedback>
         </ScrollView>
-      {/* )} */}
+      )}
 
-      <ShowNRC_Modal nrc_visible={nrc_visible} hideNRCModal={hideNRCModal} />
-      <Employee_Search visible={modalVisible} hideModal={hideModal} />
-
+      <ShowNRC_Modal
+        nrc_visible={nrc_visible}
+        hideNRCModal={hideNRCModal}
+        nrc_statecode={nrc_statecode}
+        nrc_prefix_code={nrc_prefix_code}
+      />
+      {/* <Employee_Search visible={modalVisible} hideModal={hideModal} /> */}
     </>
   );
 }
@@ -246,10 +315,11 @@ function Customer_Management(props) {
 function mapStateToProps(state) {
   return {
     emp_filter_data: state.employees.employee_filter_data,
+    initialValues: state.customers.cus_initialValues,
   };
 }
 
 export default reduxForm({
   form: 'Customer_ManagementForm',
-  validate
-})(connect(mapStateToProps, {})(Customer_Management));
+  // validate,
+})(connect(mapStateToProps, {setCusFormInitialValues})(Customer_Management));

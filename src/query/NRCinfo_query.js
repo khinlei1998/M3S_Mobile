@@ -75,27 +75,40 @@ export const fetchNRCinfo = async () => {
         [],
         (tx, results) => {
           if (results.rows.length > 0) {
-            var state_rows = [];
-            // for (let i = 0; i < results.rows.length; i++) {
-            //   var item = results.rows.item(i);
-            //   console.log('item',item.state_code,item.state_name,item.township_name);
-            // }
-            // const nrc_info = results.rows.item(0);
-            // resolve(nrc_info);
             const collection = {};
 
             for (let i = 0; i < results.rows.length; i++) {
               const obj = results.rows.item(i);
-              const key = obj.state_code+obj.state_name;
+              const key = obj.state_code + obj.state_name;
 
               if (!collection[key]) {
                 collection[key] = [];
               }
 
-              collection[key].push(obj);
+              collection[key].push(obj.nrc_prefix_code);
             }
-            // console.log('collection',collection);
-            resolve(collection);
+
+            const nrc_state_code = Object.entries(collection).map(([name]) => ({
+              ['label']: name,
+              ['key']: name,
+              ['value']: name,
+            }));
+
+
+            const nrc_prefixdata = Object.entries(collection).reduce(
+              (result, [id, values]) => {
+                const transformedValues = values.map(value => ({
+                  id,
+                  label: value,
+                  value,
+                }));
+
+                return result.concat(transformedValues);
+              },
+              [],
+            );
+
+            resolve([nrc_state_code,nrc_prefixdata]);
           } else {
             reject('No Data');
           }

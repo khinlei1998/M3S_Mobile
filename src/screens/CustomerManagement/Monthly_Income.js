@@ -56,6 +56,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
 
                 <Field
@@ -65,6 +66,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
 
                 <Field
@@ -74,6 +76,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
 
                 <Field
@@ -83,6 +86,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
 
                 <Field
@@ -92,6 +96,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
 
                 <Field
@@ -101,6 +106,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
                 <Field
                   name={'busutlbilexpns'}
@@ -109,6 +115,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
 
                 <Field
@@ -118,6 +125,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
                 <Field
                   name={'taxExpns'}
@@ -126,6 +134,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
 
                 <Field
@@ -135,6 +144,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
                 <Field
                   name={'othrExpns1'}
@@ -143,6 +153,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
 
                 <Field
@@ -152,6 +163,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
                 <View
                   style={{
@@ -186,6 +198,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
 
                 <Field
@@ -195,6 +208,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
 
                 <Field
@@ -204,6 +218,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
 
                 <Field
@@ -213,6 +228,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
 
                 <Field
@@ -222,6 +238,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
 
                 <Field
@@ -231,6 +248,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
                 <Field
                   name={'healthyExpns'}
@@ -239,6 +257,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
 
                 <Field
@@ -248,6 +267,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
                 <Field
                   name={'fmlyTaxExpns'}
@@ -256,6 +276,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
 
                 <Field
@@ -265,6 +286,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
                 <Field
                   name={'financeExpns'}
@@ -273,6 +295,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
 
                 <Field
@@ -282,6 +305,7 @@ export default function Monthly_Income() {
                   cus_width
                   input_mode
                   inputmax={28}
+                  keyboardType={'numeric'}
                 />
                 <View
                   style={{

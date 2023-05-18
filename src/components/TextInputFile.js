@@ -20,12 +20,16 @@ export default function TextInputFile(props) {
     input_cusstyle,
     disabled,
     inputmax,
+    keyboardType,
     words_count,
     editable,
     meta: {touched, error},
     input: {onChange, value, ...restInput},
     ...rest
   } = props;
+
+  const [values, setValues] = useState([]);
+  const [total, setTotal] = useState(0);
 
   const togglePasswordIcon = () => {
     if (passwordIcon == 'eye') {
@@ -36,10 +40,22 @@ export default function TextInputFile(props) {
       setIsPassword(true);
     }
   };
-  const handleTextChange = text => {
+  const handleTextChange = (text) => {
+    // setWordCount(text.length);
+    
     onChange(text);
-    setWordCount(text.length);
+
+    const sumArr = text.split(",");
+    const sum = sumArr.reduce(function(a, b){
+      return parseInt(a) + parseInt(b);
+    }, 0);
+    if(sum) {
+      setTotal(sum);
+    }
+
   };
+
+ 
   return (
     <View>
       <TextInput
@@ -58,7 +74,8 @@ export default function TextInputFile(props) {
         onFocus={focusTextInput && handleTextInputFocus}
         mode={input_mode ? 'flat' : ''}
         label={title}
-        onChangeText={handleTextChange}
+        onChangeText={(text)=>handleTextChange(text)}
+        // onChangeText={text => onChange(text)}
         style={{
           backgroundColor: '#fff',
           marginTop: 10,
@@ -67,6 +84,7 @@ export default function TextInputFile(props) {
           borderColor: '#303030',
           borderWidth: 0.5,
         }}
+        keyboardType={keyboardType ? keyboardType : 'default'}
         underlineColor="#FFF"
         secureTextEntry={isPassword && password ? true : false} //for android
         placeholder={showValue ? defaultData : ''}
@@ -80,6 +98,7 @@ export default function TextInputFile(props) {
           )
         }
       />
+       <Text>Total: {total}</Text>
       {/* {inputmax ? (
         <Text style={{alignSelf: 'flex-end', color: '#818be3'}}>
           {wordCount}/{inputmax}
