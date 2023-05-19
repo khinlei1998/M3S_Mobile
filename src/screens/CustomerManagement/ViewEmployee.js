@@ -86,10 +86,7 @@ function ViewEmployee(props) {
           />
         </View>
 
-        <TouchableOpacity onPress={() => btntest()}>
-          <Text>Option 1</Text>
-        </TouchableOpacity>
-
+       
         {/* <Field component={RadioButton}/> */}
       </View>
     );

@@ -1,9 +1,16 @@
-import {View, Text, Image, FlatList} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { View, Text, Image, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import Viewloan from '../Loan/Viewloan';
-import {fetchEmpName} from '../../query/Employee_query';
-import {getAllLoan} from '../../query/AllLoan_query';
-export default function Home() {
+import { fetchEmpName } from '../../query/Employee_query';
+import { getAllLoan } from '../../query/AllLoan_query';
+import {
+  Modal,
+  Portal,
+  Button,
+  Provider,
+  Divider,
+} from 'react-native-paper';
+export default function Home(props) {
   const [emp_name, setEmpName] = useState();
   const [loan_data, setAllLoan] = useState([]);
 
@@ -57,7 +64,7 @@ export default function Home() {
     loadData();
   }, []);
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <View
         style={{
           backgroundColor: '#232D57',
@@ -74,11 +81,11 @@ export default function Home() {
           }}>
           <Image
             source={require('../../../assets/images/default-user.png')}
-            style={{width: 30, height: 30}}
+            style={{ width: 30, height: 30 }}
           />
-          <View style={{marginLeft: 20}}>
-            <Text style={{color: '#c7c7c7'}}>Team leader</Text>
-            <Text style={{color: '#fff'}}>{emp_name}</Text>
+          <View style={{ marginLeft: 20 }}>
+            <Text style={{ color: '#c7c7c7' }}>Team leader</Text>
+            <Text style={{ color: '#fff' }}>{emp_name}</Text>
           </View>
         </View>
 
@@ -120,7 +127,7 @@ export default function Home() {
                 color: 'red',
               }}>
               {loan_data.length}{' '}
-              <Text style={{color: '#c7c7c7', fontSize: 15}}>PCS</Text>
+              <Text style={{ color: '#c7c7c7', fontSize: 15 }}>PCS</Text>
             </Text>
           </View>
         </View>
@@ -163,7 +170,7 @@ export default function Home() {
                 color: '#73DEF7',
               }}>
               {formattedPrice}{' '}
-              <Text style={{color: '#c7c7c7', fontSize: 15}}>MMK</Text>
+              <Text style={{ color: '#c7c7c7', fontSize: 15 }}>MMK</Text>
             </Text>
           </View>
         </View>
@@ -184,6 +191,7 @@ export default function Home() {
           }}>
           Today New Application
         </Text>
+
         <Text
           style={{
             marginRight: 10,
@@ -191,7 +199,7 @@ export default function Home() {
             color: 'red',
           }}>
           {loan_data.length}
-          <Text style={{color: '#c7c7c7', fontSize: 17}}>Pcs</Text>
+          <Text style={{ color: '#c7c7c7', fontSize: 17 }}>Pcs</Text>
         </Text>
       </View>
 

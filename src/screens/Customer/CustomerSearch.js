@@ -7,7 +7,7 @@ import { filterCustomer } from '../../query/Customer_query';
 import { Picker } from '@react-native-picker/picker';
 
 export default function CustomerSearch() {
-  const [searchTerm, setSearchTerm] = useState();
+  const [searchTerm, setSearchTerm] = useState('');
   const [all_customer, setAllCustomer] = useState([]);
   const [selectedItemValue, setSelectedItemValue] = useState('customer_nm');
 

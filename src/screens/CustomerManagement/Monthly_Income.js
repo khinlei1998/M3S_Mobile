@@ -1,16 +1,35 @@
-import {View, Text, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import Collapsible from 'react-native-collapsible';
 import TextInputFile from '../../components/TextInputFile';
-import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
+import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
 import DividerLine from '../../components/DividerLine';
+import { TextInput } from 'react-native-paper';
+import InputTest from '../../components/InputTest';
 export default function Monthly_Income() {
+  const [totalSum, setTotalSum] = useState(0);
+
   const [open_monthlyincome, setMonthlyExpense] = useState(false);
 
   const MonthlyIncomeFun = () => {
     setMonthlyExpense(!open_monthlyincome);
   };
+
+  const handleTextChange = (text) => {
+    let sum = 0;
+
+    for (let i = 0; i < text.length; i++) {
+      const digit = parseInt(text[i]);
+      if (!isNaN(digit)) {
+        sum += digit;
+      }
+    }
+
+    setTotalSum(sum);
+  };
+
+
   return (
     <>
       <View
@@ -22,11 +41,11 @@ export default function Monthly_Income() {
           marginRight: 20,
           marginTop: 15,
         }}>
-        <Text style={{fontWeight: 'bold', fontSize: 20}}>
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
           Monthly Income / Expense Statement
         </Text>
         <TouchableOpacity onPress={MonthlyIncomeFun}>
-          <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
+          <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
         </TouchableOpacity>
       </View>
 
@@ -38,9 +57,12 @@ export default function Monthly_Income() {
             backgroundColor: '#FAF8F8',
             margin: 10,
           }}>
-          <View style={{flexDirection: 'row'}}>
+
+          {/* <TextInput onChangeText={handleTextChange} /> */}
+          {/* <Text>Total Sum: {totalSum}</Text> */}
+          <View style={{ flexDirection: 'row' }}>
             <View>
-              <Text style={{fontWeight: 'bold'}}>Business Income/Expense</Text>
+              <Text style={{ fontWeight: 'bold' }}>Business Income/Expense</Text>
               <View
                 style={{
                   backgroundColor: '#ECF0F3',
@@ -67,7 +89,18 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  editable
                 />
+
+                {/* <Field
+                  name={'rawmaterialExpans'}
+                  title={'Raw Material Expense'}
+                  component={InputTest}
+                  cus_width
+                  input_mode
+                  inputmax={28}
+                  keyboardType={'numeric'}
+                /> */}
 
                 <Field
                   name={'rawmaterialExpans'}
@@ -174,15 +207,15 @@ export default function Monthly_Income() {
                     padding: 20,
                     marginTop: 10,
                   }}>
-                  <Text style={{color: '#fff'}}>Total Net Income</Text>
-                  <Text style={{color: '#F9A970'}}>0</Text>
+                  <Text style={{ color: '#fff' }}>Total Net Income</Text>
+                  <Text style={{ color: '#F9A970' }}>0</Text>
                 </View>
               </View>
             </View>
             {/* Family Inccome */}
 
-            <View style={{marginLeft: 15}}>
-              <Text style={{fontWeight: 'bold'}}>Family Income/Expense</Text>
+            <View style={{ marginLeft: 15 }}>
+              <Text style={{ fontWeight: 'bold' }}>Family Income/Expense</Text>
               <View
                 style={{
                   backgroundColor: '#ECF0F3',
@@ -316,8 +349,8 @@ export default function Monthly_Income() {
                     padding: 20,
                     marginTop: 10,
                   }}>
-                  <Text style={{color: '#fff'}}>Total Net Income</Text>
-                  <Text style={{color: '#F9A970'}}>0</Text>
+                  <Text style={{ color: '#fff' }}>Total Net Income</Text>
+                  <Text style={{ color: '#F9A970' }}>0</Text>
                 </View>
               </View>
             </View>
@@ -331,9 +364,9 @@ export default function Monthly_Income() {
             input_cusstyle
             inputmax={10000}
           />
-          <View style={{marginTop: 10, padding: 10,justifyContent:'space-between',flexDirection:'row'}}>
+          <View style={{ marginTop: 10, padding: 10, justifyContent: 'space-between', flexDirection: 'row' }}>
             <View>
-              <Text style={{fontWeight: 'bold'}}>Total Net Icome=</Text>
+              <Text style={{ fontWeight: 'bold' }}>Total Net Icome=</Text>
               <Text>
                 (Total Net Icome= Total Business Net Income+Total Fammily Net
                 Income+Other Income)

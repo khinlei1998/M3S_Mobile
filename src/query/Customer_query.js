@@ -883,3 +883,20 @@ export function storeCustomerData(cus_data) {
     });
   });
 }
+
+export async function fetchAllCustomerNum() {
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        `SELECT * FROM Customer`,
+        [],
+        (tx, results) => {
+          resolve(results.rows.raw());
+        },
+        (tx, error) => {
+          reject(error);
+        },
+      );
+    });
+  });
+}

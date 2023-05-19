@@ -16,13 +16,13 @@ const TestScreen = props => {
   const onSubmit = values => {
     alert(JSON.stringify(values));
     TestAction(values);
+    props.navigation.navigate('Home')
     dispatch(reset('yourFormName'));
   };
 
 useEffect(() => {
-  alert('in')
 
-  initializeForm({branchName:'hello'})
+  // initializeForm({branchName:'hello'})
   // fieldValue && props.initialize(fieldValue)
   // setCusFormInitialValues({branchName:'testing'})
 
@@ -46,6 +46,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 function mapStateToProps(state, ownprops) {
+  console.log('state',state);
   return {
     edit_data: state.employees.all_address,
     fieldValue: state.customers.cus_initialValues,
@@ -53,6 +54,6 @@ function mapStateToProps(state, ownprops) {
   };
 }
 
-export default connect(mapStateToProps,mapDispatchToProps )(
+export default connect(mapStateToProps,{TestAction} )(
   reduxForm({form: 'yourFormName'})(TestScreen),
 );

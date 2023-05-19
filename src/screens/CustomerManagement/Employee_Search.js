@@ -4,9 +4,10 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
+  TextInput
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {Field, reduxForm, change} from 'redux-form';
+import React, { useState, useEffect } from 'react';
+import { Field, reduxForm, change } from 'redux-form';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
 import {
@@ -15,24 +16,23 @@ import {
   Button,
   Provider,
   Divider,
-  TextInput,
 } from 'react-native-paper';
-import {Picker} from '@react-native-picker/picker';
-import {emp_filter_item} from '../../common';
-import {filterEmp} from '../../query/Employee_query';
+import { Picker } from '@react-native-picker/picker';
+import { emp_filter_item } from '../../common';
+import { filterEmp } from '../../query/Employee_query';
 import ViewEmployee from './ViewEmployee';
-import {TestAction} from '../../redux/EmployeeReducer';
-import {connect, useDispatch} from 'react-redux';
+import { TestAction } from '../../redux/EmployeeReducer';
+import { connect, useDispatch } from 'react-redux';
 
 function Employee_Search(props) {
-  const {TestAction} = props;
+  const { TestAction } = props;
 
   const containerStyle = {
     backgroundColor: '#e8e8e8',
     width: '85%',
     alignSelf: 'center',
   };
-  const {visible, hideModal, handleSubmit, dispatch} = props;
+  const { visible, hideModal, handleSubmit, dispatch } = props;
   const [searchTerm, setSearchTerm] = useState('');
   const [all_emp, setAllEmp] = useState([]);
 
@@ -58,6 +58,12 @@ function Employee_Search(props) {
     setSearchTerm(newText);
   };
 
+  const onSubmit = async(values) => {
+    await filterEmp(selectedItemValue, values.searchtext)
+    .then(data => (data.length > 0 ? setAllEmp(data) : alert('No data')))
+    .catch(error => console.log('error', error));
+  };
+
   return (
     // /
     <Provider>
@@ -80,7 +86,7 @@ function Employee_Search(props) {
           onDismiss={hideModal}
           contentContainerStyle={containerStyle}>
           <View
-            style={{backgroundColor: '#232D57', padding: 25}}
+            style={{ backgroundColor: '#232D57', padding: 25 }}
             onStartShouldSetResponder={() => hideModal()}>
             <Icon
               name="x-circle"
@@ -95,19 +101,19 @@ function Employee_Search(props) {
               }}
             />
           </View>
-          <View style={{padding: 10, height: 550}}>
+          <View style={{ padding: 10, height: 550 }}>
             <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{marginRight: 10}}>Search Item:</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
                   onValueChange={handleItemValueChange}
-                  style={{width: 200, backgroundColor: 'white'}}
+                  style={{ width: 200, backgroundColor: 'white',marginTop:7 }}
                   mode="dropdown">
                   {emp_filter_item.length > 0 &&
                     emp_filter_item.map(val => (
@@ -120,25 +126,36 @@ function Employee_Search(props) {
                 </Picker>
               </View>
 
-              <View style={{width: '50%'}}>
-                <TextInput
+              <View style={{ width: '50%' }}>
+                {/* <TextInput
                   value={searchTerm}
-                  onChangeText={handleChangeText}
-                  right={
-                    <TextInput.Icon
-                      icon={'magnify'}
-                      onPress={() => handleSearch()}
-                    />
-                  }
+                  onChangeText={text => setSearchTerm(text)}
+                  // right={
+                  //   <TextInput.Icon
+                  //     icon={'magnify'}
+                  //     onPress={() => handleSearch()}
+                  //   />
+                  // }
                   style={{
                     backgroundColor: 'white',
                   }}
+                /> */}
+
+                <Field
+                  name={'searchtext'}
+                  component={TextInputFile}
+                  input_mode
+                  inputmax={20}
+                  icon={'magnify'}
+                  handleTextInputFocus={handleSubmit(onSubmit)}
                 />
+
+
               </View>
             </View>
             <ViewEmployee emp_data={all_emp} hideModal={hideModal} />
 
-            {/* <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideModal()}
                 mode="contained"
@@ -152,7 +169,7 @@ function Employee_Search(props) {
                 }}>
                 OK
               </Button>
-              <Button
+              {/* <Button
                 onPress={() => hideModal()}
                 mode="contained"
                 buttonColor={'#6870C3'}
@@ -164,8 +181,8 @@ function Employee_Search(props) {
                   marginLeft: 5,
                 }}>
                 Cancel
-              </Button>
-            </View> */}
+              </Button> */}
+            </View>
           </View>
         </Modal>
       </Portal>
@@ -178,4 +195,4 @@ function Employee_Search(props) {
 
 export default reduxForm({
   form: 'Customer_ManagementForm',
-})(connect(null, {TestAction})(Employee_Search));
+})(connect(null, { TestAction })(Employee_Search));
