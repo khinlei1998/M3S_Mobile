@@ -47,7 +47,7 @@ export default function RootNavigation(props) {
           inactiveTintColor: 'white',
         },
         headerTintColor: '#fff',
-        headerShown: true,
+        headerShown: false,
         headerStyle: {
           backgroundColor: '#232D57',
         },

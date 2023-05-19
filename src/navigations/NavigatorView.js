@@ -5,6 +5,8 @@ import TestScreen from '../screens/CustomerManagement/TestScreen';
 import Home from '../screens/Dashboard/Home'
 import Customer_Management from '../screens/CustomerManagement/Customer_Management';
 import CustomerSearch from '../screens/Customer/CustomerSearch';
+import Icon from 'react-native-vector-icons/Feather';
+import { useNavigation, } from '@react-navigation/native';
 
 const StackNavigationData = [
     {
@@ -46,11 +48,24 @@ const StackNavigationData = [
 ]
 const Stack = createNativeStackNavigator();
 
+
+
 export default function NavigatorView() {
+    const navigation = useNavigation();
+
+    const headerLeftComponentMenu = () => {
+        return (
+            <Icon name="align-justify" size={20} color="#FFF" onPress={() => navigation.openDrawer()} />
+            // <></>
+
+        )
+    }
     return (
-        <Stack.Navigator screenOptions={{
-            headerShown: false, // Hide the header in stack navigator screens
-        }}>
+        <Stack.Navigator
+        //  screenOptions={{
+        //     headerShown: false, // Hide the header in stack navigator screens
+        // }}
+        >
             {StackNavigationData.map((item, idx) => (
                 <Stack.Screen
                     key={`stack_item-${idx + 1}`}
@@ -58,10 +73,12 @@ export default function NavigatorView() {
 
                     component={item.component}
                     options={{
+                        headerTitleAlign: 'center',
                         title: item.title,
-                        headerLeft: item.headerLeft,
-                        headerTintColor: '#5da7ec',
+                        headerLeft: item.headerLeft || headerLeftComponentMenu,
+                         headerTintColor: '#FFF',
                         headerTitleStyle: item.headerTitleStyle,
+                        headerStyle: { backgroundColor: '#273050' },
                     }}
                 />
             ))}

@@ -10,9 +10,10 @@ export default function DrawerContent(props) {
     const navigation = useNavigation();
     const { removeUserID } = useContext(AuthContext);
 
-    const handleDrawerItemPress = (screenName) => {
-        navigation.navigate(screenName);
-       
+    const handleDrawerItemPress = (screenName,title) => {
+        console.log('title',title);
+        navigation.setParams({ headerTitle: 'iii' });
+
     };
     return (
         <View style={{ flex: 1 }}>
