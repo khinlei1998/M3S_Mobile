@@ -1,6 +1,5 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, FlatList} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import Icon from 'react-native-vector-icons/Feather';
 import Collapsible from 'react-native-collapsible';
 import {RadioButton} from 'react-native-paper';
 import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
@@ -8,7 +7,7 @@ import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
 import {connect} from 'react-redux';
 import DefaultTextInput from '../../components/DefaultTextInput';
-import moment from 'moment';
+import {Picker} from '@react-native-picker/picker';
 import {
   owner_shipratio,
   gender,
@@ -21,61 +20,31 @@ import DatePicker from '../../components/DatePicker';
 import {style} from '../../style/Customer_Base_style';
 import {setCusFormInitialValues} from '../../redux/CustomerReducer';
 import {fetchAllCustomerNum} from '../../query/Customer_query';
-// const initialValues = {CustomerNo: '0000'};
-
+import {Modal, Provider, Portal, Button} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/Feather';
+import {city_code} from '../../common';
 function Customer_Base_Info(props) {
   const {
     showNrcFun,
     show_nrc,
-    nrc_statecode,
-    initializeForm,
-    setCusFormInitialValues,
-    // cus_initialvalues,
-    initialValues,
-    cus_data_count,
+    handleSubmit,
+    showVillageSearch,
+    showCitySearch,
+    showTownshipSearch,
+    showWardSearch
   } = props;
   const [open_cusinfo, setCusInfo] = useState(false);
   const [show_village, setVillage] = useState('village');
+  const [modal_city_visible, setCityCodeModalVisible] = useState(false);
   const [show_businessdate, setBusiness] = useState('estimated');
+  const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
+  const [all_emp, setAllEmp] = useState([]);
+
   const CusInfoFun = () => {
     setCusInfo(!open_cusinfo);
   };
 
   const numbers = Array.from({length: 60}, (_, i) => i + 1);
-
-  // const loadCusData = async () => {
-  //   await fetchAllCustomerNum().then(cust_data => {
-  //     setCusFormInitialValues(cust_data.length + 1);
-  //   });
-  // };
-
-  // useEffect(async () => {
-  //   loadCusData();
-  // }, []);
-
-  // useEffect(() => {
-  //   props.initialize({
-  //     CustomerNo: `TB${moment().format(
-  //       'YYYYMMDD',
-  //     )}88}`,
-  //   });
-  // }, [cus_data_count]);
-
-  // useEffect(() => {
-  //   // const update_initialvalue = Object.assign({}, initialValues, {
-  //   //   CustomerNo: initialValues.CustomerNo,
-  //   // });
-  //   // console.log('update_initialvalue', update_initialvalue);
-  //   props.initialize(initialValues);
-  //   // props.initialize(initialValues);
-  //   // props.initialize(initialValues);
-  //   alert('oo');
-  //   // TestAction({branchName: 'ds', branchCode: 'pp'});
-  // }, []);
-
-  const showCitySearch = () => {
-    alert('true')
-  };
 
   return (
     <>
@@ -129,15 +98,6 @@ function Customer_Base_Info(props) {
                 editable
               />
             </View>
-
-            {/* <Field
-              name={'CustomerNo'}
-              title={'oo'}
-              component={DefaultTextInput}
-              input_mode
-              inputmax={100}
-              // editable
-            /> */}
 
             <View style={style.child_input_style}>
               <Field
@@ -216,12 +176,14 @@ function Customer_Base_Info(props) {
 
             <View style={style.child_input_style}>
               <Field
-                name={'villageCode'}
-                title={'Village Code '}
+                name={'TownshipCode'}
+                title={'Township Code '}
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
                 icon={'magnify'}
+                editable
+                handleTextInputFocus={showTownshipSearch}
               />
               <Field
                 name={'VillageName'}
@@ -229,6 +191,7 @@ function Customer_Base_Info(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
+
               />
             </View>
 
@@ -253,6 +216,8 @@ function Customer_Base_Info(props) {
                   input_mode
                   inputmax={100}
                   icon={'magnify'}
+                  editable
+                  handleTextInputFocus={showVillageSearch}
                 />
                 <Field
                   name={'village_name'}
@@ -271,6 +236,8 @@ function Customer_Base_Info(props) {
                   input_mode
                   inputmax={100}
                   icon={'magnify'}
+                  editable
+                  handleTextInputFocus={showWardSearch}
                 />
                 <Field
                   name={'WardName'}
@@ -420,18 +387,12 @@ function Customer_Base_Info(props) {
 }
 
 function mapStateToProps(state) {
-  // console.log('conut',state.customers.cus_initialValues);
-  return {
-    // cus_data_count: state.customers.cus_initialValues,
-    initialValues: state.customers.cus_initialValues,
-  };
+  return {};
 }
 
 export default reduxForm({
   form: 'Customer_ManagementForm',
   enableReinitialize: true,
-
-  // initialValues,
 })(
   connect(mapStateToProps, {setCusFormInitialValues, fetchAllCustomerNum})(
     Customer_Base_Info,

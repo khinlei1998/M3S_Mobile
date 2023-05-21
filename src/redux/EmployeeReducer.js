@@ -13,7 +13,6 @@ export const addEmpFilter = props => {
   };
 };
 export const TestAction = props => {
-  console.log('props', props);
   return {
     type: 'GET_ADDRESS_DATA',
     payload: props,

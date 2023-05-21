@@ -16,13 +16,7 @@ const initialState = {
   totalnetfamily: 0,
 };
 
-// export const updateTotalSum = (sum) => ({
-//     console.log(su);
-//     type: 'UPDATE_TOTAL_SUM',
-//     payload: sum,
-// });
 export const updateTotalSum = props => {
-  console.log(props);
   return {
     type: 'UPDATE_TOTAL_SUM',
     payload: props,
@@ -30,7 +24,6 @@ export const updateTotalSum = props => {
 };
 
 export const totalIncome = props => {
-  console.log(props);
   return {
     type: 'UPDATE_TOTAL_INCOME',
     payload: props,

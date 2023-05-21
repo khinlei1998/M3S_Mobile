@@ -298,6 +298,56 @@ export const salary_grade = [
     value: '05',
   },
 ];
+export const city_code = [
+  {
+    id: 1,
+    label: 'City Code',
+    value: 'city_code',
+  },
+  {
+    id: 2,
+    label: 'City Name',
+    value: 'city_name',
+  },
+];
+export const village_code = [
+  {
+    id: 1,
+    label: 'Village Code',
+    value: 'village_code',
+  },
+  {
+    id: 2,
+    label: 'Village Name',
+    value: 'village_name',
+  },
+];
+
+export const Township_code = [
+  {
+    id: 1,
+    label: 'Township Code',
+    value: 'township_code',
+  },
+  {
+    id: 2,
+    label: 'Township Name',
+    value: 'township_name',
+  },
+];
+
+export const ward_code = [
+  {
+    id: 1,
+    label: 'Ward Code',
+    value: 'ward_code',
+  },
+  {
+    id: 2,
+    label: 'Ward Name',
+    value: 'ward_name',
+  },
+];
 
 // export const BASE_URL='https://8582-103-231-92-61.ngrok-free.app/'
 export const BASE_URL = 'https://sample-rest.onrender.com/skylark-m3s/'; // static
