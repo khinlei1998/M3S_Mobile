@@ -56,6 +56,8 @@ function LoginScreen(props) {
     // fetchData();
   }, []);
 
+  
+
   const saveLoginInfo = async login_info => {
     try {
       await AsyncStorage.setItem('login_info', login_info);

@@ -11,8 +11,8 @@ export default function DrawerContent(props) {
     const { removeUserID } = useContext(AuthContext);
 
     const handleDrawerItemPress = (screenName,title) => {
-        console.log('title',title);
-        navigation.setParams({ headerTitle: 'iii' });
+        navigation.navigate(screenName);
+
 
     };
     return (

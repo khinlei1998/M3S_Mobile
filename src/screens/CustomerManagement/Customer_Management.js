@@ -86,13 +86,13 @@ function Customer_Management(props) {
           : '',
     });
     alert(JSON.stringify(data));
-    await storeCustomerData(data).then(result => {
-      if (result == 'success') {
-        alert('Create Success')
-        dispatch(reset('Customer_ManagementForm'));
-        navigation.navigate('Home');
-      }
-    });
+    // await storeCustomerData(data).then(result => {
+    //   if (result == 'success') {
+    //     alert('Create Success')
+    //     dispatch(reset('Customer_ManagementForm'));
+    //     navigation.navigate('Home');
+    //   }
+    // });
 
     console.log('all Customer data>>>>>', values);
   };
@@ -123,7 +123,7 @@ function Customer_Management(props) {
       setEmpName(emp_name[0].employee_name);
     });
     await fetchAllCustomerNum().then(cust_data => {
-     console.log('cust_data',cust_data);
+     console.log('cust_data',cust_data.length);
     });
   };
 
@@ -142,14 +142,14 @@ function Customer_Management(props) {
     // alert(total)
 
     const test = Object.assign({}, emp_filter_data, {
-      totSaleIncome: total.toString()
+      // totSaleIncome: total.toString()
     })
     props.initialize(test)
 
-    return () => {
-      emp_filter_data;
-    };
-  }, [emp_filter_data, total]);
+    // return () => {
+    //   emp_filter_data;
+    // };
+  }, [emp_filter_data, ]);
 
   const Show_NRC = newValue => {
     setNRC(newValue);
@@ -341,5 +341,5 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Customer_ManagementForm',
-  validate,
+  // validate,
 })(connect(mapStateToProps, { setCusFormInitialValues })(Customer_Management));

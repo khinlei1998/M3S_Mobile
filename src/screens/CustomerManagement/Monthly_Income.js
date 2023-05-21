@@ -1,34 +1,154 @@
-import { View, Text, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import {View, Text, TouchableOpacity, Button, TextInput} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import Collapsible from 'react-native-collapsible';
 import TextInputFile from '../../components/TextInputFile';
-import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
 import DividerLine from '../../components/DividerLine';
-import { TextInput } from 'react-native-paper';
-import InputTest from '../../components/InputTest';
-export default function Monthly_Income() {
-  const [totalSum, setTotalSum] = useState(0);
-
+import {connect} from 'react-redux';
+import {Field, reduxForm, reset, change} from 'redux-form';
+import {
+  totalIncome,
+  totalExpense,
+  totalFamilyExpense,
+  totalFamilyIncome,
+  totalNetBusiness,
+  totalNetFamily,
+} from '../../redux/MonthlyReducer';
+import DefaultTextInput from '../../components/DefaultTextInput';
+function Monthly_Income(props) {
+  const {
+    dispatch,
+    totalIncome,
+    total_income,
+    total_expense,
+    totalExpense,
+    totalFamilyExpense,
+    totalFamilyIncome,
+    total_family_income,
+    total_family_expense,
+    totalNetBusiness,
+    total_net_business,
+    totalNetFamily,
+    total_net_family,
+  } = props;
+  const [values, setValues] = useState([]);
+  const [familyvalues, setFamilyValues] = useState([]);
   const [open_monthlyincome, setMonthlyExpense] = useState(false);
-
+  const [total_fmly_net, setFamilyNet] = useState(0);
+  const [total_business_net, setBusinessNet] = useState(0);
+  const [totalnet, setTotalNet] = useState(0);
   const MonthlyIncomeFun = () => {
     setMonthlyExpense(!open_monthlyincome);
   };
 
-  const handleTextChange = (text) => {
-    let sum = 0;
+  const handleFieldChange = (value, index) => {
+    const number = parseFloat(value);
 
-    for (let i = 0; i < text.length; i++) {
-      const digit = parseInt(text[i]);
-      if (!isNaN(digit)) {
-        sum += digit;
-      }
+    // Check if the input is a valid number
+    if (!isNaN(number)) {
+      // Update the corresponding value in the values array
+      const newValues = [...values];
+      newValues[index] = number;
+
+      setValues(newValues);
+      const filteredValues = newValues.filter(
+        value => typeof value === 'number',
+      );
+
+      // Calculate the sum of the values array
+      const sum = filteredValues.reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0,
+      );
+      totalExpense(sum);
+
+      dispatch(
+        change(
+          'Customer_ManagementForm',
+          'totSaleExpense',
+          `-${sum.toString()}`,
+        ),
+      );
     }
-
-    setTotalSum(sum);
   };
 
+  const handleFmailyChange = (value, index) => {
+    const number = parseFloat(value);
+
+    // Check if the input is a valid number
+    if (!isNaN(number)) {
+      // Update the corresponding value in the values array
+      const newValues = [...familyvalues];
+      newValues[index] = number;
+
+      setFamilyValues(newValues);
+      // Calculate the sum of the values array
+      const filteredfmlyValues = newValues.filter(
+        value => typeof value === 'number',
+      );
+
+      const sum = filteredfmlyValues.reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0,
+      );
+      totalFamilyExpense(sum);
+      dispatch(
+        change(
+          'Customer_ManagementForm',
+          'fmlyTotExpense',
+          `-${sum.toString()}`,
+        ),
+      );
+    }
+  };
+
+  const handleNetChange = (text, index) => {
+    const number = parseFloat(text);
+
+    // Check if the input is a valid number
+    if (!isNaN(number)) {
+      totalIncome(number);
+    }
+  };
+
+  const handleFamilyChange = text => {
+    const number = parseFloat(text);
+
+    // Check if the input is a valid number
+    if (!isNaN(number)) {
+      totalFamilyIncome(number);
+    }
+  };
+  const calCulateSum = (total_expense, total_income) => {
+    const sum = total_income - total_expense;
+    setBusinessNet(sum);
+    dispatch(
+      change('Customer_ManagementForm', 'totBusNetIncomeitem', `${sum}`),
+    );
+    totalNetBusiness(sum);
+  };
+  const familyCulateSum = (total_family_income, total_family_expense) => {
+    const sum = total_family_income - total_family_expense;
+    setFamilyNet(sum);
+    dispatch(change('Customer_ManagementForm', 'fmlyTotNetIncome', `${sum}`));
+    totalNetFamily(sum);
+  };
+  const netCulateSum = (total_net_business, total_net_family) => {
+    const sum = total_net_business - total_net_family;
+    setTotalNet(sum);
+    dispatch(change('Customer_ManagementForm', 'totalnet', `${sum}`));
+  };
+  useEffect(() => {
+    calCulateSum(total_expense, total_income);
+  }, [total_expense, total_income]);
+
+  useEffect(() => {
+    familyCulateSum(total_family_income, total_family_expense);
+  }, [total_family_income, total_family_expense]);
+
+  useEffect(() => {
+    netCulateSum(total_net_business, total_net_family);
+  }, [total_net_business, total_net_family]);
 
   return (
     <>
@@ -41,11 +161,11 @@ export default function Monthly_Income() {
           marginRight: 20,
           marginTop: 15,
         }}>
-        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+        <Text style={{fontWeight: 'bold', fontSize: 20}}>
           Monthly Income / Expense Statement
         </Text>
         <TouchableOpacity onPress={MonthlyIncomeFun}>
-          <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
+          <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
         </TouchableOpacity>
       </View>
 
@@ -57,12 +177,9 @@ export default function Monthly_Income() {
             backgroundColor: '#FAF8F8',
             margin: 10,
           }}>
-
-          {/* <TextInput onChangeText={handleTextChange} /> */}
-          {/* <Text>Total Sum: {totalSum}</Text> */}
-          <View style={{ flexDirection: 'row' }}>
-            <View>
-              <Text style={{ fontWeight: 'bold' }}>Business Income/Expense</Text>
+          <View style={{flexDirection: 'row',alignSelf:'center'}}>
+            <View >
+              <Text style={{fontWeight: 'bold',padding:5,marginTop:10}}>Business Income/Expense</Text>
               <View
                 style={{
                   backgroundColor: '#ECF0F3',
@@ -79,29 +196,19 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleNetChange(value, 10)}
                 />
 
                 <Field
                   name={'totSaleExpense'}
                   title={'Total Sale Expense (-)'}
-                  component={TextInputFile}
-                  cus_width
+                  component={DefaultTextInput}
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
                   editable
                 />
 
-                {/* <Field
-                  name={'rawmaterialExpans'}
-                  title={'Raw Material Expense'}
-                  component={InputTest}
-                  cus_width
-                  input_mode
-                  inputmax={28}
-                  keyboardType={'numeric'}
-                /> */}
-
                 <Field
                   name={'rawmaterialExpans'}
                   title={'Raw Material Expense'}
@@ -110,6 +217,7 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFieldChange(value, 0)}
                 />
 
                 <Field
@@ -120,6 +228,7 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFieldChange(value, 1)}
                 />
 
                 <Field
@@ -130,6 +239,7 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFieldChange(value, 2)}
                 />
 
                 <Field
@@ -140,6 +250,7 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFieldChange(value, 3)}
                 />
                 <Field
                   name={'busutlbilexpns'}
@@ -149,6 +260,7 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFieldChange(value, 4)}
                 />
 
                 <Field
@@ -159,6 +271,7 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFieldChange(value, 5)}
                 />
                 <Field
                   name={'taxExpns'}
@@ -168,6 +281,7 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFieldChange(value, 6)}
                 />
 
                 <Field
@@ -178,6 +292,7 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFieldChange(value, 7)}
                 />
                 <Field
                   name={'othrExpns1'}
@@ -187,6 +302,7 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFieldChange(value, 8)}
                 />
 
                 <Field
@@ -197,6 +313,7 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFieldChange(value, 9)}
                 />
                 <View
                   style={{
@@ -207,15 +324,15 @@ export default function Monthly_Income() {
                     padding: 20,
                     marginTop: 10,
                   }}>
-                  <Text style={{ color: '#fff' }}>Total Net Income</Text>
-                  <Text style={{ color: '#F9A970' }}>0</Text>
+                  <Text style={{color: '#fff'}}>Total Net Income</Text>
+                  <Text style={{color: '#F9A970'}}>{total_business_net}</Text>
                 </View>
               </View>
             </View>
             {/* Family Inccome */}
 
-            <View style={{ marginLeft: 15 }}>
-              <Text style={{ fontWeight: 'bold' }}>Family Income/Expense</Text>
+            <View style={{marginLeft: 15,}}>
+              <Text style={{fontWeight: 'bold',padding:5,marginTop:10}}>Family Income/Expense</Text>
               <View
                 style={{
                   backgroundColor: '#ECF0F3',
@@ -232,16 +349,16 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFamilyChange(value)}
                 />
 
                 <Field
                   name={'fmlyTotExpense'}
                   title={'Total Family Expense (-)'}
-                  component={TextInputFile}
-                  cus_width
-                  input_mode
+                  component={DefaultTextInput}
                   inputmax={28}
                   keyboardType={'numeric'}
+                  editable
                 />
 
                 <Field
@@ -252,6 +369,7 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFmailyChange(value, 0)}
                 />
 
                 <Field
@@ -262,6 +380,7 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFmailyChange(value, 1)}
                 />
 
                 <Field
@@ -272,6 +391,7 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFmailyChange(value, 2)}
                 />
 
                 <Field
@@ -282,6 +402,7 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFmailyChange(value, 3)}
                 />
                 <Field
                   name={'healthyExpns'}
@@ -291,16 +412,18 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFmailyChange(value, 4)}
                 />
 
                 <Field
-                  name={'fmlyTotNetincome'}
+                  name={'fmlyTrnsrtExpns'}
                   title={'Transportation'}
                   component={TextInputFile}
                   cus_width
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFmailyChange(value, 5)}
                 />
                 <Field
                   name={'fmlyTaxExpns'}
@@ -310,17 +433,9 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFmailyChange(value, 6)}
                 />
 
-                <Field
-                  name={'goodsLossExpns'}
-                  title={'Loss of Goods'}
-                  component={TextInputFile}
-                  cus_width
-                  input_mode
-                  inputmax={28}
-                  keyboardType={'numeric'}
-                />
                 <Field
                   name={'financeExpns'}
                   title={'Other debt/Saving'}
@@ -329,6 +444,7 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFmailyChange(value, 8)}
                 />
 
                 <Field
@@ -339,6 +455,7 @@ export default function Monthly_Income() {
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFmailyChange(value, 9)}
                 />
                 <View
                   style={{
@@ -347,32 +464,46 @@ export default function Monthly_Income() {
                     backgroundColor: '#20316C',
                     width: 300,
                     padding: 20,
-                    marginTop: 10,
+                    marginTop: 77,
                   }}>
-                  <Text style={{ color: '#fff' }}>Total Net Income</Text>
-                  <Text style={{ color: '#F9A970' }}>0</Text>
+                  <Text style={{color: '#fff'}}>Total Net Income</Text>
+                  <Text style={{color: '#F9A970'}}>{total_fmly_net}</Text>
                 </View>
               </View>
             </View>
           </View>
+          <View style={{marginLeft:15,marginRight:15}}>
+            <Field
+              name={'remark'}
+              title={'Remark'}
+              component={TextInputFile}
+              input_mode
+              input_cusstyle
+              inputmax={10000}
+            />
+          </View>
 
-          <Field
-            name={'remark'}
-            title={'Remark'}
-            component={TextInputFile}
-            input_mode
-            input_cusstyle
-            inputmax={10000}
-          />
-          <View style={{ marginTop: 10, padding: 10, justifyContent: 'space-between', flexDirection: 'row' }}>
+          <View
+            style={{
+              marginTop: 10,
+              padding: 10,
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+            }}>
             <View>
-              <Text style={{ fontWeight: 'bold' }}>Total Net Icome=</Text>
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Text style={{fontWeight: 'bold', fontSize: 20}}>
+                  Total Net Icome=
+                </Text>
+                <Text style={{color: '#F9A970', fontSize: 15}}>{totalnet}</Text>
+              </View>
+
               <Text>
                 (Total Net Icome= Total Business Net Income+Total Fammily Net
                 Income+Other Income)
               </Text>
             </View>
-            <Text>00</Text>
           </View>
         </View>
       </Collapsible>
@@ -381,3 +512,30 @@ export default function Monthly_Income() {
     </>
   );
 }
+
+function mapStateToProps(state) {
+  return {
+    // sale_expense:
+    //   state.form.Customer_ManagementForm?.values?.totSaleExpense || '',
+    total_income: state.monthly.totalincome,
+    total_expense: state.monthly.totalexpense,
+    total_family_income: state.monthly.totalincomeexpense,
+    total_family_expense: state.monthly.totalfamilyexpense,
+    total_net_business: state.monthly.totalnetbusiness,
+    total_net_family: state.monthly.totalnetfamily,
+  };
+}
+
+export default reduxForm({
+  form: 'Customer_ManagementForm',
+  enableReinitialize: true,
+})(
+  connect(mapStateToProps, {
+    totalFamilyIncome,
+    totalIncome,
+    totalExpense,
+    totalFamilyExpense,
+    totalNetBusiness,
+    totalNetFamily,
+  })(Monthly_Income),
+);

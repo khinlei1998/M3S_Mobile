@@ -1,10 +1,11 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from '../screens/Login/LoginScreen';
 import SplashScreen from '../screens/SplashScreen';
 import SettingScreen from '../screens/Setting/SettingScreen';
+import TestScreen from '../screens/CustomerManagement/TestScreen';
+import Customer_Management from '../screens/CustomerManagement/Customer_Management';
 export default function AuthNavigation(props) {
-
   const Stack = createNativeStackNavigator();
   return (
     <Stack.Navigator
@@ -19,19 +20,30 @@ export default function AuthNavigation(props) {
         },
       }}>
       <Stack.Screen
+        name="Customer_Management"
+        component={Customer_Management}
+        options={{headerShown: false}}
+      />
+
+      <Stack.Screen
+        name="Test"
+        component={TestScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Setting"
         component={SettingScreen}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Splash"
         component={SplashScreen}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
     </Stack.Navigator>
   );

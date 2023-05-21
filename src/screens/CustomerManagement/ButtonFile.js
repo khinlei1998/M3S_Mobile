@@ -3,7 +3,6 @@ import React from 'react';
 import {connect,useDispatch} from 'react-redux';
 import {Field, reduxForm,reset} from 'redux-form';
 import { TestAction } from '../../redux/EmployeeReducer';
-
 function ButtonFile(props) {
     const dispatch = useDispatch();
 
@@ -17,9 +16,8 @@ function ButtonFile(props) {
     
       };
 
-    const btnSelectEmployee = values => {
-        // alert(JSON.stringify(values))
-
+    const btnSelectEmployee = item => {
+        alert('jj')
         const emp_data={
             branchName:'we',
             branchCode:'pp'
@@ -30,18 +28,18 @@ function ButtonFile(props) {
       };
   return (
     <View style={{marginTop:20}}>
-      {/* <TouchableOpacity
+      <TouchableOpacity
        
         onPress={() => btnSelectEmployee()}
       >
         <Text>Option 1</Text>
-      </TouchableOpacity> */}
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      </TouchableOpacity>
+      {/* <Button title="Submit" onPress={handleSubmit(onSubmit)} /> */}
       {/* <Button title="Edit" onPress={() => btnedit()} /> */}
     </View>
   );
 }
 
 export default connect(null, {TestAction})(
-    reduxForm({form: 'Customer_ManagementForm'})(ButtonFile),
+    reduxForm({form: 'yourFormName'})(ButtonFile),
   );

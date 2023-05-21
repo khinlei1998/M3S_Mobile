@@ -1,15 +1,14 @@
-import { View, Text, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
-import { TextInput, DefaultTheme } from 'react-native-paper';
-import { updateTotalSum } from '../redux/MonthlyReducer';
+import {View, Text, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {TextInput, DefaultTheme} from 'react-native-paper';
+import {updateTotalSum} from '../redux/MonthlyReducer';
 import {connect, useDispatch} from 'react-redux';
 
- function InputFile(props) {
+function InputFile(props) {
   const [passwordIcon, setPasswordIcon] = useState('eye');
   const [isPassword, setIsPassword] = useState(true);
   const [wordCount, setWordCount] = React.useState(0);
   const [totalSum, setTotalSum] = useState(0);
-
 
   const {
     updateTotalSum,
@@ -28,8 +27,8 @@ import {connect, useDispatch} from 'react-redux';
     keyboardType,
     words_count,
     editable,
-    meta: { touched, error },
-    input: { onChange, value, ...restInput },
+    meta: {touched, error},
+    input: {onChange, value, ...restInput},
     ...rest
   } = props;
 
@@ -45,7 +44,7 @@ import {connect, useDispatch} from 'react-redux';
       setIsPassword(true);
     }
   };
-  const handleTextChange = (text) => {
+  const handleTextChange = text => {
     // setWordCount(text.length);
 
     onChange(text);
@@ -58,13 +57,10 @@ import {connect, useDispatch} from 'react-redux';
         sum += digit;
       }
     }
-    updateTotalSum(sum)
-    
+    updateTotalSum(sum);
 
     setTotalSum(sum);
-
   };
-
 
   return (
     <View>
@@ -118,8 +114,35 @@ import {connect, useDispatch} from 'react-redux';
       <></>} */}
       {touched && error && <Text style={{ color: 'red' }}>{error}</Text>}
     </View>
+    // <TextInput
+    //   {...restInput}
+    //   {...rest}
+    //   style={{borderWidth: 1}}
+    //   defaultValue={value}
+    //   onChangeText={text => handleTextChange(text)}
+    // />
   );
 }
 
 export default connect(null, {updateTotalSum})(InputFile);
+
+// import {Text, View, TextInput} from 'react-native';
+// import React from 'react';
+// export default function InputFile(props) {
+//   const {
+//     input: {onChange, value, ...restInput},
+//     ...rest
+//   } = props;
+//   return (
+//     <View>
+//       <TextInput
+//         {...restInput}
+//         {...rest}
+//         style={{borderWidth: 1}}
+//         defaultValue={value}
+//         onChangeText={text => onChange(text)}
+//       />
+//     </View>
+//   );
+// }
 

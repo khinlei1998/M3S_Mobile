@@ -7,6 +7,8 @@ import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
 import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
 import {connect} from 'react-redux';
+import DefaultTextInput from '../../components/DefaultTextInput';
+import moment from 'moment';
 import {
   owner_shipratio,
   gender,
@@ -18,6 +20,7 @@ import DividerLine from '../../components/DividerLine';
 import DatePicker from '../../components/DatePicker';
 import {style} from '../../style/Customer_Base_style';
 import {setCusFormInitialValues} from '../../redux/CustomerReducer';
+import {fetchAllCustomerNum} from '../../query/Customer_query';
 // const initialValues = {CustomerNo: '0000'};
 
 function Customer_Base_Info(props) {
@@ -28,7 +31,8 @@ function Customer_Base_Info(props) {
     initializeForm,
     setCusFormInitialValues,
     // cus_initialvalues,
-    initialValues
+    initialValues,
+    cus_data_count,
   } = props;
   const [open_cusinfo, setCusInfo] = useState(false);
   const [show_village, setVillage] = useState('village');
@@ -38,6 +42,37 @@ function Customer_Base_Info(props) {
   };
 
   const numbers = Array.from({length: 60}, (_, i) => i + 1);
+
+  // const loadCusData = async () => {
+  //   await fetchAllCustomerNum().then(cust_data => {
+  //     setCusFormInitialValues(cust_data.length + 1);
+  //   });
+  // };
+
+  // useEffect(async () => {
+  //   loadCusData();
+  // }, []);
+
+  // useEffect(() => {
+  //   props.initialize({
+  //     CustomerNo: `TB${moment().format(
+  //       'YYYYMMDD',
+  //     )}88}`,
+  //   });
+  // }, [cus_data_count]);
+
+  // useEffect(() => {
+  //   // const update_initialvalue = Object.assign({}, initialValues, {
+  //   //   CustomerNo: initialValues.CustomerNo,
+  //   // });
+  //   // console.log('update_initialvalue', update_initialvalue);
+  //   props.initialize(initialValues);
+  //   // props.initialize(initialValues);
+  //   // props.initialize(initialValues);
+  //   alert('oo');
+  //   // TestAction({branchName: 'ds', branchCode: 'pp'});
+  // }, []);
+
   return (
     <>
       <View style={style.container}>
@@ -90,6 +125,15 @@ function Customer_Base_Info(props) {
                 // editable
               />
             </View>
+
+            {/* <Field
+              name={'CustomerNo'}
+              title={'oo'}
+              component={DefaultTextInput}
+              input_mode
+              inputmax={100}
+              // editable
+            /> */}
 
             <View style={style.child_input_style}>
               <Field
@@ -370,11 +414,20 @@ function Customer_Base_Info(props) {
 }
 
 function mapStateToProps(state) {
+  // console.log('conut',state.customers.cus_initialValues);
   return {
+    // cus_data_count: state.customers.cus_initialValues,
+    initialValues: state.customers.cus_initialValues,
   };
-} 
+}
 
 export default reduxForm({
   form: 'Customer_ManagementForm',
+  enableReinitialize: true,
+
   // initialValues,
-})(connect(mapStateToProps, {setCusFormInitialValues})(Customer_Base_Info));
+})(
+  connect(mapStateToProps, {setCusFormInitialValues, fetchAllCustomerNum})(
+    Customer_Base_Info,
+  ),
+);
