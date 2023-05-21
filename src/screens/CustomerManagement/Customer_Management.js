@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   LayoutAnimation,
 } from 'react-native';
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import React, {useState, useEffect, useLayoutEffect, useRef} from 'react';
 import {
   Field,
   reduxForm,
@@ -15,7 +15,7 @@ import {
   initialize,
   reset,
 } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import {
   RadioButton,
   Button,
@@ -24,7 +24,7 @@ import {
   Provider,
   Portal,
 } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 import DividerLine from '../../components/DividerLine';
 import Icon from 'react-native-vector-icons/Feather';
@@ -32,12 +32,12 @@ import TextInputFile from '../../components/TextInputFile';
 import Employee_Search from './Employee_Search';
 import Collapsible from 'react-native-collapsible';
 import DropDownPicker from '../../components/DropDownPicker';
-import { fetchNRCinfo } from '../../query/NRCinfo_query';
+import {fetchNRCinfo} from '../../query/NRCinfo_query';
 import Customer_Base_Info from './Customer_Base_Info';
 import Property_Info from './Property_Info';
-import { salary_grade } from '../../common';
+import {salary_grade} from '../../common';
 import Monthly_Income from './Monthly_Income';
-import { gender } from '../../common';
+import {gender} from '../../common';
 import {
   address_type,
   business_situation,
@@ -46,16 +46,16 @@ import {
 } from '../../common';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import Busines_Info from './Busines_Info';
-import { style } from '../../style/Customer_Mang_style';
+import {style} from '../../style/Customer_Mang_style';
 import ShowNRC_Modal from './ShowNRC_Modal';
 import validate from './Validate';
 import ButtonFile from './ButtonFile';
 import InputFile from '../../components/InputTest';
-import { storeCustomerData } from '../../query/Customer_query';
+import {storeCustomerData} from '../../query/Customer_query';
 import moment from 'moment';
-import { fetchEmpName } from '../../query/Employee_query';
-import { setCusFormInitialValues } from '../../redux/CustomerReducer';
-import { fetchAllCustomerNum } from '../../query/Customer_query';
+import {fetchEmpName} from '../../query/Employee_query';
+import {setCusFormInitialValues} from '../../redux/CustomerReducer';
+import {fetchAllCustomerNum} from '../../query/Customer_query';
 function Customer_Management(props) {
   const navigation = useNavigation();
 
@@ -86,13 +86,13 @@ function Customer_Management(props) {
           : '',
     });
     alert(JSON.stringify(data));
-    // await storeCustomerData(data).then(result => {
-    //   if (result == 'success') {
-    //     alert('Create Success')
-    //     dispatch(reset('Customer_ManagementForm'));
-    //     navigation.navigate('Home');
-    //   }
-    // });
+    await storeCustomerData(data).then(result => {
+      if (result == 'success') {
+        alert('Create Success');
+        dispatch(reset('Customer_ManagementForm'));
+        navigation.navigate('Home');
+      }
+    });
 
     console.log('all Customer data>>>>>', values);
   };
@@ -123,7 +123,7 @@ function Customer_Management(props) {
       setEmpName(emp_name[0].employee_name);
     });
     await fetchAllCustomerNum().then(cust_data => {
-     console.log('cust_data',cust_data.length);
+      console.log('cust_data', cust_data.length);
     });
   };
 
@@ -143,13 +143,13 @@ function Customer_Management(props) {
 
     const test = Object.assign({}, emp_filter_data, {
       // totSaleIncome: total.toString()
-    })
-    props.initialize(test)
+    });
+    props.initialize(test);
 
     // return () => {
     //   emp_filter_data;
     // };
-  }, [emp_filter_data, ]);
+  }, [emp_filter_data]);
 
   const Show_NRC = newValue => {
     setNRC(newValue);
@@ -167,13 +167,13 @@ function Customer_Management(props) {
           <TouchableWithoutFeedback
             onPress={Keyboard.dismiss}
             accessible={false}>
-            <View style={{ flex: 1, backgroundColor: '#fff' }}>
+            <View style={{flex: 1, backgroundColor: '#fff'}}>
               <Text style={style.title_style}>
                 Customer Information Management
               </Text>
               <DividerLine />
 
-              <View style={style.continer}>
+              {/* <View style={style.continer}>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -207,14 +207,14 @@ function Customer_Management(props) {
                   OK
                 </Button>
               </View>
-              <DividerLine />
+              <DividerLine /> */}
               {/* EMployee Information */}
               <View style={style.title_emp_style}>
-                <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+                <Text style={{fontWeight: 'bold', fontSize: 20}}>
                   Employee Information
                 </Text>
                 <TouchableOpacity onPress={EmpInfoFun}>
-                  <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
+                  <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
                 </TouchableOpacity>
               </View>
 
@@ -253,7 +253,7 @@ function Customer_Management(props) {
                         component={TextInputFile}
                         editable
                       />
-                      <View style={{ marginRight: 10 }}>
+                      <View style={{marginRight: 10}}>
                         <Field
                           name={'positionTitleNm'}
                           title={'Current Position'}
@@ -276,7 +276,7 @@ function Customer_Management(props) {
                         input_mode
                         editable
                       />
-                      <View style={{ marginRight: 10 }}>
+                      <View style={{marginRight: 10}}>
                         <Field
                           data={salary_grade}
                           name={'salaryRatingCode'}
@@ -301,7 +301,7 @@ function Customer_Management(props) {
               <Busines_Info />
               <Monthly_Income />
 
-              {/* <Button
+              <Button
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
                 buttonColor={'#6870C3'}
@@ -313,7 +313,7 @@ function Customer_Management(props) {
                   marginBottom: 20, alignSelf: 'center'
                 }}>
                 Submit
-              </Button> */}
+              </Button>
             </View>
           </TouchableWithoutFeedback>
         </ScrollView>
@@ -335,11 +335,11 @@ function mapStateToProps(state) {
   return {
     emp_filter_data: state.employees.employee_filter_data,
     initialValues: state.customers.cus_initialValues,
-    total: state.monthly.totalSum
+    total: state.monthly.totalSum,
   };
 }
 
 export default reduxForm({
   form: 'Customer_ManagementForm',
   // validate,
-})(connect(mapStateToProps, { setCusFormInitialValues })(Customer_Management));
+})(connect(mapStateToProps, {setCusFormInitialValues})(Customer_Management));

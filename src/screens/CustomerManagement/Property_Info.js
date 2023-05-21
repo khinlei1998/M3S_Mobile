@@ -60,12 +60,16 @@ export default function Property_Info() {
                   name={'propApartmentYn'}
                   component={SingleCheckBox}
                   initialValue={false}
+                  checkedValue="Y"
+                  uncheckedValue="N"
                 />
                 <Field
                   label={'Machines'}
                   name={'propMachinesYn'}
                   component={SingleCheckBox}
                   initialValue={false}
+                  checkedValue="Y"
+                  uncheckedValue="N"
                 />
               </View>
 
@@ -75,12 +79,16 @@ export default function Property_Info() {
                   name={'propCarYn'}
                   component={SingleCheckBox}
                   initialValue={false}
+                  checkedValue="Y"
+                  uncheckedValue="N"
                 />
                 <Field
                   label={'Farmland'}
                   name={'propFarmlandYn'}
                   component={SingleCheckBox}
                   initialValue={false}
+                  checkedValue="Y"
+                  uncheckedValue="N"
                 />
               </View>
             </View>
