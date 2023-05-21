@@ -73,6 +73,10 @@ function Customer_Base_Info(props) {
   //   // TestAction({branchName: 'ds', branchCode: 'pp'});
   // }, []);
 
+  const showCitySearch = () => {
+    alert('true')
+  };
+
   return (
     <>
       <View style={style.container}>
@@ -119,10 +123,10 @@ function Customer_Base_Info(props) {
               <Field
                 name={'CustomerNo'}
                 title={'Customer No'}
-                component={TextInputFile}
+                component={DefaultTextInput}
                 input_mode
                 inputmax={100}
-                // editable
+                editable
               />
             </View>
 
@@ -198,6 +202,8 @@ function Customer_Base_Info(props) {
                 input_mode
                 inputmax={100}
                 icon={'magnify'}
+                handleTextInputFocus={showCitySearch}
+                editable
               />
               <Field
                 name={'city_name'}

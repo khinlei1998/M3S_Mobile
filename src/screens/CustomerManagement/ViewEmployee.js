@@ -8,6 +8,8 @@ import {addEmpFilter} from '../../redux/EmployeeReducer';
 import {connect} from 'react-redux';
 import {reduxForm} from 'redux-form';
 import { TestAction } from '../../redux/EmployeeReducer';
+import { change } from 'redux-form';
+
 function ViewEmployee(props) {
   const [checked, setChecked] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
@@ -18,13 +20,15 @@ function ViewEmployee(props) {
 
   const btnSelectEmployee = item => {
     setSelectedValue(item.employee_no);
-    let emp_data = {
-      branchCode: item.branch_code,
-      employeeNo: item.employee_no,
-      entryDate: item.entry_date,
-      positionTitleNm: item.position_title_nm,
-    };
-    addEmpFilter(emp_data);
+    // dispatch(change('Customer_ManagementForm', 'employeeNo',  item.employee_no));
+
+    // let emp_data = {
+    //   branchCode: item.branch_code,
+    //   employeeNo: item.employee_no,
+    //   entryDate: item.entry_date,
+    //   positionTitleNm: item.position_title_nm,
+    // };
+    // addEmpFilter(emp_data);
   };
 
   const btntest = item => {
@@ -144,24 +148,7 @@ function ViewEmployee(props) {
         renderItem={item}
         keyExtractor={(item, index) => index.toString()}
       />
-      {/* <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-        <Button
-          contentStyle={{width: 100, padding: 3}}
-          mode="contained"
-          onPress={hideModal}
-          buttonColor={'#6870C3'}
-          style={{borderRadius: 0, margin: 10}}>
-          OK
-        </Button>
-        <Button
-          contentStyle={{width: 100, padding: 3}}
-          mode="contained"
-          onPress={hideModal}
-          buttonColor={'#6870C3'}
-          style={{borderRadius: 0, margin: 10}}>
-          Cancel
-        </Button>
-      </View> */}
+      
     </>
   );
 }

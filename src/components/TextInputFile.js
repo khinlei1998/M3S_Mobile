@@ -24,7 +24,7 @@ export default function TextInputFile(props) {
     words_count,
     editable,
     meta: {touched, error},
-    input: {onChange, value, ...restInput},
+    input: {onChange, ...restInput},
     ...rest
   } = props;
 
@@ -62,7 +62,6 @@ export default function TextInputFile(props) {
         {...restInput}
         {...rest}
         editable={editable ? false : true}
-        defaultValue={value}
         theme={{
           colors: {
             ...DefaultTheme.colors,

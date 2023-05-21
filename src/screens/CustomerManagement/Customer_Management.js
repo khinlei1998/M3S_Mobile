@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   LayoutAnimation,
+  FlatList,
 } from 'react-native';
 import React, {useState, useEffect, useLayoutEffect, useRef} from 'react';
 import {
@@ -14,18 +15,19 @@ import {
   setInitialValues,
   initialize,
   reset,
+  change,
 } from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
 import {
   RadioButton,
   Button,
-  TextInput,
   Modal,
   Provider,
   Portal,
+  TextInput,
 } from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
-
+import ViewEmployee from './ViewEmployee';
 import DividerLine from '../../components/DividerLine';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
@@ -56,8 +58,14 @@ import moment from 'moment';
 import {fetchEmpName} from '../../query/Employee_query';
 import {setCusFormInitialValues} from '../../redux/CustomerReducer';
 import {fetchAllCustomerNum} from '../../query/Customer_query';
+import {emp_filter_item} from '../../common';
+import {Picker} from '@react-native-picker/picker';
+import {filterEmp} from '../../query/Employee_query';
+import DefaultTextInput from '../../components/DefaultTextInput';
+import {addEmpFilter} from '../../redux/EmployeeReducer';
 function Customer_Management(props) {
   const navigation = useNavigation();
+  const [all_emp, setAllEmp] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -67,8 +75,12 @@ function Customer_Management(props) {
     emp_filter_data,
     setCusFormInitialValues,
     initialValues,
+    addEmpFilter,
   } = props;
   const [modalVisible, setModalVisible] = useState(false);
+  const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
+  const [selectedValue, setSelectedValue] = useState(null);
+
   const [nrc_visible, setNRC_Visible] = useState(false);
   const [open_empinfo, setEmpInfo] = useState(false);
   const [show_nrc, setNRC] = useState('old');
@@ -76,6 +88,11 @@ function Customer_Management(props) {
   const [nrc_statecode, setNRCStateCode] = useState([]);
   const [nrc_prefix_code, setNRCPrefixCode] = useState([]);
   const [empname, setEmpName] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleItemValueChange = itemValue => {
+    setSelectedItemValue(itemValue);
+  };
   var count = 0;
   const onSubmit = async values => {
     let data = Object.assign(values, emp_filter_data, {
@@ -86,15 +103,13 @@ function Customer_Management(props) {
           : '',
     });
     alert(JSON.stringify(data));
-    await storeCustomerData(data).then(result => {
-      if (result == 'success') {
-        alert('Create Success');
-        dispatch(reset('Customer_ManagementForm'));
-        navigation.navigate('Home');
-      }
-    });
-
-    console.log('all Customer data>>>>>', values);
+    // await storeCustomerData(data).then(result => {
+    //   if (result == 'success') {
+    //     alert('Create Success');
+    //     dispatch(reset('Customer_ManagementForm'));
+    //     navigation.navigate('Home');
+    //   }
+    // });
   };
   const hideModal = () => setModalVisible(false);
 
@@ -110,6 +125,16 @@ function Customer_Management(props) {
     setNRC_Visible(!nrc_visible), setNRC('old');
   };
   const loadData = async () => {
+    await fetchAllCustomerNum().then(cust_data => {
+      dispatch(
+        change(
+          'Customer_ManagementForm',
+          'CustomerNo',
+          `TB${moment().format('YYYYMMDD')}${cust_data.length}`,
+        ),
+      );
+      console.log('cust_data', cust_data.length);
+    });
     await fetchNRCinfo()
       .then(result => {
         {
@@ -121,9 +146,6 @@ function Customer_Management(props) {
       .catch(error => console.log(error));
     await fetchEmpName().then(emp_name => {
       setEmpName(emp_name[0].employee_name);
-    });
-    await fetchAllCustomerNum().then(cust_data => {
-      console.log('cust_data', cust_data.length);
     });
   };
 
@@ -137,19 +159,94 @@ function Customer_Management(props) {
     loadData();
   }, []);
 
-  useEffect(() => {
-    // alert('oo')
-    // alert(total)
+  const btnSelectEmployee = item => {
+    setSelectedValue(item.employee_no);
+    dispatch(change('Customer_ManagementForm', 'branchCode', item.branch_code));
+    dispatch(change('Customer_ManagementForm', 'employeeNo', item.employee_no));
+    dispatch(change('Customer_ManagementForm', 'entryDate', item.entry_date));
+    dispatch(
+      change(
+        'Customer_ManagementForm',
+        'positionTitleNm',
+        item.position_title_nm,
+      ),
+    );
 
-    const test = Object.assign({}, emp_filter_data, {
-      // totSaleIncome: total.toString()
-    });
-    props.initialize(test);
-
-    // return () => {
-    //   emp_filter_data;
+    // let emp_data = {
+    //   branchCode: item.branch_code,
+    //   employeeNo: item.employee_no,
+    //   entryDate: item.entry_date,
+    //   positionTitleNm: item.position_title_nm,
     // };
-  }, [emp_filter_data]);
+    // addEmpFilter(emp_data);
+  };
+
+  const item = ({item, index}) => {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          borderBottomWidth: 1,
+          borderBottomColor: '#ccc',
+          padding: 10,
+        }}>
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+          }}>
+          {index + 1}
+        </Text>
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+          }}>
+          {item.employee_no}
+        </Text>
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+          }}>
+          {item.employee_name}
+        </Text>
+
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+          }}>
+          {item.position_title_nm == null ? 'No Data' : item.position_title_nm}
+        </Text>
+
+        <View>
+          <RadioButton
+            value={item.employee_no}
+            status={
+              selectedValue === item.employee_no ? 'checked' : 'unchecked'
+            }
+            onPress={() => btnSelectEmployee(item)}
+          />
+        </View>
+
+        {/* <Field component={RadioButton}/> */}
+      </View>
+    );
+  };
+
+  const containerStyle = {
+    backgroundColor: '#e8e8e8',
+    width: '85%',
+    alignSelf: 'center',
+  };
+
+  // useEffect(() => {
+  //   const test = Object.assign({}, emp_filter_data, {
+  //     // totSaleIncome: total.toString()
+  //   });
+  //   props.initialize(test);
+  // }, [emp_filter_data]);
 
   const Show_NRC = newValue => {
     setNRC(newValue);
@@ -158,22 +255,26 @@ function Customer_Management(props) {
     }
   };
 
+  const handleSearch = async () => {
+    await filterEmp(selectedItemValue, searchTerm)
+      .then(data => (data.length > 0 ? setAllEmp(data) : alert('No data')))
+      .catch(error => console.log('error', error));
+  };
+
   return (
     <>
-      {modalVisible ? (
+      {/* {modalVisible ? (
         <Employee_Search visible={modalVisible} hideModal={hideModal} />
-      ) : (
-        <ScrollView>
-          <TouchableWithoutFeedback
-            onPress={Keyboard.dismiss}
-            accessible={false}>
-            <View style={{flex: 1, backgroundColor: '#fff'}}>
-              <Text style={style.title_style}>
-                Customer Information Management
-              </Text>
-              <DividerLine />
+      ) : ( */}
+      <ScrollView>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View style={{flex: 1, backgroundColor: '#fff'}}>
+            <Text style={style.title_style}>
+              Customer Information Management
+            </Text>
+            <DividerLine />
 
-              {/* <View style={style.continer}>
+            {/* <View style={style.continer}>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -208,116 +309,117 @@ function Customer_Management(props) {
                 </Button>
               </View>
               <DividerLine /> */}
-              {/* EMployee Information */}
-              <View style={style.title_emp_style}>
-                <Text style={{fontWeight: 'bold', fontSize: 20}}>
-                  Employee Information
-                </Text>
-                <TouchableOpacity onPress={EmpInfoFun}>
-                  <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
-                </TouchableOpacity>
-              </View>
+            {/* EMployee Information */}
+            <View style={style.title_emp_style}>
+              <Text style={{fontWeight: 'bold', fontSize: 20}}>
+                Employee Information
+              </Text>
+              <TouchableOpacity onPress={EmpInfoFun}>
+                <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
+              </TouchableOpacity>
+            </View>
 
-              <Collapsible collapsed={open_empinfo}>
+            <Collapsible collapsed={open_empinfo}>
+              <View
+                style={{
+                  width: '90%',
+                  alignSelf: 'center',
+                  backgroundColor: '#FAFAFA',
+                }}>
                 <View
                   style={{
-                    width: '90%',
-                    alignSelf: 'center',
-                    backgroundColor: '#FAFAFA',
+                    padding: 5,
+                    // margin: 10,
                   }}>
+                  <Field
+                    name={'employeeNo'}
+                    title={'Employee No'}
+                    component={TextInputFile}
+                    cus_width
+                    icon={'magnify'}
+                    input_mode
+                    handleTextInputFocus={showEmplyeeSearch}
+                    focusTextInput
+                    editable
+                  />
+
                   <View
                     style={{
-                      padding: 5,
-                      // margin: 10,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
                     }}>
                     <Field
-                      name={'employeeNo'}
-                      title={'Employee No'}
+                      name={'entryDate'}
+                      title={'Start Working Date at SHM'}
                       component={TextInputFile}
-                      cus_width
-                      icon={'magnify'}
-                      input_mode
-                      handleTextInputFocus={showEmplyeeSearch}
-                      focusTextInput
                       editable
                     />
-
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                      }}>
+                    <View style={{marginRight: 10}}>
                       <Field
-                        name={'entryDate'}
-                        title={'Start Working Date at SHM'}
-                        component={TextInputFile}
+                        name={'positionTitleNm'}
+                        title={'Current Position'}
+                        component={DefaultTextInput}
                         editable
                       />
-                      <View style={{marginRight: 10}}>
-                        <Field
-                          name={'positionTitleNm'}
-                          title={'Current Position'}
-                          component={TextInputFile}
-                          editable
-                        />
-                      </View>
                     </View>
+                  </View>
 
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                      }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
+                    <Field
+                      name={'branchCode'}
+                      title={'Branch'}
+                      component={DefaultTextInput}
+                      cus_width
+                      input_mode
+                      editable
+                    />
+                    <View style={{marginRight: 10}}>
                       <Field
-                        name={'branchCode'}
-                        title={'Branch'}
-                        component={TextInputFile}
-                        cus_width
-                        input_mode
-                        editable
+                        data={salary_grade}
+                        name={'salaryRatingCode'}
+                        title={'Salary Grade'}
+                        component={DropDownPicker}
+                        pickerStyle={{
+                          width: 300,
+                        }}
                       />
-                      <View style={{marginRight: 10}}>
-                        <Field
-                          data={salary_grade}
-                          name={'salaryRatingCode'}
-                          title={'Salary Grade'}
-                          component={DropDownPicker}
-                          pickerStyle={{
-                            width: 300,
-                          }}
-                        />
-                      </View>
                     </View>
                   </View>
                 </View>
-              </Collapsible>
-              <DividerLine />
-              <Customer_Base_Info
-                showNrcFun={Show_NRC}
-                show_nrc={show_nrc}
-                nrc_statecode={nrc_statecode}
-              />
-              <Property_Info />
-              <Busines_Info />
-              <Monthly_Income />
+              </View>
+            </Collapsible>
+            <DividerLine />
+            <Customer_Base_Info
+              showNrcFun={Show_NRC}
+              show_nrc={show_nrc}
+              nrc_statecode={nrc_statecode}
+            />
+            <Property_Info />
+            <Busines_Info />
+            <Monthly_Income />
 
-              <Button
-                onPress={handleSubmit(onSubmit)}
-                mode="contained"
-                buttonColor={'#6870C3'}
-                style={{
-                  borderRadius: 0,
-                  width: '90%',
-                  marginTop: 10,
-                  color: 'black',
-                  marginBottom: 20, alignSelf: 'center'
-                }}>
-                Submit
-              </Button>
-            </View>
-          </TouchableWithoutFeedback>
-        </ScrollView>
-      )}
+            <Button
+              onPress={handleSubmit(onSubmit)}
+              mode="contained"
+              buttonColor={'#6870C3'}
+              style={{
+                borderRadius: 0,
+                width: '90%',
+                marginTop: 10,
+                color: 'black',
+                marginBottom: 20,
+                alignSelf: 'center',
+              }}>
+              Submit
+            </Button>
+          </View>
+        </TouchableWithoutFeedback>
+      </ScrollView>
+      {/* )} */}
 
       <ShowNRC_Modal
         nrc_visible={nrc_visible}
@@ -326,15 +428,155 @@ function Customer_Management(props) {
         nrc_prefix_code={nrc_prefix_code}
       />
       {/* <Employee_Search visible={modalVisible} hideModal={hideModal} /> */}
+      <Provider>
+        <Portal>
+          <Modal
+            dismissable={false}
+            visible={modalVisible}
+            onDismiss={hideModal}
+            contentContainerStyle={containerStyle}>
+            <View
+              style={{backgroundColor: '#232D57', padding: 25}}
+              onStartShouldSetResponder={() => hideModal()}>
+              <Icon
+                name="x-circle"
+                size={25}
+                color="#fff"
+                style={{
+                  marginLeft: 20,
+                  position: 'absolute',
+                  top: 0,
+                  right: 10,
+                  top: 10,
+                }}
+              />
+            </View>
+            <View style={{padding: 10, height: 550}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                }}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={{marginRight: 10}}>Search Item:</Text>
+
+                  <Picker
+                    selectedValue={selectedItemValue}
+                    onValueChange={handleItemValueChange}
+                    style={{width: 200, backgroundColor: 'white', marginTop: 7}}
+                    mode="dropdown">
+                    {emp_filter_item.length > 0 &&
+                      emp_filter_item.map(val => (
+                        <Picker.Item
+                          label={val.label}
+                          value={val.value}
+                          key={val.id}
+                        />
+                      ))}
+                  </Picker>
+                </View>
+
+                <View style={{width: '50%'}}>
+                  {/* <Field
+                    name={'searchtext'}
+                    component={TextInputFile}
+                    input_mode
+                    inputmax={20}
+                    icon={'magnify'}
+                    handleTextInputFocus={handleSubmit(onSubmit)}
+                  /> */}
+                  <TextInput
+                    value={searchTerm}
+                    onChangeText={text => setSearchTerm(text)}
+                    right={
+                      <TextInput.Icon
+                        icon={'magnify'}
+                        onPress={() => handleSearch()}
+                      />
+                    }
+                    style={{
+                      backgroundColor: 'white',
+                    }}
+                  />
+                </View>
+              </View>
+              {/* <ViewEmployee emp_data={all_emp} hideModal={hideModal} /> */}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  backgroundColor: '#fff',
+                  borderRadius: 5,
+                  padding: 5,
+                  margin: 20,
+                }}>
+                <Text
+                  style={{
+                    padding: 10,
+                    flex: 1,
+                    fontWeight: 'bold',
+                  }}>
+                  #
+                </Text>
+                <Text
+                  style={{
+                    flex: 1,
+
+                    padding: 10,
+                    fontWeight: 'bold',
+                  }}>
+                  Employee No
+                </Text>
+                <Text
+                  style={{
+                    flex: 1,
+
+                    padding: 10,
+                    fontWeight: 'bold',
+                  }}>
+                  Employee Name
+                </Text>
+                <Text
+                  style={{
+                    flex: 1,
+
+                    padding: 10,
+                    fontWeight: 'bold',
+                  }}>
+                  Positon Name
+                </Text>
+              </View>
+
+              <FlatList
+                data={all_emp}
+                renderItem={item}
+                keyExtractor={(item, index) => index.toString()}
+              />
+
+              {/* <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                <Button
+                  onPress={() => hideModal()}
+                  mode="contained"
+                  buttonColor={'#6870C3'}
+                  style={{
+                    borderRadius: 0,
+                    width: 100,
+                    marginTop: 10,
+                    color: 'black',
+                    marginLeft: 5,
+                  }}>
+                  OK
+                </Button>
+              </View> */}
+            </View>
+          </Modal>
+        </Portal>
+      </Provider>
     </>
   );
 }
 
 function mapStateToProps(state) {
-  // console.log('state', state);
   return {
-    emp_filter_data: state.employees.employee_filter_data,
-    initialValues: state.customers.cus_initialValues,
     total: state.monthly.totalSum,
   };
 }
@@ -342,4 +584,8 @@ function mapStateToProps(state) {
 export default reduxForm({
   form: 'Customer_ManagementForm',
   // validate,
-})(connect(mapStateToProps, {setCusFormInitialValues})(Customer_Management));
+})(
+  connect(mapStateToProps, {setCusFormInitialValues, addEmpFilter})(
+    Customer_Management,
+  ),
+);
