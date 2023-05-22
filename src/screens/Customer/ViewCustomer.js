@@ -1,65 +1,70 @@
-import { View, Text, FlatList } from 'react-native';
+import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import React from 'react';
-import { Button } from 'react-native-paper';
-
+import {Button} from 'react-native-paper';
+import { setInquiryStatus } from '../../redux/CustomerReducer';
 export default function ViewCustomer(props) {
-  const { customer_data } = props;
-
-  const item = ({ item, index }) => {
+  const {customer_data, navigation} = props;
+  const btn_inquiry=()=>{
+    
+  }
+  const item = ({item, index}) => {
     return (
-      <View
-        style={{
-          flexDirection: 'row',
-          borderBottomWidth: 1,
-          borderBottomColor: '#ccc',
-          padding: 10,
-        }}>
-        <Text
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Edit_Emp_Info', item)}>
+        <View
           style={{
+            flexDirection: 'row',
+            borderBottomWidth: 1,
+            borderBottomColor: '#ccc',
             padding: 10,
-            flex: 1,
           }}>
-          {index + 1}
-        </Text>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.customer_no}
-        </Text>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.customer_nm}
-        </Text>
+          <Text
+            style={{
+              padding: 10,
+              flex: 1,
+            }}>
+            {index + 1}
+          </Text>
+          <Text
+            style={{
+              padding: 10,
+              flex: 1,
+            }}>
+            {item.customer_no}
+          </Text>
+          <Text
+            style={{
+              padding: 10,
+              flex: 1,
+            }}>
+            {item.customer_nm}
+          </Text>
 
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.nrc_no == null ? 'No Data' : item.nrc_no}
-        </Text>
+          <Text
+            style={{
+              padding: 10,
+              flex: 1,
+            }}>
+            {item.nrc_no == null ? 'No Data' : item.nrc_no}
+          </Text>
 
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.tel_no == null ? 'No Data' : item.tel_no}
-        </Text>
+          <Text
+            style={{
+              padding: 10,
+              flex: 1,
+            }}>
+            {item.tel_no == null ? 'No Data' : item.tel_no}
+          </Text>
 
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.mobile_tel_no == null ? 'NO Data' : item.mobile_tel_no}
-        </Text>
-      </View>
+          <Text
+            style={{
+              padding: 10,
+              flex: 1,
+            }}>
+            {item.mobile_tel_no == null ? 'NO Data' : item.mobile_tel_no}
+          </Text>
+        </View>
+      </TouchableOpacity>
     );
   };
 
@@ -135,8 +140,6 @@ export default function ViewCustomer(props) {
         renderItem={item}
         keyExtractor={(item, index) => index.toString()}
       />
-     
-    
     </>
   );
 }

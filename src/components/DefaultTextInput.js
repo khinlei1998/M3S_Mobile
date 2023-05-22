@@ -21,6 +21,8 @@ export default function DefaultTextInput(props) {
   return (
     <>
       <TextInput
+       {...restInput}
+       {...restProps}
         theme={{
           colors: {
             ...DefaultTheme.colors,
@@ -41,8 +43,7 @@ export default function DefaultTextInput(props) {
           borderWidth: 0.5,
         }}
         underlineColor="#FFF"
-        {...restInput}
-        {...restProps}
+       
       />
     </>
   );

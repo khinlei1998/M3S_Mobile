@@ -5,6 +5,8 @@ import SplashScreen from '../screens/SplashScreen';
 import SettingScreen from '../screens/Setting/SettingScreen';
 import TestScreen from '../screens/CustomerManagement/TestScreen';
 import Customer_Management from '../screens/CustomerManagement/Customer_Management';
+import Edit_Emp_Info from '../screens/EditCustManagement/Edit_Emp_Info';
+import CustomerSearch from '../screens/Customer/CustomerSearch';
 export default function AuthNavigation(props) {
   const Stack = createNativeStackNavigator();
   return (
@@ -19,11 +21,23 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
-      <Stack.Screen
-        name="Customer_Management"
+        {/* <Stack.Screen
+        name="Customer Management"
         component={Customer_Management}
         options={{headerShown: false}}
+      /> */}
+      <Stack.Screen
+        name="Customer Search"
+        component={CustomerSearch}
+        options={{headerShown: false}}
       />
+      <Stack.Screen
+        name="Edit_Emp_Info"
+        component={Edit_Emp_Info}
+        options={{headerShown: false}}
+      />
+
+      
 
       {/* <Stack.Screen
         name="Test"

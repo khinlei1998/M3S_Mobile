@@ -1,11 +1,13 @@
-import {View, Text, StyleSheet} from 'react-native';
-import React, {useState} from 'react';
-import {TextInput, DefaultTheme} from 'react-native-paper';
+import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { TextInput, DefaultTheme } from 'react-native-paper';
 
 export default function TextInputFile(props) {
   const [passwordIcon, setPasswordIcon] = useState('eye');
   const [isPassword, setIsPassword] = useState(true);
   const [wordCount, setWordCount] = React.useState(0);
+  const [totalSum, setTotalSum] = useState(0);
+
 
   const {
     focusTextInput,
@@ -23,8 +25,8 @@ export default function TextInputFile(props) {
     keyboardType,
     words_count,
     editable,
-    meta: {touched, error},
-    input: {onChange, ...restInput},
+    meta: { touched, error },
+    input: { onChange, ...restInput },
     ...rest
   } = props;
 
@@ -40,28 +42,33 @@ export default function TextInputFile(props) {
       setIsPassword(true);
     }
   };
-  const handleTextChange = (text, index) => {
+  const handleTextChange = (text) => {
     // setWordCount(text.length);
-    
+
     onChange(text);
 
-    const sumArr = text.split(",");
-    const sum = sumArr.reduce(function(a, b){
-      return parseInt(a) + parseInt(b);
-    }, 0);
-    if(sum) {
-      setfirst(sum);
+    let sum = 0;
+
+    for (let i = 0; i < text.length; i++) {
+      const digit = parseInt(text[i]);
+      if (!isNaN(digit)) {
+        sum += digit;
+      }
     }
+    
+
+    setTotalSum(sum);
 
   };
 
- 
+
   return (
     <View>
       <TextInput
         {...restInput}
         {...rest}
         editable={editable ? false : true}
+        // defaultValue={value}
         theme={{
           colors: {
             ...DefaultTheme.colors,
@@ -73,8 +80,8 @@ export default function TextInputFile(props) {
         onFocus={focusTextInput && handleTextInputFocus}
         mode={input_mode ? 'flat' : ''}
         label={title}
-        // onChangeText={(text)=>handleTextChange(text,index)}
-        onChangeText={text => onChange(text)}
+        onChangeText={(text) => handleTextChange(text)}
+        // onChangeText={text => onChange(text)}
         style={{
           backgroundColor: '#fff',
           marginTop: 10,
@@ -97,14 +104,15 @@ export default function TextInputFile(props) {
           )
         }
       />
-       {/* <Text>Total: {total}</Text> */}
+      {/* <Text>Total: {total}</Text> */}
+      {/* <Text>{totalSum}</Text> */}
       {/* {inputmax ? (
         <Text style={{alignSelf: 'flex-end', color: '#818be3'}}>
           {wordCount}/{inputmax}
         </Text>
       ):
       <></>} */}
-      {touched && error && <Text style={{color: 'red'}}>{error}</Text>}
+      {touched && error && <Text style={{ color: 'red' }}>{error}</Text>}
     </View>
   );
 }

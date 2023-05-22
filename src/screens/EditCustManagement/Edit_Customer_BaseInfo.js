@@ -2,12 +2,13 @@ import {View, Text, TouchableOpacity, FlatList} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Collapsible from 'react-native-collapsible';
 import {RadioButton} from 'react-native-paper';
-import {Field, reduxForm, setInitialValues, initialize,reset} from 'redux-form';
+import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
 import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
 import {connect} from 'react-redux';
 import DefaultTextInput from '../../components/DefaultTextInput';
 import {Picker} from '@react-native-picker/picker';
+import InputTest from '../../components/InputTest';
 import {
   owner_shipratio,
   gender,
@@ -23,9 +24,9 @@ import {fetchAllCustomerNum} from '../../query/Customer_query';
 import {Modal, Provider, Portal, Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import {city_code} from '../../common';
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 
-function Customer_Base_Info(props) {
+function Edit_Customer_BaseInfo(props) {
   const {
     showNrcFun,
     show_nrc,
@@ -94,9 +95,9 @@ function Customer_Base_Info(props) {
             <View style={style.child_input_style}>
               {show_nrc == 'old' ? (
                 <Field
-                  name={'nrcNo'}
+                  name={'nrc_no'}
                   title={'NRC'}
-                  component={TextInputFile}
+                  component={DefaultTextInput}
                   cus_width
                   input_mode
                 />
@@ -104,7 +105,7 @@ function Customer_Base_Info(props) {
                 <></>
               )}
               <Field
-                name={'CustomerNo'}
+                name={'customer_no'}
                 title={'Customer No'}
                 component={DefaultTextInput}
                 input_mode
@@ -115,17 +116,17 @@ function Customer_Base_Info(props) {
 
             <View style={style.child_input_style}>
               <Field
-                name={'employeeName'}
+                name={'customer_nm'}
                 title={'Customer Name'}
-                component={TextInputFile}
+                component={DefaultTextInput}
                 input_mode
                 inputmax={100}
               />
 
               <Field
-                name={'savingAcctNum'}
+                name={'saving_acct_num'}
                 title={'Saving Code'}
-                component={TextInputFile}
+                component={DefaultTextInput}
                 cus_width
                 input_mode
                 inputmax={20}
@@ -143,7 +144,7 @@ function Customer_Base_Info(props) {
                 }}
               />
               <Field
-                name={'birthDate'}
+                name={'birth_date'}
                 component={DatePicker}
                 label={'date of birth'}
               />
@@ -185,7 +186,6 @@ function Customer_Base_Info(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
-                editable
               />
             </View>
 
@@ -206,7 +206,6 @@ function Customer_Base_Info(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
-                editable
               />
             </View>
 
@@ -294,7 +293,7 @@ function Customer_Base_Info(props) {
               {show_businessdate == 'estimated' ? (
                 <Field
                   num_data={numbers}
-                  name={'currResidentPerd'}
+                  name={'curr_resident_perd'}
                   title={'Select a Value'}
                   component={DropDownPicker}
                   pickerStyle={{
@@ -303,14 +302,14 @@ function Customer_Base_Info(props) {
                 />
               ) : (
                 <Field
-                  name={'currResidentPerd'}
+                  name={'curr_resident_perd'}
                   component={DatePicker}
                   label={'Start Living Date'}
                 />
               )}
               <Field
-                name={'telNo'}
-                title={'Phone Number'}
+                name={'tel_no'}
+                title={'Tel Number'}
                 component={TextInputFile}
                 input_mode
                 inputmax={20}
@@ -320,15 +319,15 @@ function Customer_Base_Info(props) {
 
             <View style={style.child_input_style}>
               <Field
-                name={'mobileTelNo'}
-                title={'Mobile Phone Number '}
+                name={'mobile_tel_no'}
+                title={'Mobile Tel Number '}
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
                 keyboardType={'numeric'}
               />
               <Field
-                name={'familyNum'}
+                name={'family_num'}
                 title={'Number of family Number '}
                 component={TextInputFile}
                 input_mode
@@ -339,7 +338,7 @@ function Customer_Base_Info(props) {
 
             <View style={style.child_input_style}>
               <Field
-                name={'hghschlNum'}
+                name={'hghschl_num'}
                 title={'Number of High school Students '}
                 component={TextInputFile}
                 input_mode
@@ -347,8 +346,8 @@ function Customer_Base_Info(props) {
                 keyboardType={'numeric'}
               />
               <Field
-                name={'universityNum'}
-                title={'Number of University Student '}
+                name={'university_num'}
+                title={'Number of University Student'}
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
@@ -359,7 +358,7 @@ function Customer_Base_Info(props) {
             <View style={style.child_input_style}>
               <Field
                 data={condition_house}
-                name={'houseOcpnType'}
+                name={'house_ocpn_type'}
                 title={'Condition of House'}
                 component={DropDownPicker}
                 pickerStyle={{
@@ -368,7 +367,7 @@ function Customer_Base_Info(props) {
               />
               <Field
                 data={owner_shipratio}
-                name={'businessOwnType'}
+                name={'business_own_type'}
                 title={'Ownership of Business'}
                 component={DropDownPicker}
                 pickerStyle={{
@@ -386,7 +385,7 @@ function Customer_Base_Info(props) {
 
               <Field
                 data={maritail_status}
-                name={'maritalStatus'}
+                name={'marital_status'}
                 title={'Maritial Status'}
                 component={DropDownPicker}
                 pickerStyle={{
@@ -411,6 +410,6 @@ export default reduxForm({
   enableReinitialize: true,
 })(
   connect(mapStateToProps, {setCusFormInitialValues, fetchAllCustomerNum})(
-    Customer_Base_Info,
+    Edit_Customer_BaseInfo,
   ),
 );

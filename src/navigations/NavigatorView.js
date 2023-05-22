@@ -7,7 +7,7 @@ import Customer_Management from '../screens/CustomerManagement/Customer_Manageme
 import CustomerSearch from '../screens/Customer/CustomerSearch';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation, } from '@react-navigation/native';
-
+import Edit_Emp_Info from '../screens/EditCustManagement/Edit_Emp_Info';
 const StackNavigationData = [
     {
         name: 'Home',
@@ -39,6 +39,15 @@ const StackNavigationData = [
     {
         name: 'Customer Search',
         component: CustomerSearch,
+        // headerLeft: headerLeftComponent,
+        headerTitleStyle: {
+            color: '#FFF',
+            fontSize: 18,
+        }
+    },
+    {
+        name: 'Edit_Emp_Info',
+        component: Edit_Emp_Info,
         // headerLeft: headerLeftComponent,
         headerTitleStyle: {
             color: '#FFF',

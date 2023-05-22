@@ -25,14 +25,14 @@ import TextInputFile from '../../components/TextInputFile';
 import Collapsible from 'react-native-collapsible';
 import DropDownPicker from '../../components/DropDownPicker';
 import {fetchNRCinfo} from '../../query/NRCinfo_query';
-import Customer_Base_Info from './Customer_Base_Info';
-import Property_Info from './Property_Info';
+import Customer_Base_Info from '../CustomerManagement/Customer_Base_Info';
+//   import Property_Info from './Property_Info';
 import {salary_grade, city_code, Township_code, ward_code} from '../../common';
-import Monthly_Income from './Monthly_Income';
-import Busines_Info from './Busines_Info';
+//   import Monthly_Income from './Monthly_Income';
+//   import Busines_Info from './Busines_Info';
 import {style} from '../../style/Customer_Mang_style';
-import ShowNRC_Modal from './ShowNRC_Modal';
-import validate from './Validate';
+//   import ShowNRC_Modal from './ShowNRC_Modal';
+//   import validate from './Validate';
 import moment from 'moment';
 import {fetchEmpName} from '../../query/Employee_query';
 import {setCusFormInitialValues} from '../../redux/CustomerReducer';
@@ -42,11 +42,18 @@ import {Picker} from '@react-native-picker/picker';
 import {filterEmp} from '../../query/Employee_query';
 import DefaultTextInput from '../../components/DefaultTextInput';
 import {addEmpFilter} from '../../redux/EmployeeReducer';
-import { storeCustomerData } from '../../query/Customer_query';
+import {operations} from '../../common';
+import {setUpdateStatus} from '../../redux/CustomerReducer';
+import CustomTextInput from '../../components/CustomTextInput';
+import InputTest from '../../components/InputTest';
+import Edit_Customer_BaseInfo from './Edit_Customer_BaseInfo';
+import Edit_property_Info from './Edit_Property_Info';
+import Edit_Business_Info from './Edit_Business_Info';
+import Edit_monthly_Income from './Edit_monthly_Income';
 function Customer_Management(props) {
   const dispatch = useDispatch();
 
-  const {handleSubmit, emp_filter_data} = props;
+  const {handleSubmit, setUpdateStatus} = props;
   const [all_emp, setAllEmp] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
@@ -56,7 +63,7 @@ function Customer_Management(props) {
   const [nrc_visible, setNRC_Visible] = useState(false);
   const [open_empinfo, setEmpInfo] = useState(false);
   const [show_nrc, setNRC] = useState('old');
-  const [show_operation, setOperation] = useState('1');
+  const [show_operation, setOperation] = useState('2');
   const [nrc_statecode, setNRCStateCode] = useState([]);
   const [nrc_prefix_code, setNRCPrefixCode] = useState([]);
   const [empname, setEmpName] = useState('');
@@ -92,14 +99,14 @@ function Customer_Management(props) {
           ? values.nrc_stateCode + values.nrc_prefix + values.nrcNo
           : '',
     });
-    alert(JSON.stringify(data));
-    await storeCustomerData(data).then(result => {
-      if (result == 'success') {
-        alert('Create Success');
-        dispatch(reset('Customer_ManagementForm'));
-        navigation.navigate('Home');
-      }
-    });
+    console.log(JSON.stringify(data));
+    // await storeCustomerData(data).then(result => {
+    //   if (result == 'success') {
+    //     alert('Create Success');
+    //     dispatch(reset('Customer_ManagementForm'));
+    //     navigation.navigate('Home');
+    //   }
+    // });
   };
   const hideModal = () => setModalVisible(false);
   const hideVillageModal = () => setVillageCodeModalVisible(false);
@@ -107,10 +114,48 @@ function Customer_Management(props) {
 
   const hideCityModal = () => setCityCodeModalVisible(false);
   const hideWardModal = () => setWardCodeModalVisible(false);
-
+  const filtered_cus_data = props.route.params;
+  console.log('filtered_cus_data', filtered_cus_data);
   const EmpInfoFun = () => {
     setEmpInfo(!open_empinfo);
   };
+
+  useEffect(() => {
+    const test = Object.assign({}, filtered_cus_data, {
+      hghschl_num: filtered_cus_data.hghschl_num.toString(),
+      university_num: filtered_cus_data.university_num.toString(),
+      family_num: filtered_cus_data.family_num.toString(),
+      tot_prop_estmtd_val: filtered_cus_data.tot_prop_estmtd_val.toString(),
+      curr_resident_perd: filtered_cus_data.curr_resident_perd.toString(),
+      otr_prop_estmtd_val: filtered_cus_data.otr_prop_estmtd_val.toString(),
+      workplace_period:filtered_cus_data.workplace_period.toString(),
+      curr_workplace_perd:filtered_cus_data.curr_workplace_perd.toString(),
+      land_scale:filtered_cus_data.land_scale.toString(),
+      tot_sale_income:filtered_cus_data.tot_sale_income.toString(),
+      wrkp_rent_expns:filtered_cus_data.wrkp_rent_expns && filtered_cus_data.wrkp_rent_expns.toString(),
+      // rawmaterial_expans:rawmaterial_expans?filtered_cus_data.rawmaterial_expans.toString():'',
+      // employee_expns:employee_expns?filtered_cus_data.employee_expns.toString():'',
+      // trnsrt_expns:trnsrt_expns?filtered_cus_data.trnsrt_expns.toString():'',
+      // bus_utlbil_expns:bus_utlbil_expns?filtered_cus_data.bus_utlbil_expns.toString():'',
+      // tel_expns:tel_expns?filtered_cus_data.tel_expns.toString():'',
+      // tax_expns:tax_expns?filtered_cus_data.tax_expns.toString():'',
+      // goods_loss_expns:goods_loss_expns?filtered_cus_data.goods_loss_expns.toString():'',
+      // othr_expns_1:othr_expns_1?filtered_cus_data.othr_expns_1.toString():'',
+      // othr_expns_2:othr_expns_2?filtered_cus_data.othr_expns_2.toString():'',
+      // fmly_tot_income:fmly_tot_income?filtered_cus_data.fmly_tot_income.toString():'',
+      // fmly_tot_expense:fmly_tot_expense?filtered_cus_data.fmly_tot_expense.toString():'',
+      // food_expns:food_expns?filtered_cus_data.food_expns.toString():'',
+      // house_mngt_expns:house_mngt_expns?filtered_cus_data.house_mngt_expns.toString():'',
+      // utlbil_expns:utlbil_expns?filtered_cus_data.utlbil_expns.toString():'',
+      // edct_expns:edct_expns?filtered_cus_data.edct_expns.toString():'',
+      // healthy_expns:healthy_expns?filtered_cus_data.healthy_expns.toString():'',
+      // fmly_trnsrt_expns:fmly_trnsrt_expns?filtered_cus_data.fmly_trnsrt_expns.toString():'',
+      // fmly_tax_expns:fmly_tax_expns?filtered_cus_data.fmly_tax_expns.toString():'',
+      // finance_expns:finance_expns?filtered_cus_data.finance_expns.toString():'',
+      // fmly_otr_expns:fmly_otr_expns?filtered_cus_data.fmly_otr_expns.toString():'',
+    });
+    props.initialize(test);
+  }, []);
 
   const city_item = ({item, index}) => {
     return (
@@ -234,7 +279,7 @@ function Customer_Management(props) {
           <RadioButton
             value={item.township_code}
             status={
-              selectedTownshipItemValue === item.township_code
+              townshipselectedItemValue === item.township_code
                 ? 'checked'
                 : 'unchecked'
             }
@@ -254,34 +299,34 @@ function Customer_Management(props) {
   const hideNRCModal = () => {
     setNRC_Visible(!nrc_visible), setNRC('old');
   };
-  const loadData = async () => {
-    await fetchAllCustomerNum().then(cust_data => {
-      dispatch(
-        change(
-          'Customer_ManagementForm',
-          'CustomerNo',
-          `TB${moment().format('YYYYMMDD')}${cust_data.length}`,
-        ),
-      );
-      console.log('cust_data', cust_data.length);
-    });
-    await fetchNRCinfo()
-      .then(result => {
-        {
-          const [nrc_state_code, nrc_prefixdata] = result;
-          setNRCStateCode(nrc_state_code);
-          setNRCPrefixCode(nrc_prefixdata);
-        }
-      })
-      .catch(error => console.log(error));
-    await fetchEmpName().then(emp_name => {
-      setEmpName(emp_name[0].employee_name);
-    });
-  };
+  // const loadData = async () => {
+  //   await fetchAllCustomerNum().then(cust_data => {
+  //     dispatch(
+  //       change(
+  //         'Customer_ManagementForm',
+  //         'CustomerNo',
+  //         `TB${moment().format('YYYYMMDD')}${cust_data.length}`,
+  //       ),
+  //     );
+  //     console.log('cust_data', cust_data.length);
+  //   });
+  //   await fetchNRCinfo()
+  //     .then(result => {
+  //       {
+  //         const [nrc_state_code, nrc_prefixdata] = result;
+  //         setNRCStateCode(nrc_state_code);
+  //         setNRCPrefixCode(nrc_prefixdata);
+  //       }
+  //     })
+  //     .catch(error => console.log(error));
+  //   await fetchEmpName().then(emp_name => {
+  //     setEmpName(emp_name[0].employee_name);
+  //   });
+  // };
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  // useEffect(() => {
+  //   loadData();
+  // }, []);
 
   const btnSelectEmployee = item => {
     setSelectedValue(item.employee_no);
@@ -462,12 +507,23 @@ function Customer_Management(props) {
       </View>
     );
   };
+  const filtered_operations = operations.filter(item => item.value != 1);
 
+  const btnChangeOperation = newValue => {
+    setOperation(newValue);
+    if (newValue == 2) {
+      setUpdateStatus(false);
+    } else {
+      setUpdateStatus(true);
+    }
+  };
+
+  console.log('filtered_cus_data', filtered_cus_data.position_title_nm);
   return (
     <>
       {/* {modalVisible ? (
-        <Employee_Search visible={modalVisible} hideModal={hideModal} />
-      ) : ( */}
+          <Employee_Search visible={modalVisible} hideModal={hideModal} />
+        ) : ( */}
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={{flex: 1, backgroundColor: '#fff'}}>
@@ -476,41 +532,41 @@ function Customer_Management(props) {
             </Text>
             <DividerLine />
 
-            {/* <View style={style.continer}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                  }}>
-                  {operations.map((option, index) => (
-                    <RadioButton.Group
-                      key={index}
-                      onValueChange={newValue => setOperation(newValue)}
-                      value={show_operation}>
-                      <View
-                        key={option.value}
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                        }}>
-                        <RadioButton.Item
-                          label={option.label}
-                          value={option.value}
-                          color="#000"
-                          labelStyle={{marginLeft: 5}}
-                        />
-                      </View>
-                    </RadioButton.Group>
-                  ))}
-                </View>
-                <Button
-                  onPress={handleSubmit(onSubmit)}
-                  mode="contained"
-                  buttonColor={'#6870C3'}
-                  style={style.btnStyle}>
-                  OK
-                </Button>
+            <View style={style.continer}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}>
+                {filtered_operations.map((option, index) => (
+                  <RadioButton.Group
+                    key={index}
+                    onValueChange={newValue => btnChangeOperation(newValue)}
+                    value={show_operation}>
+                    <View
+                      key={option.value}
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <RadioButton.Item
+                        label={option.label}
+                        value={option.value}
+                        color="#000"
+                        labelStyle={{marginLeft: 5}}
+                      />
+                    </View>
+                  </RadioButton.Group>
+                ))}
               </View>
-              <DividerLine /> */}
+              <Button
+                onPress={handleSubmit(onSubmit)}
+                mode="contained"
+                buttonColor={'#6870C3'}
+                style={style.btnStyle}>
+                OK
+              </Button>
+            </View>
+            <DividerLine />
             {/* EMployee Information */}
             <View style={style.title_emp_style}>
               <Text style={{fontWeight: 'bold', fontSize: 20}}>
@@ -534,11 +590,11 @@ function Customer_Management(props) {
                     // margin: 10,
                   }}>
                   <Field
-                    name={'employeeNo'}
+                    name={'employee_no'}
                     title={'Employee No'}
                     component={TextInputFile}
                     cus_width
-                    icon={'magnify'}
+                    // icon={update_status == true && 'magnify'}
                     input_mode
                     handleTextInputFocus={showEmplyeeSearch}
                     focusTextInput
@@ -551,16 +607,16 @@ function Customer_Management(props) {
                       justifyContent: 'space-between',
                     }}>
                     <Field
-                      name={'entryDate'}
+                      name={'entry_date'}
                       title={'Start Working Date at SHM'}
-                      component={TextInputFile}
+                      component={DefaultTextInput}
                       editable
                     />
                     <View style={{marginRight: 10}}>
                       <Field
-                        name={'positionTitleNm'}
+                        name={'position_title_nm'}
                         title={'Current Position'}
-                        component={DefaultTextInput}
+                        component={TextInputFile}
                         editable
                       />
                     </View>
@@ -572,17 +628,18 @@ function Customer_Management(props) {
                       justifyContent: 'space-between',
                     }}>
                     <Field
-                      name={'branchCode'}
+                      name={'branch_code'}
                       title={'Branch'}
-                      component={DefaultTextInput}
+                      component={InputTest}
                       cus_width
                       input_mode
                       editable
                     />
                     <View style={{marginRight: 10}}>
                       <Field
+                        // enabled={update_status == true ? false : true}
                         data={salary_grade}
-                        name={'salaryRatingCode'}
+                        name={'salary_rating_code'}
                         title={'Salary Grade'}
                         component={DropDownPicker}
                         pickerStyle={{
@@ -597,7 +654,7 @@ function Customer_Management(props) {
 
             <DividerLine />
 
-            <Customer_Base_Info
+            <Edit_Customer_BaseInfo
               showNrcFun={Show_NRC}
               show_nrc={show_nrc}
               nrc_statecode={nrc_statecode}
@@ -606,9 +663,9 @@ function Customer_Management(props) {
               showTownshipSearch={ShowTownshipModal}
               showWardSearch={showWardModal}
             />
-            <Property_Info />
-            <Busines_Info />
-            <Monthly_Income />
+            <Edit_property_Info />
+            <Edit_Business_Info />
+            <Edit_monthly_Income />
 
             <Button
               onPress={handleSubmit(onSubmit)}
@@ -629,12 +686,12 @@ function Customer_Management(props) {
       </ScrollView>
       {/* )} */}
 
-      <ShowNRC_Modal
-        nrc_visible={nrc_visible}
-        hideNRCModal={hideNRCModal}
-        nrc_statecode={nrc_statecode}
-        nrc_prefix_code={nrc_prefix_code}
-      />
+      {/* <ShowNRC_Modal
+          nrc_visible={nrc_visible}
+          hideNRCModal={hideNRCModal}
+          nrc_statecode={nrc_statecode}
+          nrc_prefix_code={nrc_prefix_code}
+        /> */}
       <Provider>
         <Portal>
           <Modal
@@ -864,8 +921,6 @@ function Customer_Management(props) {
               </View>
               <View>
                 <FlatList
-                  // scrollEnabled={false}
-
                   data={all_city}
                   renderItem={city_item}
                   keyExtractor={(item, index) => index.toString()}
@@ -1300,14 +1355,19 @@ function Customer_Management(props) {
 }
 
 function mapStateToProps(state) {
-  return {};
+  // console.log('>>>', state.customers.update_status);
+  return {
+    // update_status: state.customers.update_status,
+  };
 }
 
 export default reduxForm({
   form: 'Customer_ManagementForm',
   // validate,
 })(
-  connect(mapStateToProps, {setCusFormInitialValues, addEmpFilter})(
-    Customer_Management,
-  ),
+  connect(mapStateToProps, {
+    setCusFormInitialValues,
+    addEmpFilter,
+    setUpdateStatus,
+  })(Customer_Management),
 );

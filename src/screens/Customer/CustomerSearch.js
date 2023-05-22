@@ -6,14 +6,13 @@ import { TextInput } from 'react-native-paper';
 import { filterCustomer } from '../../query/Customer_query';
 import { Picker } from '@react-native-picker/picker';
 
-export default function CustomerSearch() {
+export default function CustomerSearch(props) {
+  const {navigation}=props
   const [searchTerm, setSearchTerm] = useState('');
   const [all_customer, setAllCustomer] = useState([]);
   const [selectedItemValue, setSelectedItemValue] = useState('customer_nm');
 
   useEffect(() => {
-
-
     return () => {
       setAllCustomer([]);
     }
@@ -72,7 +71,7 @@ export default function CustomerSearch() {
             />
           </View>
         </View>
-        <ViewCustomer customer_data={all_customer} />
+        <ViewCustomer customer_data={all_customer} navigation={navigation} />
 
        
       </View>
