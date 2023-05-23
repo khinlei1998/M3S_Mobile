@@ -154,7 +154,7 @@ function Customer_Management(props) {
       finance_expns: filtered_cus_data.finance_expns ? filtered_cus_data.finance_expns.toString() : '',
       fmly_otr_expns: filtered_cus_data.fmly_otr_expns ? filtered_cus_data.fmly_otr_expns.toString() : '',
       employee_num: filtered_cus_data.employee_num ? filtered_cus_data.employee_num.toString() : '',
-      // currWorkplacePerd: filtered_cus_data.currWorkplacePerd ? filtered_cus_data.currWorkplacePerd.toString() : '',
+      curr_resident_perd: filtered_cus_data.curr_resident_perd ? filtered_cus_data.curr_resident_perd.toString() : '',
     });
     props.initialize(test);
   }, []);

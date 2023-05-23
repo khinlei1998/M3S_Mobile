@@ -802,7 +802,8 @@ export function storeCustomerData(cus_data) {
           cus_data.telNo,
           cus_data.mobileTelNo,
           cus_data.addr, //23
-          cus_data.currResidentPerd,
+          // cus_data.currResidentPerd,
+          4,
           cus_data.occupation,
           null, //father name
           cus_data.familyNum,
