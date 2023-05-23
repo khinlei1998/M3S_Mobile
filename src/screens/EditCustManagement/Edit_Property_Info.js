@@ -1,16 +1,19 @@
-import {View, Text, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
 import Collapsible from 'react-native-collapsible';
 import Icon from 'react-native-vector-icons/Feather';
-import {property_type} from '../../common';
+import { property_type } from '../../common';
 import CheckBoxFile from '../../components/CheckBoxFile';
-import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
 import TextInputFile from '../../components/TextInputFile';
 import DividerLine from '../../components/DividerLine';
-import {style} from '../../style/Property_Info_style';
+import { style } from '../../style/Property_Info_style';
 import SingleCheckBox from '../../components/SingleCheckBox';
+import { connect, useDispatch } from 'react-redux';
+import { Field, reduxForm, change } from 'redux-form';
 
-export default function Edit_property_Info() {
+
+function Edit_property_Info(props) {
+  const { update_status } = props
   const [show_propertyinfo, setOpenPropertyInfo] = useState(false);
 
   const PropertyInfoFun = () => {
@@ -22,7 +25,7 @@ export default function Edit_property_Info() {
       <View style={style.container}>
         <Text style={style.titlestyle}>Property Information</Text>
         <TouchableOpacity onPress={PropertyInfoFun}>
-          <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
+          <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
         </TouchableOpacity>
       </View>
       <Collapsible collapsed={show_propertyinfo}>
@@ -34,7 +37,7 @@ export default function Edit_property_Info() {
               marginLeft: 15,
               marginRight: 16,
             }}>
-            <View style={{padding: 5, flexDirection: 'row'}}>
+            <View style={{ padding: 5, flexDirection: 'row' }}>
               <View>
                 <Field
                   label={'House'}
@@ -42,14 +45,16 @@ export default function Edit_property_Info() {
                   component={SingleCheckBox}
                   checkedValue="Y"
                   uncheckedValue="N"
-                  //   format={value => !!value}
-                  //   parse={value => (value ? true : false)}
+                  disabled={update_status == true ? false : true}
+                  // format={value => !!value}
+                  // parse={value => (value ? true : false)}
                 />
                 <Field
                   label={'Motorcycle'}
                   name={'prop_motorcycle_yn'}
                   component={SingleCheckBox}
-                  defaultValue={false}
+                  // defaultValue={false}
+                  disabled={update_status == true ? true : false}
                   checkedValue="Y"
                   uncheckedValue="N"
                 />
@@ -63,6 +68,7 @@ export default function Edit_property_Info() {
                   initialValue={false}
                   checkedValue="Y"
                   uncheckedValue="N"
+                  disabled={update_status == true ? false : true}
                 />
                 <Field
                   label={'Machines'}
@@ -71,6 +77,7 @@ export default function Edit_property_Info() {
                   initialValue={false}
                   checkedValue="Y"
                   uncheckedValue="N"
+                  disabled={update_status == true ? true : false}
                 />
               </View>
 
@@ -82,6 +89,7 @@ export default function Edit_property_Info() {
                   initialValue={false}
                   checkedValue="Y"
                   uncheckedValue="N"
+                  disabled={update_status == true ? true : false}
                 />
                 <Field
                   label={'Farmland'}
@@ -90,6 +98,7 @@ export default function Edit_property_Info() {
                   initialValue={false}
                   checkedValue="Y"
                   uncheckedValue="N"
+                  disabled={update_status == true ? true : false}
                 />
               </View>
             </View>
@@ -100,6 +109,7 @@ export default function Edit_property_Info() {
               component={TextInputFile}
               input_mode
               keyboardType={'numeric'}
+              editable={update_status == true ? false : true}
             />
           </View>
 
@@ -109,6 +119,7 @@ export default function Edit_property_Info() {
               title={'Other Property'}
               component={TextInputFile}
               input_mode
+              editable={update_status == true ? false : true}
             />
             <Field
               name={'tot_prop_estmtd_val'}
@@ -116,6 +127,7 @@ export default function Edit_property_Info() {
               component={TextInputFile}
               input_mode
               keyboardType={'numeric'}
+              editable={update_status == true ? false : true}
             />
           </View>
         </View>
@@ -124,3 +136,13 @@ export default function Edit_property_Info() {
     </>
   );
 }
+
+function mapStateToProps(state) {
+  return {
+    update_status: state.customers.update_status,
+  };
+}
+
+export default reduxForm({
+  form: 'Customer_ManagementForm',
+})(connect(mapStateToProps, {})(Edit_property_Info));

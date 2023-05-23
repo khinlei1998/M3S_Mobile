@@ -102,7 +102,7 @@ export const business_situation = [
 export const owner_shipratio = [
   {
     id: 1,
-    label: 'Own',
+    label: '100 % Own',
     value: '01',
   },
   {
@@ -112,7 +112,7 @@ export const owner_shipratio = [
   },
   {
     id: 3,
-    label: 'Share',
+    label: 'Other',
     value: '03',
   },
 ];

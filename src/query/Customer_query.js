@@ -826,7 +826,7 @@ export function storeCustomerData(cus_data) {
           cus_data.workplaceName,
           null, //workplaceType
           cus_data.workplacePeriod,
-          null, //employeeNum
+          cus_data.employeeNum, //employeeNum
           cus_data.workplaceAddr,
           cus_data.currWorkplacePerd,
           cus_data.businessSttnFlg,

@@ -41,8 +41,8 @@ export default function Property_Info() {
                   component={SingleCheckBox}
                   checkedValue="Y"
                   uncheckedValue="N"
-                  //   format={value => !!value}
-                  //   parse={value => (value ? true : false)}
+                    // format={value => !!value}
+                    // parse={value => (value ? true : false)}
                 />
                 <Field
                   label={'Motorcycle'}

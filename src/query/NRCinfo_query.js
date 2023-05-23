@@ -89,8 +89,8 @@ export const fetchNRCinfo = async () => {
             }
 
             const nrc_state_code = Object.entries(collection).map(([name]) => ({
+              ['id']: name,
               ['label']: name,
-              ['key']: name,
               ['value']: name,
             }));
 

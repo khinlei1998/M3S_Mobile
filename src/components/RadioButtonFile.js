@@ -20,7 +20,8 @@ export default function RadioButtonFile(props) {
                 key={val.id}
                 label={val.name}
                 value={val.id}
-                disabled={disabled ? true : false}
+                // disabled={disabled ? true : false}
+                disabled={disabled}
               />
             </View>
           </RadioButton.Group>

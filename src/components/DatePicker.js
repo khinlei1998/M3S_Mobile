@@ -12,7 +12,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/Feather';
 import moment from 'moment';
 export default function DatePicker(props) {
-  const {label, onAgeChange, meta, input} = props;
+  const {editable,label, onAgeChange, meta, input} = props;
 
   const [showdate, setShowDate] = useState(false);
   const [date, setDate] = useState('');
@@ -41,6 +41,7 @@ export default function DatePicker(props) {
           label={label}
           mode={'outlined'}
           value={date && moment(date).format('YYYY-MM-DD') }
+          editable={editable ? false : true}
           style={{
             backgroundColor: '#FFF',
             marginTop: 10,

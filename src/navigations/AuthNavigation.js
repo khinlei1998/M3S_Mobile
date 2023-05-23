@@ -1,5 +1,5 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/Login/LoginScreen';
 import SplashScreen from '../screens/SplashScreen';
 import SettingScreen from '../screens/Setting/SettingScreen';
@@ -21,10 +21,10 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
-        {/* <Stack.Screen
+      {/* <Stack.Screen
         name="Customer Management"
         component={Customer_Management}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       /> */}
       <Stack.Screen
         name="Customer Search"
@@ -37,7 +37,7 @@ export default function AuthNavigation(props) {
         options={{headerShown: false}}
       />
 
-      
+
 
       {/* <Stack.Screen
         name="Test"
@@ -47,17 +47,17 @@ export default function AuthNavigation(props) {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Setting"
         component={SettingScreen}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Splash"
         component={SplashScreen}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

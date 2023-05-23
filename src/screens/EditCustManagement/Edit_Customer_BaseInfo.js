@@ -1,13 +1,13 @@
-import {View, Text, TouchableOpacity, FlatList} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import Collapsible from 'react-native-collapsible';
-import {RadioButton} from 'react-native-paper';
-import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
+import { RadioButton } from 'react-native-paper';
+import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
 import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import DefaultTextInput from '../../components/DefaultTextInput';
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 import InputTest from '../../components/InputTest';
 import {
   owner_shipratio,
@@ -18,13 +18,13 @@ import {
 } from '../../common';
 import DividerLine from '../../components/DividerLine';
 import DatePicker from '../../components/DatePicker';
-import {style} from '../../style/Customer_Base_style';
-import {setCusFormInitialValues} from '../../redux/CustomerReducer';
-import {fetchAllCustomerNum} from '../../query/Customer_query';
-import {Modal, Provider, Portal, Button} from 'react-native-paper';
+import { style } from '../../style/Customer_Base_style';
+import { setCusFormInitialValues } from '../../redux/CustomerReducer';
+import { fetchAllCustomerNum } from '../../query/Customer_query';
+import { Modal, Provider, Portal, Button } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
-import {city_code} from '../../common';
-import {useDispatch} from 'react-redux';
+import { city_code } from '../../common';
+import { useDispatch } from 'react-redux';
 
 function Edit_Customer_BaseInfo(props) {
   const {
@@ -35,6 +35,7 @@ function Edit_Customer_BaseInfo(props) {
     showCitySearch,
     showTownshipSearch,
     showWardSearch,
+    update_status
   } = props;
   const dispatch = useDispatch();
 
@@ -49,7 +50,7 @@ function Edit_Customer_BaseInfo(props) {
     setCusInfo(!open_cusinfo);
   };
 
-  const numbers = Array.from({length: 60}, (_, i) => i + 1);
+  const numbers = Array.from({ length: 60 }, (_, i) => i + 1);
   const handleRadioButtonChange = value => {
     alert(value);
     setVillage(value);
@@ -64,11 +65,11 @@ function Edit_Customer_BaseInfo(props) {
   return (
     <>
       <View style={style.container}>
-        <Text style={{fontWeight: 'bold', fontSize: 20}}>
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
           Customer Base Information
         </Text>
         <TouchableOpacity onPress={CusInfoFun}>
-          <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
+          <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
         </TouchableOpacity>
       </View>
 
@@ -84,10 +85,10 @@ function Edit_Customer_BaseInfo(props) {
               onValueChange={newValue => showNrcFun(newValue)}
               value={show_nrc}>
               <View style={style.child_radio_title_style}>
-                <Text style={{marginTop: 5}}>Old </Text>
+                <Text style={{ marginTop: 5 }}>Old </Text>
                 <RadioButton value="old" />
 
-                <Text style={{marginTop: 5}}>New</Text>
+                <Text style={{ marginTop: 5 }}>New</Text>
                 <RadioButton value="new" />
               </View>
             </RadioButton.Group>
@@ -97,9 +98,11 @@ function Edit_Customer_BaseInfo(props) {
                 <Field
                   name={'nrc_no'}
                   title={'NRC'}
-                  component={DefaultTextInput}
+                  component={TextInputFile}
                   cus_width
                   input_mode
+                  editable={update_status == true ? false : true}
+
                 />
               ) : (
                 <></>
@@ -107,7 +110,7 @@ function Edit_Customer_BaseInfo(props) {
               <Field
                 name={'customer_no'}
                 title={'Customer No'}
-                component={DefaultTextInput}
+                component={TextInputFile}
                 input_mode
                 inputmax={100}
                 editable
@@ -118,18 +121,22 @@ function Edit_Customer_BaseInfo(props) {
               <Field
                 name={'customer_nm'}
                 title={'Customer Name'}
-                component={DefaultTextInput}
+                component={TextInputFile}
                 input_mode
                 inputmax={100}
+                editable={update_status == true ? false : true}
+
               />
 
               <Field
                 name={'saving_acct_num'}
                 title={'Saving Code'}
-                component={DefaultTextInput}
+                component={TextInputFile}
                 cus_width
                 input_mode
                 inputmax={20}
+                editable={update_status == true ? false : true}
+
               />
             </View>
 
@@ -142,11 +149,14 @@ function Edit_Customer_BaseInfo(props) {
                 pickerStyle={{
                   width: 300,
                 }}
+                enabled={update_status == true ? false : true}
               />
               <Field
                 name={'birth_date'}
                 component={DatePicker}
                 label={'date of birth'}
+                editable={update_status == true ? false : true}
+
               />
             </View>
 
@@ -159,6 +169,9 @@ function Edit_Customer_BaseInfo(props) {
                 pickerStyle={{
                   width: 300,
                 }}
+                enabled={update_status == true ? false : true}
+
+
               />
               <Field
                 name={'addr'}
@@ -166,6 +179,8 @@ function Edit_Customer_BaseInfo(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
+                editable={update_status == true ? false : true}
+
               />
             </View>
 
@@ -186,6 +201,7 @@ function Edit_Customer_BaseInfo(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
+                editable
               />
             </View>
 
@@ -206,6 +222,7 @@ function Edit_Customer_BaseInfo(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
+                editable
               />
             </View>
 
@@ -213,10 +230,10 @@ function Edit_Customer_BaseInfo(props) {
               onValueChange={newValue => handleRadioButtonChange(newValue)}
               value={show_village}>
               <View style={style.child_radio_title_style}>
-                <Text style={{marginTop: 5}}>Village </Text>
+                <Text style={{ marginTop: 5 }}>Village </Text>
                 <RadioButton value="village" />
 
-                <Text style={{marginTop: 5}}>Ward</Text>
+                <Text style={{ marginTop: 5 }}>Ward</Text>
                 <RadioButton value="ward" />
               </View>
             </RadioButton.Group>
@@ -239,7 +256,7 @@ function Edit_Customer_BaseInfo(props) {
                   component={TextInputFile}
                   input_mode
                   inputmax={100}
-                  // editable
+                  editable
                 />
               </View>
             ) : (
@@ -260,6 +277,7 @@ function Edit_Customer_BaseInfo(props) {
                   component={TextInputFile}
                   input_mode
                   inputmax={100}
+                  editable
                 />
               </View>
             )}
@@ -272,6 +290,8 @@ function Edit_Customer_BaseInfo(props) {
                 input_mode
                 inputmax={100}
                 input_cusstyle
+                editable={update_status == true ? false : true}
+
               />
             </View>
             <Text style={style.radio_title_style}>
@@ -281,10 +301,10 @@ function Edit_Customer_BaseInfo(props) {
               onValueChange={newValue => setBusiness(newValue)}
               value={show_businessdate}>
               <View style={style.child_radio_title_style}>
-                <Text style={{marginTop: 5}}>Estimated </Text>
+                <Text style={{ marginTop: 5 }}>Estimated </Text>
                 <RadioButton value="estimated" />
 
-                <Text style={{marginTop: 5}}>Exact Date</Text>
+                <Text style={{ marginTop: 5 }}>Exact Date</Text>
                 <RadioButton value="exact" />
               </View>
             </RadioButton.Group>
@@ -299,12 +319,16 @@ function Edit_Customer_BaseInfo(props) {
                   pickerStyle={{
                     width: 300,
                   }}
+                  enabled={update_status == true ? false : true}
+
                 />
               ) : (
                 <Field
                   name={'curr_resident_perd'}
                   component={DatePicker}
                   label={'Start Living Date'}
+                  editable={update_status == true ? false : true}
+
                 />
               )}
               <Field
@@ -314,6 +338,8 @@ function Edit_Customer_BaseInfo(props) {
                 input_mode
                 inputmax={20}
                 keyboardType={'numeric'}
+                editable={update_status == true ? false : true}
+
               />
             </View>
 
@@ -325,6 +351,8 @@ function Edit_Customer_BaseInfo(props) {
                 input_mode
                 inputmax={100}
                 keyboardType={'numeric'}
+                editable={update_status == true ? false : true}
+
               />
               <Field
                 name={'family_num'}
@@ -333,6 +361,8 @@ function Edit_Customer_BaseInfo(props) {
                 input_mode
                 inputmax={100}
                 keyboardType={'numeric'}
+                editable={update_status == true ? false : true}
+
               />
             </View>
 
@@ -344,6 +374,8 @@ function Edit_Customer_BaseInfo(props) {
                 input_mode
                 inputmax={100}
                 keyboardType={'numeric'}
+                editable={update_status == true ? false : true}
+
               />
               <Field
                 name={'university_num'}
@@ -352,6 +384,8 @@ function Edit_Customer_BaseInfo(props) {
                 input_mode
                 inputmax={100}
                 keyboardType={'numeric'}
+                editable={update_status == true ? false : true}
+
               />
             </View>
 
@@ -364,6 +398,8 @@ function Edit_Customer_BaseInfo(props) {
                 pickerStyle={{
                   width: 300,
                 }}
+                enabled={update_status == true ? false : true}
+
               />
               <Field
                 data={owner_shipratio}
@@ -373,6 +409,8 @@ function Edit_Customer_BaseInfo(props) {
                 pickerStyle={{
                   width: 300,
                 }}
+                enabled={update_status == true ? false : true}
+
               />
             </View>
 
@@ -381,6 +419,8 @@ function Edit_Customer_BaseInfo(props) {
                 name={'occupation'}
                 title={'Occupation'}
                 component={TextInputFile}
+                editable={update_status == true ? false : true}
+
               />
 
               <Field
@@ -391,6 +431,8 @@ function Edit_Customer_BaseInfo(props) {
                 pickerStyle={{
                   width: 300,
                 }}
+                enabled={update_status == true ? false : true}
+
               />
             </View>
           </View>
@@ -402,14 +444,16 @@ function Edit_Customer_BaseInfo(props) {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    update_status: state.customers.update_status,
+  };
 }
 
 export default reduxForm({
   form: 'Customer_ManagementForm',
   enableReinitialize: true,
 })(
-  connect(mapStateToProps, {setCusFormInitialValues, fetchAllCustomerNum})(
+  connect(mapStateToProps, { setCusFormInitialValues, fetchAllCustomerNum })(
     Edit_Customer_BaseInfo,
   ),
 );
