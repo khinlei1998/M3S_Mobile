@@ -2,15 +2,19 @@ import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {Button} from 'react-native-paper';
 import { setInquiryStatus } from '../../redux/CustomerReducer';
-export default function ViewCustomer(props) {
-  const {customer_data, navigation} = props;
-  const btn_inquiry=()=>{
-    
+import { getInquiryCusData } from '../../redux/CustomerReducer';
+import {connect} from 'react-redux';
+import {Field, reduxForm, reset, change} from 'redux-form';
+ function ViewCustomer(props) {
+  const {customer_data, navigation,getInquiryCusData} = props;
+  const btn_inquiry=(item)=>{
+    navigation.navigate('Edit_Emp_Info', item)
+    getInquiryCusData(item)
   }
   const item = ({item, index}) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('Edit_Emp_Info', item)}>
+        onPress={() =>btn_inquiry(item) }>
         <View
           style={{
             flexDirection: 'row',
@@ -143,3 +147,12 @@ export default function ViewCustomer(props) {
     </>
   );
 }
+
+export default reduxForm({
+  form: 'Customer_ManagementForm',
+  enableReinitialize: true,
+})(
+  connect(null, {
+    getInquiryCusData,
+  })(ViewCustomer),
+);

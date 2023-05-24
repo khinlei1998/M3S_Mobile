@@ -2,7 +2,13 @@ import {View, Text, TouchableOpacity, FlatList} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Collapsible from 'react-native-collapsible';
 import {RadioButton} from 'react-native-paper';
-import {Field, reduxForm, setInitialValues, initialize,reset} from 'redux-form';
+import {
+  Field,
+  reduxForm,
+  setInitialValues,
+  initialize,
+  reset,
+} from 'redux-form';
 import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
 import {connect} from 'react-redux';
@@ -22,8 +28,8 @@ import {setCusFormInitialValues} from '../../redux/CustomerReducer';
 import {fetchAllCustomerNum} from '../../query/Customer_query';
 import {Modal, Provider, Portal, Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
-import {city_code} from '../../common';
-import { useDispatch } from 'react-redux';
+import {city_code,owner_ship_business} from '../../common';
+import {useDispatch} from 'react-redux';
 
 function Customer_Base_Info(props) {
   const {
@@ -146,6 +152,7 @@ function Customer_Base_Info(props) {
                 name={'birthDate'}
                 component={DatePicker}
                 label={'date of birth'}
+                icon={'calendar'}
               />
             </View>
 
@@ -306,6 +313,7 @@ function Customer_Base_Info(props) {
                   name={'currResidentPerd'}
                   component={DatePicker}
                   label={'Start Living Date'}
+                  icon={'calendar'}
                 />
               )}
               <Field
@@ -367,7 +375,7 @@ function Customer_Base_Info(props) {
                 }}
               />
               <Field
-                data={owner_shipratio}
+                data={owner_ship_business}
                 name={'businessOwnType'}
                 title={'Ownership of Business'}
                 component={DropDownPicker}

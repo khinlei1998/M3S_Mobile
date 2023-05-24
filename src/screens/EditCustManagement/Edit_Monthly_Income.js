@@ -20,6 +20,7 @@ function Edit_Monthly_Income(props) {
   const {
     dispatch,
     totalIncome,
+    inquiry_cusdata,
     total_income,
     total_expense,
     totalExpense,
@@ -31,6 +32,7 @@ function Edit_Monthly_Income(props) {
     total_net_business,
     totalNetFamily,
     total_net_family,
+    update_status
   } = props;
   const [values, setValues] = useState([]);
   const [familyvalues, setFamilyValues] = useState([]);
@@ -184,17 +186,6 @@ function Edit_Monthly_Income(props) {
                 Business Income/Expense
               </Text>
 
-              <Field
-                name={'wrkp_rent_expns'}
-                title={'Business Building Renting'}
-                component={TextInputFile}
-                cus_width
-                input_mode
-                inputmax={28}
-                keyboardType={'numeric'}
-                onChange={value => handleFieldChange(value, 1)}
-              />
-
               <View
                 style={{
                   backgroundColor: '#ECF0F3',
@@ -212,6 +203,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleNetChange(value, 10)}
+                  editable={update_status == true ? false : true}
                 />
 
                 <Field
@@ -222,6 +214,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   editable
+                  
                 />
 
                 <Field
@@ -233,15 +226,20 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFieldChange(value, 0)}
+                  editable={update_status == true ? false : true}
                 />
 
+                
                 <Field
                   name={'wrkp_rent_expns'}
-                  title={'Tel Number dsdsd'}
+                  title={'Business Building Renting'}
                   component={TextInputFile}
+                  cus_width
                   input_mode
-                  inputmax={20}
+                  inputmax={28}
                   keyboardType={'numeric'}
+                  onChange={value => handleFieldChange(value, 1)}
+                  editable={update_status == true ? false : true}
                 />
 
                 <Field
@@ -253,6 +251,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFieldChange(value, 2)}
+                  editable={update_status == true ? false : true}
                 />
 
                 <Field
@@ -264,6 +263,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFieldChange(value, 3)}
+                  editable={update_status == true ? false : true}
                 />
                 <Field
                   name={'bus_utlbil_expns'}
@@ -274,6 +274,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFieldChange(value, 4)}
+                  editable={update_status == true ? false : true}
                 />
 
                 <Field
@@ -285,6 +286,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFieldChange(value, 5)}
+                  editable={update_status == true ? false : true}
                 />
                 <Field
                   name={'tax_expns'}
@@ -295,6 +297,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFieldChange(value, 6)}
+                  editable={update_status == true ? false : true}
                 />
 
                 <Field
@@ -306,6 +309,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFieldChange(value, 7)}
+                  editable={update_status == true ? false : true}
                 />
                 <Field
                   name={'othr_expns_1'}
@@ -316,6 +320,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFieldChange(value, 8)}
+                  editable={update_status == true ? false : true}
                 />
 
                 <Field
@@ -327,6 +332,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFieldChange(value, 9)}
+                  editable={update_status == true ? false : true}
                 />
                 <View
                   style={{
@@ -338,7 +344,7 @@ function Edit_Monthly_Income(props) {
                     marginTop: 10,
                   }}>
                   <Text style={{color: '#fff'}}>Total Net Income</Text>
-                  <Text style={{color: '#F9A970'}}>{total_business_net}</Text>
+                  <Text style={{color: '#F9A970'}}>{inquiry_cusdata.tot_bus_net_income}</Text>
                 </View>
               </View>
             </View>
@@ -365,6 +371,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFamilyChange(value)}
+                  editable={update_status == true ? false : true}
                 />
 
                 <Field
@@ -385,6 +392,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFmailyChange(value, 0)}
+                  editable={update_status == true ? false : true}
                 />
 
                 <Field
@@ -396,6 +404,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFmailyChange(value, 1)}
+                  editable={update_status == true ? false : true}
                 />
 
                 <Field
@@ -407,6 +416,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFmailyChange(value, 2)}
+                  editable={update_status == true ? false : true}
                 />
 
                 <Field
@@ -418,6 +428,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFmailyChange(value, 3)}
+                  editable={update_status == true ? false : true}
                 />
                 <Field
                   name={'healthy_expns'}
@@ -428,6 +439,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFmailyChange(value, 4)}
+                  editable={update_status == true ? false : true}
                 />
 
                 <Field
@@ -439,6 +451,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFmailyChange(value, 5)}
+                  editable={update_status == true ? false : true}
                 />
                 <Field
                   name={'fmly_tax_expns'}
@@ -449,6 +462,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFmailyChange(value, 6)}
+                  editable={update_status == true ? false : true}
                 />
 
                 <Field
@@ -460,6 +474,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFmailyChange(value, 8)}
+                  editable={update_status == true ? false : true}
                 />
 
                 <Field
@@ -471,6 +486,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFmailyChange(value, 9)}
+                  editable={update_status == true ? false : true}
                 />
                 <View
                   style={{
@@ -482,7 +498,7 @@ function Edit_Monthly_Income(props) {
                     marginTop: 77,
                   }}>
                   <Text style={{color: '#fff'}}>Total Net Income</Text>
-                  <Text style={{color: '#F9A970'}}>{total_fmly_net}</Text>
+                  <Text style={{color: '#F9A970'}}>{inquiry_cusdata.fmly_tot_net_income}</Text>
                 </View>
               </View>
             </View>
@@ -495,6 +511,7 @@ function Edit_Monthly_Income(props) {
               input_mode
               input_cusstyle
               inputmax={10000}
+              editable={update_status == true ? false : true}
             />
           </View>
 
@@ -511,7 +528,7 @@ function Edit_Monthly_Income(props) {
                 <Text style={{fontWeight: 'bold', fontSize: 20}}>
                   Total Net Icome=
                 </Text>
-                <Text style={{color: '#F9A970', fontSize: 15}}>{totalnet}</Text>
+                <Text style={{color: '#F9A970', fontSize: 15}}>{inquiry_cusdata.total_net}</Text>
               </View>
 
               <Text>
@@ -529,9 +546,12 @@ function Edit_Monthly_Income(props) {
 }
 
 function mapStateToProps(state) {
+  console.log('state',state.customers.inquiry_cusdata);
   return {
     // sale_expense:
     //   state.form.Customer_ManagementForm?.values?.totSaleExpense || '',
+    update_status: state.customers.update_status,
+    inquiry_cusdata:state.customers.inquiry_cusdata,
     total_income: state.monthly.totalincome,
     total_expense: state.monthly.totalexpense,
     total_family_income: state.monthly.totalincomeexpense,

@@ -74,17 +74,17 @@ export const address_type = [
   {
     id: 1,
     label: 'Home',
-    value: 'Home',
+    value: '01',
   },
   {
     id: 2,
     label: 'Business',
-    value: 'Business',
+    value: '02',
   },
   {
     id: 3,
     label: 'Other',
-    value: 'Other',
+    value: '03',
   },
 ];
 
@@ -99,7 +99,7 @@ export const business_situation = [
   },
 ];
 
-export const owner_shipratio = [
+export const owner_ship_business = [
   {
     id: 1,
     label: '100 % Own',
@@ -113,6 +113,24 @@ export const owner_shipratio = [
   {
     id: 3,
     label: 'Other',
+    value: '03',
+  },
+];
+
+export const owner_shipratio = [
+  {
+    id: 1,
+    label: ' Own',
+    value: '01',
+  },
+  {
+    id: 2,
+    label: 'Rent',
+    value: '02',
+  },
+  {
+    id: 3,
+    label: 'Share',
     value: '03',
   },
 ];
@@ -132,45 +150,41 @@ export const business_type = [
     label: 'Service',
     value: '002',
   },
+
   {
     id: 4,
-    label: 'Service',
+    label: 'Employee',
     value: '003',
   },
   {
     id: 5,
-    label: 'Employee',
+    label: 'LiveStock',
     value: '004',
   },
   {
     id: 6,
-    label: 'LiveStock',
+    label: 'Agriculture Crop-Farming',
     value: '005',
   },
   {
     id: 7,
-    label: 'Agriculture Crop-Farming',
+    label: 'Fishery',
     value: '006',
   },
   {
     id: 8,
-    label: 'Fishery',
+    label: 'Retail Business',
     value: '007',
   },
   {
     id: 9,
-    label: 'Retail Business',
+    label: 'Small Industrial',
     value: '008',
   },
   {
     id: 10,
-    label: 'Small Industrial',
-    value: '009',
-  },
-  {
-    id: 11,
     label: 'Agriculture Animal-Husbandary',
-    value: '010',
+    value: '009',
   },
 ];
 

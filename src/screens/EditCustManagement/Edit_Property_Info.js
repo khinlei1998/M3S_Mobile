@@ -54,7 +54,7 @@ function Edit_property_Info(props) {
                   name={'prop_motorcycle_yn'}
                   component={SingleCheckBox}
                   // defaultValue={false}
-                  disabled={update_status == true ? true : false}
+                  disabled={update_status == true ? false : true}
                   checkedValue="Y"
                   uncheckedValue="N"
                 />
@@ -77,7 +77,7 @@ function Edit_property_Info(props) {
                   initialValue={false}
                   checkedValue="Y"
                   uncheckedValue="N"
-                  disabled={update_status == true ? true : false}
+                  disabled={update_status == true ? false : true}
                 />
               </View>
 
@@ -89,7 +89,7 @@ function Edit_property_Info(props) {
                   initialValue={false}
                   checkedValue="Y"
                   uncheckedValue="N"
-                  disabled={update_status == true ? true : false}
+                  disabled={update_status == true ? false : true}
                 />
                 <Field
                   label={'Farmland'}
@@ -98,7 +98,7 @@ function Edit_property_Info(props) {
                   initialValue={false}
                   checkedValue="Y"
                   uncheckedValue="N"
-                  disabled={update_status == true ? true : false}
+                  disabled={update_status == true ? false : true}
                 />
               </View>
             </View>
@@ -109,8 +109,8 @@ function Edit_property_Info(props) {
               component={TextInputFile}
               input_mode
               keyboardType={'numeric'}
-              editable={update_status == true ? false : true}
-            />
+              disabled={update_status == true ? false : true}
+              />
           </View>
 
           <View style={style.input_container_style}>
@@ -119,16 +119,16 @@ function Edit_property_Info(props) {
               title={'Other Property'}
               component={TextInputFile}
               input_mode
-              editable={update_status == true ? false : true}
-            />
+              disabled={update_status == true ? false : true}
+              />
             <Field
               name={'tot_prop_estmtd_val'}
               title={'Estimated Value'}
               component={TextInputFile}
               input_mode
               keyboardType={'numeric'}
-              editable={update_status == true ? false : true}
-            />
+              disabled={update_status == true ? false : true}
+              />
           </View>
         </View>
       </Collapsible>

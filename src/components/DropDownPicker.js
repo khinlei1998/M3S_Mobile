@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Picker } from '@react-native-picker/picker';
-import { languages } from '../common';
-import { StyleSheet, View } from 'react-native';
+import React, {useState} from 'react';
+import {Picker} from '@react-native-picker/picker';
+import {languages} from '../common';
+import {StyleSheet, View} from 'react-native';
 
 export default function DropDownPicker(props) {
   const {
-    input: { onChange, value },
+    input: {onChange, value},
     data,
     title,
     selectedValue,
@@ -15,18 +15,16 @@ export default function DropDownPicker(props) {
     enabled,
     ...pickerProps
   } = props;
-  // console.log('input',props);
-  return num_data ? (
 
+  return num_data ? (
     <View
       style={{
         borderColor: 'black',
         backgroundColor: '#FFF',
         borderWidth: 0.5,
         marginTop: 10,
-        // marginLeft: 10,
         width: pickerStyle.width,
-        borderRadius: 2
+        borderRadius: 2,
       }}>
       <Picker
         {...pickerProps}
@@ -34,11 +32,6 @@ export default function DropDownPicker(props) {
         selectedValue={value}
         onValueChange={onChange}
         style={[pickerStyle, styles.picker]}
-        // style={{
-        //   height: 50,
-        //   width: 200,
-        //   color: 'black',
-        // }}
         mode="dropdown">
         <Picker.Item label={title} value="" />
         {num_data.length > 0 &&
@@ -54,9 +47,8 @@ export default function DropDownPicker(props) {
         backgroundColor: '#FFF',
         borderWidth: 0.5,
         marginTop: 10,
-        // marginLeft: 10,
         width: pickerStyle.width,
-        borderRadius: 2
+        borderRadius: 2,
       }}>
       <Picker
         {...pickerProps}
@@ -64,11 +56,6 @@ export default function DropDownPicker(props) {
         selectedValue={value}
         onValueChange={onChange}
         style={[pickerStyle, styles.picker]}
-        // style={{
-        //   height: 50,
-        //   width: 200,
-        //   color: 'black',
-        // }}
         mode="dropdown">
         <Picker.Item label={title} value="" />
         {data.length > 0 &&
@@ -85,6 +72,5 @@ const styles = StyleSheet.create({
     // backgroundColor: '#fff',
     // marginTop: 20,
     color: 'black',
-
   },
 });

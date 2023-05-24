@@ -156,6 +156,8 @@ function Edit_Customer_BaseInfo(props) {
                 component={DatePicker}
                 label={'date of birth'}
                 editable={update_status == true ? false : true}
+                icon={update_status == true && 'calendar'}
+                update_status
 
               />
             </View>
@@ -207,7 +209,7 @@ function Edit_Customer_BaseInfo(props) {
 
             <View style={style.child_input_style}>
               <Field
-                name={'TownshipCode'}
+                name={'township_code'}
                 title={'Township Code '}
                 component={TextInputFile}
                 input_mode
@@ -217,8 +219,8 @@ function Edit_Customer_BaseInfo(props) {
                 handleTextInputFocus={showTownshipSearch}
               />
               <Field
-                name={'VillageName'}
-                title={'Village Name '}
+                name={'township_name'}
+                title={'Township Name '}
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
@@ -262,7 +264,7 @@ function Edit_Customer_BaseInfo(props) {
             ) : (
               <View style={style.child_input_style}>
                 <Field
-                  name={'Wardcode'}
+                  name={'ward_code'}
                   title={'Ward Code '}
                   component={TextInputFile}
                   input_mode
@@ -272,7 +274,7 @@ function Edit_Customer_BaseInfo(props) {
                   handleTextInputFocus={showWardSearch}
                 />
                 <Field
-                  name={'WardName'}
+                  name={'ward_name'}
                   title={'Ward Name '}
                   component={TextInputFile}
                   input_mode
@@ -322,6 +324,18 @@ function Edit_Customer_BaseInfo(props) {
                   enabled={update_status == true ? false : true}
 
                 />
+
+              //   <Field
+              //   data={condition_house}
+              //   name={'house_ocpn_type'}
+              //   title={'Condition of House'}
+              //   component={DropDownPicker}
+              //   pickerStyle={{
+              //     width: 300,
+              //   }}
+              //   enabled={update_status == true ? false : true}
+
+              // />
               ) : (
                 <Field
                   name={'curr_resident_perd'}

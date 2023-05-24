@@ -30,6 +30,7 @@ function Monthly_Income(props) {
     total_net_business,
     totalNetFamily,
     total_net_family,
+    total_business_net_total,
   } = props;
   const [values, setValues] = useState([]);
   const [familyvalues, setFamilyValues] = useState([]);
@@ -121,7 +122,7 @@ function Monthly_Income(props) {
   };
   const calCulateSum = (total_expense, total_income) => {
     const sum = total_income - total_expense;
-    setBusinessNet(sum);
+    // setBusinessNet(sum);
     dispatch(
       change('Customer_ManagementForm', 'totBusNetIncomeitem', `${sum}`),
     );
@@ -140,6 +141,8 @@ function Monthly_Income(props) {
   };
   useEffect(() => {
     calCulateSum(total_expense, total_income);
+
+    
   }, [total_expense, total_income]);
 
   useEffect(() => {
@@ -177,9 +180,11 @@ function Monthly_Income(props) {
             backgroundColor: '#FAF8F8',
             margin: 10,
           }}>
-          <View style={{flexDirection: 'row',alignSelf:'center'}}>
-            <View >
-              <Text style={{fontWeight: 'bold',padding:5,marginTop:10}}>Business Income/Expense</Text>
+          <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+            <View>
+              <Text style={{fontWeight: 'bold', padding: 5, marginTop: 10}}>
+                Business Income/Expense
+              </Text>
               <View
                 style={{
                   backgroundColor: '#ECF0F3',
@@ -325,14 +330,18 @@ function Monthly_Income(props) {
                     marginTop: 10,
                   }}>
                   <Text style={{color: '#fff'}}>Total Net Income</Text>
-                  <Text style={{color: '#F9A970'}}>{total_business_net}</Text>
+                  <Text style={{color: '#F9A970'}}>
+                    {total_business_net_total}
+                  </Text>
                 </View>
               </View>
             </View>
             {/* Family Inccome */}
 
-            <View style={{marginLeft: 15,}}>
-              <Text style={{fontWeight: 'bold',padding:5,marginTop:10}}>Family Income/Expense</Text>
+            <View style={{marginLeft: 15}}>
+              <Text style={{fontWeight: 'bold', padding: 5, marginTop: 10}}>
+                Family Income/Expense
+              </Text>
               <View
                 style={{
                   backgroundColor: '#ECF0F3',
@@ -472,7 +481,7 @@ function Monthly_Income(props) {
               </View>
             </View>
           </View>
-          <View style={{marginLeft:15,marginRight:15}}>
+          <View style={{marginLeft: 15, marginRight: 15}}>
             <Field
               name={'remark'}
               title={'Remark'}
@@ -514,6 +523,9 @@ function Monthly_Income(props) {
 }
 
 function mapStateToProps(state) {
+  const total_business_net_total =
+    state.monthly.totalincome - state.monthly.totalexpense;
+
   return {
     // sale_expense:
     //   state.form.Customer_ManagementForm?.values?.totSaleExpense || '',
@@ -523,6 +535,7 @@ function mapStateToProps(state) {
     total_family_expense: state.monthly.totalfamilyexpense,
     total_net_business: state.monthly.totalnetbusiness,
     total_net_family: state.monthly.totalnetfamily,
+    total_business_net_total,
   };
 }
 

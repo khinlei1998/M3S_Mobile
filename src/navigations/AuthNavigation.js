@@ -21,11 +21,11 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Customer Management"
         component={Customer_Management}
         options={{ headerShown: false }}
-      /> */}
+      />
       <Stack.Screen
         name="Customer Search"
         component={CustomerSearch}

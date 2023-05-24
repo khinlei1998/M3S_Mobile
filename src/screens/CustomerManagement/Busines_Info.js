@@ -45,7 +45,7 @@ export default function Busines_Info() {
             />
             <Field
               data={business_type}
-              name={'businessOwnType'}
+              name={'wokplaceType'}
               title={'Type of business'}
               component={DropDownPicker}
               pickerStyle={{
@@ -87,6 +87,7 @@ export default function Busines_Info() {
                   name={'workplacePeriod'}
                   title={'Select a Value'}
                   component={DropDownPicker}
+                  icon={'calendar'}
                   keyboardType={'numeric'}
                   pickerStyle={{
                     width: 280,
@@ -102,6 +103,7 @@ export default function Busines_Info() {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
+                keyboardType={'numeric'}
               />
             </View>
 
@@ -152,7 +154,7 @@ export default function Busines_Info() {
                     }}
                   />
                 ) : (
-                  <Field name={'currWorkplacePerd'} component={DatePicker} />
+                  <Field name={'currWorkplacePerd'} component={DatePicker} icon={'calendar'} />
                 )}
                 <View>
                   <Text

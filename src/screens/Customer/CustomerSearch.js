@@ -1,13 +1,13 @@
-import { View, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { cus_filter_item } from '../../common';
+import {View, Text, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {cus_filter_item} from '../../common';
 import ViewCustomer from './ViewCustomer';
-import { TextInput } from 'react-native-paper';
-import { filterCustomer } from '../../query/Customer_query';
-import { Picker } from '@react-native-picker/picker';
+import {TextInput,Button} from 'react-native-paper';
+import {filterCustomer} from '../../query/Customer_query';
+import {Picker} from '@react-native-picker/picker';
 
 export default function CustomerSearch(props) {
-  const {navigation}=props
+  const {navigation} = props;
   const [searchTerm, setSearchTerm] = useState('');
   const [all_customer, setAllCustomer] = useState([]);
   const [selectedItemValue, setSelectedItemValue] = useState('customer_nm');
@@ -15,9 +15,8 @@ export default function CustomerSearch(props) {
   useEffect(() => {
     return () => {
       setAllCustomer([]);
-    }
-  }, [])
-
+    };
+  }, []);
 
   const handleSearch = async () => {
     await filterCustomer(selectedItemValue, searchTerm)
@@ -30,19 +29,33 @@ export default function CustomerSearch(props) {
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <Text
-          style={{ fontSize: 20, color: '#273050', marginTop: 10, padding: 10 }}>
+          style={{fontSize: 20, color: '#273050', marginTop: 10, padding: 10}}>
           Customer Information Management
         </Text>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ marginRight: 10 }}>Search Item:</Text>
+
+        <Button
+          onPress={() => navigation.navigate('Customer Management')}
+          mode="contained"
+          buttonColor={'#6870C3'}
+          style={{
+            borderRadius: 0,
+            width: 100,
+            marginTop: 10,
+            color: 'black',
+            marginLeft: 5,
+          }}>
+          OK
+        </Button>
+        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={{marginRight: 10}}>Search Item:</Text>
 
             <Picker
               selectedValue={selectedItemValue}
               onValueChange={handleItemValueChange}
-              style={{ width: 200, backgroundColor: 'white' }}
+              style={{width: 200, backgroundColor: 'white'}}
               mode="dropdown">
               {cus_filter_item.length > 0 &&
                 cus_filter_item.map(val => (
@@ -55,7 +68,7 @@ export default function CustomerSearch(props) {
             </Picker>
           </View>
 
-          <View style={{ width: '50%' }}>
+          <View style={{width: '50%'}}>
             <TextInput
               value={searchTerm}
               onChangeText={text => setSearchTerm(text)}
@@ -72,8 +85,6 @@ export default function CustomerSearch(props) {
           </View>
         </View>
         <ViewCustomer customer_data={all_customer} navigation={navigation} />
-
-       
       </View>
     </TouchableWithoutFeedback>
   );

@@ -12,12 +12,20 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/Feather';
 import moment from 'moment';
 export default function DatePicker(props) {
-  const {editable,label, onAgeChange, meta, input} = props;
-
+  const {
+    editable,
+    label,
+    onAgeChange,icon,
+    meta,
+    // input: {value, onChange, ...restInput},
+    // ...rest
+    input
+  } = props;
   const [showdate, setShowDate] = useState(false);
   const [date, setDate] = useState('');
 
   function showcalendar() {
+    // alert('oo')
     setShowDate(true);
   }
 
@@ -26,32 +34,34 @@ export default function DatePicker(props) {
   }
 
   function onConfirm(date) {
+    setShowDate(false);
     const chose_date = moment(date).format('YYYY-MM-DD');
     setDate(date);
     input.onChange(chose_date);
-    hidedate();
-    onAgeChange ? getAge(date, chose_date) : '';
   }
-
+  console.log('input',input);
   return (
     <>
       <View style={{flexDirection: 'row', height: 66}}>
         <TextInput
+
           {...input}
+
           label={label}
           mode={'outlined'}
-          value={date && moment(date).format('YYYY-MM-DD') }
-          editable={editable ? false : true}
+          value={date ? moment(date).format('YYYY-MM-DD') :input.value}
+          // editable={editable ? false : true}
+          editable={false}
           style={{
             backgroundColor: '#FFF',
             marginTop: 10,
             width: 300,
             // marginRight: 10,
           }}
-          onFocus={() => showcalendar()}
+          // onFocus={() => showcalendar()}
           activeUnderlineColor="red"
           right={
-            <TextInput.Icon icon={'calendar'} onPress={() => showcalendar()} />
+            <TextInput.Icon icon={icon} onPress={() => showcalendar()} />
           }
         />
 

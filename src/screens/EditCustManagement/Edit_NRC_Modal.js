@@ -46,7 +46,7 @@ function ShowNRC_Modal(props) {
 
                             <Field
                                 data={nrc_prefix_code}
-                                name={'nrc_prefix'}
+                                name={'nrc_prefix_code'}
                                 title={'Select Prefix'}
                                 component={DropDownPicker}
                                 pickerStyle={{

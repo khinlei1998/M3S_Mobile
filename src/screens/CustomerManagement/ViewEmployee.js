@@ -7,8 +7,8 @@ import {Field} from 'redux-form';
 import {addEmpFilter} from '../../redux/EmployeeReducer';
 import {connect} from 'react-redux';
 import {reduxForm} from 'redux-form';
-import { TestAction } from '../../redux/EmployeeReducer';
-import { change } from 'redux-form';
+import {TestAction} from '../../redux/EmployeeReducer';
+import {change} from 'redux-form';
 
 function ViewEmployee(props) {
   const [checked, setChecked] = useState(false);
@@ -16,7 +16,7 @@ function ViewEmployee(props) {
   const [filter_emp, setFilterEmp] = useState();
   const dispatch = useDispatch();
 
-  const {TestAction,emp_data, addEmpFilter, hideModal} = props;
+  const {TestAction, emp_data, addEmpFilter, hideModal} = props;
 
   const btnSelectEmployee = item => {
     setSelectedValue(item.employee_no);
@@ -90,7 +90,6 @@ function ViewEmployee(props) {
           />
         </View>
 
-       
         {/* <Field component={RadioButton}/> */}
       </View>
     );
@@ -140,19 +139,19 @@ function ViewEmployee(props) {
           }}>
           Positon Name
         </Text>
-
       </View>
+
+     
 
       <FlatList
         data={emp_data}
         renderItem={item}
         keyExtractor={(item, index) => index.toString()}
       />
-      
     </>
   );
 }
 
-export default connect(null, {addEmpFilter,TestAction})(
+export default connect(null, {addEmpFilter, TestAction})(
   reduxForm({form: 'Customer_ManagementForm'})(ViewEmployee),
 );

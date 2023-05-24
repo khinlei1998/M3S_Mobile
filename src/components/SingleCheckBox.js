@@ -1,13 +1,14 @@
-import { View, Text } from 'react-native';
-import React, { useState } from 'react';
-import { Checkbox } from 'react-native-paper';
+import {View, Text} from 'react-native';
+import React, {useState} from 'react';
+import {Checkbox} from 'react-native-paper';
 export default function SingleCheckBox(props) {
   const {
     label,
+    disabled,
     defaultValue,
     checkedValue,
     uncheckedValue,
-    input: { value, onChange },
+    input: {value, onChange},
     ...rest
   } = props;
   const [checked, setChecked] = useState(false);
@@ -26,14 +27,13 @@ export default function SingleCheckBox(props) {
   const handleToggle = () => {
     onChange(!value);
   };
-  console.log('value', value);
 
   // const formatCheckboxValue = value => {
   //   // Format the checkbox value to the desired format
   //   return value == '' ? 'F' : value;
   // };
 
-  const booleanToValue = (value) => {
+  const booleanToValue = value => {
     if (value == true) {
       return 'Y';
     } else if (value == false) {
@@ -53,11 +53,12 @@ export default function SingleCheckBox(props) {
         // status={booleanToValue(value) == 'Y' ? 'checked' : 'unchecked'}
 
         onPress={handleToggle}
+        disabled={disabled}
 
-      // format={formatCheckboxValue}
-      // defaultValue={false}
+        // format={formatCheckboxValue}
+        // defaultValue={false}
       />
-      <Text style={{ color: 'black' }}>{label}</Text>
+      <Text style={{color: 'black'}}>{label}</Text>
     </View>
   );
 }
