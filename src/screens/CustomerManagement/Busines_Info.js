@@ -1,18 +1,17 @@
-import {View, Text, TouchableOpacity, Button} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import Collapsible from 'react-native-collapsible';
-import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
+import {Field,} from 'redux-form';
 import TextInputFile from '../../components/TextInputFile';
 import {business_type} from '../../common';
 import DropDownPicker from '../../components/DropDownPicker';
-import {RadioButton, TextInput} from 'react-native-paper';
+import {RadioButton} from 'react-native-paper';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import DatePicker from '../../components/DatePicker';
 import DividerLine from '../../components/DividerLine';
 import {business_situation, owner_shipratio} from '../../common';
 import {style} from '../../style/Business_Info_style';
-import DefaultTextInput from '../../components/DefaultTextInput';
 export default function Busines_Info() {
   const [open_business_info, setBusinessInfo] = useState(false);
   const [show_businessdate, setBusiness] = useState('estimated');

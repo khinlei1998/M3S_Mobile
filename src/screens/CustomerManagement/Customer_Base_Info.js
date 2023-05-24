@@ -112,7 +112,7 @@ function Customer_Base_Info(props) {
               <Field
                 name={'CustomerNo'}
                 title={'Customer No'}
-                component={DefaultTextInput}
+                component={TextInputFile}
                 input_mode
                 inputmax={100}
                 editable

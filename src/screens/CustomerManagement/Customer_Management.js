@@ -94,19 +94,18 @@ function Customer_Management(props) {
           ? values.nrc_stateCode + values.nrc_prefix + values.nrcNo
           : '',
     });
-    // alert(JSON.stringify(data));
-    console.log('Finale data', JSON.stringify(data));
-    await storeCustomerData(data).then(result => {
-      if (result == 'success') {
-        // dispatch_Reset_Beneficiary([]);
+    alert(JSON.stringify(data));
+    // await storeCustomerData(data).then(result => {
+    //   if (result == 'success') {
+    //     // dispatch_Reset_Beneficiary([]);
 
-        // dispatch(reset('Customer_ManagementForm'));
-        resetMonthlyIncome()
+    //     // dispatch(reset('Customer_ManagementForm'));
+    //     resetMonthlyIncome()
 
-        ToastAndroid.show(`Create Successfully!`, ToastAndroid.SHORT);
-        props.navigation.navigate('Customer Search');
-      }
-    });
+    //     ToastAndroid.show(`Create Successfully!`, ToastAndroid.SHORT);
+    //     props.navigation.navigate('Customer Search');
+    //   }
+    // });
   };
   const hideModal = () => setModalVisible(false);
   const hideVillageModal = () => setVillageCodeModalVisible(false);
@@ -383,13 +382,6 @@ function Customer_Management(props) {
     setTownshipCodeModalVisible(true);
   };
 
-  // useEffect(() => {
-  //   const test = Object.assign({}, emp_filter_data, {
-  //     // totSaleIncome: total.toString()
-  //   });
-  //   props.initialize(test);
-  // }, [emp_filter_data]);
-
   const Show_NRC = newValue => {
     setNRC(newValue);
     if (newValue == 'new') {
@@ -473,9 +465,6 @@ function Customer_Management(props) {
 
   return (
     <>
-      {/* {modalVisible ? (
-        <Employee_Search visible={modalVisible} hideModal={hideModal} />
-      ) : ( */}
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={{flex: 1, backgroundColor: '#fff'}}>
