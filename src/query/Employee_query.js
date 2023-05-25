@@ -367,7 +367,6 @@ export function getEemployee_info() {
 }
 
 export const selectUser = async (user_id, password) => {
-  console.log(user_id, password);
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
       tx.executeSql(

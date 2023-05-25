@@ -95,17 +95,18 @@ function Customer_Management(props) {
           : '',
     });
     alert(JSON.stringify(data));
-    await storeCustomerData(data).then(result => {
-      if (result == 'success') {
-        // dispatch_Reset_Beneficiary([]);
+    console.log('data',data);
+    // await storeCustomerData(data).then(result => {
+    //   if (result == 'success') {
+    //     // dispatch_Reset_Beneficiary([]);
 
-        // dispatch(reset('Customer_ManagementForm'));
-        resetMonthlyIncome()
+    //     // dispatch(reset('Customer_ManagementForm'));
+    //     resetMonthlyIncome()
 
-        ToastAndroid.show(`Create Successfully!`, ToastAndroid.SHORT);
-        props.navigation.navigate('Customer Search');
-      }
-    });
+    //     ToastAndroid.show(`Create Successfully!`, ToastAndroid.SHORT);
+    //     props.navigation.navigate('Customer Search');
+    //   }
+    // });
   };
   const hideModal = () => setModalVisible(false);
   const hideVillageModal = () => setVillageCodeModalVisible(false);

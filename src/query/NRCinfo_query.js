@@ -16,7 +16,6 @@ export const getNRC_info = () => {
             // .get(`https://${ip}`, {})
             .get(`https://${ip}:${port}/skylark-m3s/api/nrcCodeInfo.m3s`)
             .then(({data}) => {
-              console.log('nrc data length', data.length);
               if (data.length > 0) {
                 global.db.transaction(tx => {
                   data.forEach(item => {

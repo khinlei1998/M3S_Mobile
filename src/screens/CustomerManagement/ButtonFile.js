@@ -7,8 +7,6 @@ function ButtonFile(props) {
     const dispatch = useDispatch();
 
     const {handleSubmit,TestAction}=props
-    console.log('handleSubmit',handleSubmit);
-
     const onSubmit = values => {
         alert(JSON.stringify(values))
         TestAction(values);
@@ -17,7 +15,6 @@ function ButtonFile(props) {
       };
 
     const btnSelectEmployee = item => {
-        alert('jj')
         const emp_data={
             branchName:'we',
             branchCode:'pp'

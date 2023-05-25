@@ -38,7 +38,6 @@ const TestScreen = props => {
     test,
     setCusFormInitialValues,
   } = props;
-  console.log('initialValues', initialValues);
   const [show_operation, setOperation] = useState('1');
   const [modalVisible, setModalVisible] = useState(false);
   const [open_empinfo, setEmpInfo] = useState(false);
@@ -364,17 +363,6 @@ const TestScreen = props => {
 };
 
 function mapStateToProps(state, ownprops) {
-  console.log('state', state);
-  console.log('Test Screen>>>', state.employees.employee_filter_data);
-
-  // const update_initialvalue = Object.assign(
-  //   {},
-  //   state.employees.employee_filter_data,
-  //   {
-  //     CustomerNo: state.customers.cus_initialValues.CustomerNo,
-  //   },
-  // );
-
   return {
     test:state.customers.cus_initialValues,
   };

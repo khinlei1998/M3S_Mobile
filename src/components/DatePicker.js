@@ -39,7 +39,6 @@ export default function DatePicker(props) {
     setDate(date);
     input.onChange(chose_date);
   }
-  console.log('input',input);
   return (
     <>
       <View style={{flexDirection: 'row', height: 66}}>

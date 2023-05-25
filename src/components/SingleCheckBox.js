@@ -15,14 +15,12 @@ export default function SingleCheckBox(props) {
 
   const handleCheckboxToggle = () => {
     setChecked(!checked);
-    console.log('checked', checked);
 
     if (!checked) {
       input.onChange('Y');
     } else {
       input.onChange('N');
     }
-    console.log('input', input);
   };
   const handleToggle = () => {
     onChange(!value);

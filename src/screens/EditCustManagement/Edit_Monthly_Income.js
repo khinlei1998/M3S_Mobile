@@ -1,11 +1,11 @@
-import {View, Text, TouchableOpacity, Button, TextInput} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import { View, Text, TouchableOpacity, Button, TextInput } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import Collapsible from 'react-native-collapsible';
 import TextInputFile from '../../components/TextInputFile';
 import DividerLine from '../../components/DividerLine';
-import {connect} from 'react-redux';
-import {Field, reduxForm, reset, change} from 'redux-form';
+import { connect } from 'react-redux';
+import { Field, reduxForm, reset, change } from 'redux-form';
 import {
   totalIncome,
   totalExpense,
@@ -46,6 +46,7 @@ function Edit_Monthly_Income(props) {
 
   const handleFieldChange = (value, index) => {
     const number = parseFloat(value);
+    console.log('number', number);
 
     // Check if the input is a valid number
     if (!isNaN(number)) {
@@ -63,15 +64,19 @@ function Edit_Monthly_Income(props) {
         (accumulator, currentValue) => accumulator + currentValue,
         0,
       );
-      totalExpense(sum);
+      const totalsale_expense = sum + (-inquiry_cusdata.tot_sale_expense)
+      alert(totalsale_expense)
+      totalExpense(totalsale_expense);
 
       dispatch(
         change(
           'Customer_ManagementForm',
-          'totSaleExpense',
-          `-${sum.toString()}`,
+          'tot_sale_expense',
+          `-${totalsale_expense.toString()}`,
         ),
       );
+    } else {
+      alert('not number ')
     }
   };
 
@@ -94,12 +99,14 @@ function Edit_Monthly_Income(props) {
         (accumulator, currentValue) => accumulator + currentValue,
         0,
       );
-      totalFamilyExpense(sum);
+      const totalsmly_expense = sum + (-inquiry_cusdata.fmly_tot_expense)
+      totalFamilyExpense(totalsmly_expense);
+      alert(totalsmly_expense)
       dispatch(
         change(
           'Customer_ManagementForm',
-          'fmlyTotExpense',
-          `-${sum.toString()}`,
+          'fmly_tot_expense',
+          `-${totalsmly_expense.toString()}`,
         ),
       );
     }
@@ -123,6 +130,8 @@ function Edit_Monthly_Income(props) {
     }
   };
   const calCulateSum = (total_expense, total_income) => {
+    console.log('total_expense',total_expense);
+    console.log('total_income',total_income);
     const sum = total_income - total_expense;
     setBusinessNet(sum);
     dispatch(
@@ -131,7 +140,10 @@ function Edit_Monthly_Income(props) {
     totalNetBusiness(sum);
   };
   const familyCulateSum = (total_family_income, total_family_expense) => {
+    console.log('total_family_income',total_family_income);
+    console.log('total_family_expense',total_family_expense);
     const sum = total_family_income - total_family_expense;
+    console.log('Family sum',sum);
     setFamilyNet(sum);
     dispatch(change('Customer_ManagementForm', 'fmlyTotNetIncome', `${sum}`));
     totalNetFamily(sum);
@@ -153,6 +165,9 @@ function Edit_Monthly_Income(props) {
     netCulateSum(total_net_business, total_net_family);
   }, [total_net_business, total_net_family]);
 
+
+
+
   return (
     <>
       <View
@@ -164,11 +179,11 @@ function Edit_Monthly_Income(props) {
           marginRight: 20,
           marginTop: 15,
         }}>
-        <Text style={{fontWeight: 'bold', fontSize: 20}}>
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
           Monthly Income / Expense Statement
         </Text>
         <TouchableOpacity onPress={MonthlyIncomeFun}>
-          <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
+          <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
         </TouchableOpacity>
       </View>
 
@@ -180,9 +195,9 @@ function Edit_Monthly_Income(props) {
             backgroundColor: '#FAF8F8',
             margin: 10,
           }}>
-          <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+          <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
             <View>
-              <Text style={{fontWeight: 'bold', padding: 5, marginTop: 10}}>
+              <Text style={{ fontWeight: 'bold', padding: 5, marginTop: 10 }}>
                 Business Income/Expense
               </Text>
 
@@ -214,7 +229,7 @@ function Edit_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   editable
-                  
+
                 />
 
                 <Field
@@ -229,7 +244,7 @@ function Edit_Monthly_Income(props) {
                   editable={update_status == true ? false : true}
                 />
 
-                
+
                 <Field
                   name={'wrkp_rent_expns'}
                   title={'Business Building Renting'}
@@ -343,15 +358,15 @@ function Edit_Monthly_Income(props) {
                     padding: 20,
                     marginTop: 10,
                   }}>
-                  <Text style={{color: '#fff'}}>Total Net Income</Text>
-                  <Text style={{color: '#F9A970'}}>{inquiry_cusdata.tot_bus_net_income}</Text>
+                  <Text style={{ color: '#fff' }}>Total Net Income</Text>
+                  <Text style={{ color: '#F9A970' }}>{total_net_business}</Text>
                 </View>
               </View>
             </View>
             {/* Family Inccome */}
 
-            <View style={{marginLeft: 15}}>
-              <Text style={{fontWeight: 'bold', padding: 5, marginTop: 10}}>
+            <View style={{ marginLeft: 15 }}>
+              <Text style={{ fontWeight: 'bold', padding: 5, marginTop: 10 }}>
                 Family Income/Expense
               </Text>
               <View
@@ -497,13 +512,13 @@ function Edit_Monthly_Income(props) {
                     padding: 20,
                     marginTop: 77,
                   }}>
-                  <Text style={{color: '#fff'}}>Total Net Income</Text>
-                  <Text style={{color: '#F9A970'}}>{inquiry_cusdata.fmly_tot_net_income}</Text>
+                  <Text style={{ color: '#fff' }}>Total Net Income</Text>
+                  <Text style={{ color: '#F9A970' }}>{total_net_family}</Text>
                 </View>
               </View>
             </View>
           </View>
-          <View style={{marginLeft: 15, marginRight: 15}}>
+          <View style={{ marginLeft: 15, marginRight: 15 }}>
             <Field
               name={'remark'}
               title={'Remark'}
@@ -524,11 +539,11 @@ function Edit_Monthly_Income(props) {
             }}>
             <View>
               <View
-                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text style={{fontWeight: 'bold', fontSize: 20}}>
+                style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
                   Total Net Icome=
                 </Text>
-                <Text style={{color: '#F9A970', fontSize: 15}}>{inquiry_cusdata.total_net}</Text>
+                <Text style={{ color: '#F9A970', fontSize: 15 }}>{inquiry_cusdata.total_net}</Text>
               </View>
 
               <Text>
@@ -546,12 +561,11 @@ function Edit_Monthly_Income(props) {
 }
 
 function mapStateToProps(state) {
-  console.log('state',state.customers.inquiry_cusdata);
   return {
     // sale_expense:
     //   state.form.Customer_ManagementForm?.values?.totSaleExpense || '',
     update_status: state.customers.update_status,
-    inquiry_cusdata:state.customers.inquiry_cusdata,
+    inquiry_cusdata: state.customers.inquiry_cusdata,
     total_income: state.monthly.totalincome,
     total_expense: state.monthly.totalexpense,
     total_family_income: state.monthly.totalincomeexpense,

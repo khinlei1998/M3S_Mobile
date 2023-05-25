@@ -100,6 +100,7 @@ function Edit_Business_Info(props) {
                   component={DatePicker}
                   title={'Select Date'}
                   editable={update_status == true ? false : true}
+                  icon={update_status == true && 'calendar'}
                 />
               )}
 

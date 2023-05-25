@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, } from 'react';
 import { Field, reduxForm, change } from 'redux-form';
 import { connect, useDispatch } from 'react-redux';
 import {
@@ -16,10 +16,8 @@ import {
   Modal,
   Provider,
   Portal,
-  TextInput,
   List,
 } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
 import DividerLine from '../../components/DividerLine';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
@@ -27,14 +25,8 @@ import Collapsible from 'react-native-collapsible';
 import DropDownPicker from '../../components/DropDownPicker';
 import { fetchNRCinfo } from '../../query/NRCinfo_query';
 import Customer_Base_Info from '../CustomerManagement/Customer_Base_Info';
-//   import Property_Info from './Property_Info';
 import { salary_grade, city_code, Township_code, ward_code } from '../../common';
-//   import Monthly_Income from './Monthly_Income';
-//   import Busines_Info from './Busines_Info';
 import { style } from '../../style/Customer_Mang_style';
-//   import ShowNRC_Modal from './ShowNRC_Modal';
-//   import validate from './Validate';
-import moment from 'moment';
 import { fetchEmpName } from '../../query/Employee_query';
 import { setCusFormInitialValues } from '../../redux/CustomerReducer';
 import { fetchAllCustomerNum } from '../../query/Customer_query';
@@ -45,16 +37,16 @@ import DefaultTextInput from '../../components/DefaultTextInput';
 import { addEmpFilter } from '../../redux/EmployeeReducer';
 import { operations } from '../../common';
 import { setUpdateStatus } from '../../redux/CustomerReducer';
-import InputTest from '../../components/InputTest';
 import Edit_Customer_BaseInfo from './Edit_Customer_BaseInfo';
 import Edit_property_Info from './Edit_Property_Info';
 import Edit_Business_Info from './Edit_Business_Info';
 import Edit_Monthly_Income from './Edit_Monthly_Income';
 import ShowNRC_Modal from '../CustomerManagement/ShowNRC_Modal';
+import { totalIncome, totalFamilyIncome, totalNetFamily, totalExpense,totalFamilyExpense } from '../../redux/MonthlyReducer';
 function Customer_Management(props) {
   const dispatch = useDispatch();
 
-  const { handleSubmit, setUpdateStatus, update_status } = props;
+  const { handleSubmit, setUpdateStatus, update_status, emp_filter_data, totalIncome, totalFamilyIncome, totalNetFamily,totalExpense,totalFamilyExpense } = props;
   const [all_emp, setAllEmp] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
@@ -121,7 +113,7 @@ function Customer_Management(props) {
   };
 
   useEffect(() => {
-    const test = Object.assign({}, filtered_cus_data, {
+    const retrive_cusdata = Object.assign({}, filtered_cus_data, {
       hghschl_num: filtered_cus_data.hghschl_num
         ? filtered_cus_data.hghschl_num.toString()
         : '',
@@ -216,9 +208,19 @@ function Customer_Management(props) {
         ? filtered_cus_data.tot_sale_expense.toString()
         : '',
     });
-    console.log('test', test);
-    props.initialize(test);
+    console.log('test', retrive_cusdata);
+    props.initialize(retrive_cusdata);
   }, []);
+
+
+  useEffect(() => {
+
+    totalIncome(parseFloat(filtered_cus_data.tot_sale_income))
+    totalExpense(parseFloat(filtered_cus_data.tot_sale_expense))
+    totalFamilyIncome(parseFloat(filtered_cus_data.fmly_tot_income))
+    totalFamilyExpense(parseFloat(filtered_cus_data.fmly_tot_expense))
+    // totalNetFamily(parseFloat('99'))
+  }, [])
 
   const city_item = ({ item, index }) => {
     return (
@@ -392,14 +394,15 @@ function Customer_Management(props) {
   // }, []);
 
   const btnSelectEmployee = item => {
+    console.log('item', item);
     setSelectedValue(item.employee_no);
-    dispatch(change('Customer_ManagementForm', 'branchCode', item.branch_code));
-    dispatch(change('Customer_ManagementForm', 'employeeNo', item.employee_no));
-    dispatch(change('Customer_ManagementForm', 'entryDate', item.entry_date));
+    dispatch(change('Customer_ManagementForm', 'branch_code', item.branch_code));
+    dispatch(change('Customer_ManagementForm', 'employee_no', item.employee_no));
+    dispatch(change('Customer_ManagementForm', 'entry_date', item.entry_date));
     dispatch(
       change(
         'Customer_ManagementForm',
-        'positionTitleNm',
+        'position_title_nm',
         item.position_title_nm,
       ),
     );
@@ -1405,6 +1408,7 @@ function Customer_Management(props) {
 }
 
 function mapStateToProps(state) {
+  console.log('edit state>>>>>>>>', state);
   return {
     update_status: state.customers.update_status,
   };
@@ -1418,5 +1422,10 @@ export default reduxForm({
     setCusFormInitialValues,
     addEmpFilter,
     setUpdateStatus,
+    totalIncome,
+    totalFamilyIncome,
+    totalNetFamily,
+    totalExpense,
+    totalFamilyExpense
   })(Customer_Management),
 );

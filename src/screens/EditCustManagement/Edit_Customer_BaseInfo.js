@@ -325,23 +325,13 @@ function Edit_Customer_BaseInfo(props) {
 
                 />
 
-              //   <Field
-              //   data={condition_house}
-              //   name={'house_ocpn_type'}
-              //   title={'Condition of House'}
-              //   component={DropDownPicker}
-              //   pickerStyle={{
-              //     width: 300,
-              //   }}
-              //   enabled={update_status == true ? false : true}
-
-              // />
               ) : (
                 <Field
                   name={'curr_resident_perd'}
                   component={DatePicker}
                   label={'Start Living Date'}
                   editable={update_status == true ? false : true}
+                  icon={update_status == true && 'calendar'}
 
                 />
               )}

@@ -32,6 +32,7 @@ export const totalIncome = props => {
 };
 
 export const totalExpense = props => {
+  console.log('props',props);
   return {
     type: 'UPDATE_TOTAL_EXPENSE',
     payload: props,
