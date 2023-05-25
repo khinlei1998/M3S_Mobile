@@ -42,11 +42,11 @@ import Edit_property_Info from './Edit_Property_Info';
 import Edit_Business_Info from './Edit_Business_Info';
 import Edit_Monthly_Income from './Edit_Monthly_Income';
 import ShowNRC_Modal from '../CustomerManagement/ShowNRC_Modal';
-import { totalIncome, totalFamilyIncome, totalNetFamily, totalExpense,totalFamilyExpense } from '../../redux/MonthlyReducer';
+import { totalIncome, totalFamilyIncome, totalNetFamily, totalExpense, totalFamilyExpense, updateTotalSum } from '../../redux/MonthlyReducer';
 function Customer_Management(props) {
   const dispatch = useDispatch();
 
-  const { handleSubmit, setUpdateStatus, update_status, emp_filter_data, totalIncome, totalFamilyIncome, totalNetFamily,totalExpense,totalFamilyExpense } = props;
+  const { handleSubmit, setUpdateStatus, update_status, emp_filter_data, totalIncome, totalFamilyIncome, totalNetFamily, totalExpense, totalFamilyExpense, updateTotalSum } = props;
   const [all_emp, setAllEmp] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
@@ -219,6 +219,8 @@ function Customer_Management(props) {
     totalExpense(parseFloat(filtered_cus_data.tot_sale_expense))
     totalFamilyIncome(parseFloat(filtered_cus_data.fmly_tot_income))
     totalFamilyExpense(parseFloat(filtered_cus_data.fmly_tot_expense))
+    updateTotalSum(parseFloat(filtered_cus_data.total_net))
+
     // totalNetFamily(parseFloat('99'))
   }, [])
 
@@ -1426,6 +1428,7 @@ export default reduxForm({
     totalFamilyIncome,
     totalNetFamily,
     totalExpense,
-    totalFamilyExpense
+    totalFamilyExpense,
+    updateTotalSum
   })(Customer_Management),
 );

@@ -13,6 +13,7 @@ import {
   totalFamilyIncome,
   totalNetBusiness,
   totalNetFamily,
+  updateTotalSum
 } from '../../redux/MonthlyReducer';
 import DefaultTextInput from '../../components/DefaultTextInput';
 
@@ -20,6 +21,7 @@ function Edit_Monthly_Income(props) {
   const {
     dispatch,
     totalIncome,
+    updateTotalSum,
     inquiry_cusdata,
     total_income,
     total_expense,
@@ -32,10 +34,33 @@ function Edit_Monthly_Income(props) {
     total_net_business,
     totalNetFamily,
     total_net_family,
-    update_status
+    update_status,
+    total_net
   } = props;
-  const [values, setValues] = useState([]);
-  const [familyvalues, setFamilyValues] = useState([]);
+  const [values, setValues] = useState(
+    [
+      inquiry_cusdata.rawmaterial_expans,
+      inquiry_cusdata.wrkp_rent_expns,
+      inquiry_cusdata.employee_expns,
+      inquiry_cusdata.trnsrt_expns,
+      inquiry_cusdata.bus_utlbil_expns,
+      inquiry_cusdata.tel_expns,
+      inquiry_cusdata.tax_expns,
+      inquiry_cusdata.goods_loss_expns,
+      inquiry_cusdata.othr_expns_1,
+      inquiry_cusdata.othr_expns_2,
+    ]
+  );
+  const [familyvalues, setFamilyValues] = useState([
+    inquiry_cusdata.food_expns,
+    inquiry_cusdata.house_mngt_expns,
+    inquiry_cusdata.utlbil_expns,
+    inquiry_cusdata.edct_expns,
+    inquiry_cusdata.healthy_expns,
+    inquiry_cusdata.fmly_trnsrt_expns,
+    inquiry_cusdata.finance_expns,
+    inquiry_cusdata.fmly_otr_expns,
+  ]);
   const [open_monthlyincome, setMonthlyExpense] = useState(false);
   const [total_fmly_net, setFamilyNet] = useState(0);
   const [total_business_net, setBusinessNet] = useState(0);
@@ -47,13 +72,13 @@ function Edit_Monthly_Income(props) {
   const handleFieldChange = (value, index) => {
     const number = parseFloat(value);
     console.log('number', number);
+    //2
 
     // Check if the input is a valid number
     if (!isNaN(number)) {
       // Update the corresponding value in the values array
       const newValues = [...values];
       newValues[index] = number;
-
       setValues(newValues);
       const filteredValues = newValues.filter(
         value => typeof value === 'number',
@@ -64,19 +89,38 @@ function Edit_Monthly_Income(props) {
         (accumulator, currentValue) => accumulator + currentValue,
         0,
       );
-      const totalsale_expense = sum + (-inquiry_cusdata.tot_sale_expense)
-      alert(totalsale_expense)
-      totalExpense(totalsale_expense);
+      console.log('sum', sum);
+      totalExpense(sum);
 
       dispatch(
         change(
           'Customer_ManagementForm',
           'tot_sale_expense',
-          `-${totalsale_expense.toString()}`,
+          `${sum.toString()}`,
         ),
       );
-    } else {
-      alert('not number ')
+
+    }
+    else {
+      const newValues = [...values];
+      newValues[index] = 0;
+      setValues(newValues);
+      const filteredValues = newValues.filter(
+        value => typeof value === 'number',
+      );
+      // Calculate the sum of the values array
+      const sum = filteredValues.reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0,
+      );
+      totalExpense(sum);
+      dispatch(
+        change(
+          'Customer_ManagementForm',
+          'tot_sale_expense',
+          `${sum.toString()}`,
+        ),
+      );
     }
   };
 
@@ -99,14 +143,35 @@ function Edit_Monthly_Income(props) {
         (accumulator, currentValue) => accumulator + currentValue,
         0,
       );
-      const totalsmly_expense = sum + (-inquiry_cusdata.fmly_tot_expense)
-      totalFamilyExpense(totalsmly_expense);
-      alert(totalsmly_expense)
+      // const totalsmly_expense = sum + (-inquiry_cusdata.fmly_tot_expense)
+      totalFamilyExpense(sum);
       dispatch(
         change(
           'Customer_ManagementForm',
           'fmly_tot_expense',
-          `-${totalsmly_expense.toString()}`,
+          `${sum.toString()}`,
+        ),
+      );
+    } else {
+      const newValues = [...familyvalues];
+      newValues[index] = 0;
+
+      setFamilyValues(newValues);
+      // Calculate the sum of the values array
+      const filteredfmlyValues = newValues.filter(
+        value => typeof value === 'number',
+      );
+
+      const sum = filteredfmlyValues.reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0,
+      );
+      totalFamilyExpense(sum);
+      dispatch(
+        change(
+          'Customer_ManagementForm',
+          'fmly_tot_expense',
+          `${sum.toString()}`,
         ),
       );
     }
@@ -130,8 +195,8 @@ function Edit_Monthly_Income(props) {
     }
   };
   const calCulateSum = (total_expense, total_income) => {
-    console.log('total_expense',total_expense);
-    console.log('total_income',total_income);
+    console.log('total_expense', total_expense);
+    console.log('total_income', total_income);
     const sum = total_income - total_expense;
     setBusinessNet(sum);
     dispatch(
@@ -140,16 +205,20 @@ function Edit_Monthly_Income(props) {
     totalNetBusiness(sum);
   };
   const familyCulateSum = (total_family_income, total_family_expense) => {
-    console.log('total_family_income',total_family_income);
-    console.log('total_family_expense',total_family_expense);
+    console.log('total_family_income', total_family_income);
+    console.log('total_family_expense', total_family_expense);
     const sum = total_family_income - total_family_expense;
-    console.log('Family sum',sum);
+    console.log('Family sum', sum);
     setFamilyNet(sum);
     dispatch(change('Customer_ManagementForm', 'fmlyTotNetIncome', `${sum}`));
     totalNetFamily(sum);
   };
   const netCulateSum = (total_net_business, total_net_family) => {
-    const sum = total_net_business - total_net_family;
+    console.log('total_net_business',total_net_business);
+    console.log('total_net_family',total_net_family);
+    const sum = total_net_business += total_net_family;
+    console.log('total net sum',sum);
+    updateTotalSum(sum)
     setTotalNet(sum);
     dispatch(change('Customer_ManagementForm', 'totalnet', `${sum}`));
   };
@@ -543,12 +612,12 @@ function Edit_Monthly_Income(props) {
                 <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
                   Total Net Icome=
                 </Text>
-                <Text style={{ color: '#F9A970', fontSize: 15 }}>{inquiry_cusdata.total_net}</Text>
+                <Text style={{ color: '#F9A970', fontSize: 15 }}>{total_net}</Text>
               </View>
 
               <Text>
                 (Total Net Icome= Total Business Net Income+Total Fammily Net
-                Income+Other Income)
+                Income)
               </Text>
             </View>
           </View>
@@ -572,6 +641,7 @@ function mapStateToProps(state) {
     total_family_expense: state.monthly.totalfamilyexpense,
     total_net_business: state.monthly.totalnetbusiness,
     total_net_family: state.monthly.totalnetfamily,
+    total_net: state.monthly.totalSum,
   };
 }
 
@@ -586,5 +656,6 @@ export default reduxForm({
     totalFamilyExpense,
     totalNetBusiness,
     totalNetFamily,
+    updateTotalSum
   })(Edit_Monthly_Income),
 );
