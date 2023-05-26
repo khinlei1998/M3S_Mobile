@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
 import {Field, reduxForm, change, reset} from 'redux-form';
@@ -44,11 +44,11 @@ import {filterEmp} from '../../query/Employee_query';
 import DefaultTextInput from '../../components/DefaultTextInput';
 import {addEmpFilter} from '../../redux/EmployeeReducer';
 import {storeCustomerData} from '../../query/Customer_query';
-import { resetMonthlyIncome } from '../../redux/MonthlyReducer';
+import {resetMonthlyIncome} from '../../redux/MonthlyReducer';
 function Customer_Management(props) {
   const dispatch = useDispatch();
 
-  const {handleSubmit, emp_filter_data,resetMonthlyIncome} = props;
+  const {handleSubmit, emp_filter_data, resetMonthlyIncome} = props;
   const [all_emp, setAllEmp] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
@@ -95,13 +95,13 @@ function Customer_Management(props) {
           : '',
     });
     alert(JSON.stringify(data));
-    console.log('data',data);
+    console.log('data', data);
     await storeCustomerData(data).then(result => {
       if (result == 'success') {
         // dispatch_Reset_Beneficiary([]);
 
         // dispatch(reset('Customer_ManagementForm'));
-        resetMonthlyIncome()
+        resetMonthlyIncome();
 
         ToastAndroid.show(`Create Successfully!`, ToastAndroid.SHORT);
         props.navigation.navigate('Customer Search');
@@ -259,7 +259,7 @@ function Customer_Management(props) {
   };
 
   const hideNRCModal = () => {
-    setNRC_Visible(!nrc_visible), setNRC('old');
+    setNRC_Visible(!nrc_visible), setNRC(show_nrc);
   };
   const loadData = async () => {
     await fetchAllCustomerNum().then(cust_data => {
@@ -281,14 +281,13 @@ function Customer_Management(props) {
       })
       .catch(error => console.log(error));
     await fetchEmpName().then(emp_name => {
+      console.log('emp_name', emp_name);
       setEmpName(emp_name[0].employee_name);
     });
   };
 
   useEffect(() => {
     loadData();
-
-   
   }, []);
 
   const btnSelectEmployee = item => {
@@ -384,6 +383,7 @@ function Customer_Management(props) {
   };
 
   const Show_NRC = newValue => {
+    console.log('nrc new value', newValue);
     setNRC(newValue);
     if (newValue == 'new') {
       setNRC_Visible(true);
@@ -1305,7 +1305,9 @@ export default reduxForm({
   form: 'Customer_ManagementForm',
   // validate,
 })(
-  connect(mapStateToProps, {setCusFormInitialValues, addEmpFilter,resetMonthlyIncome})(
-    Customer_Management,
-  ),
+  connect(mapStateToProps, {
+    setCusFormInitialValues,
+    addEmpFilter,
+    resetMonthlyIncome,
+  })(Customer_Management),
 );

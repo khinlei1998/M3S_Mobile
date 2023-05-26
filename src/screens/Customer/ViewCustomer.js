@@ -12,6 +12,7 @@ import {Field, reduxForm, reset, change} from 'redux-form';
     getInquiryCusData(item)
   }
   const item = ({item, index}) => {
+    console.log('item',item);
     return (
       <TouchableOpacity
         onPress={() =>btn_inquiry(item) }>

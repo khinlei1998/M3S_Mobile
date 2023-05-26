@@ -43,8 +43,8 @@ function Edit_property_Info(props) {
                   label={'House'}
                   name={'prop_house_yn'}
                   component={SingleCheckBox}
-                  checkedValue="Y"
-                  uncheckedValue="N"
+                  // checkedValue="Y"
+                  // uncheckedValue="N"
                   disabled={update_status == true ? false : true}
                   // format={value => !!value}
                   // parse={value => (value ? true : false)}
@@ -55,8 +55,8 @@ function Edit_property_Info(props) {
                   component={SingleCheckBox}
                   // defaultValue={false}
                   disabled={update_status == true ? false : true}
-                  checkedValue="Y"
-                  uncheckedValue="N"
+                  // checkedValue="Y"
+                  // uncheckedValue="N"
                 />
               </View>
 
@@ -66,8 +66,8 @@ function Edit_property_Info(props) {
                   name={'prop_apartment_yn'}
                   component={SingleCheckBox}
                   initialValue={false}
-                  checkedValue="Y"
-                  uncheckedValue="N"
+                  // checkedValue="Y"
+                  // uncheckedValue="N"
                   disabled={update_status == true ? false : true}
                 />
                 <Field

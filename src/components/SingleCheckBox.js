@@ -26,6 +26,8 @@ export default function SingleCheckBox(props) {
     onChange(!value);
   };
 
+  console.log('value', value);
+
   // const formatCheckboxValue = value => {
   //   // Format the checkbox value to the desired format
   //   return value == '' ? 'F' : value;
@@ -47,7 +49,7 @@ export default function SingleCheckBox(props) {
         alignItems: 'center',
       }}>
       <Checkbox
-        status={value ? 'checked' : 'unchecked'}
+        status={value == 1 ? 'checked' : 'unchecked'}
         // status={booleanToValue(value) == 'Y' ? 'checked' : 'unchecked'}
 
         onPress={handleToggle}

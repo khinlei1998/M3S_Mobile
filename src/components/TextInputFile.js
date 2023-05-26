@@ -1,13 +1,12 @@
-import { View, Text, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
-import { TextInput, DefaultTheme } from 'react-native-paper';
+import {View, Text, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {TextInput, DefaultTheme} from 'react-native-paper';
 
 export default function TextInputFile(props) {
   const [passwordIcon, setPasswordIcon] = useState('eye');
   const [isPassword, setIsPassword] = useState(true);
   const [wordCount, setWordCount] = React.useState(0);
   const [totalSum, setTotalSum] = useState(0);
-
 
   const {
     focusTextInput,
@@ -25,8 +24,9 @@ export default function TextInputFile(props) {
     keyboardType,
     words_count,
     editable,
-    meta: { touched, error },
-    input: { onChange, ...restInput },
+    showRightIcon,
+    meta: {touched, error},
+    input: {onChange, ...restInput},
     ...rest
   } = props;
 
@@ -42,7 +42,7 @@ export default function TextInputFile(props) {
       setIsPassword(true);
     }
   };
-  const handleTextChange = (text) => {
+  const handleTextChange = text => {
     // setWordCount(text.length);
 
     onChange(text);
@@ -55,12 +55,8 @@ export default function TextInputFile(props) {
         sum += digit;
       }
     }
-    
-
     setTotalSum(sum);
-
   };
-
 
   return (
     <View>
@@ -80,7 +76,7 @@ export default function TextInputFile(props) {
         onFocus={focusTextInput && handleTextInputFocus}
         mode={input_mode ? 'flat' : ''}
         label={title}
-        onChangeText={(text) => handleTextChange(text)}
+        onChangeText={text => handleTextChange(text)}
         // onChangeText={text => onChange(text)}
         style={{
           backgroundColor: '#fff',
@@ -94,14 +90,23 @@ export default function TextInputFile(props) {
         underlineColor="#FFF"
         secureTextEntry={isPassword && password ? true : false} //for android
         placeholder={showValue ? defaultData : ''}
+        // right={
+        //   icon == 'eye' ? (
+        //     <TextInput.Icon icon={icon} onPress={togglePasswordIcon} />
+        //   ) : icon == 'magnify' ? (
+        //     <TextInput.Icon icon={icon} onPress={handleTextInputFocus} />
+        //   ) : (
+        //     <TextInput.Icon icon={icon} />
+        //   )
+        // }
         right={
           icon == 'eye' ? (
             <TextInput.Icon icon={icon} onPress={togglePasswordIcon} />
           ) : icon == 'magnify' ? (
             <TextInput.Icon icon={icon} onPress={handleTextInputFocus} />
-          ) : (
-            <TextInput.Icon icon={icon} />
-          )
+          ) : icon == 'calendar' ? (
+            <TextInput.Icon icon={icon}  />
+          ) : null
         }
       />
       {/* <Text>Total: {total}</Text> */}
@@ -112,7 +117,7 @@ export default function TextInputFile(props) {
         </Text>
       ):
       <></>} */}
-      {touched && error && <Text style={{ color: 'red' }}>{error}</Text>}
+      {touched && error && <Text style={{color: 'red'}}>{error}</Text>}
     </View>
   );
 }

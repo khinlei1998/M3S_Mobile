@@ -8,7 +8,7 @@ import {
   FlatList,
 } from 'react-native';
 import React, { useState, useEffect, } from 'react';
-import { Field, reduxForm, change } from 'redux-form';
+import { Field, reduxForm, change,reset } from 'redux-form';
 import { connect, useDispatch } from 'react-redux';
 import {
   RadioButton,
@@ -43,6 +43,7 @@ import Edit_Business_Info from './Edit_Business_Info';
 import Edit_Monthly_Income from './Edit_Monthly_Income';
 import ShowNRC_Modal from '../CustomerManagement/ShowNRC_Modal';
 import { totalIncome, totalFamilyIncome, totalNetFamily, totalExpense, totalFamilyExpense, updateTotalSum } from '../../redux/MonthlyReducer';
+import { updateCustomerData } from '../../query/Customer_query';
 function Customer_Management(props) {
   const dispatch = useDispatch();
 
@@ -93,13 +94,13 @@ function Customer_Management(props) {
           : '',
     });
     console.log(JSON.stringify(data));
-    // await storeCustomerData(data).then(result => {
-    //   if (result == 'success') {
-    //     alert('Create Success');
-    //     dispatch(reset('Customer_ManagementForm'));
-    //     navigation.navigate('Home');
-    //   }
-    // });
+    await updateCustomerData(data).then(result => {
+      if (result == 'success') {
+        alert('Update Success');
+        dispatch(reset('Customer_ManagementForm'));
+        props.navigation.navigate('Home');
+      }
+    });
   };
   const hideModal = () => setModalVisible(false);
   const hideVillageModal = () => setVillageCodeModalVisible(false);
@@ -215,11 +216,11 @@ function Customer_Management(props) {
 
   useEffect(() => {
 
-    totalIncome(parseFloat(filtered_cus_data.tot_sale_income))
-    totalExpense(parseFloat(filtered_cus_data.tot_sale_expense))
-    totalFamilyIncome(parseFloat(filtered_cus_data.fmly_tot_income))
-    totalFamilyExpense(parseFloat(filtered_cus_data.fmly_tot_expense))
-    updateTotalSum(parseFloat(filtered_cus_data.total_net))
+    totalIncome(filtered_cus_data.tot_sale_income?parseFloat(filtered_cus_data.tot_sale_income):0)
+    totalExpense(filtered_cus_data.tot_sale_expense?parseFloat(filtered_cus_data.tot_sale_expense):0)
+    totalFamilyIncome(filtered_cus_data.fmly_tot_income?parseFloat(filtered_cus_data.fmly_tot_income):0)
+    totalFamilyExpense(filtered_cus_data.fmly_tot_expense?parseFloat(filtered_cus_data.fmly_tot_expense):0)
+    updateTotalSum(filtered_cus_data.total_net?parseFloat(filtered_cus_data.total_net):0)
 
     // totalNetFamily(parseFloat('99'))
   }, [])

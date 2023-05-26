@@ -8,6 +8,7 @@ import {
   setInitialValues,
   initialize,
   reset,
+  change
 } from 'redux-form';
 import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
@@ -56,7 +57,6 @@ function Customer_Base_Info(props) {
 
   const numbers = Array.from({length: 60}, (_, i) => i + 1);
   const handleRadioButtonChange = value => {
-    alert(value);
     setVillage(value);
     if (value == 'ward') {
       dispatch(change('Customer_ManagementForm', 'village_code', ''));

@@ -195,6 +195,7 @@ function LoginScreen(props) {
                   password
                   input_cusstyle
                   icon={'eye'}
+                  showRightIcon
                 />
 
                 <Field
