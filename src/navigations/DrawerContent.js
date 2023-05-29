@@ -107,7 +107,7 @@ export default function DrawerContent(props) {
                         icon={() => <Icon name="refresh-cw" size={20} color="#fff" />} // Set the icon to an Ionicons icon
                         label="Synchronization "
                         activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
-                        onPress={() => props.navigation.navigate('Home')}
+                        onPress={() => props.navigation.navigate('Synchronization')}
                     />
 
                     <DrawerItem

@@ -18,26 +18,26 @@ export default function Viewloan(props) {
                 <Text style={{
                     padding: 10,
                     flex: 1,
-                }}>{item.type}</Text>
+                }}>{item.loan_type}</Text>
                 <Text style={{
                     padding: 10,
                     flex: 1,
-                }}>{item.no}</Text>
+                }}>{item.application_no}</Text>
 
                 <Text style={{
                     padding: 10,
                     flex: 1,
-                }}>{item.name}</Text>
+                }}>{item.borrower_name}</Text>
 
                 <Text style={{
                     padding: 10,
                     flex: 1,
-                }}>{item.amount}</Text>
+                }}>{item.past_loan_amount}</Text>
 
                 <Text style={{
                     padding: 10,
                     flex: 1,
-                }}>{item.sync}</Text>
+                }}>{item.sync_sts}</Text>
             </View>
         )
     }

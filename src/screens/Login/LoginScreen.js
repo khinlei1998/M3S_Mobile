@@ -29,6 +29,7 @@ import {encode} from 'base-64';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {getCustomer_info} from '../../query/Customer_query';
 import {getNRC_info} from '../../query/NRCinfo_query';
+import {getIndividual_loan} from '../../query/AllLoan_query';
 function LoginScreen(props) {
   const dispatch = useDispatch();
   const [id, setID] = useState('');
@@ -55,8 +56,6 @@ function LoginScreen(props) {
     // }
     // fetchData();
   }, []);
-
-  
 
   const saveLoginInfo = async login_info => {
     try {
@@ -97,8 +96,14 @@ function LoginScreen(props) {
               if (result == 'success') {
                 getNRC_info().then(result => {
                   if (result == 'success') {
-                    setIsLoading(false);
-                    alert('Sync success');
+                    // setIsLoading(false);
+                    // alert('Sync success');
+                    getIndividual_loan().then(result => {
+                      if (result == 'success') {
+                        setIsLoading(false);
+                        alert('Sync success');
+                      }
+                    });
                   }
                 });
               }

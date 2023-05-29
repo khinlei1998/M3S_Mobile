@@ -7,6 +7,7 @@ import TestScreen from '../screens/CustomerManagement/TestScreen';
 import Customer_Management from '../screens/CustomerManagement/Customer_Management';
 import Edit_Emp_Info from '../screens/EditCustManagement/Edit_Emp_Info';
 import CustomerSearch from '../screens/Customer/CustomerSearch';
+import Synchronization_Screen from '../screens/Synchronization/Synchronization_Screen';
 export default function AuthNavigation(props) {
   const Stack = createNativeStackNavigator();
   return (
@@ -39,11 +40,11 @@ export default function AuthNavigation(props) {
 
 
 
-      {/* <Stack.Screen
-        name="Test"
-        component={TestScreen}
+      <Stack.Screen
+        name="Synchronization"
+        component={Synchronization_Screen}
         options={{headerShown: false}}
-      /> */}
+      />
       <Stack.Screen
         name="Login"
         component={LoginScreen}
