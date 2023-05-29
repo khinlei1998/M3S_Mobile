@@ -8,6 +8,7 @@ import Tab from '../../components/Tab';
 import Sync_Upload_Screen from './Sync_Upload_Screen';
 import CheckBoxFile from '../../components/CheckBoxFile';
 import Sync_Download_Screen from './Sync_Download_Screen';
+import Sync_Setting_Screen from './Sync_Setting_Screen';
 const UploadComponent = () => {
   return <Text>uuu</Text>;
 };
@@ -53,7 +54,7 @@ export default function Synchronization_Screen() {
           onPress={() => handleTabPress(1)}
         />
         <Tab
-          label="Tab 3"
+          label="Setting"
           isActive={activeTab === 2}
           onPress={() => handleTabPress(2)}
         />
@@ -62,7 +63,7 @@ export default function Synchronization_Screen() {
       <View style={{flex: 1, backgroundColor: '#fff'}}>
         {activeTab === 0 && <Sync_Upload_Screen loan_data={loan_data} />}
         {activeTab === 1 && <Sync_Download_Screen />}
-        {activeTab === 2 && <ChildComponent3 />}
+        {activeTab === 2 && <Sync_Setting_Screen />}
       </View>
     </>
   );

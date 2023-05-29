@@ -341,7 +341,7 @@ export function getEemployee_info() {
                         console.log('insertedRows>>>>', insertedRows);
                         if (insertedRows === data.length) {
                           resolve('success');
-                          console.log('All records inserted successfully');
+                          console.log('All Employee records inserted successfully');
                         }
                       },
                       error => {
