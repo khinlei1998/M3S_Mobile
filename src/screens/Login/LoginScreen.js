@@ -132,9 +132,6 @@ function LoginScreen(props) {
     }
   };
 
-  // const btncheck = () => {
-  //   setRememberMe(true);
-  // };
   return (
     <>
       {modalVisible ? (

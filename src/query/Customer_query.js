@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {BASE_URL} from '../common';
+import { BASE_URL } from '../common';
 import moment from 'moment';
-import {fetchEmpName} from './Employee_query';
+import { fetchEmpName } from './Employee_query';
 
 const ExecuteQuery = (sql, params = []) =>
   new Promise((resolve, reject) => {
@@ -627,7 +627,7 @@ export function getCustomer_info() {
             `https://${ip}:${port}/skylark-m3s/api/customers.m3s`,
             // { responseType: 'json' }
           )
-          .then(({data}) => {
+          .then(({ data }) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -1039,3 +1039,39 @@ export function updateCustomerData(cus_data) {
     });
   });
 }
+
+export function UploadCustomerData(customer_data) {
+  return new Promise(async (resolve, reject) => {
+    let ip = await AsyncStorage.getItem('ip');
+    let port = await AsyncStorage.getItem('port');
+    const batchSize = 100;
+    let totalRowsAffected = 0;
+
+    const searchWord = '/skylark-m3s';
+    const newIP = ip.replace(
+      new RegExp(searchWord, 'g'),
+      ':' + port + searchWord,
+    );
+
+    console.log('finale data', customer_data);
+    axios
+      .post(
+        // `https://sample-rest.onrender.com:443/skylark-m3s/api/customers.m3s`
+        // `https://${ip}:${port}/skylark-m3s/api/customers.m3s`, customer_data,
+        // { responseType: 'json' }
+        `https://7c77-2a09-bac5-4934-18d2-00-279-81.ngrok-free.app:443/skylark-m3s`, customer_data, {
+        responseType: 'json',
+        headers: {
+          "Content-Type": "application/json",
+         
+        }
+      }
+      )
+      .then(({ data }) => {
+        console.log('data', data);
+      });
+
+  });
+}
+
+

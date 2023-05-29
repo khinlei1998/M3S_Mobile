@@ -131,8 +131,6 @@ export default function Sync_Download_Screen() {
           {moment().format('YYYY-MM-DD')}
         </Text>
 
-
-
       </View>
     );
   };
@@ -214,14 +212,6 @@ export default function Sync_Download_Screen() {
             Download Information
           </Text>
 
-          <TouchableOpacity onPress={() => alert('pp')}>
-            <Icon
-              name="rotate-cw"
-              size={30}
-              color="#000"
-              style={{ marginRight: 15 }}
-            />
-          </TouchableOpacity>
         </View>
 
         <DividerLine cuswidth />

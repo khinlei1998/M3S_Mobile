@@ -18,9 +18,6 @@ function SettingScreen(props) {
   const [ip, setIP] = useState();
 
   const [port, setPort] = useState();
-  const [text, setText] = React.useState("");
-
-
 
   const { visible, hideModal, handleSubmit, dispatch } = props;
 
