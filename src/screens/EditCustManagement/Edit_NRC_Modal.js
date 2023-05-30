@@ -33,7 +33,7 @@ function ShowNRC_Modal(props) {
                             }}>
                             <Field
                                 data={nrc_statecode}
-                                name={'nrc_statecode'}
+                                name={'nrc_state_code'}
                                 title={'Select State COde'}
                                 component={DropDownPicker}
                                 pickerStyle={{

@@ -87,15 +87,16 @@ function Customer_Management(props) {
     setSelectedItemValue(itemValue);
   };
   const onSubmit = async values => {
+    console.log('values', values);
     let data = Object.assign(values, emp_filter_data, {
       createUserId: empname,
       residentRgstId:
-        values.nrc_stateCode && values.nrc_prefix
-          ? values.nrc_stateCode + values.nrc_prefix + values.nrcNo
-          : '',
+        show_nrc == 'old'
+          ? values.nrcNo
+          : values.nrc_statecode + values.nrc_prefix + values.nrcNo,
     });
     alert(JSON.stringify(data));
-    console.log('data', data);
+    console.log('Cust insert data', data);
     await storeCustomerData(data).then(result => {
       if (result == 'success') {
         // dispatch_Reset_Beneficiary([]);

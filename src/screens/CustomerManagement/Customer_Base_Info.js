@@ -8,7 +8,7 @@ import {
   setInitialValues,
   initialize,
   reset,
-  change
+  change,
 } from 'redux-form';
 import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
@@ -29,7 +29,7 @@ import {setCusFormInitialValues} from '../../redux/CustomerReducer';
 import {fetchAllCustomerNum} from '../../query/Customer_query';
 import {Modal, Provider, Portal, Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
-import {city_code,owner_ship_business} from '../../common';
+import {city_code, owner_ship_business} from '../../common';
 import {useDispatch} from 'react-redux';
 
 function Customer_Base_Info(props) {
@@ -86,7 +86,14 @@ function Customer_Base_Info(props) {
             <Text style={style.radio_title_style}>NRC Type</Text>
 
             <RadioButton.Group
-              onValueChange={newValue => showNrcFun(newValue)}
+              onValueChange={newValue => {
+                showNrcFun(newValue);
+                if (newValue == 'old') {
+                  dispatch(change('Customer_ManagementForm', 'nrc_statecode', ''));
+                  dispatch(change('Customer_ManagementForm', 'nrc_prefix', ''));
+                  dispatch(change('Customer_ManagementForm', 'nrcNo', ''));
+                }
+              }}
               value={show_nrc}>
               <View style={style.child_radio_title_style}>
                 <Text style={{marginTop: 5}}>Old </Text>
@@ -109,6 +116,7 @@ function Customer_Base_Info(props) {
               ) : (
                 <></>
               )}
+
               <Field
                 name={'CustomerNo'}
                 title={'Customer No'}

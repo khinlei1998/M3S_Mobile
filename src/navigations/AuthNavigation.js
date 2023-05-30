@@ -27,7 +27,7 @@ export default function AuthNavigation(props) {
         component={Customer_Management}
         options={{ headerShown: false }}
       /> */}
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Customer Search"
         component={CustomerSearch}
         options={{headerShown: false}}
@@ -36,7 +36,7 @@ export default function AuthNavigation(props) {
         name="Edit_Emp_Info"
         component={Edit_Emp_Info}
         options={{headerShown: false}}
-      /> */}
+      />
 
 
 
