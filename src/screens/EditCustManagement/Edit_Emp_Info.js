@@ -71,6 +71,8 @@ function Customer_Management(props) {
   } = props;
   const [all_emp, setAllEmp] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [show_businessdate, setBusiness] = useState('1');
+
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
   const [villageselectedItemValue, setVillageSelectedValue] =
     useState('village_code');
@@ -452,6 +454,9 @@ function Customer_Management(props) {
   useEffect(() => {
     loadData();
   }, []);
+  const handleStartLivingStatus = value => {
+    setBusiness(value);
+  };
 
   const btnSelectEmployee = item => {
     setSelectedValue(item.employee_no);
@@ -792,6 +797,8 @@ function Customer_Management(props) {
               showVillageSearch={ShowVillageModal}
               showTownshipSearch={ShowTownshipModal}
               showWardSearch={showWardModal}
+              handleStartLivingStatus={handleStartLivingStatus}
+              show_businessdate={show_businessdate}
             />
             <Edit_property_Info />
             <Edit_Business_Info />

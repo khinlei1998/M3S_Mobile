@@ -3,7 +3,7 @@ import React from 'react';
 import {RadioButton} from 'react-native-paper';
 
 export default function RadioButtonFile(props) {
-  const {disabled, data, input} = props;
+  const {disabled, data, input,ShowRadioBtnChange} = props;
   return (
     <View
       style={{
@@ -12,10 +12,14 @@ export default function RadioButtonFile(props) {
       {data.map((val, index) => {
         return (
           <RadioButton.Group
-            onValueChange={input.onChange}
+            onValueChange={
+              ShowRadioBtnChange
+                ? () => ShowRadioBtnChange(val, input)
+                : input.onChange
+            }
             value={input.value}
             key={index}>
-            <View style={{flexDirection: 'row',}}>
+            <View style={{flexDirection: 'row'}}>
               <RadioButton.Item
                 key={val.id}
                 label={val.name}

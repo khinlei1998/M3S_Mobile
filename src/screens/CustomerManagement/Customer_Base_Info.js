@@ -15,6 +15,7 @@ import TextInputFile from '../../components/TextInputFile';
 import {connect} from 'react-redux';
 import DefaultTextInput from '../../components/DefaultTextInput';
 import {Picker} from '@react-native-picker/picker';
+import RadioButtonFile from '../../components/RadioButtonFile';
 import {
   owner_shipratio,
   gender,
@@ -29,11 +30,13 @@ import {setCusFormInitialValues} from '../../redux/CustomerReducer';
 import {fetchAllCustomerNum} from '../../query/Customer_query';
 import {Modal, Provider, Portal, Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
-import {city_code, owner_ship_business} from '../../common';
+import {city_code, owner_ship_business, village_status,start_living_date_status} from '../../common';
 import {useDispatch} from 'react-redux';
 
 function Customer_Base_Info(props) {
   const {
+    show_businessdate,
+    handleStartLivingStatus,
     showNrcFun,
     show_nrc,
     handleSubmit,
@@ -45,9 +48,9 @@ function Customer_Base_Info(props) {
   const dispatch = useDispatch();
 
   const [open_cusinfo, setCusInfo] = useState(false);
-  const [show_village, setVillage] = useState('village');
+  const [show_village, setVillage] = useState('1');
   const [modal_city_visible, setCityCodeModalVisible] = useState(false);
-  const [show_businessdate, setBusiness] = useState('estimated');
+  // const [show_businessdate, setBusiness] = useState('estimated');
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
   const [all_emp, setAllEmp] = useState([]);
 
@@ -56,9 +59,11 @@ function Customer_Base_Info(props) {
   };
 
   const numbers = Array.from({length: 60}, (_, i) => i + 1);
-  const handleRadioButtonChange = value => {
-    setVillage(value);
-    if (value == 'ward') {
+  const handleRadioButtonChange = (value, input) => {
+    console.log('value', value.id);
+    setVillage(value.id);
+    input.onChange(value.id);
+    if (value == '2') {
       dispatch(change('Customer_ManagementForm', 'village_code', ''));
     }
     // Dispatch action to clear the field value
@@ -89,7 +94,9 @@ function Customer_Base_Info(props) {
               onValueChange={newValue => {
                 showNrcFun(newValue);
                 if (newValue == 'old') {
-                  dispatch(change('Customer_ManagementForm', 'nrc_statecode', ''));
+                  dispatch(
+                    change('Customer_ManagementForm', 'nrc_statecode', ''),
+                  );
                   dispatch(change('Customer_ManagementForm', 'nrc_prefix', ''));
                   dispatch(change('Customer_ManagementForm', 'nrcNo', ''));
                 }
@@ -225,7 +232,7 @@ function Customer_Base_Info(props) {
               />
             </View>
 
-            <RadioButton.Group
+            {/* <RadioButton.Group
               onValueChange={newValue => handleRadioButtonChange(newValue)}
               value={show_village}>
               <View style={style.child_radio_title_style}>
@@ -235,9 +242,18 @@ function Customer_Base_Info(props) {
                 <Text style={{marginTop: 5}}>Ward</Text>
                 <RadioButton value="ward" />
               </View>
-            </RadioButton.Group>
+            </RadioButton.Group> */}
 
-            {show_village == 'village' ? (
+            <View>
+              <Field
+                data={village_status}
+                name={'village_status'}
+                component={RadioButtonFile}
+                ShowRadioBtnChange={(value,input) => handleRadioButtonChange(value,input)}
+              />
+            </View>
+
+            {show_village == '1' ? (
               <View style={style.child_input_style}>
                 <Field
                   name={'village_code'}
@@ -294,19 +310,21 @@ function Customer_Base_Info(props) {
               Start Living Date Current Address
             </Text>
             <RadioButton.Group
-              onValueChange={newValue => setBusiness(newValue)}
+              onValueChange={newValue => handleStartLivingStatus(newValue)}
               value={show_businessdate}>
               <View style={style.child_radio_title_style}>
                 <Text style={{marginTop: 5}}>Estimated </Text>
-                <RadioButton value="estimated" />
+                <RadioButton value="1" />
 
                 <Text style={{marginTop: 5}}>Exact Date</Text>
-                <RadioButton value="exact" />
+                <RadioButton value="2" />
               </View>
             </RadioButton.Group>
 
+            
+
             <View style={style.child_input_style}>
-              {show_businessdate == 'estimated' ? (
+              {show_businessdate == '1' ? (
                 <Field
                   num_data={numbers}
                   name={'currResidentPerd'}

@@ -40,11 +40,11 @@ export default function AuthNavigation(props) {
 
 
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Synchronization"
         component={Synchronization_Screen}
         options={{headerShown: false}}
-      />
+      /> */}
       <Stack.Screen
         name="Login"
         component={LoginScreen}

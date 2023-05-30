@@ -59,6 +59,7 @@ function Customer_Management(props) {
   const [open_empinfo, setEmpInfo] = useState(false);
   const [show_nrc, setNRC] = useState('old');
   const [show_operation, setOperation] = useState('1');
+  const [show_businessdate, setBusiness] = useState('1');
   const [nrc_statecode, setNRCStateCode] = useState([]);
   const [nrc_prefix_code, setNRCPrefixCode] = useState([]);
   const [empname, setEmpName] = useState('');
@@ -94,6 +95,7 @@ function Customer_Management(props) {
         show_nrc == 'old'
           ? values.nrcNo
           : values.nrc_statecode + values.nrc_prefix + values.nrcNo,
+      start_living_date_status: show_businessdate,
     });
     alert(JSON.stringify(data));
     console.log('Cust insert data', data);
@@ -465,6 +467,10 @@ function Customer_Management(props) {
     );
   };
 
+  const handleStartLivingStatus = value => {
+    setBusiness(value);
+  };
+
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
@@ -604,6 +610,8 @@ function Customer_Management(props) {
               showVillageSearch={ShowVillageModal}
               showTownshipSearch={ShowTownshipModal}
               showWardSearch={showWardModal}
+              handleStartLivingStatus={handleStartLivingStatus}
+              show_businessdate={show_businessdate}
             />
             <Property_Info />
             <Busines_Info />

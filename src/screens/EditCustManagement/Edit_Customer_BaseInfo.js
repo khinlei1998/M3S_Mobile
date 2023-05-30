@@ -34,6 +34,8 @@ import {useDispatch} from 'react-redux';
 
 function Edit_Customer_BaseInfo(props) {
   const {
+    show_businessdate,
+    handleStartLivingStatus,
     showNrcFun,
     show_nrc,
     handleSubmit,
@@ -48,7 +50,6 @@ function Edit_Customer_BaseInfo(props) {
   const [open_cusinfo, setCusInfo] = useState(false);
   const [show_village, setVillage] = useState('village');
   const [modal_city_visible, setCityCodeModalVisible] = useState(false);
-  const [show_businessdate, setBusiness] = useState('estimated');
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
   const [all_emp, setAllEmp] = useState([]);
 
@@ -300,19 +301,19 @@ function Edit_Customer_BaseInfo(props) {
               Start Living Date Current Address
             </Text>
             <RadioButton.Group
-              onValueChange={newValue => setBusiness(newValue)}
+             onValueChange={newValue => handleStartLivingStatus(newValue)}
               value={show_businessdate}>
               <View style={style.child_radio_title_style}>
                 <Text style={{marginTop: 5}}>Estimated </Text>
-                <RadioButton value="estimated" />
+                <RadioButton value="1" />
 
                 <Text style={{marginTop: 5}}>Exact Date</Text>
-                <RadioButton value="exact" />
+                <RadioButton value="2" />
               </View>
             </RadioButton.Group>
 
             <View style={style.child_input_style}>
-              {show_businessdate == 'estimated' ? (
+              {show_businessdate == '1' ? (
                 <Field
                   num_data={numbers}
                   name={'curr_resident_perd'}

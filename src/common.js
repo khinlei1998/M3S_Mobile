@@ -99,6 +99,28 @@ export const business_situation = [
   },
 ];
 
+export const village_status = [
+  {
+    id: '1',
+    name: 'Village',
+  },
+  {
+    id: '2',
+    name: 'Ward',
+  },
+];
+
+export const start_living_date_status = [
+  {
+    id: '1',
+    name: 'Estimated',
+  },
+  {
+    id: '2',
+    name: 'Exact Date',
+  },
+];
+
 export const owner_ship_business = [
   {
     id: 1,
@@ -187,7 +209,6 @@ export const business_type = [
     value: '009',
   },
 ];
-
 
 export const property_type = [
   {
