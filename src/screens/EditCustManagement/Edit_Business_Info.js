@@ -1,21 +1,21 @@
-import {View, Text, TouchableOpacity, Button} from 'react-native';
-import React, {useState} from 'react';
+import { View, Text, TouchableOpacity, Button } from 'react-native';
+import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import Collapsible from 'react-native-collapsible';
-import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
+import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
 import TextInputFile from '../../components/TextInputFile';
-import {business_type} from '../../common';
+import { business_type } from '../../common';
 import DropDownPicker from '../../components/DropDownPicker';
-import {RadioButton, TextInput} from 'react-native-paper';
+import { RadioButton, TextInput } from 'react-native-paper';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import DatePicker from '../../components/DatePicker';
 import DividerLine from '../../components/DividerLine';
-import {business_situation, owner_shipratio} from '../../common';
-import {style} from '../../style/Business_Info_style';
-import {connect} from 'react-redux';
+import { business_situation, owner_shipratio } from '../../common';
+import { style } from '../../style/Business_Info_style';
+import { connect } from 'react-redux';
 import DefaultTextInput from '../../components/DefaultTextInput';
 function Edit_Business_Info(props) {
-  const {update_status} = props;
+  const { update_status } = props;
   const [open_business_info, setBusinessInfo] = useState(false);
   const [show_businessdate, setBusiness] = useState('estimated');
   const [show_business_date, setBusinessStartDate] = useState('estimated');
@@ -23,14 +23,14 @@ function Edit_Business_Info(props) {
   const MonthlyIncomeFun = () => {
     setBusinessInfo(!open_business_info);
   };
-  const numbers = Array.from({length: 60}, (_, i) => i + 1);
+  const numbers = Array.from({ length: 60 }, (_, i) => i + 1);
 
   return (
     <>
       <View style={style.container}>
-        <Text style={{fontWeight: 'bold', fontSize: 20}}>Business Info</Text>
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Business Info</Text>
         <TouchableOpacity onPress={MonthlyIncomeFun}>
-          <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
+          <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
         </TouchableOpacity>
       </View>
       <Collapsible collapsed={open_business_info}>
@@ -60,7 +60,7 @@ function Edit_Business_Info(props) {
               padding: 5,
               marginTop: 10,
             }}>
-            <Text style={{marginLeft: 10, fontSize: 15, fontWeight: 'bold'}}>
+            <Text style={{ marginLeft: 10, fontSize: 15, fontWeight: 'bold' }}>
               Business Period
             </Text>
 
@@ -73,10 +73,10 @@ function Edit_Business_Info(props) {
                   marginTop: 10,
                   marginLeft: 10,
                 }}>
-                <Text style={{marginTop: 5}}>Estimated </Text>
+                <Text style={{ marginTop: 5 }}>Estimated </Text>
                 <RadioButton value="estimated" />
 
-                <Text style={{marginTop: 5}}>Exact Date</Text>
+                <Text style={{ marginTop: 5 }}>Exact Date</Text>
                 <RadioButton value="exact" />
               </View>
             </RadioButton.Group>
@@ -114,7 +114,7 @@ function Edit_Business_Info(props) {
               />
             </View>
 
-            <View style={{marginRight: 10, marginLeft: 10}}>
+            <View style={{ marginRight: 10, marginLeft: 10 }}>
               <Field
                 name={'workplace_addr'}
                 title={'Address'}
@@ -126,8 +126,8 @@ function Edit_Business_Info(props) {
               />
             </View>
 
-            <View style={{marginTop: 15}}>
-              <Text style={{marginLeft: 10, fontSize: 15, fontWeight: 'bold'}}>
+            <View style={{ marginTop: 15 }}>
+              <Text style={{ marginLeft: 10, fontSize: 15, fontWeight: 'bold' }}>
                 Current Businesss Start Date
               </Text>
 
@@ -140,10 +140,10 @@ function Edit_Business_Info(props) {
                     marginTop: 10,
                     marginLeft: 10,
                   }}>
-                  <Text style={{marginTop: 5}}>Estimated </Text>
+                  <Text style={{ marginTop: 5 }}>Estimated </Text>
                   <RadioButton value="estimated" />
 
-                  <Text style={{marginTop: 5}}>Exact Date</Text>
+                  <Text style={{ marginTop: 5 }}>Exact Date</Text>
                   <RadioButton value="exact" />
                 </View>
               </RadioButton.Group>
@@ -169,7 +169,7 @@ function Edit_Business_Info(props) {
                 )}
                 <View>
                   <Text
-                    style={{fontSize: 15, fontWeight: 'bold', marginLeft: 10}}>
+                    style={{ fontSize: 15, fontWeight: 'bold', marginLeft: 10 }}>
                     Business Situation
                   </Text>
                   <Field

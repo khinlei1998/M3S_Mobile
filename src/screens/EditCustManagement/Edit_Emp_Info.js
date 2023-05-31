@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {Field, reduxForm, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { Field, reduxForm, change, reset } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
 import moment from 'moment';
 import {
   RadioButton,
@@ -24,20 +24,20 @@ import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
 import Collapsible from 'react-native-collapsible';
 import DropDownPicker from '../../components/DropDownPicker';
-import {fetchNRCinfo} from '../../query/NRCinfo_query';
+import { fetchNRCinfo } from '../../query/NRCinfo_query';
 import Customer_Base_Info from '../CustomerManagement/Customer_Base_Info';
-import {salary_grade, city_code, Township_code, ward_code} from '../../common';
-import {style} from '../../style/Customer_Mang_style';
-import {fetchEmpName} from '../../query/Employee_query';
-import {setCusFormInitialValues} from '../../redux/CustomerReducer';
-import {fetchAllCustomerNum} from '../../query/Customer_query';
-import {emp_filter_item, village_code} from '../../common';
-import {Picker} from '@react-native-picker/picker';
-import {filterEmp} from '../../query/Employee_query';
+import { salary_grade, city_code, Township_code, ward_code } from '../../common';
+import { style } from '../../style/Customer_Mang_style';
+import { fetchEmpName } from '../../query/Employee_query';
+import { setCusFormInitialValues } from '../../redux/CustomerReducer';
+import { fetchAllCustomerNum } from '../../query/Customer_query';
+import { emp_filter_item, village_code } from '../../common';
+import { Picker } from '@react-native-picker/picker';
+import { filterEmp } from '../../query/Employee_query';
 import DefaultTextInput from '../../components/DefaultTextInput';
-import {addEmpFilter} from '../../redux/EmployeeReducer';
-import {operations} from '../../common';
-import {setUpdateStatus} from '../../redux/CustomerReducer';
+import { addEmpFilter } from '../../redux/EmployeeReducer';
+import { operations } from '../../common';
+import { setUpdateStatus } from '../../redux/CustomerReducer';
 import Edit_Customer_BaseInfo from './Edit_Customer_BaseInfo';
 import Edit_property_Info from './Edit_Property_Info';
 import Edit_Business_Info from './Edit_Business_Info';
@@ -52,8 +52,8 @@ import {
   totalFamilyExpense,
   updateTotalSum,
 } from '../../redux/MonthlyReducer';
-import {updateCustomerData} from '../../query/Customer_query';
-import {checkDataExists} from '../../query/Customer_query';
+import { updateCustomerData } from '../../query/Customer_query';
+import { checkDataExists } from '../../query/Customer_query';
 function Customer_Management(props) {
   const dispatch = useDispatch();
 
@@ -123,15 +123,19 @@ function Customer_Management(props) {
     );
     console.log('data.residentRgstId', data.residentRgstId);
     if (filtered_cus_data.resident_rgst_id != data.residentRgstId) {
-      console.log('not equal');
-      await checkDataExists(data.residentRgstId).then(response => {
-        console.log('response', response);
-        if (response == true) {
-          alert('NRC No already exist');
-          console.log('Data already exists in the database');
-          return;
-        }
-      });
+      const check_nrc = await checkDataExists(data.residentRgstId)
+      if (check_nrc == true) {
+        alert('NRC No already exist');
+        console.log('Data already exists in the database');
+      } else {
+        await updateCustomerData(data).then(result => {
+          if (result == 'success') {
+            alert('Update Success');
+            dispatch(reset('Customer_ManagementForm'));
+            props.navigation.navigate('Home');
+          }
+        });
+      }
     } else {
       await updateCustomerData(data).then(result => {
         if (result == 'success') {
@@ -284,7 +288,7 @@ function Customer_Management(props) {
     // totalNetFamily(parseFloat('99'))
   }, []);
 
-  const city_item = ({item, index}) => {
+  const city_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -321,13 +325,13 @@ function Customer_Management(props) {
             status={
               selectedCityItemValue === item.city_code ? 'checked' : 'unchecked'
             }
-            // onPress={() => btnSelectEmployee(item)}
+          // onPress={() => btnSelectEmployee(item)}
           />
         </View>
       </View>
     );
   };
-  const ward_item = ({item, index}) => {
+  const ward_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -364,14 +368,14 @@ function Customer_Management(props) {
             status={
               wardselectedItemValue === item.ward_code ? 'checked' : 'unchecked'
             }
-            // onPress={() => btnSelectEmployee(item)}
+          // onPress={() => btnSelectEmployee(item)}
           />
         </View>
       </View>
     );
   };
 
-  const township_item = ({item, index}) => {
+  const township_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -410,7 +414,7 @@ function Customer_Management(props) {
                 ? 'checked'
                 : 'unchecked'
             }
-            // onPress={() => btnSelectEmployee(item)}
+          // onPress={() => btnSelectEmployee(item)}
           />
         </View>
       </View>
@@ -484,7 +488,7 @@ function Customer_Management(props) {
     // addEmpFilter(emp_data);
   };
 
-  const item = ({item, index}) => {
+  const item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -596,7 +600,7 @@ function Customer_Management(props) {
       .catch(error => console.log('error', error));
   };
 
-  const village_item = ({item, index}) => {
+  const village_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -635,7 +639,7 @@ function Customer_Management(props) {
                 ? 'checked'
                 : 'unchecked'
             }
-            // onPress={() => btnSelectEmployee(item)}
+          // onPress={() => btnSelectEmployee(item)}
           />
         </View>
       </View>
@@ -659,7 +663,7 @@ function Customer_Management(props) {
         ) : ( */}
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{flex: 1, backgroundColor: '#fff'}}>
+          <View style={{ flex: 1, backgroundColor: '#fff' }}>
             <Text style={style.title_style}>
               Customer Information Management
             </Text>
@@ -685,7 +689,7 @@ function Customer_Management(props) {
                         label={option.label}
                         value={option.value}
                         color="#000"
-                        labelStyle={{marginLeft: 5}}
+                        labelStyle={{ marginLeft: 5 }}
                       />
                     </View>
                   </RadioButton.Group>
@@ -704,11 +708,11 @@ function Customer_Management(props) {
             <DividerLine />
             {/* EMployee Information */}
             <View style={style.title_emp_style}>
-              <Text style={{fontWeight: 'bold', fontSize: 20}}>
+              <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
                 Employee Information
               </Text>
               <TouchableOpacity onPress={EmpInfoFun}>
-                <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
+                <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
               </TouchableOpacity>
             </View>
 
@@ -747,7 +751,7 @@ function Customer_Management(props) {
                       component={DefaultTextInput}
                       editable
                     />
-                    <View style={{marginRight: 10}}>
+                    <View style={{ marginRight: 10 }}>
                       <Field
                         name={'position_title_nm'}
                         title={'Current Position'}
@@ -770,7 +774,7 @@ function Customer_Management(props) {
                       input_mode
                       editable
                     />
-                    <View style={{marginRight: 10}}>
+                    <View style={{ marginRight: 10 }}>
                       <Field
                         enabled={update_status == true ? false : true}
                         data={salary_grade}
@@ -822,7 +826,7 @@ function Customer_Management(props) {
             onDismiss={hideModal}
             contentContainerStyle={containerStyle}>
             <View
-              style={{backgroundColor: '#232D57', padding: 25}}
+              style={{ backgroundColor: '#232D57', padding: 25 }}
               onStartShouldSetResponder={() => hideModal()}>
               <Icon
                 name="x-circle"
@@ -837,19 +841,19 @@ function Customer_Management(props) {
                 }}
               />
             </View>
-            <View style={{padding: 10, height: 550}}>
+            <View style={{ padding: 10, height: 550 }}>
               <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-around',
                 }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{marginRight: 10}}>Search Item:</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                   <Picker
                     selectedValue={selectedItemValue}
                     onValueChange={handleItemValueChange}
-                    style={{width: 200, backgroundColor: 'white', marginTop: 7}}
+                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
                     mode="dropdown">
                     {emp_filter_item.length > 0 &&
                       emp_filter_item.map(val => (
@@ -862,7 +866,7 @@ function Customer_Management(props) {
                   </Picker>
                 </View>
 
-                <View style={{width: '50%'}}>
+                <View style={{ width: '50%' }}>
                   <Field
                     name={'searchtext'}
                     component={TextInputFile}
@@ -925,7 +929,7 @@ function Customer_Management(props) {
                 keyExtractor={(item, index) => index.toString()}
               />
 
-              <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                 <Button
                   onPress={() => hideModal()}
                   mode="contained"
@@ -955,7 +959,7 @@ function Customer_Management(props) {
             onDismiss={hideCityModal}
             contentContainerStyle={containerStyle}>
             <View
-              style={{backgroundColor: '#232D57', padding: 25}}
+              style={{ backgroundColor: '#232D57', padding: 25 }}
               onStartShouldSetResponder={() => hideCityModal()}>
               <Icon
                 name="x-circle"
@@ -970,19 +974,19 @@ function Customer_Management(props) {
                 }}
               />
             </View>
-            <View style={{padding: 10, height: 550}}>
+            <View style={{ padding: 10, height: 550 }}>
               <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-around',
                 }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{marginRight: 10}}>Search Item:</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                   <Picker
                     selectedValue={selectedItemValue}
                     onValueChange={handleItemValueChange}
-                    style={{width: 200, backgroundColor: 'white', marginTop: 7}}
+                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
                     mode="dropdown">
                     {city_code.length > 0 &&
                       city_code.map(val => (
@@ -995,7 +999,7 @@ function Customer_Management(props) {
                   </Picker>
                 </View>
 
-                <View style={{width: '50%'}}>
+                <View style={{ width: '50%' }}>
                   <Field
                     name={'searchtext'}
                     component={TextInputFile}
@@ -1087,7 +1091,7 @@ function Customer_Management(props) {
             onDismiss={hideVillageModal}
             contentContainerStyle={containerStyle}>
             <View
-              style={{backgroundColor: '#232D57', padding: 25}}
+              style={{ backgroundColor: '#232D57', padding: 25 }}
               onStartShouldSetResponder={() => hideVillageModal()}>
               <Icon
                 name="x-circle"
@@ -1102,19 +1106,19 @@ function Customer_Management(props) {
                 }}
               />
             </View>
-            <View style={{padding: 10, height: 550}}>
+            <View style={{ padding: 10, height: 550 }}>
               <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-around',
                 }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{marginRight: 10}}>Search Item:</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                   <Picker
                     selectedValue={villageselectedItemValue}
                     onValueChange={handleItemValueChange}
-                    style={{width: 200, backgroundColor: 'white', marginTop: 7}}
+                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
                     mode="dropdown">
                     {village_code.length > 0 &&
                       village_code.map(val => (
@@ -1127,7 +1131,7 @@ function Customer_Management(props) {
                   </Picker>
                 </View>
 
-                <View style={{width: '50%'}}>
+                <View style={{ width: '50%' }}>
                   <Field
                     name={'searchtext'}
                     component={TextInputFile}
@@ -1219,7 +1223,7 @@ function Customer_Management(props) {
             onDismiss={hideTownshipModal}
             contentContainerStyle={containerStyle}>
             <View
-              style={{backgroundColor: '#232D57', padding: 25}}
+              style={{ backgroundColor: '#232D57', padding: 25 }}
               onStartShouldSetResponder={() => hideTownshipModal()}>
               <Icon
                 name="x-circle"
@@ -1234,19 +1238,19 @@ function Customer_Management(props) {
                 }}
               />
             </View>
-            <View style={{padding: 10, height: 550}}>
+            <View style={{ padding: 10, height: 550 }}>
               <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-around',
                 }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{marginRight: 10}}>Search Item:</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                   <Picker
                     selectedValue={townshipselectedItemValue}
                     onValueChange={handleItemValueChange}
-                    style={{width: 200, backgroundColor: 'white', marginTop: 7}}
+                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
                     mode="dropdown">
                     {Township_code.length > 0 &&
                       Township_code.map(val => (
@@ -1259,7 +1263,7 @@ function Customer_Management(props) {
                   </Picker>
                 </View>
 
-                <View style={{width: '50%'}}>
+                <View style={{ width: '50%' }}>
                   <Field
                     name={'searchtext'}
                     component={TextInputFile}
@@ -1351,7 +1355,7 @@ function Customer_Management(props) {
             onDismiss={hideWardModal}
             contentContainerStyle={containerStyle}>
             <View
-              style={{backgroundColor: '#232D57', padding: 25}}
+              style={{ backgroundColor: '#232D57', padding: 25 }}
               onStartShouldSetResponder={() => hideWardModal()}>
               <Icon
                 name="x-circle"
@@ -1366,19 +1370,19 @@ function Customer_Management(props) {
                 }}
               />
             </View>
-            <View style={{padding: 10, height: 550}}>
+            <View style={{ padding: 10, height: 550 }}>
               <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-around',
                 }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{marginRight: 10}}>Search Item:</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                   <Picker
                     selectedValue={wardselectedItemValue}
                     onValueChange={handleItemValueChange}
-                    style={{width: 200, backgroundColor: 'white', marginTop: 7}}
+                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
                     mode="dropdown">
                     {ward_code.length > 0 &&
                       ward_code.map(val => (
@@ -1391,7 +1395,7 @@ function Customer_Management(props) {
                   </Picker>
                 </View>
 
-                <View style={{width: '50%'}}>
+                <View style={{ width: '50%' }}>
                   <Field
                     name={'searchtext'}
                     component={TextInputFile}

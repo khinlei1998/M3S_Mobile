@@ -57,7 +57,7 @@ function Customer_Management(props) {
   const [selectedValue, setSelectedValue] = useState(null);
   const [nrc_visible, setNRC_Visible] = useState(false);
   const [open_empinfo, setEmpInfo] = useState(false);
-  const [show_nrc, setNRC] = useState('old');
+  const [show_nrc, setNRC] = useState('1');
   const [show_operation, setOperation] = useState('1');
   const [show_businessdate, setBusiness] = useState('1');
   const [nrc_statecode, setNRCStateCode] = useState([]);
@@ -88,11 +88,10 @@ function Customer_Management(props) {
     setSelectedItemValue(itemValue);
   };
   const onSubmit = async values => {
-    console.log('values', values);
     let data = Object.assign(values, emp_filter_data, {
       createUserId: empname,
       residentRgstId:
-        show_nrc == 'old'
+        show_nrc == '1'
           ? values.nrcNo
           : values.nrc_statecode + values.nrc_prefix + values.nrcNo,
       start_living_date_status: show_businessdate,
@@ -388,7 +387,7 @@ function Customer_Management(props) {
   const Show_NRC = newValue => {
     console.log('nrc new value', newValue);
     setNRC(newValue);
-    if (newValue == 'new') {
+    if (newValue == '2') {
       setNRC_Visible(true);
     }
   };
@@ -467,8 +466,9 @@ function Customer_Management(props) {
     );
   };
 
-  const handleStartLivingStatus = value => {
-    setBusiness(value);
+  const handleStartLivingStatus = (value,input) => {
+    setBusiness(value.id);
+    input.onChange(value.id);
   };
 
   return (

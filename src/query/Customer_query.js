@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {BASE_URL} from '../common';
+import { BASE_URL } from '../common';
 import moment from 'moment';
-import {fetchEmpName} from './Employee_query';
+import { fetchEmpName } from './Employee_query';
 
 const ExecuteQuery = (sql, params = []) =>
   new Promise((resolve, reject) => {
@@ -65,135 +65,6 @@ export async function filterCustomer(selectedColumn, searchTerm) {
   });
 }
 
-// export function getCustomer_info() {
-//   return new Promise(async (resolve, reject) => {
-//     let ip = await AsyncStorage.getItem('ip');
-//     let port = await AsyncStorage.getItem('port');
-//     const batchSize = 100;
-//     global.db.transaction(tx => {
-//       tx.executeSql('DELETE FROM Customer', [], (tx, results) => {
-//         axios
-//           // .get(`https://${ip}`, {})
-//           .get(`${BASE_URL}api/customers.m3s`)
-//           .then(({data}) => {
-//             if (data.length > 0) {
-//               global.db.transaction(txn => {
-//                 for (let i = 0; i < data.length; i += batchSize) {
-//                   const records = data.slice(i, i + batchSize);
-//                   records.forEach(item => {
-//                     //88 columns
-//                     txn.executeSql(
-//                       `INSERT INTO Customer (serial_no,customer_no,customer_nm,status_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,resident_rgst_id,employee_no,branch_code,entry_date,position_title_nm,salary_rating_code,gender,birth_date,marital_status,saving_acct_num,tel_no,mobile_tel_no,addr,curr_resident_perd,occupation,father_name,family_num,hghschl_num,university_num,house_ocpn_type,remark,business_own_type,prop_apartment_yn,prop_house_yn,prop_car_yn,prop_motorcycle_yn,prop_machines_yn,prop_farmland_yn,prop_other_yn,tot_prop_estmtd_val,ohtr_own_property,otr_prop_estmtd_val,workplace_name,workplace_type,workplace_period,employee_num,workplace_addr,curr_workplace_perd,business_sttn_flg,land_scale,land_own_type,otr_income,tot_sale_income,tot_sale_expense,rawmaterial_expans,wrkp_rent_expns,employee_expns,prmn_empl_expns,tmpy_empl_expns,trnsrt_expns,bus_utlbil_expns,tel_expns,tax_expns,goods_loss_expns,othr_expns_1,othr_expns_2,tot_bus_net_income,fmly_tot_income,fmly_tot_expense,food_expns,house_mngt_expns,utlbil_expns,edct_expns,healthy_expns,fmly_tax_expns,fmly_trnsrt_expns,finance_expns,fmly_otr_expns,fmly_tot_net_income,tablet_sync_sts,sync_sts,nrc_state_code,nrc_prefix_code,nrc_no,curr_resident_date,workplace_date,curr_workplace_date,err_msg) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-//                       [
-//                         item.serialNo,
-//                         item.customerNo,
-//                         item.customerNm,
-//                         item.statusCode,
-//                         item.createDatetime,
-//                         item.createUserId,
-//                         item.deleteDatetime,
-//                         item.deleteUserId,
-//                         item.updateDatetime,
-//                         item.updateUserId,
-//                         item.residentRgstId,
-//                         item.employeeNo,
-//                         item.branchCode,
-//                         item.entryDate,
-//                         item.positionTitleNm,
-//                         item.salaryRatingCode,
-//                         item.gender,
-//                         item.birthDate,
-//                         item.maritalStatus,
-//                         item.savingAcctNum,
-//                         item.telNo,
-//                         item.mobileTelNo,
-//                         item.addr, //23
-//                         item.currResidentPerd,
-//                         item.occupation,
-//                         null,
-//                         item.familyNum,
-//                         item.hghschlNum,
-//                         item.universityNum,
-//                         item.houseOcpnType,
-//                         item.remark,
-//                         item.businessOwnType,
-//                         item.propApartmentYn,
-//                         item.propHouseYn,
-//                         item.propCarYn,
-//                         item.propMotorcycleYn,
-//                         item.propMachinesYn,
-//                         item.propFarmlandYn,
-//                         item.propOtherYn,
-//                         item.totPropEstmtdVal,
-//                         item.ohtrOwnProperty,
-//                         item.otrPropEstmtdVal, //43
-//                         item.workplaceName,
-//                         item.workplaceType,
-//                         item.workplacePeriod,
-//                         item.employeeNum,
-//                         item.workplaceAddr,
-//                         item.currWorkplacePerd,
-//                         item.businessSttnFlg,
-//                         item.landScale,
-//                         item.landOwnType,
-//                         item.otrIncome,
-//                         item.totSaleIncome,
-//                         item.totSaleExpense,
-//                         item.rawmaterialExpans,
-//                         item.wrkpRentExpns,
-//                         item.employeeExpns,
-//                         item.prmnEmplExpns, //59
-//                         item.tmpyEmplExpns,
-//                         item.trnsrtExpns,
-//                         item.busUtlbilExpns,
-//                         item.telExpnsitem,
-//                         item.taxExpnsitem,
-//                         item.goodsLossExpnsitem,
-//                         item.othrExpns1item,
-//                         item.othrExpns2item,
-//                         item.totBusNetIncomeitem,
-//                         item.fmlyTotIncomeitem,
-//                         item.fmlyTotExpenseitem,
-//                         item.foodExpnsitem, //71
-//                         item.houseMngtExpnsitem,
-//                         item.utlbilExpns,
-//                         item.edctExpnsitem,
-//                         item.healthyExpnsitem,
-//                         item.fmlyTaxExpnsitem,
-//                         item.fmlyTrnsrtExpnsitem,
-//                         item.financeExpnsitem,
-//                         item.fmlyOtrExpnsitem,
-//                         item.fmlyTotNetIncomeitem,
-//                         item.tabletSyncStsitem, //81
-//                         item.syncStsitem,
-//                         item.nrcStateCode,
-//                         item.nrcPrefixCode,
-//                         item.nrcNo,
-//                         null,
-//                         item.workplaceDate,
-//                         null,
-//                         null,
-//                       ],
-
-//                       (tx, results) => {
-//                         resolve('success');
-//                       },
-//                       error => {
-//                         alert('Customer Insert Error', error);
-//                         reject(error);
-//                       },
-//                     );
-//                   });
-//                 }
-//               });
-//             }
-//           })
-//           .catch(error => reject(error));
-//       });
-//     });
-//   });
-// }
-
 export function getCustomer_info() {
   return new Promise(async (resolve, reject) => {
     let ip = await AsyncStorage.getItem('ip');
@@ -207,418 +78,7 @@ export function getCustomer_info() {
       ':' + port + searchWord,
     );
 
-    // global.db.transaction(tx => {
-    //   tx.executeSql('DELETE FROM Customer', [], (tx, results) => {
-    //     console.log('Delete success');
-    //     axios
-    //       // .get(`https://${newIP}/skylark-m3s/api/employees.m3s`)
-    //       .get(`https://${ip}:${port}/skylark-m3s/api/customers.m3s`)
-    //       .then(({ data }) => {
-    //         console.log('data', data.length);
-    //         if (data.length > 0) {
-    //           let insertedRows = 0;
-    //           global.db.transaction(tx => {
-    //             for (let i = 0; i < data.length; i += batchSize) {
-    //               const records = data.slice(i, i + batchSize);
-    //               console.log('records>>>>>>', records.length);
-    //               records.forEach(item => {
-    //                 tx.executeSql(
-    //                   `INSERT INTO Customer (serial_no,customer_no,customer_nm,status_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,resident_rgst_id,employee_no,branch_code,entry_date,position_title_nm,salary_rating_code,gender,birth_date,marital_status,saving_acct_num,tel_no,mobile_tel_no,addr,curr_resident_perd,occupation,father_name,family_num,hghschl_num,university_num,house_ocpn_type,remark,business_own_type,prop_apartment_yn,prop_house_yn,prop_car_yn,prop_motorcycle_yn,prop_machines_yn,prop_farmland_yn,prop_other_yn,tot_prop_estmtd_val,ohtr_own_property,otr_prop_estmtd_val,workplace_name,workplace_type,workplace_period,employee_num,workplace_addr,curr_workplace_perd,business_sttn_flg,land_scale,land_own_type,otr_income,tot_sale_income,tot_sale_expense,rawmaterial_expans,wrkp_rent_expns,employee_expns,prmn_empl_expns,tmpy_empl_expns,trnsrt_expns,bus_utlbil_expns,tel_expns,tax_expns,goods_loss_expns,othr_expns_1,othr_expns_2,tot_bus_net_income,fmly_tot_income,fmly_tot_expense,food_expns,house_mngt_expns,utlbil_expns,edct_expns,healthy_expns,fmly_tax_expns,fmly_trnsrt_expns,finance_expns,fmly_otr_expns,fmly_tot_net_income,tablet_sync_sts,sync_sts,nrc_state_code,nrc_prefix_code,nrc_no,curr_resident_date,workplace_date,curr_workplace_date,err_msg) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-    //                   [
-    //                     item.serialNo,
-    //                     item.customerNo,
-    //                     item.customerNm,
-    //                     item.statusCode,
-    //                     item.createDatetime,
-    //                     item.createUserId,
-    //                     item.deleteDatetime,
-    //                     item.deleteUserId,
-    //                     item.updateDatetime,
-    //                     item.updateUserId,
-    //                     item.residentRgstId,
-    //                     item.employeeNo,
-    //                     item.branchCode,
-    //                     item.entryDate,
-    //                     item.positionTitleNm,
-    //                     item.salaryRatingCode,
-    //                     item.gender,
-    //                     item.birthDate,
-    //                     item.maritalStatus,
-    //                     item.savingAcctNum,
-    //                     item.telNo,
-    //                     item.mobileTelNo,
-    //                     item.addr, //23
-    //                     item.currResidentPerd,
-    //                     item.occupation,
-    //                     null,
-    //                     item.familyNum,
-    //                     item.hghschlNum,
-    //                     item.universityNum,
-    //                     item.houseOcpnType,
-    //                     item.remark,
-    //                     item.businessOwnType,
-    //                     item.propApartmentYn,
-    //                     item.propHouseYn,
-    //                     item.propCarYn,
-    //                     item.propMotorcycleYn,
-    //                     item.propMachinesYn,
-    //                     item.propFarmlandYn,
-    //                     item.propOtherYn,
-    //                     item.totPropEstmtdVal,
-    //                     item.ohtrOwnProperty,
-    //                     item.otrPropEstmtdVal, //43
-    //                     item.workplaceName,
-    //                     item.workplaceType,
-    //                     item.workplacePeriod,
-    //                     item.employeeNum,
-    //                     item.workplaceAddr,
-    //                     item.currWorkplacePerd,
-    //                     item.businessSttnFlg,
-    //                     item.landScale,
-    //                     item.landOwnType,
-    //                     item.otrIncome,
-    //                     item.totSaleIncome,
-    //                     item.totSaleExpense,
-    //                     item.rawmaterialExpans,
-    //                     item.wrkpRentExpns,
-    //                     item.employeeExpns,
-    //                     item.prmnEmplExpns, //59
-    //                     item.tmpyEmplExpns,
-    //                     item.trnsrtExpns,
-    //                     item.busUtlbilExpns,
-    //                     item.telExpnsitem,
-    //                     item.taxExpnsitem,
-    //                     item.goodsLossExpnsitem,
-    //                     item.othrExpns1item,
-    //                     item.othrExpns2item,
-    //                     item.totBusNetIncomeitem,
-    //                     item.fmlyTotIncomeitem,
-    //                     item.fmlyTotExpenseitem,
-    //                     item.foodExpnsitem, //71
-    //                     item.houseMngtExpnsitem,
-    //                     item.utlbilExpns,
-    //                     item.edctExpnsitem,
-    //                     item.healthyExpnsitem,
-    //                     item.fmlyTaxExpnsitem,
-    //                     item.fmlyTrnsrtExpnsitem,
-    //                     item.financeExpnsitem,
-    //                     item.fmlyOtrExpnsitem,
-    //                     item.fmlyTotNetIncomeitem,
-    //                     item.tabletSyncStsitem, //81
-    //                     item.syncStsitem,
-    //                     item.nrcStateCode,
-    //                     item.nrcPrefixCode,
-    //                     item.nrcNo,
-    //                     null,
-    //                     item.workplaceDate,
-    //                     null,
-    //                     null,
-    //                   ],
-    //                   (tx, results) => {
-    //                     // If insert query succeeds, resolve the promise
-    //                     console.log('Customer Insert success', results.rowsAffected);
-    //                     console.log('length', data.length);
 
-    //                     insertedRows += results.rowsAffected;
-    //                     console.log('insertedRows>>>>', insertedRows);
-    //                     if (insertedRows === data.length) {
-    //                       resolve('success');
-    //                       console.log('All records inserted successfully');
-    //                     }
-    //                   },
-    //                   error => {
-    //                     console.log('query error', error);
-    //                     // If insert query fails, rollback the transaction and reject the promise
-    //                     tx.executeSql('ROLLBACK', [], () => {
-    //                       reject(error);
-    //                     });
-    //                   },
-    //                 );
-    //               });
-    //             }
-    //           });
-
-    //         }
-    //       })
-    //       .catch(error => {
-    //         alert(error);
-    //         reject(error);
-    //       });
-    //   });
-    // });
-    const testdat = [
-      {
-        serialNo: 1,
-        employeeNo: 2,
-        employeeName: 'mgmg',
-        employeeLocalName: 'd',
-        userId: '1',
-        password:
-          'NkI4NkIyNzNGRjM0RkNFMTlENkI4MDRFRkY1QTNGNTc0N0FEQTRFQUEyMkYxRDQ5QzAxRTUyRERCNzg3NUI0Qg==',
-        userKind: 'dsd',
-        resident_rgst_id: 'sa',
-        entryDate: '434',
-        tel_no: '44',
-        cell_phone_no: '43',
-        employeeTypeCode: '434',
-        branchCode: '32',
-        branch_name: '323',
-        local_branch_name: '434',
-        departmentCode: '888',
-        departmentName: '443',
-        departmentLocalName: '43',
-        teamCode: '434',
-        teamName: 'wew',
-        teamLocalName: '434',
-        positionTitleCode: '43',
-        positionTitleNm: 'rer',
-        positionTitleLclNm: 'aew',
-        err_msg: 'fdf',
-      },
-      {
-        serialNo: 2,
-        employeeNo: 2,
-        employeeName: 'mgmg',
-        employeeLocalName: 'd',
-        userId: '4',
-        password: '323',
-        userKind: 'dsd',
-        resident_rgst_id: 'sa',
-        entryDate: '434',
-        tel_no: '44',
-        cell_phone_no: '43',
-        employeeTypeCode: '434',
-        branchCode: '32',
-        branch_name: '323',
-        local_branch_name: '434',
-        departmentCode: '888',
-        departmentName: '443',
-        departmentLocalName: '43',
-        teamCode: '434',
-        teamName: 'wew',
-        teamLocalName: '434',
-        positionTitleCode: '43',
-        positionTitleNm: 'rer',
-        positionTitleLclNm: 'aew',
-        err_msg: 'fdf',
-      },
-      {
-        serialNo: 3,
-        employeeNo: 2,
-        employeeName: 'mgmg',
-        employeeLocalName: 'd',
-        userId: '4',
-        password: '323',
-        userKind: 'dsd',
-        resident_rgst_id: 'sa',
-        entryDate: '434',
-        tel_no: '44',
-        cell_phone_no: '43',
-        employeeTypeCode: '434',
-        branchCode: '32',
-        branch_name: '323',
-        local_branch_name: '434',
-        departmentCode: '888',
-        departmentName: '443',
-        departmentLocalName: '43',
-        teamCode: '434',
-        teamName: 'wew',
-        teamLocalName: '434',
-        positionTitleCode: '43',
-        positionTitleNm: 'rer',
-        positionTitleLclNm: 'aew',
-        err_msg: 'fdf',
-      },
-      {
-        serialNo: 4,
-        employeeNo: 2,
-        employeeName: 'mgmg',
-        employeeLocalName: 'd',
-        userId: '4',
-        password: '323',
-        userKind: 'dsd',
-        resident_rgst_id: 'sa',
-        entryDate: '434',
-        tel_no: '44',
-        cell_phone_no: '43',
-        employeeTypeCode: '434',
-        branchCode: '32',
-        branch_name: '323',
-        local_branch_name: '434',
-        departmentCode: '888',
-        departmentName: '443',
-        departmentLocalName: '43',
-        teamCode: '434',
-        teamName: 'wew',
-        teamLocalName: '434',
-        positionTitleCode: '43',
-        positionTitleNm: 'rer',
-        positionTitleLclNm: 'aew',
-        err_msg: 'fdf',
-      },
-      {
-        serialNo: 5,
-        employeeNo: 2,
-        employeeName: 'mgmg',
-        employeeLocalName: 'd',
-        userId: '4',
-        password: '323',
-        userKind: 'dsd',
-        resident_rgst_id: 'sa',
-        entryDate: '434',
-        tel_no: '44',
-        cell_phone_no: '43',
-        employeeTypeCode: '434',
-        branchCode: '32',
-        branch_name: '323',
-        local_branch_name: '434',
-        departmentCode: '888',
-        departmentName: '443',
-        departmentLocalName: '43',
-        teamCode: '434',
-        teamName: 'wew',
-        teamLocalName: '434',
-        positionTitleCode: '43',
-        positionTitleNm: 'rer',
-        positionTitleLclNm: 'aew',
-        err_msg: 'fdf',
-      },
-      {
-        serialNo: 6,
-        employeeNo: 2,
-        employeeName: 'mgmg',
-        employeeLocalName: 'd',
-        userId: '4',
-        password: '323',
-        userKind: 'dsd',
-        resident_rgst_id: 'sa',
-        entryDate: '434',
-        tel_no: '44',
-        cell_phone_no: '43',
-        employeeTypeCode: '434',
-        branchCode: '32',
-        branch_name: '323',
-        local_branch_name: '434',
-        departmentCode: '888',
-        departmentName: '443',
-        departmentLocalName: '43',
-        teamCode: '434',
-        teamName: 'wew',
-        teamLocalName: '434',
-        positionTitleCode: '43',
-        positionTitleNm: 'rer',
-        positionTitleLclNm: 'aew',
-        err_msg: 'fdf',
-      },
-      {
-        serialNo: 7,
-        employeeNo: 2,
-        employeeName: 'mgmg',
-        employeeLocalName: 'd',
-        userId: '4',
-        password: '323',
-        userKind: 'dsd',
-        resident_rgst_id: 'sa',
-        entryDate: '434',
-        tel_no: '44',
-        cell_phone_no: '43',
-        employeeTypeCode: '434',
-        branchCode: '32',
-        branch_name: '323',
-        local_branch_name: '434',
-        departmentCode: '888',
-        departmentName: '443',
-        departmentLocalName: '43',
-        teamCode: '434',
-        teamName: 'wew',
-        teamLocalName: '434',
-        positionTitleCode: '43',
-        positionTitleNm: 'rer',
-        positionTitleLclNm: 'aew',
-        err_msg: 'fdf',
-      },
-      {
-        serialNo: 8,
-        employeeNo: 2,
-        employeeName: 'mgmg',
-        employeeLocalName: 'd',
-        userId: '4',
-        password: '323',
-        userKind: 'dsd',
-        resident_rgst_id: 'sa',
-        entryDate: '434',
-        tel_no: '44',
-        cell_phone_no: '43',
-        employeeTypeCode: '434',
-        branchCode: '32',
-        branch_name: '323',
-        local_branch_name: '434',
-        departmentCode: '888',
-        departmentName: '443',
-        departmentLocalName: '43',
-        teamCode: '434',
-        teamName: 'wew',
-        teamLocalName: '434',
-        positionTitleCode: '43',
-        positionTitleNm: 'rer',
-        positionTitleLclNm: 'aew',
-        err_msg: 'fdf',
-      },
-      {
-        serialNo: 9,
-        employeeNo: 2,
-        employeeName: 'mgmg',
-        employeeLocalName: 'd',
-        userId: '4',
-        password: '323',
-        userKind: 'dsd',
-        resident_rgst_id: 'sa',
-        entryDate: '434',
-        tel_no: '44',
-        cell_phone_no: '43',
-        employeeTypeCode: '434',
-        branchCode: '32',
-        branch_name: '323',
-        local_branch_name: '434',
-        departmentCode: '888',
-        departmentName: '443',
-        departmentLocalName: '43',
-        teamCode: '434',
-        teamName: 'wew',
-        teamLocalName: '434',
-        positionTitleCode: '43',
-        positionTitleNm: 'rer',
-        positionTitleLclNm: 'aew',
-        err_msg: 'fdf',
-      },
-      {
-        serialNo: 10,
-        employeeNo: 2,
-        employeeName: 'mgmg',
-        employeeLocalName: 'd',
-        userId: '4',
-        password: '323',
-        userKind: 'dsd',
-        resident_rgst_id: 'sa',
-        entryDate: '434',
-        tel_no: '44',
-        cell_phone_no: '43',
-        employeeTypeCode: '434',
-        branchCode: '32',
-        branch_name: '323',
-        local_branch_name: '434',
-        departmentCode: '888',
-        departmentName: '443',
-        departmentLocalName: '43',
-        teamCode: '434',
-        teamName: 'wew',
-        teamLocalName: '434',
-        positionTitleCode: '43',
-        positionTitleNm: 'rer',
-        positionTitleLclNm: 'aew',
-        err_msg: 'fdf',
-      },
-    ];
     global.db.transaction(tx => {
       tx.executeSql('DELETE FROM Customer', [], (tx, results) => {
         axios
@@ -627,7 +87,7 @@ export function getCustomer_info() {
             `https://${ip}:${port}/skylark-m3s/api/customers.m3s`,
             // { responseType: 'json' }
           )
-          .then(({data}) => {
+          .then(({ data }) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -795,7 +255,7 @@ export const checkDataExists = dataToCheck => {
 };
 
 export function storeCustomerData(cus_data) {
-  console.log('cus_data',cus_data);
+  console.log('cus_data', cus_data);
   return new Promise(async (resolve, reject) => {
     try {
       const dataExists = await checkDataExists(cus_data.residentRgstId);
@@ -810,7 +270,7 @@ export function storeCustomerData(cus_data) {
           trans.executeSql(
             `INSERT INTO Customer (serial_no,customer_no,customer_nm,status_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,resident_rgst_id,employee_no,branch_code,entry_date,position_title_nm,salary_rating_code,gender,birth_date,marital_status,saving_acct_num,tel_no,mobile_tel_no,addr,curr_resident_perd,occupation,father_name,family_num,hghschl_num,university_num,house_ocpn_type,remark,business_own_type,prop_apartment_yn,prop_house_yn,prop_car_yn,prop_motorcycle_yn,prop_machines_yn,prop_farmland_yn,prop_other_yn,tot_prop_estmtd_val,ohtr_own_property,otr_prop_estmtd_val,workplace_name,workplace_type,workplace_period,employee_num,workplace_addr,curr_workplace_perd,business_sttn_flg,land_scale,land_own_type,otr_income,tot_sale_income,tot_sale_expense,rawmaterial_expans,wrkp_rent_expns,employee_expns,prmn_empl_expns,tmpy_empl_expns,trnsrt_expns,bus_utlbil_expns,tel_expns,tax_expns,goods_loss_expns,othr_expns_1,othr_expns_2,tot_bus_net_income,fmly_tot_income,fmly_tot_expense,food_expns,house_mngt_expns,utlbil_expns,edct_expns,healthy_expns,fmly_tax_expns,fmly_trnsrt_expns,finance_expns,fmly_otr_expns,fmly_tot_net_income,tablet_sync_sts,sync_sts,nrc_state_code,nrc_prefix_code,nrc_no,curr_resident_date,workplace_date,curr_workplace_date,err_msg,postal_code,total_net,city_code,city_name,township_code,township_name,village_code,village_name,ward_code,ward_name,address_type,business_period_status,curr_business_date_status,village_status,start_living_date_status,nrc_type) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
             [
-              28, //cus_data.serialNo
+              null, //cus_data.serialNo
               // cus_data.employeeNo,
               cus_data.CustomerNo,
               cus_data.employeeName, //customerNM
@@ -960,6 +420,7 @@ export async function fetchAllCustomerNum() {
 
 export function updateCustomerData(cus_data) {
   return new Promise(async (resolve, reject) => {
+
     global.db.transaction(trans => {
       trans.executeSql(
         'UPDATE Customer SET serial_no=?,customer_no =?,customer_nm =?,status_code=?,create_datetime =?,create_user_id =?,delete_datetime =?,delete_user_id =?,update_datetime =?,update_user_id =?,resident_rgst_id =?,employee_no =?,branch_code =?,entry_date =?,position_title_nm =?,salary_rating_code =?,gender =?,birth_date =?,marital_status =?,saving_acct_num =?,tel_no =?,mobile_tel_no =?,addr =?,curr_resident_perd =?,occupation =?,father_name =?,family_num =?,hghschl_num =?,university_num =?,house_ocpn_type =?,remark =?,business_own_type =?,prop_apartment_yn =?,prop_house_yn =?,prop_car_yn =?,prop_motorcycle_yn =?,prop_machines_yn =?,prop_farmland_yn =?,prop_other_yn =?,tot_prop_estmtd_val =?,ohtr_own_property =?,otr_prop_estmtd_val =?,workplace_name =?,workplace_type =?,workplace_period =?,employee_num =?,workplace_addr =?,curr_workplace_perd =?,business_sttn_flg =?,land_scale =?,land_own_type =?,otr_income =?,tot_sale_income =?,tot_sale_expense =?,rawmaterial_expans =?,wrkp_rent_expns =?,employee_expns =?,prmn_empl_expns =?,tmpy_empl_expns =?,trnsrt_expns =?,bus_utlbil_expns =?,tel_expns =?,tax_expns =?,goods_loss_expns =?,othr_expns_1 =?,othr_expns_2 =?,tot_bus_net_income =?,fmly_tot_income =?,fmly_tot_expense =?,food_expns =?,house_mngt_expns =?,utlbil_expns =?,edct_expns =?,healthy_expns =?,fmly_tax_expns =?,fmly_trnsrt_expns =?,finance_expns =?,fmly_otr_expns =?,fmly_tot_net_income =?,tablet_sync_sts =?,sync_sts =?,nrc_state_code =?,nrc_prefix_code =?,nrc_no =?,curr_resident_date =?,workplace_date =?,curr_workplace_date =?,err_msg =?,postal_code =?,total_net =?,city_code =?,city_name =?,township_code =?,township_name =?,village_code =?,village_name =?,ward_code =?,ward_name =?,address_type =?  WHERE id = ?',
@@ -968,7 +429,7 @@ export function updateCustomerData(cus_data) {
           // cus_data.employeeNo,
           cus_data.customer_no,
           cus_data.customer_nm, //customerNM
-          '02', //statusCode
+          '01', //statusCode
           '2020-09-09', //create Date Time
           cus_data.createUserId,
           null, //deleteDatetime
@@ -1092,28 +553,65 @@ export function UploadCustomerData(customer_data) {
     let ip = await AsyncStorage.getItem('ip');
     let port = await AsyncStorage.getItem('port');
     console.log('finale data', customer_data);
-
-    axios
-      .post(
-        // `https://sample-rest.onrender.com:443/skylark-m3s/api/customers.m3s`
-        // `https://${ip}:${port}/skylark-m3s/api/customers.m3s`, customer_data,
-        `https://13a7-2a09-bac1-4b00-20-00-277-6.ngrok-free.app:443/skylark-m3s/api/customers.m3s`,
-        customer_data,
-        {
-          // responseType: 'json',
-          headers: {
-            'Content-Type': 'application/json',
+    for (var i = 0; i < customer_data.length; i++) {
+      // console.log(' customer_data[i],', customer_data[8]);
+      axios
+        .post(
+          // `https://${ip}:${port}/skylark-m3s/api/customers.m3s`, customer_data,
+          `https://f3ef-2a09-bac1-4b40-20-00-278-92.ngrok-free.app/skylark-m3s/api/customers.m3s`,
+          [customer_data[i]],
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
           },
-        },
-      )
-      .then(response => {
-        console.log('response', response);
-        // if (response.data.status == 200) {
-        //   alert('Customer Upload Success');
-        // }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+        )
+        .then(async response => {
+          console.log('response', response.data[0].errMsg);
+          if (response.data[0].errMsg) {
+            alert('SmTH wrong')
+            // reject(response.data[0].errMsg)
+          } else {
+            console.log('Update table Sync');
+             await updateTableSyncStatus(response.data[0].id)
+              .then((response) => {
+                resolve('success');
+
+              })
+              .catch((error) => {
+                console.error('Error in childFunction:', error);
+                reject('Error messageupdate sync');
+              });
+          }
+        })
+        .catch(error => {
+          reject(error)
+          console.log(error);
+        });
+    }
   });
 }
+
+
+export const updateTableSyncStatus = (id) => {
+  return new Promise(async (resolve, reject) => {
+    console.log('cus id', id);
+    global.db.transaction((tx) => {
+
+      tx.executeSql(
+        'UPDATE Customer set tablet_sync_sts=? where id=?',
+        ['01', id],
+        (txObj, resultSet) => {
+          console.log('resultSet', resultSet);
+          resolve('success')
+          console.log('Update successful');
+        },
+        (txObj, error) => {
+          reject(error)
+          console.error('Update error:', error);
+        }
+      );
+    });
+  });
+};
+

@@ -24,6 +24,7 @@ export default function RadioButtonFile(props) {
                 key={val.id}
                 label={val.name}
                 value={val.id}
+                status={input.checked ? 'checked' : 'unchecked'}
                 // disabled={disabled ? true : false}
                 disabled={disabled}
               />

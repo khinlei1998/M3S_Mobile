@@ -99,6 +99,18 @@ export const business_situation = [
   },
 ];
 
+export const nrc_type = [
+  {
+    id: '1',
+    name: 'Old',
+  },
+  {
+    id: '2',
+    name: 'New',
+  },
+];
+
+
 export const village_status = [
   {
     id: '1',

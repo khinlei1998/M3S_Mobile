@@ -10,9 +10,9 @@ const validate = (values) => {
     if (!values.telNo) {
         errors.telNo = "Telno is required.";
     }
-
-
-
+    if (!values.nrcNo) {
+        errors.nrcNo = "NRC is required.";
+    }
 
     return errors;
 };
