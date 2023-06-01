@@ -36,6 +36,7 @@ export default function App() {
       name: 'M3SDB.db',
       createFromLocation: '~M3SDB.db',
       location: 'Library',
+      readOnly: false
     },
     success => {
       console.log('DB Connection Created');
