@@ -64,6 +64,7 @@ export default function TextInputFile(props) {
         {...restInput}
         {...rest}
         editable={editable ? false : true}
+        maxLength={inputmax}
         // defaultValue={value}
         theme={{
           colors: {

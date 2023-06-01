@@ -44,7 +44,7 @@ function ShowNRC_Modal(props) {
 
               <Field
                 data={nrc_prefix_code}
-                name={'nrc_prefix_code'}
+                name={'nrc_prefix'}
                 title={'Select Prefix'}
                 component={DropDownPicker}
                 pickerStyle={{
@@ -57,7 +57,7 @@ function ShowNRC_Modal(props) {
               title={'NRC Number'}
               component={TextInputFile}
               input_mode
-              inputmax={100}
+              inputmax={6}
             />
           </View>
           <View

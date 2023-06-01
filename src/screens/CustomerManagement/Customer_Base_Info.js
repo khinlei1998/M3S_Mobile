@@ -63,7 +63,7 @@ function Customer_Base_Info(props) {
   const handleRadioButtonChange = (value, input) => {
     setVillage(value.id);
     input.onChange(value.id);
-    if (value == '2') {
+    if (value.id == '2') {
       dispatch(change('Customer_ManagementForm', 'village_code', ''));
     }
     // Dispatch action to clear the field value
@@ -73,7 +73,6 @@ function Customer_Base_Info(props) {
   };
 
   const handleNRCChange = (value, input) => {
-    console.log('value', value);
     input.onChange(value.id);
     showNrcFun(value.id);
     if (value.id == 'old') {
@@ -136,6 +135,7 @@ function Customer_Base_Info(props) {
                 <Field
                   name={'nrcNo'}
                   title={'NRC'}
+                  inputmax={6}
                   component={TextInputFile}
                   cus_width
                   input_mode

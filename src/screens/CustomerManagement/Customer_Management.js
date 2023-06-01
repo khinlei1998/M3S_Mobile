@@ -8,7 +8,7 @@ import {
   FlatList,
   ToastAndroid,
 } from 'react-native';
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, } from 'react';
 import {Field, reduxForm, change, reset} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
 import {
@@ -17,9 +17,7 @@ import {
   Modal,
   Provider,
   Portal,
-  TextInput,
 } from 'react-native-paper';
-import {useNavigation} from '@react-navigation/native';
 import DividerLine from '../../components/DividerLine';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
@@ -63,7 +61,6 @@ function Customer_Management(props) {
   const [nrc_statecode, setNRCStateCode] = useState([]);
   const [nrc_prefix_code, setNRCPrefixCode] = useState([]);
   const [empname, setEmpName] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
   const [modal_city_visible, setCityCodeModalVisible] = useState(false);
   // Villgae
   const [modal_village_visible, setVillageCodeModalVisible] = useState(false);
@@ -102,7 +99,7 @@ function Customer_Management(props) {
       if (result == 'success') {
         // dispatch_Reset_Beneficiary([]);
 
-        // dispatch(reset('Customer_ManagementForm'));
+        dispatch(reset('Customer_ManagementForm'));
         resetMonthlyIncome();
 
         ToastAndroid.show(`Create Successfully!`, ToastAndroid.SHORT);
@@ -304,14 +301,6 @@ function Customer_Management(props) {
         item.position_title_nm,
       ),
     );
-
-    // let emp_data = {
-    //   branchCode: item.branch_code,
-    //   employeeNo: item.employee_no,
-    //   entryDate: item.entry_date,
-    //   positionTitleNm: item.position_title_nm,
-    // };
-    // addEmpFilter(emp_data);
   };
 
   const item = ({item, index}) => {
@@ -385,7 +374,6 @@ function Customer_Management(props) {
   };
 
   const Show_NRC = newValue => {
-    console.log('nrc new value', newValue);
     setNRC(newValue);
     if (newValue == '2') {
       setNRC_Visible(true);

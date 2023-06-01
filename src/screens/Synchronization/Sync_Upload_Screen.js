@@ -1,13 +1,19 @@
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
 import DividerLine from '../../components/DividerLine';
-import { Button, Checkbox } from 'react-native-paper';
+import {Button, Checkbox} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import CheckBoxFile from '../../components/CheckBoxFile';
-import { UploadCustomerData } from '../../query/Customer_query';
-import { updateTableSyncStatus } from '../../query/Customer_query';
+import {UploadCustomerData} from '../../query/Customer_query';
+import {updateTableSyncStatus} from '../../query/Customer_query';
 export default function Sync_Upload_Screen(props) {
-  const { btnUploadCustomer,customer_data, loan_data, btn_disabled, btn_cus_disabled } = props;
+  const {
+    btnUploadCustomer,
+    customer_data,
+    loan_data,
+    btn_disabled,
+    btn_cus_disabled,
+  } = props;
   const [checkedItems, setCheckedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
 
@@ -40,7 +46,7 @@ export default function Sync_Upload_Screen(props) {
     }
   };
 
-  const item = ({ item }) => {
+  const item = ({item}) => {
     return (
       <View
         style={{
@@ -109,7 +115,7 @@ export default function Sync_Upload_Screen(props) {
               name="chevron-right"
               size={30}
               color="#000"
-              style={{ marginLeft: 15 }}
+              style={{marginLeft: 15}}
             />
           </TouchableOpacity>
         </View>
@@ -144,9 +150,9 @@ export default function Sync_Upload_Screen(props) {
   // };
 
   return (
-    <View style={{ marginTop: 20, marginLeft: 10, marginRight: 10, flex: 1 }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={{ fontWeight: 'bold', fontSize: 18, marginLeft: 10 }}>
+    <View style={{marginTop: 20, marginLeft: 10, marginRight: 10, flex: 1}}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <Text style={{fontWeight: 'bold', fontSize: 18, marginLeft: 10}}>
           Upload Application
         </Text>
 
@@ -158,7 +164,7 @@ export default function Sync_Upload_Screen(props) {
               color: 'red',
             }}>
             {loan_data.length}
-            <Text style={{ color: '#c7c7c7', fontSize: 15 }}> PCS</Text>
+            <Text style={{color: '#c7c7c7', fontSize: 15}}> PCS</Text>
           </Text>
         </View>
       </View>
@@ -238,12 +244,16 @@ export default function Sync_Upload_Screen(props) {
         renderItem={item}
         keyExtractor={(item, index) => index.toString()}
       />
+      <View style={{flexDirection:'row',marginLeft:15}}>
+        <Text style={{fontWeight:'bold',fontSize:17}} >New Customer : </Text>
+        <Text style={{fontWeight:'bold',fontSize:17}} >{customer_data.length} </Text>
+      </View>
       <View
         style={{
           flexDirection: 'row',
           justifyContent: 'center',
-          position: 'absolute',
-          bottom: 0,
+          // position: 'absolute',
+          // bottom: 0,
           marginBottom: 10,
           alignSelf: 'center',
         }}>

@@ -35,19 +35,6 @@ export default function CustomerSearch(props) {
           Customer Information Management
         </Text>
 
-        <Button
-          onPress={() => navigation.navigate('Customer Management')}
-          mode="contained"
-          buttonColor={'#6870C3'}
-          style={{
-            borderRadius: 0,
-            width: 100,
-            marginTop: 10,
-            color: 'black',
-            marginLeft: 5,
-          }}>
-          OK
-        </Button>
         <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={{marginRight: 10}}>Search Item:</Text>

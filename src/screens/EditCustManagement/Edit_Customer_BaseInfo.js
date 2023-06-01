@@ -21,6 +21,8 @@ import {
   maritail_status,
   address_type,
   condition_house,
+  village_status,
+  nrc_type
 } from '../../common';
 import DividerLine from '../../components/DividerLine';
 import DatePicker from '../../components/DatePicker';
@@ -29,11 +31,12 @@ import {setCusFormInitialValues} from '../../redux/CustomerReducer';
 import {fetchAllCustomerNum} from '../../query/Customer_query';
 import {Modal, Provider, Portal, Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
-import {city_code} from '../../common';
+import {city_code, start_living_date_status} from '../../common';
 import {useDispatch} from 'react-redux';
-
+import RadioButtonFile from '../../components/RadioButtonFile';
 function Edit_Customer_BaseInfo(props) {
   const {
+    show_village,
     show_businessdate,
     handleStartLivingStatus,
     showNrcFun,
@@ -44,11 +47,13 @@ function Edit_Customer_BaseInfo(props) {
     showTownshipSearch,
     showWardSearch,
     update_status,
+    handleRadioButtonChange,
+    handleNRCChange
   } = props;
   const dispatch = useDispatch();
 
   const [open_cusinfo, setCusInfo] = useState(false);
-  const [show_village, setVillage] = useState('village');
+  // const [show_village, setVillage] = useState('village');
   const [modal_city_visible, setCityCodeModalVisible] = useState(false);
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
   const [all_emp, setAllEmp] = useState([]);
@@ -58,17 +63,17 @@ function Edit_Customer_BaseInfo(props) {
   };
 
   const numbers = Array.from({length: 60}, (_, i) => i + 1);
-  const handleRadioButtonChange = value => {
-    alert(value);
-    setVillage(value);
-    if (value == 'ward') {
-      dispatch(change('Customer_ManagementForm', 'village_code', ''));
-    }
-    // Dispatch action to clear the field value
-    // dispatch(
-    //   change('myForm', 'fieldName', radioValue === 'clear' ? '' : radioValue),
-    // );
-  };
+  // const handleRadioButtonChange = value => {
+  //   alert(value);
+  //   setVillage(value);
+  //   if (value == 'ward') {
+  //     dispatch(change('Customer_ManagementForm', 'village_code', ''));
+  //   }
+  //   // Dispatch action to clear the field value
+  //   // dispatch(
+  //   //   change('myForm', 'fieldName', radioValue === 'clear' ? '' : radioValue),
+  //   // );
+  // };
   return (
     <>
       <View style={style.container}>
@@ -88,7 +93,7 @@ function Edit_Customer_BaseInfo(props) {
             }}>
             <Text style={style.radio_title_style}>NRC Type</Text>
 
-            <RadioButton.Group
+            {/* <RadioButton.Group
               onValueChange={newValue => {
                 showNrcFun(newValue);
               }}
@@ -100,7 +105,19 @@ function Edit_Customer_BaseInfo(props) {
                 <Text style={{marginTop: 5}}>New</Text>
                 <RadioButton value="new" />
               </View>
-            </RadioButton.Group>
+            </RadioButton.Group> */}
+
+            <View>
+              <Field
+                data={nrc_type}
+                name={'nrc_type'}
+                component={RadioButtonFile}
+                ShowRadioBtnChange={(value, input) =>
+                  showNrcFun(value, input)
+                }
+                disabled={update_status == true ? false : true}
+              />
+            </View>
 
             <View style={style.child_input_style}>
               {show_nrc == 'old' ? (
@@ -230,7 +247,7 @@ function Edit_Customer_BaseInfo(props) {
               />
             </View>
 
-            <RadioButton.Group
+            {/* <RadioButton.Group
               onValueChange={newValue => handleRadioButtonChange(newValue)}
               value={show_village}>
               <View style={style.child_radio_title_style}>
@@ -240,9 +257,20 @@ function Edit_Customer_BaseInfo(props) {
                 <Text style={{marginTop: 5}}>Ward</Text>
                 <RadioButton value="ward" />
               </View>
-            </RadioButton.Group>
+            </RadioButton.Group> */}
 
-            {show_village == 'village' ? (
+            <Field
+              data={village_status}
+              name={'village_status'}
+              component={RadioButtonFile}
+              ShowRadioBtnChange={(value, input) =>
+                handleRadioButtonChange(value, input)
+              }
+              disabled={update_status == true ? false : true}
+              get_value={1}
+            />
+
+            {show_village == '1' ? (
               <View style={style.child_input_style}>
                 <Field
                   name={'village_code'}
@@ -300,7 +328,7 @@ function Edit_Customer_BaseInfo(props) {
             <Text style={style.radio_title_style}>
               Start Living Date Current Address
             </Text>
-            <RadioButton.Group
+            {/* <RadioButton.Group
              onValueChange={newValue => handleStartLivingStatus(newValue)}
               value={show_businessdate}>
               <View style={style.child_radio_title_style}>
@@ -310,7 +338,19 @@ function Edit_Customer_BaseInfo(props) {
                 <Text style={{marginTop: 5}}>Exact Date</Text>
                 <RadioButton value="2" />
               </View>
-            </RadioButton.Group>
+            </RadioButton.Group> */}
+
+            <View>
+              <Field
+                data={start_living_date_status}
+                name={'start_living_date_status'}
+                component={RadioButtonFile}
+                ShowRadioBtnChange={(value, input) =>
+                  handleStartLivingStatus(value, input)
+                }
+                disabled={update_status == true ? false : true}
+              />
+            </View>
 
             <View style={style.child_input_style}>
               {show_businessdate == '1' ? (
