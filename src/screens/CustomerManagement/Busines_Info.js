@@ -114,7 +114,7 @@ function Busines_Info() {
                   }}
                 />
               ) : (
-                <Field name={'workplacePeriod'} component={DatePicker} title={'Select Date'} />
+                <Field name={'workplacePeriod'} component={DatePicker} title={'Select Date'} icon={'calendar'} />
               )}
 
               <Field

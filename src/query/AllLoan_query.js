@@ -205,3 +205,5 @@ export function getIndividual_loan() {
     });
   });
 }
+
+

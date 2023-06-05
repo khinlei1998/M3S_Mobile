@@ -239,11 +239,11 @@ function Customer_Management(props) {
         <View>
           <RadioButton
             value={item.township_code}
-            status={
-              selectedTownshipItemValue === item.township_code
-                ? 'checked'
-                : 'unchecked'
-            }
+            // status={
+            //   selectedTownshipItemValue === item.township_code
+            //     ? 'checked'
+            //     : 'unchecked'
+            // }
             // onPress={() => btnSelectEmployee(item)}
           />
         </View>
