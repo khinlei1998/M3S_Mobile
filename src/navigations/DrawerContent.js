@@ -58,14 +58,14 @@ export default function DrawerContent(props) {
                         activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
                         onPress={() => handleDrawerItemPress('Survey')}
                     />
-                    <DrawerItem
+                    {/* <DrawerItem
                         labelStyle={{ color: '#fff' }}
                         icon={() => <Icon name="dollar-sign" size={20} color="#fff" />} // Set the icon to an Ionicons icon
                         label="New Loan Application"
                         screenName="NewLoan"
                         activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
                         onPress={() => props.navigation.navigate('NewLoan')}
-                    />
+                    /> */}
 
                     <DrawerItem
                         labelStyle={{ color: '#c7c7c7', marginLeft: 50 }}

@@ -86,4 +86,21 @@ export function getLoanMax() {
     });
 }
 
+export async function getAllLoanMax() {
+    return new Promise((resolve, reject) => {
+      global.db.transaction(tx => {
+        tx.executeSql(
+          `SELECT * FROM Application_limit `,
+          [],
+          (tx, results) => {
+            resolve(results.rows.raw());
+          },
+          (tx, error) => {
+            reject(error);
+          },
+        );
+      });
+    });
+  }
+
 

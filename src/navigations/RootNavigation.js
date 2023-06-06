@@ -12,7 +12,7 @@ import { Divider } from 'react-native-paper';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AuthContext } from '../components/context';
-import NewLoan from '../screens/NewLoan/NewLoan';
+// import NewLoan from '../screens/NewLoan/NewLoan';
 import CustomerSearch from '../screens/Customer/CustomerSearch';
 import Customer_Management from '../screens/CustomerManagement/Customer_Management';
 import Survey from '../screens/Survey/Survey';

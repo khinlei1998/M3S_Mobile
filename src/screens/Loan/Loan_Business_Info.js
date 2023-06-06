@@ -1,0 +1,124 @@
+import { View, Text } from 'react-native'
+import React, { useState } from 'react'
+import { List } from 'react-native-paper'
+import TextInputFile from '../../components/TextInputFile'
+import { business_type, address_type,owner_shipratio } from '../../common'
+import DatePicker from '../../components/DatePicker'
+import DropDownPicker from '../../components/DropDownPicker'
+import { style } from '../../style/Individual_Loan_style'
+import { reduxForm, Field } from 'redux-form';
+import { connect } from 'react-redux';
+function Loan_Business_Info(props) {
+    const [loan_business_expanded, setLoan_BusinessInfo_expanded] = useState(true);
+
+    const handleLoanBusinessToggle = () => {
+        setLoan_BusinessInfo_expanded(!loan_business_expanded);
+    };
+    return (
+        <>
+            <List.Accordion
+                expanded={loan_business_expanded}
+                onPress={handleLoanBusinessToggle}
+                style={style.list_container}
+                titleStyle={style.list_title}
+                title="Business Info">
+
+                <View style={style.sub_container}>
+
+                    <View style={style.sub_list_container}>
+                        <Field
+                            name={'workplaceName'}
+                            title={'Business Name '}
+                            component={TextInputFile}
+                            input_mode
+                            inputmax={100}
+                        />
+                        <Field
+                            data={business_type}
+                            name={'wokplaceType'}
+                            title={'Type of business'}
+                            component={DropDownPicker}
+                            pickerStyle={{
+                                width: 300,
+                            }}
+                        />
+                    </View>
+
+                    <View style={style.sub_list_container}>
+                        <Field name={'workplacePeriod'}
+                            component={DatePicker}
+                            label={'Business Peroid'}
+                            icon={'calendar'} />
+                        <Field
+                            name={'workplaceName'}
+                            title={'Number of workers'}
+                            component={TextInputFile}
+                            input_mode
+                            inputmax={20}
+                        />
+
+
+                    </View>
+
+                    <View style={style.sub_list_container}>
+                        <Field
+                            data={address_type}
+                            name={'address_type'}
+                            title={'Address Type'}
+                            component={DropDownPicker}
+                            pickerStyle={{
+                                width: 300,
+                            }}
+                        />
+                        <Field
+                            name={'addr'}
+                            title={'Address'}
+                            component={TextInputFile}
+                            input_mode
+                            inputmax={100}
+                        />
+                    </View>
+
+                    <View style={style.sub_list_container}>
+                        <Field name={'workplacePeriod'}
+                            component={DatePicker}
+                            label={'Working Time in current business'}
+                            icon={'calendar'} />
+                        <Field
+                            name={'addr'}
+                            title={'Agriture-Lands'}
+                            component={TextInputFile}
+                            input_mode
+                            inputmax={100}
+                        />
+                    </View>
+                    <View style={style.sub_list_container}>
+                        <Field
+                            data={owner_shipratio}
+                            name={'address_type'}
+                            title={'OwnerShip ratio'}
+                            component={DropDownPicker}
+                            pickerStyle={{
+                                width: 300,
+                            }}
+                        />
+
+                    </View>
+
+
+
+                </View>
+            </List.Accordion>
+
+
+        </>
+    )
+}
+function mapStateToProps(state) {
+    return {};
+}
+
+export default reduxForm({
+    form: 'Individual_Loan_Form',
+    // validate,
+})(connect(mapStateToProps, {})(Loan_Business_Info));

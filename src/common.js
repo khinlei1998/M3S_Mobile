@@ -248,6 +248,24 @@ export const property_type = [
     name: 'Farmland',
   },
 ];
+export const loan_type = [
+  {
+    id: 1,
+    label: 'Commerce',
+    value: '10',
+  },
+  {
+    id: 2,
+    label: 'Agriculture/ Animal Hisbandry',
+    value: '20',
+  },
+  {
+    id: 3,
+    label: 'Employee',
+    value: '30',
+  },
+  
+];
 
 export const gender = [
   {
@@ -393,6 +411,17 @@ export const ward_code = [
     id: 2,
     label: 'Ward Name',
     value: 'ward_name',
+  },
+];
+
+export const borrower_type = [
+  {
+    id: '1',
+    name: 'New Borrower',
+  },
+  {
+    id: '2',
+    name: 'Old Borrower',
   },
 ];
 
