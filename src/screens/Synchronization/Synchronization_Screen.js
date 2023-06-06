@@ -31,7 +31,7 @@ export default function Synchronization_Screen() {
         if (result == 'success') {
           await loadData();
         } else {
-          alert('Something Wrong');
+          await loadData();
         }
       });
       // updateTableSyncStatus('13')
