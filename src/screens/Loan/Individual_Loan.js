@@ -4,39 +4,55 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ScrollView,
-  FlatList
+  FlatList,
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import DividerLine from '../../components/DividerLine';
-import { style } from '../../style/Individual_Loan_style';
-import { operations } from '../../common';
-import { RadioButton, Button, List, Modal, Provider, Portal } from 'react-native-paper';
-import { reduxForm, Field, change } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import {style} from '../../style/Individual_Loan_style';
+import {operations} from '../../common';
+import {
+  RadioButton,
+  Button,
+  List,
+  Modal,
+  Provider,
+  Portal,
+} from 'react-native-paper';
+import {reduxForm, Field, change} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
-import { loan_type } from '../../common';
+import {loan_type} from '../../common';
 import DatePicker from '../../components/DatePicker';
-import { Picker } from '@react-native-picker/picker';
-import {
-  emp_filter_item
-} from '../../common';
-import { getAllLoan } from '../../query/AllLoan_query';
+import {Picker} from '@react-native-picker/picker';
+import {emp_filter_item} from '../../common';
+import {getAllLoan} from '../../query/AllLoan_query';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Borrower_Info from './Borrower_Info';
 import Icon from 'react-native-vector-icons/Feather';
-import { filterEmp } from '../../query/Employee_query';
-import { filterCustomer } from '../../query/Customer_query';
+import {filterEmp} from '../../query/Employee_query';
+import {filterCustomer} from '../../query/Customer_query';
 import Co_Borrower_Info from './Co_Borrower_Info';
 import Loan_Business_Info from './Loan_Business_Info';
 import Borrower_Monthly_Income from './Borrower_Monthly_Income';
-import { getAllLoanMax } from '../../query/LoanMax_query';
-const Borrower_modal = (props) => {
+import {getAllLoanMax} from '../../query/LoanMax_query';
+import Borrower_Current_Map from './Borrower_Current_Map';
+import Borrower_Contract from './Borrower_Contract';
+import Borrower_Sign from './Borrower_Sign';
+const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
 
-  const { all_cus, modalVisible, hideModal, selectedItemValue, handleItemValueChange, setAllCus, handleSubmit, } = props
+  const {
+    all_cus,
+    modalVisible,
+    hideModal,
+    selectedItemValue,
+    handleItemValueChange,
+    setAllCus,
+    handleSubmit,
+  } = props;
   const btnCusSearch = async values => {
     await filterCustomer(selectedItemValue, values.searchtext)
       .then(data => (data.length > 0 ? setAllCus(data) : alert('No data')))
@@ -50,7 +66,7 @@ const Borrower_modal = (props) => {
     dispatch(change('Individual_Loan_Form', 'nrc_no', item.resident_rgst_id));
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -92,9 +108,7 @@ const Borrower_modal = (props) => {
         <View>
           <RadioButton
             value={item.id}
-            status={
-              selectedValue === item.id ? 'checked' : 'unchecked'
-            }
+            status={selectedValue === item.id ? 'checked' : 'unchecked'}
             onPress={() => btnSelectEmployee(item)}
           />
         </View>
@@ -104,7 +118,6 @@ const Borrower_modal = (props) => {
     );
   };
   return (
-
     <Provider>
       <Portal>
         <Modal
@@ -114,7 +127,6 @@ const Borrower_modal = (props) => {
           visible={modalVisible}
           onDismiss={hideModal}
           contentContainerStyle={style.modal_container}>
-
           <View
             style={style.modal_header}
             onStartShouldSetResponder={() => hideModal()}>
@@ -131,8 +143,8 @@ const Borrower_modal = (props) => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
@@ -154,7 +166,7 @@ const Borrower_modal = (props) => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
+              <View style={{width: '50%'}}>
                 <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -216,7 +228,7 @@ const Borrower_modal = (props) => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideModal()}
                 mode="contained"
@@ -235,29 +247,43 @@ const Borrower_modal = (props) => {
         </Modal>
       </Portal>
     </Provider>
-  )
-}
+  );
+};
 
-const CoBorrower_modal = (props) => {
+const CoBorrower_modal = props => {
   const dispatch = useDispatch();
   const [co_borrowerselectedValue, setCoborrowerSelectedValue] = useState(null);
 
-  const { all_co_borrower, co_borrower_modalVisible, hideCoBorrowerModal, selectedItemValue, handleItemValueChange, setAllCoBorrower, handleSubmit, } = props
+  const {
+    all_co_borrower,
+    co_borrower_modalVisible,
+    hideCoBorrowerModal,
+    selectedItemValue,
+    handleItemValueChange,
+    setAllCoBorrower,
+    handleSubmit,
+  } = props;
   const btnCusSearch = async values => {
     await filterCustomer(selectedItemValue, values.searchtext)
-      .then(data => (data.length > 0 ? setAllCoBorrower(data) : alert('No data')))
+      .then(data =>
+        data.length > 0 ? setAllCoBorrower(data) : alert('No data'),
+      )
       .catch(error => console.log('error', error));
   };
 
   const btnSelectEmployee = item => {
     console.log('co item', item);
     setCoborrowerSelectedValue(item.id);
-    dispatch(change('Individual_Loan_Form', 'co_brwer_rgst_id', item.resident_rgst_id));
+    dispatch(
+      change('Individual_Loan_Form', 'co_brwer_rgst_id', item.resident_rgst_id),
+    );
     dispatch(change('Individual_Loan_Form', 'co_brwer_name', item.customer_nm));
-    dispatch(change('Individual_Loan_Form', 'co_customer_no', item.customer_no));
+    dispatch(
+      change('Individual_Loan_Form', 'co_customer_no', item.customer_no),
+    );
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -311,7 +337,6 @@ const CoBorrower_modal = (props) => {
     );
   };
   return (
-
     <Provider>
       <Portal>
         <Modal
@@ -321,7 +346,6 @@ const CoBorrower_modal = (props) => {
           visible={co_borrower_modalVisible}
           onDismiss={hideCoBorrowerModal}
           contentContainerStyle={style.modal_container}>
-
           <View
             style={style.modal_header}
             onStartShouldSetResponder={() => hideCoBorrowerModal()}>
@@ -338,8 +362,8 @@ const CoBorrower_modal = (props) => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
@@ -361,7 +385,7 @@ const CoBorrower_modal = (props) => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
+              <View style={{width: '50%'}}>
                 <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -423,7 +447,7 @@ const CoBorrower_modal = (props) => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideCoBorrowerModal()}
                 mode="contained"
@@ -442,8 +466,8 @@ const CoBorrower_modal = (props) => {
         </Modal>
       </Portal>
     </Provider>
-  )
-}
+  );
+};
 
 function Individual_Loan(props) {
   const dispatch = useDispatch();
@@ -454,12 +478,13 @@ function Individual_Loan(props) {
   const [all_cus, setAllCus] = useState([]);
   const [all_co_borrower, setAllCoBorrower] = useState([]);
   const [loanexpanded, setLoanExpanded] = React.useState(true);
-  const [loan_cycle_value, setLocanCycleValue] = useState('')
-  const [loan_max_data, setLoanMaxData] = useState([])
-  const [app_amount, setAppAmount] = useState(0)
-  const { handleSubmit } = props;
-  const onSubmit = (values) => {
-    alert(JSON.stringify(values))
+  const [loan_cycle_value, setLocanCycleValue] = useState('');
+  const [loan_type_value, setLoanType] = useState('');
+  const [loan_max_data, setLoanMaxData] = useState([]);
+  const [app_amount, setAppAmount] = useState(0);
+  const {handleSubmit, totalnet} = props;
+  const onSubmit = values => {
+    alert(JSON.stringify(values));
   };
   const showCustomerSearch = () => {
     setModalVisible(true);
@@ -489,39 +514,34 @@ function Individual_Loan(props) {
       );
     });
     await getAllLoanMax().then(loan_max_data => {
-      setLoanMaxData(loan_max_data)
+      setLoanMaxData(loan_max_data);
       console.log('loan_max_data', loan_max_data);
-
-    })
+    });
   };
 
   useEffect(() => {
     loadData();
   }, []);
   const handleCalculate = () => {
-    loan_max_data.map((value) => {
-      console.log('loan type',value.loan_type);
-      if (value.loan_cycle == 1 && value.loan_type == 10) {
-        setAppAmount(value.loan_limit_amount)
-      }
-      else if (value.loan_cycle == 2 && value.loan_type == 10) {
-        setAppAmount(value.loan_limit_amount)
+    loan_max_data.map(value => {
+      console.log('loan type', loan_type_value);
+      console.log('loan_cycle_value', loan_cycle_value);
+      console.log('total', totalnet * 2);
 
+      if (30 == loan_type_value) {
+        setAppAmount(totalnet * 2);
+      } else if (
+        value.loan_cycle == loan_cycle_value &&
+        value.loan_type == loan_type_value
+      ) {
+        setAppAmount(value.loan_limit_amount);
+      } else if (
+        loan_cycle_value >= value.loan_cycle &&
+        value.loan_type == loan_type_value
+      ) {
+        setAppAmount(value.loan_limit_amount);
       }
-      else if (value.loan_cycle >= 3 && value.loan_type == 10) {
-        setAppAmount(value.loan_limit_amount)
-
-      } else if (value.loan_cycle == 1 && value.loan_type == 20) {
-        setAppAmount(value.loan_limit_amount)
-      }
-      else if (value.loan_cycle == 2 && value.loan_type == 20) {
-        setAppAmount(value.loan_limit_amount)
-      }
-      else if (value.loan_cycle >= 3 && value.loan_type == 20) {
-        setAppAmount(value.loan_limit_amount)
-      }
-
-    })
+    });
     console.log('loan_cycle_value', loan_cycle_value);
     // const { applicationNo, loanCycle } = props.formValues;
     // Perform calculations using applicationNo and loanCycle
@@ -530,7 +550,7 @@ function Individual_Loan(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{ flex: 1, backgroundColor: '#fff' }}>
+          <View style={{flex: 1, backgroundColor: '#fff'}}>
             <Text style={style.title_style}>Individual Loan Application</Text>
             <DividerLine />
 
@@ -554,7 +574,7 @@ function Individual_Loan(props) {
                         label={option.label}
                         value={option.value}
                         color="#000"
-                        labelStyle={{ marginLeft: 5 }}
+                        labelStyle={{marginLeft: 5}}
                       />
                     </View>
                   </RadioButton.Group>
@@ -605,7 +625,7 @@ function Individual_Loan(props) {
                     pickerStyle={{
                       width: 300,
                     }}
-                    onChange={value => console.log('value', value)}
+                    onChange={value => setLoanType(value)}
                   />
 
                   <Field
@@ -682,7 +702,13 @@ function Individual_Loan(props) {
             <Borrower_Info showCustomerSearch={showCustomerSearch} />
             <Co_Borrower_Info showCoBorrowerSearch={showCoBorrowerSearch} />
             <Loan_Business_Info />
-            <Borrower_Monthly_Income handleCalculate={handleCalculate} app_amount={app_amount} />
+            <Borrower_Monthly_Income
+              handleCalculate={handleCalculate}
+              app_amount={app_amount}
+            />
+            <Borrower_Current_Map/>
+            <Borrower_Contract/>
+            <Borrower_Sign/>
           </View>
         </TouchableWithoutFeedback>
       </ScrollView>
@@ -706,15 +732,14 @@ function Individual_Loan(props) {
         selectedItemValue={selectedItemValue}
         all_co_borrower={all_co_borrower}
       />
-
-
-
     </>
   );
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    totalnet: state.monthly.totalnetincome,
+  };
 }
 
 export default reduxForm({
