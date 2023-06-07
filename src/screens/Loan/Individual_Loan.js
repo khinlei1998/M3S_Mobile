@@ -6,10 +6,16 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import DividerLine from '../../components/DividerLine';
 import {style} from '../../style/Individual_Loan_style';
 import {operations} from '../../common';
+// import {
+//   SketchCanvas,
+//   RNSketchCanvas,
+// } from '@terrylinla/react-native-sketch-canvas';
+import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
+
 import {
   RadioButton,
   Button,
@@ -40,6 +46,7 @@ import {getAllLoanMax} from '../../query/LoanMax_query';
 import Borrower_Current_Map from './Borrower_Current_Map';
 import Borrower_Contract from './Borrower_Contract';
 import Borrower_Sign from './Borrower_Sign';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -474,7 +481,9 @@ function Individual_Loan(props) {
   const [show_operation, setOperation] = useState('1');
   const [modalVisible, setModalVisible] = useState(false);
   const [co_borrower_modalVisible, setCoBorrowerModalVisible] = useState(false);
-  const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
+  const [selectedItemValue, setSelectedItemValue] = useState(
+    'emplo                                             yee_name',
+  );
   const [all_cus, setAllCus] = useState([]);
   const [all_co_borrower, setAllCoBorrower] = useState([]);
   const [loanexpanded, setLoanExpanded] = React.useState(true);
@@ -482,6 +491,7 @@ function Individual_Loan(props) {
   const [loan_type_value, setLoanType] = useState('');
   const [loan_max_data, setLoanMaxData] = useState([]);
   const [app_amount, setAppAmount] = useState(0);
+  const [show_canvas, setCanvas] = useState(false);
   const {handleSubmit, totalnet} = props;
   const onSubmit = values => {
     alert(JSON.stringify(values));
@@ -519,6 +529,10 @@ function Individual_Loan(props) {
     });
   };
 
+  const hideSignModal = () => {
+    setCanvas(!show_canvas);
+  };
+
   useEffect(() => {
     loadData();
   }, []);
@@ -546,193 +560,459 @@ function Individual_Loan(props) {
     // const { applicationNo, loanCycle } = props.formValues;
     // Perform calculations using applicationNo and loanCycle
   };
+  const canvasWidth = 600; // Set the desired width
+  const canvasHeight = 400; // Set the desired height
+  const sketchRef = useRef(null);
+
+  const handleTouchMove = e => {
+    const {locationX, locationY} = e.nativeEvent;
+
+    if (
+      locationX < 0 ||
+      locationX > canvasWidth ||
+      locationY < 0 ||
+      locationY > canvasHeight
+    ) {
+      Alert.alert('Cannot draw outside the canvas boundaries');
+      sketchRef.current.clear();
+    }
+  };
+
   return (
-    <>
-      <ScrollView nestedScrollEnabled={true}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{flex: 1, backgroundColor: '#fff'}}>
-            <Text style={style.title_style}>Individual Loan Application</Text>
-            <DividerLine />
-
-            <View style={style.continer}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                }}>
-                {operations.map((option, index) => (
-                  <RadioButton.Group
-                    key={index}
-                    onValueChange={newValue => setOperation(newValue)}
-                    value={show_operation}>
-                    <View
-                      key={option.value}
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                      }}>
-                      <RadioButton.Item
-                        label={option.label}
-                        value={option.value}
-                        color="#000"
-                        labelStyle={{marginLeft: 5}}
-                      />
-                    </View>
-                  </RadioButton.Group>
-                ))}
-              </View>
-              <Button
-                onPress={handleSubmit(onSubmit)}
-                mode="contained"
-                buttonColor={'#6870C3'}
-                style={style.btnStyle}>
-                OK
-              </Button>
+    <View
+      style={{
+        // flex: 1,
+        // backgroundColor: 'red',
+      }}>
+      {/* <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}> */}
+      <RNSketchCanvas
+        ref={sketchRef}
+        // containerStyle={{
+        //   width: 600,
+        //   height: 400,
+        //   backgroundColor: '#e6e5e3',
+        // }}
+        canvasStyle={{
+          backgroundColor: 'blue',
+          width: 600,
+          height: 400,
+          // width: 100,
+          // height: 100,
+          // flex: 1,
+        }}
+        defaultStrokeIndex={0}
+        defaultStrokeWidth={5}
+        closeComponent={
+          <TouchableOpacity onPress={() => alert('pp')}>
+            <View
+              style={{
+                marginHorizontal: 2.5,
+                marginVertical: 8,
+                height: 30,
+                width: 60,
+                backgroundColor: '#39579A',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 5,
+              }}>
+              <Text style={{color: 'white'}}>Close</Text>
             </View>
-            <DividerLine />
-
-            <List.Accordion
-              expanded={loanexpanded}
-              onPress={handleLoanToggle}
-              style={style.list_container}
-              titleStyle={style.list_title}
-              title="Loan Info">
-              <View style={style.sub_container}>
-                <View style={style.sub_list_container}>
-                  <Field
-                    name={'application_no'}
-                    title={'Application No'}
-                    component={TextInputFile}
-                    cus_width
-                    input_mode
-                    editable
-                  />
-
-                  <Field
-                    name={'product_type'}
-                    title={'Product Type'}
-                    component={TextInputFile}
-                    cus_width
-                    input_mode
-                  />
-                </View>
-
-                <View style={style.sub_list_container}>
-                  <Field
-                    data={loan_type}
-                    name={'loan_type'}
-                    title={'Type of Loan'}
-                    component={DropDownPicker}
-                    pickerStyle={{
-                      width: 300,
-                    }}
-                    onChange={value => setLoanType(value)}
-                  />
-
-                  <Field
-                    name={'workplacePeriod'}
-                    component={DatePicker}
-                    label={'Application Date'}
-                    icon={'calendar'}
-                  />
-                </View>
-
-                <View style={style.sub_list_container}>
-                  <Field
-                    name={'loan_cycle'}
-                    title={'Loan Cycle'}
-                    component={TextInputFile}
-                    cus_width
-                    input_mode
-                    keyboardType={'numeric'}
-                    onChange={value => setLocanCycleValue(value)}
-                  />
-
-                  <Field
-                    name={'loanterm_cnt'}
-                    title={'Loan Term'}
-                    component={TextInputFile}
-                    cus_width
-                    input_mode
-                    keyboardType={'numeric'}
-                  />
-                </View>
-
-                <View style={style.sub_list_container}>
-                  <Field
-                    name={'application_no'}
-                    title={'Loan Apply Amount'}
-                    component={TextInputFile}
-                    cus_width
-                    input_mode
-                    editable
-                    keyboardType={'numeric'}
-                  />
-
-                  <Field
-                    name={'loan_code'}
-                    title={'Loan Code'}
-                    component={TextInputFile}
-                    cus_width
-                    input_mode
-                  />
-                </View>
-
-                <View style={style.sub_list_container}>
-                  <Field
-                    name={'loan_charges'}
-                    title={'Loan Charges'}
-                    component={TextInputFile}
-                    cus_width
-                    input_mode
-                    editable
-                    keyboardType={'numeric'}
-                  />
-
-                  <Field
-                    name={'interest_rates'}
-                    title={'Interest Rates'}
-                    component={TextInputFile}
-                    cus_width
-                    input_mode
-                  />
-                </View>
-              </View>
-            </List.Accordion>
-
-            <Borrower_Info showCustomerSearch={showCustomerSearch} />
-            <Co_Borrower_Info showCoBorrowerSearch={showCoBorrowerSearch} />
-            <Loan_Business_Info />
-            <Borrower_Monthly_Income
-              handleCalculate={handleCalculate}
-              app_amount={app_amount}
-            />
-            <Borrower_Current_Map/>
-            <Borrower_Contract/>
-            <Borrower_Sign/>
+          </TouchableOpacity>
+        }
+        undoComponent={
+          <View
+            style={{
+              marginHorizontal: 2.5,
+              marginVertical: 8,
+              height: 30,
+              width: 60,
+              backgroundColor: '#39579A',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 5,
+            }}>
+            <Text style={{color: 'white'}}>Undo</Text>
           </View>
-        </TouchableWithoutFeedback>
-      </ScrollView>
-
-      <Borrower_modal
-        handleSubmit={handleSubmit}
-        setAllCus={setAllCus}
-        modalVisible={modalVisible}
-        hideModal={hideModal}
-        handleItemValueChange={handleItemValueChange}
-        selectedItemValue={selectedItemValue}
-        all_cus={all_cus}
+        }
+        clearComponent={
+          <View
+            style={{
+              marginHorizontal: 2.5,
+              marginVertical: 8,
+              height: 30,
+              width: 60,
+              backgroundColor: '#39579A',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 5,
+            }}>
+            <Text style={{color: 'white'}}>Clear</Text>
+          </View>
+        }
+        eraseComponent={
+          <View
+            style={{
+              marginHorizontal: 2.5,
+              marginVertical: 8,
+              height: 30,
+              width: 60,
+              backgroundColor: '#39579A',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 5,
+            }}>
+            <Text style={{color: 'white'}}>Eraser</Text>
+          </View>
+        }
+        saveComponent={
+          <View
+            style={{
+              marginHorizontal: 2.5,
+              marginVertical: 8,
+              height: 30,
+              width: 60,
+              backgroundColor: '#39579A',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 5,
+            }}>
+            <Text style={{color: 'white'}}>Save</Text>
+          </View>
+        }
+        savePreference={() => {
+          return {
+            folder: 'RNSketchCanvas',
+            filename: String(Math.ceil(Math.random() * 100000000)),
+            transparent: false,
+            imageType: 'png',
+          };
+        }}
       />
+      {/* </View>xw */}
+    </View>
+    // <>
+    //   <ScrollView nestedScrollEnabled={true}>
+    //     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+    //       <View style={{flex: 1, backgroundColor: '#fff'}}>
+    //         <Text style={style.title_style}>Individual Loan Application</Text>
+    //         <DividerLine />
 
-      <CoBorrower_modal
-        handleSubmit={handleSubmit}
-        setAllCoBorrower={setAllCoBorrower}
-        co_borrower_modalVisible={co_borrower_modalVisible}
-        hideCoBorrowerModal={hideCoBorrowerModal}
-        handleItemValueChange={handleItemValueChange}
-        selectedItemValue={selectedItemValue}
-        all_co_borrower={all_co_borrower}
-      />
-    </>
+    //         <View style={style.continer}>
+    //           <View
+    //             style={{
+    //               flexDirection: 'row',
+    //             }}>
+    //             {operations.map((option, index) => (
+    //               <RadioButton.Group
+    //                 key={index}
+    //                 onValueChange={newValue => setOperation(newValue)}
+    //                 value={show_operation}>
+    //                 <View
+    //                   key={option.value}
+    //                   style={{
+    //                     flexDirection: 'row',
+    //                     alignItems: 'center',
+    //                   }}>
+    //                   <RadioButton.Item
+    //                     label={option.label}
+    //                     value={option.value}
+    //                     color="#000"
+    //                     labelStyle={{marginLeft: 5}}
+    //                   />
+    //                 </View>
+    //               </RadioButton.Group>
+    //             ))}
+    //           </View>
+    //           <Button
+    //             onPress={handleSubmit(onSubmit)}
+    //             mode="contained"
+    //             buttonColor={'#6870C3'}
+    //             style={style.btnStyle}>
+    //             OK
+    //           </Button>
+    //         </View>
+    //         <DividerLine />
+
+    //         <List.Accordion
+    //           expanded={loanexpanded}
+    //           onPress={handleLoanToggle}
+    //           style={style.list_container}
+    //           titleStyle={style.list_title}
+    //           title="Loan Info">
+    //           <View style={style.sub_container}>
+    //             <View style={style.sub_list_container}>
+    //               <Field
+    //                 name={'application_no'}
+    //                 title={'Application No'}
+    //                 component={TextInputFile}
+    //                 cus_width
+    //                 input_mode
+    //                 editable
+    //               />
+
+    //               <Field
+    //                 name={'product_type'}
+    //                 title={'Product Type'}
+    //                 component={TextInputFile}
+    //                 cus_width
+    //                 input_mode
+    //               />
+    //             </View>
+
+    //             <View style={style.sub_list_container}>
+    //               <Field
+    //                 data={loan_type}
+    //                 name={'loan_type'}
+    //                 title={'Type of Loan'}
+    //                 component={DropDownPicker}
+    //                 pickerStyle={{
+    //                   width: 300,
+    //                 }}
+    //                 onChange={value => setLoanType(value)}
+    //               />
+
+    //               <Field
+    //                 name={'workplacePeriod'}
+    //                 component={DatePicker}
+    //                 label={'Application Date'}
+    //                 icon={'calendar'}
+    //               />
+    //             </View>
+
+    //             <View style={style.sub_list_container}>
+    //               <Field
+    //                 name={'loan_cycle'}
+    //                 title={'Loan Cycle'}
+    //                 component={TextInputFile}
+    //                 cus_width
+    //                 input_mode
+    //                 keyboardType={'numeric'}
+    //                 onChange={value => setLocanCycleValue(value)}
+    //               />
+
+    //               <Field
+    //                 name={'loanterm_cnt'}
+    //                 title={'Loan Term'}
+    //                 component={TextInputFile}
+    //                 cus_width
+    //                 input_mode
+    //                 keyboardType={'numeric'}
+    //               />
+    //             </View>
+
+    //             <View style={style.sub_list_container}>
+    //               <Field
+    //                 name={'application_no'}
+    //                 title={'Loan Apply Amount'}
+    //                 component={TextInputFile}
+    //                 cus_width
+    //                 input_mode
+    //                 editable
+    //                 keyboardType={'numeric'}
+    //               />
+
+    //               <Field
+    //                 name={'loan_code'}
+    //                 title={'Loan Code'}
+    //                 component={TextInputFile}
+    //                 cus_width
+    //                 input_mode
+    //               />
+    //             </View>
+
+    //             <View style={style.sub_list_container}>
+    //               <Field
+    //                 name={'loan_charges'}
+    //                 title={'Loan Charges'}
+    //                 component={TextInputFile}
+    //                 cus_width
+    //                 input_mode
+    //                 editable
+    //                 keyboardType={'numeric'}
+    //               />
+
+    //               <Field
+    //                 name={'interest_rates'}
+    //                 title={'Interest Rates'}
+    //                 component={TextInputFile}
+    //                 cus_width
+    //                 input_mode
+    //               />
+    //             </View>
+    //           </View>
+    //         </List.Accordion>
+
+    //         <Borrower_Info showCustomerSearch={showCustomerSearch} />
+    //         <Co_Borrower_Info showCoBorrowerSearch={showCoBorrowerSearch} />
+    //         <Loan_Business_Info />
+    //         <Borrower_Monthly_Income
+    //           handleCalculate={handleCalculate}
+    //           app_amount={app_amount}
+    //         />
+    //         <Borrower_Current_Map />
+    //         <Borrower_Contract />
+    //         <Borrower_Sign setCanvas={setCanvas} show_canvas={show_canvas} />
+    //       </View>
+    //     </TouchableWithoutFeedback>
+    //   </ScrollView>
+
+    //   <Borrower_modal
+    //     handleSubmit={handleSubmit}
+    //     setAllCus={setAllCus}
+    //     modalVisible={modalVisible}
+    //     hideModal={hideModal}
+    //     handleItemValueChange={handleItemValueChange}
+    //     selectedItemValue={selectedItemValue}
+    //     all_cus={all_cus}
+    //   />
+
+    //   <CoBorrower_modal
+    //     handleSubmit={handleSubmit}
+    //     setAllCoBorrower={setAllCoBorrower}
+    //     co_borrower_modalVisible={co_borrower_modalVisible}
+    //     hideCoBorrowerModal={hideCoBorrowerModal}
+    //     handleItemValueChange={handleItemValueChange}
+    //     selectedItemValue={selectedItemValue}
+    //     all_co_borrower={all_co_borrower}
+    //   />
+
+    //   <Modal
+    //     visible={show_canvas}
+    //     animationType="slide"
+    //     transparent={true}
+    //     useNativeDriver
+    //     hideModalContentWhileAnimating
+    //     dismissable={false}
+    //     onDismiss={hideSignModal}>
+    //     {/* <View
+    //       style={style.modal_header}
+    //       onStartShouldSetResponder={() => hideSignModal()}>
+    //       <Icon
+    //         name="x-circle"
+    //         size={25}
+    //         color="#fff"
+    //         style={style.cancel_icon_style}
+    //       />
+    //     </View> */}
+    //     {/* <View
+    //       style={{
+    //         flex: 1,
+    //         justifyContent: 'center',
+    //         alignItems: 'center',
+    //         // width: 600, height: 400,
+    //       }}> */}
+    //     <View
+    //       style={{
+    //         flex: 1,
+    //         backgroundColor: 'red',
+    //       }}>
+    //       <View
+    //         style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    //         <RNSketchCanvas
+    //           containerStyle={{
+    //             width: 600,
+    //             height: 400,
+    //             backgroundColor: '#e6e5e3',
+    //           }}
+    //           canvasStyle={{
+    //             backgroundColor: 'blue',
+    //             // width: 100,
+    //             // height: 100,
+    //             flex:1
+    //           }}
+    //           defaultStrokeIndex={0}
+    //           defaultStrokeWidth={5}
+    //           closeComponent={
+    //             <TouchableOpacity onPress={() => alert('pp')}>
+    //               <View
+    //                 style={{
+    //                   marginHorizontal: 2.5,
+    //                   marginVertical: 8,
+    //                   height: 30,
+    //                   width: 60,
+    //                   backgroundColor: '#39579A',
+    //                   justifyContent: 'center',
+    //                   alignItems: 'center',
+    //                   borderRadius: 5,
+    //                 }}>
+    //                 <Text style={{color: 'white'}}>Close</Text>
+    //               </View>
+    //             </TouchableOpacity>
+    //           }
+    //           undoComponent={
+    //             <View
+    //               style={{
+    //                 marginHorizontal: 2.5,
+    //                 marginVertical: 8,
+    //                 height: 30,
+    //                 width: 60,
+    //                 backgroundColor: '#39579A',
+    //                 justifyContent: 'center',
+    //                 alignItems: 'center',
+    //                 borderRadius: 5,
+    //               }}>
+    //               <Text style={{color: 'white'}}>Undo</Text>
+    //             </View>
+    //           }
+    //           clearComponent={
+    //             <View
+    //               style={{
+    //                 marginHorizontal: 2.5,
+    //                 marginVertical: 8,
+    //                 height: 30,
+    //                 width: 60,
+    //                 backgroundColor: '#39579A',
+    //                 justifyContent: 'center',
+    //                 alignItems: 'center',
+    //                 borderRadius: 5,
+    //               }}>
+    //               <Text style={{color: 'white'}}>Clear</Text>
+    //             </View>
+    //           }
+    //           eraseComponent={
+    //             <View
+    //               style={{
+    //                 marginHorizontal: 2.5,
+    //                 marginVertical: 8,
+    //                 height: 30,
+    //                 width: 60,
+    //                 backgroundColor: '#39579A',
+    //                 justifyContent: 'center',
+    //                 alignItems: 'center',
+    //                 borderRadius: 5,
+    //               }}>
+    //               <Text style={{color: 'white'}}>Eraser</Text>
+    //             </View>
+    //           }
+    //           saveComponent={
+    //             <View
+    //               style={{
+    //                 marginHorizontal: 2.5,
+    //                 marginVertical: 8,
+    //                 height: 30,
+    //                 width: 60,
+    //                 backgroundColor: '#39579A',
+    //                 justifyContent: 'center',
+    //                 alignItems: 'center',
+    //                 borderRadius: 5,
+    //               }}>
+    //               <Text style={{color: 'white'}}>Save</Text>
+    //             </View>
+    //           }
+    //           savePreference={() => {
+    //             return {
+    //               folder: 'RNSketchCanvas',
+    //               filename: String(Math.ceil(Math.random() * 100000000)),
+    //               transparent: false,
+    //               imageType: 'png',
+    //             };
+    //           }}
+    //         />
+    //       </View>
+    //     </View>
+    //     {/* </View> */}
+    //   </Modal>
+    // </>
   );
 }
 
