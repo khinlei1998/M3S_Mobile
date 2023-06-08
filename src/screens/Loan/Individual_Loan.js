@@ -17,7 +17,7 @@ import { operations } from '../../common';
 //   RNSketchCanvas,
 // } from '@terrylinla/react-native-sketch-canvas';
 // import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
-import  SketchCanvas  from '@terrylinla/react-native-sketch-canvas';
+import SketchCanvas from '@terrylinla/react-native-sketch-canvas';
 
 import {
   RadioButton,
@@ -49,6 +49,8 @@ import { getAllLoanMax } from '../../query/LoanMax_query';
 import Borrower_Current_Map from './Borrower_Current_Map';
 import Borrower_Contract from './Borrower_Contract';
 import Borrower_Sign from './Borrower_Sign';
+import SignatureCapture from 'react-native-signature-capture';
+
 import { TouchableOpacity } from 'react-native-gesture-handler';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
@@ -615,6 +617,12 @@ function Individual_Loan(props) {
       sketchRef.current.addPath({ x, y });
     }
   };
+  const handleSignatureCaptured = (signature) => {
+    console.log(signature);
+    // Handle the captured signature data
+  };
+  const signatureRef = useRef(null);
+
   return (
 
     // <>
@@ -863,12 +871,13 @@ function Individual_Loan(props) {
     // </View>
     // <View style={{backgroundColor:'red',flex:1}}>
 
-      <SketchCanvas
-        canvasStyle={{  width: 300, height: 300, backgroundColor: 'blue' }} // Set the desired dimensions for the drawing area
-        defaultStrokeWidth={3}
-        defaultStrokeColor="#000000"
-      />
+
     // </View>
+    <SignatureCapture
+      ref={signatureRef}
+      onSaveEvent={handleSignatureCaptured}
+      style={{ flex: 1 }}
+    />
 
 
   );

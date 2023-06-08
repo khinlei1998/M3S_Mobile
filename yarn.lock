@@ -6132,7 +6132,7 @@ prompts@^2.0.1, prompts@^2.4.0:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@*, prop-types@^15.6.1, prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@*, prop-types@^15.5.10, prop-types@^15.6.1, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -6310,6 +6310,13 @@ react-native-signature-canvas@^4.5.1:
   resolved "https://registry.npmjs.org/react-native-signature-canvas/-/react-native-signature-canvas-4.5.1.tgz"
   integrity sha512-YCiyIMWXiv9fn1JdKAb++b3AkKG5R1GQIXh+cAipxHV1GGZXKVuBukVo5WQ2rL1P9NOGpIOpWyeq0NXdGk41Rw==
 
+react-native-signature-capture@^0.4.12:
+  version "0.4.12"
+  resolved "https://registry.npmjs.org/react-native-signature-capture/-/react-native-signature-capture-0.4.12.tgz"
+  integrity sha512-DtRqYABtrXxcKhMYJaRFcptAgugDjsn/09KCbcNtZHVtEFyUvdSriOx2i6OgtTRHlQbN/+YBWnezeikcXu7UnQ==
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-sqlite-storage@^6.0.1:
   version "6.0.1"
   resolved "https://registry.npmjs.org/react-native-sqlite-storage/-/react-native-sqlite-storage-6.0.1.tgz"
@@ -6331,7 +6338,7 @@ react-native-webview@>11.18.1:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
 
-react-native@*, "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", react-native@^0.69.0, react-native@>=0.14.0, react-native@>=0.42.0, react-native@>=0.57, react-native@>=0.59, react-native@>=0.65.0:
+react-native@*, "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", react-native@^0.69.0, react-native@>=0.14.0, react-native@>=0.42.0, react-native@>=0.47, react-native@>=0.57, react-native@>=0.59, react-native@>=0.65.0:
   version "0.69.0"
   resolved "https://registry.npmjs.org/react-native/-/react-native-0.69.0.tgz"
   integrity sha512-TBaoNMaxxVLRNNxNXmi8sauxSv6LXF5O6apoUPHVYC1Tr9dP0DqiQP2ngHHJM9ysxxIkX47OTho028HRbkgTCA==
