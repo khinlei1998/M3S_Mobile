@@ -1,17 +1,24 @@
-import React, {useState, useEffect} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import React, { useState, useEffect, useRef } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 import RootNavigation from './src/navigations/RootNavigation';
 import AuthNavigation from './src/navigations/AuthNavigation';
 // import {store} from './src/redux/store';
-import {Provider} from 'react-redux';
-import {AuthContext} from './src/components/context';
+import { Provider } from 'react-redux';
+import { AuthContext } from './src/components/context';
 import SQLite from 'react-native-sqlite-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './src/screens/SplashScreen';
 import store from './src/redux/store';
+import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
+import { StyleSheet, View, Text, Image, Button,PermissionsAndroid  } from 'react-native';
+import RNFS from 'react-native-fs';
+
 export default function App() {
   const [show_splash, showSplash] = useState(true);
   const [userID, setUserID] = React.useState(null);
+  const [paths, setPaths] = useState([]);
+
+  const sketchRef = useRef();
 
   const saveUserID = async user_id => {
     try {
@@ -49,8 +56,8 @@ export default function App() {
   useEffect(() => {
     const saveIp = async user_id => {
       try {
-        await AsyncStorage.setItem('ip','sample-rest.onrender.com');
-        await AsyncStorage.setItem('port','443');
+        await AsyncStorage.setItem('ip', 'sample-rest.onrender.com');
+        await AsyncStorage.setItem('port', '443');
 
       } catch (e) {
         console.log('error ::', e);
@@ -60,10 +67,13 @@ export default function App() {
       showSplash(false);
     }, 3000);
 
+
+
     saveIp();
 
     return () => clearTimeout(timer);
   }, []);
+
 
   return (
     <Provider store={store}>
@@ -81,5 +91,68 @@ export default function App() {
         )}
       </NavigationContainer>
     </Provider>
+ 
   );
 }
+const styles = StyleSheet.create({
+  textInput: {
+    width: 200,
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#000',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+  },
+  sectionContainer: {
+    marginTop: 32,
+    paddingHorizontal: 24,
+  },
+  textInputContainer: {
+    position: 'absolute',
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  sectionDescription: {
+    marginTop: 8,
+    fontSize: 18,
+    fontWeight: '400',
+  },
+  highlight: {
+    fontWeight: '700',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  strokeColorButton: {
+    marginHorizontal: 2.5,
+    marginVertical: 8,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+  },
+  strokeWidthButton: {
+    marginHorizontal: 2.5,
+    marginVertical: 8,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#39579A',
+  },
+  functionButton: {
+    marginHorizontal: 2.5,
+    marginVertical: 8,
+    height: 30,
+    width: 60,
+    backgroundColor: '#39579A',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+});

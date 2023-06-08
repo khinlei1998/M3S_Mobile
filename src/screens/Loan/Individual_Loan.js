@@ -5,16 +5,19 @@ import {
   Keyboard,
   ScrollView,
   FlatList,
+  StyleSheet,
+  PermissionsAndroid
 } from 'react-native';
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import DividerLine from '../../components/DividerLine';
-import {style} from '../../style/Individual_Loan_style';
-import {operations} from '../../common';
+import { style } from '../../style/Individual_Loan_style';
+import { operations } from '../../common';
 // import {
 //   SketchCanvas,
 //   RNSketchCanvas,
 // } from '@terrylinla/react-native-sketch-canvas';
-import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
+// import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
+import  SketchCanvas  from '@terrylinla/react-native-sketch-canvas';
 
 import {
   RadioButton,
@@ -24,29 +27,29 @@ import {
   Provider,
   Portal,
 } from 'react-native-paper';
-import {reduxForm, Field, change} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import { reduxForm, Field, change } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
-import {loan_type} from '../../common';
+import { loan_type } from '../../common';
 import DatePicker from '../../components/DatePicker';
-import {Picker} from '@react-native-picker/picker';
-import {emp_filter_item} from '../../common';
-import {getAllLoan} from '../../query/AllLoan_query';
+import { Picker } from '@react-native-picker/picker';
+import { emp_filter_item } from '../../common';
+import { getAllLoan } from '../../query/AllLoan_query';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Borrower_Info from './Borrower_Info';
 import Icon from 'react-native-vector-icons/Feather';
-import {filterEmp} from '../../query/Employee_query';
-import {filterCustomer} from '../../query/Customer_query';
+import { filterEmp } from '../../query/Employee_query';
+import { filterCustomer } from '../../query/Customer_query';
 import Co_Borrower_Info from './Co_Borrower_Info';
 import Loan_Business_Info from './Loan_Business_Info';
 import Borrower_Monthly_Income from './Borrower_Monthly_Income';
-import {getAllLoanMax} from '../../query/LoanMax_query';
+import { getAllLoanMax } from '../../query/LoanMax_query';
 import Borrower_Current_Map from './Borrower_Current_Map';
 import Borrower_Contract from './Borrower_Contract';
 import Borrower_Sign from './Borrower_Sign';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -73,7 +76,7 @@ const Borrower_modal = props => {
     dispatch(change('Individual_Loan_Form', 'nrc_no', item.resident_rgst_id));
   };
 
-  const item = ({item, index}) => {
+  const item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -150,8 +153,8 @@ const Borrower_modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{marginRight: 10}}>Search Item:</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
@@ -173,7 +176,7 @@ const Borrower_modal = props => {
                 </Picker>
               </View>
 
-              <View style={{width: '50%'}}>
+              <View style={{ width: '50%' }}>
                 <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -235,7 +238,7 @@ const Borrower_modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
               <Button
                 onPress={() => hideModal()}
                 mode="contained"
@@ -290,7 +293,7 @@ const CoBorrower_modal = props => {
     );
   };
 
-  const item = ({item, index}) => {
+  const item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -369,8 +372,8 @@ const CoBorrower_modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{marginRight: 10}}>Search Item:</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
@@ -392,7 +395,7 @@ const CoBorrower_modal = props => {
                 </Picker>
               </View>
 
-              <View style={{width: '50%'}}>
+              <View style={{ width: '50%' }}>
                 <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -454,7 +457,7 @@ const CoBorrower_modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
               <Button
                 onPress={() => hideCoBorrowerModal()}
                 mode="contained"
@@ -492,7 +495,11 @@ function Individual_Loan(props) {
   const [loan_max_data, setLoanMaxData] = useState([]);
   const [app_amount, setAppAmount] = useState(0);
   const [show_canvas, setCanvas] = useState(false);
-  const {handleSubmit, totalnet} = props;
+  const [showCanvas, setShowCanvas] = useState(false);
+  const sketchRef = useRef();
+
+  const { handleSubmit, totalnet, navigation
+  } = props;
   const onSubmit = values => {
     alert(JSON.stringify(values));
   };
@@ -504,6 +511,29 @@ function Individual_Loan(props) {
   };
   const handleItemValueChange = itemValue => {
     setSelectedItemValue(itemValue);
+  };
+  useEffect(() => {
+    requestStoragePermission();
+  }, []);
+
+  const requestStoragePermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+      ]);
+
+      if (
+        granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
+        granted['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED
+      ) {
+        console.log('Storage permissions granted');
+      } else {
+        console.log('Storage permissions denied');
+      }
+    } catch (error) {
+      console.warn('Error requesting storage permissions:', error);
+    }
   };
   const hideModal = () => setModalVisible(false);
   const hideCoBorrowerModal = () => setCoBorrowerModalVisible(false);
@@ -560,140 +590,37 @@ function Individual_Loan(props) {
     // const { applicationNo, loanCycle } = props.formValues;
     // Perform calculations using applicationNo and loanCycle
   };
-  const canvasWidth = 600; // Set the desired width
-  const canvasHeight = 400; // Set the desired height
-  const sketchRef = useRef(null);
 
-  const handleTouchMove = e => {
-    const {locationX, locationY} = e.nativeEvent;
 
-    if (
-      locationX < 0 ||
-      locationX > canvasWidth ||
-      locationY < 0 ||
-      locationY > canvasHeight
-    ) {
-      Alert.alert('Cannot draw outside the canvas boundaries');
-      sketchRef.current.clear();
-    }
+  const toggleCanvasVisibility = () => {
+    alert('kk')
+    setShowCanvas(!showCanvas);
   };
 
+  const onSketchSave = async (success, path) => {
+    if (success) {
+      console.log('Image saved successfully:', path);
+    } else {
+      console.log('Save failed');
+    }
+  };
+  const [isTouchEnabled, setTouchEnabled] = useState(true);
+  const canvasWidth = 600; // Specify your desired canvas width
+  const handleTouchMove = (x, y) => {
+    console.log('x', x);
+    if (x > canvasWidth) {
+      setTouchEnabled(false);
+    } else {
+      setTouchEnabled(true);
+      sketchRef.current.addPath({ x, y });
+    }
+  };
   return (
-    <View
-      style={{
-        // flex: 1,
-        // backgroundColor: 'red',
-      }}>
-      {/* <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}> */}
-      <RNSketchCanvas
-        ref={sketchRef}
-        // containerStyle={{
-        //   width: 600,
-        //   height: 400,
-        //   backgroundColor: '#e6e5e3',
-        // }}
-        canvasStyle={{
-          backgroundColor: 'blue',
-          width: 600,
-          height: 400,
-          // width: 100,
-          // height: 100,
-          // flex: 1,
-        }}
-        defaultStrokeIndex={0}
-        defaultStrokeWidth={5}
-        closeComponent={
-          <TouchableOpacity onPress={() => alert('pp')}>
-            <View
-              style={{
-                marginHorizontal: 2.5,
-                marginVertical: 8,
-                height: 30,
-                width: 60,
-                backgroundColor: '#39579A',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 5,
-              }}>
-              <Text style={{color: 'white'}}>Close</Text>
-            </View>
-          </TouchableOpacity>
-        }
-        undoComponent={
-          <View
-            style={{
-              marginHorizontal: 2.5,
-              marginVertical: 8,
-              height: 30,
-              width: 60,
-              backgroundColor: '#39579A',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 5,
-            }}>
-            <Text style={{color: 'white'}}>Undo</Text>
-          </View>
-        }
-        clearComponent={
-          <View
-            style={{
-              marginHorizontal: 2.5,
-              marginVertical: 8,
-              height: 30,
-              width: 60,
-              backgroundColor: '#39579A',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 5,
-            }}>
-            <Text style={{color: 'white'}}>Clear</Text>
-          </View>
-        }
-        eraseComponent={
-          <View
-            style={{
-              marginHorizontal: 2.5,
-              marginVertical: 8,
-              height: 30,
-              width: 60,
-              backgroundColor: '#39579A',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 5,
-            }}>
-            <Text style={{color: 'white'}}>Eraser</Text>
-          </View>
-        }
-        saveComponent={
-          <View
-            style={{
-              marginHorizontal: 2.5,
-              marginVertical: 8,
-              height: 30,
-              width: 60,
-              backgroundColor: '#39579A',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 5,
-            }}>
-            <Text style={{color: 'white'}}>Save</Text>
-          </View>
-        }
-        savePreference={() => {
-          return {
-            folder: 'RNSketchCanvas',
-            filename: String(Math.ceil(Math.random() * 100000000)),
-            transparent: false,
-            imageType: 'png',
-          };
-        }}
-      />
-      {/* </View>xw */}
-    </View>
+
     // <>
     //   <ScrollView nestedScrollEnabled={true}>
     //     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-    //       <View style={{flex: 1, backgroundColor: '#fff'}}>
+    //       <View style={{ flex: 1, backgroundColor: '#fff' }}>
     //         <Text style={style.title_style}>Individual Loan Application</Text>
     //         <DividerLine />
 
@@ -717,7 +644,7 @@ function Individual_Loan(props) {
     //                     label={option.label}
     //                     value={option.value}
     //                     color="#000"
-    //                     labelStyle={{marginLeft: 5}}
+    //                     labelStyle={{ marginLeft: 5 }}
     //                   />
     //                 </View>
     //               </RadioButton.Group>
@@ -851,12 +778,14 @@ function Individual_Loan(props) {
     //         />
     //         <Borrower_Current_Map />
     //         <Borrower_Contract />
-    //         <Borrower_Sign setCanvas={setCanvas} show_canvas={show_canvas} />
+    //         <Borrower_Sign setCanvas={setCanvas} show_canvas={show_canvas} showCanvas={showCanvas} navigation={navigation} />
+
+
     //       </View>
     //     </TouchableWithoutFeedback>
     //   </ScrollView>
 
-    //   <Borrower_modal
+    //   {/* <Borrower_modal
     //     handleSubmit={handleSubmit}
     //     setAllCus={setAllCus}
     //     modalVisible={modalVisible}
@@ -874,9 +803,19 @@ function Individual_Loan(props) {
     //     handleItemValueChange={handleItemValueChange}
     //     selectedItemValue={selectedItemValue}
     //     all_co_borrower={all_co_borrower}
-    //   />
+    //   /> */}
 
-    //   <Modal
+    //   {/* <Button
+    //     onPress={() => toggleCanvasVisibility()}
+    //     mode="contained"
+    //     buttonColor={'#6870C3'}
+    //   >
+    //     OK
+    //   </Button> */}
+
+    //   {/* <Modal
+    //     onStrokeStart={({ nativeEvent }) => handleTouchMove(nativeEvent.locationX, nativeEvent.locationY)}
+    //     onStrokeChanged={({ nativeEvent }) => handleTouchMove(nativeEvent.locationX, nativeEvent.locationY)}
     //     visible={show_canvas}
     //     animationType="slide"
     //     transparent={true}
@@ -884,137 +823,119 @@ function Individual_Loan(props) {
     //     hideModalContentWhileAnimating
     //     dismissable={false}
     //     onDismiss={hideSignModal}>
-    //     {/* <View
-    //       style={style.modal_header}
-    //       onStartShouldSetResponder={() => hideSignModal()}>
-    //       <Icon
-    //         name="x-circle"
-    //         size={25}
-    //         color="#fff"
-    //         style={style.cancel_icon_style}
+
+    //   </Modal> */}
+    //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'blue', }}>
+    //     <View style={{
+    //       flex: 1,
+    //       backgroundColor: 'red',
+    //       width: 600,
+    //       height: 400,
+    //     }}>
+    //       <SketchCanvas
+    //         style={{ flex: 1 }}
+    //         strokeColor={'red'}
+    //         strokeWidth={7}
     //       />
-    //     </View> */}
-    //     {/* <View
-    //       style={{
-    //         flex: 1,
-    //         justifyContent: 'center',
-    //         alignItems: 'center',
-    //         // width: 600, height: 400,
-    //       }}> */}
-    //     <View
-    //       style={{
-    //         flex: 1,
-    //         backgroundColor: 'red',
-    //       }}>
-    //       <View
-    //         style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-    //         <RNSketchCanvas
-    //           containerStyle={{
-    //             width: 600,
-    //             height: 400,
-    //             backgroundColor: '#e6e5e3',
-    //           }}
-    //           canvasStyle={{
-    //             backgroundColor: 'blue',
-    //             // width: 100,
-    //             // height: 100,
-    //             flex:1
-    //           }}
-    //           defaultStrokeIndex={0}
-    //           defaultStrokeWidth={5}
-    //           closeComponent={
-    //             <TouchableOpacity onPress={() => alert('pp')}>
-    //               <View
-    //                 style={{
-    //                   marginHorizontal: 2.5,
-    //                   marginVertical: 8,
-    //                   height: 30,
-    //                   width: 60,
-    //                   backgroundColor: '#39579A',
-    //                   justifyContent: 'center',
-    //                   alignItems: 'center',
-    //                   borderRadius: 5,
-    //                 }}>
-    //                 <Text style={{color: 'white'}}>Close</Text>
-    //               </View>
-    //             </TouchableOpacity>
-    //           }
-    //           undoComponent={
-    //             <View
-    //               style={{
-    //                 marginHorizontal: 2.5,
-    //                 marginVertical: 8,
-    //                 height: 30,
-    //                 width: 60,
-    //                 backgroundColor: '#39579A',
-    //                 justifyContent: 'center',
-    //                 alignItems: 'center',
-    //                 borderRadius: 5,
-    //               }}>
-    //               <Text style={{color: 'white'}}>Undo</Text>
-    //             </View>
-    //           }
-    //           clearComponent={
-    //             <View
-    //               style={{
-    //                 marginHorizontal: 2.5,
-    //                 marginVertical: 8,
-    //                 height: 30,
-    //                 width: 60,
-    //                 backgroundColor: '#39579A',
-    //                 justifyContent: 'center',
-    //                 alignItems: 'center',
-    //                 borderRadius: 5,
-    //               }}>
-    //               <Text style={{color: 'white'}}>Clear</Text>
-    //             </View>
-    //           }
-    //           eraseComponent={
-    //             <View
-    //               style={{
-    //                 marginHorizontal: 2.5,
-    //                 marginVertical: 8,
-    //                 height: 30,
-    //                 width: 60,
-    //                 backgroundColor: '#39579A',
-    //                 justifyContent: 'center',
-    //                 alignItems: 'center',
-    //                 borderRadius: 5,
-    //               }}>
-    //               <Text style={{color: 'white'}}>Eraser</Text>
-    //             </View>
-    //           }
-    //           saveComponent={
-    //             <View
-    //               style={{
-    //                 marginHorizontal: 2.5,
-    //                 marginVertical: 8,
-    //                 height: 30,
-    //                 width: 60,
-    //                 backgroundColor: '#39579A',
-    //                 justifyContent: 'center',
-    //                 alignItems: 'center',
-    //                 borderRadius: 5,
-    //               }}>
-    //               <Text style={{color: 'white'}}>Save</Text>
-    //             </View>
-    //           }
-    //           savePreference={() => {
-    //             return {
-    //               folder: 'RNSketchCanvas',
-    //               filename: String(Math.ceil(Math.random() * 100000000)),
-    //               transparent: false,
-    //               imageType: 'png',
-    //             };
-    //           }}
-    //         />
-    //       </View>
     //     </View>
-    //     {/* </View> */}
-    //   </Modal>
+    //   </View>
+
+
+
+
+
+
+
     // </>
+    //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'blue', }}>
+    //   <View style={{
+    //     flex: 1,
+    //     backgroundColor: 'red',
+    //     width: 600,
+    //     height: 400,
+    //   }}>
+    //     <SketchCanvas
+    //       style={{ flex: 1 }}
+    //       strokeColor={'red'}
+    //       strokeWidth={7}
+    //     />
+    //   </View>
+    // </View>
+    // <View style={{backgroundColor:'red',flex:1}}>
+
+      <SketchCanvas
+        canvasStyle={{  width: 300, height: 300, backgroundColor: 'blue' }} // Set the desired dimensions for the drawing area
+        defaultStrokeWidth={3}
+        defaultStrokeColor="#000000"
+      />
+    // </View>
+
+
   );
 }
+const styles = StyleSheet.create({
+  textInput: {
+    width: 200,
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#000',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+  },
+  sectionContainer: {
+    marginTop: 32,
+    paddingHorizontal: 24,
+  },
+  textInputContainer: {
+    position: 'absolute',
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  sectionDescription: {
+    marginTop: 8,
+    fontSize: 18,
+    fontWeight: '400',
+  },
+  highlight: {
+    fontWeight: '700',
+  },
+  container: {
+    width: 600, height: 300,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  strokeColorButton: {
+    marginHorizontal: 2.5,
+    marginVertical: 8,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+  },
+  strokeWidthButton: {
+    marginHorizontal: 2.5,
+    marginVertical: 8,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#39579A',
+  },
+  functionButton: {
+    marginHorizontal: 2.5,
+    marginVertical: 8,
+    height: 30,
+    width: 60,
+    backgroundColor: '#39579A',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+});
+
 
 function mapStateToProps(state) {
   return {
