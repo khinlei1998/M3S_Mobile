@@ -6,19 +6,21 @@ import {
   ScrollView,
   FlatList,
   StyleSheet,
-  PermissionsAndroid
+  PermissionsAndroid,
+  TouchableHighlight,
 } from 'react-native';
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef, createRef} from 'react';
 import DividerLine from '../../components/DividerLine';
-import { style } from '../../style/Individual_Loan_style';
-import { operations } from '../../common';
+import {style} from '../../style/Individual_Loan_style';
+import {operations} from '../../common';
+import RNFS from 'react-native-fs';
+import Borrower_Modal from './Borrower_Modal';
 // import {
 //   SketchCanvas,
 //   RNSketchCanvas,
 // } from '@terrylinla/react-native-sketch-canvas';
 // import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
 import SketchCanvas from '@terrylinla/react-native-sketch-canvas';
-
 import {
   RadioButton,
   Button,
@@ -27,31 +29,34 @@ import {
   Provider,
   Portal,
 } from 'react-native-paper';
-import { reduxForm, Field, change } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import {reduxForm, Field, change} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
-import { loan_type } from '../../common';
+import {loan_type} from '../../common';
 import DatePicker from '../../components/DatePicker';
-import { Picker } from '@react-native-picker/picker';
-import { emp_filter_item } from '../../common';
-import { getAllLoan } from '../../query/AllLoan_query';
+import {Picker} from '@react-native-picker/picker';
+import {emp_filter_item} from '../../common';
+import {getAllLoan} from '../../query/AllLoan_query';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Borrower_Info from './Borrower_Info';
 import Icon from 'react-native-vector-icons/Feather';
-import { filterEmp } from '../../query/Employee_query';
-import { filterCustomer } from '../../query/Customer_query';
+import {filterEmp} from '../../query/Employee_query';
+import {filterCustomer} from '../../query/Customer_query';
 import Co_Borrower_Info from './Co_Borrower_Info';
 import Loan_Business_Info from './Loan_Business_Info';
 import Borrower_Monthly_Income from './Borrower_Monthly_Income';
-import { getAllLoanMax } from '../../query/LoanMax_query';
+import {getAllLoanMax} from '../../query/LoanMax_query';
 import Borrower_Current_Map from './Borrower_Current_Map';
 import Borrower_Contract from './Borrower_Contract';
 import Borrower_Sign from './Borrower_Sign';
 import SignatureCapture from 'react-native-signature-capture';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {storeLoanData} from '../../query/AllLoan_query';
+import { fetchEmpName } from '../../query/Employee_query';
+// import RNFetchBlob from 'rn-fetch-blob';
 
-import { TouchableOpacity } from 'react-native-gesture-handler';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -75,10 +80,13 @@ const Borrower_modal = props => {
     console.log('item', item.id);
     setSelectedValue(item.id);
     dispatch(change('Individual_Loan_Form', 'borrower_name', item.customer_nm));
-    dispatch(change('Individual_Loan_Form', 'nrc_no', item.resident_rgst_id));
+    dispatch(
+      change('Individual_Loan_Form', 'resident_rgst_id', item.resident_rgst_id),
+    );
+    dispatch(change('Individual_Loan_Form', 'customer_no', item.customer_no));
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -155,8 +163,8 @@ const Borrower_modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
@@ -178,7 +186,7 @@ const Borrower_modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
+              <View style={{width: '50%'}}>
                 <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -240,7 +248,7 @@ const Borrower_modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideModal()}
                 mode="contained"
@@ -295,7 +303,7 @@ const CoBorrower_modal = props => {
     );
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -374,8 +382,8 @@ const CoBorrower_modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
@@ -397,7 +405,7 @@ const CoBorrower_modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
+              <View style={{width: '50%'}}>
                 <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -459,7 +467,7 @@ const CoBorrower_modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideCoBorrowerModal()}
                 mode="contained"
@@ -481,29 +489,222 @@ const CoBorrower_modal = props => {
   );
 };
 
+const Borrower_Sign_Modal = props => {
+  const {
+    show_canvas,
+    hideSignModal,
+    setCanvas,
+    _onSaveEvent,
+    _onDragEvent,
+    saveSign,
+    resetSign,
+    sign,
+  } = props;
+  return (
+    <Modal
+      visible={show_canvas}
+      animationType="slide"
+      transparent={true}
+      useNativeDriver
+      hideModalContentWhileAnimating
+      dismissable={false}
+      onDismiss={hideSignModal}>
+      <View
+        style={{
+          backgroundColor: '#232D57',
+          padding: 25,
+          width: 400,
+          alignSelf: 'center',
+        }}
+        onStartShouldSetResponder={() => setCanvas(!show_canvas)}>
+        <Icon
+          name="x-circle"
+          size={25}
+          color="#fff"
+          style={style.cancel_icon_style}
+        />
+      </View>
+      <View
+        style={{
+          backgroundColor: '#F5FCFF',
+          width: 400,
+          height: 300,
+          alignSelf: 'center',
+        }}>
+        <SignatureCapture
+          style={{
+            flex: 1,
+          }}
+          ref={sign}
+          onSaveEvent={_onSaveEvent}
+          onDragEvent={_onDragEvent}
+          showNativeButtons={false}
+          showTitleLabel={false}
+          saveImageFileInExtStorage
+          minStrokeWidth={10}
+          maxStrokeWidth={10}
+          // backgroundColor="transparent"
+          viewMode={'portrait'}
+        />
+        <View style={{flexDirection: 'row'}}>
+          <TouchableHighlight
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              color: 'white',
+              height: 50,
+              backgroundColor: '#6870C3',
+              margin: 10,
+            }}
+            onPress={() => {
+              saveSign();
+            }}>
+            <Text style={{color: '#fff'}}>Save</Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              color: 'white',
+              height: 50,
+              backgroundColor: '#6870C3',
+              margin: 10,
+            }}
+            onPress={() => {
+              resetSign();
+            }}>
+            <Text style={{color: '#fff'}}>Reset</Text>
+          </TouchableHighlight>
+        </View>
+      </View>
+    </Modal>
+  );
+};
+
+const Co_Borrower_Sign_Modal = props => {
+  const {
+    show_co_borrower_canvas,
+    hideCoBorrowerSignModal,
+    setCoBorrowerCanvas,
+    _onCoBorrowerSaveEvent,
+    co_borrower_saveSign,
+    co_borrower_resetSignn,
+    co_borrower_sign,
+  } = props;
+  return (
+    <Modal
+      visible={show_co_borrower_canvas}
+      animationType="slide"
+      transparent={true}
+      useNativeDriver
+      hideModalContentWhileAnimating
+      dismissable={false}
+      onDismiss={hideCoBorrowerSignModal}>
+      <View
+        style={{
+          backgroundColor: '#232D57',
+          padding: 25,
+          width: 400,
+          alignSelf: 'center',
+        }}
+        onStartShouldSetResponder={() =>
+          setCoBorrowerCanvas(!show_co_borrower_canvas)
+        }>
+        <Icon
+          name="x-circle"
+          size={25}
+          color="#fff"
+          style={style.cancel_icon_style}
+        />
+      </View>
+      <View
+        style={{
+          backgroundColor: '#F5FCFF',
+          width: 400,
+          height: 300,
+          alignSelf: 'center',
+        }}>
+        <SignatureCapture
+          style={{
+            flex: 1,
+          }}
+          ref={co_borrower_sign}
+          onSaveEvent={_onCoBorrowerSaveEvent}
+          showNativeButtons={false}
+          showTitleLabel={false}
+          saveImageFileInExtStorage
+          minStrokeWidth={10}
+          maxStrokeWidth={10}
+          // backgroundColor="transparent"
+          viewMode={'portrait'}
+        />
+        <View style={{flexDirection: 'row'}}>
+          <TouchableHighlight
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              color: 'white',
+              height: 50,
+              backgroundColor: '#6870C3',
+              margin: 10,
+            }}
+            onPress={() => {
+              co_borrower_saveSign();
+            }}>
+            <Text style={{color: '#fff'}}>Save</Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              color: 'white',
+              height: 50,
+              backgroundColor: '#6870C3',
+              margin: 10,
+            }}
+            onPress={() => {
+              co_borrower_resetSignn();
+            }}>
+            <Text style={{color: '#fff'}}>Reset</Text>
+          </TouchableHighlight>
+        </View>
+      </View>
+    </Modal>
+  );
+};
+
 function Individual_Loan(props) {
   const dispatch = useDispatch();
   const [show_operation, setOperation] = useState('1');
   const [modalVisible, setModalVisible] = useState(false);
   const [co_borrower_modalVisible, setCoBorrowerModalVisible] = useState(false);
-  const [selectedItemValue, setSelectedItemValue] = useState(
-    'emplo                                             yee_name',
-  );
+  const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
   const [all_cus, setAllCus] = useState([]);
   const [all_co_borrower, setAllCoBorrower] = useState([]);
   const [loanexpanded, setLoanExpanded] = React.useState(true);
   const [loan_cycle_value, setLocanCycleValue] = useState('');
-  const [loan_type_value, setLoanType] = useState('');
+  const [loan_type_value, setLoanType] = useState();
   const [loan_max_data, setLoanMaxData] = useState([]);
   const [app_amount, setAppAmount] = useState(0);
   const [show_canvas, setCanvas] = useState(false);
+  const [show_co_borrower_canvas, setCoBorrowerCanvas] = useState(false);
   const [showCanvas, setShowCanvas] = useState(false);
-  const sketchRef = useRef();
+  const [filePath, setFilePath] = useState('');
+  const [co_borrower_filePath, setCoBorrowerFilePath] = useState('');
+  const [empname, setEmpName] = useState('');
 
-  const { handleSubmit, totalnet, navigation
-  } = props;
-  const onSubmit = values => {
+  const {handleSubmit, totalnet, navigation} = props;
+  const onSubmit = async values => {
+   
+    console.log('values', values);
     alert(JSON.stringify(values));
+    await storeLoanData(values).then(result => {
+      console.log(result);
+    });
   };
   const showCustomerSearch = () => {
     setModalVisible(true);
@@ -526,8 +727,10 @@ function Individual_Loan(props) {
       ]);
 
       if (
-        granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
-        granted['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED
+        granted['android.permission.WRITE_EXTERNAL_STORAGE'] ===
+          PermissionsAndroid.RESULTS.GRANTED &&
+        granted['android.permission.READ_EXTERNAL_STORAGE'] ===
+          PermissionsAndroid.RESULTS.GRANTED
       ) {
         console.log('Storage permissions granted');
       } else {
@@ -559,327 +762,464 @@ function Individual_Loan(props) {
       setLoanMaxData(loan_max_data);
       console.log('loan_max_data', loan_max_data);
     });
+    
   };
 
   const hideSignModal = () => {
     setCanvas(!show_canvas);
   };
+  const hideCoBorrowerSignModal = () => {
+    setCoBorrowerCanvas(!show_co_borrower_canvas);
+  };
 
   useEffect(() => {
     loadData();
   }, []);
+
   const handleCalculate = () => {
     loan_max_data.map(value => {
-      console.log('loan type', loan_type_value);
-      console.log('loan_cycle_value', loan_cycle_value);
-      console.log('total', totalnet * 2);
-
       if (30 == loan_type_value) {
+        dispatch(
+          change('Individual_Loan_Form', 'loan_limit_amt', totalnet * 2),
+        );
         setAppAmount(totalnet * 2);
       } else if (
         value.loan_cycle == loan_cycle_value &&
         value.loan_type == loan_type_value
       ) {
+        dispatch(
+          change(
+            'Individual_Loan_Form',
+            'loan_limit_amt',
+            value.loan_limit_amount,
+          ),
+        );
         setAppAmount(value.loan_limit_amount);
       } else if (
         loan_cycle_value >= value.loan_cycle &&
         value.loan_type == loan_type_value
       ) {
+        dispatch(
+          change(
+            'Individual_Loan_Form',
+            'loan_limit_amt',
+            value.loan_limit_amount,
+          ),
+        );
         setAppAmount(value.loan_limit_amount);
       }
     });
-    console.log('loan_cycle_value', loan_cycle_value);
-    // const { applicationNo, loanCycle } = props.formValues;
-    // Perform calculations using applicationNo and loanCycle
+  };
+  const saveSign = async () => {
+    // sign.current.saveImage();
+
+    const pathName = await sign.current.saveImage();
+    console.log('pathName', pathName);
+
+    // sign.current.saveImage().then(({ pathName }) => {
+    //   RNFetchBlob.fs.mv(pathName, '/storage/emulated/0/Pictures/Signature.png')
+    //     .then(() => {
+    //       console.log('Signature saved successfully');
+    //     })
+    //     .catch((error) => {
+    //       console.log('Error saving signature:', error);
+    //     });
+    // });
+  };
+  const co_borrower_saveSign = async () => {
+    // sign.current.saveImage();
+
+    const pathName = await co_borrower_sign.current.saveImage();
   };
 
-
-  const toggleCanvasVisibility = () => {
-    alert('kk')
-    setShowCanvas(!showCanvas);
+  const resetSign = () => {
+    sign.current.resetImage();
+  };
+  const co_borrower_resetSign = () => {
+    co_borrower_sign.current.resetImage();
   };
 
-  const onSketchSave = async (success, path) => {
-    if (success) {
-      console.log('Image saved successfully:', path);
-    } else {
-      console.log('Save failed');
-    }
+  const _onDragEvent = () => {
+    console.log('dragged');
   };
-  const [isTouchEnabled, setTouchEnabled] = useState(true);
-  const canvasWidth = 600; // Specify your desired canvas width
-  const handleTouchMove = (x, y) => {
-    console.log('x', x);
-    if (x > canvasWidth) {
-      setTouchEnabled(false);
-    } else {
-      setTouchEnabled(true);
-      sketchRef.current.addPath({ x, y });
-    }
+
+  const _onSaveEvent = async result => {
+    // console.log('result',result.pathName);
+    const pathName = result.pathName;
+    // const targetPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/RNSketchCanvas//1.png`;
+    // const fileName = `image_${Date.now()}.jpg`;
+    // try {
+    //   await RNFS.mkdir(RNFS.ExternalStorageDirectoryPath + '/Pictures/RNSketchCanvas/');
+    //   await RNFS.moveFile(pathName, targetPath);
+
+    //   console.log('Signature saved successfully');
+    // } catch (error) {
+    //   console.log('Error saving signature:', error);
+    // }
+
+    const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/RNSketchCanvas/`;
+    let newFilePath;
+    RNFS.mkdir(directoryPath)
+      .then(() => {
+        const fileName = `signature_${Date.now()}.png`;
+        newFilePath = `${directoryPath}${fileName}`;
+        console.log('old newFilePath', newFilePath);
+        return RNFS.moveFile(pathName, newFilePath);
+      })
+      .then(() => {
+        console.log('Signature saved successfully');
+        console.log('newFilePath', newFilePath);
+        setFilePath(newFilePath);
+      })
+      .catch(error => {
+        console.log('Error saving signature:', error);
+      });
+
+    setCoBorrowerCanvas(false);
   };
-  const handleSignatureCaptured = (signature) => {
-    console.log(signature);
-    // Handle the captured signature data
+  const _onCoBorrowerSaveEvent = async result => {
+    // console.log('result',result.pathName);
+    const pathName = result.pathName;
+    // const targetPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/RNSketchCanvas//1.png`;
+    // const fileName = `image_${Date.now()}.jpg`;
+    // try {
+    //   await RNFS.mkdir(RNFS.ExternalStorageDirectoryPath + '/Pictures/RNSketchCanvas/');
+    //   await RNFS.moveFile(pathName, targetPath);
+
+    //   console.log('Signature saved successfully');
+    // } catch (error) {
+    //   console.log('Error saving signature:', error);
+    // }
+
+    const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/RNSketchCanvas/`;
+    let newFilePath;
+    RNFS.mkdir(directoryPath)
+      .then(() => {
+        const fileName = `signature_${Date.now()}.png`;
+        newFilePath = `${directoryPath}${fileName}`;
+        console.log('old newFilePath', newFilePath);
+        return RNFS.moveFile(pathName, newFilePath);
+      })
+      .then(() => {
+        console.log('Signature saved successfully');
+        console.log('newFilePath', newFilePath);
+        setCoBorrowerFilePath(newFilePath);
+      })
+      .catch(error => {
+        console.log('Error saving signature:', error);
+      });
+
+    setCanvas(false);
   };
-  const signatureRef = useRef(null);
+
+  const sign = createRef();
+  const co_borrower_sign = createRef();
 
   return (
+    <>
+      <ScrollView nestedScrollEnabled={true}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View style={{flex: 1, backgroundColor: '#fff'}}>
+            <Text style={style.title_style}>Individual Loan Application</Text>
+            <DividerLine />
 
-    // <>
-    //   <ScrollView nestedScrollEnabled={true}>
-    //     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-    //       <View style={{ flex: 1, backgroundColor: '#fff' }}>
-    //         <Text style={style.title_style}>Individual Loan Application</Text>
-    //         <DividerLine />
+            <View style={style.continer}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}>
+                {operations.map((option, index) => (
+                  <RadioButton.Group
+                    key={index}
+                    onValueChange={newValue => setOperation(newValue)}
+                    value={show_operation}>
+                    <View
+                      key={option.value}
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <RadioButton.Item
+                        label={option.label}
+                        value={option.value}
+                        color="#000"
+                        labelStyle={{marginLeft: 5}}
+                      />
+                    </View>
+                  </RadioButton.Group>
+                ))}
+              </View>
+              <Button
+                onPress={handleSubmit(onSubmit)}
+                mode="contained"
+                buttonColor={'#6870C3'}
+                style={style.btnStyle}>
+                OK
+              </Button>
+            </View>
+            <DividerLine />
 
-    //         <View style={style.continer}>
-    //           <View
-    //             style={{
-    //               flexDirection: 'row',
-    //             }}>
-    //             {operations.map((option, index) => (
-    //               <RadioButton.Group
-    //                 key={index}
-    //                 onValueChange={newValue => setOperation(newValue)}
-    //                 value={show_operation}>
-    //                 <View
-    //                   key={option.value}
-    //                   style={{
-    //                     flexDirection: 'row',
-    //                     alignItems: 'center',
-    //                   }}>
-    //                   <RadioButton.Item
-    //                     label={option.label}
-    //                     value={option.value}
-    //                     color="#000"
-    //                     labelStyle={{ marginLeft: 5 }}
-    //                   />
-    //                 </View>
-    //               </RadioButton.Group>
-    //             ))}
-    //           </View>
-    //           <Button
-    //             onPress={handleSubmit(onSubmit)}
-    //             mode="contained"
-    //             buttonColor={'#6870C3'}
-    //             style={style.btnStyle}>
-    //             OK
-    //           </Button>
-    //         </View>
-    //         <DividerLine />
+            <List.Accordion
+              expanded={loanexpanded}
+              onPress={handleLoanToggle}
+              style={style.list_container}
+              titleStyle={style.list_title}
+              title="Loan Info">
+              <View style={style.sub_container}>
+                <View style={style.sub_list_container}>
+                  <Field
+                    name={'application_no'}
+                    title={'Application No'}
+                    component={TextInputFile}
+                    cus_width
+                    input_mode
+                    editable
+                  />
 
-    //         <List.Accordion
-    //           expanded={loanexpanded}
-    //           onPress={handleLoanToggle}
-    //           style={style.list_container}
-    //           titleStyle={style.list_title}
-    //           title="Loan Info">
-    //           <View style={style.sub_container}>
-    //             <View style={style.sub_list_container}>
-    //               <Field
-    //                 name={'application_no'}
-    //                 title={'Application No'}
-    //                 component={TextInputFile}
-    //                 cus_width
-    //                 input_mode
-    //                 editable
-    //               />
+                  <Field
+                    name={'product_type'}
+                    title={'Product Type'}
+                    component={TextInputFile}
+                    cus_width
+                    input_mode
+                  />
+                </View>
 
-    //               <Field
-    //                 name={'product_type'}
-    //                 title={'Product Type'}
-    //                 component={TextInputFile}
-    //                 cus_width
-    //                 input_mode
-    //               />
-    //             </View>
+                <View style={style.sub_list_container}>
+                  <Field
+                    data={loan_type}
+                    name={'loan_type'}
+                    title={'Type of Loan'}
+                    component={DropDownPicker}
+                    pickerStyle={{
+                      width: 300,
+                    }}
+                    onChange={value => setLoanType(value)}
+                  />
 
-    //             <View style={style.sub_list_container}>
-    //               <Field
-    //                 data={loan_type}
-    //                 name={'loan_type'}
-    //                 title={'Type of Loan'}
-    //                 component={DropDownPicker}
-    //                 pickerStyle={{
-    //                   width: 300,
-    //                 }}
-    //                 onChange={value => setLoanType(value)}
-    //               />
+                  <Field
+                    name={'application_date'}
+                    component={DatePicker}
+                    label={'Application Date'}
+                    icon={'calendar'}
+                  />
+                </View>
 
-    //               <Field
-    //                 name={'workplacePeriod'}
-    //                 component={DatePicker}
-    //                 label={'Application Date'}
-    //                 icon={'calendar'}
-    //               />
-    //             </View>
+                <View style={style.sub_list_container}>
+                  <Field
+                    name={'loan_cycle'}
+                    title={'Loan Cycle'}
+                    component={TextInputFile}
+                    cus_width
+                    input_mode
+                    keyboardType={'numeric'}
+                    onChange={value => setLocanCycleValue(value)}
+                  />
 
-    //             <View style={style.sub_list_container}>
-    //               <Field
-    //                 name={'loan_cycle'}
-    //                 title={'Loan Cycle'}
-    //                 component={TextInputFile}
-    //                 cus_width
-    //                 input_mode
-    //                 keyboardType={'numeric'}
-    //                 onChange={value => setLocanCycleValue(value)}
-    //               />
+                  <Field
+                    name={'loanterm_cnt'}
+                    title={'Loan Term'}
+                    component={TextInputFile}
+                    cus_width
+                    input_mode
+                    keyboardType={'numeric'}
+                  />
+                </View>
 
-    //               <Field
-    //                 name={'loanterm_cnt'}
-    //                 title={'Loan Term'}
-    //                 component={TextInputFile}
-    //                 cus_width
-    //                 input_mode
-    //                 keyboardType={'numeric'}
-    //               />
-    //             </View>
+                <View style={style.sub_list_container}>
+                  <Field
+                    name={'application_amt'}
+                    title={'Loan Apply Amount'}
+                    component={TextInputFile}
+                    cus_width
+                    input_mode
+                    keyboardType={'numeric'}
+                  />
 
-    //             <View style={style.sub_list_container}>
-    //               <Field
-    //                 name={'application_no'}
-    //                 title={'Loan Apply Amount'}
-    //                 component={TextInputFile}
-    //                 cus_width
-    //                 input_mode
-    //                 editable
-    //                 keyboardType={'numeric'}
-    //               />
+                  <Field
+                    name={'loan_code'}
+                    title={'Loan Code'}
+                    component={TextInputFile}
+                    cus_width
+                    input_mode
+                  />
+                </View>
 
-    //               <Field
-    //                 name={'loan_code'}
-    //                 title={'Loan Code'}
-    //                 component={TextInputFile}
-    //                 cus_width
-    //                 input_mode
-    //               />
-    //             </View>
+                <View style={style.sub_list_container}>
+                  <Field
+                    name={'loan_charges'}
+                    title={'Loan Charges'}
+                    component={TextInputFile}
+                    cus_width
+                    input_mode
+                    keyboardType={'numeric'}
+                  />
 
-    //             <View style={style.sub_list_container}>
-    //               <Field
-    //                 name={'loan_charges'}
-    //                 title={'Loan Charges'}
-    //                 component={TextInputFile}
-    //                 cus_width
-    //                 input_mode
-    //                 editable
-    //                 keyboardType={'numeric'}
-    //               />
+                  <Field
+                    name={'interest_rates'}
+                    title={'Interest Rates'}
+                    component={TextInputFile}
+                    cus_width
+                    input_mode
+                  />
+                </View>
+              </View>
+            </List.Accordion>
 
-    //               <Field
-    //                 name={'interest_rates'}
-    //                 title={'Interest Rates'}
-    //                 component={TextInputFile}
-    //                 cus_width
-    //                 input_mode
-    //               />
-    //             </View>
-    //           </View>
-    //         </List.Accordion>
+            <Borrower_Info showCustomerSearch={showCustomerSearch} />
+            <Co_Borrower_Info showCoBorrowerSearch={showCoBorrowerSearch} />
+            <Loan_Business_Info />
+            <Borrower_Monthly_Income
+              handleCalculate={handleCalculate}
+              app_amount={app_amount}
+            />
+            <Borrower_Current_Map />
+            <Borrower_Contract />
+            <Borrower_Sign
+              setCanvas={setCanvas}
+              show_canvas={show_canvas}
+              showCanvas={showCanvas}
+              navigation={navigation}
+              filePath={filePath}
+              co_borrower_filePath={co_borrower_filePath}
+              setCoBorrowerCanvas={setCoBorrowerCanvas}
+              show_co_borrower_canvas={show_co_borrower_canvas}
+            />
+          </View>
+        </TouchableWithoutFeedback>
+      </ScrollView>
 
-    //         <Borrower_Info showCustomerSearch={showCustomerSearch} />
-    //         <Co_Borrower_Info showCoBorrowerSearch={showCoBorrowerSearch} />
-    //         <Loan_Business_Info />
-    //         <Borrower_Monthly_Income
-    //           handleCalculate={handleCalculate}
-    //           app_amount={app_amount}
-    //         />
-    //         <Borrower_Current_Map />
-    //         <Borrower_Contract />
-    //         <Borrower_Sign setCanvas={setCanvas} show_canvas={show_canvas} showCanvas={showCanvas} navigation={navigation} />
+      <Borrower_modal
+        handleSubmit={handleSubmit}
+        setAllCus={setAllCus}
+        modalVisible={modalVisible}
+        hideModal={hideModal}
+        handleItemValueChange={handleItemValueChange}
+        selectedItemValue={selectedItemValue}
+        all_cus={all_cus}
+      />
 
+      {/* <Borrower_Modal
+        handleSubmit={handleSubmit}
+        setAllCus={setAllCus}
+        modalVisible={modalVisible}
+        hideModal={hideModal}
+        handleItemValueChange={handleItemValueChange}
+        selectedItemValue={selectedItemValue}
+        all_cus={all_cus}
+      /> */}
 
-    //       </View>
-    //     </TouchableWithoutFeedback>
-    //   </ScrollView>
+      <CoBorrower_modal
+        handleSubmit={handleSubmit}
+        setAllCoBorrower={setAllCoBorrower}
+        co_borrower_modalVisible={co_borrower_modalVisible}
+        hideCoBorrowerModal={hideCoBorrowerModal}
+        handleItemValueChange={handleItemValueChange}
+        selectedItemValue={selectedItemValue}
+        all_co_borrower={all_co_borrower}
+      />
 
-    //   {/* <Borrower_modal
-    //     handleSubmit={handleSubmit}
-    //     setAllCus={setAllCus}
-    //     modalVisible={modalVisible}
-    //     hideModal={hideModal}
-    //     handleItemValueChange={handleItemValueChange}
-    //     selectedItemValue={selectedItemValue}
-    //     all_cus={all_cus}
-    //   />
+      <Borrower_Sign_Modal
+        show_canvas={show_canvas}
+        hideSignModal={hideSignModal}
+        setCanvas={setCanvas}
+        _onSaveEvent={_onSaveEvent}
+        _onDragEvent={_onDragEvent}
+        saveSign={saveSign}
+        resetSign={resetSign}
+        sign={sign}
+      />
 
-    //   <CoBorrower_modal
-    //     handleSubmit={handleSubmit}
-    //     setAllCoBorrower={setAllCoBorrower}
-    //     co_borrower_modalVisible={co_borrower_modalVisible}
-    //     hideCoBorrowerModal={hideCoBorrowerModal}
-    //     handleItemValueChange={handleItemValueChange}
-    //     selectedItemValue={selectedItemValue}
-    //     all_co_borrower={all_co_borrower}
-    //   /> */}
+      <Co_Borrower_Sign_Modal
+        show_co_borrower_canvas={show_co_borrower_canvas}
+        hideCoBorrowerSignModal={hideCoBorrowerSignModal}
+        setCoBorrowerCanvas={setCoBorrowerCanvas}
+        _onCoBorrowerSaveEvent={_onCoBorrowerSaveEvent}
+        co_borrower_saveSign={co_borrower_saveSign}
+        co_borrower_resetSign={co_borrower_resetSign}
+        co_borrower_sign={co_borrower_sign}
+      />
 
-    //   {/* <Button
-    //     onPress={() => toggleCanvasVisibility()}
-    //     mode="contained"
-    //     buttonColor={'#6870C3'}
-    //   >
-    //     OK
-    //   </Button> */}
-
-    //   {/* <Modal
-    //     onStrokeStart={({ nativeEvent }) => handleTouchMove(nativeEvent.locationX, nativeEvent.locationY)}
-    //     onStrokeChanged={({ nativeEvent }) => handleTouchMove(nativeEvent.locationX, nativeEvent.locationY)}
-    //     visible={show_canvas}
-    //     animationType="slide"
-    //     transparent={true}
-    //     useNativeDriver
-    //     hideModalContentWhileAnimating
-    //     dismissable={false}
-    //     onDismiss={hideSignModal}>
-
-    //   </Modal> */}
-    //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'blue', }}>
-    //     <View style={{
-    //       flex: 1,
-    //       backgroundColor: 'red',
-    //       width: 600,
-    //       height: 400,
-    //     }}>
-    //       <SketchCanvas
-    //         style={{ flex: 1 }}
-    //         strokeColor={'red'}
-    //         strokeWidth={7}
-    //       />
-    //     </View>
-    //   </View>
-
-
-
-
-
-
-
-    // </>
-    //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'blue', }}>
-    //   <View style={{
-    //     flex: 1,
-    //     backgroundColor: 'red',
-    //     width: 600,
-    //     height: 400,
-    //   }}>
-    //     <SketchCanvas
-    //       style={{ flex: 1 }}
-    //       strokeColor={'red'}
-    //       strokeWidth={7}
-    //     />
-    //   </View>
-    // </View>
-    // <View style={{backgroundColor:'red',flex:1}}>
-
-
-    // </View>
-    <SignatureCapture
-      ref={signatureRef}
-      onSaveEvent={handleSignatureCaptured}
-      style={{ flex: 1 }}
-    />
-
-
+      {/* <Modal
+        visible={show_canvas}
+        animationType="slide"
+        transparent={true}
+        useNativeDriver
+        hideModalContentWhileAnimating
+        dismissable={false}
+        onDismiss={hideSignModal}>
+        <View
+          style={{
+            backgroundColor: '#232D57',
+            padding: 25,
+            width: 400,
+            alignSelf: 'center',
+          }}
+          onStartShouldSetResponder={() => setCanvas(!show_canvas)}>
+          <Icon
+            name="x-circle"
+            size={25}
+            color="#fff"
+            style={style.cancel_icon_style}
+          />
+        </View>
+        <View
+          style={{
+            backgroundColor: '#F5FCFF',
+            width: 400,
+            height: 300,
+            alignSelf: 'center',
+          }}>
+          <SignatureCapture
+            style={{
+              flex: 1,
+            }}
+            ref={sign}
+            onSaveEvent={_onSaveEvent}
+            onDragEvent={_onDragEvent}
+            showNativeButtons={false}
+            showTitleLabel={false}
+            saveImageFileInExtStorage
+            minStrokeWidth={10}
+            maxStrokeWidth={10}
+            // backgroundColor="transparent"
+            viewMode={'portrait'}
+          />
+          <View style={{flexDirection: 'row'}}>
+            <TouchableHighlight
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: 'white',
+                height: 50,
+                backgroundColor: '#6870C3',
+                margin: 10,
+              }}
+              onPress={() => {
+                saveSign();
+              }}>
+              <Text style={{color: '#fff'}}>Save</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: 'white',
+                height: 50,
+                backgroundColor: '#6870C3',
+                margin: 10,
+              }}
+              onPress={() => {
+                resetSign();
+              }}>
+              <Text style={{color: '#fff'}}>Reset</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Modal> */}
+    </>
   );
 }
 const styles = StyleSheet.create({
@@ -911,7 +1251,8 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   container: {
-    width: 600, height: 300,
+    width: 600,
+    height: 300,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
@@ -944,7 +1285,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 });
-
 
 function mapStateToProps(state) {
   return {

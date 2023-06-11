@@ -1,22 +1,22 @@
-import { View, } from 'react-native';
+import {View} from 'react-native';
 import React from 'react';
-import { List, } from 'react-native-paper';
-import { reduxForm, Field } from 'redux-form';
-import { connect } from 'react-redux';
-import { style } from '../../style/Individual_Loan_style';
+import {List} from 'react-native-paper';
+import {reduxForm, Field} from 'redux-form';
+import {connect} from 'react-redux';
+import {style} from '../../style/Individual_Loan_style';
 import {
   borrower_type,
   condition_house,
   maritail_status,
   gender,
-  address_type
+  address_type,
 } from '../../common';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
 import DatePicker from '../../components/DatePicker';
 import RadioButtonFile from '../../components/RadioButtonFile';
 function Borrower_Info(props) {
-  const { showCustomerSearch } = props
+  const {showCustomerSearch} = props;
   const [borrower_expanded, setBorrowerExpanded] = React.useState(true);
 
   const handleBorrowerToggle = () => {
@@ -34,7 +34,7 @@ function Borrower_Info(props) {
         <View style={style.sub_container}>
           <Field
             data={borrower_type}
-            name={'curr_business_date_status'}
+            name={'cst_new_exist_flg'}
             component={RadioButtonFile}
           />
 
@@ -48,7 +48,7 @@ function Borrower_Info(props) {
           />
           <View style={style.sub_list_container}>
             <Field
-              name={'nrc_no'}
+              name={'resident_rgst_id'}
               title={'NRC'}
               icon={'magnify'}
               component={TextInputFile}
@@ -71,7 +71,7 @@ function Borrower_Info(props) {
 
           <View style={style.sub_list_container}>
             <Field
-              name={'application_no'}
+              name={'saving_acct_num'}
               title={'Saving Code'}
               component={TextInputFile}
               cus_width
@@ -80,10 +80,12 @@ function Borrower_Info(props) {
 
             <Field
               name={'tel_no'}
-              title={'Phone Number'}
+              title={'Tel No'}
               component={TextInputFile}
               cus_width
               input_mode
+              keyboardType={'numeric'}
+
             />
           </View>
 
@@ -109,7 +111,7 @@ function Borrower_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               data={maritail_status}
-              name={'maritalStatus'}
+              name={'marital_status'}
               title={'Maritial Status'}
               component={DropDownPicker}
               pickerStyle={{
@@ -127,7 +129,7 @@ function Borrower_Info(props) {
               }}
             />
           </View>
-          
+
           <Field
             name={'addr'}
             title={'No,Street '}
@@ -139,7 +141,7 @@ function Borrower_Info(props) {
 
           <View style={style.sub_list_container}>
             <Field
-              name={'birthDate'}
+              name={'curr_resident_date'}
               component={DatePicker}
               label={'Living Time in current address'}
               icon={'calendar'}
@@ -151,15 +153,18 @@ function Borrower_Info(props) {
               component={TextInputFile}
               cus_width
               input_mode
+              keyboardType={'numeric'}
             />
           </View>
 
           <View style={style.sub_list_container}>
             <Field
-              name={'birthDate'}
-              component={DatePicker}
-              label={'Number of Students'}
-              icon={'calendar'}
+              name={'students_cnt'}
+              title={'Number of Students'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+              keyboardType={'numeric'}
             />
 
             <Field
@@ -168,6 +173,7 @@ function Borrower_Info(props) {
               component={TextInputFile}
               cus_width
               input_mode
+              keyboardType={'numeric'}
             />
           </View>
 
@@ -192,8 +198,6 @@ function Borrower_Info(props) {
           </View>
         </View>
       </List.Accordion>
-
-
     </>
   );
 }

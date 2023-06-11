@@ -7,7 +7,7 @@ export const TOTAL_NET_BUSINESS = 'TOTAL_NET_BUSINESS';
 export const TOTAL_NET_FAMILY = 'TOTAL_NET_FAMILY';
 export const RESET_INCONE = 'RESET_INCONE';
 export const TOTAL_NET_INCOME = 'TOTAL_NET_INCOME';
-
+export const TOTAL_LIMIT_AMT = 'TOTAL_LIMIT_AMT';
 
 const initialState = {
   totalSum: 0,
@@ -17,7 +17,8 @@ const initialState = {
   totalincomeexpense: 0,
   totalnetbusiness: 0,
   totalnetfamily: 0,
-  totalnetincome:0
+  totalnetincome: 0,
+  totallmtamount: 0,
 };
 
 export const updateTotalSum = props => {
@@ -35,7 +36,7 @@ export const totalIncome = props => {
 };
 
 export const totalExpense = props => {
-  console.log('props',props);
+  console.log('props', props);
   return {
     type: 'UPDATE_TOTAL_EXPENSE',
     payload: props,
@@ -81,6 +82,12 @@ export const totalNetIncome = props => {
   };
 };
 
+export const totalLoanAmt = props => {
+  return {
+    type: 'TOTAL_LIMIT_AMT',
+    payload: props,
+  };
+};
 export default function MonthlyReducder(state = initialState, action) {
   switch (action.type) {
     case UPDATE_TOTAL_SUM:
@@ -97,8 +104,10 @@ export default function MonthlyReducder(state = initialState, action) {
       return {...state, totalnetbusiness: action.payload};
     case TOTAL_NET_FAMILY:
       return {...state, totalnetfamily: action.payload};
-      case TOTAL_NET_INCOME:
-        return {...state, totalnetincome: action.payload};
+    case TOTAL_NET_INCOME:
+      return {...state, totalnetincome: action.payload};
+    case TOTAL_LIMIT_AMT:
+      return {...state, totallmtamount: action.payload};
     case RESET_INCONE:
       return initialState;
 

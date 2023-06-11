@@ -16,6 +16,7 @@ import {
   totalNetFamily,
   totalNetIncome
 } from '../../redux/MonthlyReducer';
+import { totalLoanAmt } from '../../redux/MonthlyReducer';
 function Borrower_Monthly_Income(props) {
     const dispatch = useDispatch();
 
@@ -35,7 +36,8 @@ function Borrower_Monthly_Income(props) {
     totalNetFamily,
     total_net_family,
     total_business_net_total,
-    totalNetIncome
+    totalNetIncome,
+    totalLoanAmt
   } = props;
   const [co_borrower_expanded, setBorrowerIncomeExpanded] = useState(true);
   const [values, setValues] = useState([]);
@@ -107,6 +109,15 @@ function Borrower_Monthly_Income(props) {
           `${sum.toString()}`,
         ),
       );
+    }
+  };
+
+  const handleFamilyChange = text => {
+    const number = parseFloat(text);
+
+    // Check if the input is a valid number
+    if (!isNaN(number)) {
+      totalFamilyIncome(number);
     }
   };
 
@@ -611,6 +622,7 @@ export default reduxForm({
     totalFamilyExpense,
     totalNetBusiness,
     totalNetFamily,
-    totalNetIncome
+    totalNetIncome,
+    totalLoanAmt
   })(Borrower_Monthly_Income),
 );

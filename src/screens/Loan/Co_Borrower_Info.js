@@ -57,42 +57,42 @@ function Co_Borrower_Info(props) {
 
                     <View style={style.sub_list_container}>
                         <Field
-                            name={'birthDate'}
+                            name={'co_brwer_birth_dt'}
                             component={DatePicker}
                             label={'Date Of Birth'}
                             icon={'calendar'}
                         />
 
                         <Field
-                            name={'tel_no'}
-                            title={'Phone Number'}
+                            name={'co_brwer_tel_no'}
+                            title={'Tel No'}
                             component={TextInputFile}
                             cus_width
                             input_mode
-                            editable
+                            keyboardType={'numeric'}
                             inputmax={30}
                         />
                     </View>
 
                     <View style={style.sub_list_container}>
                         <Field
-                            name={'tel_no'}
+                            name={'co_occupation'}
                             title={'Occupation'}
                             component={TextInputFile}
                             cus_width
                             input_mode
-                            editable
                             inputmax={50}
                         />
 
                         <Field
-                            name={'tel_no'}
+                            name={'co_brwer_mble_tel_no'}
                             title={'Relation with Phone Number'}
                             component={TextInputFile}
                             cus_width
                             input_mode
-                            editable
                             inputmax={50}
+                            keyboardType={'numeric'}
+
                         />
                     </View>
 
