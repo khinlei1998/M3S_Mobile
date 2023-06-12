@@ -12,7 +12,7 @@ import {
 import React, { useState, useEffect, useRef, createRef } from 'react';
 import DividerLine from '../../components/DividerLine';
 import { style } from '../../style/Individual_Loan_style';
-import { operations, city_code, Township_code, ward_code } from '../../common';
+import { operations, city_code, Township_code, ward_code, village_code } from '../../common';
 import RNFS from 'react-native-fs';
 import Borrower_Modal from './Borrower_Modal';
 // import {
@@ -1049,7 +1049,392 @@ const Township_Modal = props => {
 
 
 }
+const Village_Modal = props => {
+  const [village_selected, setVillageselectedValue] = useState(null);
 
+  const { hideVillageModal,
+    modal_village_visible,
+    setTownshipSelectedItemValue,
+    selectedVillageItemValue,
+    handleVllageItemValueChange,
+    setAllVillage,
+    handleSubmit, all_village } = props
+  const btnVillageSearch = async values => {
+    await filterCustomer(selectedVillageItemValue, values.searchtext)
+      .then(data => (data.length > 0 ? setAllVillage(data) : alert('No data')))
+      .catch(error => console.log('error', error));
+  };
+
+  const btnSelectVillage = item => {
+    setVillageselectedValue(item.id);
+    dispatch(change('Individual_Loan_Form', 'village_code', item.village_code));
+    dispatch(
+      change('Individual_Loan_Form', 'village_name', item.village_name),
+    );
+  };
+
+  const village_item = ({ item, index }) => {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          borderBottomWidth: 1,
+          borderBottomColor: '#ccc',
+          padding: 10,
+        }}>
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+          }}>
+          {index + 1}
+        </Text>
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+          }}>
+          {item.village_code}
+        </Text>
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+          }}>
+          {item.village_name}
+        </Text>
+
+
+        <View>
+          <RadioButton
+            value={item.id}
+            status={village_selected === item.id ? 'checked' : 'unchecked'}
+            onPress={() => btnSelectVillage(item)}
+          />
+        </View>
+      </View>
+    );
+  };
+  return (
+    <Provider>
+      <Portal>
+        <Modal
+          useNativeDriver
+          hideModalContentWhileAnimating
+          dismissable={false}
+          visible={modal_village_visible}
+          onDismiss={hideVillageModal}
+          contentContainerStyle={style.modal_container}>
+          <View
+            style={style.modal_header}
+            onStartShouldSetResponder={() => hideVillageModal()}>
+            <Icon
+              name="x-circle"
+              size={25}
+              color="#fff"
+              style={style.cancel_icon_style}
+            />
+          </View>
+          <View style={style.modal_body_container}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+              }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+
+                <Picker
+                  selectedValue={selectedVillageItemValue}
+                  onValueChange={handleVllageItemValueChange}
+                  style={{
+                    width: 200,
+                    backgroundColor: 'white',
+                    marginTop: 7,
+                  }}
+                  mode="dropdown">
+                  {village_code.length > 0 &&
+                    village_code.map(val => (
+                      <Picker.Item
+                        label={val.label}
+                        value={val.value}
+                        key={val.id}
+                      />
+                    ))}
+                </Picker>
+              </View>
+
+              <View style={{ width: '50%' }}>
+                <Field
+                  name={'searchtext'}
+                  component={TextInputFile}
+                  input_mode
+                  inputmax={20}
+                  icon={'magnify'}
+                  handleTextInputFocus={handleSubmit(btnVillageSearch)}
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                backgroundColor: '#fff',
+                borderRadius: 5,
+                padding: 5,
+                margin: 20,
+              }}>
+              <Text
+                style={{
+                  padding: 10,
+                  flex: 1,
+                  fontWeight: 'bold',
+                }}>
+                #
+              </Text>
+              <Text
+                style={{
+                  flex: 1,
+
+                  padding: 10,
+                  fontWeight: 'bold',
+                }}>
+                Village Code
+              </Text>
+              <Text
+                style={{
+                  flex: 1,
+
+                  padding: 10,
+                  fontWeight: 'bold',
+                }}>
+                Village Name
+              </Text>
+
+            </View>
+
+            <FlatList
+              data={all_village}
+              renderItem={village_item}
+              keyExtractor={(item, index) => index.toString()}
+            />
+
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <Button
+                onPress={() => hideVillageModal()}
+                mode="contained"
+                buttonColor={'#6870C3'}
+                style={{
+                  borderRadius: 0,
+                  width: 100,
+                  marginTop: 10,
+                  color: 'black',
+                  marginLeft: 5,
+                }}>
+                OK
+              </Button>
+            </View>
+          </View>
+        </Modal>
+      </Portal>
+    </Provider>
+  )
+
+
+}
+
+const Ward_Modal = props => {
+  const [village_selected, setVillageselectedValue] = useState(null);
+  console.log('modal_ward_visible', modal_ward_visible);
+  const { hideWardModal,
+    modal_ward_visible,
+    setWardSelectedItemValue,
+    selectedWardItemValue,
+    handleWardItemValueChange,
+    setAllWard,
+    handleSubmit,
+    all_ward } = props
+  const btnWardSearch = async values => {
+    await filterCustomer(selectedWardItemValue, values.searchtext)
+      .then(data => (data.length > 0 ? setAllWard(data) : alert('No data')))
+      .catch(error => console.log('error', error));
+  };
+
+  const btnSelectWard = item => {
+    setVillageselectedValue(item.id);
+    dispatch(change('Individual_Loan_Form', 'village_code', item.village_code));
+    dispatch(
+      change('Individual_Loan_Form', 'village_name', item.village_name),
+    );
+  };
+
+  const ward_item = ({ item, index }) => {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          borderBottomWidth: 1,
+          borderBottomColor: '#ccc',
+          padding: 10,
+        }}>
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+          }}>
+          {index + 1}
+        </Text>
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+          }}>
+          {item.ward_code}
+        </Text>
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+          }}>
+          {item.ward_name}
+        </Text>
+
+
+        <View>
+          <RadioButton
+            value={item.id}
+            status={village_selected === item.id ? 'checked' : 'unchecked'}
+            onPress={() => btnSelectWard(item)}
+          />
+        </View>
+      </View>
+    );
+  };
+  return (
+    <Provider>
+      <Portal>
+        <Modal
+          useNativeDriver
+          hideModalContentWhileAnimating
+          dismissable={false}
+          visible={modal_ward_visible}
+          onDismiss={hideWardModal}
+          contentContainerStyle={style.modal_container}>
+          <View
+            style={style.modal_header}
+            onStartShouldSetResponder={() => hideWardModal()}>
+            <Icon
+              name="x-circle"
+              size={25}
+              color="#fff"
+              style={style.cancel_icon_style}
+            />
+          </View>
+          <View style={style.modal_body_container}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+              }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+
+                <Picker
+                  selectedValue={selectedWardItemValue}
+                  onValueChange={handleWardItemValueChange}
+                  style={{
+                    width: 200,
+                    backgroundColor: 'white',
+                    marginTop: 7,
+                  }}
+                  mode="dropdown">
+                  {ward_code.length > 0 &&
+                    ward_code.map(val => (
+                      <Picker.Item
+                        label={val.label}
+                        value={val.value}
+                        key={val.id}
+                      />
+                    ))}
+                </Picker>
+              </View>
+
+              <View style={{ width: '50%' }}>
+                <Field
+                  name={'searchtext'}
+                  component={TextInputFile}
+                  input_mode
+                  inputmax={20}
+                  icon={'magnify'}
+                  handleTextInputFocus={handleSubmit(btnWardSearch)}
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                backgroundColor: '#fff',
+                borderRadius: 5,
+                padding: 5,
+                margin: 20,
+              }}>
+              <Text
+                style={{
+                  padding: 10,
+                  flex: 1,
+                  fontWeight: 'bold',
+                }}>
+                #
+              </Text>
+              <Text
+                style={{
+                  flex: 1,
+
+                  padding: 10,
+                  fontWeight: 'bold',
+                }}>
+                Ward Code
+              </Text>
+              <Text
+                style={{
+                  flex: 1,
+
+                  padding: 10,
+                  fontWeight: 'bold',
+                }}>
+                Ward Name
+              </Text>
+
+            </View>
+
+            <FlatList
+              data={all_ward}
+              renderItem={ward_item}
+              keyExtractor={(item, index) => index.toString()}
+            />
+
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <Button
+                onPress={() => hideWardModal()}
+                mode="contained"
+                buttonColor={'#6870C3'}
+                style={{
+                  borderRadius: 0,
+                  width: 100,
+                  marginTop: 10,
+                  color: 'black',
+                  marginLeft: 5,
+                }}>
+                OK
+              </Button>
+            </View>
+          </View>
+        </Modal>
+      </Portal>
+    </Provider>
+  )
+
+
+}
 
 
 function Individual_Loan(props) {
@@ -1076,8 +1461,13 @@ function Individual_Loan(props) {
   const [selectedCityItemValue, setCitySelectedItemValue] = useState('city_code');
   const [all_city, setAllCity] = useState([]);
   const [selectedTownshipItemValue, setTownshipSelectedItemValue] = useState('township_code');
+  const [selectedWardItemValue, setWardSelectedItemValue] = useState('ward_code');
+  const [selectedVillageItemValue, setVillageSelectedItemValue] = useState('village_code');
   const [all_township, setAllTownship] = useState([]);
-
+  const [all_village, setAllVillage] = useState([]);
+  const [all_ward, setAllWard] = useState([]);
+  const [modal_village_visible, setVillageCodeModalVisible] = useState(false);
+  const [modal_ward_visible, setWardCodeModalVisible] = useState(false);
   const { handleSubmit, totalnet, navigation } = props;
   const onSubmit = async values => {
 
@@ -1092,6 +1482,9 @@ function Individual_Loan(props) {
   };
   const showCoBorrowerSearch = () => {
     setCoBorrowerModalVisible(true);
+  };
+  const showWardSearch = () => {
+    setWardCodeModalVisible(true);
   };
   const handleItemValueChange = itemValue => {
     setSelectedItemValue(itemValue);
@@ -1295,6 +1688,8 @@ function Individual_Loan(props) {
 
   const hideCityModal = () => setCityCodeModalVisible(false);
   const hideTownshipModal = () => setTownshipCodeModalVisible(false);
+  const hideVillageModal = () => setVillageCodeModalVisible(false);
+  const hideWardModal = () => setWardCodeModalVisible(false);
 
   const handleCityItemValueChange = itemValue => {
     setCitySelectedItemValue(itemValue);
@@ -1302,7 +1697,12 @@ function Individual_Loan(props) {
   const handleTownshipItemValueChange = itemValue => {
     setTownshipSelectedItemValue(itemValue);
   };
-
+  const handleVllageItemValueChange = itemValue => {
+    setVillageSelectedItemValue(itemValue);
+  };
+  const handleWardItemValueChange = itemValue => {
+    setWardSelectedItemValue(itemValue);
+  };
 
   const sign = createRef();
   const co_borrower_sign = createRef();
@@ -1313,6 +1713,10 @@ function Individual_Loan(props) {
   const showTownshipSearch = () => {
     setTownshipCodeModalVisible(true);
   }
+  const showVillageSearch = () => {
+    setVillageCodeModalVisible(true);
+  }
+
 
 
   return (
@@ -1468,9 +1872,16 @@ function Individual_Loan(props) {
 
             <Borrower_Info showCustomerSearch={showCustomerSearch}
               showCitySearch={showCitySearch}
-              showTownshipSearch={showTownshipSearch} />
-            <Co_Borrower_Info showCoBorrowerSearch={showCoBorrowerSearch} />
+              showTownshipSearch={showTownshipSearch}
+               showVillageSearch={showVillageSearch}
+               showWardSearch={showWardSearch} />
+        
+
+
+            <Co_Borrower_Info showCoBorrowerSearch={showCoBorrowerSearch}
+            />
             <Loan_Business_Info />
+
             <Borrower_Monthly_Income
               handleCalculate={handleCalculate}
               app_amount={app_amount}
@@ -1545,12 +1956,23 @@ function Individual_Loan(props) {
         handleTownshipItemValueChange={handleTownshipItemValueChange}
         setAllTownship={setAllTownship} handleSubmit={handleSubmit} />
 
-      {/* <Village_Modal hideTownshipModal={hideTownshipModal}
-        modal_township_visible={modal_township_visible}
+      <Village_Modal hideVillageModal={hideVillageModal}
+        modal_village_visible={modal_village_visible}
         setTownshipSelectedItemValue={setTownshipSelectedItemValue}
-        selectedTownshipItemValue={selectedTownshipItemValue}
-        handleTownshipItemValueChange={handleTownshipItemValueChange}
-        setAllTownship={setAllTownship} handleSubmit={handleSubmit} /> */}
+        selectedVillageItemValue={selectedVillageItemValue}
+        handleVllageItemValueChange={handleVllageItemValueChange}
+        setAllVillage={setAllVillage}
+        handleSubmit={handleSubmit} all_village={all_village} />
+
+      <Ward_Modal hideWardModal={hideWardModal}
+        modal_ward_visible={modal_ward_visible}
+        setWardSelectedItemValue={setWardSelectedItemValue}
+        selectedWardItemValue={selectedWardItemValue}
+        handleWardItemValueChange={handleWardItemValueChange}
+        setAllWard={setAllWard}
+        handleSubmit={handleSubmit}
+        all_ward={all_ward} />
+
 
     </>
   );
