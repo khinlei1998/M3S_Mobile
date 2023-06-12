@@ -85,7 +85,7 @@ function Co_Borrower_Info(props) {
                         />
 
                         <Field
-                            name={'co_brwer_mble_tel_no'}
+                            name={'borrower_rltn'}
                             title={'Relation with Phone Number'}
                             component={TextInputFile}
                             cus_width

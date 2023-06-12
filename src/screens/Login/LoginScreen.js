@@ -100,25 +100,25 @@ function LoginScreen(props) {
                 getNRC_info().then(result => {
                   if (result == 'success') {
 
-                    getIndividual_loan().then(result => {
+                    // getIndividual_loan().then(result => {
+                    //   if (result == 'success') {
+                    getLoanMax().then(result => {
                       if (result == 'success') {
-                        getLoanMax().then(result => {
+                        getSurvey_Item().then(result => {
                           if (result == 'success') {
-                            getSurvey_Item().then(result => {
+                            getCodeInfo().then(result => {
                               if (result == 'success') {
-                                getCodeInfo().then(result => {
-                                  if (result == 'success') {
-                                    setIsLoading(false);
-                                    alert('Sync success');
+                                setIsLoading(false);
+                                alert('Sync success');
 
-                                  }
-                                });
                               }
                             });
                           }
                         });
                       }
                     });
+                    //   }
+                    // });
                   }
                 });
               }

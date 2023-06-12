@@ -55,6 +55,7 @@ import SignatureCapture from 'react-native-signature-capture';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {storeLoanData} from '../../query/AllLoan_query';
 import { fetchEmpName } from '../../query/Employee_query';
+import validate from './Validate';
 // import RNFetchBlob from 'rn-fetch-blob';
 
 const Borrower_modal = props => {
@@ -677,6 +678,12 @@ const Co_Borrower_Sign_Modal = props => {
   );
 };
 
+const City_Modal=prope=>{
+  return (
+    <></>
+  )
+}
+
 function Individual_Loan(props) {
   const dispatch = useDispatch();
   const [show_operation, setOperation] = useState('1');
@@ -1139,6 +1146,7 @@ function Individual_Loan(props) {
         co_borrower_resetSign={co_borrower_resetSign}
         co_borrower_sign={co_borrower_sign}
       />
+      <City_Modal/>
 
       {/* <Modal
         visible={show_canvas}
@@ -1222,69 +1230,6 @@ function Individual_Loan(props) {
     </>
   );
 }
-const styles = StyleSheet.create({
-  textInput: {
-    width: 200,
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 5,
-    paddingHorizontal: 10,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  textInputContainer: {
-    position: 'absolute',
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  container: {
-    width: 600,
-    height: 300,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  strokeColorButton: {
-    marginHorizontal: 2.5,
-    marginVertical: 8,
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-  },
-  strokeWidthButton: {
-    marginHorizontal: 2.5,
-    marginVertical: 8,
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#39579A',
-  },
-  functionButton: {
-    marginHorizontal: 2.5,
-    marginVertical: 8,
-    height: 30,
-    width: 60,
-    backgroundColor: '#39579A',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
-  },
-});
 
 function mapStateToProps(state) {
   return {
@@ -1294,5 +1239,5 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Individual_Loan_Form',
-  // validate,
+  validate,
 })(connect(mapStateToProps, {})(Individual_Loan));

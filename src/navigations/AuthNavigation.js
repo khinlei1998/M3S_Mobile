@@ -40,7 +40,7 @@ export default function AuthNavigation(props) {
         options={{headerShown: false}}
       /> */}
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Individual Loan"
         component={Individual_Loan}
         options={{headerShown: false}}
@@ -49,17 +49,17 @@ export default function AuthNavigation(props) {
         name="Sign1"
         component={Sign1}
         options={{headerShown: false}}
-      />
+      /> */}
       {/* <Stack.Screen
         name="Synchronization"
         component={Synchronization_Screen}
         options={{headerShown: false}}
       /> */}
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Login"
         component={LoginScreen}
         options={{headerShown: false}}
-      /> */}
+      />
       <Stack.Screen
         name="Setting"
         component={SettingScreen}
