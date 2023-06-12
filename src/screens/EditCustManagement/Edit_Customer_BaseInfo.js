@@ -1,7 +1,7 @@
-import {View, Text, TouchableOpacity, FlatList} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import Collapsible from 'react-native-collapsible';
-import {RadioButton} from 'react-native-paper';
+import { RadioButton } from 'react-native-paper';
 import {
   Field,
   reduxForm,
@@ -11,9 +11,9 @@ import {
 } from 'redux-form';
 import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import DefaultTextInput from '../../components/DefaultTextInput';
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 import InputTest from '../../components/InputTest';
 import {
   owner_shipratio,
@@ -26,13 +26,13 @@ import {
 } from '../../common';
 import DividerLine from '../../components/DividerLine';
 import DatePicker from '../../components/DatePicker';
-import {style} from '../../style/Customer_Base_style';
-import {setCusFormInitialValues} from '../../redux/CustomerReducer';
-import {fetchAllCustomerNum} from '../../query/Customer_query';
-import {Modal, Provider, Portal, Button} from 'react-native-paper';
+import { style } from '../../style/Customer_Base_style';
+import { setCusFormInitialValues } from '../../redux/CustomerReducer';
+import { fetchAllCustomerNum } from '../../query/Customer_query';
+import { Modal, Provider, Portal, Button } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
-import {city_code, start_living_date_status} from '../../common';
-import {useDispatch} from 'react-redux';
+import { city_code, start_living_date_status } from '../../common';
+import { useDispatch } from 'react-redux';
 import RadioButtonFile from '../../components/RadioButtonFile';
 function Edit_Customer_BaseInfo(props) {
   const {
@@ -48,7 +48,8 @@ function Edit_Customer_BaseInfo(props) {
     showWardSearch,
     update_status,
     handleRadioButtonChange,
-    handleNRCChange
+    handleNRCChange,
+    showLocationSearch
   } = props;
   const dispatch = useDispatch();
 
@@ -62,7 +63,7 @@ function Edit_Customer_BaseInfo(props) {
     setCusInfo(!open_cusinfo);
   };
 
-  const numbers = Array.from({length: 60}, (_, i) => i + 1);
+  const numbers = Array.from({ length: 60 }, (_, i) => i + 1);
   // const handleRadioButtonChange = value => {
   //   alert(value);
   //   setVillage(value);
@@ -77,11 +78,11 @@ function Edit_Customer_BaseInfo(props) {
   return (
     <>
       <View style={style.container}>
-        <Text style={{fontWeight: 'bold', fontSize: 20}}>
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
           Customer Base Information
         </Text>
         <TouchableOpacity onPress={CusInfoFun}>
-          <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
+          <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
         </TouchableOpacity>
       </View>
 
@@ -314,6 +315,27 @@ function Edit_Customer_BaseInfo(props) {
               </View>
             )}
 
+            <View style={style.child_input_style}>
+              <Field
+                name={'location_code'}
+                title={'Location Code '}
+                component={TextInputFile}
+                input_mode
+                inputmax={100}
+                icon={'magnify'}
+                editable
+                handleTextInputFocus={showLocationSearch}
+              />
+              <Field
+                name={'location_name'}
+                title={'Location Name '}
+                component={TextInputFile}
+                input_mode
+                inputmax={100}
+                editable
+              />
+            </View>
+
             <View style={style.postal_input_style}>
               <Field
                 name={'postal_code'}
@@ -486,7 +508,7 @@ export default reduxForm({
   form: 'Customer_ManagementForm',
   enableReinitialize: true,
 })(
-  connect(mapStateToProps, {setCusFormInitialValues, fetchAllCustomerNum})(
+  connect(mapStateToProps, { setCusFormInitialValues, fetchAllCustomerNum })(
     Edit_Customer_BaseInfo,
   ),
 );
