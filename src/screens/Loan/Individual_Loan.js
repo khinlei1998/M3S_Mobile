@@ -1117,6 +1117,7 @@ const Township_Modal = props => {
 }
 const Village_Modal = props => {
   const [village_selected, setVillageselectedValue] = useState(null);
+  const [village_text, setVillage_Text] = useState('')
 
   const { hideVillageModal,
     modal_village_visible,
@@ -1125,8 +1126,8 @@ const Village_Modal = props => {
     handleVllageItemValueChange,
     setAllVillage,
     handleSubmit, all_village } = props
-  const btnVillageSearch = async values => {
-    await filterCustomer(selectedVillageItemValue, values.searchtext)
+  const btnVillageSearch = async () => {
+    await filterCustomer(selectedVillageItemValue,village_text)
       .then(data => (data.length > 0 ? setAllVillage(data) : alert('No data')))
       .catch(error => console.log('error', error));
   };
@@ -1138,6 +1139,10 @@ const Village_Modal = props => {
       change('Individual_Loan_Form', 'village_name', item.village_name),
     );
   };
+
+  const onChangeVillageText = (inputText)=>{
+    setVillage_Text(inputText)
+  }
 
   const village_item = ({ item, index }) => {
     return (
@@ -1230,14 +1235,29 @@ const Village_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
-                <Field
+              <View style={{ width: '40%' }}>
+                {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
                   input_mode
                   inputmax={20}
                   icon={'magnify'}
                   handleTextInputFocus={handleSubmit(btnVillageSearch)}
+                /> */}
+                <TextInput
+                  style={{
+                    backgroundColor: '#fff',
+                    marginTop: 10,
+                    width: 250,
+                    borderColor: '#303030',
+                    borderWidth: 0.5,
+                  }}
+                  value={village_text}
+                  onChangeText={onChangeVillageText}
+                  right={
+                    <TextInput.Icon icon={'magnify'} onPress={() => btnVillageSearch()} />
+
+                  }
                 />
               </View>
             </View>
@@ -1310,7 +1330,7 @@ const Village_Modal = props => {
 
 const Ward_Modal = props => {
   const [village_selected, setVillageselectedValue] = useState(null);
-  console.log('modal_ward_visible', modal_ward_visible);
+  const [ward_text, setWard_Text] = useState('')
   const { hideWardModal,
     modal_ward_visible,
     setWardSelectedItemValue,
@@ -1332,6 +1352,9 @@ const Ward_Modal = props => {
       change('Individual_Loan_Form', 'village_name', item.village_name),
     );
   };
+  const onChangeWardText = (inputText)=>{
+    setWard_Text(inputText)
+  }
 
   const ward_item = ({ item, index }) => {
     return (
@@ -1425,13 +1448,28 @@ const Ward_Modal = props => {
               </View>
 
               <View style={{ width: '50%' }}>
-                <Field
+                {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
                   input_mode
                   inputmax={20}
                   icon={'magnify'}
                   handleTextInputFocus={handleSubmit(btnWardSearch)}
+                /> */}
+                 <TextInput
+                  style={{
+                    backgroundColor: '#fff',
+                    marginTop: 10,
+                    width: 250,
+                    borderColor: '#303030',
+                    borderWidth: 0.5,
+                  }}
+                  value={ward_text}
+                  onChangeText={onChangeWardText}
+                  right={
+                    <TextInput.Icon icon={'magnify'} onPress={() => btnWardSearch()} />
+
+                  }
                 />
               </View>
             </View>
