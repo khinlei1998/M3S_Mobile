@@ -413,6 +413,18 @@ export const ward_code = [
     value: 'ward_name',
   },
 ];
+export const location_code = [
+  {
+    id: 1,
+    label: 'Location Code',
+    value: 'location_code',
+  },
+  {
+    id: 2,
+    label: 'Location Name',
+    value: 'location_name',
+  },
+];
 
 export const borrower_type = [
   {

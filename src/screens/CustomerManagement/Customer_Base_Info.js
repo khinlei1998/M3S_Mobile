@@ -44,6 +44,7 @@ function Customer_Base_Info(props) {
     showCitySearch,
     showTownshipSearch,
     showWardSearch,
+    showLocationSearch
   } = props;
   console.log('show_nrc', show_nrc);
   const dispatch = useDispatch();
@@ -315,6 +316,27 @@ function Customer_Base_Info(props) {
               </View>
             )}
 
+            <View style={style.child_input_style}>
+              <Field
+                name={'location_code'}
+                title={'Location Code '}
+                component={TextInputFile}
+                input_mode
+                inputmax={100}
+                icon={'magnify'}
+                handleTextInputFocus={showLocationSearch}
+                editable
+              />
+              <Field
+                name={'location_name'}
+                title={'Location Name '}
+                component={TextInputFile}
+                input_mode
+                inputmax={100}
+                editable
+              />
+            </View>
+
             <View style={style.postal_input_style}>
               <Field
                 name={'postal_code'}
@@ -471,7 +493,7 @@ function mapStateToProps(state) {
 export default reduxForm({
   form: 'Customer_ManagementForm',
   enableReinitialize: true,
-  initialValues: { village_status: '1', nrc_type: '1', start_living_date_status: '1',curr_business_date_status: '1',  }
+  initialValues: { village_status: '1', nrc_type: '1', start_living_date_status: '1', curr_business_date_status: '1', }
 })(
   connect(mapStateToProps, { setCusFormInitialValues, fetchAllCustomerNum })(
     Customer_Base_Info,
