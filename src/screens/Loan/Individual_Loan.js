@@ -56,11 +56,14 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { storeLoanData } from '../../query/AllLoan_query';
 import { fetchEmpName } from '../../query/Employee_query';
 import validate from './Validate';
+import { TextInput } from 'react-native-paper';
 // import RNFetchBlob from 'rn-fetch-blob';
 
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
+  const [emp_data, setEmpData] = React.useState('');
+
 
   const {
     all_cus,
@@ -71,8 +74,14 @@ const Borrower_modal = props => {
     setAllCus,
     handleSubmit,
   } = props;
-  const btnCusSearch = async values => {
-    await filterCustomer(selectedItemValue, values.searchtext)
+
+  const onChangeEmpText = (inputText) => {
+    setEmpData(inputText);
+  };
+
+  const btnCusSearch = async () => {
+    // alert('oo')
+    await filterCustomer(selectedItemValue, emp_data)
       .then(data => (data.length > 0 ? setAllCus(data) : alert('No data')))
       .catch(error => console.log('error', error));
   };
@@ -187,14 +196,31 @@ const Borrower_modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
-                <Field
+              <View style={{ width: '40%' }}>
+                {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
                   input_mode
                   inputmax={20}
                   icon={'magnify'}
                   handleTextInputFocus={handleSubmit(btnCusSearch)}
+                /> */}
+                <TextInput
+                  style={{
+                    backgroundColor: '#fff',
+                    marginTop: 10,
+                    width: 250,
+                    borderColor: '#303030',
+                    borderWidth: 0.5,
+                  }}
+                  value={emp_data}
+                  onChangeText={onChangeEmpText}
+                  right={
+
+
+                    <TextInput.Icon icon={'magnify'} onPress={() => btnCusSearch()} />
+
+                  }
                 />
               </View>
             </View>
@@ -680,12 +706,17 @@ const Co_Borrower_Sign_Modal = props => {
 
 const City_Modal = props => {
   const [city_selected, setCityselectedValue] = useState(null);
+  const [city_text, set_cityText] = useState('')
 
   const { handleSubmit, all_city, setAllCity, handleCityItemValueChange, selectedCityItemValue, modal_city_visible, hideCityModal, setCitySelectedItemValue } = props
-  const btnCitySearch = async values => {
-    await filterCustomer(selectedCityItemValue, values.searchtext)
+  const btnCitySearch = async () => {
+    await filterCustomer(selectedCityItemValue, city_text)
       .then(data => (data.length > 0 ? setAllCity(data) : alert('No data')))
       .catch(error => console.log('error', error));
+  };
+
+  const onChangeCityText = (inputText) => {
+    set_cityText(inputText);
   };
 
   const btnSelectCity = item => {
@@ -787,14 +818,29 @@ const City_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
-                <Field
+              <View style={{ width: '40%' }}>
+                {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
                   input_mode
                   inputmax={20}
                   icon={'magnify'}
                   handleTextInputFocus={handleSubmit(btnCitySearch)}
+                /> */}
+                <TextInput
+                  style={{
+                    backgroundColor: '#fff',
+                    marginTop: 10,
+                    width: 250,
+                    borderColor: '#303030',
+                    borderWidth: 0.5,
+                  }}
+                  value={city_text}
+                  onChangeText={onChangeCityText}
+                  right={
+                    <TextInput.Icon icon={'magnify'} onPress={() => btnCitySearch()} />
+
+                  }
                 />
               </View>
             </View>
@@ -865,6 +911,7 @@ const City_Modal = props => {
 
 const Township_Modal = props => {
   const [township_selected, setTownshipselectedValue] = useState(null);
+  const [township_text, setTownshipText] = useState('')
 
   const { handleSubmit, all_township, setAllTownship, handleTownshipItemValueChange, selectedTwonshipItemValue, modal_township_visible, hideTownshipModal, setTownshipSelectedItemValue } = props
   const btnTownshipSearch = async values => {
@@ -923,6 +970,9 @@ const Township_Modal = props => {
       </View>
     );
   };
+  const onChangeTownshipText = (inputText) => {
+    setTownshipText(inputText);
+  };
   return (
     <Provider>
       <Portal>
@@ -972,14 +1022,30 @@ const Township_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
-                <Field
+              <View style={{ width: '40%' }}>
+                {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
                   input_mode
                   inputmax={20}
                   icon={'magnify'}
                   handleTextInputFocus={handleSubmit(btnTownshipSearch)}
+                /> */}
+
+                <TextInput
+                  style={{
+                    backgroundColor: '#fff',
+                    marginTop: 10,
+                    width: 250,
+                    borderColor: '#303030',
+                    borderWidth: 0.5,
+                  }}
+                  value={township_text}
+                  onChangeText={onChangeTownshipText}
+                  right={
+                    <TextInput.Icon icon={'magnify'} onPress={() => btnTownshipSearch()} />
+
+                  }
                 />
               </View>
             </View>
