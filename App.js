@@ -40,8 +40,8 @@ export default function App() {
 
   global.db = SQLite.openDatabase(
     {
-      name: 'M3SDB1.db',
-      createFromLocation: '~M3SDB1.db',
+      name: 'M3SDB.db',
+      createFromLocation: '~M3SDB.db',
       location: 'Library',
       readOnly: false
     },

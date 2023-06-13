@@ -213,7 +213,8 @@ function Edit_Customer_BaseInfo(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
-                icon={'magnify'}
+                icon={update_status == true && 'magnify'}
+                // icon={'magnify'}
                 handleTextInputFocus={showCitySearch}
                 editable
               />
@@ -234,7 +235,8 @@ function Edit_Customer_BaseInfo(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
-                icon={'magnify'}
+                // icon={'magnify'}
+                icon={update_status == true && 'magnify'}
                 editable
                 handleTextInputFocus={showTownshipSearch}
               />
@@ -279,7 +281,8 @@ function Edit_Customer_BaseInfo(props) {
                   component={TextInputFile}
                   input_mode
                   inputmax={100}
-                  icon={'magnify'}
+                  // icon={'magnify'}
+                  icon={update_status == true && 'magnify'}
                   editable
                   handleTextInputFocus={showVillageSearch}
                 />
@@ -300,7 +303,8 @@ function Edit_Customer_BaseInfo(props) {
                   component={TextInputFile}
                   input_mode
                   inputmax={100}
-                  icon={'magnify'}
+                  // icon={'magnify'}
+                  icon={update_status == true && 'magnify'}
                   editable
                   handleTextInputFocus={showWardSearch}
                 />
@@ -322,7 +326,8 @@ function Edit_Customer_BaseInfo(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
-                icon={'magnify'}
+                // icon={'magnify'}
+                icon={update_status == true && 'magnify'}
                 editable
                 handleTextInputFocus={showLocationSearch}
               />

@@ -4,7 +4,7 @@ import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
 import {Button} from 'react-native-paper';
 
 export default function Borrower_Sign(props) {
-  const {setCanvas, show_canvas, showCanvas, navigation, filePath,setCoBorrowerCanvas,co_borrower_filePath,show_co_borrower_canvas} = props;
+  const {show_borrower_sign,borrower_sign_path,setCanvas, show_canvas, showCanvas, navigation, filePath,setCoBorrowerCanvas,co_borrower_filePath,show_co_borrower_canvas} = props;
   return (
     <>
       <View style={{flex: 1, padding: 5, margin: 20}}>
@@ -21,10 +21,11 @@ export default function Borrower_Sign(props) {
             </Text>
             <Text> Date 17/05/2023</Text>
           </View>
+          {/* <Text>{borrower_sign_path}</Text> */}
 
           <View>
             <Text style={{fontWeight: 'bold', fontSize: 15}}>Sign</Text>
-            {filePath == '' && (
+            {show_borrower_sign == '' && (
               <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
                 <Image
                   source={{
@@ -34,10 +35,12 @@ export default function Borrower_Sign(props) {
                 />
               </TouchableOpacity>
             )}
-            {filePath !== '' && (
+            {borrower_sign_path !== '' && (
               <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
                 <Image
-                  source={{uri: `file://${filePath}`}}
+                  // source={{uri: `file://${borrower_sign_path}`}}
+                  source={{ uri: `data:image/png;base64,${show_borrower_sign}` }}
+
                   style={{width: 100, height: 50}}
                 />
               </TouchableOpacity>

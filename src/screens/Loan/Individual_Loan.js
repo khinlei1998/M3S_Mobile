@@ -5,14 +5,20 @@ import {
   Keyboard,
   ScrollView,
   FlatList,
-  StyleSheet,
   PermissionsAndroid,
   TouchableHighlight,
 } from 'react-native';
-import React, { useState, useEffect, useRef, createRef } from 'react';
+import React, {useState, useEffect, useRef, createRef} from 'react';
 import DividerLine from '../../components/DividerLine';
-import { style } from '../../style/Individual_Loan_style';
-import { operations, city_code, Township_code, ward_code, village_code, location_code } from '../../common';
+import {style} from '../../style/Individual_Loan_style';
+import {
+  operations,
+  city_code,
+  Township_code,
+  ward_code,
+  village_code,
+  location_code,
+} from '../../common';
 import RNFS from 'react-native-fs';
 import Borrower_Modal from './Borrower_Modal';
 // import {
@@ -29,41 +35,36 @@ import {
   Provider,
   Portal,
 } from 'react-native-paper';
-import { reduxForm, Field, change } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import {reduxForm, Field, change} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
-import { loan_type } from '../../common';
+import {loan_type,emp_filter_item} from '../../common';
 import DatePicker from '../../components/DatePicker';
-import { Picker } from '@react-native-picker/picker';
-import { emp_filter_item } from '../../common';
-import { getAllLoan } from '../../query/AllLoan_query';
+import {Picker} from '@react-native-picker/picker';
+import {getAllLoan} from '../../query/AllLoan_query';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Borrower_Info from './Borrower_Info';
 import Icon from 'react-native-vector-icons/Feather';
-import { filterEmp } from '../../query/Employee_query';
-import { filterCustomer } from '../../query/Customer_query';
+import {filterCustomer} from '../../query/Customer_query';
 import Co_Borrower_Info from './Co_Borrower_Info';
 import Loan_Business_Info from './Loan_Business_Info';
 import Borrower_Monthly_Income from './Borrower_Monthly_Income';
-import { getAllLoanMax } from '../../query/LoanMax_query';
+import {getAllLoanMax} from '../../query/LoanMax_query';
 import Borrower_Current_Map from './Borrower_Current_Map';
 import Borrower_Contract from './Borrower_Contract';
 import Borrower_Sign from './Borrower_Sign';
 import SignatureCapture from 'react-native-signature-capture';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { storeLoanData } from '../../query/AllLoan_query';
-import { fetchEmpName } from '../../query/Employee_query';
+import {storeLoanData} from '../../query/AllLoan_query';
 import validate from './Validate';
-import { TextInput } from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 // import RNFetchBlob from 'rn-fetch-blob';
 
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
   const [emp_data, setEmpData] = React.useState('');
-
 
   const {
     all_cus,
@@ -75,7 +76,7 @@ const Borrower_modal = props => {
     handleSubmit,
   } = props;
 
-  const onChangeEmpText = (inputText) => {
+  const onChangeEmpText = inputText => {
     setEmpData(inputText);
   };
 
@@ -96,7 +97,7 @@ const Borrower_modal = props => {
     dispatch(change('Individual_Loan_Form', 'customer_no', item.customer_no));
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -173,8 +174,8 @@ const Borrower_modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
@@ -196,7 +197,7 @@ const Borrower_modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '40%' }}>
+              <View style={{width: '40%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -216,10 +217,10 @@ const Borrower_modal = props => {
                   value={emp_data}
                   onChangeText={onChangeEmpText}
                   right={
-
-
-                    <TextInput.Icon icon={'magnify'} onPress={() => btnCusSearch()} />
-
+                    <TextInput.Icon
+                      icon={'magnify'}
+                      onPress={() => btnCusSearch()}
+                    />
                   }
                 />
               </View>
@@ -275,7 +276,7 @@ const Borrower_modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideModal()}
                 mode="contained"
@@ -300,6 +301,7 @@ const Borrower_modal = props => {
 const CoBorrower_modal = props => {
   const dispatch = useDispatch();
   const [co_borrowerselectedValue, setCoborrowerSelectedValue] = useState(null);
+  const [co_borrower_data, setCoBorrowerText] = useState('');
 
   const {
     all_co_borrower,
@@ -310,8 +312,8 @@ const CoBorrower_modal = props => {
     setAllCoBorrower,
     handleSubmit,
   } = props;
-  const btnCusSearch = async values => {
-    await filterCustomer(selectedItemValue, values.searchtext)
+  const btnCusSearch = async () => {
+    await filterCustomer(selectedItemValue, co_borrower_data)
       .then(data =>
         data.length > 0 ? setAllCoBorrower(data) : alert('No data'),
       )
@@ -319,7 +321,6 @@ const CoBorrower_modal = props => {
   };
 
   const btnSelectEmployee = item => {
-    console.log('co item', item);
     setCoborrowerSelectedValue(item.id);
     dispatch(
       change('Individual_Loan_Form', 'co_brwer_rgst_id', item.resident_rgst_id),
@@ -330,7 +331,7 @@ const CoBorrower_modal = props => {
     );
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -383,6 +384,10 @@ const CoBorrower_modal = props => {
       </View>
     );
   };
+
+  const onChangeCoBorrowerText = inputvalues => {
+    setCoBorrowerText(inputvalues);
+  };
   return (
     <Provider>
       <Portal>
@@ -409,8 +414,8 @@ const CoBorrower_modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
@@ -432,14 +437,31 @@ const CoBorrower_modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
-                <Field
+              <View style={{width: '50%'}}>
+                {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
                   input_mode
                   inputmax={20}
                   icon={'magnify'}
                   handleTextInputFocus={handleSubmit(btnCusSearch)}
+                /> */}
+                <TextInput
+                  style={{
+                    backgroundColor: '#fff',
+                    marginTop: 10,
+                    width: 250,
+                    borderColor: '#303030',
+                    borderWidth: 0.5,
+                  }}
+                  value={co_borrower_data}
+                  onChangeText={onChangeCoBorrowerText}
+                  right={
+                    <TextInput.Icon
+                      icon={'magnify'}
+                      onPress={() => btnCusSearch()}
+                    />
+                  }
                 />
               </View>
             </View>
@@ -494,7 +516,7 @@ const CoBorrower_modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideCoBorrowerModal()}
                 mode="contained"
@@ -573,7 +595,7 @@ const Borrower_Sign_Modal = props => {
           // backgroundColor="transparent"
           viewMode={'portrait'}
         />
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{flexDirection: 'row'}}>
           <TouchableHighlight
             style={{
               flex: 1,
@@ -587,7 +609,7 @@ const Borrower_Sign_Modal = props => {
             onPress={() => {
               saveSign();
             }}>
-            <Text style={{ color: '#fff' }}>Save</Text>
+            <Text style={{color: '#fff'}}>Save</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={{
@@ -602,7 +624,7 @@ const Borrower_Sign_Modal = props => {
             onPress={() => {
               resetSign();
             }}>
-            <Text style={{ color: '#fff' }}>Reset</Text>
+            <Text style={{color: '#fff'}}>Reset</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -667,7 +689,7 @@ const Co_Borrower_Sign_Modal = props => {
           // backgroundColor="transparent"
           viewMode={'portrait'}
         />
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{flexDirection: 'row'}}>
           <TouchableHighlight
             style={{
               flex: 1,
@@ -681,7 +703,7 @@ const Co_Borrower_Sign_Modal = props => {
             onPress={() => {
               co_borrower_saveSign();
             }}>
-            <Text style={{ color: '#fff' }}>Save</Text>
+            <Text style={{color: '#fff'}}>Save</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={{
@@ -696,7 +718,7 @@ const Co_Borrower_Sign_Modal = props => {
             onPress={() => {
               co_borrower_resetSignn();
             }}>
-            <Text style={{ color: '#fff' }}>Reset</Text>
+            <Text style={{color: '#fff'}}>Reset</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -706,28 +728,35 @@ const Co_Borrower_Sign_Modal = props => {
 
 const City_Modal = props => {
   const [city_selected, setCityselectedValue] = useState(null);
-  const [city_text, set_cityText] = useState('')
+  const [city_text, set_cityText] = useState('');
 
-  const { handleSubmit, all_city, setAllCity, handleCityItemValueChange, selectedCityItemValue, modal_city_visible, hideCityModal, setCitySelectedItemValue } = props
+  const {
+    handleSubmit,
+    all_city,
+    setAllCity,
+    handleCityItemValueChange,
+    selectedCityItemValue,
+    modal_city_visible,
+    hideCityModal,
+    setCitySelectedItemValue,
+  } = props;
   const btnCitySearch = async () => {
     await filterCustomer(selectedCityItemValue, city_text)
       .then(data => (data.length > 0 ? setAllCity(data) : alert('No data')))
       .catch(error => console.log('error', error));
   };
 
-  const onChangeCityText = (inputText) => {
+  const onChangeCityText = inputText => {
     set_cityText(inputText);
   };
 
   const btnSelectCity = item => {
     setCityselectedValue(item.id);
     dispatch(change('Individual_Loan_Form', 'city_code', item.city_code));
-    dispatch(
-      change('Individual_Loan_Form', 'city_name', item.city_name),
-    );
+    dispatch(change('Individual_Loan_Form', 'city_name', item.city_name));
   };
 
-  const city_item = ({ item, index }) => {
+  const city_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -757,7 +786,6 @@ const City_Modal = props => {
           }}>
           {item.city_name}
         </Text>
-
 
         <View>
           <RadioButton
@@ -795,8 +823,8 @@ const City_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedCityItemValue}
@@ -818,7 +846,7 @@ const City_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '40%' }}>
+              <View style={{width: '40%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -838,8 +866,10 @@ const City_Modal = props => {
                   value={city_text}
                   onChangeText={onChangeCityText}
                   right={
-                    <TextInput.Icon icon={'magnify'} onPress={() => btnCitySearch()} />
-
+                    <TextInput.Icon
+                      icon={'magnify'}
+                      onPress={() => btnCitySearch()}
+                    />
                   }
                 />
               </View>
@@ -878,7 +908,6 @@ const City_Modal = props => {
                 }}>
                 City Name
               </Text>
-
             </View>
 
             <FlatList
@@ -887,7 +916,7 @@ const City_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideCityModal()}
                 mode="contained"
@@ -906,14 +935,23 @@ const City_Modal = props => {
         </Modal>
       </Portal>
     </Provider>
-  )
-}
+  );
+};
 
 const Township_Modal = props => {
   const [township_selected, setTownshipselectedValue] = useState(null);
-  const [township_text, setTownshipText] = useState('')
+  const [township_text, setTownshipText] = useState('');
 
-  const { handleSubmit, all_township, setAllTownship, handleTownshipItemValueChange, selectedTwonshipItemValue, modal_township_visible, hideTownshipModal, setTownshipSelectedItemValue } = props
+  const {
+    handleSubmit,
+    all_township,
+    setAllTownship,
+    handleTownshipItemValueChange,
+    selectedTwonshipItemValue,
+    modal_township_visible,
+    hideTownshipModal,
+    setTownshipSelectedItemValue,
+  } = props;
   const btnTownshipSearch = async values => {
     await filterCustomer(selectedTwonshipItemValue, values.searchtext)
       .then(data => (data.length > 0 ? setAllTownship(data) : alert('No data')))
@@ -922,13 +960,15 @@ const Township_Modal = props => {
 
   const btnSelectCity = item => {
     setTownshipselectedValue(item.id);
-    dispatch(change('Individual_Loan_Form', 'township_code', item.township_code));
+    dispatch(
+      change('Individual_Loan_Form', 'township_code', item.township_code),
+    );
     dispatch(
       change('Individual_Loan_Form', 'township_name', item.township_name),
     );
   };
 
-  const township_item = ({ item, index }) => {
+  const township_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -959,7 +999,6 @@ const Township_Modal = props => {
           {item.township_name}
         </Text>
 
-
         <View>
           <RadioButton
             value={item.id}
@@ -970,7 +1009,7 @@ const Township_Modal = props => {
       </View>
     );
   };
-  const onChangeTownshipText = (inputText) => {
+  const onChangeTownshipText = inputText => {
     setTownshipText(inputText);
   };
   return (
@@ -999,8 +1038,8 @@ const Township_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedTwonshipItemValue}
@@ -1022,7 +1061,7 @@ const Township_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '40%' }}>
+              <View style={{width: '40%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -1043,8 +1082,10 @@ const Township_Modal = props => {
                   value={township_text}
                   onChangeText={onChangeTownshipText}
                   right={
-                    <TextInput.Icon icon={'magnify'} onPress={() => btnTownshipSearch()} />
-
+                    <TextInput.Icon
+                      icon={'magnify'}
+                      onPress={() => btnTownshipSearch()}
+                    />
                   }
                 />
               </View>
@@ -1083,7 +1124,6 @@ const Township_Modal = props => {
                 }}>
                 Township Name
               </Text>
-
             </View>
 
             <FlatList
@@ -1092,7 +1132,7 @@ const Township_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideTownshipModal()}
                 mode="contained"
@@ -1111,23 +1151,24 @@ const Township_Modal = props => {
         </Modal>
       </Portal>
     </Provider>
-  )
-
-
-}
+  );
+};
 const Village_Modal = props => {
   const [village_selected, setVillageselectedValue] = useState(null);
-  const [village_text, setVillage_Text] = useState('')
+  const [village_text, setVillage_Text] = useState('');
 
-  const { hideVillageModal,
+  const {
+    hideVillageModal,
     modal_village_visible,
     setTownshipSelectedItemValue,
     selectedVillageItemValue,
     handleVllageItemValueChange,
     setAllVillage,
-    handleSubmit, all_village } = props
+    handleSubmit,
+    all_village,
+  } = props;
   const btnVillageSearch = async () => {
-    await filterCustomer(selectedVillageItemValue,village_text)
+    await filterCustomer(selectedVillageItemValue, village_text)
       .then(data => (data.length > 0 ? setAllVillage(data) : alert('No data')))
       .catch(error => console.log('error', error));
   };
@@ -1135,16 +1176,14 @@ const Village_Modal = props => {
   const btnSelectVillage = item => {
     setVillageselectedValue(item.id);
     dispatch(change('Individual_Loan_Form', 'village_code', item.village_code));
-    dispatch(
-      change('Individual_Loan_Form', 'village_name', item.village_name),
-    );
+    dispatch(change('Individual_Loan_Form', 'village_name', item.village_name));
   };
 
-  const onChangeVillageText = (inputText)=>{
-    setVillage_Text(inputText)
-  }
+  const onChangeVillageText = inputText => {
+    setVillage_Text(inputText);
+  };
 
-  const village_item = ({ item, index }) => {
+  const village_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -1174,7 +1213,6 @@ const Village_Modal = props => {
           }}>
           {item.village_name}
         </Text>
-
 
         <View>
           <RadioButton
@@ -1212,8 +1250,8 @@ const Village_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedVillageItemValue}
@@ -1235,7 +1273,7 @@ const Village_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '40%' }}>
+              <View style={{width: '40%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -1255,8 +1293,10 @@ const Village_Modal = props => {
                   value={village_text}
                   onChangeText={onChangeVillageText}
                   right={
-                    <TextInput.Icon icon={'magnify'} onPress={() => btnVillageSearch()} />
-
+                    <TextInput.Icon
+                      icon={'magnify'}
+                      onPress={() => btnVillageSearch()}
+                    />
                   }
                 />
               </View>
@@ -1295,7 +1335,6 @@ const Village_Modal = props => {
                 }}>
                 Village Name
               </Text>
-
             </View>
 
             <FlatList
@@ -1304,7 +1343,7 @@ const Village_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideVillageModal()}
                 mode="contained"
@@ -1323,24 +1362,24 @@ const Village_Modal = props => {
         </Modal>
       </Portal>
     </Provider>
-  )
-
-
-}
+  );
+};
 
 const Ward_Modal = props => {
   const [village_selected, setVillageselectedValue] = useState(null);
-  const [ward_text, setWard_Text] = useState('')
-  const { hideWardModal,
+  const [ward_text, setWard_Text] = useState('');
+  const {
+    hideWardModal,
     modal_ward_visible,
     setWardSelectedItemValue,
     selectedWardItemValue,
     handleWardItemValueChange,
     setAllWard,
     handleSubmit,
-    all_ward } = props
-  const btnWardSearch = async values => {
-    await filterCustomer(selectedWardItemValue, values.searchtext)
+    all_ward,
+  } = props;
+  const btnWardSearch = async () => {
+    await filterCustomer(selectedWardItemValue, ward_text)
       .then(data => (data.length > 0 ? setAllWard(data) : alert('No data')))
       .catch(error => console.log('error', error));
   };
@@ -1348,15 +1387,13 @@ const Ward_Modal = props => {
   const btnSelectWard = item => {
     setVillageselectedValue(item.id);
     dispatch(change('Individual_Loan_Form', 'village_code', item.village_code));
-    dispatch(
-      change('Individual_Loan_Form', 'village_name', item.village_name),
-    );
+    dispatch(change('Individual_Loan_Form', 'village_name', item.village_name));
   };
-  const onChangeWardText = (inputText)=>{
-    setWard_Text(inputText)
-  }
+  const onChangeWardText = inputText => {
+    setWard_Text(inputText);
+  };
 
-  const ward_item = ({ item, index }) => {
+  const ward_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -1386,7 +1423,6 @@ const Ward_Modal = props => {
           }}>
           {item.ward_name}
         </Text>
-
 
         <View>
           <RadioButton
@@ -1424,8 +1460,8 @@ const Ward_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedWardItemValue}
@@ -1447,7 +1483,7 @@ const Ward_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
+              <View style={{width: '50%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -1456,7 +1492,7 @@ const Ward_Modal = props => {
                   icon={'magnify'}
                   handleTextInputFocus={handleSubmit(btnWardSearch)}
                 /> */}
-                 <TextInput
+                <TextInput
                   style={{
                     backgroundColor: '#fff',
                     marginTop: 10,
@@ -1467,8 +1503,10 @@ const Ward_Modal = props => {
                   value={ward_text}
                   onChangeText={onChangeWardText}
                   right={
-                    <TextInput.Icon icon={'magnify'} onPress={() => btnWardSearch()} />
-
+                    <TextInput.Icon
+                      icon={'magnify'}
+                      onPress={() => btnWardSearch()}
+                    />
                   }
                 />
               </View>
@@ -1507,7 +1545,6 @@ const Ward_Modal = props => {
                 }}>
                 Ward Name
               </Text>
-
             </View>
 
             <FlatList
@@ -1516,7 +1553,7 @@ const Ward_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideWardModal()}
                 mode="contained"
@@ -1535,36 +1572,43 @@ const Ward_Modal = props => {
         </Modal>
       </Portal>
     </Provider>
-  )
-
-
-}
+  );
+};
 
 const Location_Modal = props => {
   const [location_selected, setLocationSelectedValue] = useState(null);
-  const { hideLocationModal,
+  const [location_text, setLocation_Text] = useState('');
+  const {
+    hideLocationModal,
     modal_location_visible,
     setLocationSelectedItemValue,
     selectedLocationItemValue,
     handleLocationItemValueChange,
     setAllLocation,
     handleSubmit,
-    all_location } = props
-  const btnLocationSearch = async values => {
-    await filterCustomer(selectedLocationItemValue, values.searchtext)
+    all_location,
+  } = props;
+  const btnLocationSearch = async () => {
+    await filterCustomer(selectedLocationItemValue, location_text)
       .then(data => (data.length > 0 ? setAllLocation(data) : alert('No data')))
       .catch(error => console.log('error', error));
   };
 
+  const onChangeLocationText = inputText => {
+    setLocation_Text(inputText);
+  };
+
   const btnSelectLocation = item => {
     setLocationSelectedValue(item.id);
-    dispatch(change('Individual_Loan_Form', 'location_code', item.location_code));
+    dispatch(
+      change('Individual_Loan_Form', 'location_code', item.location_code),
+    );
     dispatch(
       change('Individual_Loan_Form', 'location_name', item.location_name),
     );
   };
 
-  const location_item = ({ item, index }) => {
+  const location_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -1594,7 +1638,6 @@ const Location_Modal = props => {
           }}>
           {item.location_name}
         </Text>
-
 
         <View>
           <RadioButton
@@ -1632,8 +1675,8 @@ const Location_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedLocationItemValue}
@@ -1655,14 +1698,31 @@ const Location_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
-                <Field
+              <View style={{width: '50%'}}>
+                {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
                   input_mode
                   inputmax={20}
                   icon={'magnify'}
                   handleTextInputFocus={handleSubmit(btnLocationSearch)}
+                /> */}
+                <TextInput
+                  style={{
+                    backgroundColor: '#fff',
+                    marginTop: 10,
+                    width: 250,
+                    borderColor: '#303030',
+                    borderWidth: 0.5,
+                  }}
+                  value={location_text}
+                  onChangeText={onChangeLocationText}
+                  right={
+                    <TextInput.Icon
+                      icon={'magnify'}
+                      onPress={() => btnLocationSearch()}
+                    />
+                  }
                 />
               </View>
             </View>
@@ -1700,7 +1760,6 @@ const Location_Modal = props => {
                 }}>
                 Location Name
               </Text>
-
             </View>
 
             <FlatList
@@ -1709,7 +1768,7 @@ const Location_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideLocationModal()}
                 mode="contained"
@@ -1728,12 +1787,8 @@ const Location_Modal = props => {
         </Modal>
       </Portal>
     </Provider>
-  )
-
-
-}
-
-
+  );
+};
 
 function Individual_Loan(props) {
   const dispatch = useDispatch();
@@ -1756,11 +1811,15 @@ function Individual_Loan(props) {
   const [empname, setEmpName] = useState('');
   const [modal_city_visible, setCityCodeModalVisible] = useState(false);
   const [modal_township_visible, setTownshipCodeModalVisible] = useState(false);
-  const [selectedCityItemValue, setCitySelectedItemValue] = useState('city_code');
+  const [selectedCityItemValue, setCitySelectedItemValue] =
+    useState('city_code');
   const [all_city, setAllCity] = useState([]);
-  const [selectedTownshipItemValue, setTownshipSelectedItemValue] = useState('township_code');
-  const [selectedWardItemValue, setWardSelectedItemValue] = useState('ward_code');
-  const [selectedVillageItemValue, setVillageSelectedItemValue] = useState('village_code');
+  const [selectedTownshipItemValue, setTownshipSelectedItemValue] =
+    useState('township_code');
+  const [selectedWardItemValue, setWardSelectedItemValue] =
+    useState('ward_code');
+  const [selectedVillageItemValue, setVillageSelectedItemValue] =
+    useState('village_code');
   const [all_township, setAllTownship] = useState([]);
   const [all_village, setAllVillage] = useState([]);
   const [all_ward, setAllWard] = useState([]);
@@ -1768,17 +1827,57 @@ function Individual_Loan(props) {
   const [modal_village_visible, setVillageCodeModalVisible] = useState(false);
   const [modal_ward_visible, setWardCodeModalVisible] = useState(false);
   const [modal_location_visible, setLocationModalVisible] = useState(false);
-  const [selectedLocationItemValue, setLocationSelectedItemValue] = useState('location_code');
+  const [borrower_sign_path, setBorrowerSignPath] = useState('');
+  const [show_borrower_sign, setShowBorrowerSign] = useState('')
+  const [selectedLocationItemValue, setLocationSelectedItemValue] =
+    useState('location_code');
+  const [all_loandata, setAllLoanData] = useState([]);
 
-  const { handleSubmit, totalnet, navigation } = props;
-  const onSubmit = async values => {
+  const {handleSubmit, totalnet, navigation} = props;
 
-    console.log('values', values);
-    alert(JSON.stringify(values));
-    await storeLoanData(values).then(result => {
-      console.log(result);
-    });
+  const saveBorroweSign = async borrower_sign_path => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/Signature/`;
+    let newFilePath;
+    RNFS.mkdir(directoryPath)
+      .then(() => {
+        // 10${user_id}TB${moment().format('YYYYMMDD')}${loan_data.length + 1}
+        const fileName = `10${user_id}TB${moment().format('YYYYMMDD')}${all_loandata.length + 1}SG01.jpg`;
+        newFilePath = `${directoryPath}${fileName}`;
+        // console.log('old newFilePath', newFilePath);
+        return RNFS.moveFile(borrower_sign_path, newFilePath);
+      })
+      .then(() => {
+        console.log('Signature saved successfully');
+      })
+      .catch(error => {
+        throw error;
+
+        // console.log('Error saving signature:', error);
+      });
   };
+
+  const onSubmit = async values => {
+    try {
+      // Save the image
+      if (borrower_sign_path) {
+        const imagePath = await saveBorroweSign(borrower_sign_path);
+        console.log('Image saved successfully:', imagePath);
+      }
+
+      await storeLoanData(values).then(result => {
+        console.log(result);
+      });
+    } catch (error) {
+      console.log('Error:', error);
+    }
+    // console.log('values', values);
+    // alert(JSON.stringify(values));
+    // await storeLoanData(values).then(result => {
+    //   console.log(result);
+    // });
+  };
+
   const showCustomerSearch = () => {
     setModalVisible(true);
   };
@@ -1804,9 +1903,9 @@ function Individual_Loan(props) {
 
       if (
         granted['android.permission.WRITE_EXTERNAL_STORAGE'] ===
-        PermissionsAndroid.RESULTS.GRANTED &&
+          PermissionsAndroid.RESULTS.GRANTED &&
         granted['android.permission.READ_EXTERNAL_STORAGE'] ===
-        PermissionsAndroid.RESULTS.GRANTED
+          PermissionsAndroid.RESULTS.GRANTED
       ) {
         console.log('Storage permissions granted');
       } else {
@@ -1826,6 +1925,7 @@ function Individual_Loan(props) {
     const user_id = await AsyncStorage.getItem('user_id');
 
     await getAllLoan().then(loan_data => {
+      setAllLoanData(loan_data);
       dispatch(
         change(
           'Individual_Loan_Form',
@@ -1836,9 +1936,7 @@ function Individual_Loan(props) {
     });
     await getAllLoanMax().then(loan_max_data => {
       setLoanMaxData(loan_max_data);
-      console.log('loan_max_data', loan_max_data);
     });
-
   };
 
   const hideSignModal = () => {
@@ -1920,7 +2018,9 @@ function Individual_Loan(props) {
   };
 
   const _onSaveEvent = async result => {
-    // console.log('result',result.pathName);
+    setBorrowerSignPath(result.pathName);
+    setShowBorrowerSign(result.encoded)
+
     const pathName = result.pathName;
     // const targetPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/RNSketchCanvas//1.png`;
     // const fileName = `image_${Date.now()}.jpg`;
@@ -1933,25 +2033,26 @@ function Individual_Loan(props) {
     //   console.log('Error saving signature:', error);
     // }
 
-    const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/RNSketchCanvas/`;
-    let newFilePath;
-    RNFS.mkdir(directoryPath)
-      .then(() => {
-        const fileName = `signature_${Date.now()}.png`;
-        newFilePath = `${directoryPath}${fileName}`;
-        console.log('old newFilePath', newFilePath);
-        return RNFS.moveFile(pathName, newFilePath);
-      })
-      .then(() => {
-        console.log('Signature saved successfully');
-        console.log('newFilePath', newFilePath);
-        setFilePath(newFilePath);
-      })
-      .catch(error => {
-        console.log('Error saving signature:', error);
-      });
+    // const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/Signature/`;
+    // let newFilePath;
+    // RNFS.mkdir(directoryPath)
+    //   .then(() => {
+    //     // 10${user_id}TB${moment().format('YYYYMMDD')}${loan_data.length + 1}
+    //     const fileName = `rr.jpg`;
+    //     newFilePath = `${directoryPath}${fileName}`;
+    //     console.log('old newFilePath', newFilePath);
+    //     return RNFS.moveFile(pathName, newFilePath);
+    //   })
+    //   .then(() => {
+    //     console.log('Signature saved successfully');
+    //     console.log('newFilePath', newFilePath);
+    //     setFilePath(newFilePath);
+    //   })
+    //   .catch(error => {
+    //     console.log('Error saving signature:', error);
+    //   });
 
-    setCoBorrowerCanvas(false);
+    setCanvas(false);
   };
   const _onCoBorrowerSaveEvent = async result => {
     // console.log('result',result.pathName);
@@ -2016,25 +2117,22 @@ function Individual_Loan(props) {
 
   const showCitySearch = () => {
     setCityCodeModalVisible(true);
-  }
+  };
   const showTownshipSearch = () => {
     setTownshipCodeModalVisible(true);
-  }
+  };
   const showVillageSearch = () => {
     setVillageCodeModalVisible(true);
-  }
-  const showLocationSearch
-    = () => {
-      setLocationModalVisible(true);
-    }
-
-
+  };
+  const showLocationSearch = () => {
+    setLocationModalVisible(true);
+  };
 
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{ flex: 1, backgroundColor: '#fff' }}>
+          <View style={{flex: 1, backgroundColor: '#fff'}}>
             <Text style={style.title_style}>Individual Loan Application</Text>
             <DividerLine />
 
@@ -2058,7 +2156,7 @@ function Individual_Loan(props) {
                         label={option.label}
                         value={option.value}
                         color="#000"
-                        labelStyle={{ marginLeft: 5 }}
+                        labelStyle={{marginLeft: 5}}
                       />
                     </View>
                   </RadioButton.Group>
@@ -2181,16 +2279,16 @@ function Individual_Loan(props) {
               </View>
             </List.Accordion>
 
-            <Borrower_Info showCustomerSearch={showCustomerSearch}
+            <Borrower_Info
+              showCustomerSearch={showCustomerSearch}
               showCitySearch={showCitySearch}
               showTownshipSearch={showTownshipSearch}
               showVillageSearch={showVillageSearch}
-              showWardSearch={showWardSearch} showLocationSearch={showLocationSearch} />
-
-
-
-            <Co_Borrower_Info showCoBorrowerSearch={showCoBorrowerSearch}
+              showWardSearch={showWardSearch}
+              showLocationSearch={showLocationSearch}
             />
+
+            <Co_Borrower_Info showCoBorrowerSearch={showCoBorrowerSearch} />
             <Loan_Business_Info />
 
             <Borrower_Monthly_Income
@@ -2208,6 +2306,9 @@ function Individual_Loan(props) {
               co_borrower_filePath={co_borrower_filePath}
               setCoBorrowerCanvas={setCoBorrowerCanvas}
               show_co_borrower_canvas={show_co_borrower_canvas}
+              all_loandata={all_loandata}
+              borrower_sign_path={borrower_sign_path}
+              show_borrower_sign={show_borrower_sign}
             />
           </View>
         </TouchableWithoutFeedback>
@@ -2253,47 +2354,58 @@ function Individual_Loan(props) {
         co_borrower_resetSign={co_borrower_resetSign}
         co_borrower_sign={co_borrower_sign}
       />
-      <City_Modal hideCityModal={hideCityModal}
+      <City_Modal
+        hideCityModal={hideCityModal}
         modal_city_visible={modal_city_visible}
         setCitySelectedItemValue={setCitySelectedItemValue}
         selectedCityItemValue={selectedCityItemValue}
         handleCityItemValueChange={handleCityItemValueChange}
-        setAllCity={setAllCity} handleSubmit={handleSubmit} />
+        setAllCity={setAllCity}
+        handleSubmit={handleSubmit}
+      />
 
-      <Township_Modal hideTownshipModal={hideTownshipModal}
+      <Township_Modal
+        hideTownshipModal={hideTownshipModal}
         modal_township_visible={modal_township_visible}
         setTownshipSelectedItemValue={setTownshipSelectedItemValue}
         selectedTownshipItemValue={selectedTownshipItemValue}
         handleTownshipItemValueChange={handleTownshipItemValueChange}
-        setAllTownship={setAllTownship} handleSubmit={handleSubmit} />
+        setAllTownship={setAllTownship}
+        handleSubmit={handleSubmit}
+      />
 
-      <Village_Modal hideVillageModal={hideVillageModal}
+      <Village_Modal
+        hideVillageModal={hideVillageModal}
         modal_village_visible={modal_village_visible}
         setTownshipSelectedItemValue={setTownshipSelectedItemValue}
         selectedVillageItemValue={selectedVillageItemValue}
         handleVllageItemValueChange={handleVllageItemValueChange}
         setAllVillage={setAllVillage}
-        handleSubmit={handleSubmit} all_village={all_village} />
+        handleSubmit={handleSubmit}
+        all_village={all_village}
+      />
 
-      <Ward_Modal hideWardModal={hideWardModal}
+      <Ward_Modal
+        hideWardModal={hideWardModal}
         modal_ward_visible={modal_ward_visible}
         setWardSelectedItemValue={setWardSelectedItemValue}
         selectedWardItemValue={selectedWardItemValue}
         handleWardItemValueChange={handleWardItemValueChange}
         setAllWard={setAllWard}
         handleSubmit={handleSubmit}
-        all_ward={all_ward} />
+        all_ward={all_ward}
+      />
 
-      <Location_Modal hideLocationModal={hideLocationModal}
+      <Location_Modal
+        hideLocationModal={hideLocationModal}
         modal_location_visible={modal_location_visible}
         setLocationSelectedItemValue={setLocationSelectedItemValue}
         selectedLocationItemValue={selectedLocationItemValue}
         handleLocationItemValueChange={handleLocationItemValueChange}
         setAllLocation={setAllLocation}
         handleSubmit={handleSubmit}
-        all_location={all_location} />
-
-
+        all_location={all_location}
+      />
     </>
   );
 }
@@ -2306,5 +2418,5 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Individual_Loan_Form',
-  validate,
+  // validate,
 })(connect(mapStateToProps, {})(Individual_Loan));
