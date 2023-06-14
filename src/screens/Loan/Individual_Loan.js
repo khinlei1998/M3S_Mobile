@@ -7,6 +7,7 @@ import {
   FlatList,
   PermissionsAndroid,
   TouchableHighlight,
+  Image
 } from 'react-native';
 import React, { useState, useEffect, useRef, createRef } from 'react';
 import DividerLine from '../../components/DividerLine';
@@ -59,6 +60,7 @@ import SignatureCapture from 'react-native-signature-capture';
 import { storeLoanData } from '../../query/AllLoan_query';
 import validate from './Validate';
 import { TextInput } from 'react-native-paper';
+import { resetMonthlyIncome } from '../../redux/MonthlyReducer';
 // import RNFetchBlob from 'rn-fetch-blob';
 
 const Borrower_modal = props => {
@@ -589,9 +591,9 @@ const Borrower_Sign_Modal = props => {
           onDragEvent={_onDragEvent}
           showNativeButtons={false}
           showTitleLabel={false}
-          saveImageFileInExtStorage
           minStrokeWidth={10}
           maxStrokeWidth={10}
+          // saveImageFileInExtStorage
           // backgroundColor="transparent"
           viewMode={'portrait'}
         />
@@ -1835,55 +1837,119 @@ function Individual_Loan(props) {
     useState('location_code');
   const [all_loandata, setAllLoanData] = useState([]);
 
-  const { handleSubmit, totalnet, navigation } = props;
+  const { handleSubmit, totalnet, navigation,resetMonthlyIncome } = props;
 
-  const saveBorrowerSign = async (borrower_sign_path, suffix) => {
+  // const saveBorrowerSign = async (borrower_sign_path) => {
+  //   const user_id = await AsyncStorage.getItem('user_id');
+  //   const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/Signature/`;
+  //   let newFilePath;
+
+  //   try {
+  //     await RNFS.mkdir(directoryPath);
+  //     const fileName = `10${user_id}TB${moment().format('YYYYMMDD')}${all_loandata.length + 1}SG01.jpg`;
+  //     newFilePath = `${directoryPath}${fileName}`;
+  //     console.log('old newFilePath', newFilePath);
+  //     await RNFS.moveFile(borrower_sign_path, newFilePath);
+  //     console.log('Signature saved successfully');
+  //     console.log('newFilePath', newFilePath);
+  //     // setBorrowerSignPath(newFilePath);
+  //     return newFilePath;
+  //   } catch (error) {
+  //     console.log('Error saving signature:', error);
+  //     throw error;
+  //   }
+  // };
+
+  // const saveCoBorrowerSign = async (coborrower_sign_path, suffix) => {
+  //   const user_id = await AsyncStorage.getItem('user_id');
+  //   const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/Signature/`;
+  //   let newFilePath;
+
+  //   try {
+  //     await RNFS.mkdir(directoryPath);
+  //     const fileName = `10${user_id}TB${moment().format('YYYYMMDD')}${all_loandata.length + 1}SG02.jpg`;
+  //     newFilePath = `${directoryPath}${fileName}`;
+  //     console.log('coborrower old newFilePath', newFilePath);
+  //     await RNFS.moveFile(coborrower_sign_path, newFilePath);
+  //     console.log('Signature saved successfully');
+  //     console.log('Co newFilePath', newFilePath);
+  //     // setBorrowerSignPath(newFilePath);
+  //     return newFilePath;
+  //   } catch (error) {
+  //     console.log('Error saving signature:', error);
+  //     throw error;
+  //   }
+  // };
+
+  const saveSignatureToInternalStorage = async (signatureData, index) => {
     const user_id = await AsyncStorage.getItem('user_id');
-    const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/Signature/`;
-    const fileName = `10TB${moment().format('YYYYMMDD')}${all_loandata.length + 1}SG${suffix}.jpg`;
-    const newFilePath = `${directoryPath}${fileName}`;
-    console.log('borowe file path', newFilePath);
+    try {
+      // Get the path to the application's internal storage directory
+      const internalDir = RNFS.DocumentDirectoryPath;
+      console.log('internalDir', internalDir);
 
-    return RNFS.moveFile(borrower_sign_path, newFilePath);
-  };
+      // Create the target directory path
+      const directoryPath = `${internalDir}/SignatureImages`;
 
-  const saveCoBorrowerSign = async (coborrower_sign_path, suffix) => {
-    const user_id = await AsyncStorage.getItem('user_id');
-    const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/Signature/`;
-    const fileName = `10TB${moment().format('YYYYMMDD')}${all_loandata.length + 1}SG${suffix}.jpg`;
-    const newFilePath = `${directoryPath}${fileName}`;
-    console.log('newfile path', newFilePath);
-    return RNFS.moveFile(coborrower_sign_path, newFilePath);
+      // Check if the directory exists, and create it if it doesn't
+      const dirExists = await RNFS.exists(directoryPath);
+      if (!dirExists) {
+        await RNFS.mkdir(directoryPath);
+      }
+
+      // Generate a unique file name for the signature image
+      const fileName = `10${user_id}TB${moment().format('YYYYMMDD')}${all_loandata.length + 1}SG${index}.jpg`;
+
+      // Construct the file path
+      const filePath = `${directoryPath}/${fileName}`;
+
+      // Save the signature image to the internal storage
+      await RNFS.writeFile(filePath, signatureData, 'base64');
+
+      console.log('Signature saved successfully:', filePath);
+      return fileName;
+    } catch (error) {
+      console.log('Error saving signature:', error);
+      throw error;
+    }
   };
 
   const onSubmit = async values => {
+
     try {
       // Save the images
       let borrowerImagePath, coBorrowerImagePath;
 
       if (borrower_sign_path) {
-        borrowerImagePath = await saveBorrowerSign(borrower_sign_path, '01');
+        borrowerImagePath = await saveSignatureToInternalStorage(borrower_sign_path, '01');
         console.log('Borrower image saved successfully:', borrowerImagePath);
       }
 
       if (coborrower_sign_path) {
-        coBorrowerImagePath = await saveCoBorrowerSign(coborrower_sign_path, '02');
+        coBorrowerImagePath = await saveSignatureToInternalStorage(coborrower_sign_path, '02');
         console.log('Co-Borrower image saved successfully:', coBorrowerImagePath);
       }
 
+      // Only call the store function if at least one image was saved successfully
+
       const loan_data = Object.assign({}, values, {
         borrower_sign: borrowerImagePath || null,
-        co_borrower_sign: coBorrowerImagePath || null
+        co_borrower_sign: coBorrowerImagePath || null,
+      });
+      await storeLoanData(loan_data).then((result) => {
+        if (result == 'success') {
+          dispatch(reset('Individual_Loan_Form'));
+          resetMonthlyIncome();
+
+          ToastAndroid.show(`Create Successfully!`, ToastAndroid.SHORT);
+          props.navigation.navigate('Home');
+        }
       });
 
-      await storeLoanData(loan_data).then(result => {
-        console.log(result);
-      });
     } catch (error) {
       console.log('Error:', error);
     }
   };
-
 
   const showCustomerSearch = () => {
     setModalVisible(true);
@@ -1997,7 +2063,7 @@ function Individual_Loan(props) {
     const pathName = await sign.current.saveImage();
     console.log('pathName', pathName);
 
-    
+
   };
   const co_borrower_saveSign = async () => {
     // sign.current.saveImage();
@@ -2019,70 +2085,51 @@ function Individual_Loan(props) {
   const _onSaveEvent = async result => {
     setBorrowerSignPath(result.pathName);
     setShowBorrowerSign(result.encoded)
+    // if (result && result.encoded) {
+    //   try {
+    //     // Save the signature to the internal storage
+    //     const savedFilePath = await saveSignatureToInternalStorage(result.encoded);
 
-    // sign.current.saveImage().then(({ pathName }) => {
-    //   RNFetchBlob.fs.mv(pathName, '/storage/emulated/0/Pictures/Signature.png')
-    //     .then(() => {
-    //       console.log('Signature saved successfully');
-    //     })
-    //     .catch((error) => {
-    //       console.log('Error saving signature:', error);
-    //     });
-    // });
-
-    const pathName = result.pathName;
-    // const targetPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/RNSketchCanvas//1.png`;
-    // const fileName = `image_${Date.now()}.jpg`;
-    // try {
-    //   await RNFS.mkdir(RNFS.ExternalStorageDirectoryPath + '/Pictures/RNSketchCanvas/');
-    //   await RNFS.moveFile(pathName, targetPath);
-
-    //   console.log('Signature saved successfully');
-    // } catch (error) {
-    //   console.log('Error saving signature:', error);
+    //     // Do something with the saved file path
+    //     console.log('Saved signature file path:', savedFilePath);
+    //   } catch (error) {
+    //     // Handle the error
+    //     console.log('Error:', error);
+    //   }
     // }
+    // setBorrowerSignPath(result.pathName);
+    // setShowBorrowerSign(result.encoded)
+
+    // const pathName = result.pathName;
+    // console.log('pathName', pathName);
+    // const user_id = await AsyncStorage.getItem('user_id');
 
     // const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/Signature/`;
     // let newFilePath;
+    // //RNFS.mkdir(directoryPath) is called to create the directory if it doesn't exist
     // RNFS.mkdir(directoryPath)
     //   .then(() => {
-    //     // 10${user_id}TB${moment().format('YYYYMMDD')}${loan_data.length + 1}
-    //     const fileName = `rr.jpg`;
+    //     const fileName = `10${user_id}TB${moment().format('YYYYMMDD')}${all_loandata.length + 1}SG01.jpg`;
     //     newFilePath = `${directoryPath}${fileName}`;
     //     console.log('old newFilePath', newFilePath);
+    //     //to move the signature image from its current pathName to the new newFilePath
     //     return RNFS.moveFile(pathName, newFilePath);
     //   })
     //   .then(() => {
     //     console.log('Signature saved successfully');
     //     console.log('newFilePath', newFilePath);
-    //     setFilePath(newFilePath);
+    //     setBorrowerSignPath(newFilePath)
     //   })
     //   .catch(error => {
     //     console.log('Error saving signature:', error);
     //   });
+
 
     setCanvas(false);
   };
   const _onCoBorrowerSaveEvent = async result => {
     setCoBorrowerSignPath(result.pathName);
     setShowCoBorrowerSign(result.encoded)
-    // const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/RNSketchCanvas/`;
-    // let newFilePath;
-    // RNFS.mkdir(directoryPath)
-    //   .then(() => {
-    //     const fileName = `signature_${Date.now()}.png`;
-    //     newFilePath = `${directoryPath}${fileName}`;
-    //     console.log('old newFilePath', newFilePath);
-    //     return RNFS.moveFile(pathName, newFilePath);
-    //   })
-    //   .then(() => {
-    //     console.log('Signature saved successfully');
-    //     console.log('newFilePath', newFilePath);
-    //     setCoBorrowerFilePath(newFilePath);
-    //   })
-    //   .catch(error => {
-    //     console.log('Error saving signature:', error);
-    //   });
 
     setCoBorrowerCanvas(false);
   };
@@ -2125,6 +2172,9 @@ function Individual_Loan(props) {
   const showLocationSearch = () => {
     setLocationModalVisible(true);
   };
+  const borrowerPath = `${RNFS.DocumentDirectoryPath}/SignatureImages/10M00172TB202306143SG02.jpg`;
+  // 10M00172TB202306145SG02
+
 
   return (
     <>
@@ -2169,6 +2219,8 @@ function Individual_Loan(props) {
               </Button>
             </View>
             <DividerLine />
+            {/* <Image source={{ uri: `file://${borrowerPath}` }} style={{ width: 200, height: 200 }} /> */}
+
 
             <List.Accordion
               expanded={loanexpanded}
@@ -2418,4 +2470,4 @@ function mapStateToProps(state) {
 export default reduxForm({
   form: 'Individual_Loan_Form',
   // validate,
-})(connect(mapStateToProps, {})(Individual_Loan));
+})(connect(mapStateToProps, {})(Individual_Loan,resetMonthlyIncome));
