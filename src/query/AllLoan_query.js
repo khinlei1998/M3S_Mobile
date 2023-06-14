@@ -365,8 +365,8 @@ export const storeLoanData = async loan_data => {
             loan_data.ward_name,
             loan_data.location_code,
             loan_data.location_name,
-            null, //borrower sign
-            null
+            loan_data.borrower_sign, //borrower sign
+            loan_data.co_borrower_sign
 
           ],
           (trans, results) => {
