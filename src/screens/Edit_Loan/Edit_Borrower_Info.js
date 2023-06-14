@@ -19,7 +19,7 @@ import RadioButtonFile from '../../components/RadioButtonFile';
 import { useDispatch } from 'react-redux';
 
 function Borrower_Info(props) {
-  const { showLocationSearch, showCustomerSearch, showTownshipSearch, showCitySearch, showVillageSearch, showWardSearch } = props;
+  const { showLocationSearch,showCustomerSearch, showTownshipSearch, showCitySearch ,showVillageSearch,showWardSearch} = props;
   const [borrower_expanded, setBorrowerExpanded] = React.useState(true);
   const [show_village, setVillage] = useState('1');
   const dispatch = useDispatch();

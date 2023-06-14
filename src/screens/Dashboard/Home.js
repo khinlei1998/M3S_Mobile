@@ -5,6 +5,8 @@ import {fetchEmpName} from '../../query/Employee_query';
 import {getAllLoan} from '../../query/AllLoan_query';
 import {Modal, Portal, Button, Provider, Divider} from 'react-native-paper';
 export default function Home(props) {
+  const {navigation} = props;
+
   const [emp_name, setEmpName] = useState();
   const [loan_data, setAllLoan] = useState([]);
 
@@ -197,7 +199,7 @@ export default function Home(props) {
         </Text>
       </View>
 
-      <Viewloan loan_data={loan_data} />
+      <Viewloan loan_data={loan_data} navigation={navigation} />
     </View>
   );
 }

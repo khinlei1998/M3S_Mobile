@@ -260,8 +260,8 @@ export const storeLoanData = async loan_data => {
             null, //salary rating code
             loan_data.addr,
             loan_data.family_num,
-            null,//hghschl_num,
-            null,//university_num,
+            loan_data.hghschl_num,//hghschl_num,
+            loan_data.university_num,//university_num,
             null,//students_cnt,
             loan_data.curr_resident_perd,
             loan_data.house_ocpn_type,

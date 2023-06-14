@@ -10,6 +10,8 @@ import CustomerSearch from '../screens/Customer/CustomerSearch';
 import Synchronization_Screen from '../screens/Synchronization/Synchronization_Screen';
 import Individual_Loan from '../screens/Loan/Individual_Loan';
 import Sign1 from '../screens/Loan/Sign1';
+import Home from '../screens/Dashboard/Home';
+import Edit_Individual_Loan from '../screens/Edit_Loan/Edit_Individual_Loan';
 export default function AuthNavigation(props) {
   const Stack = createNativeStackNavigator();
   return (
@@ -25,24 +27,24 @@ export default function AuthNavigation(props) {
         },
       }}>
       {/* <Stack.Screen
-        name="Customer Management"
-        component={Customer_Management}
+        name="Individual_loan"
+        component={Individual_Loan}
         options={{headerShown: false}}
       /> */}
       {/* <Stack.Screen
         name="Customer Search"
         component={CustomerSearch}
         options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Edit_Emp_Info"
-        component={Edit_Emp_Info}
-        options={{headerShown: false}}
       /> */}
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{headerShown: false}}
+      />
 
       <Stack.Screen
-        name="Individual Loan"
-        component={Individual_Loan}
+        name="Edit_Individual_Loan"
+        component={Edit_Individual_Loan}
         options={{headerShown: false}}
       />
       <Stack.Screen

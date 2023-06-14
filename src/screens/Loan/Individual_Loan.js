@@ -37,7 +37,7 @@ import {
   Portal,
 } from 'react-native-paper';
 import { reduxForm, Field, change } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch,reset } from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
 import { loan_type, emp_filter_item } from '../../common';
