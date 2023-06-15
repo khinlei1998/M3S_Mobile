@@ -43,15 +43,21 @@ export default function AuthNavigation(props) {
       />
 
       <Stack.Screen
+        name="Edit_Emp_Info"
+        component={Edit_Emp_Info}
+        options={{headerShown: false}}
+      />
+
+      <Stack.Screen
         name="Edit_Individual_Loan"
         component={Edit_Individual_Loan}
         options={{headerShown: false}}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Sign1"
         component={Sign1}
         options={{headerShown: false}}
-      />
+      /> */}
       {/* <Stack.Screen
         name="Synchronization"
         component={Synchronization_Screen}

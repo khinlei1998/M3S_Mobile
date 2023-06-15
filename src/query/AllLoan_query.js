@@ -349,7 +349,7 @@ export const storeLoanData = async loan_data => {
             null, //old_application_no
             null, //transaction_date (Date)
             loan_data.loan_limit_amt,
-            null, //curr_resident_date
+            loan_data.curr_resident_date, //curr_resident_date
             null, //workplace_date //130
             null, //curr_workplace_date
             null, //132
@@ -384,3 +384,24 @@ export const storeLoanData = async loan_data => {
     }
   });
 };
+
+export async function deleteLoan_ByID(id) {
+  console.log('id',id);
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        `DELETE FROM Individual_application WHERE id = ${id}`,
+        [],
+        (txObj, resultSet) => {
+          resolve('success');
+          // Delete query successful
+          console.log('Delete successful');
+        },
+        (txObj, error) => {
+          // Error occurred while executing the delete query
+          console.error('Delete error:', error);
+        },
+      );
+    });
+  });
+}

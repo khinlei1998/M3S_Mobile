@@ -7,11 +7,12 @@ import {
   FlatList,
   PermissionsAndroid,
   TouchableHighlight,
-  Image
+  Image,
+  ToastAndroid
 } from 'react-native';
-import React, { useState, useEffect, useRef, createRef } from 'react';
+import React, {useState, useEffect, useRef, createRef} from 'react';
 import DividerLine from '../../components/DividerLine';
-import { style } from '../../style/Individual_Loan_style';
+import {style} from '../../style/Individual_Loan_style';
 import {
   operations,
   city_code,
@@ -36,31 +37,32 @@ import {
   Provider,
   Portal,
 } from 'react-native-paper';
-import { reduxForm, Field, change } from 'redux-form';
-import { connect, useDispatch,reset } from 'react-redux';
+import {reduxForm, Field, change, reset} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
-import { loan_type, emp_filter_item } from '../../common';
+import {loan_type, emp_filter_item} from '../../common';
 import DatePicker from '../../components/DatePicker';
-import { Picker } from '@react-native-picker/picker';
-import { getAllLoan } from '../../query/AllLoan_query';
+import {Picker} from '@react-native-picker/picker';
+import {getAllLoan} from '../../query/AllLoan_query';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Borrower_Info from './Borrower_Info';
 import Icon from 'react-native-vector-icons/Feather';
-import { filterCustomer } from '../../query/Customer_query';
+import {filterCustomer} from '../../query/Customer_query';
 import Co_Borrower_Info from './Co_Borrower_Info';
 import Loan_Business_Info from './Loan_Business_Info';
 import Borrower_Monthly_Income from './Borrower_Monthly_Income';
-import { getAllLoanMax } from '../../query/LoanMax_query';
+import {getAllLoanMax} from '../../query/LoanMax_query';
 import Borrower_Current_Map from './Borrower_Current_Map';
 import Borrower_Contract from './Borrower_Contract';
 import Borrower_Sign from './Borrower_Sign';
 import SignatureCapture from 'react-native-signature-capture';
-import { storeLoanData } from '../../query/AllLoan_query';
+import {storeLoanData} from '../../query/AllLoan_query';
 import validate from './Validate';
-import { TextInput } from 'react-native-paper';
-import { resetMonthlyIncome } from '../../redux/MonthlyReducer';
+import {TextInput} from 'react-native-paper';
+import {resetMonthlyIncome} from '../../redux/MonthlyReducer';
+import {log} from 'console';
 // import RNFetchBlob from 'rn-fetch-blob';
 
 const Borrower_modal = props => {
@@ -99,7 +101,7 @@ const Borrower_modal = props => {
     dispatch(change('Individual_Loan_Form', 'customer_no', item.customer_no));
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -176,8 +178,8 @@ const Borrower_modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
@@ -199,7 +201,7 @@ const Borrower_modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '40%' }}>
+              <View style={{width: '40%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -278,7 +280,7 @@ const Borrower_modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideModal()}
                 mode="contained"
@@ -333,7 +335,7 @@ const CoBorrower_modal = props => {
     );
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -416,8 +418,8 @@ const CoBorrower_modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
@@ -439,7 +441,7 @@ const CoBorrower_modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
+              <View style={{width: '50%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -518,7 +520,7 @@ const CoBorrower_modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideCoBorrowerModal()}
                 mode="contained"
@@ -597,7 +599,7 @@ const Borrower_Sign_Modal = props => {
           // backgroundColor="transparent"
           viewMode={'portrait'}
         />
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{flexDirection: 'row'}}>
           <TouchableHighlight
             style={{
               flex: 1,
@@ -611,7 +613,7 @@ const Borrower_Sign_Modal = props => {
             onPress={() => {
               saveSign();
             }}>
-            <Text style={{ color: '#fff' }}>Save</Text>
+            <Text style={{color: '#fff'}}>Save</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={{
@@ -626,7 +628,7 @@ const Borrower_Sign_Modal = props => {
             onPress={() => {
               resetSign();
             }}>
-            <Text style={{ color: '#fff' }}>Reset</Text>
+            <Text style={{color: '#fff'}}>Reset</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -641,7 +643,7 @@ const Co_Borrower_Sign_Modal = props => {
     setCoBorrowerCanvas,
     _onCoBorrowerSaveEvent,
     co_borrower_saveSign,
-    co_borrower_resetSignn,
+    co_borrower_resetSign,
     co_borrower_sign,
   } = props;
   return (
@@ -691,7 +693,7 @@ const Co_Borrower_Sign_Modal = props => {
           // backgroundColor="transparent"
           viewMode={'portrait'}
         />
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{flexDirection: 'row'}}>
           <TouchableHighlight
             style={{
               flex: 1,
@@ -705,7 +707,7 @@ const Co_Borrower_Sign_Modal = props => {
             onPress={() => {
               co_borrower_saveSign();
             }}>
-            <Text style={{ color: '#fff' }}>Save</Text>
+            <Text style={{color: '#fff'}}>Save</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={{
@@ -718,9 +720,9 @@ const Co_Borrower_Sign_Modal = props => {
               margin: 10,
             }}
             onPress={() => {
-              co_borrower_resetSignn();
+              co_borrower_resetSign();
             }}>
-            <Text style={{ color: '#fff' }}>Reset</Text>
+            <Text style={{color: '#fff'}}>Reset</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -758,7 +760,7 @@ const City_Modal = props => {
     dispatch(change('Individual_Loan_Form', 'city_name', item.city_name));
   };
 
-  const city_item = ({ item, index }) => {
+  const city_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -825,8 +827,8 @@ const City_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedCityItemValue}
@@ -848,7 +850,7 @@ const City_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '40%' }}>
+              <View style={{width: '40%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -918,7 +920,7 @@ const City_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideCityModal()}
                 mode="contained"
@@ -970,7 +972,7 @@ const Township_Modal = props => {
     );
   };
 
-  const township_item = ({ item, index }) => {
+  const township_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -1040,8 +1042,8 @@ const Township_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedTwonshipItemValue}
@@ -1063,7 +1065,7 @@ const Township_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '40%' }}>
+              <View style={{width: '40%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -1134,7 +1136,7 @@ const Township_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideTownshipModal()}
                 mode="contained"
@@ -1185,7 +1187,7 @@ const Village_Modal = props => {
     setVillage_Text(inputText);
   };
 
-  const village_item = ({ item, index }) => {
+  const village_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -1252,8 +1254,8 @@ const Village_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedVillageItemValue}
@@ -1275,7 +1277,7 @@ const Village_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '40%' }}>
+              <View style={{width: '40%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -1345,7 +1347,7 @@ const Village_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideVillageModal()}
                 mode="contained"
@@ -1395,7 +1397,7 @@ const Ward_Modal = props => {
     setWard_Text(inputText);
   };
 
-  const ward_item = ({ item, index }) => {
+  const ward_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -1462,8 +1464,8 @@ const Ward_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedWardItemValue}
@@ -1485,7 +1487,7 @@ const Ward_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
+              <View style={{width: '50%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -1555,7 +1557,7 @@ const Ward_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideWardModal()}
                 mode="contained"
@@ -1610,7 +1612,7 @@ const Location_Modal = props => {
     );
   };
 
-  const location_item = ({ item, index }) => {
+  const location_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -1677,8 +1679,8 @@ const Location_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedLocationItemValue}
@@ -1700,7 +1702,7 @@ const Location_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
+              <View style={{width: '50%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -1770,7 +1772,7 @@ const Location_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideLocationModal()}
                 mode="contained"
@@ -1810,7 +1812,6 @@ function Individual_Loan(props) {
   const [showCanvas, setShowCanvas] = useState(false);
   const [filePath, setFilePath] = useState('');
   const [co_borrower_filePath, setCoBorrowerFilePath] = useState('');
-  const [empname, setEmpName] = useState('');
   const [modal_city_visible, setCityCodeModalVisible] = useState(false);
   const [modal_township_visible, setTownshipCodeModalVisible] = useState(false);
   const [selectedCityItemValue, setCitySelectedItemValue] =
@@ -1830,23 +1831,25 @@ function Individual_Loan(props) {
   const [modal_ward_visible, setWardCodeModalVisible] = useState(false);
   const [modal_location_visible, setLocationModalVisible] = useState(false);
   const [borrower_sign_path, setBorrowerSignPath] = useState('');
-  const [show_borrower_sign, setShowBorrowerSign] = useState('')
+  const [show_borrower_sign, setShowBorrowerSign] = useState('');
   const [coborrower_sign_path, setCoBorrowerSignPath] = useState('');
-  const [show_coborrower_sign, setShowCoBorrowerSign] = useState('')
+  const [show_coborrower_sign, setShowCoBorrowerSign] = useState('');
   const [selectedLocationItemValue, setLocationSelectedItemValue] =
     useState('location_code');
   const [all_loandata, setAllLoanData] = useState([]);
 
-  const { handleSubmit, totalnet, navigation,resetMonthlyIncome } = props;
+  const {handleSubmit, totalnet, navigation, resetMonthlyIncome} = props;
 
-  // const saveBorrowerSign = async (borrower_sign_path) => {
+  // const saveBorrowerSign = async borrower_sign_path => {
   //   const user_id = await AsyncStorage.getItem('user_id');
   //   const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/Signature/`;
   //   let newFilePath;
 
   //   try {
   //     await RNFS.mkdir(directoryPath);
-  //     const fileName = `10${user_id}TB${moment().format('YYYYMMDD')}${all_loandata.length + 1}SG01.jpg`;
+  //     const fileName = `10${user_id}TB${moment().format('YYYYMMDD')}${
+  //       all_loandata.length + 1
+  //     }SG01.jpg`;
   //     newFilePath = `${directoryPath}${fileName}`;
   //     console.log('old newFilePath', newFilePath);
   //     await RNFS.moveFile(borrower_sign_path, newFilePath);
@@ -1860,96 +1863,153 @@ function Individual_Loan(props) {
   //   }
   // };
 
-  // const saveCoBorrowerSign = async (coborrower_sign_path, suffix) => {
-  //   const user_id = await AsyncStorage.getItem('user_id');
-  //   const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/Signature/`;
-  //   let newFilePath;
-
-  //   try {
-  //     await RNFS.mkdir(directoryPath);
-  //     const fileName = `10${user_id}TB${moment().format('YYYYMMDD')}${all_loandata.length + 1}SG02.jpg`;
-  //     newFilePath = `${directoryPath}${fileName}`;
-  //     console.log('coborrower old newFilePath', newFilePath);
-  //     await RNFS.moveFile(coborrower_sign_path, newFilePath);
-  //     console.log('Signature saved successfully');
-  //     console.log('Co newFilePath', newFilePath);
-  //     // setBorrowerSignPath(newFilePath);
-  //     return newFilePath;
-  //   } catch (error) {
-  //     console.log('Error saving signature:', error);
-  //     throw error;
-  //   }
-  // };
-
-  const saveSignatureToInternalStorage = async (signatureData, index) => {
-    const user_id = await AsyncStorage.getItem('user_id');
+  const requestWriteStoragePermission = async () => {
     try {
-      // Get the path to the application's internal storage directory
-      const internalDir = RNFS.DocumentDirectoryPath;
-      console.log('internalDir', internalDir);
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: 'Write Storage Permission',
+          message:
+            'App needs access to your device storage to save the signature image.',
+          buttonPositive: 'OK',
+          buttonNegative: 'Cancel',
+        },
+      );
 
-      // Create the target directory path
-      const directoryPath = `${internalDir}/SignatureImages`;
-
-      // Check if the directory exists, and create it if it doesn't
-      const dirExists = await RNFS.exists(directoryPath);
-      if (!dirExists) {
-        await RNFS.mkdir(directoryPath);
-      }
-
-      // Generate a unique file name for the signature image
-      const fileName = `10${user_id}TB${moment().format('YYYYMMDD')}${all_loandata.length + 1}SG${index}.jpg`;
-
-      // Construct the file path
-      const filePath = `${directoryPath}/${fileName}`;
-
-      // Save the signature image to the internal storage
-      await RNFS.writeFile(filePath, signatureData, 'base64');
-
-      console.log('Signature saved successfully:', filePath);
-      return fileName;
+      return granted === PermissionsAndroid.RESULTS.GRANTED;
     } catch (error) {
-      console.log('Error saving signature:', error);
-      throw error;
+      console.log('Error requesting write storage permission:', error);
+      return false;
     }
   };
 
-  const onSubmit = async values => {
+  const saveSignatureToInternalStorage = async (image_encode, index) => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    try {
+      // Request write storage permission
+      const granted = await requestWriteStoragePermission();
 
+      if (granted) {
+        // Get the base64-encoded image data from the result
+        // const imageData = result.encoded;
+
+        // Generate a unique filename for the image
+        const filename = `10${user_id}TB${moment().format('YYYYMMDD')}${all_loandata.length + 1}SG${index}.jpg`;
+
+        // Define the destination path in the app's internal storage
+        const destinationPath = `${RNFS.DocumentDirectoryPath}/${filename}`;
+
+        // Write the base64-encoded image data to the destination path
+        await RNFS.writeFile(destinationPath, image_encode, 'base64');
+        console.log('destinationPath', destinationPath);
+        // Set the image path for display
+        // setFinalepath(destinationPath);
+        return destinationPath;
+      } else {
+        console.log('Write storage permission denied.');
+      }
+    } catch (error) {
+      console.log('Error saving signature:', error);
+    }
+  };
+
+  // const onSubmit = async values => {
+  //   try {
+  //     // Save the images
+  //     let borrowerImagePath, coBorrowerImagePath;
+
+  //     if (borrower_sign_path) {
+  //       borrowerImagePath = await saveSignatureToInternalStorage(
+  //         show_borrower_sign,
+  //         '01',
+  //       );
+  //       console.log('Borrower image saved successfully:', borrowerImagePath);
+  //     }
+
+  //     if (coborrower_sign_path) {
+  //       coBorrowerImagePath = await saveSignatureToInternalStorage(
+  //         show_coborrower_sign,
+  //         '02',
+  //       );
+  //       console.log(
+  //         'Co-Borrower image saved successfully:',
+  //         coBorrowerImagePath,
+  //       );
+  //     }
+
+  //     // Only call the store function if at least one image was saved successfully
+
+  //     const loan_data = Object.assign({}, values, {
+  //       borrower_sign: borrowerImagePath,
+  //       co_borrower_sign: coBorrowerImagePath,
+  //     });
+  //     await storeLoanData(loan_data).then(result => {
+  //       if (result == 'success') {
+  //         dispatch(reset('Individual_Loan_Form'));
+  //         resetMonthlyIncome();
+
+  //         ToastAndroid.show(`Create Successfully!`, ToastAndroid.SHORT);
+  //         props.navigation.navigate('Home');
+  //       }
+  //     });
+  //   } catch (error) {
+  //     console.log('Error:', error);
+  //   }
+  // };
+  const onSubmit = async values => {
+    console.log('values',values);
     try {
       // Save the images
       let borrowerImagePath, coBorrowerImagePath;
+      let saveImageError = false;
 
       if (borrower_sign_path) {
-        borrowerImagePath = await saveSignatureToInternalStorage(borrower_sign_path, '01');
-        console.log('Borrower image saved successfully:', borrowerImagePath);
+        borrowerImagePath = await saveSignatureToInternalStorage(
+          show_borrower_sign,
+          '01',
+        );
+        if (!borrowerImagePath) {
+          saveImageError = true;
+          ToastAndroid.show('Error! Borrower Sign cannot save', ToastAndroid.SHORT);
+        } else {
+          console.log('Borrower image saved successfully:', borrowerImagePath);
+        }
       }
 
       if (coborrower_sign_path) {
-        coBorrowerImagePath = await saveSignatureToInternalStorage(coborrower_sign_path, '02');
-        console.log('Co-Borrower image saved successfully:', coBorrowerImagePath);
+        coBorrowerImagePath = await saveSignatureToInternalStorage(
+          show_coborrower_sign,
+          '02',
+        );
+        if (!coBorrowerImagePath) {
+          saveImageError = true;
+          ToastAndroid.show('Error! Co-Borrower Sign cannot save', ToastAndroid.SHORT);
+        } else {
+          console.log('Co-Borrower image saved successfully:', coBorrowerImagePath);
+        }
       }
 
-      // Only call the store function if at least one image was saved successfully
+      if (!saveImageError) {
+        const loan_data = Object.assign({}, values, {
+          borrower_sign: borrowerImagePath,
+          co_borrower_sign: coBorrowerImagePath,
+        });
 
-      const loan_data = Object.assign({}, values, {
-        borrower_sign: borrowerImagePath || null,
-        co_borrower_sign: coBorrowerImagePath || null,
-      });
-      await storeLoanData(loan_data).then((result) => {
-        if (result == 'success') {
-          dispatch(reset('Individual_Loan_Form'));
-          resetMonthlyIncome();
+        await storeLoanData(loan_data).then(result => {
+          if (result == 'success') {
+            dispatch(reset('Individual_Loan_Form'));
+            resetMonthlyIncome();
 
-          ToastAndroid.show(`Create Successfully!`, ToastAndroid.SHORT);
-          props.navigation.navigate('Home');
-        }
-      });
-
+            ToastAndroid.show('Create Successfully!', ToastAndroid.SHORT);
+            props.navigation.navigate('Home');
+          }
+        });
+      }
     } catch (error) {
       console.log('Error:', error);
     }
   };
+
 
   const showCustomerSearch = () => {
     setModalVisible(true);
@@ -1963,31 +2023,7 @@ function Individual_Loan(props) {
   const handleItemValueChange = itemValue => {
     setSelectedItemValue(itemValue);
   };
-  useEffect(() => {
-    requestStoragePermission();
-  }, []);
 
-  const requestStoragePermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.requestMultiple([
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-      ]);
-
-      if (
-        granted['android.permission.WRITE_EXTERNAL_STORAGE'] ===
-        PermissionsAndroid.RESULTS.GRANTED &&
-        granted['android.permission.READ_EXTERNAL_STORAGE'] ===
-        PermissionsAndroid.RESULTS.GRANTED
-      ) {
-        console.log('Storage permissions granted');
-      } else {
-        console.log('Storage permissions denied');
-      }
-    } catch (error) {
-      console.warn('Error requesting storage permissions:', error);
-    }
-  };
   const hideModal = () => setModalVisible(false);
   const hideCoBorrowerModal = () => setCoBorrowerModalVisible(false);
 
@@ -2062,8 +2098,6 @@ function Individual_Loan(props) {
 
     const pathName = await sign.current.saveImage();
     console.log('pathName', pathName);
-
-
   };
   const co_borrower_saveSign = async () => {
     // sign.current.saveImage();
@@ -2084,7 +2118,7 @@ function Individual_Loan(props) {
 
   const _onSaveEvent = async result => {
     setBorrowerSignPath(result.pathName);
-    setShowBorrowerSign(result.encoded)
+    setShowBorrowerSign(result.encoded);
     // if (result && result.encoded) {
     //   try {
     //     // Save the signature to the internal storage
@@ -2124,12 +2158,11 @@ function Individual_Loan(props) {
     //     console.log('Error saving signature:', error);
     //   });
 
-
     setCanvas(false);
   };
   const _onCoBorrowerSaveEvent = async result => {
     setCoBorrowerSignPath(result.pathName);
-    setShowCoBorrowerSign(result.encoded)
+    setShowCoBorrowerSign(result.encoded);
 
     setCoBorrowerCanvas(false);
   };
@@ -2172,15 +2205,14 @@ function Individual_Loan(props) {
   const showLocationSearch = () => {
     setLocationModalVisible(true);
   };
-  const borrowerPath = `${RNFS.DocumentDirectoryPath}/SignatureImages/10M00172TB202306143SG02.jpg`;
-  // 10M00172TB202306145SG02
-
+  const borrowerPath = `${RNFS.DocumentDirectoryPath}/SignatureImages/10M00172TB202306154SG02.jpg`;
+  // /data/user/0/com.m3smobile/files/signature_1686831305370.jpg
 
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{ flex: 1, backgroundColor: '#fff' }}>
+          <View style={{flex: 1, backgroundColor: '#fff'}}>
             <Text style={style.title_style}>Individual Loan Application</Text>
             <DividerLine />
 
@@ -2192,6 +2224,7 @@ function Individual_Loan(props) {
                 {operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
+
                     onValueChange={newValue => setOperation(newValue)}
                     value={show_operation}>
                     <View
@@ -2201,10 +2234,11 @@ function Individual_Loan(props) {
                         alignItems: 'center',
                       }}>
                       <RadioButton.Item
+                      disabled={option.value!==show_operation}
                         label={option.label}
                         value={option.value}
                         color="#000"
-                        labelStyle={{ marginLeft: 5 }}
+                        labelStyle={{marginLeft: 5}}
                       />
                     </View>
                   </RadioButton.Group>
@@ -2219,8 +2253,6 @@ function Individual_Loan(props) {
               </Button>
             </View>
             <DividerLine />
-            {/* <Image source={{ uri: `file://${borrowerPath}` }} style={{ width: 200, height: 200 }} /> */}
-
 
             <List.Accordion
               expanded={loanexpanded}
@@ -2470,4 +2502,4 @@ function mapStateToProps(state) {
 export default reduxForm({
   form: 'Individual_Loan_Form',
   // validate,
-})(connect(mapStateToProps, {})(Individual_Loan,resetMonthlyIncome));
+})(connect(mapStateToProps, {resetMonthlyIncome})(Individual_Loan, ));

@@ -345,6 +345,6 @@ function mapStateToProps(state) {
 }
 
 export default reduxForm({
-  form: 'Individual_Loan_Form',
+  form: 'Edit_Individual_Loan_Form',
   // validate,
 })(connect(mapStateToProps, {})(Borrower_Info));
