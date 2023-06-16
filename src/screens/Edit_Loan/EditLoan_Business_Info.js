@@ -15,6 +15,7 @@ import {style} from '../../style/Individual_Loan_style';
 import {reduxForm, Field} from 'redux-form';
 import {connect} from 'react-redux';
 function Loan_Business_Info(props) {
+  const {update_status}=props
   const [loan_business_expanded, setLoan_BusinessInfo_expanded] =
     useState(true);
 
@@ -37,6 +38,7 @@ function Loan_Business_Info(props) {
               component={TextInputFile}
               input_mode
               inputmax={100}
+              editable={update_status == true ? false : true}
             />
             <Field
               data={business_type}
@@ -46,6 +48,7 @@ function Loan_Business_Info(props) {
               pickerStyle={{
                 width: 300,
               }}
+              enabled={update_status == true ? false : true}
             />
           </View>
 
@@ -54,7 +57,8 @@ function Loan_Business_Info(props) {
               name={'workplace_period'}
               component={DatePicker}
               label={'Business Peroid'}
-              icon={'calendar'}
+              icon={update_status == true &&'calendar'}
+              editable={update_status == true ? false : true}
             />
             <Field
               name={'employee_num'}
@@ -63,6 +67,7 @@ function Loan_Business_Info(props) {
               input_mode
               keyboardType={'numeric'}
               inputmax={20}
+              editable={update_status == true ? false : true}
             />
           </View>
 
@@ -75,6 +80,7 @@ function Loan_Business_Info(props) {
               pickerStyle={{
                 width: 300,
               }}
+              enabled={update_status == true ? false : true}
             />
             <Field
               name={'workplace_addr'}
@@ -82,6 +88,7 @@ function Loan_Business_Info(props) {
               component={TextInputFile}
               input_mode
               inputmax={100}
+              editable={update_status == true ? false : true}
             />
           </View>
 
@@ -90,7 +97,8 @@ function Loan_Business_Info(props) {
               name={'curr_workplace_perd'}
               component={DatePicker}
               label={'Working Time in current business'}
-              icon={'calendar'}
+              icon={update_status == true &&'calendar'}
+              editable={update_status == true ? false : true}
             />
             <View
               style={{
@@ -107,6 +115,7 @@ function Loan_Business_Info(props) {
                   data={business_situation}
                   name={'business_sttn_flg'}
                   component={RadioButtonFile}
+                  disabled={update_status == true ? false : true}
                 />
               </View>
             </View>
@@ -121,6 +130,7 @@ function Loan_Business_Info(props) {
               pickerStyle={{
                 width: 300,
               }}
+              enabled={update_status == true ? false : true}
             />
             <Field
               name={'land_scale'}
@@ -128,6 +138,7 @@ function Loan_Business_Info(props) {
               component={TextInputFile}
               input_mode
               inputmax={100}
+              editable={update_status == true ? false : true}
             />
           </View>
         </View>
@@ -136,7 +147,9 @@ function Loan_Business_Info(props) {
   );
 }
 function mapStateToProps(state) {
-  return {};
+  return {
+    update_status: state.loan.update_status,
+  };
 }
 
 export default reduxForm({

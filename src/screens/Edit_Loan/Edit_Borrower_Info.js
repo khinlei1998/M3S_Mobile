@@ -19,7 +19,7 @@ import RadioButtonFile from '../../components/RadioButtonFile';
 import { useDispatch } from 'react-redux';
 
 function Borrower_Info(props) {
-  const { showLocationSearch,showCustomerSearch, showTownshipSearch, showCitySearch ,showVillageSearch,showWardSearch} = props;
+  const { showLocationSearch, update_status, showCustomerSearch, showTownshipSearch, showCitySearch, showVillageSearch, showWardSearch } = props;
   const [borrower_expanded, setBorrowerExpanded] = React.useState(true);
   const [show_village, setVillage] = useState('1');
   const dispatch = useDispatch();
@@ -52,6 +52,7 @@ function Borrower_Info(props) {
             data={borrower_type}
             name={'cst_new_exist_flg'}
             component={RadioButtonFile}
+            disabled={update_status == true ? false : true}
           />
 
           <Field
@@ -66,7 +67,7 @@ function Borrower_Info(props) {
             <Field
               name={'resident_rgst_id'}
               title={'NRC'}
-              icon={'magnify'}
+              icon={update_status == true && 'magnify'}
               component={TextInputFile}
               cus_width
               input_mode
@@ -82,6 +83,7 @@ function Borrower_Info(props) {
               cus_width
               input_mode
               editable
+
             />
           </View>
 
@@ -92,6 +94,8 @@ function Borrower_Info(props) {
               component={TextInputFile}
               cus_width
               input_mode
+              editable={update_status == true ? false : true}
+
             />
 
             <Field
@@ -101,6 +105,8 @@ function Borrower_Info(props) {
               cus_width
               input_mode
               keyboardType={'numeric'}
+              editable={update_status == true ? false : true}
+
 
             />
           </View>
@@ -114,6 +120,8 @@ function Borrower_Info(props) {
               pickerStyle={{
                 width: 300,
               }}
+              enabled={update_status == true ? false : true}
+
             />
 
             <Field
@@ -121,6 +129,7 @@ function Borrower_Info(props) {
               component={DatePicker}
               label={'date of birth'}
               icon={'calendar'}
+              editable={update_status == true ? false : true}
             />
           </View>
 
@@ -133,6 +142,8 @@ function Borrower_Info(props) {
               pickerStyle={{
                 width: 300,
               }}
+              enabled={update_status == true ? false : true}
+
             />
 
             <Field
@@ -143,6 +154,8 @@ function Borrower_Info(props) {
               pickerStyle={{
                 width: 300,
               }}
+              enabled={update_status == true ? false : true}
+
             />
           </View>
 
@@ -153,7 +166,7 @@ function Borrower_Info(props) {
               component={TextInputFile}
               input_mode
               inputmax={100}
-              icon={'magnify'}
+              icon={update_status == true && 'magnify'}
               editable
               handleTextInputFocus={showCitySearch}
 
@@ -174,7 +187,7 @@ function Borrower_Info(props) {
               component={TextInputFile}
               input_mode
               inputmax={100}
-              icon={'magnify'}
+              icon={update_status == true && 'magnify'}
               editable
               handleTextInputFocus={showTownshipSearch}
             />
@@ -189,9 +202,10 @@ function Borrower_Info(props) {
           </View>
 
           <View style={style.sub_list_container}>
-            <Field
+            <Field 
               data={village_status}
               name={'village_status'}
+              disabled={update_status == true ? false : true}
               component={RadioButtonFile}
               ShowRadioBtnChange={(value, input) => handleRadioButtonChange(value, input)}
             />
@@ -209,7 +223,7 @@ function Borrower_Info(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
-                icon={'magnify'}
+                icon={update_status == true && 'magnify'}
                 editable
                 handleTextInputFocus={showVillageSearch}
 
@@ -220,7 +234,7 @@ function Borrower_Info(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
-              // editable
+                editable
               />
             </View>
           ) : (
@@ -234,7 +248,7 @@ function Borrower_Info(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
-                icon={'magnify'}
+                icon={update_status == true && 'magnify'}
                 editable
                 handleTextInputFocus={showWardSearch}
 
@@ -245,6 +259,7 @@ function Borrower_Info(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
+                editable
               />
             </View>
           )}
@@ -255,7 +270,7 @@ function Borrower_Info(props) {
               component={TextInputFile}
               input_mode
               inputmax={100}
-              icon={'magnify'}
+              icon={update_status == true && 'magnify'}
               handleTextInputFocus={showLocationSearch}
               editable
             />
@@ -276,6 +291,8 @@ function Borrower_Info(props) {
             input_mode
             inputmax={100}
             input_cusstyle
+            editable={update_status == true ? false : true}
+
           />
 
           <View style={style.sub_list_container}>
@@ -283,7 +300,8 @@ function Borrower_Info(props) {
               name={'curr_resident_date'}
               component={DatePicker}
               label={'Living Time in current address'}
-              icon={'calendar'}
+              icon={update_status == true &&'calendar'}
+              editable={update_status == true ? false : true}
             />
 
             <Field
@@ -293,6 +311,8 @@ function Borrower_Info(props) {
               cus_width
               input_mode
               keyboardType={'numeric'}
+              editable={update_status == true ? false : true}
+
             />
           </View>
 
@@ -304,6 +324,8 @@ function Borrower_Info(props) {
               cus_width
               input_mode
               keyboardType={'numeric'}
+              editable={update_status == true ? false : true}
+
             />
 
             <Field
@@ -313,6 +335,8 @@ function Borrower_Info(props) {
               cus_width
               input_mode
               keyboardType={'numeric'}
+              editable={update_status == true ? false : true}
+
             />
           </View>
 
@@ -321,6 +345,7 @@ function Borrower_Info(props) {
               data={condition_house}
               name={'house_ocpn_type'}
               title={'Condition of house'}
+              enabled={update_status == true ? false : true}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,
@@ -333,6 +358,7 @@ function Borrower_Info(props) {
               component={TextInputFile}
               cus_width
               input_mode
+              editable={update_status == true ? false : true}
             />
           </View>
         </View>
@@ -341,7 +367,10 @@ function Borrower_Info(props) {
   );
 }
 function mapStateToProps(state) {
-  return {};
+  return {
+    update_status: state.loan.update_status,
+
+  };
 }
 
 export default reduxForm({

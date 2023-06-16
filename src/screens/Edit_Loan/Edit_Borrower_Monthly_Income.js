@@ -39,7 +39,8 @@ function Borrower_Monthly_Income(props) {
     totalNetIncome,
     totalLoanAmt,
     retrive_loan_data,
-    loan_limit_amount
+    loan_limit_amount,
+    update_status
   } = props;
   const [co_borrower_expanded, setBorrowerIncomeExpanded] = useState(true);
   const [values, setValues] = useState([
@@ -267,6 +268,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleNetChange(value, 10)}
+                  editable={update_status == true ? false : true}
+
                 />
 
                 <Field
@@ -287,6 +290,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFieldChange(value, 0)}
+                  editable={update_status == true ? false : true}
+
                 />
 
                 <Field
@@ -298,6 +303,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFieldChange(value, 1)}
+                  editable={update_status == true ? false : true}
+
                 />
 
                 <Field
@@ -309,6 +316,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFieldChange(value, 2)}
+                  editable={update_status == true ? false : true}
+
                 />
 
                 <Field
@@ -320,6 +329,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFieldChange(value, 3)}
+                  editable={update_status == true ? false : true}
+
                 />
 
                 <Field
@@ -331,6 +342,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFieldChange(value, 4)}
+                  editable={update_status == true ? false : true}
+
                 />
 
                 <Field
@@ -342,6 +355,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFieldChange(value, 5)}
+                  editable={update_status == true ? false : true}
+
                 />
 
                 <Field
@@ -353,6 +368,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFieldChange(value, 6)}
+                  editable={update_status == true ? false : true}
+
                 />
 
                 <Field
@@ -364,6 +381,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFieldChange(value, 7)}
+                  editable={update_status == true ? false : true}
+
                 />
 
                 <Field
@@ -375,6 +394,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFieldChange(value, 8)}
+                  editable={update_status == true ? false : true}
+
                 />
 
                 <Field
@@ -386,6 +407,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFieldChange(value, 9)}
+                  editable={update_status == true ? false : true}
+
                 />
 
                 <View
@@ -399,7 +422,6 @@ function Borrower_Monthly_Income(props) {
                   }}>
                   <Text style={{color: '#fff'}}>Total Net Income</Text>
                   <Text style={{color: '#F9A970'}}>
-                    {' '}
                     {total_business_net_total}
                   </Text>
                 </View>
@@ -427,6 +449,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFamilyChange(value)}
+                  editable={update_status == true ? false : true}
+
                 />
 
                 <Field
@@ -447,6 +471,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFmailyChange(value, 0)}
+                  editable={update_status == true ? false : true}
+
                 />
 
                 <Field
@@ -458,6 +484,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFmailyChange(value, 1)}
+                  editable={update_status == true ? false : true}
+
                 />
 
                 <Field
@@ -469,6 +497,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFmailyChange(value, 2)}
+                  editable={update_status == true ? false : true}
+
                 />
 
                 <Field
@@ -480,6 +510,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFmailyChange(value, 3)}
+                  editable={update_status == true ? false : true}
+
                 />
                 <Field
                   name={'healthy_expns'}
@@ -490,6 +522,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFmailyChange(value, 4)}
+                  editable={update_status == true ? false : true}
+
                 />
 
                 <Field
@@ -501,6 +535,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFmailyChange(value, 5)}
+                  editable={update_status == true ? false : true}
+
                 />
                 <Field
                   name={'fmly_tax_expns'}
@@ -511,6 +547,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFmailyChange(value, 6)}
+                  editable={update_status == true ? false : true}
+
                 />
 
                 <Field
@@ -522,6 +560,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFmailyChange(value, 7)}
+                  editable={update_status == true ? false : true}
+
                 />
 
                 <Field
@@ -533,6 +573,8 @@ function Borrower_Monthly_Income(props) {
                   inputmax={28}
                   keyboardType={'numeric'}
                   onChange={value => handleFmailyChange(value, 8)}
+                  editable={update_status == true ? false : true}
+
                 />
 
                 <View
@@ -557,6 +599,8 @@ function Borrower_Monthly_Income(props) {
             input_mode
             input_cusstyle
             inputmax={10000}
+            editable={update_status == true ? false : true}
+
           />
 
           <View
@@ -640,7 +684,9 @@ function mapStateToProps(state) {
     total_net_family: state.monthly.totalnetfamily,
     total_business_net_total,
     retrive_loan_data: state.loan.edit_loandata,
-    loan_limit_amount:state.monthly.totallmtamount
+    loan_limit_amount:state.monthly.totallmtamount,
+    update_status: state.loan.update_status,
+
   };
 }
 

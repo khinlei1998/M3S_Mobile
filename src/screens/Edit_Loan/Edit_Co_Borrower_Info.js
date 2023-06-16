@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import DatePicker from '../../components/DatePicker';
 function Co_Borrower_Info(props) {
     const [co_borrower_expanded, setCoBorrowerExpanded] = useState(true);
-    const { showCoBorrowerSearch } = props
+    const { showCoBorrowerSearch,update_status } = props
 
     const handleCoBorrowerToggle = () => {
         setCoBorrowerExpanded(!co_borrower_expanded);
@@ -35,7 +35,7 @@ function Co_Borrower_Info(props) {
                         <Field
                             name={'co_brwer_rgst_id'}
                             title={'NRC'}
-                            icon={'magnify'}
+                            icon={update_status == true && 'magnify'}
                             component={TextInputFile}
                             cus_width
                             inputmax={20}
@@ -60,7 +60,8 @@ function Co_Borrower_Info(props) {
                             name={'co_brwer_birth_dt'}
                             component={DatePicker}
                             label={'Date Of Birth'}
-                            icon={'calendar'}
+                            icon={update_status == true &&'calendar'}
+                            editable={update_status == true ? false : true}
                         />
 
                         <Field
@@ -71,6 +72,7 @@ function Co_Borrower_Info(props) {
                             input_mode
                             keyboardType={'numeric'}
                             inputmax={30}
+                            editable={update_status == true ? false : true}
                         />
                     </View>
 
@@ -82,6 +84,7 @@ function Co_Borrower_Info(props) {
                             cus_width
                             input_mode
                             inputmax={50}
+                            editable={update_status == true ? false : true}
                         />
 
                         <Field
@@ -92,6 +95,7 @@ function Co_Borrower_Info(props) {
                             input_mode
                             inputmax={50}
                             keyboardType={'numeric'}
+                            editable={update_status == true ? false : true}
 
                         />
                     </View>
@@ -105,7 +109,9 @@ function Co_Borrower_Info(props) {
 }
 
 function mapStateToProps(state) {
-    return {};
+    return {
+        update_status: state.loan.update_status,
+    };
 }
 
 export default reduxForm({
