@@ -9,6 +9,7 @@ import {updateTableSyncStatus} from '../../query/Customer_query';
 export default function Sync_Upload_Screen(props) {
   const {
     btnUploadCustomer,
+    btnLoanUpload,
     customer_data,
     loan_data,
     btn_disabled,
@@ -45,6 +46,7 @@ export default function Sync_Upload_Screen(props) {
       setCheckedItems([...checkedItems, item]);
     }
   };
+  console.log('checkedItems',checkedItems);
 
   const item = ({item}) => {
     return (
@@ -148,6 +150,7 @@ export default function Sync_Upload_Screen(props) {
   //     console.error('API call failed. Value not changed.');
   //   }
   // };
+
 
   return (
     <View style={{marginTop: 20, marginLeft: 10, marginRight: 10, flex: 1}}>
@@ -284,7 +287,7 @@ export default function Sync_Upload_Screen(props) {
             padding: 5,
           }}
           mode="outlined"
-          onPress={() => console.log('Button Pressed')}>
+          onPress={() =>btnLoanUpload(checkedItems)}>
           Upload
         </Button>
       </View>

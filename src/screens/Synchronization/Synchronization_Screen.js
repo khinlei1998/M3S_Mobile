@@ -1,16 +1,18 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
-import {DataTable} from 'react-native-paper';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { DataTable } from 'react-native-paper';
 import DividerLine from '../../components/DividerLine';
-import {Divider, Button} from 'react-native-paper';
-import {getAllLoan} from '../../query/AllLoan_query';
+import { Divider, Button } from 'react-native-paper';
+import { getAllLoan } from '../../query/AllLoan_query';
 import Tab from '../../components/Tab';
 import Sync_Upload_Screen from './Sync_Upload_Screen';
 import CheckBoxFile from '../../components/CheckBoxFile';
 import Sync_Download_Screen from './Sync_Download_Screen';
 import Sync_Setting_Screen from './Sync_Setting_Screen';
-import {fetchAllCustomerNum} from '../../query/Customer_query';
-import {UploadCustomerData} from '../../query/Customer_query';
+import { fetchAllCustomerNum } from '../../query/Customer_query';
+import { UploadCustomerData } from '../../query/Customer_query';
+import { UploadLoanData } from '../../query/AllLoan_query';
+import { getAllLoan_By_application_no } from '../../query/AllLoan_query';
 export default function Synchronization_Screen() {
   const [activeTab, setActiveTab] = React.useState(0);
   const [loan_data, setAllLoan] = React.useState([]);
@@ -44,12 +46,33 @@ export default function Synchronization_Screen() {
     }
   };
 
+  const btnLoanUpload = async (checkedItems) => {
+    console.log('loan_data', checkedItems);
+    try {
+      // Call the API here
+      await UploadLoanData(checkedItems).then(async result => {
+        if (result == 'success') {
+          // await loadData();
+        } else {
+          // await loadData();
+        }
+      });
+      // updateTableSyncStatus('13')
+    } catch (error) {
+      // If API call fails, revert the value of 'tablet_sync_sts' back to the original value
+      // customer_data.forEach(obj => {
+      //   obj.tablet_sync_sts = obj.tablet_sync_sts == '01' ? '01' : obj.tablet_sync_sts;
+      // });
+      console.error('API call failed. Value not changed.');
+    }
+  }
+
   const handleTabPress = index => {
     setActiveTab(index);
   };
 
   const loadData = async () => {
-    await getAllLoan()
+    await getAllLoan_By_application_no()
       .then(setAllLoan)
       .catch(error => console.log(error));
 
@@ -76,19 +99,19 @@ export default function Synchronization_Screen() {
   }, []);
   return (
     <>
-      <Text style={{fontWeight: 'bold', fontSize: 20, padding: 15}}>
+      <Text style={{ fontWeight: 'bold', fontSize: 20, padding: 15 }}>
         Synchronization
       </Text>
-      <Text style={{fontSize: 15, padding: 5, marginLeft: 10}}>
+      <Text style={{ fontSize: 15, padding: 5, marginLeft: 10 }}>
         Synchronization is the coordination of events to operate a system in
         union
       </Text>
-      <View style={{flexDirection: 'row', marginLeft: 10, marginRight: 10}}>
+      <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10 }}>
         <Tab
           label="Upload"
           isActive={activeTab === 0}
           onPress={() => handleTabPress(0)}>
-          <View style={{backgroundColor: '#fff'}}>
+          <View style={{ backgroundColor: '#fff' }}>
             <Text>Upload Applications</Text>
           </View>
         </Tab>
@@ -104,7 +127,7 @@ export default function Synchronization_Screen() {
         />
       </View>
 
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
+      <View style={{ flex: 1, backgroundColor: '#fff' }}>
         {activeTab === 0 && (
           <Sync_Upload_Screen
             btnUploadCustomer={btnUploadCustomer}
@@ -112,6 +135,7 @@ export default function Synchronization_Screen() {
             btn_disabled={btn_disabled}
             customer_data={customer_data}
             btn_cus_disabled={btn_cus_disabled}
+            btnLoanUpload={btnLoanUpload}
           />
         )}
         {activeTab === 1 && <Sync_Download_Screen />}

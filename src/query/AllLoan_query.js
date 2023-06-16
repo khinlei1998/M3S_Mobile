@@ -397,40 +397,159 @@ export const storeLoanData = async loan_data => {
   });
 };
 
-// export async function deleteLoan_ByID(id) {
-//   console.log('id', id);
-//   return new Promise((resolve, reject) => {
-//     if (!global.db) {
-//       reject('Database connection not established');
-//       return;
-//     }
 
-//     global.db.transaction(tx => {
-//       tx.executeSql(
-//         "DELETE FROM Individual_application WHERE id = ?",
-//         [id],
-//         (txObj, resultSet) => {
-//           console.log('resultSet', resultSet);
-//           resolve('success');
-//           // Delete query successful
-//           console.log('Delete successful');
-//         },
-//         (txObj, error) => {
-//           // Error occurred while executing the delete query
-//           console.error('Delete error:', error);
-//         },
-//       );
-//     });
-//   });
-// }
-
-export async function deleteLoan_ByID(id) {
+export async function deleteLoan_ByID(data) {
   try {
-    await ExecuteQuery("DELETE FROM Individual_application WHERE id = ?", [id]);
-    console.log('Delete successful');
-    return 'success';
+    const borrowerImagePath = data.borrower_sign;
+    const coBorrowerImagePath = data.co_borrower_sign;
+
+    // Delete the borrower image if it exists
+    if (borrowerImagePath) {
+      try {
+        await deleteImageFile(borrowerImagePath);
+        console.log('Borrower image deleted successfully:', borrowerImagePath);
+      } catch (error) {
+        console.error('Error deleting borrower image:', error);
+        // Display an alert indicating the error
+        alert('Error deleting borrower image');
+      }
+    }
+
+    // Delete the co-borrower image if it exists
+    if (coBorrowerImagePath) {
+      try {
+        await deleteImageFile(coBorrowerImagePath);
+        console.log('Co-borrower image deleted successfully:', coBorrowerImagePath);
+      } catch (error) {
+        console.error('Error deleting co-borrower image:', error);
+        // Display an alert indicating the error
+        alert('Error deleting co-borrower image');
+      }
+    }
+
+    return new Promise((resolve, reject) => {
+      global.db.transaction(tx => {
+        tx.executeSql(
+          "DELETE FROM Individual_application WHERE id = ?",
+          [data.id],
+          (txObj, resultSet) => {
+            console.log('resultSet', resultSet);
+            resolve('success');
+            // Delete query successful
+            console.log('Delete successful');
+          },
+          (txObj, error) => {
+            // Error occurred while executing the delete query
+            console.error('Delete error:', error);
+            reject(error);
+          },
+        );
+      });
+    });
   } catch (error) {
-    console.error('Delete error:', error);
+    console.error('Error deleting loan:', error);
     throw error;
   }
+}
+export function UploadLoanData(loan_data) {
+  return new Promise(async (resolve, reject) => {
+    const failedData = [];
+    let ip = await AsyncStorage.getItem('ip');
+    let port = await AsyncStorage.getItem('port');
+
+    try {
+      for (var i = 0; i < loan_data.length; i++) {
+        const data = [loan_data[i]];
+
+        await axios
+          .post(
+            `https://https://d131-103-231-92-92.ngrok-free.app/skylark-m3s/api/individualLoan.m3s`,
+            data,
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            },
+          )
+          .then(response => {
+            console.log('response', response.data[0].errMsg);
+            // if (response.data[0].errMsg) {
+            //   failedData.push(response.data[0].customerNm);
+            // } else {
+            //   global.db.transaction(tx => {
+            //     tx.executeSql(
+            //       'UPDATE Customer set tablet_sync_sts=? where id=?',
+            //       ['01', response.data[0].id],
+            //       (txObj, resultSet) => {
+            //         console.log('Update successful');
+            //       },
+            //       (txObj, error) => {
+            //         reject(error);
+            //         console.error('Update error:', error);
+            //       },
+            //     );
+            //   });
+            // }
+          })
+          .catch(error => {
+            console.log('axios error', error);
+            Alert.alert('Error', 'Axios error occurred.');
+            reject(error);
+            return; // Stop further execution of the loop
+          });
+      }
+
+      console.log('failedData', failedData);
+      if (failedData.length > 0) {
+        Alert.alert(
+          'Error',
+          `Failed to upload ${failedData.length} data items:\n${JSON.stringify(
+            failedData,
+          )}`,
+        );
+        resolve('error');
+      } else {
+        Alert.alert('Success', 'All data successfully uploaded.');
+        resolve('success');
+      }
+    } catch (error) {
+      alert(error);
+      reject(error);
+      console.log('error', error);
+    }
+  });
+}
+
+export async function getAllLoan_By_application_no() {
+  console.log('getAllLoan_By_application_no');
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        `SELECT *
+        FROM Individual_application AS IA
+        LEFT JOIN Guarantee AS T1 ON IA.application_no = T1.application_no
+        LEFT JOIN Area_evaluation AS T2 ON IA.application_no = T2.application_no
+        LEFT JOIN Exception_aprv AS T3 ON IA.application_no = T3.application_no
+        LEFT JOIN Relation_info AS T4 ON IA.application_no = T4.application_no`,
+        [],
+        (tx, results) => {
+          console.log('results', results);
+          const rows = results.rows.raw();
+          let data = new FormData();
+
+          const test = data.append('individualApplication',
+            [{ "statusCode": "01", "createUserId": "M00110", "updateUserId": "M00110", "productType": "", "channelDeviceType": "" }])
+          console.log('test', test);
+          const individualApplication = rows.map(row => console.log('row', row)({
+
+          }));
+          resolve(results.rows.raw());
+        },
+        (tx, error) => {
+          console.log('error', error);
+          reject(error);
+        },
+      );
+    });
+  });
 }

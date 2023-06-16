@@ -91,20 +91,21 @@ function Borrower_Sign(props) {
                 />
               </TouchableOpacity>
             )} */}
-            {coborrower_sign_path !== '' && (
-              <TouchableOpacity onPress={() =>  update_status == true && setCoBorrowerCanvas(!show_co_borrower_canvas)}>
+            {/* {coborrower_sign_path !== '' && (
+              <TouchableOpacity onPress={() =>  update_status == true && setCoBorrowerCanvas(!show_co_borrower_canvas)}> */}
                 {/* <Image
                   source={{uri: `file://${co_borrower_filePath}`}}
                   style={{width: 100, height: 50}}
                 /> */}
                 <Image
-                  source={{ uri: `file://${coborrower_sign_path}` }}
+               
+                  source={{ uri: `file:///data/user/0/com.m3smobile/files/10M00172TB202306163SG02.jpg` }}
                   // source={{ uri: `data:image/png;base64,${show_coborrower_sign}` }}
 
                   style={{ width: 100, height: 50 }}
                 />
-              </TouchableOpacity>
-            )}
+              {/* </TouchableOpacity> */}
+            {/* )} */}
             {/* <View style={{width: 300, height: 300,backgroundColor:'red'}}>
             <SketchCanvas
               style={{flex: 1}}

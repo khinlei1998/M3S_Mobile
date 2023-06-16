@@ -2085,9 +2085,8 @@ function Edit_Individual_Loan(props) {
   };
 
   const onSubmit = async values => {
-    console.log('values', values.id);
     if (show_operation == '4') {
-      await deleteLoan_ByID(values.id).then(response => {
+      await deleteLoan_ByID(values).then(response => {
         if (response == 'success') {
           alert('Delete Success');
           // setUpdateStatus(false);
