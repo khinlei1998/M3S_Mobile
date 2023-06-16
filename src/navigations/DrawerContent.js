@@ -85,7 +85,7 @@ export default function DrawerContent(props) {
                         labelStyle={{ color: '#c7c7c7', marginLeft: 50 }}
                         label="Individual Loan "
                         activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
-                        onPress={() => props.navigation.navigate('Home')}
+                        onPress={() => props.navigation.navigate('Individual_loan')}
                     />
 
                     <DrawerItem

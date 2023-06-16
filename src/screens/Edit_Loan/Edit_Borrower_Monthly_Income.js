@@ -3,8 +3,8 @@ import React, {useState, useEffect} from 'react';
 import {List, Button} from 'react-native-paper';
 import {style} from '../../style/Individual_Loan_style';
 import TextInputFile from '../../components/TextInputFile';
-import {reduxForm, Field,change} from 'redux-form';
-import {connect,useDispatch,} from 'react-redux';
+import {reduxForm, Field, change} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
 import DefaultTextInput from '../../components/DefaultTextInput';
 import {getAllLoanMax} from '../../query/LoanMax_query';
 import {
@@ -14,11 +14,11 @@ import {
   totalFamilyIncome,
   totalNetBusiness,
   totalNetFamily,
-  totalNetIncome
+  totalNetIncome,
 } from '../../redux/MonthlyReducer';
-import { totalLoanAmt } from '../../redux/MonthlyReducer';
+import {totalLoanAmt} from '../../redux/MonthlyReducer';
 function Borrower_Monthly_Income(props) {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const {
     handleCalculate,
@@ -37,14 +37,36 @@ function Borrower_Monthly_Income(props) {
     total_net_family,
     total_business_net_total,
     totalNetIncome,
-    totalLoanAmt
+    totalLoanAmt,
+    retrive_loan_data,
+    loan_limit_amount
   } = props;
   const [co_borrower_expanded, setBorrowerIncomeExpanded] = useState(true);
-  const [values, setValues] = useState([]);
-  const [familyvalues, setFamilyValues] = useState([]);
+  const [values, setValues] = useState([
+    retrive_loan_data.rawmaterial_expans,
+    retrive_loan_data.wrkp_rent_expns,
+    retrive_loan_data.employee_expns,
+    retrive_loan_data.trnsrt_expns,
+    retrive_loan_data.bus_utlbil_expns,
+    retrive_loan_data.tel_expns,
+    retrive_loan_data.tax_expns,
+    retrive_loan_data.goods_loss_expns,
+    retrive_loan_data.othr_expns_1,
+    retrive_loan_data.othr_expns_2,
+  ]);
+  const [familyvalues, setFamilyValues] = useState([
+    retrive_loan_data.food_expns,
+    retrive_loan_data.house_mngt_expns,
+    retrive_loan_data.utlbil_expns,
+    retrive_loan_data.edct_expns,
+    retrive_loan_data.healthy_expns,
+    retrive_loan_data.fmly_trnsrt_expns,
+    retrive_loan_data.fmly_tax_expns,
+    retrive_loan_data.finance_expns,
+    retrive_loan_data.fmly_otr_expns,
+  ]);
   const [total_fmly_net, setFamilyNet] = useState(0);
   const [totalnet, setTotalNet] = useState(0);
-
 
   const handleBorrowerIncomeToggle = () => {
     setBorrowerIncomeExpanded(!co_borrower_expanded);
@@ -84,14 +106,15 @@ function Borrower_Monthly_Income(props) {
 
       dispatch(
         change(
-          'Individual_Loan_Form',
-          'totSaleExpense',
+          'Edit_Individual_Loan_Form',
+          'tot_sale_expense',
           `${sum.toString()}`,
         ),
       );
     } else {
       const newValues = [...values];
       newValues[index] = 0;
+      console.log('newValues', newValues);
       setValues(newValues);
       const filteredValues = newValues.filter(
         value => typeof value === 'number',
@@ -101,11 +124,12 @@ function Borrower_Monthly_Income(props) {
         (accumulator, currentValue) => accumulator + currentValue,
         0,
       );
+      console.log('sum', sum);
       totalExpense(sum);
       dispatch(
         change(
-          'Individual_Loan_Form',
-          'totSaleExpense',
+          'Edit_Individual_Loan_Form',
+          'tot_sale_expense',
           `${sum.toString()}`,
         ),
       );
@@ -127,9 +151,10 @@ function Borrower_Monthly_Income(props) {
     // Check if the input is a valid number
     if (!isNaN(number)) {
       // Update the corresponding value in the values array
+      console.log('familyvalues', familyvalues);
       const newValues = [...familyvalues];
       newValues[index] = number;
-
+      console.log('newValues', newValues);
       setFamilyValues(newValues);
       // Calculate the sum of the values array
       const filteredfmlyValues = newValues.filter(
@@ -143,14 +168,15 @@ function Borrower_Monthly_Income(props) {
       totalFamilyExpense(sum);
       dispatch(
         change(
-          'Individual_Loan_Form',
-          'fmlyTotExpense',
+          'Edit_Individual_Loan_Form',
+          'fmly_tot_expense',
           `${sum.toString()}`,
         ),
       );
     } else {
       const newValues = [...familyvalues];
       newValues[index] = 0;
+      console.log('family newValues', newValues);
 
       setFamilyValues(newValues);
       // Calculate the sum of the values array
@@ -162,11 +188,12 @@ function Borrower_Monthly_Income(props) {
         (accumulator, currentValue) => accumulator + currentValue,
         0,
       );
+      console.log('sum', sum);
       totalFamilyExpense(sum);
       dispatch(
         change(
-          'Individual_Loan_Form',
-          'fmlyTotExpense',
+          'Edit_Individual_Loan_Form',
+          'fmly_tot_expense',
           `${sum.toString()}`,
         ),
       );
@@ -177,7 +204,7 @@ function Borrower_Monthly_Income(props) {
     const sum = total_income - total_expense;
     // setBusinessNet(sum);
     dispatch(
-      change('Individual_Loan_Form', 'totBusNetIncomeitem', `${sum}`),
+      change('Edit_Individual_Loan_Form', 'totBusNetIncomeitem', `${sum}`),
     );
     totalNetBusiness(sum);
   };
@@ -185,14 +212,14 @@ function Borrower_Monthly_Income(props) {
   const familyCulateSum = (total_family_income, total_family_expense) => {
     const sum = total_family_income - total_family_expense;
     setFamilyNet(sum);
-    dispatch(change('Individual_Loan_Form', 'fmlyTotNetIncome', `${sum}`));
+    dispatch(change('Edit_Individual_Loan_Form', 'fmlyTotNetIncome', `${sum}`));
     totalNetFamily(sum);
   };
   const netCulateSum = (total_net_business, total_net_family) => {
     const sum = total_net_business + total_net_family;
-    totalNetIncome(sum)
+    totalNetIncome(sum);
     setTotalNet(sum);
-    dispatch(change('Individual_Loan_Form', 'totalnet', `${sum}`));
+    dispatch(change('Edit_Individual_Loan_Form', 'totalnet', `${sum}`));
   };
 
   useEffect(() => {
@@ -232,7 +259,7 @@ function Borrower_Monthly_Income(props) {
                   marginTop: 10,
                 }}>
                 <Field
-                  name={'totSaleIncome'}
+                  name={'tot_sale_income'}
                   title={'Total Sale Income (+)'}
                   component={TextInputFile}
                   cus_width
@@ -243,7 +270,7 @@ function Borrower_Monthly_Income(props) {
                 />
 
                 <Field
-                  name={'totSaleExpense'}
+                  name={'tot_sale_expense'}
                   title={'Total Sale Expense (-)'}
                   component={DefaultTextInput}
                   input_mode
@@ -252,7 +279,7 @@ function Borrower_Monthly_Income(props) {
                   editable
                 />
                 <Field
-                  name={'rawmaterialExpans'}
+                  name={'rawmaterial_expans'}
                   title={'Raw Material Expense'}
                   component={TextInputFile}
                   cus_width
@@ -263,7 +290,7 @@ function Borrower_Monthly_Income(props) {
                 />
 
                 <Field
-                  name={'wrkpRentExpns'}
+                  name={'wrkp_rent_expns'}
                   title={'Business Building Renting'}
                   component={TextInputFile}
                   cus_width
@@ -274,7 +301,7 @@ function Borrower_Monthly_Income(props) {
                 />
 
                 <Field
-                  name={'employeeExpns'}
+                  name={'employee_expns'}
                   title={'Employee Expense'}
                   component={TextInputFile}
                   cus_width
@@ -285,7 +312,7 @@ function Borrower_Monthly_Income(props) {
                 />
 
                 <Field
-                  name={'trnsrtExpns'}
+                  name={'trnsrt_expns'}
                   title={'Transportation'}
                   component={TextInputFile}
                   cus_width
@@ -296,7 +323,7 @@ function Borrower_Monthly_Income(props) {
                 />
 
                 <Field
-                  name={'busutlbilexpns'}
+                  name={'bus_utlbil_expns'}
                   title={'Electricity Bill Expense'}
                   component={TextInputFile}
                   cus_width
@@ -307,7 +334,7 @@ function Borrower_Monthly_Income(props) {
                 />
 
                 <Field
-                  name={'telExpns'}
+                  name={'tel_expns'}
                   title={'Phone Bill Expense'}
                   component={TextInputFile}
                   cus_width
@@ -318,7 +345,7 @@ function Borrower_Monthly_Income(props) {
                 />
 
                 <Field
-                  name={'taxExpns'}
+                  name={'tax_expns'}
                   title={'Taxes'}
                   component={TextInputFile}
                   cus_width
@@ -329,7 +356,7 @@ function Borrower_Monthly_Income(props) {
                 />
 
                 <Field
-                  name={'goodsLossExpns'}
+                  name={'goods_loss_expns'}
                   title={'Loss of Goods'}
                   component={TextInputFile}
                   cus_width
@@ -340,7 +367,7 @@ function Borrower_Monthly_Income(props) {
                 />
 
                 <Field
-                  name={'othrExpns1'}
+                  name={'othr_expns_1'}
                   title={'Other Expense'}
                   component={TextInputFile}
                   cus_width
@@ -351,7 +378,7 @@ function Borrower_Monthly_Income(props) {
                 />
 
                 <Field
-                  name={'othrExpns2'}
+                  name={'othr_expns_2'}
                   title={'Other Expense'}
                   component={TextInputFile}
                   cus_width
@@ -371,7 +398,10 @@ function Borrower_Monthly_Income(props) {
                     marginTop: 10,
                   }}>
                   <Text style={{color: '#fff'}}>Total Net Income</Text>
-                  <Text style={{color: '#F9A970'}}> {total_business_net_total}</Text>
+                  <Text style={{color: '#F9A970'}}>
+                    {' '}
+                    {total_business_net_total}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -389,7 +419,7 @@ function Borrower_Monthly_Income(props) {
                   marginTop: 10,
                 }}>
                 <Field
-                  name={'fmlyTotIncome'}
+                  name={'fmly_tot_income'}
                   title={'Total Family Income (+)'}
                   component={TextInputFile}
                   cus_width
@@ -400,7 +430,7 @@ function Borrower_Monthly_Income(props) {
                 />
 
                 <Field
-                  name={'fmlyTotExpense'}
+                  name={'fmly_tot_expense'}
                   title={'Total Family Expense (-)'}
                   component={DefaultTextInput}
                   inputmax={28}
@@ -409,7 +439,7 @@ function Borrower_Monthly_Income(props) {
                 />
 
                 <Field
-                  name={'foodExpns'}
+                  name={'food_expns'}
                   title={'Cost For Food'}
                   component={TextInputFile}
                   cus_width
@@ -420,7 +450,7 @@ function Borrower_Monthly_Income(props) {
                 />
 
                 <Field
-                  name={'houseMngtExpns'}
+                  name={'house_mngt_expns'}
                   title={'House Maintenance'}
                   component={TextInputFile}
                   cus_width
@@ -431,7 +461,7 @@ function Borrower_Monthly_Income(props) {
                 />
 
                 <Field
-                  name={'utlbilExpns'}
+                  name={'utlbil_expns'}
                   title={'Electric, Water, Ph bill'}
                   component={TextInputFile}
                   cus_width
@@ -442,7 +472,7 @@ function Borrower_Monthly_Income(props) {
                 />
 
                 <Field
-                  name={'edctExpns'}
+                  name={'edct_expns'}
                   title={'Education Expense'}
                   component={TextInputFile}
                   cus_width
@@ -452,7 +482,7 @@ function Borrower_Monthly_Income(props) {
                   onChange={value => handleFmailyChange(value, 3)}
                 />
                 <Field
-                  name={'healthyExpns'}
+                  name={'healthy_expns'}
                   title={'Social /Welfare(Healty Expense)'}
                   component={TextInputFile}
                   cus_width
@@ -463,7 +493,7 @@ function Borrower_Monthly_Income(props) {
                 />
 
                 <Field
-                  name={'fmlyTrnsrtExpns'}
+                  name={'fmly_trnsrt_expns'}
                   title={'Transportation'}
                   component={TextInputFile}
                   cus_width
@@ -473,7 +503,7 @@ function Borrower_Monthly_Income(props) {
                   onChange={value => handleFmailyChange(value, 5)}
                 />
                 <Field
-                  name={'fmlyTaxExpns'}
+                  name={'fmly_tax_expns'}
                   title={'Taxes'}
                   component={TextInputFile}
                   cus_width
@@ -484,25 +514,25 @@ function Borrower_Monthly_Income(props) {
                 />
 
                 <Field
-                  name={'financeExpns'}
+                  name={'finance_expns'}
                   title={'Other debt/Saving'}
                   component={TextInputFile}
                   cus_width
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
-                  onChange={value => handleFmailyChange(value, 8)}
+                  onChange={value => handleFmailyChange(value, 7)}
                 />
 
                 <Field
-                  name={'fmlyOtrExpns'}
+                  name={'fmly_otr_expns'}
                   title={'Other Expense'}
                   component={TextInputFile}
                   cus_width
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
-                  onChange={value => handleFmailyChange(value, 9)}
+                  onChange={value => handleFmailyChange(value, 8)}
                 />
 
                 <View
@@ -587,7 +617,8 @@ function Borrower_Monthly_Income(props) {
                 </Text>
               </View>
               <Text style={{color: '#F9A970', fontSize: 15, marginRight: 5}}>
-                {app_amount}
+                {/* {app_amount} */}
+                {loan_limit_amount}
               </Text>
             </View>
           </View>
@@ -608,11 +639,13 @@ function mapStateToProps(state) {
     total_net_business: state.monthly.totalnetbusiness,
     total_net_family: state.monthly.totalnetfamily,
     total_business_net_total,
+    retrive_loan_data: state.loan.edit_loandata,
+    loan_limit_amount:state.monthly.totallmtamount
   };
 }
 
 export default reduxForm({
-  form: 'Individual_Loan_Form',
+  form: 'Edit_Individual_Loan_Form',
   // validate,
 })(
   connect(mapStateToProps, {
@@ -623,6 +656,6 @@ export default reduxForm({
     totalNetBusiness,
     totalNetFamily,
     totalNetIncome,
-    totalLoanAmt
+    totalLoanAmt,
   })(Borrower_Monthly_Income),
 );

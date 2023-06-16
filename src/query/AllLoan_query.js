@@ -1,5 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+const ExecuteQuery = (sql, params = []) => new Promise((resolve, reject) => {
+  global.db.transaction((trans) => {
+    trans.executeSql(sql, params, (trans, results) => {
+      resolve(results);
+      console.log('delet Beneficiary Data', results);
+    },
+      (error) => {
+        reject(error);
+        console.log('error', error);
+      });
+  });
+});
 export async function getAllLoan() {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
@@ -349,7 +361,7 @@ export const storeLoanData = async loan_data => {
             null, //old_application_no
             null, //transaction_date (Date)
             loan_data.loan_limit_amt,
-            null, //curr_resident_date
+            loan_data.curr_resident_date, //curr_resident_date
             null, //workplace_date //130
             null, //curr_workplace_date
             null, //132
@@ -385,22 +397,40 @@ export const storeLoanData = async loan_data => {
   });
 };
 
+// export async function deleteLoan_ByID(id) {
+//   console.log('id', id);
+//   return new Promise((resolve, reject) => {
+//     if (!global.db) {
+//       reject('Database connection not established');
+//       return;
+//     }
+
+//     global.db.transaction(tx => {
+//       tx.executeSql(
+//         "DELETE FROM Individual_application WHERE id = ?",
+//         [id],
+//         (txObj, resultSet) => {
+//           console.log('resultSet', resultSet);
+//           resolve('success');
+//           // Delete query successful
+//           console.log('Delete successful');
+//         },
+//         (txObj, error) => {
+//           // Error occurred while executing the delete query
+//           console.error('Delete error:', error);
+//         },
+//       );
+//     });
+//   });
+// }
+
 export async function deleteLoan_ByID(id) {
-  return new Promise((resolve, reject) => {
-    global.db.transaction(tx => {
-      tx.executeSql(
-        `DELETE FROM Individual_application WHERE id = ${id}`,
-        [],
-        (txObj, resultSet) => {
-          resolve('success');
-          // Delete query successful
-          console.log('Delete successful');
-        },
-        (txObj, error) => {
-          // Error occurred while executing the delete query
-          console.error('Delete error:', error);
-        },
-      );
-    });
-  });
+  try {
+    await ExecuteQuery("DELETE FROM Individual_application WHERE id = ?", [id]);
+    console.log('Delete successful');
+    return 'success';
+  } catch (error) {
+    console.error('Delete error:', error);
+    throw error;
+  }
 }

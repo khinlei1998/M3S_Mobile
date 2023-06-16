@@ -4,8 +4,12 @@ import Viewloan from '../Loan/Viewloan';
 import {fetchEmpName} from '../../query/Employee_query';
 import {getAllLoan} from '../../query/AllLoan_query';
 import {Modal, Portal, Button, Provider, Divider} from 'react-native-paper';
+import { useIsFocused } from '@react-navigation/native';
+
 export default function Home(props) {
   const {navigation} = props;
+  const isFocused = useIsFocused();
+
 
   const [emp_name, setEmpName] = useState();
   const [loan_data, setAllLoan] = useState([]);
@@ -57,9 +61,11 @@ export default function Home(props) {
     .replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Output: "1,000"
 
   useEffect(() => {
-    loadData();
-  }, []);
-  console.log('loan_data0',loan_data);
+    if (isFocused) {
+      loadData();
+    }
+  }, [loadData]);
+  console.log('loan_data',loan_data);
   return (
     <View style={{flex: 1}}>
       <View

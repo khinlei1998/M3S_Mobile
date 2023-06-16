@@ -1,3 +1,5 @@
+import { log } from "console";
+
 export const UPDATE_TOTAL_SUM = 'UPDATE_TOTAL_SUM';
 export const UPDATE_TOTAL_INCOME = 'UPDATE_TOTAL_INCOME';
 export const UPDATE_TOTAL_EXPENSE = 'UPDATE_TOTAL_EXPENSE';
@@ -36,7 +38,6 @@ export const totalIncome = props => {
 };
 
 export const totalExpense = props => {
-  console.log('props', props);
   return {
     type: 'UPDATE_TOTAL_EXPENSE',
     payload: props,
@@ -88,6 +89,7 @@ export const totalLoanAmt = props => {
     payload: props,
   };
 };
+
 export default function MonthlyReducder(state = initialState, action) {
   switch (action.type) {
     case UPDATE_TOTAL_SUM:

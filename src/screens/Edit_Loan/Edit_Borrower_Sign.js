@@ -5,6 +5,7 @@ import { Button } from 'react-native-paper';
 
 export default function Borrower_Sign(props) {
   const { coborrower_sign_path,show_coborrower_sign,show_borrower_sign, borrower_sign_path, setCanvas, show_canvas, showCanvas, navigation, filePath, setCoBorrowerCanvas, co_borrower_filePath, show_co_borrower_canvas } = props;
+  console.log('show_borrower_sign',show_borrower_sign);
   return (
     <>
       <View style={{ flex: 1, padding: 5, margin: 20 }}>
@@ -25,22 +26,31 @@ export default function Borrower_Sign(props) {
 
           <View>
             <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Sign</Text>
-            {show_borrower_sign == '' && (
+            {borrower_sign_path == '' && (
               <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
                 <Image
                   source={{
-                    uri: ` /storage/emulated/0/Android/data/com.m3smobile/files/saved_signature/signature.png`,
+                    uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
                   }}
                   style={{ width: 100, height: 50 }}
                 />
               </TouchableOpacity>
             )}
-            {borrower_sign_path !== '' && (
+            {borrower_sign_path ? (
+              <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
+                <Image
+                  source={{uri: `file://${borrower_sign_path}`}}
+                  // source={{ uri: `data:image/png;base64,${show_borrower_sign}` }}
+                  style={{ width: 100, height: 50 }}
+                />
+              </TouchableOpacity>
+            )
+            :
+            show_borrower_sign !== '' && (
               <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
                 <Image
                   // source={{uri: `file://${borrower_sign_path}`}}
                   source={{ uri: `data:image/png;base64,${show_borrower_sign}` }}
-
                   style={{ width: 100, height: 50 }}
                 />
               </TouchableOpacity>
@@ -71,7 +81,7 @@ export default function Borrower_Sign(props) {
 
           <View>
             <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Sign</Text>
-            {show_coborrower_sign == '' && (
+            {/* {show_coborrower_sign == '' && (
               <TouchableOpacity onPress={() => setCoBorrowerCanvas(!show_co_borrower_canvas)}>
                 <Image
                   source={{
@@ -80,7 +90,7 @@ export default function Borrower_Sign(props) {
                   style={{ width: 100, height: 50 }}
                 />
               </TouchableOpacity>
-            )}
+            )} */}
             {coborrower_sign_path !== '' && (
               <TouchableOpacity onPress={() => setCoBorrowerCanvas(!show_co_borrower_canvas)}>
                 {/* <Image
@@ -88,8 +98,8 @@ export default function Borrower_Sign(props) {
                   style={{width: 100, height: 50}}
                 /> */}
                 <Image
-                  // source={{uri: `file://${borrower_sign_path}`}}
-                  source={{ uri: `data:image/png;base64,${show_coborrower_sign}` }}
+                  source={{uri: `file://${coborrower_sign_path}`}}
+                  // source={{ uri: `data:image/png;base64,${show_coborrower_sign}` }}
 
                   style={{ width: 100, height: 50 }}
                 />

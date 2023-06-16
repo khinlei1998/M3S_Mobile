@@ -9,6 +9,8 @@ import Icon from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
 import Edit_Emp_Info from '../screens/EditCustManagement/Edit_Emp_Info';
 import Synchronization_Screen from '../screens/Synchronization/Synchronization_Screen';
+import Individual_Loan from '../screens/Loan/Individual_Loan'
+import Edit_Individual_Loan from '../screens/Edit_Loan/Edit_Individual_Loan'
 const StackNavigationData = [
   {
     name: 'Home',
@@ -56,8 +58,26 @@ const StackNavigationData = [
     },
   },
   {
+    name: 'Individual_loan',
+    component: Individual_Loan,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
     name: 'Synchronization',
     component: Synchronization_Screen,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Edit_Individual_Loan',
+    component: Edit_Individual_Loan,
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
       color: '#FFF',
