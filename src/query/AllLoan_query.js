@@ -384,3 +384,23 @@ export const storeLoanData = async loan_data => {
     }
   });
 };
+
+export async function deleteLoan_ByID(id) {
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        `DELETE FROM Individual_application WHERE id = ${id}`,
+        [],
+        (txObj, resultSet) => {
+          resolve('success');
+          // Delete query successful
+          console.log('Delete successful');
+        },
+        (txObj, error) => {
+          // Error occurred while executing the delete query
+          console.error('Delete error:', error);
+        },
+      );
+    });
+  });
+}

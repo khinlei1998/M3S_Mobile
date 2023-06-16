@@ -59,6 +59,7 @@ export default function Home(props) {
   useEffect(() => {
     loadData();
   }, []);
+  console.log('loan_data0',loan_data);
   return (
     <View style={{flex: 1}}>
       <View

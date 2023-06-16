@@ -62,6 +62,7 @@ import validate from './Edit_loan_Validate';
 import { TextInput } from 'react-native-paper';
 import { resetMonthlyIncome } from '../../redux/MonthlyReducer';
 // import RNFetchBlob from 'rn-fetch-blob';
+import { deleteLoan_ByID } from '../../query/AllLoan_query';
 
 // const Borrower_modal = props => {
 //   const dispatch = useDispatch();
@@ -1837,8 +1838,8 @@ function Edit_Individual_Loan(props) {
     useState('location_code');
   const [all_loandata, setAllLoanData] = useState([]);
 
-  const { handleSubmit, totalnet, navigation,resetMonthlyIncome } = props;
- props.initialize(retrive_loan_data);
+  const { handleSubmit, totalnet, navigation, resetMonthlyIncome, retrive_loan_data } = props;
+  props.initialize(retrive_loan_data);
   // const saveBorrowerSign = async (borrower_sign_path) => {
   //   const user_id = await AsyncStorage.getItem('user_id');
   //   const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/Signature/`;
@@ -1915,40 +1916,51 @@ function Edit_Individual_Loan(props) {
   };
 
   const onSubmit = async values => {
+    console.log('values',values.id);
+    // if (show_operation == '4') {
+    //   await deleteLoan_ByID(values.id).then(response => {
+    //     if (response == 'success') {
+    //       alert('Delete Success');
+    //       setUpdateStatus(false);
+    //       props.navigation.navigate('Home');
+    //     }
+    //   });
+    // } else {
 
-    try {
-      // Save the images
-      let borrowerImagePath, coBorrowerImagePath;
+    //   try {
+    //     // Save the images
+    //     let borrowerImagePath, coBorrowerImagePath;
 
-      if (borrower_sign_path) {
-        borrowerImagePath = await saveSignatureToInternalStorage(borrower_sign_path, '01');
-        console.log('Borrower image saved successfully:', borrowerImagePath);
-      }
+    //     if (borrower_sign_path) {
+    //       borrowerImagePath = await saveSignatureToInternalStorage(borrower_sign_path, '01');
+    //       console.log('Borrower image saved successfully:', borrowerImagePath);
+    //     }
 
-      if (coborrower_sign_path) {
-        coBorrowerImagePath = await saveSignatureToInternalStorage(coborrower_sign_path, '02');
-        console.log('Co-Borrower image saved successfully:', coBorrowerImagePath);
-      }
+    //     if (coborrower_sign_path) {
+    //       coBorrowerImagePath = await saveSignatureToInternalStorage(coborrower_sign_path, '02');
+    //       console.log('Co-Borrower image saved successfully:', coBorrowerImagePath);
+    //     }
 
-      // Only call the store function if at least one image was saved successfully
+    //     // Only call the store function if at least one image was saved successfully
 
-      const loan_data = Object.assign({}, values, {
-        borrower_sign: borrowerImagePath || null,
-        co_borrower_sign: coBorrowerImagePath || null,
-      });
-      await storeLoanData(loan_data).then((result) => {
-        if (result == 'success') {
-          dispatch(reset('Individual_Loan_Form'));
-          resetMonthlyIncome();
+    //     const loan_data = Object.assign({}, values, {
+    //       borrower_sign: borrowerImagePath || null,
+    //       co_borrower_sign: coBorrowerImagePath || null,
+    //     });
+    //     await storeLoanData(loan_data).then((result) => {
+    //       if (result == 'success') {
+    //         dispatch(reset('Individual_Loan_Form'));
+    //         resetMonthlyIncome();
 
-          ToastAndroid.show(`Create Successfully!`, ToastAndroid.SHORT);
-          props.navigation.navigate('Home');
-        }
-      });
+    //         ToastAndroid.show(`Create Successfully!`, ToastAndroid.SHORT);
+    //         props.navigation.navigate('Home');
+    //       }
+    //     });
 
-    } catch (error) {
-      console.log('Error:', error);
-    }
+    //   } catch (error) {
+    //     console.log('Error:', error);
+    //   }
+    // }
   };
 
   const showCustomerSearch = () => {
@@ -2464,11 +2476,11 @@ function Edit_Individual_Loan(props) {
 function mapStateToProps(state) {
   return {
     totalnet: state.monthly.totalnetincome,
-    retrive_loan_data:state.loan.edit_loandata
+    retrive_loan_data: state.loan.edit_loandata
   };
 }
 
 export default reduxForm({
   form: 'Edit_Individual_Loan_Form',
   // validate,
-})(connect(mapStateToProps, {})(Edit_Individual_Loan,resetMonthlyIncome));
+})(connect(mapStateToProps, {})(Edit_Individual_Loan, resetMonthlyIncome));
