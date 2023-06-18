@@ -256,7 +256,6 @@ export const checkDataExists = dataToCheck => {
 };
 
 export function storeCustomerData(cus_data) {
-  console.log('click');
   return new Promise(async (resolve, reject) => {
     try {
       const dataExists = await checkDataExists(cus_data.residentRgstId);

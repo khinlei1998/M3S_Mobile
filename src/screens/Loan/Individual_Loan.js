@@ -2056,7 +2056,7 @@ function Individual_Loan(props) {
   };
 
   useEffect(() => {
-    
+
     loadData();
   }, []);
 
@@ -2502,5 +2502,5 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Individual_Loan_Form',
-  // validate,
+  validate,
 })(connect(mapStateToProps, {resetMonthlyIncome})(Individual_Loan, ));
