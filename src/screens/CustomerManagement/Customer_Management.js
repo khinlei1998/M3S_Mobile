@@ -33,6 +33,7 @@ import {
   Township_code,
   ward_code,
   location_code,
+  operations
 } from '../../common';
 import Monthly_Income from './Monthly_Income';
 import Busines_Info from './Busines_Info';
@@ -566,41 +567,42 @@ function Customer_Management(props) {
             </Text>
             <DividerLine />
 
-            {/* <View style={style.continer}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                  }}>
-                  {operations.map((option, index) => (
-                    <RadioButton.Group
-                      key={index}
-                      onValueChange={newValue => setOperation(newValue)}
-                      value={show_operation}>
-                      <View
-                        key={option.value}
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                        }}>
-                        <RadioButton.Item
-                          label={option.label}
-                          value={option.value}
-                          color="#000"
-                          labelStyle={{marginLeft: 5}}
-                        />
-                      </View>
-                    </RadioButton.Group>
-                  ))}
-                </View>
-                <Button
-                  onPress={handleSubmit(onSubmit)}
-                  mode="contained"
-                  buttonColor={'#6870C3'}
-                  style={style.btnStyle}>
-                  OK
-                </Button>
+            <View style={style.continer}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}>
+                {operations.map((option, index) => (
+                  <RadioButton.Group
+                    key={index}
+                    onValueChange={newValue => setOperation(newValue)}
+                    value={show_operation}>
+                    <View
+                      key={option.value}
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <RadioButton.Item
+                        disabled={option.value !== show_operation}
+                        label={option.label}
+                        value={option.value}
+                        color="#000"
+                        labelStyle={{marginLeft: 5}}
+                      />
+                    </View>
+                  </RadioButton.Group>
+                ))}
               </View>
-              <DividerLine /> */}
+              <Button
+                onPress={handleSubmit(onSubmit)}
+                mode="contained"
+                buttonColor={'#6870C3'}
+                style={style.btnStyle}>
+                OK
+              </Button>
+            </View>
+            <DividerLine />
             {/* EMployee Information */}
             <View style={style.title_emp_style}>
               <Text style={{fontWeight: 'bold', fontSize: 20}}>
@@ -703,7 +705,7 @@ function Customer_Management(props) {
             <Busines_Info />
             <Monthly_Income />
 
-            <Button
+            {/* <Button
               onPress={handleSubmit(onSubmit)}
               mode="contained"
               buttonColor={'#6870C3'}
@@ -716,7 +718,7 @@ function Customer_Management(props) {
                 alignSelf: 'center',
               }}>
               Submit
-            </Button>
+            </Button> */}
           </View>
         </TouchableWithoutFeedback>
       </ScrollView>

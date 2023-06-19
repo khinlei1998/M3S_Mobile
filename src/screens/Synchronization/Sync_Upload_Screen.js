@@ -46,7 +46,6 @@ export default function Sync_Upload_Screen(props) {
       setCheckedItems([...checkedItems, item]);
     }
   };
-  console.log('checkedItems',checkedItems);
 
   const item = ({item}) => {
     return (
@@ -151,7 +150,6 @@ export default function Sync_Upload_Screen(props) {
   //   }
   // };
 
-
   return (
     <View style={{marginTop: 20, marginLeft: 10, marginRight: 10, flex: 1}}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -247,10 +245,14 @@ export default function Sync_Upload_Screen(props) {
         renderItem={item}
         keyExtractor={(item, index) => index.toString()}
       />
-      <View style={{flexDirection:'row',marginLeft:15}}>
-        <Text style={{fontWeight:'bold',fontSize:17}} >New Customer : </Text>
-        <Text style={{fontWeight:'bold',fontSize:17}} >{customer_data.length} </Text>
+      <View style={{flexDirection: 'row', marginLeft: 15}}>
+        <Text style={{fontWeight: 'bold', fontSize: 17}}>New Customer : </Text>
+        <Text style={{fontWeight: 'bold', fontSize: 17}}>
+          {customer_data.length}
+        </Text>
       </View>
+
+
       <View
         style={{
           flexDirection: 'row',

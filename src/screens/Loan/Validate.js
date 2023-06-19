@@ -12,9 +12,9 @@ const validate = (values) => {
     if (!values.borrower_name) {
         errors.borrower_name = "Borrower Name is required.";
     }
-    if (!values.tel_no) {
-        errors.tel_no = "Tel Number is required.";
-    }
+    // if (!values.tel_no) {
+    //     errors.tel_no = "Tel Number is required.";
+    // }
     if (!values.product_type) {
         errors.product_type = "Product Type is required.";
     }

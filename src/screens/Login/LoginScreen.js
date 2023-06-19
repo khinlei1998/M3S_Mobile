@@ -235,20 +235,20 @@ function LoginScreen(props) {
                   </Button>
                 </View>
 
-                <View
+                {/* <View
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'center',
                     marginTop: 10,
                   }}>
-                  {/* <Field
+                  <Field
                     component={CheckBoxFile}
                     name={'save_login_info'}
                     testcheck={() => btncheck()}
-                  /> */}
-                  <Text style={{ color: '#fff' }}>Save login Information</Text>
-                </View>
+                  />
+                   <Text style={{ color: '#fff' }}>Save login Information</Text>
+                </View> */}
               </View>
             </View>
 

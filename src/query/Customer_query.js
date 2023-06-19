@@ -404,7 +404,7 @@ export function storeCustomerData(cus_data) {
           () => {
             // Transaction successful
             resolve('success');
-          }
+          },
         );
       }
     } catch (error) {
@@ -576,7 +576,9 @@ export function updateCustomerData(cus_data) {
   return new Promise(async (resolve, reject) => {
     global.db.transaction(trans => {
       trans.executeSql(
-        `UPDATE Customer SET serial_no=?,customer_no =?,customer_nm =?,status_code=?,create_datetime =?,create_user_id =?,delete_datetime =?,delete_user_id =?,update_datetime =?,update_user_id =?,resident_rgst_id =?,employee_no =?,branch_code =?,entry_date =?,position_title_nm =?,salary_rating_code =?,gender =?,birth_date =?,marital_status =?,saving_acct_num =?,tel_no =?,mobile_tel_no =?,addr =?,curr_resident_perd =?,occupation =?,father_name =?,family_num =CASE WHEN family_num IS NULL THEN 'your_default_value' ELSE family_num END,hghschl_num =?,university_num =?,house_ocpn_type =?,remark =?,business_own_type =?,prop_apartment_yn =?,prop_house_yn =?,prop_car_yn =?,prop_motorcycle_yn =?,prop_machines_yn =?,prop_farmland_yn =?,prop_other_yn =?,tot_prop_estmtd_val =?,ohtr_own_property =?,otr_prop_estmtd_val =?,workplace_name =?,workplace_type =?,workplace_period =?,employee_num =?,workplace_addr =?,curr_workplace_perd =?,business_sttn_flg =?,land_scale =?,land_own_type =?,otr_income =?,tot_sale_income =?,tot_sale_expense =?,rawmaterial_expans =?,wrkp_rent_expns =?,employee_expns =?,prmn_empl_expns =?,tmpy_empl_expns =?,trnsrt_expns =?,bus_utlbil_expns =?,tel_expns =?,tax_expns =?,goods_loss_expns =?,othr_expns_1 =?,othr_expns_2 =?,tot_bus_net_income =?,fmly_tot_income =?,fmly_tot_expense =?,food_expns =?,house_mngt_expns =?,utlbil_expns =?,edct_expns =?,healthy_expns =?,fmly_tax_expns =?,fmly_trnsrt_expns =?,finance_expns =?,fmly_otr_expns =?,fmly_tot_net_income =?,tablet_sync_sts =?,sync_sts =?,nrc_state_code =?,nrc_prefix_code =?,nrc_no =?,curr_resident_date =?,workplace_date =?,curr_workplace_date =?,err_msg =?,postal_code =?,total_net =?,city_code =?,city_name =?,township_code =?,township_name =?,village_code =?,village_name =?,ward_code =?,ward_name =?,address_type =?,business_period_status =?, curr_business_date_status =?, village_status =?,start_living_date_status =?,nrc_type =?, location_code =?, location_name=? WHERE id = ?`,
+        `UPDATE Customer SET serial_no=?,customer_no =?,customer_nm =?,status_code=?,create_datetime =?,create_user_id =?,delete_datetime =?,delete_user_id =?,update_datetime =?,update_user_id =?,
+        resident_rgst_id =?,employee_no =?,branch_code =?,entry_date =?,position_title_nm =?,salary_rating_code =?,gender =?,birth_date =?,marital_status =?,saving_acct_num =?,
+        tel_no =?,mobile_tel_no =?,addr =?,curr_resident_perd =?,occupation =?,father_name =?,family_num =?,hghschl_num =?,university_num =?,house_ocpn_type =?,remark =?,business_own_type =?,prop_apartment_yn =?,prop_house_yn =?,prop_car_yn =?,prop_motorcycle_yn =?,prop_machines_yn =?,prop_farmland_yn =?,prop_other_yn =?,tot_prop_estmtd_val =?,ohtr_own_property =?,otr_prop_estmtd_val =?,workplace_name =?,workplace_type =?,workplace_period =?,employee_num =?,workplace_addr =?,curr_workplace_perd =?,business_sttn_flg =?,land_scale =?,land_own_type =?,otr_income =?,tot_sale_income =?,tot_sale_expense =?,rawmaterial_expans =?,wrkp_rent_expns =?,employee_expns =?,prmn_empl_expns =?,tmpy_empl_expns =?,trnsrt_expns =?,bus_utlbil_expns =?,tel_expns =?,tax_expns =?,goods_loss_expns =?,othr_expns_1 =?,othr_expns_2 =?,tot_bus_net_income =?,fmly_tot_income =?,fmly_tot_expense =?,food_expns =?,house_mngt_expns =?,utlbil_expns =?,edct_expns =?,healthy_expns =?,fmly_tax_expns =?,fmly_trnsrt_expns =?,finance_expns =?,fmly_otr_expns =?,fmly_tot_net_income =?,tablet_sync_sts =?,sync_sts =?,nrc_state_code =?,nrc_prefix_code =?,nrc_no =?,curr_resident_date =?,workplace_date =?,curr_workplace_date =?,err_msg =?,postal_code =?,total_net =?,city_code =?,city_name =?,township_code =?,township_name =?,village_code =?,village_name =?,ward_code =?,ward_name =?,address_type =?,business_period_status =?, curr_business_date_status =?, village_status =?,start_living_date_status =?,nrc_type =?, location_code =?, location_name=? WHERE id = ?`,
         [
           null, //cus_data.serialNo
           // cus_data.employeeNo,
@@ -588,7 +590,7 @@ export function updateCustomerData(cus_data) {
           null, //deleteDatetime
           null, //deleteUserId
           null, //updateDatetime
-          cus_data.createUserId, //updateUserID
+          cus_data.createUserId, //updateUserID //10
           cus_data.residentRgstId,
           //
           cus_data.employee_no,
@@ -600,7 +602,7 @@ export function updateCustomerData(cus_data) {
           cus_data.gender,
           cus_data.birth_date,
           cus_data.marital_status,
-          cus_data.saving_acct_num,
+          cus_data.saving_acct_num, //20
           cus_data.tel_no,
           cus_data.mobile_tel_no,
           cus_data.addr, //23
@@ -776,74 +778,86 @@ export function updateCustomerData(cus_data) {
 //   });
 // }
 
-export function UploadCustomerData(customer_data) {
-  return new Promise(async (resolve, reject) => {
-    const failedData = [];
-    let ip = await AsyncStorage.getItem('ip');
-    let port = await AsyncStorage.getItem('port');
-    console.log('final data', customer_data);
+export async function UploadCustomerData(customer_data) {
+  // return new Promise(async (resolve, reject) => {
+  const failedData = [];
+  let ip = await AsyncStorage.getItem('ip');
+  let port = await AsyncStorage.getItem('port');
+  try {
+    for (var i = 0; i < customer_data.length; i++) {
+      const data = [customer_data[i]];
 
-    try {
-      for (var i = 0; i < customer_data.length; i++) {
-        const data = [customer_data[i]];
-
-        await axios
-          .post(
-            `https://109d-103-134-204-196.ngrok-free.app:443/skylark-m3s/api/customers.m3s`,
-            data,
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              },
+      await axios
+        .post(
+          `https://6275-103-116-56-80.ngrok-free.app/skylark-m3s/api/customers.m3s`,
+          data,
+          {
+            headers: {
+              'Content-Type': 'application/json',
             },
-          )
-          .then(response => {
-            console.log('response', response.data[0].errMsg);
-            if (response.data[0].errMsg) {
-              failedData.push(response.data[0].customerNm);
-            } else {
-              global.db.transaction(tx => {
-                tx.executeSql(
-                  'UPDATE Customer set tablet_sync_sts=? where id=?',
-                  ['01', response.data[0].id],
-                  (txObj, resultSet) => {
-                    console.log('Update successful');
-                  },
-                  (txObj, error) => {
-                    reject(error);
-                    console.error('Update error:', error);
-                  },
-                );
-              });
-            }
-          })
-          .catch(error => {
-            console.log('axios error', error);
-            Alert.alert('Error', 'Axios error occurred.');
-            reject(error);
-            return; // Stop further execution of the loop
-          });
-      }
+          },
+        )
+        .then(response => {
+          console.log('response', response.data[0]);
 
-      console.log('failedData', failedData);
-      if (failedData.length > 0) {
-        Alert.alert(
-          'Error',
-          `Failed to upload ${failedData.length} data items:\n${JSON.stringify(
-            failedData,
-          )}`,
-        );
-        resolve('error');
-      } else {
-        Alert.alert('Success', 'All data successfully uploaded.');
-        resolve('success');
-      }
-    } catch (error) {
-      alert(error);
-      reject(error);
-      console.log('error', error);
+          if (response.data[0].errMsg) {
+            const error = {
+              resident_rgst_id: response.data[0].residentRgstId,
+              message: response.data[0].errMsg,
+            };
+            failedData.push(error);
+          } else {
+            global.db.transaction(tx => {
+              tx.executeSql(
+                'UPDATE Customer set tablet_sync_sts=? where id=?',
+                ['01', response.data[0].id],
+                (txObj, resultSet) => {
+                  console.log('Update successful');
+                },
+                (txObj, error) => {
+                  reject(error);
+                  console.error('Update error:', error);
+                },
+              );
+            });
+          }
+        })
+        .catch(error => {
+          console.log('axios error', error);
+          Alert.alert('Error', 'Axios error occurred.');
+          reject(error);
+          return; // Stop further execution of the loop
+        });
     }
-  });
+
+    console.log('failedData', failedData);
+    // if (failedData.length > 0) {
+    //   Alert.alert(
+    //     'Error',
+    //     `Failed to upload ${failedData.length} data items:\n${JSON.stringify(
+    //       failedData,
+    //     )}`,
+    //   );
+    //   resolve('error');
+    // } else {
+    //   Alert.alert('Success', 'All data successfully uploaded.');
+    //   resolve('success');
+    // }
+    if (failedData.length > 0) {
+      const errorMessage = `Failed to upload ${
+        failedData.length
+      } data items:\n${JSON.stringify(failedData)}`;
+      console.log('failedData', failedData);
+      return failedData;
+    } else {
+      return 'success';
+    }
+  } catch (error) {
+    alert('Axios error occurred');
+    // reject(error);
+    console.log('error', error);
+  }
+  //  });
 }
 
 export const updateTableSyncStatus = id => {

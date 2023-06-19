@@ -6,6 +6,8 @@ import { reduxForm, Field, change } from 'redux-form';
 import { connect, useDispatch } from 'react-redux';
 function Borrower_Sign(props) {
   const { update_status, coborrower_sign_path, show_coborrower_sign, show_borrower_sign, borrower_sign_path, setCanvas, show_canvas, showCanvas, navigation, filePath, setCoBorrowerCanvas, co_borrower_filePath, show_co_borrower_canvas } = props;
+  console.log('borrower_sign_path',borrower_sign_path);
+  console.log('show_borrower_sign',show_borrower_sign);
   return (
     <>
       <View style={{ flex: 1, padding: 5, margin: 20 }}>
@@ -26,12 +28,10 @@ function Borrower_Sign(props) {
 
           <View>
             <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Sign</Text>
-            {borrower_sign_path == '' && (
+            {borrower_sign_path == null && (
               <TouchableOpacity onPress={() => update_status == true && setCanvas(!show_canvas)}>
                 <Image
-                  source={{
-                    uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
-                  }}
+                  source={require('../../../assets/images/default-sign.png')}
                   style={{ width: 100, height: 50 }}
                 />
               </TouchableOpacity>
@@ -81,38 +81,34 @@ function Borrower_Sign(props) {
 
           <View>
             <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Sign</Text>
-            {/* {show_coborrower_sign == '' && (
-              <TouchableOpacity onPress={() => setCoBorrowerCanvas(!show_co_borrower_canvas)}>
+            {coborrower_sign_path == null && (
+              <TouchableOpacity onPress={() => update_status == true && setCoBorrowerCanvas(!show_co_borrower_canvas)}>
                 <Image
-                  source={{
-                    uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
-                  }}
+                  source={require('../../../assets/images/default-sign.png')}
                   style={{ width: 100, height: 50 }}
                 />
               </TouchableOpacity>
-            )} */}
-            {/* {coborrower_sign_path !== '' && (
-              <TouchableOpacity onPress={() =>  update_status == true && setCoBorrowerCanvas(!show_co_borrower_canvas)}> */}
-                {/* <Image
-                  source={{uri: `file://${co_borrower_filePath}`}}
-                  style={{width: 100, height: 50}}
-                /> */}
+            )}
+            {coborrower_sign_path ? (
+              <TouchableOpacity onPress={() =>  update_status == true && setCoBorrowerCanvas(!show_co_borrower_canvas)}>
                 <Image
-               
-                  source={{ uri: `file:///data/user/0/com.m3smobile/files/10M00172TB202306163SG02.jpg` }}
-                  // source={{ uri: `data:image/png;base64,${show_coborrower_sign}` }}
-
+                  source={{ uri: `file://${coborrower_sign_path}` }}
+                  // source={{ uri: `data:image/png;base64,${show_borrower_sign}` }}
                   style={{ width: 100, height: 50 }}
                 />
-              {/* </TouchableOpacity> */}
-            {/* )} */}
-            {/* <View style={{width: 300, height: 300,backgroundColor:'red'}}>
-            <SketchCanvas
-              style={{flex: 1}}
-              strokeColor="#000000"
-              strokeWidth={3}
-            />
-          </View> */}
+              </TouchableOpacity>
+            )
+              :
+              show_coborrower_sign !== '' && (
+                <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
+                  <Image
+                    // source={{uri: `file://${borrower_sign_path}`}}
+                    source={{ uri: `data:image/png;base64,${show_coborrower_sign}` }}
+                    style={{ width: 100, height: 50 }}
+                  />
+                </TouchableOpacity>
+              )}
+
           </View>
         </View>
       </View>

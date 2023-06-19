@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {Alert} from 'react-native';
+import {Alert, FileSystem} from 'react-native';
+import RNFS from 'react-native-fs';
 const ExecuteQuery = (sql, params = []) =>
   new Promise((resolve, reject) => {
     global.db.transaction(trans => {
@@ -411,7 +412,17 @@ export async function deleteLoan_ByID(data) {
     // Delete the borrower image if it exists
     if (borrowerImagePath) {
       try {
-        await deleteImageFile(borrowerImagePath);
+        // await deleteImageFile(borrowerImagePath);
+        // await FileSystem.delete(borrowerImagePath);
+        const exists = await RNFS.exists(borrowerImagePath);
+        if (exists) {
+          console.log('exist');
+          await RNFS.unlink(borrowerImagePath);
+          console.log('File deleted successfully');
+        } else {
+          console.log('File does not exist');
+        }
+
         console.log('Borrower image deleted successfully:', borrowerImagePath);
       } catch (error) {
         console.error('Error deleting borrower image:', error);
@@ -423,7 +434,14 @@ export async function deleteLoan_ByID(data) {
     // Delete the co-borrower image if it exists
     if (coBorrowerImagePath) {
       try {
-        await deleteImageFile(coBorrowerImagePath);
+        const exists = await RNFS.exists(coBorrowerImagePath);
+        if (exists) {
+          console.log('co borrower exist',exists);
+          await RNFS.unlink(coBorrowerImagePath);
+          console.log('File deleted successfully');
+        } else {
+          console.log('File does not exist');
+        }
         console.log(
           'Co-borrower image deleted successfully:',
           coBorrowerImagePath,
@@ -436,23 +454,23 @@ export async function deleteLoan_ByID(data) {
     }
 
     return new Promise((resolve, reject) => {
-      global.db.transaction(tx => {
-        tx.executeSql(
-          'DELETE FROM Individual_application WHERE id = ?',
-          [data.id],
-          (txObj, resultSet) => {
-            console.log('resultSet', resultSet);
-            resolve('success');
-            // Delete query successful
-            console.log('Delete successful');
-          },
-          (txObj, error) => {
-            // Error occurred while executing the delete query
-            console.error('Delete error:', error);
-            reject(error);
-          },
-        );
-      });
+      // global.db.transaction(tx => {
+      //   tx.executeSql(
+      //     'DELETE FROM Individual_application WHERE id = ?',
+      //     [data.id],
+      //     (txObj, resultSet) => {
+      //       console.log('resultSet', resultSet);
+      //       resolve('success');
+      //       // Delete query successful
+      //       console.log('Delete successful');
+      //     },
+      //     (txObj, error) => {
+      //       // Error occurred while executing the delete query
+      //       console.error('Delete error:', error);
+      //       reject(error);
+      //     },
+      //   );
+      // });
     });
   } catch (error) {
     console.error('Error deleting loan:', error);
@@ -565,7 +583,7 @@ export async function getAllLoan_By_application_no() {
   });
 }
 
-export const fetchDataForCheckedData = async checkedItems => {
+export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
   const failedData = [];
 
   try {
@@ -573,14 +591,15 @@ export const fetchDataForCheckedData = async checkedItems => {
       const applicationNo = data.application_no;
 
       let individual_loan_data = {
+        id: data.id,
         statusCode: data.status_code,
         createUserId: data.create_user_id,
         updateUserId: data.update_user_id,
         productType: data.product_type, //not null
         channelDeviceType: '',
-        openBranchCode: '1', //not null
+        openBranchCode: branch_code, //not null
         openUserId: 'M00172', //not null
-        mngtBranchCode: 1, //not null
+        mngtBranchCode: 1000, //not null
         mngtUserId: 'M00172',
         applicationNo: data.application_no,
         groupAplcNo: '',
@@ -688,6 +707,7 @@ export const fetchDataForCheckedData = async checkedItems => {
         loan_status_code: data.loan_status_code,
         location_code: data.location_code,
         location_name: data.location_name,
+        // mngt_user_id: data.mngt_user_id,
         ohtr_own_property: data.ohtr_own_property,
         otr_mfi_nm: data.otr_mfi_nm,
         own_property_estmtd_val: data.own_property_estmtd_val,
@@ -704,95 +724,39 @@ export const fetchDataForCheckedData = async checkedItems => {
         property_kind: data.property_kind,
       };
 
-      let test1 = {
-        statusCode: '01',
-        createUserId: 'M00110',
-        updateUserId: 'M00110',
-        productType: '',
-        channelDeviceType: '',
-        openBranchCode: '',
-        openUserId: '',
-        mngtBranchCode: '',
-        mngtUserId: '',
-        applicationNo: '22',
-        groupAplcNo: '',
-        tabletAplcNo: '',
-        referAplcNo: '',
-        loanType: '',
-        cstNewExistFlg: 'Y',
-        loanCycle: 2.0,
-        applicationAmt: 20000.0,
-        applicationDate: '2023-05-07',
-        loantermCnt: 2.0,
-        borrowerName: '',
-        customerNo: '',
-        loanCode: '',
-        savingAcctNum: '',
-        gender: 'M',
-        birthDate: '',
-        maritalStatus: '',
-        residentRgstId: '',
-        telNo: '',
-        mobileTelNo: '',
-        positionTitleNm: '',
-        addr: '',
-        businessOwnType: '',
-        coCustomerNo: '',
-        coBrwerName: '',
-        workplaceName: '',
-        workplaceType: '',
-        workplaceAddr: '',
-        landOwnType: '',
-        totSaleIncome: 0.0,
-        totSaleExpense: 0.0,
-        rawmaterialExpans: 0.0,
-        wrkpRentExpns: 0.0,
-        employeeExpns: 0.0,
-        trnsrtExpns: 0.0,
-        goodsLossExpns: 0.0,
-        othrExpns1: 0.0,
-        othrExpns2: 0.0,
-        totBusNetIncome: 0.0,
-        fmlyTotIncome: 0.0,
-        fmlyTotExpense: 0.0,
-        foodExpns: 0.0,
-        houseMngtExpns: 0.0,
-        utlbilExpns: 0.0,
-        edctExpns: 0.0,
-        healthyExpns: 0.0,
-        financeExpns: 0.0,
-        fmlyOtrExpns: 0.0,
-        fmlyTotNetIncome: 0.0,
-        totNetIncome: 0.0,
-        remark: '',
-        tabletSyncSts: '00',
-        syncSts: '00',
-        pastLoanAmount: 0.0,
-        pastLoanRating: '',
-        pastCreditEmplNm: '',
-        oldApplicationNo: '',
-        loanLimitAmt: 0.0,
-        sysOrganizationCode: '1000',
-        organizationCode: '1000',
-        restFlag: 'Y',
-        transactionDate: '2023-05-07',
-        serialNo: '',
-      };
-
       const guaranteeData = await fetchGuaranteeData(applicationNo);
       const areaevaluation = await fetchAreaEvaluation(applicationNo);
       const exception_aprv = await fetchExceptionAprv(applicationNo);
       const relation_info = await fetchRelationInfo(applicationNo);
-      console.log('guaranteeData', guaranteeData);
-
-      // const formData = new FormData();
-      // formData.append('individualApplication', JSON.stringify([test]));
-      // formData.append('guarantee', JSON.stringify(guaranteeData));
-      // formData.append('areaEvaluation', JSON.stringify(areaevaluation));
-      // formData.append('exceptionAprv', JSON.stringify(exception_aprv));
-      // formData.append('relationInfo', JSON.stringify(relation_info));
-      // console.log('data', formData);
-
+      let test_relation = {
+        organizationCode: '',
+        serialNo: '',
+        statusCode: '01',
+        createUserId: 'M00547',
+        updateUserId: 'M00547',
+        tabletExcptAprvRqstNo: '',
+        // excptAprvRqstNo: 'EAM0054720230507001',
+        tabletGroupAplcNo: '',
+        groupAplcNo: '',
+        tabletAplcNo: '',
+        applicationNo: '10M0054720230507001',
+        exceptionRqstDate: '2023-05-07',
+        borrowerName: 'John Doe',
+        applicationAmt: 500000.0,
+        birthDate: '1967-06-28',
+        borrowerAge: 63.0,
+        groupMemberNum: 6.0,
+        occupation: 'Clothing Shop',
+        netIncome: 500000.0,
+        excptAprvRsn1: 'N',
+        excptAprvRsn2: 'N',
+        excptAprvRsn3: 'N',
+        exceptionReason: 'Over 60 Years',
+        recommendNm: '',
+        tabletSyncSts: '99',
+        syncSts: '',
+        errMsg: '',
+      };
       let formData = new FormData();
       formData.append(
         'individualApplication',
@@ -800,13 +764,14 @@ export const fetchDataForCheckedData = async checkedItems => {
       );
       formData.append('guarantee', '[]');
       formData.append('areaEvaluation', '[]');
-      formData.append('exceptionAprv', '[]');
       formData.append('relationInfo', '[]');
+      formData.append('approvalRequests', '[]');
+      console.log('fromData', formData);
 
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'https://48e7-103-116-57-209.ngrok-free.app/skylark-m3s/api/individualLoan.m3s',
+        url: 'https://6275-103-116-56-80.ngrok-free.app/skylark-m3s/api/individualLoan.m3s',
         headers: {
           Cookie: 'JSESSIONID=nVnRW80EvQ6teKGkjmeggo86bp_djUvxA44l4y2Q.aungmac',
         },
@@ -814,32 +779,109 @@ export const fetchDataForCheckedData = async checkedItems => {
       };
       const response = await axios.request(config);
 
-      console.log('response', response);
-      console.log(
-        'response data error',
-        response.data.individualApplication[0].errMsg,
-      );
+      if (
+        response.data.individualApplication &&
+        response.data.individualApplication[0].errMsg
+      ) {
+        const error = {
+          form: 'individualApplication',
+          message: response.data.individualApplication[0].errMsg,
+        };
+        console.log('error', error);
+        failedData.push(error);
+      } else {
+        global.db.transaction(tx => {
+          tx.executeSql(
+            'UPDATE Individual_application set sync_sts=? where id=?',
+            ['01', response.data.individualApplication[0].id],
+            (txObj, resultSet) => {
+              console.log('Update successful');
+            },
+            (txObj, error) => {
+              reject(error);
+              console.error('Update error:', error);
+            },
+          );
+        });
+      }
+      if (response.data.approvalRequests) {
+        if (
+          response.data.approvalRequests[0] &&
+          response.data.approvalRequests[0].errMsg
+        ) {
+          console.log('Error in approvalRequests');
+          const error = {
+            form: 'approvalRequests',
+            message: response.data.approvalRequests[0].errMsg,
+          };
+          failedData.push(error);
+        } else {
+          global.db.transaction(tx => {
+            tx.executeSql(
+              'UPDATE Exception_aprv set sync_sts=? where id=?',
+              ['01', response.data.approvalRequests[0].id],
+              (txObj, resultSet) => {
+                console.log('Update successful');
+              },
+              (txObj, error) => {
+                reject(error);
+                console.error('Update error:', error);
+              },
+            );
+          });
+        }
+      }
 
-      if (response.data.individualApplication[0].errMsg) {
-        failedData.push(response.data.individualApplication[0].errMsg);
+      if (response.data.guarantee) {
+        if (response.data.guarantee[0] && response.data.guarantee[0].errMsg) {
+          console.log('Error in guarantee');
+          const error = {
+            form: 'guarantee',
+            message: response.data.guarantee[0].errMsg,
+          };
+          failedData.push(error);
+        }
+      }
+
+      if (response.data.areaEvaluation) {
+        if (
+          response.data.areaEvaluation[0] &&
+          response.data.areaEvaluation[0].errMsg
+        ) {
+          console.log('Error in areaEvaluation');
+          const error = {
+            form: 'areaEvaluation',
+            message: response.data.areaEvaluation[0].errMsg,
+          };
+          failedData.push(error);
+        }
+      }
+
+      if (response.data.relationInfo) {
+        if (
+          response.data.relationInfo[0] &&
+          response.data.relationInfo[0].errMsg
+        ) {
+          console.log('Error in relationInfo');
+          const error = {
+            form: 'relationInfo',
+            message: response.data.relationInfo[0].errMsg,
+          };
+          failedData.push(error);
+        }
       }
     }
-    console.log('failedData',failedData);
-
+    console.log('failedData', failedData);
     if (failedData.length > 0) {
       const errorMessage = `Failed to upload ${
         failedData.length
       } data items:\n${JSON.stringify(failedData)}`;
-      console.log('Error:', errorMessage);
-      Alert.alert('Error', errorMessage);
+      console.log('failedData', failedData);
+      return failedData;
     } else {
-      Alert.alert('Success', 'All data successfully uploaded.');
+      return 'success';
     }
-
-
-    // Proceed with further operations using the fetched data
   } catch (error) {
-    console.log('ok Error:', error);
     Alert.alert('out Error', 'Axios error occurred.');
   }
 };

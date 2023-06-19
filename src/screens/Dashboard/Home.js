@@ -64,7 +64,7 @@ export default function Home(props) {
     if (isFocused) {
       loadData();
     }
-  }, [loadData]);
+  }, []);
   console.log('loan_data',loan_data);
   return (
     <View style={{flex: 1}}>

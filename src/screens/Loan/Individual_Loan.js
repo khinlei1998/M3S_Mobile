@@ -8,7 +8,7 @@ import {
   PermissionsAndroid,
   TouchableHighlight,
   Image,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
 import React, {useState, useEffect, useRef, createRef} from 'react';
 import DividerLine from '../../components/DividerLine';
@@ -1883,6 +1883,39 @@ function Individual_Loan(props) {
     }
   };
 
+  // const saveSignatureToInternalStorage = async (image_encode, index) => {
+  //   const user_id = await AsyncStorage.getItem('user_id');
+  //   try {
+  //     // Request write storage permission
+  //     const granted = await requestWriteStoragePermission();
+
+  //     if (granted) {
+  //       // Get the base64-encoded image data from the result
+  //       // const imageData = result.encoded;
+
+  //       // Generate a unique filename for the image
+  //       const filename = `10${user_id}TB${moment().format('YYYYMMDD')}${
+  //         all_loandata.length + 1
+  //       }SG${index}.jpg`;
+
+  //       // Define the destination path in the app's internal storage
+  //       const destinationPath = `${RNFS.DocumentDirectoryPath}/${filename}`;
+
+  //       // Write the base64-encoded image data to the destination path
+  //       const test=await RNFS.writeFile(destinationPath, image_encode, 'base64');
+  //       console.log('destinationPath', destinationPath);
+  //       console.log('test',test);
+  //       // Set the image path for display
+  //       // setFinalepath(destinationPath);
+  //       return destinationPath;
+  //     } else {
+  //       console.log('Write storage permission denied.');
+  //     }
+  //   } catch (error) {
+  //     console.log('Error saving signature:', error);
+  //   }
+  // };
+
   const saveSignatureToInternalStorage = async (image_encode, index) => {
     const user_id = await AsyncStorage.getItem('user_id');
     try {
@@ -1890,26 +1923,38 @@ function Individual_Loan(props) {
       const granted = await requestWriteStoragePermission();
 
       if (granted) {
-        // Get the base64-encoded image data from the result
-        // const imageData = result.encoded;
-
         // Generate a unique filename for the image
-        const filename = `10${user_id}TB${moment().format('YYYYMMDD')}${all_loandata.length + 1}SG${index}.jpg`;
+        const filename = `10${user_id}TB${moment().format('YYYYMMDD')}${
+          all_loandata.length + 1
+        }SG${index}.jpg`;
 
         // Define the destination path in the app's internal storage
-        const destinationPath = `${RNFS.DocumentDirectoryPath}/${filename}`;
+        let destinationPath;
+        if (Platform.OS === 'android') {
+          destinationPath = `${RNFS.ExternalDirectoryPath}/${filename}`;
+        } else if (Platform.OS === 'ios') {
+          destinationPath = `${RNFS.LibraryDirectoryPath}/${filename}`;
+        } else {
+          console.log('Unsupported platform.');
+          return null;
+        }
 
         // Write the base64-encoded image data to the destination path
         await RNFS.writeFile(destinationPath, image_encode, 'base64');
         console.log('destinationPath', destinationPath);
-        // Set the image path for display
-        // setFinalepath(destinationPath);
+
+        // Check if the file exists
+        const fileExists = await RNFS.exists(destinationPath);
+        console.log('File exists:', fileExists);
+
         return destinationPath;
       } else {
         console.log('Write storage permission denied.');
+        return null;
       }
     } catch (error) {
       console.log('Error saving signature:', error);
+      return null;
     }
   };
 
@@ -1957,7 +2002,7 @@ function Individual_Loan(props) {
   //   }
   // };
   const onSubmit = async values => {
-    console.log('values',values);
+    console.log('values', values);
     try {
       // Save the images
       let borrowerImagePath, coBorrowerImagePath;
@@ -1970,7 +2015,10 @@ function Individual_Loan(props) {
         );
         if (!borrowerImagePath) {
           saveImageError = true;
-          ToastAndroid.show('Error! Borrower Sign cannot save', ToastAndroid.SHORT);
+          ToastAndroid.show(
+            'Error! Borrower Sign cannot save',
+            ToastAndroid.SHORT,
+          );
         } else {
           console.log('Borrower image saved successfully:', borrowerImagePath);
         }
@@ -1983,12 +2031,24 @@ function Individual_Loan(props) {
         );
         if (!coBorrowerImagePath) {
           saveImageError = true;
-          ToastAndroid.show('Error! Co-Borrower Sign cannot save', ToastAndroid.SHORT);
+          ToastAndroid.show(
+            'Error! Co-Borrower Sign cannot save',
+            ToastAndroid.SHORT,
+          );
         } else {
-          console.log('Co-Borrower image saved successfully:', coBorrowerImagePath);
+          console.log(
+            'Co-Borrower image saved successfully:',
+            coBorrowerImagePath,
+          );
         }
       }
-      console.log('borrowerImagePath',borrowerImagePath);
+      console.log('borrowerImagePath', borrowerImagePath);
+      const exists = await RNFS.exists(filePath);
+      if (exists) {
+        console.log('exist');
+      } else {
+        console.log('no exist');
+      }
       if (!saveImageError) {
         const loan_data = Object.assign({}, values, {
           borrower_sign: borrowerImagePath,
@@ -2009,7 +2069,6 @@ function Individual_Loan(props) {
       console.log('Error:', error);
     }
   };
-
 
   const showCustomerSearch = () => {
     setModalVisible(true);
@@ -2039,7 +2098,8 @@ function Individual_Loan(props) {
         change(
           'Individual_Loan_Form',
           'application_no',
-          `10${user_id}TB${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
+          // `10${user_id}TB${moment().format('YYYYMMDD')}Ya${loan_data.length + 1}`,
+          `10${user_id}TB${moment().format('YYYYMMDD')}${27}`,
         ),
       );
     });
@@ -2056,7 +2116,6 @@ function Individual_Loan(props) {
   };
 
   useEffect(() => {
-
     loadData();
   }, []);
 
@@ -2225,7 +2284,6 @@ function Individual_Loan(props) {
                 {operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
-
                     onValueChange={newValue => setOperation(newValue)}
                     value={show_operation}>
                     <View
@@ -2235,7 +2293,7 @@ function Individual_Loan(props) {
                         alignItems: 'center',
                       }}>
                       <RadioButton.Item
-                      disabled={option.value!==show_operation}
+                        disabled={option.value !== show_operation}
                         label={option.label}
                         value={option.value}
                         color="#000"
@@ -2503,4 +2561,4 @@ function mapStateToProps(state) {
 export default reduxForm({
   form: 'Individual_Loan_Form',
   validate,
-})(connect(mapStateToProps, {resetMonthlyIncome})(Individual_Loan, ));
+})(connect(mapStateToProps, {resetMonthlyIncome})(Individual_Loan));

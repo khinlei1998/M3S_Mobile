@@ -408,6 +408,26 @@ export const fetchEmpName = async () => {
   });
 };
 
+export const get_loged_branch_code = async () => {
+  const user_id = await AsyncStorage.getItem('user_id');
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        'SELECT branch_code FROM Employee WHERE user_id = ? ',
+        [user_id],
+        (tx, results) => {
+          const rows = results.rows.raw();
+          resolve(rows);
+        },
+        error => {
+          reject(error);
+        },
+      );
+    });
+  });
+};
+
+
 export async function filterEmp(selectedColumn, searchTerm) {
   let sql;
   if (selectedColumn && searchTerm) {
