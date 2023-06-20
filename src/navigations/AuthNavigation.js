@@ -36,7 +36,7 @@ export default function AuthNavigation(props) {
         component={Individual_Loan}
         options={{headerShown: false}}
       /> */}
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Customer Search"
         component={CustomerSearch}
         options={{headerShown: false}}
@@ -57,7 +57,7 @@ export default function AuthNavigation(props) {
         name="Edit_Individual_Loan"
         component={Edit_Individual_Loan}
         options={{headerShown: false}}
-      />
+      /> */}
       {/* <Stack.Screen
         name="Sign1"
         component={Sign1}

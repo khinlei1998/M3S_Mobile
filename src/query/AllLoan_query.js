@@ -894,31 +894,47 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
       }
       console.log('checked data', data);
       //delete if sync_status=02
-      if (data.sync_sts === '01') {
-        console.log('response.data.individualApplication[0].applicationNo',data.application_no);
-        const deleteQueries = [
-          `DELETE FROM Individual_application WHERE application_no =${data.application_no}`,
-          `DELETE FROM Exception_aprv WHERE application_no = '${data.application_no}'`,
-          `DELETE FROM Guarantee WHERE application_no = '${data.application_no}'`,
-          `DELETE FROM AreaEvaluation WHERE application_no = '${data.application_no}'`,
-          `DELETE FROM RelationInfo WHERE application_no = '${ data.application_no}'`,
-        ];
-        global.db.transaction(tx => {
-          deleteQueries.forEach(query => {
-            tx.executeSql(
-              query,
-              [],
-              (txObj, resultSet) => {
-                console.log('Delete successful');
-              },
-              (txObj, error) => {
-                reject(error);
-                console.error('Delete error:', error);
-              },
-            );
-          });
-        });
-      }
+      // if (data.sync_sts === '01') {
+      //   console.log('response.data.individualApplication[0].applicationNo',data.application_no);
+      //   const deleteQueries = [
+      //     `DELETE FROM Individual_application WHERE application_no =${data.application_no}`,
+      // `DELETE FROM Exception_aprv WHERE application_no = '${data.application_no}'`,
+      // `DELETE FROM Guarantee WHERE application_no = '${data.application_no}'`,
+      // `DELETE FROM AreaEvaluation WHERE application_no = '${data.application_no}'`,
+      // `DELETE FROM RelationInfo WHERE application_no = '${ data.application_no}'`,
+      // ];
+      // global.db.transaction(tx => {
+      //   deleteQueries.forEach(query => {
+      //     tx.executeSql(
+      //       query,
+      //       [],
+      //       (txObj, resultSet) => {
+      //         console.log('Delete successful');
+      //       },
+      //       (txObj, error) => {
+      //         reject(error);
+      //         console.error('Delete error:', error);
+      //       },
+      //     );
+      //   });
+      // });
+      global.db.transaction(tx => {
+        tx.executeSql(
+          `DELETE FROM Individual_application WHERE application_no = "${data.application_no}"`,
+          [],
+          (txObj, resultSet) => {
+            console.log('resultSet',resultSet);
+            resolve('success');
+            // Delete query successful
+            console.log('Delete successful');
+          },
+          (txObj, error) => {
+            // Error occurred while executing the delete query
+            console.error('Delete error:', error);
+          },
+        );
+      });
+      // }
 
     }
     if (failedData.length > 0) {
