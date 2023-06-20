@@ -893,74 +893,74 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         }
       }
 
-      if (data.sync_sts === '01') {
-        console.log('response.data.individualApplication[0].applicationNo', data.application_no);
+      // if (data.sync_sts === '01') {
+      //   console.log('response.data.individualApplication[0].applicationNo', data.application_no);
 
-        const selectIndividualQuery = `SELECT * FROM Individual_application WHERE sync_status = '01' AND application_no = '${data.application_no}'`;
+      //   const selectIndividualQuery = `SELECT * FROM Individual_application WHERE sync_status = '01' AND application_no = '${data.application_no}'`;
 
-        global.db.transaction(tx => {
-          tx.executeSql(
-            selectIndividualQuery,
-            [],
-            (txObj, individualResultSet) => {
-              const individualResults = individualResultSet.rows;
+      //   global.db.transaction(tx => {
+      //     tx.executeSql(
+      //       selectIndividualQuery,
+      //       [],
+      //       (txObj, individualResultSet) => {
+      //         const individualResults = individualResultSet.rows;
 
-              if (individualResults.length > 0) {
-                // Rows exist in Individual_application table, delete them
-                const selectExceptionQuery = `SELECT * FROM Exception_aprv WHERE sync_status = '01' AND application_no = '${data.application_no}'`;
+      //         if (individualResults.length > 0) {
+      //           // Rows exist in Individual_application table, delete them
+      //           const selectExceptionQuery = `SELECT * FROM Exception_aprv WHERE sync_status = '01' AND application_no = '${data.application_no}'`;
 
-                global.db.transaction(txSelect => {
-                  txSelect.executeSql(
-                    selectExceptionQuery,
-                    [],
-                    (txSelectObj, exceptionResultSet) => {
-                      const exceptionResults = exceptionResultSet.rows;
+      //           global.db.transaction(txSelect => {
+      //             txSelect.executeSql(
+      //               selectExceptionQuery,
+      //               [],
+      //               (txSelectObj, exceptionResultSet) => {
+      //                 const exceptionResults = exceptionResultSet.rows;
 
-                      if (exceptionResults.length > 0) {
-                        // Rows exist in Exception_aprv table, delete them
-                        const deleteExceptionQuery = `DELETE FROM Exception_aprv WHERE sync_status = '01' AND application_no = '${data.application_no}'`;
-                        const deleteIndividualQuery = `DELETE FROM Individual_application WHERE sync_status = '01' AND application_no = '${data.application_no}'`;
+      //                 if (exceptionResults.length > 0) {
+      //                   // Rows exist in Exception_aprv table, delete them
+      //                   const deleteExceptionQuery = `DELETE FROM Exception_aprv WHERE sync_status = '01' AND application_no = '${data.application_no}'`;
+      //                   const deleteIndividualQuery = `DELETE FROM Individual_application WHERE sync_status = '01' AND application_no = '${data.application_no}'`;
 
-                        global.db.transaction(txDelete => {
-                          txDelete.executeSql(
-                            deleteExceptionQuery,
-                            [],
-                            (txDeleteObj, deleteExceptionResultSet) => {
-                              console.log('Deleted rows from Exception_aprv:', deleteExceptionResultSet.rowsAffected);
-                              txDelete.executeSql(
-                                deleteIndividualQuery,
-                                [],
-                                (txDeleteObj, deleteIndividualResultSet) => {
-                                  console.log('Deleted rows from Individual_application:', deleteIndividualResultSet.rowsAffected);
-                                  resolve('success');
-                                },
-                                (txDeleteObj, deleteIndividualError) => {
-                                  reject(deleteIndividualError);
-                                  console.error('Delete from Individual_application error:', deleteIndividualError);
-                                },
-                              );
-                            },
-                            (txDeleteObj, deleteExceptionError) => {
-                              reject(deleteExceptionError);
-                              console.error('Delete from Exception_aprv error:', deleteExceptionError);
-                            },
-                          );
-                        });
-                      } else {
-                        resolve('success');
-                      }
-                    },
-                    (txSelectObj, selectExceptionError) => {
-                      reject(selectExceptionError);
-                      console.error('Select from Exception_aprv error:', selectExceptionError);
-                    },
-                  );
-                })
-              }
-            })
-        }
-        )
-      }
+      //                   global.db.transaction(txDelete => {
+      //                     txDelete.executeSql(
+      //                       deleteExceptionQuery,
+      //                       [],
+      //                       (txDeleteObj, deleteExceptionResultSet) => {
+      //                         console.log('Deleted rows from Exception_aprv:', deleteExceptionResultSet.rowsAffected);
+      //                         txDelete.executeSql(
+      //                           deleteIndividualQuery,
+      //                           [],
+      //                           (txDeleteObj, deleteIndividualResultSet) => {
+      //                             console.log('Deleted rows from Individual_application:', deleteIndividualResultSet.rowsAffected);
+      //                             resolve('success');
+      //                           },
+      //                           (txDeleteObj, deleteIndividualError) => {
+      //                             reject(deleteIndividualError);
+      //                             console.error('Delete from Individual_application error:', deleteIndividualError);
+      //                           },
+      //                         );
+      //                       },
+      //                       (txDeleteObj, deleteExceptionError) => {
+      //                         reject(deleteExceptionError);
+      //                         console.error('Delete from Exception_aprv error:', deleteExceptionError);
+      //                       },
+      //                     );
+      //                   });
+      //                 } else {
+      //                   resolve('success');
+      //                 }
+      //               },
+      //               (txSelectObj, selectExceptionError) => {
+      //                 reject(selectExceptionError);
+      //                 console.error('Select from Exception_aprv error:', selectExceptionError);
+      //               },
+      //             );
+      //           })
+      //         }
+      //       })
+      //   }
+      //   )
+      // }
       //delete if sync_status=02
       // if (data.sync_sts === '01') {
       //   console.log('response.data.individualApplication[0].applicationNo',data.application_no);
