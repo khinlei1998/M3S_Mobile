@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {Alert, FileSystem} from 'react-native';
+import { Alert, FileSystem } from 'react-native';
 import RNFS from 'react-native-fs';
 const ExecuteQuery = (sql, params = []) =>
   new Promise((resolve, reject) => {
@@ -46,7 +46,7 @@ export function getIndividual_loan() {
         axios
           // .get(`https://${newIP}/skylark-m3s/api/employees.m3s`)
           .get(`https://${ip}:${port}/skylark-m3s/api/individualLoans.m3s`)
-          .then(({data}) => {
+          .then(({ data }) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -436,7 +436,7 @@ export async function deleteLoan_ByID(data) {
       try {
         const exists = await RNFS.exists(coBorrowerImagePath);
         if (exists) {
-          console.log('co borrower exist',exists);
+          console.log('co borrower exist', exists);
           await RNFS.unlink(coBorrowerImagePath);
           console.log('File deleted successfully');
         } else {
@@ -496,7 +496,7 @@ export function UploadLoanData(data) {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: 'https://48e7-103-116-57-209.ngrok-free.app/skylark-m3s/api/individualLoan.m3s',
+      url: 'https://083d-103-231-92-94.ngrok-free.app/skylark-m3s/api/individualLoan.m3s',
       headers: {
         Cookie: 'JSESSIONID=nVnRW80EvQ6teKGkjmeggo86bp_djUvxA44l4y2Q.aungmac',
       },
@@ -515,25 +515,7 @@ export function UploadLoanData(data) {
       await axios
         .request(config)
         .then(response => {
-          // console.log('response', response.data[0].errMsg);
           console.log('response data', response.data);
-          // if (response.data[0].errMsg) {
-          //   failedData.push(response.data[0].customerNm);
-          // } else {
-          //   global.db.transaction(tx => {
-          //     tx.executeSql(
-          //       'UPDATE Customer set tablet_sync_sts=? where id=?',
-          //       ['01', response.data[0].id],
-          //       (txObj, resultSet) => {
-          //         console.log('Update successful');
-          //       },
-          //       (txObj, error) => {
-          //         reject(error);
-          //         console.error('Update error:', error);
-          //       },
-          //     );
-          //   });
-          // }
         })
         .catch(error => {
           console.log('axios error', error.response.data);
@@ -585,11 +567,11 @@ export async function getAllLoan_By_application_no() {
 
 export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
   const failedData = [];
+  let successCount = 0;
 
   try {
     for (const data of checkedItems) {
       const applicationNo = data.application_no;
-
       let individual_loan_data = {
         id: data.id,
         statusCode: data.status_code,
@@ -728,35 +710,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
       const areaevaluation = await fetchAreaEvaluation(applicationNo);
       const exception_aprv = await fetchExceptionAprv(applicationNo);
       const relation_info = await fetchRelationInfo(applicationNo);
-      let test_relation = {
-        organizationCode: '',
-        serialNo: '',
-        statusCode: '01',
-        createUserId: 'M00547',
-        updateUserId: 'M00547',
-        tabletExcptAprvRqstNo: '',
-        // excptAprvRqstNo: 'EAM0054720230507001',
-        tabletGroupAplcNo: '',
-        groupAplcNo: '',
-        tabletAplcNo: '',
-        applicationNo: '10M0054720230507001',
-        exceptionRqstDate: '2023-05-07',
-        borrowerName: 'John Doe',
-        applicationAmt: 500000.0,
-        birthDate: '1967-06-28',
-        borrowerAge: 63.0,
-        groupMemberNum: 6.0,
-        occupation: 'Clothing Shop',
-        netIncome: 500000.0,
-        excptAprvRsn1: 'N',
-        excptAprvRsn2: 'N',
-        excptAprvRsn3: 'N',
-        exceptionReason: 'Over 60 Years',
-        recommendNm: '',
-        tabletSyncSts: '99',
-        syncSts: '',
-        errMsg: '',
-      };
+
       let formData = new FormData();
       formData.append(
         'individualApplication',
@@ -766,12 +720,80 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
       formData.append('areaEvaluation', '[]');
       formData.append('relationInfo', '[]');
       formData.append('approvalRequests', '[]');
-      console.log('fromData', formData);
+
+      if (data.borrower_sign) {
+        let borrower_sign_form_data = new FormData();
+        borrower_sign_form_data.append('description', 'anything');
+        borrower_sign_form_data.append('file', {
+          uri: `file://${data.borrower_sign}`,
+          type: 'image/jpg',
+          name: data.borrower_sign,
+        });
+
+        let config = {
+          method: 'post',
+          maxBodyLength: Infinity,
+          url: 'https://1d8a-103-231-92-120.ngrok-free.app/skylark-m3s/file/upload.m3s',
+          headers: {
+            'Cookie': 'JSESSIONID=0KelytuY8bGOetOcT9iWeIDnpb5zOeBR68hMOxG7.desktop-3jeqpa9',
+            'Content-Type': 'multipart/form-data',
+
+          },
+          data: borrower_sign_form_data
+        };
+
+        axios.request(config)
+          .then((response) => {
+            console.log('img response', response.status);
+            // console.log(JSON.stringify(response.data));
+          })
+          .catch((error) => {
+            // alert('Borrower Sign fail upload')
+            const errorData = {
+              form: 'individualApplication',
+              message: 'Borrower Sign fail upload',
+            };
+            failedData.push(errorData);
+            console.log(error);
+          });
+
+      }
+      if (data.co_borrower_sign) {
+        let co_borrower_sign_form_data = new FormData();
+        co_borrower_sign_form_data.append('description', 'anything');
+        co_borrower_sign_form_data.append('file', {
+          uri: `file://${data.co_borrower_sign}`,
+          type: 'image/jpg',
+          name: data.co_borrower_sign,
+        });
+
+        let config = {
+          method: 'post',
+          maxBodyLength: Infinity,
+          url: 'https://1d8a-103-231-92-120.ngrok-free.app/skylark-m3s/file/upload.m3s',
+          headers: {
+            'Cookie': 'JSESSIONID=0KelytuY8bGOetOcT9iWeIDnpb5zOeBR68hMOxG7.desktop-3jeqpa9',
+            'Content-Type': 'multipart/form-data',
+
+          },
+          data: co_borrower_sign_form_data
+        };
+
+        axios.request(config)
+          .then((response) => {
+            console.log('img response', response.status);
+            // console.log(JSON.stringify(response.data));
+          })
+          .catch((error) => {
+            alert('Co Borrower Sign fail upload')
+            console.log(error);
+          });
+      }
 
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'https://6275-103-116-56-80.ngrok-free.app/skylark-m3s/api/individualLoan.m3s',
+        url: 'https://1d8a-103-231-92-120.ngrok-free.app/skylark-m3s/api/individualLoan.m3s',
         headers: {
           Cookie: 'JSESSIONID=nVnRW80EvQ6teKGkjmeggo86bp_djUvxA44l4y2Q.aungmac',
         },
@@ -787,9 +809,9 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           form: 'individualApplication',
           message: response.data.individualApplication[0].errMsg,
         };
-        console.log('error', error);
         failedData.push(error);
       } else {
+        successCount++;
         global.db.transaction(tx => {
           tx.executeSql(
             'UPDATE Individual_application set sync_sts=? where id=?',
@@ -870,19 +892,44 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           failedData.push(error);
         }
       }
+      console.log('checked data', data);
+      //delete if sync_status=02
+      if (data.sync_sts === '01') {
+        console.log('response.data.individualApplication[0].applicationNo',data.application_no);
+        const deleteQueries = [
+          `DELETE FROM Individual_application WHERE application_no =${data.application_no}`,
+          `DELETE FROM Exception_aprv WHERE application_no = '${data.application_no}'`,
+          `DELETE FROM Guarantee WHERE application_no = '${data.application_no}'`,
+          `DELETE FROM AreaEvaluation WHERE application_no = '${data.application_no}'`,
+          `DELETE FROM RelationInfo WHERE application_no = '${ data.application_no}'`,
+        ];
+        global.db.transaction(tx => {
+          deleteQueries.forEach(query => {
+            tx.executeSql(
+              query,
+              [],
+              (txObj, resultSet) => {
+                console.log('Delete successful');
+              },
+              (txObj, error) => {
+                reject(error);
+                console.error('Delete error:', error);
+              },
+            );
+          });
+        });
+      }
+
     }
-    console.log('failedData', failedData);
     if (failedData.length > 0) {
-      const errorMessage = `Failed to upload ${
-        failedData.length
-      } data items:\n${JSON.stringify(failedData)}`;
-      console.log('failedData', failedData);
+
       return failedData;
     } else {
       return 'success';
     }
   } catch (error) {
-    Alert.alert('out Error', 'Axios error occurred.');
+    return error
+    // Alert.alert('out Error', 'Axios error occurred.');
   }
 };
 

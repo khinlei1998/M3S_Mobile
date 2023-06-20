@@ -1,9 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {BASE_URL} from '../common';
+import { BASE_URL } from '../common';
 import moment from 'moment';
-import {fetchEmpName} from './Employee_query';
-import {Alert} from 'react-native';
+import { fetchEmpName } from './Employee_query';
+import { Alert } from 'react-native';
 
 const ExecuteQuery = (sql, params = []) =>
   new Promise((resolve, reject) => {
@@ -87,7 +87,7 @@ export function getCustomer_info() {
             `https://${ip}:${port}/skylark-m3s/api/customers.m3s`,
             // { responseType: 'json' }
           )
-          .then(({data}) => {
+          .then(({ data }) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -789,7 +789,8 @@ export async function UploadCustomerData(customer_data) {
 
       await axios
         .post(
-          `https://6275-103-116-56-80.ngrok-free.app/skylark-m3s/api/customers.m3s`,
+          // `https://${ip}:${port}/skylark-m3s/api/customers.m3s`,
+          'https://1d8a-103-231-92-120.ngrok-free.app/skylark-m3s/api/customers.m3s',
           data,
           {
             headers: {
@@ -844,18 +845,18 @@ export async function UploadCustomerData(customer_data) {
     //   resolve('success');
     // }
     if (failedData.length > 0) {
-      const errorMessage = `Failed to upload ${
-        failedData.length
-      } data items:\n${JSON.stringify(failedData)}`;
+      const errorMessage = `Failed to upload ${failedData.length
+        } data items:\n${JSON.stringify(failedData)}`;
       console.log('failedData', failedData);
       return failedData;
     } else {
       return 'success';
     }
   } catch (error) {
-    alert('Axios error occurred');
-    // reject(error);
-    console.log('error', error);
+    return error
+    // alert('Axios error occurred');
+    // // reject(error);
+    // console.log('error', error);
   }
   //  });
 }
