@@ -40,6 +40,7 @@ export async function getAllCustomer() {
 }
 
 export async function filterCustomer(selectedColumn, searchTerm) {
+  console.log('gg');
   let sql;
   if (selectedColumn && searchTerm) {
     sql = `SELECT * FROM Customer  WHERE ${selectedColumn} LIKE '%${searchTerm}%'`;

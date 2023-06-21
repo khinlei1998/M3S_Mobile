@@ -1,9 +1,7 @@
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
-import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
-import {Button} from 'react-native-paper';
 
-export default function Borrower_Sign(props) {
+export default function Individual_Staff_Sign(props) {
   const {
     coborrower_sign_path,
     show_coborrower_sign,
@@ -18,6 +16,8 @@ export default function Borrower_Sign(props) {
     co_borrower_filePath,
     show_co_borrower_canvas,
   } = props;
+  console.log('show_borrower_sign', show_borrower_sign);
+  console.log('coborrower_sign_path', coborrower_sign_path);
   return (
     <>
       <View style={{flex: 1, padding: 5, margin: 20}}>
@@ -38,17 +38,7 @@ export default function Borrower_Sign(props) {
 
           <View>
             <Text style={{fontWeight: 'bold', fontSize: 15}}>Sign</Text>
-            {show_borrower_sign == '' && (
-              <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
-                <Image
-                  source={{
-                    uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
-                  }}
-                  style={{width: 100, height: 50}}
-                />
-              </TouchableOpacity>
-            )}
-            {borrower_sign_path !== '' && (
+            {borrower_sign_path ? (
               <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
                 <Image
                   // source={{uri: `file://${borrower_sign_path}`}}
@@ -56,14 +46,14 @@ export default function Borrower_Sign(props) {
                   style={{width: 100, height: 50}}
                 />
               </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
+                <Image
+                  source={require('../../../assets/images/default-sign.png')}
+                  style={{width: 100, height: 50}}
+                />
+              </TouchableOpacity>
             )}
-            {/* <View style={{width: 300, height: 300,backgroundColor:'red'}}>
-            <SketchCanvas
-              style={{flex: 1}}
-              strokeColor="#000000"
-              strokeWidth={3}
-            />
-          </View> */}
           </View>
         </View>
 
@@ -110,7 +100,6 @@ export default function Borrower_Sign(props) {
                 />
               </TouchableOpacity>
             )}
-
           </View>
         </View>
       </View>

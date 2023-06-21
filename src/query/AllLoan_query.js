@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { Alert, FileSystem } from 'react-native';
+import {Alert, FileSystem} from 'react-native';
 import RNFS from 'react-native-fs';
 const ExecuteQuery = (sql, params = []) =>
   new Promise((resolve, reject) => {
@@ -46,7 +46,7 @@ export function getIndividual_loan() {
         axios
           // .get(`https://${newIP}/skylark-m3s/api/employees.m3s`)
           .get(`https://${ip}:${port}/skylark-m3s/api/individualLoans.m3s`)
-          .then(({ data }) => {
+          .then(({data}) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -566,11 +566,14 @@ export async function getAllLoan_By_application_no() {
 }
 
 export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
+  console.log('checkedItems', checkedItems);
   const failedData = [];
   let successCount = 0;
-
+  let success_id = [];
+  console.log('failedData', failedData);
   try {
     for (const data of checkedItems) {
+      console.log('checked data', data);
       const applicationNo = data.application_no;
       let individual_loan_data = {
         id: data.id,
@@ -721,6 +724,11 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
       formData.append('relationInfo', '[]');
       formData.append('approvalRequests', '[]');
 
+      // formData.append(
+      //   'approvalRequests',
+      //   '[{"organizationCode":"","serialNo":"","statusCode":"01","createUserId":"M00547","updateUserId":"M00547","tabletExcptAprvRqstNo":"","excptAprvRqstNo":"55559","tabletGroupAplcNo":"","groupAplcNo":"","tabletAplcNo":"","applicationNo":"10M00172TB2023062123","exceptionRqstDate":"2023-05-07","borrowerName":"John Doe","applicationAmt":500000.0,"birthDate":"1967-06-28","borrowerAge":63.0,"groupMemberNum":6.0,"occupation":"Clothing Shop","netIncome":500000.0,"excptAprvRsn1":"N","excptAprvRsn2":"N","excptAprvRsn3":"N","exceptionReason":"Over 60 Years","recommendNm":"","tabletSyncSts":"00","syncSts":""}]',
+      // );
+
       if (data.borrower_sign) {
         let borrower_sign_form_data = new FormData();
         borrower_sign_form_data.append('description', 'anything');
@@ -733,21 +741,22 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         let config = {
           method: 'post',
           maxBodyLength: Infinity,
-          url: 'https://1d8a-103-231-92-120.ngrok-free.app/skylark-m3s/file/upload.m3s',
+          url: 'https://a616-136-228-173-71.ngrok-free.app/skylark-m3s/file/upload.m3s',
           headers: {
-            'Cookie': 'JSESSIONID=0KelytuY8bGOetOcT9iWeIDnpb5zOeBR68hMOxG7.desktop-3jeqpa9',
+            Cookie:
+              'JSESSIONID=0KelytuY8bGOetOcT9iWeIDnpb5zOeBR68hMOxG7.desktop-3jeqpa9',
             'Content-Type': 'multipart/form-data',
-
           },
-          data: borrower_sign_form_data
+          data: borrower_sign_form_data,
         };
 
-        axios.request(config)
-          .then((response) => {
+        axios
+          .request(config)
+          .then(response => {
             console.log('img response', response.status);
             // console.log(JSON.stringify(response.data));
           })
-          .catch((error) => {
+          .catch(error => {
             // alert('Borrower Sign fail upload')
             const errorData = {
               form: 'individualApplication',
@@ -756,7 +765,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
             failedData.push(errorData);
             console.log(error);
           });
-
       }
       if (data.co_borrower_sign) {
         let co_borrower_sign_form_data = new FormData();
@@ -770,22 +778,23 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         let config = {
           method: 'post',
           maxBodyLength: Infinity,
-          url: 'https://1d8a-103-231-92-120.ngrok-free.app/skylark-m3s/file/upload.m3s',
+          url: 'https://a616-136-228-173-71.ngrok-free.app/skylark-m3s/file/upload.m3s',
           headers: {
-            'Cookie': 'JSESSIONID=0KelytuY8bGOetOcT9iWeIDnpb5zOeBR68hMOxG7.desktop-3jeqpa9',
+            Cookie:
+              'JSESSIONID=0KelytuY8bGOetOcT9iWeIDnpb5zOeBR68hMOxG7.desktop-3jeqpa9',
             'Content-Type': 'multipart/form-data',
-
           },
-          data: co_borrower_sign_form_data
+          data: co_borrower_sign_form_data,
         };
 
-        axios.request(config)
-          .then((response) => {
+        axios
+          .request(config)
+          .then(response => {
             console.log('img response', response.status);
             // console.log(JSON.stringify(response.data));
           })
-          .catch((error) => {
-            alert('Co Borrower Sign fail upload')
+          .catch(error => {
+            alert('Co Borrower Sign fail upload');
             console.log(error);
           });
       }
@@ -793,13 +802,14 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'https://1d8a-103-231-92-120.ngrok-free.app/skylark-m3s/api/individualLoan.m3s',
+        url: 'https://a616-136-228-173-71.ngrok-free.app/skylark-m3s/api/individualLoan.m3s',
         headers: {
           Cookie: 'JSESSIONID=nVnRW80EvQ6teKGkjmeggo86bp_djUvxA44l4y2Q.aungmac',
         },
         data: formData,
       };
       const response = await axios.request(config);
+      console.log('response', response);
 
       if (
         response.data.individualApplication &&
@@ -811,11 +821,12 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         };
         failedData.push(error);
       } else {
+        //1
         successCount++;
         global.db.transaction(tx => {
           tx.executeSql(
-            'UPDATE Individual_application set sync_sts=? where id=?',
-            ['01', response.data.individualApplication[0].id],
+            'UPDATE Individual_application set tablet_sync_sts=? where application_no=?',
+            ['01', data.application_no],
             (txObj, resultSet) => {
               console.log('Update successful');
             },
@@ -826,22 +837,23 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           );
         });
       }
+
       if (response.data.approvalRequests) {
         if (
           response.data.approvalRequests[0] &&
           response.data.approvalRequests[0].errMsg
         ) {
-          console.log('Error in approvalRequests');
           const error = {
             form: 'approvalRequests',
             message: response.data.approvalRequests[0].errMsg,
           };
           failedData.push(error);
         } else {
+          //1
           global.db.transaction(tx => {
             tx.executeSql(
-              'UPDATE Exception_aprv set sync_sts=? where id=?',
-              ['01', response.data.approvalRequests[0].id],
+              'UPDATE Exception_aprv set tablet_sync_sts=? where application_no=?',
+              ['01', response.data.approvalRequests[0].application_no],
               (txObj, resultSet) => {
                 console.log('Update successful');
               },
@@ -853,174 +865,87 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           });
         }
       }
-
-      if (response.data.guarantee) {
-        if (response.data.guarantee[0] && response.data.guarantee[0].errMsg) {
-          console.log('Error in guarantee');
-          const error = {
-            form: 'guarantee',
-            message: response.data.guarantee[0].errMsg,
-          };
-          failedData.push(error);
-        }
-      }
-
-      if (response.data.areaEvaluation) {
-        if (
-          response.data.areaEvaluation[0] &&
-          response.data.areaEvaluation[0].errMsg
-        ) {
-          console.log('Error in areaEvaluation');
-          const error = {
-            form: 'areaEvaluation',
-            message: response.data.areaEvaluation[0].errMsg,
-          };
-          failedData.push(error);
-        }
-      }
-
-      if (response.data.relationInfo) {
-        if (
-          response.data.relationInfo[0] &&
-          response.data.relationInfo[0].errMsg
-        ) {
-          console.log('Error in relationInfo');
-          const error = {
-            form: 'relationInfo',
-            message: response.data.relationInfo[0].errMsg,
-          };
-          failedData.push(error);
-        }
-      }
-
-      // if (data.sync_sts === '01') {
-      //   console.log('response.data.individualApplication[0].applicationNo', data.application_no);
-
-      //   const selectIndividualQuery = `SELECT * FROM Individual_application WHERE sync_status = '01' AND application_no = '${data.application_no}'`;
-
-      //   global.db.transaction(tx => {
-      //     tx.executeSql(
-      //       selectIndividualQuery,
-      //       [],
-      //       (txObj, individualResultSet) => {
-      //         const individualResults = individualResultSet.rows;
-
-      //         if (individualResults.length > 0) {
-      //           // Rows exist in Individual_application table, delete them
-      //           const selectExceptionQuery = `SELECT * FROM Exception_aprv WHERE sync_status = '01' AND application_no = '${data.application_no}'`;
-
-      //           global.db.transaction(txSelect => {
-      //             txSelect.executeSql(
-      //               selectExceptionQuery,
-      //               [],
-      //               (txSelectObj, exceptionResultSet) => {
-      //                 const exceptionResults = exceptionResultSet.rows;
-
-      //                 if (exceptionResults.length > 0) {
-      //                   // Rows exist in Exception_aprv table, delete them
-      //                   const deleteExceptionQuery = `DELETE FROM Exception_aprv WHERE sync_status = '01' AND application_no = '${data.application_no}'`;
-      //                   const deleteIndividualQuery = `DELETE FROM Individual_application WHERE sync_status = '01' AND application_no = '${data.application_no}'`;
-
-      //                   global.db.transaction(txDelete => {
-      //                     txDelete.executeSql(
-      //                       deleteExceptionQuery,
-      //                       [],
-      //                       (txDeleteObj, deleteExceptionResultSet) => {
-      //                         console.log('Deleted rows from Exception_aprv:', deleteExceptionResultSet.rowsAffected);
-      //                         txDelete.executeSql(
-      //                           deleteIndividualQuery,
-      //                           [],
-      //                           (txDeleteObj, deleteIndividualResultSet) => {
-      //                             console.log('Deleted rows from Individual_application:', deleteIndividualResultSet.rowsAffected);
-      //                             resolve('success');
-      //                           },
-      //                           (txDeleteObj, deleteIndividualError) => {
-      //                             reject(deleteIndividualError);
-      //                             console.error('Delete from Individual_application error:', deleteIndividualError);
-      //                           },
-      //                         );
-      //                       },
-      //                       (txDeleteObj, deleteExceptionError) => {
-      //                         reject(deleteExceptionError);
-      //                         console.error('Delete from Exception_aprv error:', deleteExceptionError);
-      //                       },
-      //                     );
-      //                   });
-      //                 } else {
-      //                   resolve('success');
-      //                 }
-      //               },
-      //               (txSelectObj, selectExceptionError) => {
-      //                 reject(selectExceptionError);
-      //                 console.error('Select from Exception_aprv error:', selectExceptionError);
-      //               },
-      //             );
-      //           })
-      //         }
-      //       })
-      //   }
-      //   )
-      // }
-      //delete if sync_status=02
-      // if (data.sync_sts === '01') {
-      //   console.log('response.data.individualApplication[0].applicationNo',data.application_no);
-      //   const deleteQueries = [
-      //     `DELETE FROM Individual_application WHERE application_no =${data.application_no}`,
-      // `DELETE FROM Exception_aprv WHERE application_no = '${data.application_no}'`,
-      // `DELETE FROM Guarantee WHERE application_no = '${data.application_no}'`,
-      // `DELETE FROM AreaEvaluation WHERE application_no = '${data.application_no}'`,
-      // `DELETE FROM RelationInfo WHERE application_no = '${ data.application_no}'`,
-      // ];
-      // global.db.transaction(tx => {
-      //   deleteQueries.forEach(query => {
-      //     tx.executeSql(
-      //       query,
-      //       [],
-      //       (txObj, resultSet) => {
-      //         console.log('Delete successful');
-      //       },
-      //       (txObj, error) => {
-      //         reject(error);
-      //         console.error('Delete error:', error);
-      //       },
-      //     );
-      //   });
-      // });
-      // global.db.transaction(tx => {
-      //   tx.executeSql(
-      //     // `DELETE FROM Individual_application WHERE application_no = "${data.application_no}"`,
-      //     `SELECT * FROM Individual_application WHERE sync_status = '01' AND application_no = '${data.application_no}'`,
-      //     [],
-      //     (txObj, resultSet) => {
-      //       console.log('resultSet', resultSet);
-      //       const results = resultSet.rows;
-      //       if (results.length > 0) {
-      //         const selectExceptionQuery = `SELECT * FROM Exception_aprv WHERE sync_status = '01' AND application_number = '${data.application_number}'`;
-
-      //       }
-      //       resolve('success');
-      //       // Delete query successful
-      //       console.log('Delete successful');
-      //     },
-      //     (txObj, error) => {
-      //       // Error occurred while executing the delete query
-      //       console.error('Delete error:', error);
-      //     },
-      //   );
-      // });
     }
-
-
-
 
     if (failedData.length > 0) {
-
       return failedData;
     } else {
-      return 'success';
+      console.log('Ok>>>>>>>>>>>>');
+      for (const data of checkedItems) {
+        // global.db.transaction(tx => {
+        //   tx.executeSql(
+        //     `DELETE FROM Individual_application WHERE application_no = ? AND tablet_sync_sts = '01'`,
+        //     [data.application_no],
+        //     (txObj, resultSet) => {
+        //       let test = resultSet.rows();
+        //       if (test.length > 0) {
+        //         tx.executeSql(
+        //           `DELETE FROM Exception_aprv WHERE application_no = ? AND tablet_sync_sts = '01'`,
+        //           [data.application_no],
+        //           (txObj, resultSet) => {
+        //             resolve('success')
+        //             console.log('Delete Exception_aprv successful');
+        //           },
+        //           (txObj, error) => {
+        //             // Error occurred while executing the delete query
+        //             console.error('Delete error:', error);
+        //             reject(error);
+        //           },
+        //         );
+        //       }
+        //       resolve('success');
+        //       // Delete query successful
+        //       console.log('Delete Individula Table successful');
+        //     },
+        //     (txObj, error) => {
+        //       // Error occurred while executing the delete query
+        //       console.error('Delete error:', error);
+        //       reject(error);
+        //     },
+        //   );
+        // });
+        await new Promise((resolve, reject) => {
+          global.db.transaction(tx => {
+            tx.executeSql(
+              `DELETE FROM Individual_application WHERE application_no = ? AND tablet_sync_sts = '01'`,
+              [data.application_no],
+              (txObj, resultSet) => {
+                console.log('Delete from Individual_application successful');
+                resolve();
+              },
+              (txObj, error) => {
+                console.error(
+                  'Delete from Individual_application error:',
+                  error,
+                );
+                reject(error);
+              },
+            );
+          });
+        });
+
+        await new Promise((resolve, reject) => {
+          global.db.transaction(tx => {
+            tx.executeSql(
+              `DELETE FROM Exception_aprv WHERE application_no = ? AND tablet_sync_sts = '01'`,
+              [data.application_no],
+              (txObj, resultSet) => {
+                console.log('Delete from Exception_aprv successful');
+                resolve();
+              },
+              (txObj, error) => {
+                console.error('Delete from Exception_aprv error:', error);
+                reject(error);
+              },
+            );
+          });
+        });
+
+      }
+       return 'success';
     }
   } catch (error) {
-    return error
+    return error;
     // Alert.alert('out Error', 'Axios error occurred.');
   }
 };

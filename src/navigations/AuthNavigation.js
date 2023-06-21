@@ -12,6 +12,7 @@ import Individual_Loan from '../screens/Loan/Individual_Loan';
 import Sign1 from '../screens/Loan/Sign1';
 import Home from '../screens/Dashboard/Home';
 import Edit_Individual_Loan from '../screens/Edit_Loan/Edit_Individual_Loan';
+import Individual_Staff_loan_Info from '../screens/Staff_Loan/Individual_Staff_loan_Info';
 export default function AuthNavigation(props) {
   const Stack = createNativeStackNavigator();
   return (
@@ -26,6 +27,11 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
+        <Stack.Screen
+        name="Indi_Staff_loan"
+        component={Individual_Staff_loan_Info}
+        options={{headerShown: false}}
+      />
          {/* <Stack.Screen
         name="Customer Management"
         component={Customer_Management}

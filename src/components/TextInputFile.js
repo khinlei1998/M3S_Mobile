@@ -9,6 +9,7 @@ export default function TextInputFile(props) {
   const [totalSum, setTotalSum] = useState(0);
 
   const {
+    require,
     focusTextInput,
     handleTextInputFocus,
     input_mode,
@@ -76,7 +77,12 @@ export default function TextInputFile(props) {
         }}
         onFocus={focusTextInput && handleTextInputFocus}
         mode={input_mode ? 'flat' : ''}
-        label={title}
+        // label={title}
+        label={
+          <Text>
+            {title} {require && <Text style={{color: 'red'}}>*</Text>}
+          </Text>
+        }
         onChangeText={text => handleTextChange(text)}
         // onChangeText={text => onChange(text)}
         style={{
@@ -106,7 +112,7 @@ export default function TextInputFile(props) {
           ) : icon == 'magnify' ? (
             <TextInput.Icon icon={icon} onPress={handleTextInputFocus} />
           ) : icon == 'calendar' ? (
-            <TextInput.Icon icon={icon}  />
+            <TextInput.Icon icon={icon} />
           ) : null
         }
       />

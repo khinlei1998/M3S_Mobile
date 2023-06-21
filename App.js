@@ -1,16 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, {useState, useEffect, useRef} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
 import RootNavigation from './src/navigations/RootNavigation';
 import AuthNavigation from './src/navigations/AuthNavigation';
 // import {store} from './src/redux/store';
-import { Provider } from 'react-redux';
-import { AuthContext } from './src/components/context';
+import {Provider} from 'react-redux';
+import {AuthContext} from './src/components/context';
 import SQLite from 'react-native-sqlite-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './src/screens/SplashScreen';
 import store from './src/redux/store';
 import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
-import { StyleSheet, View, Text, Image, Button,PermissionsAndroid  } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  Button,
+  PermissionsAndroid,
+} from 'react-native';
 import RNFS from 'react-native-fs';
 
 export default function App() {
@@ -28,6 +35,36 @@ export default function App() {
       console.log('error ::', e);
     }
   };
+  const requestWriteStoragePermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: 'Write Storage Permission',
+          message:
+            'App needs access to your device storage to save the signature image.',
+          buttonPositive: 'OK',
+          buttonNegative: 'Cancel',
+        },
+      );
+
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        await AsyncStorage.setItem(
+          'writeStoragePermission',
+          PermissionsAndroid.RESULTS.GRANTED,
+        );
+        return true; // Permission granted
+      } else {
+        await AsyncStorage.setItem(
+          'writeStoragePermission',
+          PermissionsAndroid.RESULTS.DENIED,
+        );
+        return false; // Permission denied
+      }
+    } catch (error) {
+      console.log('Error requesting write storage permission:', error);
+    }
+  };
 
   const removeUserID = async () => {
     try {
@@ -43,7 +80,7 @@ export default function App() {
       name: 'M3SDB.db',
       createFromLocation: '~M3SDB.db',
       location: 'Library',
-      readOnly: false
+      readOnly: false,
     },
     success => {
       console.log('DB Connection Created');
@@ -58,7 +95,6 @@ export default function App() {
       try {
         await AsyncStorage.setItem('ip', 'sample-rest.onrender.com');
         await AsyncStorage.setItem('port', '443');
-
       } catch (e) {
         console.log('error ::', e);
       }
@@ -67,13 +103,11 @@ export default function App() {
       showSplash(false);
     }, 3000);
 
-
-
+    requestWriteStoragePermission();
     saveIp();
 
     return () => clearTimeout(timer);
   }, []);
-
 
   return (
     <Provider store={store}>
@@ -91,7 +125,6 @@ export default function App() {
         )}
       </NavigationContainer>
     </Provider>
- 
   );
 }
 const styles = StyleSheet.create({
