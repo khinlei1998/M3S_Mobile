@@ -51,7 +51,9 @@ import moment from 'moment';
 import {filterCustomer} from '../../query/Customer_query';
 import {getAllCustomer} from '../../query/Customer_query';
 import SignatureCapture from 'react-native-signature-capture';
-
+import RNFS from 'react-native-fs';
+import { filterEmp } from '../../query/Employee_query';
+import { storeStaffLoanData } from '../../query/StaffLoan_query';
 const Borrower_Sign_Modal = props => {
   const {
     show_canvas,
@@ -259,15 +261,15 @@ const Emp_No_Search_modal = props => {
     setEmpData(inputText);
   };
 
-  const btnCusSearch = async () => {
-    await filterCustomer(selectedItemValue, emp_data)
+  const btnEmpSearch = async () => {
+    await filterEmp(selectedItemValue, emp_data)
       .then(data => (data.length > 0 ? setAllCus(data) : alert('No data')))
       .catch(error => console.log('error', error));
   };
   const btnSelectEmployee = item => {
-    setSelectedValue(item.id);
+    setSelectedValue(item.serial_no);
     dispatch(
-      change('Individual_Staff_Loan_Form', 'borrower_name', item.customer_nm),
+      change('Individual_Staff_Loan_Form', 'borrower_name', item.employee_name),
     );
     dispatch(
       change(
@@ -277,11 +279,12 @@ const Emp_No_Search_modal = props => {
       ),
     );
     dispatch(
-      change('Individual_Staff_Loan_Form', 'employee_no', item.customer_no),
+      change('Individual_Staff_Loan_Form', 'employee_no', item.employee_no),
     );
   };
 
   const item = ({item, index}) => {
+    console.log('item',item);
     return (
       <View
         style={{
@@ -302,14 +305,14 @@ const Emp_No_Search_modal = props => {
             padding: 10,
             flex: 1,
           }}>
-          {item.customer_no}
+          {item.employee_no}
         </Text>
         <Text
           style={{
             padding: 10,
             flex: 1,
           }}>
-          {item.customer_nm}
+          {item.employee_name}
         </Text>
 
         <Text
@@ -323,7 +326,7 @@ const Emp_No_Search_modal = props => {
         <View>
           <RadioButton
             value={item.id}
-            status={selectedValue === item.id ? 'checked' : 'unchecked'}
+            status={selectedValue === item.serial_no ? 'checked' : 'unchecked'}
             onPress={() => btnSelectEmployee(item)}
           />
         </View>
@@ -395,7 +398,7 @@ const Emp_No_Search_modal = props => {
                   right={
                     <TextInput.Icon
                       icon={'magnify'}
-                      onPress={() => btnCusSearch()}
+                      onPress={() => btnEmpSearch()}
                     />
                   }
                 />
@@ -503,6 +506,9 @@ const CoBorrower_NRC_Search_modal = props => {
   const btnSelectCustomer = item => {
     console.log('item', item);
     setSelectedValue(item.id);
+    dispatch(
+      change('Individual_Staff_Loan_Form', 'co_customer_no', item.co_customer_no),
+    );
     dispatch(
       change('Individual_Staff_Loan_Form', 'co_brwer_name', item.customer_nm),
     );
@@ -1779,7 +1785,7 @@ const Location_Modal = props => {
 };
 
 function Individual_Staff_loan_Info(props) {
-  const {navigation}=props
+  const {navigation} = props;
   const dispatch = useDispatch();
 
   const [show_operation, setOperation] = useState('1');
@@ -1798,7 +1804,7 @@ function Individual_Staff_loan_Info(props) {
   const [modal_city_visible, setCityCodeModalVisible] = useState(false);
   const [selectedCityItemValue, setCitySelectedItemValue] =
     useState('city_code');
-    const [filePath, setFilePath] = useState('');
+  const [filePath, setFilePath] = useState('');
   const [co_borrower_filePath, setCoBorrowerFilePath] = useState('');
   const [selectedTownshipItemValue, setTownshipSelectedItemValue] =
     useState('township_code');
@@ -1819,7 +1825,9 @@ function Individual_Staff_loan_Info(props) {
   const [coborrower_sign_path, setCoBorrowerSignPath] = useState('');
   const [show_coborrower_sign, setShowCoBorrowerSign] = useState('');
   const [showCanvas, setShowCanvas] = useState(false);
-
+  const [working_month, setWorkingMonth] = useState();
+  const [salary_amount, setSalaryAmountValue] = useState();
+  const [loan_limit_amount, setLoanLimitAmount] = useState(0);
   const {handleSubmit} = props;
   const handleLoanToggle = () => {
     setLoanExpanded(!loanexpanded);
@@ -1854,7 +1862,119 @@ function Individual_Staff_loan_Info(props) {
     loadData();
   }, []);
 
-  const onSubmit = () => {};
+  const saveSignatureToInternalStorage = async (image_encode, index) => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    try {
+      // Request write storage permission
+      const permissionStatus = await AsyncStorage.getItem(
+        'writeStoragePermission',
+      );
+      if (permissionStatus === PermissionsAndroid.RESULTS.GRANTED) {
+        // Generate a unique filename for the image
+        const filename = `10${user_id}TB${moment().format('YYYYMMDD')}${
+          all_loandata.length + 1
+        }SG${index}.jpg`;
+
+        // Define the destination path in the app's internal storage
+        let destinationPath;
+        if (Platform.OS === 'android') {
+          destinationPath = `${RNFS.ExternalDirectoryPath}/${filename}`;
+        } else if (Platform.OS === 'ios') {
+          destinationPath = `${RNFS.LibraryDirectoryPath}/${filename}`;
+        } else {
+          console.log('Unsupported platform.');
+          return null;
+        }
+
+        // Write the base64-encoded image data to the destination path
+        await RNFS.writeFile(destinationPath, image_encode, 'base64');
+        console.log('destinationPath', destinationPath);
+
+        // Check if the file exists
+        const fileExists = await RNFS.exists(destinationPath);
+        console.log('File exists:', fileExists);
+
+        return destinationPath;
+      } else {
+        console.log('Write storage permission denied.');
+        return null;
+      }
+    } catch (error) {
+      console.log('Error saving signature:', error);
+      return null;
+    }
+  };
+
+  const onSubmit = async values => {
+    try {
+      // Save the images
+      let borrowerImagePath, coBorrowerImagePath;
+      let saveImageError = false;
+
+      if (borrower_sign_path) {
+        borrowerImagePath = await saveSignatureToInternalStorage(
+          show_borrower_sign,
+          '01',
+        );
+        if (!borrowerImagePath) {
+          saveImageError = true;
+          ToastAndroid.show(
+            'Error! Borrower Sign cannot save',
+            ToastAndroid.SHORT,
+          );
+        } else {
+          console.log('Borrower image saved successfully:', borrowerImagePath);
+        }
+      }
+
+      if (coborrower_sign_path) {
+        coBorrowerImagePath = await saveSignatureToInternalStorage(
+          show_coborrower_sign,
+          '02',
+        );
+        if (!coBorrowerImagePath) {
+          saveImageError = true;
+          ToastAndroid.show(
+            'Error! Co-Borrower Sign cannot save',
+            ToastAndroid.SHORT,
+          );
+        } else {
+          console.log(
+            'Co-Borrower image saved successfully:',
+            coBorrowerImagePath,
+          );
+        }
+      }
+      console.log('borrowerImagePath', borrowerImagePath);
+      const exists = await RNFS.exists(filePath);
+      if (exists) {
+        console.log('exist');
+      } else {
+        console.log('no exist');
+      }
+      if (!saveImageError) {
+        const staff_loan = Object.assign({}, values, {
+          borrower_sign: borrowerImagePath,
+          co_borrower_sign: coBorrowerImagePath,
+          loan_limit_amt:loan_limit_amount
+        });
+
+        console.log('staff_loan',staff_loan);
+
+        await storeStaffLoanData(staff_loan).then(result => {
+          if (result == 'success') {
+            dispatch(reset('Individual_Staff_Loan_Form'));
+
+            ToastAndroid.show('Create Successfully!', ToastAndroid.SHORT);
+            props.navigation.navigate('Home');
+          }
+        });
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  };
+
   const showCustomerSearch = () => {
     setModalVisible(true);
   };
@@ -1909,44 +2029,6 @@ function Individual_Staff_loan_Info(props) {
   const _onSaveEvent = async result => {
     setBorrowerSignPath(result.pathName);
     setShowBorrowerSign(result.encoded);
-    // if (result && result.encoded) {
-    //   try {
-    //     // Save the signature to the internal storage
-    //     const savedFilePath = await saveSignatureToInternalStorage(result.encoded);
-
-    //     // Do something with the saved file path
-    //     console.log('Saved signature file path:', savedFilePath);
-    //   } catch (error) {
-    //     // Handle the error
-    //     console.log('Error:', error);
-    //   }
-    // }
-    // setBorrowerSignPath(result.pathName);
-    // setShowBorrowerSign(result.encoded)
-
-    // const pathName = result.pathName;
-    // console.log('pathName', pathName);
-    // const user_id = await AsyncStorage.getItem('user_id');
-
-    // const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/Signature/`;
-    // let newFilePath;
-    // //RNFS.mkdir(directoryPath) is called to create the directory if it doesn't exist
-    // RNFS.mkdir(directoryPath)
-    //   .then(() => {
-    //     const fileName = `10${user_id}TB${moment().format('YYYYMMDD')}${all_loandata.length + 1}SG01.jpg`;
-    //     newFilePath = `${directoryPath}${fileName}`;
-    //     console.log('old newFilePath', newFilePath);
-    //     //to move the signature image from its current pathName to the new newFilePath
-    //     return RNFS.moveFile(pathName, newFilePath);
-    //   })
-    //   .then(() => {
-    //     console.log('Signature saved successfully');
-    //     console.log('newFilePath', newFilePath);
-    //     setBorrowerSignPath(newFilePath)
-    //   })
-    //   .catch(error => {
-    //     console.log('Error saving signature:', error);
-    //   });
 
     setCanvas(false);
   };
@@ -1969,18 +2051,34 @@ function Individual_Staff_loan_Info(props) {
   const sign = createRef();
   const co_borrower_sign = createRef();
   const saveSign = async () => {
-    // sign.current.saveImage();
-
     const pathName = await sign.current.saveImage();
-    console.log('pathName', pathName);
   };
   const co_borrower_saveSign = async () => {
-    // sign.current.saveImage();
-
-    const pathName = await co_borrower_sign.current.saveImage();
+    await co_borrower_sign.current.saveImage();
   };
   const hideCoBorrowerSignModal = () => {
     setCoBorrowerCanvas(!show_co_borrower_canvas);
+  };
+  const workingDateRef = useRef(null);
+
+  const handleCalculate = () => {
+    // if (!working_month) {
+    //   workingDateRef.current.focus();
+    // }
+    // console.log('working_month', working_month);
+    // console.log('salary_amount', salary_amount);
+    if (working_month >= 0 && working_month <= 5) {
+      setLoanLimitAmount(0);
+    } else if (working_month >= 6 && working_month <= 12) {
+      setLoanLimitAmount(salary_amount * 1.5);
+    } else if (working_month >= 13 && working_month <= 35) {
+      setLoanLimitAmount(salary_amount * 2);
+    } else if (36 >= 13 && working_month <= 10000) {
+      setLoanLimitAmount(salary_amount * 3.5);
+    } else {
+      setLoanLimitAmount(0);
+    }
+
   };
   return (
     <>
@@ -2066,7 +2164,6 @@ function Individual_Staff_loan_Info(props) {
                     pickerStyle={{
                       width: 300,
                     }}
-                    onChange={value => setLoanType(value)}
                   />
 
                   <Field
@@ -2126,6 +2223,13 @@ function Individual_Staff_loan_Info(props) {
               showVillageSearch={showVillageSearch}
               showWardSearch={showWardSearch}
               showLocationSearch={showLocationSearch}
+              handleCalculate={handleCalculate}
+              setWorkingMonth={setWorkingMonth}
+              loan_limit_amount={loan_limit_amount}
+              setLoanLimitAmount={setLoanLimitAmount}
+              setSalaryAmountValue={setSalaryAmountValue}
+              working_month={working_month}
+              workingDateRef={workingDateRef}
             />
             <Invidual_Staff_CoBorrower_Info
               showCoBorrowerSearch={showCoBorrowerSearch}

@@ -27,11 +27,11 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
-        <Stack.Screen
+        {/* <Stack.Screen
         name="Indi_Staff_loan"
         component={Individual_Staff_loan_Info}
         options={{headerShown: false}}
-      />
+      /> */}
          {/* <Stack.Screen
         name="Customer Management"
         component={Customer_Management}

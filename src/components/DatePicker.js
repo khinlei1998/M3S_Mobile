@@ -15,11 +15,13 @@ export default function DatePicker(props) {
   const {
     editable,
     label,
-    onAgeChange,icon,
+    onAgeChange,
+    icon,
     meta,
     // input: {value, onChange, ...restInput},
     // ...rest
-    input
+    onWorkingDateChange,
+    input,
   } = props;
   const [showdate, setShowDate] = useState(false);
   const [date, setDate] = useState('');
@@ -38,17 +40,21 @@ export default function DatePicker(props) {
     const chose_date = moment(date).format('YYYY-MM-DD');
     setDate(date);
     input.onChange(chose_date);
+    onWorkingDateChange ? getWorkingMonth(date, chose_date) : '';
   }
+  const getWorkingMonth = (date, chose_date) => {
+    const today = moment();
+    const monthDiff = today.diff(chose_date, 'months'); // Calculate month difference
+    onWorkingDateChange(monthDiff)
+  };
   return (
     <>
       <View style={{flexDirection: 'row', height: 66}}>
         <TextInput
-
           {...input}
-
           label={label}
           mode={'outlined'}
-          value={date ? moment(date).format('YYYY-MM-DD') :input.value}
+          value={date ? moment(date).format('YYYY-MM-DD') : input.value}
           // editable={editable ? false : true}
           editable={false}
           style={{
@@ -59,9 +65,7 @@ export default function DatePicker(props) {
           }}
           // onFocus={() => showcalendar()}
           activeUnderlineColor="red"
-          right={
-            <TextInput.Icon icon={icon} onPress={() => showcalendar()} />
-          }
+          right={<TextInput.Icon icon={icon} onPress={() => showcalendar()} />}
         />
 
         <DateTimePickerModal

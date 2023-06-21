@@ -27,6 +27,12 @@ export default function Individual_staff_Emp_loan(props) {
     showTownshipSearch,
     handleCalculate,
     app_amount,
+    setWorkingMonth,
+    setSalaryAmountValue,
+    loan_limit_amount,
+    setLoanLimitAmount,
+    working_month,
+    workingDateRef
   } = props;
   const [borrower_expanded, setBorrowerExpanded] = React.useState(true);
   const [show_village, setVillage] = useState('1');
@@ -88,32 +94,40 @@ export default function Individual_staff_Emp_loan(props) {
 
           <View style={style.sub_list_container}>
             <Field
-              name={'birth_date'}
+              name={'entry_date'}
               component={DatePicker}
               label={'Start Working Date at SHM'}
               icon={'calendar'}
+              // ref={workingDateRef}
+              onWorkingDateChange={(month)=>{
+                setWorkingMonth(month)
+                setLoanLimitAmount(0)
+
+                console.log('finale moth',month);
+
+              }}
             />
 
             <Field
-              name={'positionTitleNm'}
+              name={'position_title_nm'}
               title={'Current Position'}
               component={TextInputFile}
-              editable
+
             />
           </View>
 
           <View style={style.sub_list_container}>
             <Field
-              name={'branchCode'}
+              name={'branch_code'}
               title={'Branch'}
               component={TextInputFile}
               cus_width
               input_mode
-              editable
+
             />
             <Field
               data={salary_grade}
-              name={'salaryRatingCode'}
+              name={'salary_rating_code'}
               title={'Salary Grade'}
               component={DropDownPicker}
               pickerStyle={{
@@ -130,7 +144,7 @@ export default function Individual_staff_Emp_loan(props) {
               cus_width
               input_mode
               require
-              editable
+
             />
 
             <Field
@@ -139,7 +153,7 @@ export default function Individual_staff_Emp_loan(props) {
               component={TextInputFile}
               cus_width
               input_mode
-              editable
+
             />
           </View>
 
@@ -335,12 +349,13 @@ export default function Individual_staff_Emp_loan(props) {
               inputmax={100}
             />
             <Field
-              name={'location_name'}
+              name={'salary_amount'}
               title={'Salary Amount'}
               component={TextInputFile}
               input_mode
               inputmax={100}
-              editable
+              keyboardType={'numeric'}
+              onChange={value => setSalaryAmountValue(value)}
             />
           </View>
 
@@ -377,7 +392,7 @@ export default function Individual_staff_Emp_loan(props) {
               </Text>
             </View>
             <Text style={{color: '#F9A970', fontSize: 15, marginRight: 5}}>
-              {app_amount}
+              {loan_limit_amount}
             </Text>
           </View>
 
