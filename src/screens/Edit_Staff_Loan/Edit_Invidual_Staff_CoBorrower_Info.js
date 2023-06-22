@@ -4,10 +4,11 @@ import { List } from 'react-native-paper'
 import DatePicker from '../../components/DatePicker';
 import TextInputFile from '../../components/TextInputFile';
 import { style } from '../../style/Individula_staff_Loan_Style';
-import { Field } from 'redux-form';
-export default function Invidual_Staff_CoBorrower_Info(props) {
+import { reduxForm, Field, change, reset } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
+ function Edit_Invidual_Staff_CoBorrower_Info(props) {
     const [co_borrower_expanded, setCoBorrowerExpanded] = useState(true);
-    const { showCoBorrowerSearch } = props
+    const { showCoBorrowerSearch,update_status } = props
 
     const handleCoBorrowerToggle = () => {
         setCoBorrowerExpanded(!co_borrower_expanded);
@@ -41,6 +42,7 @@ export default function Invidual_Staff_CoBorrower_Info(props) {
               editable
               handleTextInputFocus={showCoBorrowerSearch}
               focusTextInput
+
             />
 
             <Field
@@ -59,6 +61,9 @@ export default function Invidual_Staff_CoBorrower_Info(props) {
               component={DatePicker}
               label={'Date Of Birth'}
               icon={'calendar'}
+              editable={update_status == true ? false : true}
+              
+
             />
 
             <Field
@@ -69,6 +74,8 @@ export default function Invidual_Staff_CoBorrower_Info(props) {
               input_mode
               keyboardType={'numeric'}
               inputmax={30}
+              editable={update_status == true ? false : true}
+
             />
           </View>
 
@@ -80,16 +87,20 @@ export default function Invidual_Staff_CoBorrower_Info(props) {
               cus_width
               input_mode
               inputmax={50}
+              editable={update_status == true ? false : true}
+
             />
 
             <Field
               name={'borrower_rltn'}
-              title={'Relation with borrower'}
+              title={'Relation with Phone Number'}
               component={TextInputFile}
               cus_width
               input_mode
               inputmax={50}
               keyboardType={'numeric'}
+              editable={update_status == true ? false : true}
+
             />
           </View>
         </View>
@@ -97,4 +108,15 @@ export default function Invidual_Staff_CoBorrower_Info(props) {
     </>
   );
 }
+
+function mapStateToProps(state) {
+  return {
+    update_status: state.loan.staff_loan_update_status,
+  };
+}
+
+export default reduxForm({
+  form: 'Edit_Individual_Staff_Loan_Form',
+  // validate,
+})(connect(mapStateToProps, {})(Edit_Invidual_Staff_CoBorrower_Info));
 

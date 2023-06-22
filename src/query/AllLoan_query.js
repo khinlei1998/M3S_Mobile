@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {Alert, FileSystem} from 'react-native';
+import { Alert, FileSystem } from 'react-native';
 import RNFS from 'react-native-fs';
 const ExecuteQuery = (sql, params = []) =>
   new Promise((resolve, reject) => {
@@ -46,7 +46,7 @@ export function getIndividual_loan() {
         axios
           // .get(`https://${newIP}/skylark-m3s/api/employees.m3s`)
           .get(`https://${ip}:${port}/skylark-m3s/api/individualLoans.m3s`)
-          .then(({data}) => {
+          .then(({ data }) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -248,7 +248,7 @@ export const storeLoanData = async loan_data => {
             //
             null, //Decison No
             null, //contract no
-            loan_data.product_type,
+            10,// product type
             '001100', //Channel Device type
             null, //open branch code
             null, //Open user id
@@ -410,67 +410,67 @@ export async function deleteLoan_ByID(data) {
     const coBorrowerImagePath = data.co_borrower_sign;
 
     // Delete the borrower image if it exists
-    if (borrowerImagePath) {
-      try {
-        // await deleteImageFile(borrowerImagePath);
-        // await FileSystem.delete(borrowerImagePath);
-        const exists = await RNFS.exists(borrowerImagePath);
-        if (exists) {
-          console.log('exist');
-          await RNFS.unlink(borrowerImagePath);
-          console.log('File deleted successfully');
-        } else {
-          console.log('File does not exist');
-        }
+    // if (borrowerImagePath) {
+    //   try {
+    //     // await deleteImageFile(borrowerImagePath);
+    //     // await FileSystem.delete(borrowerImagePath);
+    //     const exists = await RNFS.exists(borrowerImagePath);
+    //     if (exists) {
+    //       console.log('exist');
+    //       await RNFS.unlink(borrowerImagePath);
+    //       console.log('File deleted successfully');
+    //     } else {
+    //       console.log('File does not exist');
+    //     }
 
-        console.log('Borrower image deleted successfully:', borrowerImagePath);
-      } catch (error) {
-        console.error('Error deleting borrower image:', error);
-        // Display an alert indicating the error
-        alert('Error deleting borrower image');
-      }
-    }
+    //     console.log('Borrower image deleted successfully:', borrowerImagePath);
+    //   } catch (error) {
+    //     console.error('Error deleting borrower image:', error);
+    //     // Display an alert indicating the error
+    //     alert('Error deleting borrower image');
+    //   }
+    // }
 
-    // Delete the co-borrower image if it exists
-    if (coBorrowerImagePath) {
-      try {
-        const exists = await RNFS.exists(coBorrowerImagePath);
-        if (exists) {
-          console.log('co borrower exist', exists);
-          await RNFS.unlink(coBorrowerImagePath);
-          console.log('File deleted successfully');
-        } else {
-          console.log('File does not exist');
-        }
-        console.log(
-          'Co-borrower image deleted successfully:',
-          coBorrowerImagePath,
-        );
-      } catch (error) {
-        console.error('Error deleting co-borrower image:', error);
-        // Display an alert indicating the error
-        alert('Error deleting co-borrower image');
-      }
-    }
+    // // Delete the co-borrower image if it exists
+    // if (coBorrowerImagePath) {
+    //   try {
+    //     const exists = await RNFS.exists(coBorrowerImagePath);
+    //     if (exists) {
+    //       console.log('co borrower exist', exists);
+    //       await RNFS.unlink(coBorrowerImagePath);
+    //       console.log('File deleted successfully');
+    //     } else {
+    //       console.log('File does not exist');
+    //     }
+    //     console.log(
+    //       'Co-borrower image deleted successfully:',
+    //       coBorrowerImagePath,
+    //     );
+    //   } catch (error) {
+    //     console.error('Error deleting co-borrower image:', error);
+    //     // Display an alert indicating the error
+    //     alert('Error deleting co-borrower image');
+    //   }
+    // }
 
     return new Promise((resolve, reject) => {
-      // global.db.transaction(tx => {
-      //   tx.executeSql(
-      //     'DELETE FROM Individual_application WHERE id = ?',
-      //     [data.id],
-      //     (txObj, resultSet) => {
-      //       console.log('resultSet', resultSet);
-      //       resolve('success');
-      //       // Delete query successful
-      //       console.log('Delete successful');
-      //     },
-      //     (txObj, error) => {
-      //       // Error occurred while executing the delete query
-      //       console.error('Delete error:', error);
-      //       reject(error);
-      //     },
-      //   );
-      // });
+      global.db.transaction(tx => {
+        tx.executeSql(
+          'DELETE FROM Individual_application WHERE id = ?',
+          [data.id],
+          (txObj, resultSet) => {
+            console.log('resultSet', resultSet);
+            resolve('success');
+            // Delete query successful
+            console.log('Delete successful');
+          },
+          (txObj, error) => {
+            // Error occurred while executing the delete query
+            console.error('Delete error:', error);
+            reject(error);
+          },
+        );
+      });
     });
   } catch (error) {
     console.error('Error deleting loan:', error);
@@ -942,7 +942,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         });
 
       }
-       return 'success';
+      return 'success';
     }
   } catch (error) {
     return error;

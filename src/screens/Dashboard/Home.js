@@ -9,8 +9,6 @@ import { useIsFocused } from '@react-navigation/native';
 export default function Home(props) {
   const {navigation} = props;
   const isFocused = useIsFocused();
-
-
   const [emp_name, setEmpName] = useState();
   const [loan_data, setAllLoan] = useState([]);
 
@@ -64,8 +62,7 @@ export default function Home(props) {
     if (isFocused) {
       loadData();
     }
-  }, []);
-  console.log('loan_data',loan_data);
+  }, [isFocused]);
   return (
     <View style={{flex: 1}}>
       <View

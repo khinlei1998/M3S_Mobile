@@ -2104,6 +2104,14 @@ function Individual_Loan(props) {
           `10${user_id}TB${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
         ),
       );
+      dispatch(
+        change(
+          'Individual_Loan_Form',
+          'product_type',
+          `Individual Loan`,
+        ),
+      );
+      
     });
     await getAllLoanMax().then(loan_max_data => {
       setLoanMaxData(loan_max_data);
@@ -2338,6 +2346,7 @@ function Individual_Loan(props) {
                     component={TextInputFile}
                     cus_width
                     input_mode
+                    editable
                   />
                 </View>
 

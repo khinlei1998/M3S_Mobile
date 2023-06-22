@@ -1,15 +1,22 @@
 import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import {connect} from 'react-redux';
-import {Field, reduxForm, reset, change} from 'redux-form';
+import { connect } from 'react-redux';
+import { Field, reduxForm, reset, change } from 'redux-form';
 import { addInquiryLoanData } from '../../redux/LoanReducer';
+import { log } from 'console';
 function Viewloan(props) {
-    const { loan_data,navigation ,addInquiryLoanData} = props
+    const { loan_data, navigation, addInquiryLoanData } = props
     const btn_inquiry_loan = (item) => {
-        navigation.navigate('Edit_Individual_Loan', item)
+        console.log('item product', item.product_type);
+        if (item.product_type == 20) {
+            navigation.navigate('Edit_Individual_Staff_loan_Info', item)
+        } else if (item.product_type == 10) {
+            navigation.navigate('Edit_Individual_Loan', item)
+
+        }
         addInquiryLoanData(item)
     }
-    const item = ({ item }) => {
+    const item = ({ item,index }) => {
         return (
             <TouchableOpacity onPress={() => btn_inquiry_loan(item)}>
                 <View style={{
@@ -21,7 +28,7 @@ function Viewloan(props) {
                     <Text style={{
                         padding: 10,
                         flex: 1,
-                    }}>{item.id}</Text>
+                    }}>{index+1}</Text>
                     <Text style={{
                         padding: 10,
                         flex: 1,
@@ -108,8 +115,8 @@ function Viewloan(props) {
 
 export default reduxForm({
     form: 'ViewloanForm',
-  })(
+})(
     connect(null, {
         addInquiryLoanData,
     })(Viewloan),
-  );
+);

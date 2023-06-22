@@ -430,6 +430,33 @@ export async function fetchAllCustomerNum() {
     });
   });
 }
+export async function filterCustomerByEmpno(selectedColumn, searchTerm) {
+  let sql;
+  if (selectedColumn && searchTerm) {
+    sql = `SELECT * FROM Customer  WHERE  employee_no IS NOT NULL AND employee_no <> '' AND ${selectedColumn} LIKE '%${searchTerm}%'`;
+  } else {
+    sql = `SELECT * FROM Customer WHERE employee_no IS NOT NULL AND employee_no <> ''`;
+  }
+  //20201116057
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        // `SELECT * FROM Customer WHERE ${selectedColumn} = ?`,
+        // [searchTerm],
+        sql,
+        [],
+        (tx, results) => {
+          console.log('result query', results);
+          resolve(results.rows.raw());
+        },
+        (tx, error) => {
+          reject(error);
+        },
+      );
+    });
+  });
+}
+
 
 // export function updateCustomerData(cus_data) {
 //   console.log(

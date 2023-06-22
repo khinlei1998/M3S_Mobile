@@ -8,26 +8,27 @@ import {
   PermissionsAndroid,
   TouchableHighlight,
   Image,
+  ToastAndroid,
+  TouchableOpacity,
 } from 'react-native';
-import React, {useState, useEffect, useRef, createRef} from 'react';
+import React, { useState, useEffect, useRef, createRef } from 'react';
 import DividerLine from '../../components/DividerLine';
-import {style} from '../../style/Individual_Loan_style';
+import { style } from '../../style/Individula_staff_Loan_Style';
 import {
   operations,
+  loan_type,
+  emp_filter_item,
   city_code,
   Township_code,
-  ward_code,
   village_code,
+  ward_code,
   location_code,
+  cus_filter_item,
 } from '../../common';
-import RNFS from 'react-native-fs';
-// import Borrower_Modal from './Borrower_Modal';
-// import {
-//   SketchCanvas,
-//   RNSketchCanvas,
-// } from '@terrylinla/react-native-sketch-canvas';
-// import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
-import SketchCanvas from '@terrylinla/react-native-sketch-canvas';
+import { reduxForm, Field, change, reset ,formValueSelector} from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
+import Icon from 'react-native-vector-icons/Feather';
+import { Picker } from '@react-native-picker/picker';
 import {
   RadioButton,
   Button,
@@ -35,524 +36,26 @@ import {
   Modal,
   Provider,
   Portal,
+  TextInput,
 } from 'react-native-paper';
-import {reduxForm, Field, change} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
-import {loan_type, emp_filter_item} from '../../common';
 import DatePicker from '../../components/DatePicker';
-import {Picker} from '@react-native-picker/picker';
-import {getAllLoan} from '../../query/AllLoan_query';
-import moment from 'moment';
+import Edit_Individual_staff_Emp_loan from './Edit_Individual_staff_Emp_loan';
+import Edit_Individual_Staff_CoBorrower_Info from './Edit_Invidual_Staff_CoBorrower_Info';
+import Edit_Individual_staff_Contract from './Edit_Individual_staff_Contract';
+import Edit_Individual_Staff_Sign from './Edit_Individual_Staff_Sign';
+import { getAllLoan } from '../../query/AllLoan_query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Borrower_Info from './Edit_Borrower_Info';
-import Icon from 'react-native-vector-icons/Feather';
-import {filterCustomer} from '../../query/Customer_query';
-import Co_Borrower_Info from './Edit_Co_Borrower_Info';
-import Loan_Business_Info from './EditLoan_Business_Info';
-import Borrower_Monthly_Income from './Edit_Borrower_Monthly_Income';
-import {getAllLoanMax} from '../../query/LoanMax_query';
-import Borrower_Current_Map from './Edit_Borrower_Current_Map';
-import Borrower_Contract from './Edit_Borrower_Contract';
-import Borrower_Sign from './Edit_Borrower_Sign';
+import moment from 'moment';
+import { filterCustomer } from '../../query/Customer_query';
+import { getAllCustomer } from '../../query/Customer_query';
 import SignatureCapture from 'react-native-signature-capture';
-import {storeLoanData} from '../../query/AllLoan_query';
-import validate from './Edit_loan_Validate';
-import {TextInput} from 'react-native-paper';
-import {
-  resetMonthlyIncome,
-  totalFamilyIncome,
-  totalIncome,
-  totalExpense,
-  totalFamilyExpense,
-  totalNetBusiness,
-  totalNetFamily,
-  updateTotalSum,
-  totalLoanAmt,
-} from '../../redux/MonthlyReducer';
-import {deleteLoan_ByID} from '../../query/AllLoan_query';
-// import RNFetchBlob from 'rn-fetch-blob';
-import {useIsFocused} from '@react-navigation/native';
-import {setUpdateStatus} from '../../redux/LoanReducer';
-
-const Borrower_modal = props => {
-  const dispatch = useDispatch();
-  const [selectedValue, setSelectedValue] = useState(null);
-  const [emp_data, setEmpData] = React.useState('');
-
-  const {
-    all_cus,
-    modalVisible,
-    hideModal,
-    selectedItemValue,
-    handleItemValueChange,
-    setAllCus,
-    handleSubmit,
-  } = props;
-
-  const onChangeEmpText = inputText => {
-    setEmpData(inputText);
-  };
-
-  const btnCusSearch = async () => {
-    // alert('oo')
-    await filterCustomer(selectedItemValue, emp_data)
-      .then(data => (data.length > 0 ? setAllCus(data) : alert('No data')))
-      .catch(error => console.log('error', error));
-  };
-
-  const btnSelectEmployee = item => {
-    console.log('item', item.id);
-    setSelectedValue(item.id);
-    dispatch(change('Individual_Loan_Form', 'borrower_name', item.customer_nm));
-    dispatch(
-      change('Individual_Loan_Form', 'resident_rgst_id', item.resident_rgst_id),
-    );
-    dispatch(change('Individual_Loan_Form', 'customer_no', item.customer_no));
-  };
-
-  const item = ({item, index}) => {
-    return (
-      <View
-        style={{
-          flexDirection: 'row',
-          borderBottomWidth: 1,
-          borderBottomColor: '#ccc',
-          padding: 10,
-        }}>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {index + 1}
-        </Text>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.customer_nm}
-        </Text>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.resident_rgst_id}
-        </Text>
-
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.tel_no == null ? 'No Data' : item.tel_no}
-        </Text>
-
-        <View>
-          <RadioButton
-            value={item.id}
-            status={selectedValue === item.id ? 'checked' : 'unchecked'}
-            onPress={() => btnSelectEmployee(item)}
-          />
-        </View>
-
-        {/* <Field component={RadioButton}/> */}
-      </View>
-    );
-  };
-  return (
-    <Provider>
-      <Portal>
-        <Modal
-          useNativeDriver
-          hideModalContentWhileAnimating
-          dismissable={false}
-          visible={modalVisible}
-          onDismiss={hideModal}
-          contentContainerStyle={style.modal_container}>
-          <View
-            style={style.modal_header}
-            onStartShouldSetResponder={() => hideModal()}>
-            <Icon
-              name="x-circle"
-              size={25}
-              color="#fff"
-              style={style.cancel_icon_style}
-            />
-          </View>
-          <View style={style.modal_body_container}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-              }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{marginRight: 10}}>Search Item:</Text>
-
-                <Picker
-                  selectedValue={selectedItemValue}
-                  onValueChange={handleItemValueChange}
-                  style={{
-                    width: 200,
-                    backgroundColor: 'white',
-                    marginTop: 7,
-                  }}
-                  mode="dropdown">
-                  {emp_filter_item.length > 0 &&
-                    emp_filter_item.map(val => (
-                      <Picker.Item
-                        label={val.label}
-                        value={val.value}
-                        key={val.id}
-                      />
-                    ))}
-                </Picker>
-              </View>
-
-              <View style={{width: '40%'}}>
-                {/* <Field
-                  name={'searchtext'}
-                  component={TextInputFile}
-                  input_mode
-                  inputmax={20}
-                  icon={'magnify'}
-                  handleTextInputFocus={handleSubmit(btnCusSearch)}
-                /> */}
-                <TextInput
-                  style={{
-                    backgroundColor: '#fff',
-                    marginTop: 10,
-                    width: 250,
-                    borderColor: '#303030',
-                    borderWidth: 0.5,
-                  }}
-                  value={emp_data}
-                  onChangeText={onChangeEmpText}
-                  right={
-                    <TextInput.Icon
-                      icon={'magnify'}
-                      onPress={() => btnCusSearch()}
-                    />
-                  }
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                backgroundColor: '#fff',
-                borderRadius: 5,
-                padding: 5,
-                margin: 20,
-              }}>
-              <Text
-                style={{
-                  padding: 10,
-                  flex: 1,
-                  fontWeight: 'bold',
-                }}>
-                #
-              </Text>
-              <Text
-                style={{
-                  flex: 1,
-
-                  padding: 10,
-                  fontWeight: 'bold',
-                }}>
-                Name
-              </Text>
-              <Text
-                style={{
-                  flex: 1,
-
-                  padding: 10,
-                  fontWeight: 'bold',
-                }}>
-                NRC
-              </Text>
-              <Text
-                style={{
-                  flex: 1,
-
-                  padding: 10,
-                  fontWeight: 'bold',
-                }}>
-                Phone Number
-              </Text>
-            </View>
-
-            <FlatList
-              data={all_cus}
-              renderItem={item}
-              keyExtractor={(item, index) => index.toString()}
-            />
-
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-              <Button
-                onPress={() => hideModal()}
-                mode="contained"
-                buttonColor={'#6870C3'}
-                style={{
-                  borderRadius: 0,
-                  width: 100,
-                  marginTop: 10,
-                  color: 'black',
-                  marginLeft: 5,
-                }}>
-                OK
-              </Button>
-            </View>
-          </View>
-        </Modal>
-      </Portal>
-    </Provider>
-  );
-};
-
-const CoBorrower_modal = props => {
-  const dispatch = useDispatch();
-  const [co_borrowerselectedValue, setCoborrowerSelectedValue] = useState(null);
-  const [co_borrower_data, setCoBorrowerText] = useState('');
-
-  const {
-    all_co_borrower,
-    co_borrower_modalVisible,
-    hideCoBorrowerModal,
-    selectedItemValue,
-    handleItemValueChange,
-    setAllCoBorrower,
-    handleSubmit,
-  } = props;
-  const btnCusSearch = async () => {
-    await filterCustomer(selectedItemValue, co_borrower_data)
-      .then(data =>
-        data.length > 0 ? setAllCoBorrower(data) : alert('No data'),
-      )
-      .catch(error => console.log('error', error));
-  };
-
-  const btnSelectEmployee = item => {
-    setCoborrowerSelectedValue(item.id);
-    dispatch(
-      change('Individual_Loan_Form', 'co_brwer_rgst_id', item.resident_rgst_id),
-    );
-    dispatch(change('Individual_Loan_Form', 'co_brwer_name', item.customer_nm));
-    dispatch(
-      change('Individual_Loan_Form', 'co_customer_no', item.customer_no),
-    );
-  };
-
-  const item = ({item, index}) => {
-    return (
-      <View
-        style={{
-          flexDirection: 'row',
-          borderBottomWidth: 1,
-          borderBottomColor: '#ccc',
-          padding: 10,
-        }}>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {index + 1}
-        </Text>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.customer_nm}
-        </Text>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.resident_rgst_id}
-        </Text>
-
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.tel_no == null ? 'No Data' : item.tel_no}
-        </Text>
-
-        <View>
-          <RadioButton
-            value={item.id}
-            status={
-              co_borrowerselectedValue === item.id ? 'checked' : 'unchecked'
-            }
-            onPress={() => btnSelectEmployee(item)}
-          />
-        </View>
-
-        {/* <Field component={RadioButton}/> */}
-      </View>
-    );
-  };
-
-  const onChangeCoBorrowerText = inputvalues => {
-    setCoBorrowerText(inputvalues);
-  };
-  return (
-    <Provider>
-      <Portal>
-        <Modal
-          useNativeDriver
-          hideModalContentWhileAnimating
-          dismissable={false}
-          visible={co_borrower_modalVisible}
-          onDismiss={hideCoBorrowerModal}
-          contentContainerStyle={style.modal_container}>
-          <View
-            style={style.modal_header}
-            onStartShouldSetResponder={() => hideCoBorrowerModal()}>
-            <Icon
-              name="x-circle"
-              size={25}
-              color="#fff"
-              style={style.cancel_icon_style}
-            />
-          </View>
-          <View style={style.modal_body_container}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-              }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{marginRight: 10}}>Search Item:</Text>
-
-                <Picker
-                  selectedValue={selectedItemValue}
-                  onValueChange={handleItemValueChange}
-                  style={{
-                    width: 200,
-                    backgroundColor: 'white',
-                    marginTop: 7,
-                  }}
-                  mode="dropdown">
-                  {emp_filter_item.length > 0 &&
-                    emp_filter_item.map(val => (
-                      <Picker.Item
-                        label={val.label}
-                        value={val.value}
-                        key={val.id}
-                      />
-                    ))}
-                </Picker>
-              </View>
-
-              <View style={{width: '50%'}}>
-                {/* <Field
-                  name={'searchtext'}
-                  component={TextInputFile}
-                  input_mode
-                  inputmax={20}
-                  icon={'magnify'}
-                  handleTextInputFocus={handleSubmit(btnCusSearch)}
-                /> */}
-                <TextInput
-                  style={{
-                    backgroundColor: '#fff',
-                    marginTop: 10,
-                    width: 250,
-                    borderColor: '#303030',
-                    borderWidth: 0.5,
-                  }}
-                  value={co_borrower_data}
-                  onChangeText={onChangeCoBorrowerText}
-                  right={
-                    <TextInput.Icon
-                      icon={'magnify'}
-                      onPress={() => btnCusSearch()}
-                    />
-                  }
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                backgroundColor: '#fff',
-                borderRadius: 5,
-                padding: 5,
-                margin: 20,
-              }}>
-              <Text
-                style={{
-                  padding: 10,
-                  flex: 1,
-                  fontWeight: 'bold',
-                }}>
-                #
-              </Text>
-              <Text
-                style={{
-                  flex: 1,
-
-                  padding: 10,
-                  fontWeight: 'bold',
-                }}>
-                Name
-              </Text>
-              <Text
-                style={{
-                  flex: 1,
-
-                  padding: 10,
-                  fontWeight: 'bold',
-                }}>
-                NRC
-              </Text>
-              <Text
-                style={{
-                  flex: 1,
-
-                  padding: 10,
-                  fontWeight: 'bold',
-                }}>
-                Phone Number
-              </Text>
-            </View>
-
-            <FlatList
-              data={all_co_borrower}
-              renderItem={item}
-              keyExtractor={(item, index) => index.toString()}
-            />
-
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-              <Button
-                onPress={() => hideCoBorrowerModal()}
-                mode="contained"
-                buttonColor={'#6870C3'}
-                style={{
-                  borderRadius: 0,
-                  width: 100,
-                  marginTop: 10,
-                  color: 'black',
-                  marginLeft: 5,
-                }}>
-                OK
-              </Button>
-            </View>
-          </View>
-        </Modal>
-      </Portal>
-    </Provider>
-  );
-};
-
+import RNFS from 'react-native-fs';
+import { filterEmp } from '../../query/Employee_query';
+import { storeStaffLoanData } from '../../query/StaffLoan_query';
+import { setStaffLoanUpdateStatus } from '../../redux/LoanReducer';
+import { deleteStaffLoan_ByID } from '../../query/StaffLoan_query';
 const Borrower_Sign_Modal = props => {
   const {
     show_canvas,
@@ -610,7 +113,7 @@ const Borrower_Sign_Modal = props => {
           // backgroundColor="transparent"
           viewMode={'portrait'}
         />
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <TouchableHighlight
             style={{
               flex: 1,
@@ -624,7 +127,7 @@ const Borrower_Sign_Modal = props => {
             onPress={() => {
               saveSign();
             }}>
-            <Text style={{color: '#fff'}}>Save</Text>
+            <Text style={{ color: '#fff' }}>Save</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={{
@@ -639,7 +142,7 @@ const Borrower_Sign_Modal = props => {
             onPress={() => {
               resetSign();
             }}>
-            <Text style={{color: '#fff'}}>Reset</Text>
+            <Text style={{ color: '#fff' }}>Reset</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -654,7 +157,7 @@ const Co_Borrower_Sign_Modal = props => {
     setCoBorrowerCanvas,
     _onCoBorrowerSaveEvent,
     co_borrower_saveSign,
-    co_borrower_resetSignn,
+    co_borrower_resetSign,
     co_borrower_sign,
   } = props;
   return (
@@ -704,7 +207,7 @@ const Co_Borrower_Sign_Modal = props => {
           // backgroundColor="transparent"
           viewMode={'portrait'}
         />
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <TouchableHighlight
             style={{
               flex: 1,
@@ -718,7 +221,7 @@ const Co_Borrower_Sign_Modal = props => {
             onPress={() => {
               co_borrower_saveSign();
             }}>
-            <Text style={{color: '#fff'}}>Save</Text>
+            <Text style={{ color: '#fff' }}>Save</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={{
@@ -731,13 +234,492 @@ const Co_Borrower_Sign_Modal = props => {
               margin: 10,
             }}
             onPress={() => {
-              co_borrower_resetSignn();
+              co_borrower_resetSign();
             }}>
-            <Text style={{color: '#fff'}}>Reset</Text>
+            <Text style={{ color: '#fff' }}>Reset</Text>
           </TouchableHighlight>
         </View>
       </View>
     </Modal>
+  );
+};
+
+const Emp_No_Search_modal = props => {
+  const dispatch = useDispatch();
+  const [selectedValue, setSelectedValue] = useState(null);
+  const [emp_data, setEmpData] = React.useState('');
+
+  const {
+    all_cus,
+    modalVisible,
+    hideModal,
+    selectedItemValue,
+    handleItemValueChange,
+    setAllCus,
+    handleSubmit,
+    retrive_staff_loan_data
+  } = props;
+
+
+  const onChangeEmpText = inputText => {
+    setEmpData(inputText);
+  };
+
+  const btnEmpSearch = async () => {
+    await filterEmp(selectedItemValue, emp_data)
+      .then(data => (data.length > 0 ? setAllCus(data) : alert('No data')))
+      .catch(error => console.log('error', error));
+  };
+  const btnSelectEmployee = item => {
+    setSelectedValue(item.serial_no);
+    dispatch(
+      change('Individual_Staff_Loan_Form', 'borrower_name', item.employee_name),
+    );
+    dispatch(
+      change(
+        'Individual_Staff_Loan_Form',
+        'resident_rgst_id',
+        item.resident_rgst_id,
+      ),
+    );
+    dispatch(
+      change('Individual_Staff_Loan_Form', 'employee_no', item.employee_no),
+    );
+  };
+
+  const item = ({ item, index }) => {
+    console.log('item', item);
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          borderBottomWidth: 1,
+          borderBottomColor: '#ccc',
+          padding: 10,
+        }}>
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+          }}>
+          {index + 1}
+        </Text>
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+          }}>
+          {item.employee_no}
+        </Text>
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+          }}>
+          {item.employee_name}
+        </Text>
+
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+          }}>
+          {item.tel_no == null ? 'No Data' : item.tel_no}
+        </Text>
+
+        <View>
+          <RadioButton
+            value={item.id}
+            status={selectedValue === item.serial_no ? 'checked' : 'unchecked'}
+            onPress={() => btnSelectEmployee(item)}
+          />
+        </View>
+
+        {/* <Field component={RadioButton}/> */}
+      </View>
+    );
+  };
+  return (
+    <Provider>
+      <Portal>
+        <Modal
+          useNativeDriver
+          hideModalContentWhileAnimating
+          dismissable={false}
+          visible={modalVisible}
+          onDismiss={hideModal}
+          contentContainerStyle={style.modal_container}>
+          <View
+            style={style.modal_header}
+            onStartShouldSetResponder={() => hideModal()}>
+            <Icon
+              name="x-circle"
+              size={25}
+              color="#fff"
+              style={style.cancel_icon_style}
+            />
+          </View>
+          <View style={style.modal_body_container}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+              }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+
+                <Picker
+                  selectedValue={selectedItemValue}
+                  onValueChange={handleItemValueChange}
+                  style={{
+                    width: 200,
+                    backgroundColor: 'white',
+                    marginTop: 7,
+                  }}
+                  mode="dropdown">
+                  {emp_filter_item.length > 0 &&
+                    emp_filter_item.map(val => (
+                      <Picker.Item
+                        label={val.label}
+                        value={val.value}
+                        key={val.id}
+                      />
+                    ))}
+                </Picker>
+              </View>
+
+              <View style={{ width: '40%' }}>
+                <TextInput
+                  style={{
+                    backgroundColor: '#fff',
+                    marginTop: 10,
+                    width: 250,
+                    borderColor: '#303030',
+                    borderWidth: 0.5,
+                  }}
+                  value={emp_data}
+                  onChangeText={onChangeEmpText}
+                  right={
+                    <TextInput.Icon
+                      icon={'magnify'}
+                      onPress={() => btnEmpSearch()}
+                    />
+                  }
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                backgroundColor: '#fff',
+                borderRadius: 5,
+                padding: 5,
+                margin: 20,
+              }}>
+              <Text
+                style={{
+                  padding: 10,
+                  flex: 1,
+                  fontWeight: 'bold',
+                }}>
+                #
+              </Text>
+              <Text
+                style={{
+                  flex: 1,
+                  padding: 10,
+                  fontWeight: 'bold',
+                }}>
+                Employee No
+              </Text>
+              <Text
+                style={{
+                  flex: 1,
+
+                  padding: 10,
+                  fontWeight: 'bold',
+                }}>
+                Employee Name
+              </Text>
+
+              <Text
+                style={{
+                  flex: 1,
+
+                  padding: 10,
+                  fontWeight: 'bold',
+                }}>
+                Phone Number
+              </Text>
+            </View>
+
+            <FlatList
+              data={all_cus}
+              renderItem={item}
+              keyExtractor={(item, index) => index.toString()}
+            />
+
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <Button
+                onPress={() => hideModal()}
+                mode="contained"
+                buttonColor={'#6870C3'}
+                style={{
+                  borderRadius: 0,
+                  width: 100,
+                  marginTop: 10,
+                  color: 'black',
+                  marginLeft: 5,
+                }}>
+                OK
+              </Button>
+            </View>
+          </View>
+        </Modal>
+      </Portal>
+    </Provider>
+  );
+};
+
+const CoBorrower_NRC_Search_modal = props => {
+  const dispatch = useDispatch();
+  const [selectedValue, setSelectedValue] = useState(null);
+  const [cus_data, setCusData] = React.useState('');
+
+  const {
+    CoBorrowerhideModal,
+    co_borrower_modal_visible,
+    setAllCoBorrower,
+    all_co_borrower,
+    selectedItemValue,
+    handleItemValueChange,
+    handleSubmit,
+  } = props;
+
+  const onChangeCusText = inputText => {
+    setCusData(inputText);
+  };
+
+  const btnCusSearch = async () => {
+    await filterCustomer(selectedItemValue, cus_data)
+      .then(data =>
+        data.length > 0 ? setAllCoBorrower(data) : alert('No data'),
+      )
+      .catch(error => console.log('error', error));
+  };
+  const btnSelectCustomer = item => {
+    console.log('item', item);
+    setSelectedValue(item.id);
+    dispatch(
+      change('Individual_Staff_Loan_Form', 'co_customer_no', item.co_customer_no),
+    );
+    dispatch(
+      change('Individual_Staff_Loan_Form', 'co_brwer_name', item.customer_nm),
+    );
+    dispatch(
+      change(
+        'Individual_Staff_Loan_Form',
+        'resident_rgst_id',
+        item.resident_rgst_id,
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Staff_Loan_Form',
+        'co_brwer_rgst_id',
+        item.resident_rgst_id,
+      ),
+    );
+  };
+
+  const item = ({ item, index }) => {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          borderBottomWidth: 1,
+          borderBottomColor: '#ccc',
+          padding: 10,
+        }}>
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+          }}>
+          {index + 1}
+        </Text>
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+          }}>
+          {item.customer_nm}
+        </Text>
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+          }}>
+          {item.resident_rgst_id}
+        </Text>
+
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+          }}>
+          {item.tel_no == null ? 'No Data' : item.tel_no}
+        </Text>
+
+        <View>
+          <RadioButton
+            value={item.id}
+            status={selectedValue === item.id ? 'checked' : 'unchecked'}
+            onPress={() => btnSelectCustomer(item)}
+          />
+        </View>
+      </View>
+    );
+  };
+  return (
+    <Provider>
+      <Portal>
+        <Modal
+          useNativeDriver
+          hideModalContentWhileAnimating
+          dismissable={false}
+          visible={co_borrower_modal_visible}
+          onDismiss={CoBorrowerhideModal}
+          contentContainerStyle={style.modal_container}>
+          <View
+            style={style.modal_header}
+            onStartShouldSetResponder={() => CoBorrowerhideModal()}>
+            <Icon
+              name="x-circle"
+              size={25}
+              color="#fff"
+              style={style.cancel_icon_style}
+            />
+          </View>
+          <View style={style.modal_body_container}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+              }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+
+                <Picker
+                  selectedValue={selectedItemValue}
+                  onValueChange={handleItemValueChange}
+                  style={{
+                    width: 200,
+                    backgroundColor: 'white',
+                    marginTop: 7,
+                  }}
+                  mode="dropdown">
+                  {cus_filter_item.length > 0 &&
+                    cus_filter_item.map(val => (
+                      <Picker.Item
+                        label={val.label}
+                        value={val.value}
+                        key={val.id}
+                      />
+                    ))}
+                </Picker>
+              </View>
+
+              <View style={{ width: '40%' }}>
+                <TextInput
+                  style={{
+                    backgroundColor: '#fff',
+                    marginTop: 10,
+                    width: 250,
+                    borderColor: '#303030',
+                    borderWidth: 0.5,
+                  }}
+                  value={cus_data}
+                  onChangeText={onChangeCusText}
+                  right={
+                    <TextInput.Icon
+                      icon={'magnify'}
+                      onPress={() => btnCusSearch()}
+                    />
+                  }
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                backgroundColor: '#fff',
+                borderRadius: 5,
+                padding: 5,
+                margin: 20,
+              }}>
+              <Text
+                style={{
+                  padding: 10,
+                  flex: 1,
+                  fontWeight: 'bold',
+                }}>
+                #
+              </Text>
+              <Text
+                style={{
+                  flex: 1,
+                  padding: 10,
+                  fontWeight: 'bold',
+                }}>
+                Name
+              </Text>
+              <Text
+                style={{
+                  flex: 1,
+
+                  padding: 10,
+                  fontWeight: 'bold',
+                }}>
+                NRC
+              </Text>
+
+              <Text
+                style={{
+                  flex: 1,
+
+                  padding: 10,
+                  fontWeight: 'bold',
+                }}>
+                Phone Number
+              </Text>
+            </View>
+
+            <FlatList
+              data={all_co_borrower}
+              renderItem={item}
+              keyExtractor={(item, index) => index.toString()}
+            />
+
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <Button
+                onPress={() => CoBorrowerhideModal()}
+                mode="contained"
+                buttonColor={'#6870C3'}
+                style={{
+                  borderRadius: 0,
+                  width: 100,
+                  marginTop: 10,
+                  color: 'black',
+                  marginLeft: 5,
+                }}>
+                OK
+              </Button>
+            </View>
+          </View>
+        </Modal>
+      </Portal>
+    </Provider>
   );
 };
 
@@ -771,7 +753,7 @@ const City_Modal = props => {
     dispatch(change('Individual_Loan_Form', 'city_name', item.city_name));
   };
 
-  const city_item = ({item, index}) => {
+  const city_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -838,8 +820,8 @@ const City_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{marginRight: 10}}>Search Item:</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedCityItemValue}
@@ -861,7 +843,7 @@ const City_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{width: '40%'}}>
+              <View style={{ width: '40%' }}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -931,7 +913,7 @@ const City_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
               <Button
                 onPress={() => hideCityModal()}
                 mode="contained"
@@ -967,6 +949,7 @@ const Township_Modal = props => {
     hideTownshipModal,
     setTownshipSelectedItemValue,
   } = props;
+  console.log('modal_township_visible', modal_township_visible);
   const btnTownshipSearch = async values => {
     await filterCustomer(selectedTwonshipItemValue, values.searchtext)
       .then(data => (data.length > 0 ? setAllTownship(data) : alert('No data')))
@@ -983,7 +966,7 @@ const Township_Modal = props => {
     );
   };
 
-  const township_item = ({item, index}) => {
+  const township_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -1053,8 +1036,8 @@ const Township_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{marginRight: 10}}>Search Item:</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedTwonshipItemValue}
@@ -1076,7 +1059,7 @@ const Township_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{width: '40%'}}>
+              <View style={{ width: '40%' }}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -1147,7 +1130,7 @@ const Township_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
               <Button
                 onPress={() => hideTownshipModal()}
                 mode="contained"
@@ -1198,7 +1181,7 @@ const Village_Modal = props => {
     setVillage_Text(inputText);
   };
 
-  const village_item = ({item, index}) => {
+  const village_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -1265,8 +1248,8 @@ const Village_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{marginRight: 10}}>Search Item:</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedVillageItemValue}
@@ -1288,7 +1271,7 @@ const Village_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{width: '40%'}}>
+              <View style={{ width: '40%' }}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -1358,7 +1341,7 @@ const Village_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
               <Button
                 onPress={() => hideVillageModal()}
                 mode="contained"
@@ -1408,7 +1391,7 @@ const Ward_Modal = props => {
     setWard_Text(inputText);
   };
 
-  const ward_item = ({item, index}) => {
+  const ward_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -1475,8 +1458,8 @@ const Ward_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{marginRight: 10}}>Search Item:</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedWardItemValue}
@@ -1498,7 +1481,7 @@ const Ward_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{width: '50%'}}>
+              <View style={{ width: '50%' }}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -1568,7 +1551,7 @@ const Ward_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
               <Button
                 onPress={() => hideWardModal()}
                 mode="contained"
@@ -1623,7 +1606,7 @@ const Location_Modal = props => {
     );
   };
 
-  const location_item = ({item, index}) => {
+  const location_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -1690,8 +1673,8 @@ const Location_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{marginRight: 10}}>Search Item:</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedLocationItemValue}
@@ -1713,7 +1696,7 @@ const Location_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{width: '50%'}}>
+              <View style={{ width: '50%' }}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -1783,7 +1766,7 @@ const Location_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
               <Button
                 onPress={() => hideLocationModal()}
                 mode="contained"
@@ -1805,289 +1788,160 @@ const Location_Modal = props => {
   );
 };
 
-function Edit_Individual_Loan(props) {
+function Individual_Staff_loan_Info(props) {
+  const { entryDate,salary_amount,setStaffLoanUpdateStatus,navigation, update_status, retrive_staff_loan_data } = props;
   const dispatch = useDispatch();
+
   const [show_operation, setOperation] = useState('2');
+  const [loanexpanded, setLoanExpanded] = React.useState(true);
+  const [show_canvas, setCanvas] = useState(false);
+
+  const [all_loandata, setAllLoanData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [co_borrower_modalVisible, setCoBorrowerModalVisible] = useState(false);
-  const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
   const [all_cus, setAllCus] = useState([]);
   const [all_co_borrower, setAllCoBorrower] = useState([]);
-  const [loanexpanded, setLoanExpanded] = React.useState(true);
-  const [loan_cycle_value, setLocanCycleValue] = useState('');
-  const [loan_type_value, setLoanType] = useState();
-  const [loan_max_data, setLoanMaxData] = useState([]);
-  const [app_amount, setAppAmount] = useState(0);
-  const [show_canvas, setCanvas] = useState(false);
-  const [show_co_borrower_canvas, setCoBorrowerCanvas] = useState(false);
-  const [showCanvas, setShowCanvas] = useState(false);
-  const [filePath, setFilePath] = useState('');
-  const [co_borrower_filePath, setCoBorrowerFilePath] = useState('');
-  const [empname, setEmpName] = useState('');
+  const [all_city, setAllCity] = useState([]);
+  const [all_township, setAllTownship] = useState([]);
+  const [all_village, setAllVillage] = useState([]);
+  const [all_ward, setAllWard] = useState([]);
+  const [all_location, setAllLocation] = useState([]);
   const [modal_city_visible, setCityCodeModalVisible] = useState(false);
-  const [modal_township_visible, setTownshipCodeModalVisible] = useState(false);
   const [selectedCityItemValue, setCitySelectedItemValue] =
     useState('city_code');
-  const [all_city, setAllCity] = useState([]);
+  const [filePath, setFilePath] = useState('');
+  const [co_borrower_filePath, setCoBorrowerFilePath] = useState('');
   const [selectedTownshipItemValue, setTownshipSelectedItemValue] =
     useState('township_code');
   const [selectedWardItemValue, setWardSelectedItemValue] =
     useState('ward_code');
   const [selectedVillageItemValue, setVillageSelectedItemValue] =
     useState('village_code');
-  const [all_township, setAllTownship] = useState([]);
-  const [all_village, setAllVillage] = useState([]);
-  const [all_ward, setAllWard] = useState([]);
-  const [all_location, setAllLocation] = useState([]);
   const [modal_village_visible, setVillageCodeModalVisible] = useState(false);
   const [modal_ward_visible, setWardCodeModalVisible] = useState(false);
   const [modal_location_visible, setLocationModalVisible] = useState(false);
+  const [modal_township_visible, setTownshipCodeModalVisible] = useState(false);
+  const [selectedLocationItemValue, setLocationSelectedItemValue] =
+    useState('location_code');
+  const [co_borrower_modal_visible, setCoBorrowerModalVisible] =
+    useState(false);
   const [borrower_sign_path, setBorrowerSignPath] = useState('');
   const [show_borrower_sign, setShowBorrowerSign] = useState('');
   const [coborrower_sign_path, setCoBorrowerSignPath] = useState('');
   const [show_coborrower_sign, setShowCoBorrowerSign] = useState('');
-  // const [update_status, setUpdateStatus] = useState(false);
-  const [selectedLocationItemValue, setLocationSelectedItemValue] =
-    useState('location_code');
-  const [all_loandata, setAllLoanData] = useState([]);
-
-  const {
-    retrive_loan_data,
-    handleSubmit,
-    totalnet,
-    navigation,
-    resetMonthlyIncome,
-    totalFamilyIncome,
-    totalIncome,
-    totalExpense,
-    totalFamilyExpense,
-    totalNetBusiness,
-    totalNetFamily,
-    updateTotalSum,
-    totalLoanAmt,
-    update_status,
-    setUpdateStatus,
-  } = props;
-  console.log('update_status', update_status);
-  useEffect(() => {
-    const loan_data = Object.assign({}, retrive_loan_data, {
-      loan_cycle: retrive_loan_data.loan_cycle
-        ? retrive_loan_data.loan_cycle.toString()
-        : '',
-      loanterm_cnt: retrive_loan_data.loanterm_cnt
-        ? retrive_loan_data.loanterm_cnt.toString()
-        : '',
-      application_amt: retrive_loan_data.application_amt
-        ? retrive_loan_data.application_amt.toString()
-        : '',
-      family_num: retrive_loan_data.family_num
-        ? retrive_loan_data.family_num.toString()
-        : '',
-      hghschl_num: retrive_loan_data.hghschl_num
-        ? retrive_loan_data.hghschl_num.toString()
-        : '',
-      university_num: retrive_loan_data.university_num
-        ? retrive_loan_data.university_num.toString()
-        : '',
-      employee_num: retrive_loan_data.employee_num
-        ? retrive_loan_data.employee_num.toString()
-        : '',
-      land_scale: retrive_loan_data.land_scale
-        ? retrive_loan_data.land_scale.toString()
-        : '',
-
-      tot_sale_income: retrive_loan_data.tot_sale_income
-        ? retrive_loan_data.tot_sale_income.toString()
-        : '',
-      tot_sale_expense: retrive_loan_data.tot_sale_expense
-        ? retrive_loan_data.tot_sale_expense.toString()
-        : '',
-      rawmaterial_expans: retrive_loan_data.rawmaterial_expans
-        ? retrive_loan_data.rawmaterial_expans.toString()
-        : '',
-      wrkp_rent_expns: retrive_loan_data.wrkp_rent_expns
-        ? retrive_loan_data.wrkp_rent_expns.toString()
-        : '',
-      employee_expns: retrive_loan_data.employee_expns
-        ? retrive_loan_data.employee_expns.toString()
-        : '',
-      trnsrt_expns: retrive_loan_data.trnsrt_expns
-        ? retrive_loan_data.trnsrt_expns.toString()
-        : '',
-      bus_utlbil_expns: retrive_loan_data.bus_utlbil_expns
-        ? retrive_loan_data.bus_utlbil_expns.toString()
-        : '',
-      tel_expns: retrive_loan_data.tel_expns
-        ? retrive_loan_data.tel_expns.toString()
-        : '',
-      tax_expns: retrive_loan_data.tax_expns
-        ? retrive_loan_data.tax_expns.toString()
-        : '',
-      goods_loss_expns: retrive_loan_data.goods_loss_expns
-        ? retrive_loan_data.goods_loss_expns.toString()
-        : '',
-      othr_expns_1: retrive_loan_data.othr_expns_1
-        ? retrive_loan_data.othr_expns_1.toString()
-        : '',
-      othr_expns_2: retrive_loan_data.othr_expns_2
-        ? retrive_loan_data.othr_expns_2.toString()
-        : '',
-      fmly_tot_income: retrive_loan_data.fmly_tot_income
-        ? retrive_loan_data.fmly_tot_income.toString()
-        : '',
-      fmly_tot_expense: retrive_loan_data.fmly_tot_expense
-        ? retrive_loan_data.fmly_tot_expense.toString()
-        : '',
-      food_expns: retrive_loan_data.food_expns
-        ? retrive_loan_data.food_expns.toString()
-        : '',
-      house_mngt_expns: retrive_loan_data.house_mngt_expns
-        ? retrive_loan_data.house_mngt_expns.toString()
-        : '',
-      utlbil_expns: retrive_loan_data.utlbil_expns
-        ? retrive_loan_data.utlbil_expns.toString()
-        : '',
-      edct_expns: retrive_loan_data.edct_expns
-        ? retrive_loan_data.edct_expns.toString()
-        : '',
-      healthy_expns: retrive_loan_data.healthy_expns
-        ? retrive_loan_data.healthy_expns.toString()
-        : '',
-      fmly_trnsrt_expns: retrive_loan_data.fmly_trnsrt_expns
-        ? retrive_loan_data.fmly_trnsrt_expns.toString()
-        : '',
-      fmly_tax_expns: retrive_loan_data.fmly_tax_expns
-        ? retrive_loan_data.fmly_tax_expns.toString()
-        : '',
-      finance_expns: retrive_loan_data.finance_expns
-        ? retrive_loan_data.finance_expns.toString()
-        : '',
-      fmly_otr_expns: retrive_loan_data.fmly_otr_expns
-        ? retrive_loan_data.fmly_otr_expns.toString()
-        : '',
-    });
-    if (
-      retrive_loan_data.borrower_sign != '' &&
-      retrive_loan_data.borrower_sign != 'undefined'
-    ) {
-      setBorrowerSignPath(retrive_loan_data.borrower_sign);
-    }
-    if (
-      retrive_loan_data.co_borrower_sign != '' &&
-      retrive_loan_data.co_borrower_sign != 'undefined'
-    ) {
-      setCoBorrowerSignPath(retrive_loan_data.co_borrower_sign);
-    }
-    props.initialize(loan_data);
-  }, []);
-
-  useEffect(() => {
-    totalIncome(
-      retrive_loan_data.tot_sale_income
-        ? parseFloat(retrive_loan_data.tot_sale_income)
-        : 0,
-    );
-    totalExpense(
-      retrive_loan_data.tot_sale_expense
-        ? parseFloat(retrive_loan_data.tot_sale_expense)
-        : 0,
-    );
-    totalFamilyIncome(
-      retrive_loan_data.fmly_tot_income
-        ? parseFloat(retrive_loan_data.fmly_tot_income)
-        : 0,
-    );
-    totalFamilyExpense(
-      retrive_loan_data.fmly_tot_expense
-        ? parseFloat(retrive_loan_data.fmly_tot_expense)
-        : 0,
-    );
-    updateTotalSum(
-      retrive_loan_data.total_net ? parseFloat(retrive_loan_data.total_net) : 0,
-    );
-    totalLoanAmt(retrive_loan_data.loan_limit_amt);
-  }, []);
-
-  // const saveBorrowerSign = async (borrower_sign_path) => {
-  //   const user_id = await AsyncStorage.getItem('user_id');
-  //   const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/Signature/`;
-  //   let newFilePath;
-
-  //   try {
-  //     await RNFS.mkdir(directoryPath);
-  //     const fileName = `10${user_id}TB${moment().format('YYYYMMDD')}${all_loandata.length + 1}SG01.jpg`;
-  //     newFilePath = `${directoryPath}${fileName}`;
-  //     console.log('old newFilePath', newFilePath);
-  //     await RNFS.moveFile(borrower_sign_path, newFilePath);
-  //     console.log('Signature saved successfully');
-  //     console.log('newFilePath', newFilePath);
-  //     // setBorrowerSignPath(newFilePath);
-  //     return newFilePath;
-  //   } catch (error) {
-  //     console.log('Error saving signature:', error);
-  //     throw error;
-  //   }
-  // };
-
-  // const saveCoBorrowerSign = async (coborrower_sign_path, suffix) => {
-  //   const user_id = await AsyncStorage.getItem('user_id');
-  //   const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/Signature/`;
-  //   let newFilePath;
-
-  //   try {
-  //     await RNFS.mkdir(directoryPath);
-  //     const fileName = `10${user_id}TB${moment().format('YYYYMMDD')}${all_loandata.length + 1}SG02.jpg`;
-  //     newFilePath = `${directoryPath}${fileName}`;
-  //     console.log('coborrower old newFilePath', newFilePath);
-  //     await RNFS.moveFile(coborrower_sign_path, newFilePath);
-  //     console.log('Signature saved successfully');
-  //     console.log('Co newFilePath', newFilePath);
-  //     // setBorrowerSignPath(newFilePath);
-  //     return newFilePath;
-  //   } catch (error) {
-  //     console.log('Error saving signature:', error);
-  //     throw error;
-  //   }
-  // };
-
-  const saveSignatureToInternalStorage = async (signatureData, index) => {
-    const user_id = await AsyncStorage.getItem('user_id');
-    try {
-      // Get the path to the application's internal storage directory
-      const internalDir = RNFS.DocumentDirectoryPath;
-      console.log('internalDir', internalDir);
-
-      // Create the target directory path
-      const directoryPath = `${internalDir}/SignatureImages`;
-
-      // Check if the directory exists, and create it if it doesn't
-      const dirExists = await RNFS.exists(directoryPath);
-      if (!dirExists) {
-        await RNFS.mkdir(directoryPath);
-      }
-
-      // Generate a unique file name for the signature image
-      const fileName = `10${user_id}TB${moment().format('YYYYMMDD')}${
-        all_loandata.length + 1
-      }SG${index}.jpg`;
-
-      // Construct the file path
-      const filePath = `${directoryPath}/${fileName}`;
-
-      // Save the signature image to the internal storage
-      await RNFS.writeFile(filePath, signatureData, 'base64');
-
-      console.log('Signature saved successfully:', filePath);
-      return fileName;
-    } catch (error) {
-      console.log('Error saving signature:', error);
-      throw error;
-    }
+  const [showCanvas, setShowCanvas] = useState(false);
+  const [working_month, setWorkingMonth] = useState();
+  const [loan_limit_amount, setLoanLimitAmount] = useState(0);
+  const { handleSubmit } = props;
+  const handleLoanToggle = () => {
+    setLoanExpanded(!loanexpanded);
   };
 
+  const [show_co_borrower_canvas, setCoBorrowerCanvas] = useState(false);
+
+  const loadData = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+
+    await getAllLoan().then(loan_data => {
+      setAllLoanData(loan_data);
+      dispatch(
+        change(
+          'Individual_Staff_Loan_Form',
+          'application_no',
+          `20${user_id}TB${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
+        ),
+      );
+      dispatch(
+        change(
+          'Individual_Staff_Loan_Form',
+          'product_type',
+          `Individual Staff Loan`,
+        ),
+      );
+    });
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const saveSignatureToInternalStorage = async (image_encode, index) => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    try {
+      // Request write storage permission
+      const permissionStatus = await AsyncStorage.getItem(
+        'writeStoragePermission',
+      );
+      if (permissionStatus === PermissionsAndroid.RESULTS.GRANTED) {
+        // Generate a unique filename for the image
+        const filename = `10${user_id}TB${moment().format('YYYYMMDD')}${all_loandata.length + 1
+          }SG${index}.jpg`;
+
+        // Define the destination path in the app's internal storage
+        let destinationPath;
+        if (Platform.OS === 'android') {
+          destinationPath = `${RNFS.ExternalDirectoryPath}/${filename}`;
+        } else if (Platform.OS === 'ios') {
+          destinationPath = `${RNFS.LibraryDirectoryPath}/${filename}`;
+        } else {
+          console.log('Unsupported platform.');
+          return null;
+        }
+
+        // Write the base64-encoded image data to the destination path
+        await RNFS.writeFile(destinationPath, image_encode, 'base64');
+        console.log('destinationPath', destinationPath);
+
+        // Check if the file exists
+        const fileExists = await RNFS.exists(destinationPath);
+        console.log('File exists:', fileExists);
+
+        return destinationPath;
+      } else {
+        console.log('Write storage permission denied.');
+        return null;
+      }
+    } catch (error) {
+      console.log('Error saving signature:', error);
+      return null;
+    }
+  };
+  useEffect(() => {
+    retrive_staff_loan_data.loan_limit_amt ? setLoanLimitAmount(retrive_staff_loan_data.loan_limit_amt) : setLoanLimitAmount(0)
+    const staff_loan_data = Object.assign({}, retrive_staff_loan_data, {
+      loan_cycle: retrive_staff_loan_data.loan_cycle
+        ? retrive_staff_loan_data.loan_cycle.toString()
+        : '',
+      loanterm_cnt: retrive_staff_loan_data.loanterm_cnt
+        ? retrive_staff_loan_data.loanterm_cnt.toString()
+        : '',
+      application_amt: retrive_staff_loan_data.application_amt
+        ? retrive_staff_loan_data.application_amt.toString()
+        : '',
+      salary_amount: retrive_staff_loan_data.tot_sale_income
+        ? retrive_staff_loan_data.tot_sale_income.toString()
+        : '',
+
+
+    });
+    if (
+      retrive_staff_loan_data.borrower_sign != '' &&
+      retrive_staff_loan_data.borrower_sign != 'undefined'
+    ) {
+      setBorrowerSignPath(retrive_staff_loan_data.borrower_sign);
+    }
+    if (
+      retrive_staff_loan_data.co_borrower_sign != '' &&
+      retrive_staff_loan_data.co_borrower_sign != 'undefined'
+    ) {
+      setCoBorrowerSignPath(retrive_staff_loan_data.co_borrower_sign);
+    }
+    props.initialize(staff_loan_data);
+  }, []);
+
   const onSubmit = async values => {
+
     if (show_operation == '4') {
-      await deleteLoan_ByID(values).then(response => {
+      await deleteStaffLoan_ByID(values).then(async response => {
         if (response == 'success') {
           alert('Delete Success');
           // setUpdateStatus(false);
@@ -2098,41 +1952,67 @@ function Edit_Individual_Loan(props) {
     // try {
     //   // Save the images
     //   let borrowerImagePath, coBorrowerImagePath;
+    //   let saveImageError = false;
 
     //   if (borrower_sign_path) {
     //     borrowerImagePath = await saveSignatureToInternalStorage(
-    //       borrower_sign_path,
+    //       show_borrower_sign,
     //       '01',
     //     );
-    //     console.log('Borrower image saved successfully:', borrowerImagePath);
+    //     if (!borrowerImagePath) {
+    //       saveImageError = true;
+    //       ToastAndroid.show(
+    //         'Error! Borrower Sign cannot save',
+    //         ToastAndroid.SHORT,
+    //       );
+    //     } else {
+    //       console.log('Borrower image saved successfully:', borrowerImagePath);
+    //     }
     //   }
 
     //   if (coborrower_sign_path) {
     //     coBorrowerImagePath = await saveSignatureToInternalStorage(
-    //       coborrower_sign_path,
+    //       show_coborrower_sign,
     //       '02',
     //     );
-    //     console.log(
-    //       'Co-Borrower image saved successfully:',
-    //       coBorrowerImagePath,
-    //     );
-    //   }
-
-    // //     // Only call the store function if at least one image was saved successfully
-
-    //   const loan_data = Object.assign({}, values, {
-    //     borrower_sign: borrowerImagePath || null,
-    //     co_borrower_sign: coBorrowerImagePath || null,
-    //   });
-    //   await storeLoanData(loan_data).then(result => {
-    //     if (result == 'success') {
-    //       dispatch(reset('Individual_Loan_Form'));
-    //       resetMonthlyIncome();
-
-    //       ToastAndroid.show(`Create Successfully!`, ToastAndroid.SHORT);
-    //       props.navigation.navigate('Home');
+    //     if (!coBorrowerImagePath) {
+    //       saveImageError = true;
+    //       ToastAndroid.show(
+    //         'Error! Co-Borrower Sign cannot save',
+    //         ToastAndroid.SHORT,
+    //       );
+    //     } else {
+    //       console.log(
+    //         'Co-Borrower image saved successfully:',
+    //         coBorrowerImagePath,
+    //       );
     //     }
-    //   });
+    //   }
+    //   console.log('borrowerImagePath', borrowerImagePath);
+    //   const exists = await RNFS.exists(filePath);
+    //   if (exists) {
+    //     console.log('exist');
+    //   } else {
+    //     console.log('no exist');
+    //   }
+    //   if (!saveImageError) {
+    //     const staff_loan = Object.assign({}, values, {
+    //       borrower_sign: borrowerImagePath,
+    //       co_borrower_sign: coBorrowerImagePath,
+    //       loan_limit_amt: loan_limit_amount
+    //     });
+
+    //     console.log('staff_loan', staff_loan);
+
+    //     await storeStaffLoanData(staff_loan).then(result => {
+    //       if (result == 'success') {
+    //         dispatch(reset('Individual_Staff_Loan_Form'));
+
+    //         ToastAndroid.show('Create Successfully!', ToastAndroid.SHORT);
+    //         props.navigation.navigate('Home');
+    //       }
+    //     });
+    //   }
     // } catch (error) {
     //   console.log('Error:', error);
     // }
@@ -2141,152 +2021,8 @@ function Edit_Individual_Loan(props) {
   const showCustomerSearch = () => {
     setModalVisible(true);
   };
-  const showCoBorrowerSearch = () => {
-    setCoBorrowerModalVisible(true);
-  };
-  const showWardSearch = () => {
-    setWardCodeModalVisible(true);
-  };
-  const handleItemValueChange = itemValue => {
-    setSelectedItemValue(itemValue);
-  };
-  useEffect(() => {
-    requestStoragePermission();
-  }, []);
-
-  const requestStoragePermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.requestMultiple([
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-      ]);
-
-      if (
-        granted['android.permission.WRITE_EXTERNAL_STORAGE'] ===
-          PermissionsAndroid.RESULTS.GRANTED &&
-        granted['android.permission.READ_EXTERNAL_STORAGE'] ===
-          PermissionsAndroid.RESULTS.GRANTED
-      ) {
-        console.log('Storage permissions granted');
-      } else {
-        console.log('Storage permissions denied');
-      }
-    } catch (error) {
-      console.warn('Error requesting storage permissions:', error);
-    }
-  };
-  const isFocused = useIsFocused();
   const hideModal = () => setModalVisible(false);
-  const hideCoBorrowerModal = () => setCoBorrowerModalVisible(false);
-
-  const handleLoanToggle = () => {
-    setLoanExpanded(!loanexpanded);
-  };
-  const loadData = async () => {
-    const user_id = await AsyncStorage.getItem('user_id');
-
-    await getAllLoan().then(loan_data => {
-      setAllLoanData(loan_data);
-      dispatch(
-        change(
-          'Individual_Loan_Form',
-          'application_no',
-          `10${user_id}TB${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
-        ),
-      );
-    });
-    await getAllLoanMax().then(loan_max_data => {
-      setLoanMaxData(loan_max_data);
-    });
-  };
-
-  const hideSignModal = () => {
-    setCanvas(!show_canvas);
-  };
-  const hideCoBorrowerSignModal = () => {
-    setCoBorrowerCanvas(!show_co_borrower_canvas);
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const handleCalculate = () => {
-    console.log('loan_max_data', loan_max_data);
-    console.log('loan_type_value', loan_type_value);
-    console.log('loan_cycle_value', loan_cycle_value);
-    loan_max_data.map(value => {
-      if (30 == loan_type_value) {
-        dispatch(
-          change('Edit_Individual_Loan_Form', 'loan_limit_amt', totalnet * 2),
-        );
-        setAppAmount(totalnet * 2);
-        totalLoanAmt(totalnet * 2);
-      } else if (
-        value.loan_cycle == loan_cycle_value &&
-        value.loan_type == loan_type_value
-      ) {
-        dispatch(
-          change(
-            'Edit_Individual_Loan_Form',
-            'loan_limit_amt',
-            value.loan_limit_amount,
-          ),
-        );
-        setAppAmount(value.loan_limit_amount);
-        totalLoanAmt(value.loan_limit_amount);
-      } else if (
-        loan_cycle_value >= value.loan_cycle &&
-        value.loan_type == loan_type_value
-      ) {
-        dispatch(
-          change(
-            'Individual_Loan_Form',
-            'loan_limit_amt',
-            value.loan_limit_amount,
-          ),
-        );
-        setAppAmount(value.loan_limit_amount);
-        totalLoanAmt(value.loan_limit_amount);
-      }
-    });
-  };
-  const saveSign = async () => {
-    // sign.current.saveImage();
-
-    const pathName = await sign.current.saveImage();
-    console.log('pathName', pathName);
-  };
-  const co_borrower_saveSign = async () => {
-    // sign.current.saveImage();
-
-    const pathName = await co_borrower_sign.current.saveImage();
-  };
-
-  const resetSign = () => {
-    sign.current.resetImage();
-  };
-  const co_borrower_resetSign = () => {
-    co_borrower_sign.current.resetImage();
-  };
-
-  const _onDragEvent = () => {
-    console.log('dragged');
-  };
-
-  const _onSaveEvent = async result => {
-    setShowBorrowerSign(result.encoded);
-    if (result.encoded) {
-      setBorrowerSignPath('');
-    }
-    setCanvas(false);
-  };
-  const _onCoBorrowerSaveEvent = async result => {
-    setCoBorrowerSignPath(result.pathName);
-    setShowCoBorrowerSign(result.encoded);
-
-    setCoBorrowerCanvas(false);
-  };
+  const CoBorrowerhideModal = () => setCoBorrowerModalVisible(false);
 
   const hideCityModal = () => setCityCodeModalVisible(false);
   const hideTownshipModal = () => setTownshipCodeModalVisible(false);
@@ -2294,11 +2030,11 @@ function Edit_Individual_Loan(props) {
   const hideWardModal = () => setWardCodeModalVisible(false);
   const hideLocationModal = () => setLocationModalVisible(false);
 
-  const handleCityItemValueChange = itemValue => {
-    setCitySelectedItemValue(itemValue);
-  };
   const handleTownshipItemValueChange = itemValue => {
     setTownshipSelectedItemValue(itemValue);
+  };
+  const hideSignModal = () => {
+    setCanvas(!show_canvas);
   };
   const handleVllageItemValueChange = itemValue => {
     setVillageSelectedItemValue(itemValue);
@@ -2311,12 +2047,13 @@ function Edit_Individual_Loan(props) {
     setLocationSelectedItemValue(itemValue);
   };
 
-  const sign = createRef();
-  const co_borrower_sign = createRef();
-
   const showCitySearch = () => {
     setCityCodeModalVisible(true);
   };
+  const handleCityItemValueChange = itemValue => {
+    setCitySelectedItemValue(itemValue);
+  };
+
   const showTownshipSearch = () => {
     setTownshipCodeModalVisible(true);
   };
@@ -2326,21 +2063,84 @@ function Edit_Individual_Loan(props) {
   const showLocationSearch = () => {
     setLocationModalVisible(true);
   };
+  const showWardSearch = () => {
+    setWardCodeModalVisible(true);
+  };
+  const showCoBorrowerSearch = () => {
+    setCoBorrowerModalVisible(true);
+  };
+  const _onSaveEvent = async result => {
+    setBorrowerSignPath(result.pathName);
+    setShowBorrowerSign(result.encoded);
+
+    setCanvas(false);
+  };
+  const resetSign = () => {
+    sign.current.resetImage();
+  };
+  const co_borrower_resetSign = () => {
+    co_borrower_sign.current.resetImage();
+  };
+
+  const _onDragEvent = () => {
+    console.log('dragged');
+  };
+  const _onCoBorrowerSaveEvent = async result => {
+    setCoBorrowerSignPath(result.pathName);
+    setShowCoBorrowerSign(result.encoded);
+
+    setCoBorrowerCanvas(false);
+  };
+  const sign = createRef();
+  const co_borrower_sign = createRef();
+  const saveSign = async () => {
+    const pathName = await sign.current.saveImage();
+  };
+  const co_borrower_saveSign = async () => {
+    await co_borrower_sign.current.saveImage();
+  };
+  const hideCoBorrowerSignModal = () => {
+    setCoBorrowerCanvas(!show_co_borrower_canvas);
+  };
+  const workingDateRef = useRef(null);
+
+  const handleCalculate = () => {
+    // if (!working_month) {
+    //   workingDateRef.current.focus();
+    // }
+    // console.log('working_month', working_month);
+    // console.log('salary_amount', salary_amount);
+    if (working_month >= 0 && working_month <= 5) {
+      setLoanLimitAmount(0);
+    } else if (working_month >= 6 && working_month <= 12) {
+      setLoanLimitAmount(salary_amount * 1.5);
+    } else if (working_month >= 13 && working_month <= 35) {
+      setLoanLimitAmount(salary_amount * 2);
+    } else if (36 >= 13 && working_month <= 10000) {
+      setLoanLimitAmount(salary_amount * 3.5);
+    } else {
+      setLoanLimitAmount(0);
+    }
+
+  };
   const filtered_operations = operations.filter(item => item.value != 1);
   const btnChangeOperation = newValue => {
     setOperation(newValue);
+    //Inquiry
     if (newValue == 2) {
-      setUpdateStatus(false);
+      setStaffLoanUpdateStatus(false);
     } else {
-      setUpdateStatus(true);
+      setStaffLoanUpdateStatus(true);
     }
   };
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{flex: 1, backgroundColor: '#fff'}}>
-            <Text style={style.title_style}>Individual Loan Application</Text>
+          <View style={{ flex: 1, backgroundColor: '#fff' }}>
+            <Text style={style.title_style}>
+              Individual Staff Loan Application
+            </Text>
             <DividerLine />
 
             <View style={style.continer}>
@@ -2360,14 +2160,11 @@ function Edit_Individual_Loan(props) {
                         alignItems: 'center',
                       }}>
                       <RadioButton.Item
+                        // disabled={option.value !== show_operation}
                         label={option.label}
                         value={option.value}
                         color="#000"
-                        labelStyle={{marginLeft: 5}}
-                        disabled={
-                          option.value === '3' 
-                        }
-                        //&& filtered_cus_data.sync_status === '02'
+                        labelStyle={{ marginLeft: 5 }}
                       />
                     </View>
                   </RadioButton.Group>
@@ -2384,6 +2181,7 @@ function Edit_Individual_Loan(props) {
               )}
             </View>
             <DividerLine />
+
             <List.Accordion
               expanded={loanexpanded}
               onPress={handleLoanToggle}
@@ -2399,6 +2197,8 @@ function Edit_Individual_Loan(props) {
                     cus_width
                     input_mode
                     editable
+                    require
+
                   />
 
                   <Field
@@ -2407,7 +2207,7 @@ function Edit_Individual_Loan(props) {
                     component={TextInputFile}
                     cus_width
                     input_mode
-                    editable={update_status == true ? false : true}
+                    editable
                   />
                 </View>
 
@@ -2420,8 +2220,8 @@ function Edit_Individual_Loan(props) {
                     pickerStyle={{
                       width: 300,
                     }}
-                    onChange={value => setLoanType(value)}
                     enabled={update_status == true ? false : true}
+
                   />
 
                   <Field
@@ -2430,6 +2230,7 @@ function Edit_Individual_Loan(props) {
                     label={'Application Date'}
                     icon={'calendar'}
                     editable={update_status == true ? false : true}
+
                   />
                 </View>
 
@@ -2442,7 +2243,7 @@ function Edit_Individual_Loan(props) {
                     input_mode
                     keyboardType={'numeric'}
                     editable={update_status == true ? false : true}
-                    onChange={value => setLocanCycleValue(value)}
+
                   />
 
                   <Field
@@ -2453,6 +2254,7 @@ function Edit_Individual_Loan(props) {
                     input_mode
                     keyboardType={'numeric'}
                     editable={update_status == true ? false : true}
+
                   />
                 </View>
 
@@ -2464,7 +2266,9 @@ function Edit_Individual_Loan(props) {
                     cus_width
                     input_mode
                     keyboardType={'numeric'}
+                    require
                     editable={update_status == true ? false : true}
+
                   />
 
                   <Field
@@ -2474,51 +2278,31 @@ function Edit_Individual_Loan(props) {
                     cus_width
                     input_mode
                     editable={update_status == true ? false : true}
-                  />
-                </View>
 
-                <View style={style.sub_list_container}>
-                  <Field
-                    name={'loan_charges'}
-                    title={'Loan Charges'}
-                    component={TextInputFile}
-                    cus_width
-                    input_mode
-                    keyboardType={'numeric'}
-                    editable={update_status == true ? false : true}
-                  />
-
-                  <Field
-                    name={'interest_rates'}
-                    title={'Interest Rates'}
-                    component={TextInputFile}
-                    cus_width
-                    input_mode
-                    editable={update_status == true ? false : true}
                   />
                 </View>
               </View>
             </List.Accordion>
 
-            <Borrower_Info
-              showCustomerSearch={showCustomerSearch}
+            <Edit_Individual_staff_Emp_loan
               showCitySearch={showCitySearch}
+              showCustomerSearch={showCustomerSearch}
               showTownshipSearch={showTownshipSearch}
               showVillageSearch={showVillageSearch}
               showWardSearch={showWardSearch}
               showLocationSearch={showLocationSearch}
-            />
-
-            <Co_Borrower_Info showCoBorrowerSearch={showCoBorrowerSearch} />
-            <Loan_Business_Info />
-
-            <Borrower_Monthly_Income
               handleCalculate={handleCalculate}
-              app_amount={app_amount}
+              setWorkingMonth={setWorkingMonth}
+              loan_limit_amount={loan_limit_amount}
+              setLoanLimitAmount={setLoanLimitAmount}
+              working_month={working_month}
+              workingDateRef={workingDateRef}
             />
-            <Borrower_Current_Map />
-            <Borrower_Contract />
-            <Borrower_Sign
+            <Edit_Individual_Staff_CoBorrower_Info
+              showCoBorrowerSearch={showCoBorrowerSearch}
+            />
+            <Edit_Individual_staff_Contract />
+            <Edit_Individual_Staff_Sign
               setCanvas={setCanvas}
               show_canvas={show_canvas}
               showCanvas={showCanvas}
@@ -2527,7 +2311,6 @@ function Edit_Individual_Loan(props) {
               co_borrower_filePath={co_borrower_filePath}
               setCoBorrowerCanvas={setCoBorrowerCanvas}
               show_co_borrower_canvas={show_co_borrower_canvas}
-              all_loandata={all_loandata}
               borrower_sign_path={borrower_sign_path}
               show_borrower_sign={show_borrower_sign}
               show_coborrower_sign={show_coborrower_sign}
@@ -2537,46 +2320,13 @@ function Edit_Individual_Loan(props) {
         </TouchableWithoutFeedback>
       </ScrollView>
 
-      <Borrower_modal
-        handleSubmit={handleSubmit}
-        setAllCus={setAllCus}
-        modalVisible={modalVisible}
+      <Emp_No_Search_modal
         hideModal={hideModal}
-        handleItemValueChange={handleItemValueChange}
-        selectedItemValue={selectedItemValue}
+        modalVisible={modalVisible}
+        setAllCus={setAllCus}
         all_cus={all_cus}
       />
 
-      <CoBorrower_modal
-        handleSubmit={handleSubmit}
-        setAllCoBorrower={setAllCoBorrower}
-        co_borrower_modalVisible={co_borrower_modalVisible}
-        hideCoBorrowerModal={hideCoBorrowerModal}
-        handleItemValueChange={handleItemValueChange}
-        selectedItemValue={selectedItemValue}
-        all_co_borrower={all_co_borrower}
-      />
-
-      <Borrower_Sign_Modal
-        show_canvas={show_canvas}
-        hideSignModal={hideSignModal}
-        setCanvas={setCanvas}
-        _onSaveEvent={_onSaveEvent}
-        _onDragEvent={_onDragEvent}
-        saveSign={saveSign}
-        resetSign={resetSign}
-        sign={sign}
-      />
-
-      <Co_Borrower_Sign_Modal
-        show_co_borrower_canvas={show_co_borrower_canvas}
-        hideCoBorrowerSignModal={hideCoBorrowerSignModal}
-        setCoBorrowerCanvas={setCoBorrowerCanvas}
-        _onCoBorrowerSaveEvent={_onCoBorrowerSaveEvent}
-        co_borrower_saveSign={co_borrower_saveSign}
-        co_borrower_resetSign={co_borrower_resetSign}
-        co_borrower_sign={co_borrower_sign}
-      />
       <City_Modal
         hideCityModal={hideCityModal}
         modal_city_visible={modal_city_visible}
@@ -2629,32 +2379,51 @@ function Edit_Individual_Loan(props) {
         handleSubmit={handleSubmit}
         all_location={all_location}
       />
+
+      <CoBorrower_NRC_Search_modal
+        CoBorrowerhideModal={CoBorrowerhideModal}
+        co_borrower_modal_visible={co_borrower_modal_visible}
+        setAllCoBorrower={setAllCoBorrower}
+        all_co_borrower={all_co_borrower}
+      />
+      <Borrower_Sign_Modal
+        show_canvas={show_canvas}
+        hideSignModal={hideSignModal}
+        setCanvas={setCanvas}
+        _onSaveEvent={_onSaveEvent}
+        _onDragEvent={_onDragEvent}
+        saveSign={saveSign}
+        resetSign={resetSign}
+        sign={sign}
+      />
+
+      <Co_Borrower_Sign_Modal
+        show_co_borrower_canvas={show_co_borrower_canvas}
+        hideCoBorrowerSignModal={hideCoBorrowerSignModal}
+        setCoBorrowerCanvas={setCoBorrowerCanvas}
+        _onCoBorrowerSaveEvent={_onCoBorrowerSaveEvent}
+        co_borrower_saveSign={co_borrower_saveSign}
+        co_borrower_resetSign={co_borrower_resetSign}
+        co_borrower_sign={co_borrower_sign}
+      />
     </>
   );
 }
+const selector = formValueSelector('Edit_Individual_Staff_Loan_Form');
 
 function mapStateToProps(state) {
+  const entryDate = selector(state, 'entry_date');
+  const salary_amount = selector(state, 'salary_amount');
   return {
-    totalnet: state.monthly.totalnetincome,
-    retrive_loan_data: state.loan.edit_loandata,
-    update_status: state.loan.update_status,
+    update_status: state.loan.staff_loan_update_status,
+    retrive_staff_loan_data: state.loan.edit_loandata,
+    entryDate,
+    salary_amount
+
   };
 }
 
 export default reduxForm({
-  form: 'Edit_Individual_Loan_Form',
+  form: 'Edit_Individual_Staff_Loan_Form',
   // validate,
-})(
-  connect(mapStateToProps, {
-    totalFamilyIncome,
-    totalIncome,
-    totalExpense,
-    totalFamilyExpense,
-    totalNetBusiness,
-    totalNetFamily,
-    updateTotalSum,
-    resetMonthlyIncome,
-    totalLoanAmt,
-    setUpdateStatus,
-  })(Edit_Individual_Loan),
-);
+})(connect(mapStateToProps, {setStaffLoanUpdateStatus})(Individual_Staff_loan_Info));

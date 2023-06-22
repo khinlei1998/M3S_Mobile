@@ -1,7 +1,7 @@
-import {View, Text} from 'react-native';
-import React, {useState} from 'react';
-import {List} from 'react-native-paper';
-import {style} from '../../style/Individual_Loan_style';
+import { View, Text,TouchableOpacity ,Image} from 'react-native';
+import React, { useState } from 'react';
+import { List } from 'react-native-paper';
+import { style } from '../../style/Individual_Loan_style';
 export default function Borrower_Current_Map() {
   const [borrower_map_expanded, setBorrowerMapExpanded] = useState(true);
 
@@ -15,7 +15,14 @@ export default function Borrower_Current_Map() {
       style={style.list_container}
       titleStyle={style.list_title}
       title="Borrower current Home Map">
-      <View style={style.sub_container}></View>
+      <View style={style.sub_container}>
+        <TouchableOpacity onPress={() => alert('oo')}>
+          <Image
+            source={require('../../../assets/images/default-sign.png')}
+            style={{ width: '100%', height: 200 }}
+          />
+        </TouchableOpacity>
+      </View>
     </List.Accordion>
   );
 }

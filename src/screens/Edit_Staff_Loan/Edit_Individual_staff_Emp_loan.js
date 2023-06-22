@@ -17,7 +17,7 @@ import DatePicker from '../../components/DatePicker';
 import DropDownPicker from '../../components/DropDownPicker';
 import {Button} from 'react-native-paper';
 import {connect} from 'react-redux';
-export default function Individual_staff_Emp_loan(props) {
+ function Edit_Individual_staff_Emp_loan(props) {
   const {
     showCustomerSearch,
     showLocationSearch,
@@ -28,10 +28,12 @@ export default function Individual_staff_Emp_loan(props) {
     handleCalculate,
     app_amount,
     setWorkingMonth,
+    setSalaryAmountValue,
     loan_limit_amount,
     setLoanLimitAmount,
     working_month,
-    workingDateRef
+    workingDateRef,
+    update_status
   } = props;
   const [borrower_expanded, setBorrowerExpanded] = React.useState(true);
   const [show_village, setVillage] = useState('1');
@@ -64,6 +66,7 @@ export default function Individual_staff_Emp_loan(props) {
             data={borrower_type}
             name={'cst_new_exist_flg'}
             component={RadioButtonFile}
+            disabled={update_status == true ? false : true}
           />
 
           <View style={style.sub_list_container}>
@@ -97,9 +100,13 @@ export default function Individual_staff_Emp_loan(props) {
               component={DatePicker}
               label={'Start Working Date at SHM'}
               icon={'calendar'}
+              editable={update_status == true ? false : true}
               // ref={workingDateRef}
               onWorkingDateChange={(month)=>{
+                setWorkingMonth(month)
                 setLoanLimitAmount(0)
+
+                console.log('finale moth',month);
 
               }}
             />
@@ -108,6 +115,7 @@ export default function Individual_staff_Emp_loan(props) {
               name={'position_title_nm'}
               title={'Current Position'}
               component={TextInputFile}
+              editable={update_status == true ? false : true}
 
             />
           </View>
@@ -119,6 +127,7 @@ export default function Individual_staff_Emp_loan(props) {
               component={TextInputFile}
               cus_width
               input_mode
+              editable={update_status == true ? false : true}
 
             />
             <Field
@@ -129,6 +138,7 @@ export default function Individual_staff_Emp_loan(props) {
               pickerStyle={{
                 width: 300,
               }}
+              enabled={update_status == true ? false : true}
             />
           </View>
 
@@ -140,6 +150,8 @@ export default function Individual_staff_Emp_loan(props) {
               cus_width
               input_mode
               require
+              editable={update_status == true ? false : true}
+
 
             />
 
@@ -149,6 +161,8 @@ export default function Individual_staff_Emp_loan(props) {
               component={TextInputFile}
               cus_width
               input_mode
+              editable={update_status == true ? false : true}
+
 
             />
           </View>
@@ -160,6 +174,8 @@ export default function Individual_staff_Emp_loan(props) {
               component={TextInputFile}
               cus_width
               input_mode
+              editable={update_status == true ? false : true}
+
             />
 
             <Field
@@ -169,6 +185,8 @@ export default function Individual_staff_Emp_loan(props) {
               cus_width
               input_mode
               keyboardType={'numeric'}
+              editable={update_status == true ? false : true}
+
             />
           </View>
 
@@ -181,6 +199,7 @@ export default function Individual_staff_Emp_loan(props) {
               pickerStyle={{
                 width: 300,
               }}
+              enabled={update_status == true ? false : true}
             />
 
             <Field
@@ -188,6 +207,7 @@ export default function Individual_staff_Emp_loan(props) {
               component={DatePicker}
               label={'date of birth'}
               icon={'calendar'}
+              editable={update_status == true ? false : true}
             />
           </View>
 
@@ -200,6 +220,7 @@ export default function Individual_staff_Emp_loan(props) {
               pickerStyle={{
                 width: 300,
               }}
+              enabled={update_status == true ? false : true}
             />
 
             <Field
@@ -210,6 +231,7 @@ export default function Individual_staff_Emp_loan(props) {
               pickerStyle={{
                 width: 300,
               }}
+              enabled={update_status == true ? false : true}
             />
           </View>
 
@@ -223,6 +245,7 @@ export default function Individual_staff_Emp_loan(props) {
               icon={'magnify'}
               editable
               handleTextInputFocus={showCitySearch}
+
             />
             <Field
               name={'city_name'}
@@ -231,6 +254,7 @@ export default function Individual_staff_Emp_loan(props) {
               input_mode
               inputmax={100}
               editable
+
             />
           </View>
           <View style={style.sub_list_container}>
@@ -343,6 +367,8 @@ export default function Individual_staff_Emp_loan(props) {
               component={TextInputFile}
               input_mode
               inputmax={100}
+              editable={update_status == true ? false : true}
+
             />
             <Field
               name={'salary_amount'}
@@ -350,8 +376,9 @@ export default function Individual_staff_Emp_loan(props) {
               component={TextInputFile}
               input_mode
               inputmax={100}
+              editable={update_status == true ? false : true}
+
               keyboardType={'numeric'}
-            
             />
           </View>
 
@@ -392,9 +419,75 @@ export default function Individual_staff_Emp_loan(props) {
             </Text>
           </View>
 
-        
+          {/* <View style={style.sub_list_container}>
+            <Field
+              name={'curr_resident_date'}
+              component={DatePicker}
+              label={'Living Time in current address'}
+              icon={'calendar'}
+            />
+
+            <Field
+              name={'family_num'}
+              title={'Number of family'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+              keyboardType={'numeric'}
+            />
+          </View> */}
+
+          {/* <View style={style.sub_list_container}>
+            <Field
+              name={'hghschl_num'}
+              title={'Number of High school Students'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+              keyboardType={'numeric'}
+            />
+
+            <Field
+              name={'university_num'}
+              title={'Number of University Student'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+              keyboardType={'numeric'}
+            />
+          </View> */}
+
+          {/* <View style={style.sub_list_container}>
+            <Field
+              data={condition_house}
+              name={'house_ocpn_type'}
+              title={'Condition of house'}
+              component={DropDownPicker}
+              pickerStyle={{
+                width: 300,
+              }}
+            />
+
+            <Field
+              name={'business_own_type'}
+              title={'OwnerShip of business'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+            />
+          </View> */}
         </View>
       </List.Accordion>
     </>
   );
 }
+function mapStateToProps(state) {
+  return {
+    update_status: state.loan.staff_loan_update_status,
+  };
+}
+
+export default reduxForm({
+  form: 'Edit_Individual_Staff_Loan_Form',
+  // validate,
+})(connect(mapStateToProps, {})(Edit_Individual_staff_Emp_loan));
