@@ -14,7 +14,7 @@ import Home from '../screens/Dashboard/Home';
 import Edit_Individual_Loan from '../screens/Edit_Loan/Edit_Individual_Loan';
 import Individual_Staff_loan_Info from '../screens/Staff_Loan/Individual_Staff_loan_Info';
 import Edit_Individual_Staff_loan_Info from '../screens/Edit_Staff_Loan/Edit_Individual_Staff_loan_Info';
-
+import Show_Borrower_Map from '../screens/Loan/Show_Borrower_Map';
 export default function AuthNavigation(props) {
   const Stack = createNativeStackNavigator();
   return (
@@ -55,6 +55,12 @@ export default function AuthNavigation(props) {
         component={Home}
         options={{headerShown: false}}
       />
+       <Stack.Screen
+        name="Borrower Map"
+        component={Show_Borrower_Map}
+        options={{headerShown: false}}
+      />
+
 
       <Stack.Screen
         name="Edit_Emp_Info"

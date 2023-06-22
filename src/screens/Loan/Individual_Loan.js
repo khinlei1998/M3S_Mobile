@@ -2447,7 +2447,7 @@ function Individual_Loan(props) {
               handleCalculate={handleCalculate}
               app_amount={app_amount}
             />
-            <Borrower_Current_Map />
+            <Borrower_Current_Map navigation={navigation}/>
             <Borrower_Contract />
             <Borrower_Sign
               setCanvas={setCanvas}
