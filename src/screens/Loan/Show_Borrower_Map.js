@@ -52,7 +52,9 @@ export default function Show_Borrower_Map() {
                     saveComponent={<View style={{
                         marginHorizontal: 2.5, marginVertical: 8, height: 30, width: 60,
                         backgroundColor: '#39579A', justifyContent: 'center', alignItems: 'center', borderRadius: 5
-                    }}><Text style={{ color: 'white' }}>Save</Text></View>}
+                    }}><Text style={{ color: 'white' }}>Save</Text></View>
+                }
+
                     savePreference={() => {
                         return {
                             folder: 'RNSketchCanvas',
