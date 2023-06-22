@@ -2478,7 +2478,6 @@ function Individual_Loan(props) {
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            backgroundColor: 'red',
           }}>
           <View>
             <TouchableOpacity>

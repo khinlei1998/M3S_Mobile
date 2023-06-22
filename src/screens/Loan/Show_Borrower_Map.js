@@ -28,7 +28,7 @@ export default function Show_Borrower_Map() {
                         backgroundColor: '#39579A', justifyContent: 'center', alignItems: 'center', borderRadius: 5,
                     }}><Text style={{ color: 'white' }}>Eraser</Text></View>}
                     strokeComponent={color => (
-                        <View style={{ marginHorizontal: 2.5, marginVertical: 8, width: 30, height: 30, borderRadius: 15, backgroundColor: 'red' }} />
+                        <View style={{ marginHorizontal: 2.5, marginVertical: 8, width: 30, height: 30, borderRadius: 15, backgroundColor: color }} />
                     )}
                     strokeSelectedComponent={(color, index, changed) => {
                         return (
