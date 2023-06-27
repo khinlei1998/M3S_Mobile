@@ -29,7 +29,7 @@ import { reduxForm, Field, change, reset, formValueSelector } from 'redux-form';
 import { connect, useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/Feather';
 import { Picker } from '@react-native-picker/picker';
-import validate from './validate';
+import validate from './Validate';
 import {
   RadioButton,
   Button,
@@ -574,7 +574,7 @@ const CoBorrower_NRC_Search_modal = props => {
         item.occupation,
       ),
     );
-       
+
     dispatch(
       change(
         'Individual_Staff_Loan_Form',
@@ -582,7 +582,7 @@ const CoBorrower_NRC_Search_modal = props => {
         item.resident_rgst_id,
       ),
     );
-  
+
   };
 
   const item = ({ item, index }) => {
@@ -2402,7 +2402,7 @@ const selector = formValueSelector('Individual_Staff_Loan_Form');
 function mapStateToProps(state) {
   const entryDate = selector(state, 'entry_date');
   const salary_amount = selector(state, 'salary_amount');
-  
+
   return {
     entryDate,
     salary_amount

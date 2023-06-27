@@ -264,7 +264,7 @@ export const loan_type = [
     label: 'Employee',
     value: '30',
   },
-  
+
 ];
 
 export const gender = [
@@ -435,6 +435,18 @@ export const borrower_type = [
     id: '2',
     name: 'Old Borrower',
   },
+];
+
+export const questions = [
+  {
+    id: 1,
+    name: 'Yes',
+  },
+  {
+    id: 2,
+    name: 'No ',
+  },
+
 ];
 
 // export const BASE_URL='https://8582-103-231-92-61.ngrok-free.app/'

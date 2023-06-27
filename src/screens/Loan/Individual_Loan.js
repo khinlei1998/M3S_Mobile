@@ -95,7 +95,6 @@ const Borrower_modal = props => {
   };
 
   const btnSelectEmployee = item => {
-    console.log('item', item.id);
     setSelectedValue(item.id);
     dispatch(change('Individual_Loan_Form', 'borrower_name', item.customer_nm));
     dispatch(
@@ -2105,13 +2104,8 @@ function Individual_Loan(props) {
         ),
       );
       dispatch(
-        change(
-          'Individual_Loan_Form',
-          'product_type',
-          `Individual Loan`,
-        ),
+        change('Individual_Loan_Form', 'product_type', `Individual Loan`),
       );
-      
     });
     await getAllLoanMax().then(loan_max_data => {
       setLoanMaxData(loan_max_data);
@@ -2280,7 +2274,7 @@ function Individual_Loan(props) {
 
   return (
     <>
-      <ScrollView nestedScrollEnabled={true}>
+      {/* <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={{flex: 1, backgroundColor: '#fff'}}>
             <Text style={style.title_style}>Individual Loan Application</Text>
@@ -2447,7 +2441,7 @@ function Individual_Loan(props) {
               handleCalculate={handleCalculate}
               app_amount={app_amount}
             />
-            <Borrower_Current_Map navigation={navigation}/>
+            <Borrower_Current_Map navigation={navigation} />
             <Borrower_Contract />
             <Borrower_Sign
               setCanvas={setCanvas}
@@ -2465,113 +2459,63 @@ function Individual_Loan(props) {
             />
           </View>
         </TouchableWithoutFeedback>
-      </ScrollView>
+      </ScrollView> */}
 
       <BottomSheet isOpen={false} wrapperStyle={{backgroundColor: '#3E3E84'}}>
         <View style={{flexDirection: 'row', padding: 5, marginLeft: 10}}>
           <Icon name="paperclip" size={25} color="#fff" />
           <Text style={{color: '#fff', fontSize: 20, marginLeft: 10}}>
-            Document Submit{' '}
+            Document Submit
           </Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
-          <View>
-            <TouchableOpacity>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  backgroundColor: 'pink',
-                  justifyContent: 'space-around',
-                  padding: 5,
-                  // width: '30%',
-                }}>
-                <Icon name="paperclip" size={20} color="#fff" />
-                <Text>Guarantor Form</Text>
-                <Icon name="arrow-right" size={20} color="#fff" />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  backgroundColor: 'pink',
-                  justifyContent: 'space-around',
-                  padding: 5,
-                  // width: '30%',
-                }}>
-                <Icon name="paperclip" size={20} color="#fff" />
-                <Text>Guarantor Form</Text>
-                <Icon name="arrow-right" size={20} color="#fff" />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  backgroundColor: 'pink',
-                  justifyContent: 'space-around',
-                  padding: 5,
-                  width: '30%',
-                }}>
-                <Icon name="paperclip" size={20} color="#fff" />
-                <Text>Guarantor Form</Text>
-                <Icon name="arrow-right" size={20} color="#fff" />
-              </View>
-            </TouchableOpacity>
-          </View>
+          <View style={{flex: 1, }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: 16,
+              }}>
+              <TouchableOpacity
+                style={{width: 100, height: 40, backgroundColor: 'lightgray'}}
+              />
+              <TouchableOpacity
+                style={{width: 100, height: 40, backgroundColor: 'lightgray'}}
+              />
+              <TouchableOpacity
+                style={{width: 100, height: 40, backgroundColor: 'lightgray'}}
+              />
+            </View>
 
-          <View>
-            <TouchableOpacity>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  backgroundColor: 'pink',
-                  justifyContent: 'space-around',
-                  padding: 5,
-                  // width: '30%',
-                }}>
-                <Icon name="paperclip" size={20} color="#fff" />
-                <Text>Guarantor Form</Text>
-                <Icon name="arrow-right" size={20} color="#fff" />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  backgroundColor: 'pink',
-                  justifyContent: 'space-around',
-                  padding: 5,
-                  // width: '30%',
-                }}>
-                <Icon name="paperclip" size={20} color="#fff" />
-                <Text>Guarantor Form</Text>
-                <Icon name="arrow-right" size={20} color="#fff" />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  backgroundColor: 'pink',
-                  justifyContent: 'space-around',
-                  padding: 5,
-                  width: '30%',
-                }}>
-                <Icon name="paperclip" size={20} color="#fff" />
-                <Text>Guarantor Form</Text>
-                <Icon name="arrow-right" size={20} color="#fff" />
-              </View>
-            </TouchableOpacity>
-          </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: 16,
+              }}>
+              <TouchableOpacity
+                style={{width: 100, height: 40, backgroundColor: 'lightgray'}}
+              />
+              <TouchableOpacity
+                style={{width: 100, height: 40, backgroundColor: 'lightgray'}}
+              />
 
-          <View>
-            <Text>hh</Text>
-            <Text>kk</Text>
+            </View>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: 16,
+              }}>
+              <TouchableOpacity
+                style={{width: 100, height: 40, backgroundColor: 'lightgray'}}
+              />
+              <TouchableOpacity
+                style={{width: 100, height: 40, backgroundColor: 'lightgray'}}
+              />
+              <TouchableOpacity
+                style={{width: 100, height: 40, backgroundColor: 'lightgray'}}
+              />
+            </View>
           </View>
         </View>
       </BottomSheet>
