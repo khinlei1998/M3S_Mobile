@@ -40,11 +40,11 @@ export default function AuthNavigation(props) {
         component={Customer_Management}
         options={{headerShown: false}}
       /> */}
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Home"
         component={Home}
         options={{headerShown: false}}
-      /> */}
+      />
       <Stack.Screen
         name="Individual_loan"
         component={Individual_Loan}

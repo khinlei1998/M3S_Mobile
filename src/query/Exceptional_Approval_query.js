@@ -1,0 +1,56 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+export const storeExceptionalApproval = async data => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    console.log('user id', user_id);
+    return new Promise(async (resolve, reject) => {
+        try {
+            global.db.transaction(trans => {
+                trans.executeSql(
+                    `INSERT INTO Exception_aprv (serial_no,excpt_aprv_rqst_no,status_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,group_aplc_no,application_no,exception_rqst_date,borrower_name,application_amt,birth_date,borrower_age,group_member_num,occupation,net_income,excpt_aprv_rsn_1,excpt_aprv_rsn_2,excpt_aprv_rsn_3,exception_reason,recommend_nm,tablet_sync_sts,sync_sts,err_msg
+) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+                    [
+                        null, //serialNo
+                        data.excpt_aprv_rqst_no,
+                        '01', //status code 
+                        null, //create_datetime
+                        null,//create_user_id
+                        null, //deleteDatetime
+                        null, //delet usr id
+                        null, //updateDatetime
+                        user_id, //updateUserID
+                        data.group_aplc_no,
+                        data.application_no,
+                        data.exception_rqst_date,
+                        data.borrower_name,
+                        data.application_amt,
+                        data.birth_date,
+                        data.borrower_age,
+                        data.group_member_num,
+                        data.occupation,
+                        data.net_income,
+                        data.excpt_aprv_rsn_1,
+                        data.excpt_aprv_rsn_2,
+                        data.excpt_aprv_rsn_3,
+                        data.exception_reason,
+                        data.recommend_nm,
+                        data.tablet_sync_sts,
+                        data.sync_sts,
+                        data.err_msg //27
+
+                    ],
+                    (trans, results) => {
+                        resolve('success');
+                        console.log('success', results);
+                    },
+                    error => {
+                        reject(error);
+                        console.log('error', error);
+                    },
+                );
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+};

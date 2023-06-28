@@ -19,24 +19,16 @@ import Exceptional_Approval_Info from './Exceptional_Approval_Info';
 import validate from './Validate';
 import { storeExceptionalApproval } from '../../query/Exceptional_Approval_query';
 import { useNavigation } from '@react-navigation/native';
-import { setExcept_ApprovalStatus } from '../../redux/LoanReducer';
 function Exceptional_Approvel_Form(props) {
-  console.log('all>>>', props);
-
   const navigation = useNavigation();
-  const { handleSubmit, setExcept_ApprovalStatus } = props;
+  const { handleSubmit } = props;
   const [show_operation, setOperation] = useState('1');
   const [loanexpanded, setLoanExpanded] = React.useState(true);
   // const retrive_loan_data = props.route.params.retrive_loan_data
 
   const onSubmit = async (values) => {
     console.log(JSON.stringify(values));
-    setExcept_ApprovalStatus(1)
-    // props.navigation.navigate('Individual_loan','exceptionl_success');
-    // navigation.state.params.updateParent(  
-    //   "some data to send back"
-    // )
-    navigation.goBack('exceptionl_success');
+    props.navigation.goBack('gg');
     // await storeExceptionalApproval(values).then(result => {
     //   if (result == 'success') {
     //     ToastAndroid.show(`Insert Success`, ToastAndroid.SHORT);
@@ -225,4 +217,4 @@ function mapStateToProps(state) {
 export default reduxForm({
   form: 'Exceptional_Approvel_Form',
   validate,
-})(connect(mapStateToProps, { setExcept_ApprovalStatus })(Exceptional_Approvel_Form));
+})(connect(mapStateToProps, {})(Exceptional_Approvel_Form));
