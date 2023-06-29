@@ -15,7 +15,10 @@ import {setBorrowerMap_Path} from '../../redux/LoanReducer';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 
-export default function Show_Borrower_Map(props) {
+export default function Edit_Show_Borrower_Map(props) {
+  // const {has_borrower_map} = props;
+  const has_borrower_map = props.route.params.has_borrower_map;
+
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -23,31 +26,28 @@ export default function Show_Borrower_Map(props) {
   const [imagetest, setImage] = useState('');
   const [imageQuery, setImageQuery] = useState('');
 
-  const loan_data_count = props.route.params.all_loandata.length;
-  const user_id = props.route.params.user_id;
+  // const loan_data_count = props.route.params.all_loandata.length;
   const sketchRef = useRef(null);
   const handleSave = async () => {
     if (sketchRef.current) {
-      setPaths('');
-
       try {
-        const imagePath = sketchRef.current.save(
-          true, // save with a transparent background
-          'RNSketchCanvas', // folder name (optional)
-          '3', // file name (optional)
-          true, // overwrite existing file (optional)
-          false, // include image in the gallery (optional)
-          false, // include image in the sketcher's album (optional)
-          path => {
-            console.log('Image saved to:', path);
-            // Handle success or failure
+        const result = await sketchRef.current.getBase64(
+          'jpg',
+          false,
+          true,
+          false,
+          true,
+          (err, result) => {
+            console.log('result', result);
           },
         );
+        console.log('Save successful:', result);
       } catch (error) {
         console.error('Save failed:', error);
       }
     }
   };
+  const user_id = AsyncStorage.getItem('user_id');
 
   return (
     <>
@@ -117,9 +117,10 @@ export default function Show_Borrower_Map(props) {
             savePreference={() => {
               return {
                 folder: 'RNSketchCanvas',
-                filename: `10${user_id}TB${moment().format(
-                  'YYYYMMDD',
-                )}${loan_data_count}SG01`,
+                filename: has_borrower_map ? has_borrower_map : '1',
+                //`10${user_id}TB${moment().format(
+                // 'YYYYMMDD',
+                // )}${loan_data_count}SG01`,
                 transparent: true,
                 imageType: 'jpg',
               };
@@ -137,12 +138,12 @@ export default function Show_Borrower_Map(props) {
               }
             }}
           />
-          <Button title="Savefff" onPress={handleSave} />
+          {/* <Button title="Savefff" onPress={handleSave} /> */}
         </View>
       </View>
 
       {/* <Image
-        source={{uri: `file://${paths}${imageQuery}`}}
+        source={{uri: `file://${paths}`}}
         style={{width: 400, height: 500}}
       /> */}
     </>

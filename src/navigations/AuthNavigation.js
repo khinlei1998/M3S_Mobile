@@ -16,6 +16,7 @@ import Individual_Staff_loan_Info from '../screens/Staff_Loan/Individual_Staff_l
 import Edit_Individual_Staff_loan_Info from '../screens/Edit_Staff_Loan/Edit_Individual_Staff_loan_Info';
 import Show_Borrower_Map from '../screens/Loan/Show_Borrower_Map';
 import Exceptional_Approvel_Form from '../screens/Exceptional_Approval_Request/Exceptional_Approvel_Form';
+import Edit_Show_Borrower_Map from '../screens/Edit_Loan/Edit_Show_Borrower_Map';
 export default function AuthNavigation(props) {
   const Stack = createNativeStackNavigator();
   return (
@@ -40,30 +41,41 @@ export default function AuthNavigation(props) {
         component={Customer_Management}
         options={{headerShown: false}}
       /> */}
-      <Stack.Screen
-        name="Home"
-        component={Home}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
+
+      {/* <Stack.Screen
         name="Individual_loan"
         component={Individual_Loan}
         options={{headerShown: false}}
-      />
-      <Stack.Screen
+      /> */}
+      {/* <Stack.Screen
         name="Exceptional_Approvel_Form"
         component={Exceptional_Approvel_Form}
         options={{headerShown: false}}
-      />
+      /> */}
       {/* <Stack.Screen
         name="Customer Search"
         component={CustomerSearch}
         options={{headerShown: false}}
       /> */}
 
+      {/* <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{headerShown: false}}
+      /> */}
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="Borrower Map"
         component={Show_Borrower_Map}
+        options={{headerShown: false}}
+      />
+       <Stack.Screen
+        name="Edit Borrower Map"
+        component={Edit_Show_Borrower_Map}
         options={{headerShown: false}}
       />
 
@@ -93,11 +105,7 @@ export default function AuthNavigation(props) {
         component={Synchronization_Screen}
         options={{headerShown: false}}
       />
-      <Stack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{headerShown: false}}
-      />
+
       <Stack.Screen
         name="Setting"
         component={SettingScreen}
