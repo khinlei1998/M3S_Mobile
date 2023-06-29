@@ -27,13 +27,13 @@ function Exceptional_Approvel_Form(props) {
   const { handleSubmit, setExcept_ApprovalStatus } = props;
   const [show_operation, setOperation] = useState('1');
   const [loanexpanded, setLoanExpanded] = React.useState(true);
-  // const retrive_loan_data = props.route.params.retrive_loan_data
+  const retrive_loan_data = props.route.params.retrive_loan_data
 
   const onSubmit = async (values) => {
     console.log(JSON.stringify(values));
     setExcept_ApprovalStatus(1)
     // props.navigation.navigate('Individual_loan','exceptionl_success');
-    // navigation.state.params.updateParent(  
+    // navigation.state.params.updateParent(
     //   "some data to send back"
     // )
     navigation.goBack('exceptionl_success');
@@ -47,23 +47,23 @@ function Exceptional_Approvel_Form(props) {
   const handleLoanToggle = () => {
     setLoanExpanded(!loanexpanded);
   };
-  // const loadData = async () => {
-  //   let initialize_data = {
-  //     application_no: retrive_loan_data.application_no,
-  //     application_date: retrive_loan_data.application_date,
-  //     borrower_name: retrive_loan_data.borrower_name,
-  //     resident_rgst_id: retrive_loan_data.resident_rgst_id,
-  //     application_amt: retrive_loan_data.application_amt.toString()
-  //       ? retrive_loan_data.application_amt.toString()
-  //       : '',
-  //     birth_date: retrive_loan_data.birth_date,
-  //     excpt_aprv_rqst_no: retrive_loan_data.application_no.replace(/^[^M]*M/, 'EM')
-  //   }
-  //   props.initialize(initialize_data);
-  // };
-  // useEffect(() => {
-  //   loadData();
-  // }, []);
+  const loadData = async () => {
+    let initialize_data = {
+      application_no: retrive_loan_data.application_no,
+      application_date: retrive_loan_data.application_date,
+      borrower_name: retrive_loan_data.borrower_name,
+      resident_rgst_id: retrive_loan_data.resident_rgst_id,
+      application_amt: retrive_loan_data.application_amt.toString()
+        ? retrive_loan_data.application_amt.toString()
+        : '',
+      birth_date: retrive_loan_data.birth_date,
+      excpt_aprv_rqst_no: retrive_loan_data.application_no.replace(/^[^M]*M/, 'EM')
+    }
+    props.initialize(initialize_data);
+  };
+  useEffect(() => {
+    loadData();
+  }, []);
 
 
   return (

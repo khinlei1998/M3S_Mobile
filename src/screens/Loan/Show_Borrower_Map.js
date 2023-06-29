@@ -119,7 +119,7 @@ export default function Show_Borrower_Map(props) {
                 folder: 'RNSketchCanvas',
                 filename: `10${user_id}TB${moment().format(
                   'YYYYMMDD',
-                )}${loan_data_count}SG01`,
+                )}${loan_data_count+1}SG01`,
                 transparent: true,
                 imageType: 'jpg',
               };
@@ -137,7 +137,7 @@ export default function Show_Borrower_Map(props) {
               }
             }}
           />
-          <Button title="Savefff" onPress={handleSave} />
+          {/* <Button title="Savefff" onPress={handleSave} /> */}
         </View>
       </View>
 

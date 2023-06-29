@@ -9,6 +9,7 @@ import {
   TouchableHighlight,
   Image,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
 import React, {useState, useEffect, useRef, createRef} from 'react';
 import DividerLine from '../../components/DividerLine';
@@ -1872,7 +1873,6 @@ function Edit_Individual_Loan(props) {
     setUpdateStatus,
     except_app_status,
   } = props;
-  console.log('retrive_loan_data.borrower_map', retrive_loan_data.borrower_map);
   useEffect(() => {
     const loan_data = Object.assign({}, retrive_loan_data, {
       loan_cycle: retrive_loan_data.loan_cycle
@@ -2668,9 +2668,21 @@ function Edit_Individual_Loan(props) {
                   <Icon name="chevron-right" size={25} color="#fff" />
                 </View>
               </TouchableOpacity>
+
               <TouchableOpacity
                 onPress={() =>
-                  props.navigation.navigate('Exceptional_Approvel_Form')
+                  update_status == true && except_app_status != 1
+                    ? props.navigation.navigate('Exceptional_Approvel_Form', {
+                        retrive_loan_data,
+                      })
+                    : update_status == true && except_app_status == 1
+                    ? props.navigation.navigate(
+                        'Edit_Exceptional_Approvel_Form',
+                      )
+                    : ToastAndroid.show(
+                        `Only update can modify`,
+                        ToastAndroid.SHORT,
+                      )
                 }
                 style={{
                   width: 250,

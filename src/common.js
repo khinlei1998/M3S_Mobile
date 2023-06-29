@@ -110,7 +110,6 @@ export const nrc_type = [
   },
 ];
 
-
 export const village_status = [
   {
     id: '1',
@@ -264,7 +263,6 @@ export const loan_type = [
     label: 'Employee',
     value: '30',
   },
-
 ];
 
 export const gender = [
@@ -446,7 +444,23 @@ export const questions = [
     id: 2,
     name: 'No ',
   },
-
+];
+export const loan_application_type = [
+  {
+    id: 1,
+    label: 'Individual Loan',
+    value: '10',
+  },
+  {
+    id: 2,
+    label: 'Individual Staff Loan',
+    value: '20',
+  },
+  {
+    id: 3,
+    label: 'Group Loan',
+    value: '30',
+  },
 ];
 
 // export const BASE_URL='https://8582-103-231-92-61.ngrok-free.app/'

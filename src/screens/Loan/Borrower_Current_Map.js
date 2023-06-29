@@ -7,7 +7,6 @@ import {connect, useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 function Borrower_Current_Map(props) {
   const {navigation, all_loandata, map} = props;
-  console.log('map',map);
   const [borrower_map_expanded, setBorrowerMapExpanded] = useState(true);
   const [map_show, setMapShow] = useState(false);
 
@@ -25,7 +24,13 @@ function Borrower_Current_Map(props) {
       style={style.list_container}
       titleStyle={style.list_title}
       title="Borrower current Home Map">
-      <View style={style.sub_container}>
+      <View
+        style={{
+          width: '90%',
+          alignSelf: 'center',
+          backgroundColor: '#FAFAFA',
+          padding: 10,
+        }}>
         <TouchableOpacity onPress={() => btnshowMap()}>
           {map ? (
             <Image
@@ -33,7 +38,7 @@ function Borrower_Current_Map(props) {
                 uri: `file://${map}`,
                 // uri: `file:///storage/emulated/0/Pictures/RNSketchCanvas/10M00172TB202306292SG01.jpg`,
               }}
-              style={{width: '100%', height: 200}}
+              style={{ height: 400, }}
               resizeMode="contain"
             />
           ) : (
@@ -48,7 +53,6 @@ function Borrower_Current_Map(props) {
   );
 }
 function mapStateToProps(state) {
-  console.log('state',state);
   return {
     map: state.loan.borrower_map_path,
   };

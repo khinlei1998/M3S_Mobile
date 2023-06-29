@@ -817,8 +817,8 @@ export async function UploadCustomerData(customer_data) {
 
       await axios
         .post(
-          // `https://${ip}:${port}/skylark-m3s/api/customers.m3s`,
-          'https://1d8a-103-231-92-120.ngrok-free.app/skylark-m3s/api/customers.m3s',
+          `https://${ip}:${port}/skylark-m3s/api/customers.m3s`,
+          // 'https://1d8a-103-231-92-120.ngrok-free.app/skylark-m3s/api/customers.m3s',
           data,
           {
             headers: {

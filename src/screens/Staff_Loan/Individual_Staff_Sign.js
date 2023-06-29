@@ -16,8 +16,6 @@ export default function Individual_Staff_Sign(props) {
     co_borrower_filePath,
     show_co_borrower_canvas,
   } = props;
-  console.log('show_borrower_sign', show_borrower_sign);
-  console.log('coborrower_sign_path', coborrower_sign_path);
   return (
     <>
       <View style={{flex: 1, padding: 5, margin: 20}}>

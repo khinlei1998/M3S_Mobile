@@ -9,8 +9,14 @@ import Icon from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
 import Edit_Emp_Info from '../screens/EditCustManagement/Edit_Emp_Info';
 import Synchronization_Screen from '../screens/Synchronization/Synchronization_Screen';
-import Individual_Loan from '../screens/Loan/Individual_Loan'
-import Edit_Individual_Loan from '../screens/Edit_Loan/Edit_Individual_Loan'
+import Individual_Loan from '../screens/Loan/Individual_Loan';
+import Edit_Individual_Loan from '../screens/Edit_Loan/Edit_Individual_Loan';
+import Individual_Staff_loan_Info from '../screens/Staff_Loan/Individual_Staff_loan_Info';
+import Exceptional_Approvel_Form from '../screens/Exceptional_Approval_Request/Exceptional_Approvel_Form';
+import Show_Borrower_Map from '../screens/Loan/Show_Borrower_Map';
+import Edit_Show_Borrower_Map from '../screens/Edit_Loan/Edit_Show_Borrower_Map';
+import Edit_Individual_Staff_loan_Info from '../screens/Edit_Staff_Loan/Edit_Individual_Staff_loan_Info';
+import Edit_Exceptional_Approvel_Form from '../screens/Edit_Exceptional_Approval_Request/Edit_Exceptional_Approvel_Form';
 const StackNavigationData = [
   {
     name: 'Home',
@@ -84,6 +90,60 @@ const StackNavigationData = [
       fontSize: 18,
     },
   },
+  {
+    name: 'Indi_Staff_loan',
+    component: Individual_Staff_loan_Info,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Exceptional_Approvel_Form',
+    component: Exceptional_Approvel_Form,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Borrower Map',
+    component: Show_Borrower_Map,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Edit Borrower Map',
+    component: Edit_Show_Borrower_Map,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Edit_Individual_Staff_loan_Info',
+    component: Edit_Individual_Staff_loan_Info,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Edit_Exceptional_Approvel_Form',
+    component: Edit_Exceptional_Approvel_Form,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
 ];
 const Stack = createNativeStackNavigator();
 
@@ -102,11 +162,7 @@ export default function NavigatorView() {
     );
   };
   return (
-    <Stack.Navigator
-    //  screenOptions={{
-    //     headerShown: false, // Hide the header in stack navigator screens
-    // }}
-    >
+    <Stack.Navigator>
       {StackNavigationData.map((item, idx) => (
         <Stack.Screen
           key={`stack_item-${idx + 1}`}

@@ -1383,7 +1383,7 @@ const Ward_Modal = props => {
     setAllWard,
     handleSubmit,
     all_ward,
-    map
+    map,
   } = props;
   const btnWardSearch = async () => {
     await filterCustomer(selectedWardItemValue, ward_text)
@@ -1841,7 +1841,14 @@ function Individual_Loan(props) {
     useState('location_code');
   const [all_loandata, setAllLoanData] = useState([]);
 
-  const {handleSubmit, totalnet, navigation, resetMonthlyIncome,map} = props;
+  const {
+    handleSubmit,
+    totalnet,
+    navigation,
+    resetMonthlyIncome,
+    map,
+    update_status,
+  } = props;
 
   // const saveBorrowerSign = async borrower_sign_path => {
   //   const user_id = await AsyncStorage.getItem('user_id');
@@ -2044,7 +2051,6 @@ function Individual_Loan(props) {
           );
         }
       }
-      console.log('borrowerImagePath', borrowerImagePath);
       const exists = await RNFS.exists(filePath);
       if (exists) {
         console.log('exist');
@@ -2055,8 +2061,7 @@ function Individual_Loan(props) {
         const loan_data = Object.assign({}, values, {
           borrower_sign: borrowerImagePath,
           co_borrower_sign: coBorrowerImagePath,
-          borrower_map:map
-
+          borrower_map: map,
         });
 
         await storeLoanData(loan_data).then(result => {
@@ -2163,7 +2168,6 @@ function Individual_Loan(props) {
     // sign.current.saveImage();
 
     const pathName = await sign.current.saveImage();
-    console.log('pathName', pathName);
   };
   const co_borrower_saveSign = async () => {
     // sign.current.saveImage();
@@ -2446,7 +2450,6 @@ function Individual_Loan(props) {
             <Borrower_Current_Map
               navigation={navigation}
               all_loandata={all_loandata}
-
             />
             <Borrower_Contract />
             <Borrower_Sign
@@ -2489,6 +2492,14 @@ function Individual_Loan(props) {
                 marginBottom: 16,
               }}>
               <TouchableOpacity
+                onPress={() =>
+                  update_status == true
+                    ? ''
+                    : ToastAndroid.show(
+                        `Only update can modify`,
+                        ToastAndroid.SHORT,
+                      )
+                }
                 style={{
                   width: 250,
                   height: 40,
@@ -2511,6 +2522,14 @@ function Individual_Loan(props) {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() =>
+                  update_status == true
+                    ? ''
+                    : ToastAndroid.show(
+                        `Only update can modify`,
+                        ToastAndroid.SHORT,
+                      )
+                }
                 style={{
                   width: 250,
                   height: 40,
@@ -2533,6 +2552,14 @@ function Individual_Loan(props) {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() =>
+                  update_status == true
+                    ? ''
+                    : ToastAndroid.show(
+                        `Only update can modify`,
+                        ToastAndroid.SHORT,
+                      )
+                }
                 style={{
                   width: 250,
                   height: 40,
@@ -2561,6 +2588,14 @@ function Individual_Loan(props) {
                 marginBottom: 16,
               }}>
               <TouchableOpacity
+                onPress={() =>
+                  update_status == true
+                    ? ''
+                    : ToastAndroid.show(
+                        `Only update can modify`,
+                        ToastAndroid.SHORT,
+                      )
+                }
                 style={{
                   width: 250,
                   height: 40,
@@ -2583,6 +2618,14 @@ function Individual_Loan(props) {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() =>
+                  update_status == true
+                    ? ''
+                    : ToastAndroid.show(
+                        `Only update can modify`,
+                        ToastAndroid.SHORT,
+                      )
+                }
                 style={{
                   width: 250,
                   height: 40,
@@ -2605,6 +2648,14 @@ function Individual_Loan(props) {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() =>
+                  update_status == true
+                    ? ''
+                    : ToastAndroid.show(
+                        `Only update can modify`,
+                        ToastAndroid.SHORT,
+                      )
+                }
                 style={{
                   width: 250,
                   height: 40,
@@ -2765,6 +2816,7 @@ function mapStateToProps(state) {
   return {
     totalnet: state.monthly.totalnetincome,
     map: state.loan.borrower_map_path,
+    update_status: state.loan.update_status,
   };
 }
 

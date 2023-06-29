@@ -15,11 +15,12 @@ import { reduxForm, Field, change, reset } from 'redux-form';
 import { connect, useDispatch } from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
-import Exceptional_Approval_Info from './Exceptional_Approval_Info';
+import Exceptional_Approval_Info from './Edit_Exceptional_Approval_Info';
 import validate from './Validate';
 import { storeExceptionalApproval } from '../../query/Exceptional_Approval_query';
 import { useNavigation } from '@react-navigation/native';
-function Exceptional_Approvel_Form(props) {
+
+function Edit_Exceptional_Approvel_Form(props) {
   const navigation = useNavigation();
   const { handleSubmit } = props;
   const [show_operation, setOperation] = useState('1');
@@ -57,6 +58,7 @@ function Exceptional_Approvel_Form(props) {
   //   loadData();
   // }, []);
 
+  const filtered_operations = operations.filter(item => item.value != 1);
 
   return (
     <>
@@ -70,7 +72,7 @@ function Exceptional_Approvel_Form(props) {
                 style={{
                   flexDirection: 'row',
                 }}>
-                {operations.map((option, index) => (
+                {filtered_operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
                     onValueChange={newValue => setOperation(newValue)}
@@ -215,6 +217,6 @@ function mapStateToProps(state) {
 }
 
 export default reduxForm({
-  form: 'Exceptional_Approvel_Form',
+  form: 'Edit_Exceptional_Approvel_Form',
   validate,
-})(connect(mapStateToProps, {})(Exceptional_Approvel_Form));
+})(connect(mapStateToProps, {})(Edit_Exceptional_Approvel_Form));

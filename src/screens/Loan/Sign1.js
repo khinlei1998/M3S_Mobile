@@ -53,7 +53,6 @@ export default function Sign1() {
 
         // Write the base64-encoded image data to the destination path
         await RNFS.writeFile(destinationPath, imageData, 'base64');
-        console.log('destinationPath',destinationPath);
         // Set the image path for display
         setImagePath(destinationPath);
       } else {

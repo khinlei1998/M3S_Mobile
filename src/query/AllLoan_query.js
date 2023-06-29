@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { Alert, FileSystem } from 'react-native';
+import {Alert, FileSystem} from 'react-native';
 import RNFS from 'react-native-fs';
 const ExecuteQuery = (sql, params = []) =>
   new Promise((resolve, reject) => {
@@ -44,9 +44,8 @@ export function getIndividual_loan() {
     global.db.transaction(tx => {
       tx.executeSql('DELETE FROM Individual_application', [], (tx, results) => {
         axios
-          // .get(`https://${newIP}/skylark-m3s/api/employees.m3s`)
           .get(`https://${ip}:${port}/skylark-m3s/api/individualLoans.m3s`)
-          .then(({ data }) => {
+          .then(({data}) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -197,7 +196,6 @@ export function getIndividual_loan() {
                         console.log('length', data.length);
 
                         insertedRows += results.rowsAffected;
-                        console.log('insertedRows>>>>', insertedRows);
                         if (insertedRows === data.length) {
                           resolve('success');
                           console.log('All loan records inserted successfully');
@@ -227,7 +225,7 @@ export function getIndividual_loan() {
 
 export const storeLoanData = async loan_data => {
   const user_id = await AsyncStorage.getItem('user_id');
-  console.log('Before insert loan',loan_data);
+  console.log('Before insert loan', loan_data);
   return new Promise(async (resolve, reject) => {
     try {
       global.db.transaction(trans => {
@@ -249,7 +247,7 @@ export const storeLoanData = async loan_data => {
             //
             null, //Decison No
             null, //contract no
-            10,// product type
+            10, // product type
             '001100', //Channel Device type
             null, //open branch code
             null, //Open user id
@@ -387,7 +385,7 @@ export const storeLoanData = async loan_data => {
             loan_data.location_name,
             loan_data.borrower_sign, //borrower sign
             loan_data.co_borrower_sign,
-            loan_data.borrower_map
+            loan_data.borrower_map,
             //146
           ],
           (trans, results) => {
@@ -498,7 +496,7 @@ export function UploadLoanData(data) {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: 'https://083d-103-231-92-94.ngrok-free.app/skylark-m3s/api/individualLoan.m3s',
+      url: `https://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
       headers: {
         Cookie: 'JSESSIONID=nVnRW80EvQ6teKGkjmeggo86bp_djUvxA44l4y2Q.aungmac',
       },
@@ -568,14 +566,13 @@ export async function getAllLoan_By_application_no() {
 }
 
 export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
-  console.log('checkedItems', checkedItems);
   const failedData = [];
   let successCount = 0;
   let success_id = [];
-  console.log('failedData', failedData);
+  let ip = await AsyncStorage.getItem('ip');
+  let port = await AsyncStorage.getItem('port');
   try {
     for (const data of checkedItems) {
-      console.log('checked data', data);
       const applicationNo = data.application_no;
       let individual_loan_data = {
         id: data.id,
@@ -743,7 +740,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         let config = {
           method: 'post',
           maxBodyLength: Infinity,
-          url: 'https://a616-136-228-173-71.ngrok-free.app/skylark-m3s/file/upload.m3s',
+          url: `https://${ip}:${port}/skylark-m3s/file/upload.m3s`,
           headers: {
             Cookie:
               'JSESSIONID=0KelytuY8bGOetOcT9iWeIDnpb5zOeBR68hMOxG7.desktop-3jeqpa9',
@@ -780,7 +777,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         let config = {
           method: 'post',
           maxBodyLength: Infinity,
-          url: 'https://a616-136-228-173-71.ngrok-free.app/skylark-m3s/file/upload.m3s',
+          url: `https://${ip}:${port}/skylark-m3s/file/upload.m3s`,
           headers: {
             Cookie:
               'JSESSIONID=0KelytuY8bGOetOcT9iWeIDnpb5zOeBR68hMOxG7.desktop-3jeqpa9',
@@ -804,15 +801,13 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'https://a616-136-228-173-71.ngrok-free.app/skylark-m3s/api/individualLoan.m3s',
+        url: `https://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
         headers: {
           Cookie: 'JSESSIONID=nVnRW80EvQ6teKGkjmeggo86bp_djUvxA44l4y2Q.aungmac',
         },
         data: formData,
       };
       const response = await axios.request(config);
-      console.log('response', response);
-
       if (
         response.data.individualApplication &&
         response.data.individualApplication[0].errMsg
@@ -942,7 +937,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
             );
           });
         });
-
       }
       return 'success';
     }

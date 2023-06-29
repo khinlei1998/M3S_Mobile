@@ -88,12 +88,9 @@ export default function Synchronization_Screen() {
       obj.tablet_sync_sts = '01';
       obj.customer_no = '';
     });
-    console.log('Finale Cus data', customer_data);
-
     try {
       // Call the API here
       await UploadCustomerData(customer_data).then(async result => {
-        console.log('result', result);
         if (result == 'success') {
           await loadData();
           setLoading(false);
@@ -126,15 +123,12 @@ export default function Synchronization_Screen() {
       checkedItems.some(obj2 => obj2.id === obj1.id),
     );
 
-    console.log('filteredArray',filteredArray);
-
     try {
       // Call the API here
       if (filteredArray.length > 0) {
         setLoading(true);
         await fetchDataForCheckedData(filteredArray, branch_code).then(
           async result => {
-            console.log('resutl>>>>>>>>', result);
             if (result == 'success') {
               await loadData();
               setLoading(false);

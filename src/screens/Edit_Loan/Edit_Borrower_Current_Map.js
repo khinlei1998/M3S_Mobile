@@ -5,7 +5,8 @@ import {style} from '../../style/Individual_Loan_style';
 import {reduxForm, Field, change, reset} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
 function Borrower_Current_Map(props) {
-  const {navigation, map, borrower_map,has_borrower_map} = props;
+  const {navigation, map, borrower_map, has_borrower_map, update_status} =
+    props;
   const [borrower_map_expanded, setBorrowerMapExpanded] = useState(true);
   const handleBorrowerMapToggle = () => {
     setBorrowerMapExpanded(!borrower_map_expanded);
@@ -18,7 +19,12 @@ function Borrower_Current_Map(props) {
       titleStyle={style.list_title}
       title="Borrower current Home Map">
       <View style={style.sub_container}>
-        <TouchableOpacity onPress={() =>  navigation.navigate('Edit Borrower Map',{has_borrower_map})}>
+        <TouchableOpacity
+          onPress={() =>
+            update_status == true
+              ? navigation.navigate('Edit Borrower Map', {has_borrower_map})
+              : ''
+          }>
           {map ? (
             <Image
               source={{
@@ -49,6 +55,7 @@ function Borrower_Current_Map(props) {
 function mapStateToProps(state) {
   return {
     map: state.loan.borrower_map_path,
+    update_status: state.loan.update_status,
   };
 }
 
