@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { Alert, FileSystem } from 'react-native';
+import {Alert, FileSystem} from 'react-native';
 import RNFS from 'react-native-fs';
 const ExecuteQuery = (sql, params = []) =>
   new Promise((resolve, reject) => {
@@ -44,9 +44,8 @@ export function getIndividual_loan() {
     global.db.transaction(tx => {
       tx.executeSql('DELETE FROM Individual_application', [], (tx, results) => {
         axios
-          // .get(`https://${newIP}/skylark-m3s/api/employees.m3s`)
           .get(`https://${ip}:${port}/skylark-m3s/api/individualLoans.m3s`)
-          .then(({ data }) => {
+          .then(({data}) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -197,7 +196,6 @@ export function getIndividual_loan() {
                         console.log('length', data.length);
 
                         insertedRows += results.rowsAffected;
-                        console.log('insertedRows>>>>', insertedRows);
                         if (insertedRows === data.length) {
                           resolve('success');
                           console.log('All loan records inserted successfully');
@@ -227,12 +225,13 @@ export function getIndividual_loan() {
 
 export const storeLoanData = async loan_data => {
   const user_id = await AsyncStorage.getItem('user_id');
+  console.log('Before insert loan', loan_data);
   return new Promise(async (resolve, reject) => {
     try {
       global.db.transaction(trans => {
         trans.executeSql(
           `INSERT INTO Individual_application (serial_no,application_no,group_aplc_no,status_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,loan_status_code,decision_no,contract_no,product_type,channel_device_type,open_branch_code,open_user_id,mngt_branch_code,mngt_user_id,loan_type,cst_new_exist_flg,loan_cycle,application_amt,application_date,loanterm_cnt,borrower_name,customer_no,loan_code,saving_acct_num,gender,birth_date,marital_status,resident_rgst_id,tel_no,mobile_tel_no,employee_no,entry_date,position_title_nm,position_title_code,branch_code,salary_rating_code,addr,family_num,hghschl_num,university_num,students_cnt,curr_resident_perd,house_ocpn_type,business_own_type,co_customer_no,co_brwer_name,co_brwer_birth_dt,co_brwer_rgst_id,co_brwer_tel_no,co_brwer_mble_tel_no,borrower_rltn,co_occupation,workplace_name,workplace_type,workplace_period,employee_num,workplace_addr,curr_workplace_perd,business_sttn_flg,land_scale,land_own_type,tot_sale_income,tot_sale_expense,rawmaterial_expans,wrkp_rent_expns,employee_expns,prmn_empl_expns,tmpy_empl_expns,trnsrt_expns,bus_utlbil_expns,tel_expns,tax_expns,goods_loss_expns,othr_expns_1,othr_expns_2,tot_bus_net_income,fmly_tot_income,fmly_tot_expense,food_expns,house_mngt_expns,utlbil_expns,edct_expns,healthy_expns,fmly_trnsrt_expns,fmly_tax_expns,finance_expns,fmly_otr_expns,fmly_tot_net_income,tot_net_income,otr_mfi_loan_cnt,otr_mfi_nm,remark,borrower_id_no,borrower_age,have_fixed_asset,co_brwer_business,co_brwer_net_income,property_kind,prop_apartment_yn,prop_house_yn,prop_car_yn,prop_motorcycle_yn,prop_machines_yn,prop_farmland_yn,ohtr_own_property,tot_prop_estmtd_val,own_property_estmtd_val,past_loan_cycle,pastdue_month_cnt,past_loan_rating,past_loan_amount,past_credit_empl_nm,check_phone_num_yn,reputation_yn,business_good_yn,real_property_yn,
-          repayment_history_yn,loan_officer_cmnt,tablet_sync_sts,sync_sts,old_application_no,transaction_date,loan_limit_amt,curr_resident_date,workplace_date,curr_workplace_date,err_msg,interest_rates,loan_charges,city_code,city_name,township_code,township_name,village_code,village_name,ward_code,ward_name,location_code,location_name,borrower_sign,co_borrower_sign) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+          repayment_history_yn,loan_officer_cmnt,tablet_sync_sts,sync_sts,old_application_no,transaction_date,loan_limit_amt,curr_resident_date,workplace_date,curr_workplace_date,err_msg,interest_rates,loan_charges,city_code,city_name,township_code,township_name,village_code,village_name,ward_code,ward_name,location_code,location_name,borrower_sign,co_borrower_sign,borrower_map) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
           [
             null, //serialNo
             loan_data.application_no,
@@ -248,7 +247,7 @@ export const storeLoanData = async loan_data => {
             //
             null, //Decison No
             null, //contract no
-            10,// product type
+            10, // product type
             '001100', //Channel Device type
             null, //open branch code
             null, //Open user id
@@ -386,6 +385,7 @@ export const storeLoanData = async loan_data => {
             loan_data.location_name,
             loan_data.borrower_sign, //borrower sign
             loan_data.co_borrower_sign,
+            loan_data.borrower_map,
             //146
           ],
           (trans, results) => {
@@ -496,7 +496,7 @@ export function UploadLoanData(data) {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: 'https://083d-103-231-92-94.ngrok-free.app/skylark-m3s/api/individualLoan.m3s',
+      url: `https://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
       headers: {
         Cookie: 'JSESSIONID=nVnRW80EvQ6teKGkjmeggo86bp_djUvxA44l4y2Q.aungmac',
       },
@@ -566,14 +566,13 @@ export async function getAllLoan_By_application_no() {
 }
 
 export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
-  console.log('checkedItems', checkedItems);
   const failedData = [];
   let successCount = 0;
   let success_id = [];
-  console.log('failedData', failedData);
+  let ip = await AsyncStorage.getItem('ip');
+  let port = await AsyncStorage.getItem('port');
   try {
     for (const data of checkedItems) {
-      console.log('checked data', data);
       const applicationNo = data.application_no;
       let individual_loan_data = {
         id: data.id,
@@ -741,7 +740,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         let config = {
           method: 'post',
           maxBodyLength: Infinity,
-          url: 'https://a616-136-228-173-71.ngrok-free.app/skylark-m3s/file/upload.m3s',
+          url: `https://${ip}:${port}/skylark-m3s/file/upload.m3s`,
           headers: {
             Cookie:
               'JSESSIONID=0KelytuY8bGOetOcT9iWeIDnpb5zOeBR68hMOxG7.desktop-3jeqpa9',
@@ -778,7 +777,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         let config = {
           method: 'post',
           maxBodyLength: Infinity,
-          url: 'https://a616-136-228-173-71.ngrok-free.app/skylark-m3s/file/upload.m3s',
+          url: `https://${ip}:${port}/skylark-m3s/file/upload.m3s`,
           headers: {
             Cookie:
               'JSESSIONID=0KelytuY8bGOetOcT9iWeIDnpb5zOeBR68hMOxG7.desktop-3jeqpa9',
@@ -802,15 +801,13 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'https://a616-136-228-173-71.ngrok-free.app/skylark-m3s/api/individualLoan.m3s',
+        url: `https://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
         headers: {
           Cookie: 'JSESSIONID=nVnRW80EvQ6teKGkjmeggo86bp_djUvxA44l4y2Q.aungmac',
         },
         data: formData,
       };
       const response = await axios.request(config);
-      console.log('response', response);
-
       if (
         response.data.individualApplication &&
         response.data.individualApplication[0].errMsg
@@ -940,7 +937,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
             );
           });
         });
-
       }
       return 'success';
     }

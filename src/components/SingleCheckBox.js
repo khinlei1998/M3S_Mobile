@@ -26,7 +26,6 @@ export default function SingleCheckBox(props) {
     onChange(!value);
   };
 
-  console.log('value', value);
 
   // const formatCheckboxValue = value => {
   //   // Format the checkbox value to the desired format

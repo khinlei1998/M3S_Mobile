@@ -1999,7 +1999,6 @@ function Individual_Staff_loan_Info(props) {
           );
         }
       }
-      console.log('borrowerImagePath', borrowerImagePath);
       const exists = await RNFS.exists(filePath);
       if (exists) {
         console.log('exist');

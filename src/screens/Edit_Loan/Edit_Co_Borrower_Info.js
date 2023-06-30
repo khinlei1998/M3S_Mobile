@@ -102,8 +102,6 @@ function Co_Borrower_Info(props) {
 
                 </View>
             </List.Accordion>
-
-
         </>
     )
 }

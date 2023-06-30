@@ -24,15 +24,11 @@ const Drawer = createDrawerNavigator();
 export default function RootNavigation(props) {
   const { removeUserID } = useContext(AuthContext);
 
-  const showToast = () => {
-    ToastAndroid.show('Hello, World!', ToastAndroid.SHORT);
-  };
-
   return (
 
 
     <Drawer.Navigator
-    
+
       drawerPosition="right"
       drawerHideStatusBarOnOpen='true'
       drawerStyle={{

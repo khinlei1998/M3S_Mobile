@@ -11,9 +11,9 @@ import {
   ToastAndroid,
   TouchableOpacity,
 } from 'react-native';
-import React, { useState, useEffect, useRef, createRef } from 'react';
+import React, {useState, useEffect, useRef, createRef} from 'react';
 import DividerLine from '../../components/DividerLine';
-import { style } from '../../style/Individual_Loan_style';
+import {style} from '../../style/Individual_Loan_style';
 import BottomSheet from 'react-native-simple-bottom-sheet';
 
 import {
@@ -40,32 +40,32 @@ import {
   Provider,
   Portal,
 } from 'react-native-paper';
-import { reduxForm, Field, change, reset } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import {reduxForm, Field, change, reset} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
-import { loan_type, emp_filter_item } from '../../common';
+import {loan_type, emp_filter_item} from '../../common';
 import DatePicker from '../../components/DatePicker';
-import { Picker } from '@react-native-picker/picker';
-import { getAllLoan } from '../../query/AllLoan_query';
+import {Picker} from '@react-native-picker/picker';
+import {getAllLoan} from '../../query/AllLoan_query';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Borrower_Info from './Borrower_Info';
 import Icon from 'react-native-vector-icons/Feather';
-import { filterCustomer } from '../../query/Customer_query';
+import {filterCustomer} from '../../query/Customer_query';
 import Co_Borrower_Info from './Co_Borrower_Info';
 import Loan_Business_Info from './Loan_Business_Info';
 import Borrower_Monthly_Income from './Borrower_Monthly_Income';
-import { getAllLoanMax } from '../../query/LoanMax_query';
+import {getAllLoanMax} from '../../query/LoanMax_query';
 import Borrower_Current_Map from './Borrower_Current_Map';
 import Borrower_Contract from './Borrower_Contract';
 import Borrower_Sign from './Borrower_Sign';
 import SignatureCapture from 'react-native-signature-capture';
-import { storeLoanData } from '../../query/AllLoan_query';
+import {storeLoanData} from '../../query/AllLoan_query';
 import validate from './Validate';
-import { TextInput } from 'react-native-paper';
-import { resetMonthlyIncome } from '../../redux/MonthlyReducer';
-import { log } from 'console';
+import {TextInput} from 'react-native-paper';
+import {resetMonthlyIncome} from '../../redux/MonthlyReducer';
+import {log} from 'console';
 // import RNFetchBlob from 'rn-fetch-blob';
 
 const Borrower_modal = props => {
@@ -103,7 +103,7 @@ const Borrower_modal = props => {
     dispatch(change('Individual_Loan_Form', 'customer_no', item.customer_no));
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -180,8 +180,8 @@ const Borrower_modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
@@ -203,7 +203,7 @@ const Borrower_modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '40%' }}>
+              <View style={{width: '40%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -282,7 +282,7 @@ const Borrower_modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideModal()}
                 mode="contained"
@@ -337,7 +337,7 @@ const CoBorrower_modal = props => {
     );
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -420,8 +420,8 @@ const CoBorrower_modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
@@ -443,7 +443,7 @@ const CoBorrower_modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
+              <View style={{width: '50%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -522,7 +522,7 @@ const CoBorrower_modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideCoBorrowerModal()}
                 mode="contained"
@@ -601,7 +601,7 @@ const Borrower_Sign_Modal = props => {
           // backgroundColor="transparent"
           viewMode={'portrait'}
         />
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{flexDirection: 'row'}}>
           <TouchableHighlight
             style={{
               flex: 1,
@@ -615,7 +615,7 @@ const Borrower_Sign_Modal = props => {
             onPress={() => {
               saveSign();
             }}>
-            <Text style={{ color: '#fff' }}>Save</Text>
+            <Text style={{color: '#fff'}}>Save</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={{
@@ -630,7 +630,7 @@ const Borrower_Sign_Modal = props => {
             onPress={() => {
               resetSign();
             }}>
-            <Text style={{ color: '#fff' }}>Reset</Text>
+            <Text style={{color: '#fff'}}>Reset</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -695,7 +695,7 @@ const Co_Borrower_Sign_Modal = props => {
           // backgroundColor="transparent"
           viewMode={'portrait'}
         />
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{flexDirection: 'row'}}>
           <TouchableHighlight
             style={{
               flex: 1,
@@ -709,7 +709,7 @@ const Co_Borrower_Sign_Modal = props => {
             onPress={() => {
               co_borrower_saveSign();
             }}>
-            <Text style={{ color: '#fff' }}>Save</Text>
+            <Text style={{color: '#fff'}}>Save</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={{
@@ -724,7 +724,7 @@ const Co_Borrower_Sign_Modal = props => {
             onPress={() => {
               co_borrower_resetSign();
             }}>
-            <Text style={{ color: '#fff' }}>Reset</Text>
+            <Text style={{color: '#fff'}}>Reset</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -762,7 +762,7 @@ const City_Modal = props => {
     dispatch(change('Individual_Loan_Form', 'city_name', item.city_name));
   };
 
-  const city_item = ({ item, index }) => {
+  const city_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -829,8 +829,8 @@ const City_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedCityItemValue}
@@ -852,7 +852,7 @@ const City_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '40%' }}>
+              <View style={{width: '40%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -922,7 +922,7 @@ const City_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideCityModal()}
                 mode="contained"
@@ -974,7 +974,7 @@ const Township_Modal = props => {
     );
   };
 
-  const township_item = ({ item, index }) => {
+  const township_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -1044,8 +1044,8 @@ const Township_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedTwonshipItemValue}
@@ -1067,7 +1067,7 @@ const Township_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '40%' }}>
+              <View style={{width: '40%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -1138,7 +1138,7 @@ const Township_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideTownshipModal()}
                 mode="contained"
@@ -1189,7 +1189,7 @@ const Village_Modal = props => {
     setVillage_Text(inputText);
   };
 
-  const village_item = ({ item, index }) => {
+  const village_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -1256,8 +1256,8 @@ const Village_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedVillageItemValue}
@@ -1279,7 +1279,7 @@ const Village_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '40%' }}>
+              <View style={{width: '40%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -1349,7 +1349,7 @@ const Village_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideVillageModal()}
                 mode="contained"
@@ -1383,6 +1383,7 @@ const Ward_Modal = props => {
     setAllWard,
     handleSubmit,
     all_ward,
+    map,
   } = props;
   const btnWardSearch = async () => {
     await filterCustomer(selectedWardItemValue, ward_text)
@@ -1399,7 +1400,7 @@ const Ward_Modal = props => {
     setWard_Text(inputText);
   };
 
-  const ward_item = ({ item, index }) => {
+  const ward_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -1466,8 +1467,8 @@ const Ward_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedWardItemValue}
@@ -1489,7 +1490,7 @@ const Ward_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
+              <View style={{width: '50%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -1559,7 +1560,7 @@ const Ward_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideWardModal()}
                 mode="contained"
@@ -1614,7 +1615,7 @@ const Location_Modal = props => {
     );
   };
 
-  const location_item = ({ item, index }) => {
+  const location_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -1681,8 +1682,8 @@ const Location_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedLocationItemValue}
@@ -1704,7 +1705,7 @@ const Location_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
+              <View style={{width: '50%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -1774,7 +1775,7 @@ const Location_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideLocationModal()}
                 mode="contained"
@@ -1840,7 +1841,14 @@ function Individual_Loan(props) {
     useState('location_code');
   const [all_loandata, setAllLoanData] = useState([]);
 
-  const { handleSubmit, totalnet, navigation, resetMonthlyIncome } = props;
+  const {
+    handleSubmit,
+    totalnet,
+    navigation,
+    resetMonthlyIncome,
+    map,
+    update_status,
+  } = props;
 
   // const saveBorrowerSign = async borrower_sign_path => {
   //   const user_id = await AsyncStorage.getItem('user_id');
@@ -1926,8 +1934,9 @@ function Individual_Loan(props) {
 
       if (granted) {
         // Generate a unique filename for the image
-        const filename = `10${user_id}TB${moment().format('YYYYMMDD')}${all_loandata.length + 1
-          }SG${index}.jpg`;
+        const filename = `10${user_id}TB${moment().format('YYYYMMDD')}${
+          all_loandata.length + 1
+        }SG${index}.jpg`;
 
         // Define the destination path in the app's internal storage
         let destinationPath;
@@ -2003,7 +2012,6 @@ function Individual_Loan(props) {
   //   }
   // };
   const onSubmit = async values => {
-    console.log('values', values);
     try {
       // Save the images
       let borrowerImagePath, coBorrowerImagePath;
@@ -2043,7 +2051,6 @@ function Individual_Loan(props) {
           );
         }
       }
-      console.log('borrowerImagePath', borrowerImagePath);
       const exists = await RNFS.exists(filePath);
       if (exists) {
         console.log('exist');
@@ -2054,6 +2061,7 @@ function Individual_Loan(props) {
         const loan_data = Object.assign({}, values, {
           borrower_sign: borrowerImagePath,
           co_borrower_sign: coBorrowerImagePath,
+          borrower_map: map,
         });
 
         await storeLoanData(loan_data).then(result => {
@@ -2160,7 +2168,6 @@ function Individual_Loan(props) {
     // sign.current.saveImage();
 
     const pathName = await sign.current.saveImage();
-    console.log('pathName', pathName);
   };
   const co_borrower_saveSign = async () => {
     // sign.current.saveImage();
@@ -2440,7 +2447,10 @@ function Individual_Loan(props) {
               handleCalculate={handleCalculate}
               app_amount={app_amount}
             />
-            <Borrower_Current_Map navigation={navigation} />
+            <Borrower_Current_Map
+              navigation={navigation}
+              all_loandata={all_loandata}
+            />
             <Borrower_Contract />
             <Borrower_Sign
               setCanvas={setCanvas}
@@ -2460,71 +2470,116 @@ function Individual_Loan(props) {
         </TouchableWithoutFeedback>
       </ScrollView>
 
-      <BottomSheet isOpen={false} wrapperStyle={{ backgroundColor: '#3E3E84' }}>
-        <View style={{ padding: 5, marginLeft: 10 }}>
-          <View style={{ flexDirection: 'row' }}>
+      <BottomSheet isOpen={false} wrapperStyle={{backgroundColor: '#3E3E84'}}>
+        <View style={{padding: 5, marginLeft: 10}}>
+          <View style={{flexDirection: 'row'}}>
             <Icon name="paperclip" size={25} color="#fff" />
-            <Text style={{ color: '#fff', fontSize: 20, marginLeft: 10 }}>
+            <Text style={{color: '#fff', fontSize: 20, marginLeft: 10}}>
               Document Submit
             </Text>
           </View>
 
-          <View style={{ flex: 1, marginTop: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View
+            style={{
+              flex: 1,
+              marginTop: 20,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
             <View
               style={{
                 flexDirection: 'column',
                 marginBottom: 16,
               }}>
               <TouchableOpacity
+                onPress={() =>
+                  update_status == true
+                    ? ''
+                    : ToastAndroid.show(
+                        `Only update can modify`,
+                        ToastAndroid.SHORT,
+                      )
+                }
                 style={{
-                  width: 250, height: 40, backgroundColor: '#242157', margin: 10,
-                }}
-
-              >
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 5 }}>
-                  <View style={{ alignItems: 'center', flexDirection: 'row', }}>
+                  width: 250,
+                  height: 40,
+                  backgroundColor: '#242157',
+                  margin: 10,
+                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    margin: 5,
+                  }}>
+                  <View style={{alignItems: 'center', flexDirection: 'row'}}>
                     <Icon name="paperclip" size={20} color="#fff" />
-                    <Text style={{ color: '#fff', marginLeft: 5 }}>Guarantor Form</Text>
-
-
+                    <Text style={{color: '#fff', marginLeft: 5}}>
+                      Guarantor Form
+                    </Text>
                   </View>
                   <Icon name="chevron-right" size={25} color="#fff" />
                 </View>
-
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() =>
+                  update_status == true
+                    ? ''
+                    : ToastAndroid.show(
+                        `Only update can modify`,
+                        ToastAndroid.SHORT,
+                      )
+                }
                 style={{
-                  width: 250, height: 40, backgroundColor: '#242157', margin: 10,
-                }}
-
-              >
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 5 }}>
-                  <View style={{ alignItems: 'center', flexDirection: 'row', }}>
+                  width: 250,
+                  height: 40,
+                  backgroundColor: '#242157',
+                  margin: 10,
+                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    margin: 5,
+                  }}>
+                  <View style={{alignItems: 'center', flexDirection: 'row'}}>
                     <Icon name="paperclip" size={20} color="#fff" />
-                    <Text style={{ color: '#fff', marginLeft: 5 }}>Area Evaluation Form</Text>
-
-
+                    <Text style={{color: '#fff', marginLeft: 5}}>
+                      Area Evaluation Form
+                    </Text>
                   </View>
                   <Icon name="chevron-right" size={25} color="#fff" />
                 </View>
-
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() =>
+                  update_status == true
+                    ? ''
+                    : ToastAndroid.show(
+                        `Only update can modify`,
+                        ToastAndroid.SHORT,
+                      )
+                }
                 style={{
-                  width: 250, height: 40, backgroundColor: '#242157', margin: 10,
-                }}
-
-              >
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 5 }}>
-                  <View style={{ alignItems: 'center', flexDirection: 'row', }}>
+                  width: 250,
+                  height: 40,
+                  backgroundColor: '#242157',
+                  margin: 10,
+                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    margin: 5,
+                  }}>
+                  <View style={{alignItems: 'center', flexDirection: 'row'}}>
                     <Icon name="paperclip" size={20} color="#fff" />
-                    <Text style={{ color: '#fff', marginLeft: 5 }}>RelationShip Form</Text>
-
-
+                    <Text style={{color: '#fff', marginLeft: 5}}>
+                      RelationShip Form
+                    </Text>
                   </View>
                   <Icon name="chevron-right" size={25} color="#fff" />
                 </View>
-
               </TouchableOpacity>
             </View>
             <View
@@ -2533,55 +2588,94 @@ function Individual_Loan(props) {
                 marginBottom: 16,
               }}>
               <TouchableOpacity
+                onPress={() =>
+                  update_status == true
+                    ? ''
+                    : ToastAndroid.show(
+                        `Only update can modify`,
+                        ToastAndroid.SHORT,
+                      )
+                }
                 style={{
-                  width: 250, height: 40, backgroundColor: '#242157', margin: 10,
-                }}
-
-              >
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 5 }}>
-                  <View style={{ alignItems: 'center', flexDirection: 'row', }}>
+                  width: 250,
+                  height: 40,
+                  backgroundColor: '#242157',
+                  margin: 10,
+                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    margin: 5,
+                  }}>
+                  <View style={{alignItems: 'center', flexDirection: 'row'}}>
                     <Icon name="paperclip" size={20} color="#fff" />
-                    <Text style={{ color: '#fff', marginLeft: 5 }}>Evidence Document  Form</Text>
-
-
+                    <Text style={{color: '#fff', marginLeft: 5}}>
+                      Evidence Document Form
+                    </Text>
                   </View>
                   <Icon name="chevron-right" size={25} color="#fff" />
                 </View>
-
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() =>
+                  update_status == true
+                    ? ''
+                    : ToastAndroid.show(
+                        `Only update can modify`,
+                        ToastAndroid.SHORT,
+                      )
+                }
                 style={{
-                  width: 250, height: 40, backgroundColor: '#242157', margin: 10,
-                }}
-
-              >
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 5 }}>
-                  <View style={{ alignItems: 'center', flexDirection: 'row', }}>
+                  width: 250,
+                  height: 40,
+                  backgroundColor: '#242157',
+                  margin: 10,
+                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    margin: 5,
+                  }}>
+                  <View style={{alignItems: 'center', flexDirection: 'row'}}>
                     <Icon name="paperclip" size={20} color="#fff" />
-                    <Text style={{ color: '#fff', marginLeft: 5 }}>Exceptional Approval Request...</Text>
-
-
+                    <Text style={{color: '#fff', marginLeft: 5}}>
+                      Exceptional Approval Request...
+                    </Text>
                   </View>
                   <Icon name="chevron-right" size={25} color="#fff" />
                 </View>
-
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() =>
+                  update_status == true
+                    ? ''
+                    : ToastAndroid.show(
+                        `Only update can modify`,
+                        ToastAndroid.SHORT,
+                      )
+                }
                 style={{
-                  width: 250, height: 40, backgroundColor: '#242157', margin: 10,
-                }}
-
-              >
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 5 }}>
-                  <View style={{ alignItems: 'center', flexDirection: 'row', }}>
+                  width: 250,
+                  height: 40,
+                  backgroundColor: '#242157',
+                  margin: 10,
+                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    margin: 5,
+                  }}>
+                  <View style={{alignItems: 'center', flexDirection: 'row'}}>
                     <Icon name="paperclip" size={20} color="#fff" />
-                    <Text style={{ color: '#fff', marginLeft: 5 }}>Passport Photo</Text>
-
-
+                    <Text style={{color: '#fff', marginLeft: 5}}>
+                      Passport Photo
+                    </Text>
                   </View>
                   <Icon name="chevron-right" size={25} color="#fff" />
                 </View>
-
               </TouchableOpacity>
             </View>
 
@@ -2589,7 +2683,7 @@ function Individual_Loan(props) {
               style={{
                 flexDirection: 'column',
                 marginBottom: 16,
-                justifyContent: 'center'
+                justifyContent: 'center',
               }}>
               <Button
                 mode="contained"
@@ -2605,7 +2699,6 @@ function Individual_Loan(props) {
               </Button>
 
               <Button
-
                 mode="contained"
                 buttonColor={'#6870C3'}
                 style={{
@@ -2614,15 +2707,11 @@ function Individual_Loan(props) {
                   height: 70,
                   borderRadius: 10,
                   justifyContent: 'center',
-                  marginTop:5
-
+                  marginTop: 5,
                 }}>
                 Cancel
               </Button>
             </View>
-
-
-
           </View>
         </View>
       </BottomSheet>
@@ -2726,10 +2815,12 @@ function Individual_Loan(props) {
 function mapStateToProps(state) {
   return {
     totalnet: state.monthly.totalnetincome,
+    map: state.loan.borrower_map_path,
+    update_status: state.loan.update_status,
   };
 }
 
 export default reduxForm({
   form: 'Individual_Loan_Form',
   // validate,
-})(connect(mapStateToProps, { resetMonthlyIncome })(Individual_Loan));
+})(connect(mapStateToProps, {resetMonthlyIncome})(Individual_Loan));

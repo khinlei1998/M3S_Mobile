@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import CheckBoxFile from '../../components/CheckBoxFile';
 import {UploadCustomerData} from '../../query/Customer_query';
 import {updateTableSyncStatus} from '../../query/Customer_query';
+import {loan_application_type} from '../../common';
 export default function Sync_Upload_Screen(props) {
   const {
     btnUploadCustomer,
@@ -48,6 +49,9 @@ export default function Sync_Upload_Screen(props) {
   };
 
   const item = ({item}) => {
+    const foundItem = loan_application_type.filter(
+      data => data.value == item.product_type,
+    );
     return (
       <View
         style={{
@@ -79,7 +83,7 @@ export default function Sync_Upload_Screen(props) {
             padding: 10,
             flex: 1,
           }}>
-          {item.loan_type}
+          {foundItem[0].label}
         </Text>
         <Text
           style={{
@@ -252,7 +256,6 @@ export default function Sync_Upload_Screen(props) {
         </Text>
       </View>
 
-
       <View
         style={{
           flexDirection: 'row',
@@ -289,7 +292,7 @@ export default function Sync_Upload_Screen(props) {
             padding: 5,
           }}
           mode="outlined"
-          onPress={() =>btnLoanUpload(checkedItems)}>
+          onPress={() => btnLoanUpload(checkedItems)}>
           Upload
         </Button>
       </View>

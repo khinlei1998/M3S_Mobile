@@ -54,3 +54,48 @@ export const storeExceptionalApproval = async data => {
         }
     });
 };
+
+export async function getExceptionalApproval(application_no) {
+    return new Promise((resolve, reject) => {
+        global.db.transaction(tx => {
+            tx.executeSql(
+                'SELECT * FROM Exception_aprv WHERE application_no = ?',
+                [application_no],
+                (tx, results) => {
+                    resolve(results.rows.raw());
+                },
+                (tx, error) => {
+                    reject(error);
+                },
+            );
+        });
+    });
+}
+
+export async function deleteExceptional_approval_ByID(data) {
+    try {
+
+        return new Promise((resolve, reject) => {
+            global.db.transaction(tx => {
+                tx.executeSql(
+                    'DELETE FROM Exception_aprv WHERE id = ?',
+                    [data.id],
+                    (txObj, resultSet) => {
+                        console.log('resultSet', resultSet);
+                        resolve('success');
+                        // Delete query successful
+                        console.log('Delete successful');
+                    },
+                    (txObj, error) => {
+                        // Error occurred while executing the delete query
+                        console.error('Delete error:', error);
+                        reject(error);
+                    },
+                );
+            });
+        });
+    } catch (error) {
+        console.error('Error deleting loan:', error);
+        throw error;
+    }
+}
