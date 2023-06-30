@@ -1,5 +1,5 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/Login/LoginScreen';
 import SplashScreen from '../screens/SplashScreen';
 import SettingScreen from '../screens/Setting/SettingScreen';
@@ -18,6 +18,7 @@ import Show_Borrower_Map from '../screens/Loan/Show_Borrower_Map';
 import Exceptional_Approvel_Form from '../screens/Exceptional_Approval_Request/Exceptional_Approvel_Form';
 import Edit_Show_Borrower_Map from '../screens/Edit_Loan/Edit_Show_Borrower_Map';
 import Edit_Exceptional_Approvel_Form from '../screens/Edit_Exceptional_Approval_Request/Edit_Exceptional_Approvel_Form';
+import Evidence from '../screens/Evidence/Evidence';
 export default function AuthNavigation(props) {
   const Stack = createNativeStackNavigator();
   return (
@@ -32,6 +33,11 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
+      <Stack.Screen
+        name="Evicence"
+        component={Evidence}
+        options={{ headerShown: false }}
+      />
       {/* <Stack.Screen
         name="Indi_Staff_loan"
         component={Individual_Staff_loan_Info}
@@ -63,44 +69,44 @@ export default function AuthNavigation(props) {
       <Stack.Screen
         name="Home"
         component={Home}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Borrower Map"
         component={Show_Borrower_Map}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="Edit Borrower Map"
         component={Edit_Show_Borrower_Map}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="Exceptional_Approvel_Form"
         component={Exceptional_Approvel_Form}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
         name="Edit_Emp_Info"
         component={Edit_Emp_Info}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
         name="Edit_Individual_Loan"
         component={Edit_Individual_Loan}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Edit_Individual_Staff_loan_Info"
         component={Edit_Individual_Staff_loan_Info}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Edit_Exceptional_Approvel_Form"
         component={Edit_Exceptional_Approvel_Form}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       {/* <Stack.Screen
         name="Sign1"
@@ -110,18 +116,18 @@ export default function AuthNavigation(props) {
       <Stack.Screen
         name="Synchronization"
         component={Synchronization_Screen}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
         name="Setting"
         component={SettingScreen}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Splash"
         component={SplashScreen}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
