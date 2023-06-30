@@ -28,11 +28,11 @@ function Edit_Exceptional_Approvel_Form(props) {
   const [show_operation, setOperation] = useState('2');
   const [loanexpanded, setLoanExpanded] = React.useState(true);
   const onSubmit = async (values) => {
-    console.log('delet button',values);
     if (show_operation == '4') {
-      await deleteExceptional_approval_ByID(values).then(response => {
+      await deleteExceptional_approval_ByID(values.excpt_aprv_rqst_no).then(response => {
         if (response == 'success') {
           alert('Delete Success');
+          navigation.goBack();
           // setUpdateStatus(false);
           // props.navigation.navigate('Home');
         }
@@ -128,7 +128,15 @@ function Edit_Exceptional_Approvel_Form(props) {
                   </RadioButton.Group>
                 ))}
               </View>
-
+              {exceptional_update_status == true && (
+                <Button
+                  onPress={handleSubmit(onSubmit)}
+                  mode="contained"
+                  buttonColor={'#6870C3'}
+                  style={style.btnStyle}>
+                  OK
+                </Button>
+              )}
             </View>
             <DividerLine />
             <List.Accordion

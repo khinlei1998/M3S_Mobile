@@ -72,14 +72,14 @@ export async function getExceptionalApproval(application_no) {
     });
 }
 
-export async function deleteExceptional_approval_ByID(data) {
+export async function deleteExceptional_approval_ByID(excpt_aprv_rqst_no) {
     try {
 
         return new Promise((resolve, reject) => {
             global.db.transaction(tx => {
                 tx.executeSql(
-                    'DELETE FROM Exception_aprv WHERE id = ?',
-                    [data.id],
+                    'DELETE FROM Exception_aprv WHERE excpt_aprv_rqst_no = ?',
+                    [excpt_aprv_rqst_no],
                     (txObj, resultSet) => {
                         console.log('resultSet', resultSet);
                         resolve('success');
@@ -98,4 +98,21 @@ export async function deleteExceptional_approval_ByID(data) {
         console.error('Error deleting loan:', error);
         throw error;
     }
+}
+
+export async function getAllExceptionalApproval() {
+    return new Promise((resolve, reject) => {
+        global.db.transaction(tx => {
+            tx.executeSql(
+                'SELECT * FROM Exception_aprv ',
+                [],
+                (tx, results) => {
+                    resolve(results.rows.raw());
+                },
+                (tx, error) => {
+                    reject(error);
+                },
+            );
+        });
+    });
 }

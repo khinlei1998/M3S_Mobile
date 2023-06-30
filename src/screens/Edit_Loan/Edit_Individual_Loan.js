@@ -79,7 +79,7 @@ import { deleteLoan_ByID } from '../../query/AllLoan_query';
 // import RNFetchBlob from 'rn-fetch-blob';
 import { useIsFocused } from '@react-navigation/native';
 import { setUpdateStatus } from '../../redux/LoanReducer';
-
+import { getAllExceptionalApproval } from '../../query/Exceptional_Approval_query';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -2210,6 +2210,9 @@ function Edit_Individual_Loan(props) {
     await getExceptionalApproval(retrive_loan_data.application_no).then(data => {
       setExceptionalData(data)
     });
+    await getAllExceptionalApproval().then(data => {
+      console.log('data', data);
+    })
 
   };
 
