@@ -117,15 +117,17 @@ export default function Show_Borrower_Map(props) {
             savePreference={() => {
               return {
                 folder: 'RNSketchCanvas',
-                filename: `10${user_id}TB${moment().format(
-                  'YYYYMMDD',
-                )}${loan_data_count+1}SG01`,
+                filename: `10${user_id}TB${moment().format('YYYYMMDD')}${
+                  loan_data_count + 1
+                }SG01`,
                 transparent: true,
                 imageType: 'jpg',
               };
             }}
             onSketchSaved={(success, path) => {
-              console.log('success', success);
+              console.log('success path', path);
+              ///storage/emulated/0/Pictures/RNSketchCanvas/10M00172TB2023070215SG01.jpg
+              ///storage/emulated/0/Android/data/com.m3smobile/files/10M00172TB2023070215SG01.jpg
               alert(success ? 'Image saved!' : 'Failed to save image!', path);
               if (path) {
                 const queryParam = `?timestamp=${Date.now()}`;

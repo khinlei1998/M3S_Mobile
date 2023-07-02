@@ -16,24 +16,32 @@ import { connect, useDispatch } from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
 import Exceptional_Approval_Info from './Edit_Exceptional_Approval_Info';
-import validate from './Validate';
+// import validate from './Validate';
 import { storeExceptionalApproval } from '../../query/Exceptional_Approval_query';
 import { useNavigation } from '@react-navigation/native';
-
+import { setExcept_UPDATEStatus } from '../../redux/LoanReducer';
+import { deleteExceptional_approval_ByID } from '../../query/Exceptional_Approval_query';
 function Edit_Exceptional_Approvel_Form(props) {
   const navigation = useNavigation();
-  const { handleSubmit } = props;
-  const [show_operation, setOperation] = useState('1');
+  const { handleSubmit, exceptional_update_status, setExcept_UPDATEStatus } = props;
+  const retrive_exceptional_data = props.route.params.exceptional_data[0]
+  const [show_operation, setOperation] = useState('2');
   const [loanexpanded, setLoanExpanded] = React.useState(true);
-  // const retrive_loan_data = props.route.params.retrive_loan_data
-
   const onSubmit = async (values) => {
-    console.log(JSON.stringify(values));
-    props.navigation.goBack('gg');
+    if (show_operation == '4') {
+      await deleteExceptional_approval_ByID(values.excpt_aprv_rqst_no).then(response => {
+        if (response == 'success') {
+          alert('Delete Success');
+          navigation.goBack();
+          // setUpdateStatus(false);
+          // props.navigation.navigate('Home');
+        }
+      });
+    }
     // await storeExceptionalApproval(values).then(result => {
     //   if (result == 'success') {
     //     ToastAndroid.show(`Insert Success`, ToastAndroid.SHORT);
-    //     navigation.goBack('exceptionl_success');
+    //     // navigation.goBack('exceptionl_success');
     //   }
     // })
   };
@@ -59,7 +67,33 @@ function Edit_Exceptional_Approvel_Form(props) {
   // }, []);
 
   const filtered_operations = operations.filter(item => item.value != 1);
+  useEffect(() => {
+    const exceptional_data = Object.assign({}, retrive_exceptional_data, {
+      application_amt: retrive_exceptional_data.application_amt
+        ? retrive_exceptional_data.application_amt.toString()
+        : '',
+      borrower_age: retrive_exceptional_data.borrower_age
+        ? retrive_exceptional_data.borrower_age.toString()
+        : '',
+      net_income: retrive_exceptional_data.net_income
+        ? retrive_exceptional_data.net_income.toString()
+        : '',
+      group_member_num: retrive_exceptional_data.group_member_num
+        ? retrive_exceptional_data.group_member_num.toString()
+        : '',
+    })
+    props.initialize(exceptional_data);
 
+
+  }, [])
+  const btnChangeOperation = newValue => {
+    setOperation(newValue);
+    if (newValue == 2) {
+      setExcept_UPDATEStatus(false);
+    } else {
+      setExcept_UPDATEStatus(true);
+    }
+  };
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
@@ -75,7 +109,7 @@ function Edit_Exceptional_Approvel_Form(props) {
                 {filtered_operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
-                    onValueChange={newValue => setOperation(newValue)}
+                    onValueChange={newValue => btnChangeOperation(newValue)}
                     value={show_operation}>
                     <View
                       key={option.value}
@@ -84,7 +118,7 @@ function Edit_Exceptional_Approvel_Form(props) {
                         alignItems: 'center',
                       }}>
                       <RadioButton.Item
-                        disabled={option.value !== show_operation}
+                        // disabled={option.value !== show_operation}
                         label={option.label}
                         value={option.value}
                         color="#000"
@@ -94,7 +128,15 @@ function Edit_Exceptional_Approvel_Form(props) {
                   </RadioButton.Group>
                 ))}
               </View>
-
+              {exceptional_update_status == true && (
+                <Button
+                  onPress={handleSubmit(onSubmit)}
+                  mode="contained"
+                  buttonColor={'#6870C3'}
+                  style={style.btnStyle}>
+                  OK
+                </Button>
+              )}
             </View>
             <DividerLine />
             <List.Accordion
@@ -170,6 +212,7 @@ function Edit_Exceptional_Approvel_Form(props) {
                     cus_width
                     input_mode
                     keyboardType={'numeric'}
+                    editable={exceptional_update_status == true ? false : true}
                   />
 
                   <Field
@@ -179,6 +222,7 @@ function Edit_Exceptional_Approvel_Form(props) {
                     cus_width
                     input_mode
                     keyboardType={'numeric'}
+                    editable={exceptional_update_status == true ? false : true}
 
                   />
                 </View>
@@ -191,6 +235,7 @@ function Edit_Exceptional_Approvel_Form(props) {
                     cus_width
                     input_mode
                     keyboardType={'numeric'}
+                    editable={exceptional_update_status == true ? false : true}
 
                   />
 
@@ -200,6 +245,7 @@ function Edit_Exceptional_Approvel_Form(props) {
                     component={TextInputFile}
                     cus_width
                     input_mode
+                    editable={exceptional_update_status == true ? false : true}
                   />
                 </View>
               </View>
@@ -213,10 +259,13 @@ function Edit_Exceptional_Approvel_Form(props) {
 }
 
 function mapStateToProps(state) {
-  return {};
+  console.log('exceptional_update_status', state.loan.exceptional_update_status);
+  return {
+    exceptional_update_status: state.loan.exceptional_update_status
+  };
 }
 
 export default reduxForm({
   form: 'Edit_Exceptional_Approvel_Form',
-  validate,
-})(connect(mapStateToProps, {})(Edit_Exceptional_Approvel_Form));
+  // validate,
+})(connect(mapStateToProps, { setExcept_UPDATEStatus })(Edit_Exceptional_Approvel_Form));

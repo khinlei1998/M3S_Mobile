@@ -437,11 +437,11 @@ export const borrower_type = [
 
 export const questions = [
   {
-    id: 1,
+    id: '1',
     name: 'Yes',
   },
   {
-    id: 2,
+    id: '2',
     name: 'No ',
   },
 ];

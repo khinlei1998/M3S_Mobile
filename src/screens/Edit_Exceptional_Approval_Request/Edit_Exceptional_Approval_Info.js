@@ -12,7 +12,7 @@ import DividerLine from '../../components/DividerLine';
 import Icon from 'react-native-vector-icons/Feather';
 import validate from './Validate';
 function Exceptional_Approval_Info(props) {
-  const { handleSubmit, onSubmit } = props;
+  const { handleSubmit, onSubmit ,exceptional_update_status} = props;
 
   const [exceptional_approval_expanded, setExceptionalApproval] =
     useState(true);
@@ -64,6 +64,7 @@ function Exceptional_Approval_Info(props) {
               data={questions}
               name={'excpt_aprv_rsn_1'}
               component={RadioButtonFile}
+              disabled={exceptional_update_status == true ? false : true}
             />
           </View>
         </View>
@@ -85,6 +86,7 @@ function Exceptional_Approval_Info(props) {
               data={questions}
               name={'excpt_aprv_rsn_2'}
               component={RadioButtonFile}
+              disabled={exceptional_update_status == true ? false : true}
             />
           </View>
         </View>
@@ -105,6 +107,7 @@ function Exceptional_Approval_Info(props) {
               data={questions}
               name={'excpt_aprv_rsn_3'}
               component={RadioButtonFile}
+              disabled={exceptional_update_status == true ? false : true}
             />
           </View>
         </View>
@@ -118,6 +121,7 @@ function Exceptional_Approval_Info(props) {
             inputmax={100}
             input_cusstyle
             require
+            editable={exceptional_update_status == true ? false : true}
           />
         </View>
 
@@ -129,6 +133,7 @@ function Exceptional_Approval_Info(props) {
               component={TextInputFile}
               input_mode
               inputmax={100}
+              editable={exceptional_update_status == true ? false : true}
             />
           </View>
         </View>
@@ -161,10 +166,12 @@ function Exceptional_Approval_Info(props) {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    exceptional_update_status: state.loan.exceptional_update_status
+  };
 }
 
 export default reduxForm({
-  form: 'Exceptional_Approvel_Form',
+  form: 'Edit_Exceptional_Approvel_Form',
   // validate,
 })(connect(mapStateToProps, {})(Exceptional_Approval_Info));

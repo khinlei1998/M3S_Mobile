@@ -203,15 +203,7 @@ const Borrower_modal = props => {
                 </Picker>
               </View>
 
-              <View style={{width: '40%'}}>
-                {/* <Field
-                  name={'searchtext'}
-                  component={TextInputFile}
-                  input_mode
-                  inputmax={20}
-                  icon={'magnify'}
-                  handleTextInputFocus={handleSubmit(btnCusSearch)}
-                /> */}
+              <View style={{width: '50%'}}>
                 <TextInput
                   style={{
                     backgroundColor: '#fff',
@@ -1937,27 +1929,30 @@ function Individual_Loan(props) {
         const filename = `10${user_id}TB${moment().format('YYYYMMDD')}${
           all_loandata.length + 1
         }SG${index}.jpg`;
+        const directory = '/storage/emulated/0/Pictures/Signature/';
+        const filePath = directory + filename;
 
         // Define the destination path in the app's internal storage
-        let destinationPath;
-        if (Platform.OS === 'android') {
-          destinationPath = `${RNFS.ExternalDirectoryPath}/${filename}`;
-        } else if (Platform.OS === 'ios') {
-          destinationPath = `${RNFS.LibraryDirectoryPath}/${filename}`;
-        } else {
-          console.log('Unsupported platform.');
-          return null;
-        }
+        // let destinationPath;
+        // if (Platform.OS === 'android') {
+        //   destinationPath = `${RNFS.ExternalStorageDirectoryPath}/${filename}`;
+        // } else if (Platform.OS === 'ios') {
+        //   destinationPath = `${RNFS.ExternalStorageDirectoryPath}/${filename}`;
+        // } else {
+        //   console.log('Unsupported platform.');
+        //   return null;
+        // }
+        await RNFS.mkdir(directory);
 
         // Write the base64-encoded image data to the destination path
-        await RNFS.writeFile(destinationPath, image_encode, 'base64');
-        console.log('destinationPath', destinationPath);
+        await RNFS.writeFile(filePath, image_encode, 'base64');
+        console.log('filePath', filePath);
 
         // Check if the file exists
-        const fileExists = await RNFS.exists(destinationPath);
+        const fileExists = await RNFS.exists(filePath);
         console.log('File exists:', fileExists);
 
-        return destinationPath;
+        return filePath;
       } else {
         console.log('Write storage permission denied.');
         return null;
@@ -2379,6 +2374,7 @@ function Individual_Loan(props) {
                     input_mode
                     keyboardType={'numeric'}
                     onChange={value => setLocanCycleValue(value)}
+                    require
                   />
 
                   <Field
@@ -2399,6 +2395,7 @@ function Individual_Loan(props) {
                     cus_width
                     input_mode
                     keyboardType={'numeric'}
+                    require
                   />
 
                   <Field

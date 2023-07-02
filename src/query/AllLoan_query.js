@@ -405,6 +405,7 @@ export const storeLoanData = async loan_data => {
 };
 
 export async function deleteLoan_ByID(data) {
+  console.log('delete data',data);
   try {
     const borrowerImagePath = data.borrower_sign;
     const coBorrowerImagePath = data.co_borrower_sign;
@@ -456,13 +457,21 @@ export async function deleteLoan_ByID(data) {
     return new Promise((resolve, reject) => {
       global.db.transaction(tx => {
         tx.executeSql(
-          'DELETE FROM Individual_application WHERE id = ?',
-          [data.id],
+          'DELETE FROM Individual_application WHERE application_no = ?',
+          [data.application_no],
           (txObj, resultSet) => {
-            console.log('resultSet', resultSet);
-            resolve('success');
-            // Delete query successful
-            console.log('Delete successful');
+            tx.executeSql(
+              'DELETE FROM Exception_aprv WHERE application_no = ?',
+              [data.application_no],
+              (txObj, resultSet) => {
+                console.log('Delete from Table2 successful');
+                resolve('success');
+              },
+              (txObj, error) => {
+                console.error('Delete from Table2 error:', error);
+                reject(error);
+              }
+            );
           },
           (txObj, error) => {
             // Error occurred while executing the delete query
@@ -867,7 +876,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
     if (failedData.length > 0) {
       return failedData;
     } else {
-      console.log('Ok>>>>>>>>>>>>');
       for (const data of checkedItems) {
         // global.db.transaction(tx => {
         //   tx.executeSql(

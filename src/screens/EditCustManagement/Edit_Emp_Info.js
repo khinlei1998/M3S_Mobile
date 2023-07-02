@@ -158,7 +158,6 @@ function Customer_Management(props) {
             ? values.nrc_no
             : values.nrc_state_code + values.nrc_prefix_code + values.nrc_no,
       });
-      console.log('update data', data);
       if (filtered_cus_data.resident_rgst_id != data.residentRgstId) {
         const check_nrc = await checkDataExists(data.residentRgstId);
         if (check_nrc == true) {
