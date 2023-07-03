@@ -156,9 +156,7 @@ const Guarantor_modal = props => {
 
   const btnSelectGuarantor = item => {
     setGuarantorSelectedValue(item.id);
-    dispatch(
-      change('Guarantor_Form', 'resident_rgst_id', item.resident_rgst_id),
-    );
+    dispatch(change('Guarantor_Form', 'guarantor_no', item.customer_no));
     dispatch(change('Guarantor_Form', 'guarantor_nm', item.customer_nm));
     dispatch(change('Guarantor_Form', 'gender', item.gender));
     dispatch(change('Guarantor_Form', 'birth_date', item.birth_date));
@@ -168,6 +166,10 @@ const Guarantor_modal = props => {
     dispatch(
       change('Guarantor_Form', 'curr_resident_date', item.curr_resident_date),
     );
+    dispatch(
+      change('Guarantor_Form', 'resident_rgst_id', item.resident_rgst_id),
+    );
+
     dispatch(change('Guarantor_Form', 'tel_no', item.tel_no));
     dispatch(change('Guarantor_Form', 'house_ocpn_type', item.house_ocpn_type));
     dispatch(
@@ -287,7 +289,7 @@ const Guarantor_modal = props => {
                   style={{
                     backgroundColor: '#fff',
                     marginTop: 10,
-                    width: 250,
+                    width: 300,
                     borderColor: '#303030',
                     borderWidth: 0.5,
                   }}

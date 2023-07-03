@@ -462,7 +462,7 @@ function Relation_Form(props) {
         </TouchableWithoutFeedback>
       </ScrollView>
 
-      {/* <Modal
+      <Modal
         visible={modalVisible}
         animationType="slide"
         transparent={true}
@@ -537,15 +537,15 @@ function Relation_Form(props) {
             </TouchableHighlight>
           </View>
         </View>
-      </Modal> */}
-      <SignModal
+      </Modal>
+      {/* <SignModal
         _onSaveEvent={_onSaveEvent}
         saveSign={saveSign}
         resetSign={resetSign}
         sign={sign}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-      />
+      /> */}
     </>
   );
 }

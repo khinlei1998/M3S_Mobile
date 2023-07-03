@@ -405,7 +405,7 @@ export const storeLoanData = async loan_data => {
 };
 
 export async function deleteLoan_ByID(data) {
-  console.log('delete data',data);
+  console.log('delete data', data);
   try {
     const borrowerImagePath = data.borrower_sign;
     const coBorrowerImagePath = data.co_borrower_sign;
@@ -470,7 +470,7 @@ export async function deleteLoan_ByID(data) {
               (txObj, error) => {
                 console.error('Delete from Table2 error:', error);
                 reject(error);
-              }
+              },
             );
           },
           (txObj, error) => {
@@ -604,7 +604,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         applicationAmt: 1000000.0,
         applicationDate: data.application_date,
         loantermCnt: data.loanterm_cnt, //not null
-        borrowerName: data.borrower_name,
+        borrowerName: 'jj', //data.borrower_name
         customerNo: data.customer_no,
         loanCode: data.loan_code,
         savingAcctNum: data.saving_acct_num,
@@ -716,26 +716,135 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         prop_motorcycle_yn: data.prop_motorcycle_yn,
         property_kind: data.property_kind,
       };
+      let test = {
+        statusCode: '01',
+        createUserId: 'M00110',
+        updateUserId: 'M00110',
+        productType: '',
+        channelDeviceType: '',
+        openBranchCode: '',
+        openUserId: '',
+        mngtBranchCode: '',
+        mngtUserId: '',
+        applicationNo: '42',
+        groupAplcNo: '',
+        tabletAplcNo: '',
+        referAplcNo: '',
+        loanType: '',
+        cstNewExistFlg: 'Y',
+        loanCycle: 6.0,
+        applicationAmt: 1000000.0,
+        applicationDate: '2023-05-07',
+        loantermCnt: 12.0,
+        borrowerName: '',
+        customerNo: '',
+        loanCode: '',
+        savingAcctNum: '',
+        gender: 'M',
+        birthDate: '',
+        maritalStatus: '',
+        residentRgstId: '',
+        telNo: '',
+        mobileTelNo: '',
+        positionTitleNm: '',
+        addr: '',
+        businessOwnType: '',
+        coCustomerNo: '',
+        coBrwerName: '',
+        workplaceName: '',
+        workplaceType: '',
+        workplaceAddr: '',
+        landOwnType: '',
+        totSaleIncome: 0.0,
+        totSaleExpense: 0.0,
+        rawmaterialExpans: 0.0,
+        wrkpRentExpns: 0.0,
+        employeeExpns: 0.0,
+        trnsrtExpns: 0.0,
+        goodsLossExpns: 0.0,
+        othrExpns1: 0.0,
+        othrExpns2: 0.0,
+        totBusNetIncome: 0.0,
+        fmlyTotIncome: 0.0,
+        fmlyTotExpense: 0.0,
+        foodExpns: 0.0,
+        houseMngtExpns: 0.0,
+        utlbilExpns: 0.0,
+        edctExpns: 0.0,
+        healthyExpns: 0.0,
+        financeExpns: 0.0,
+        fmlyOtrExpns: 0.0,
+        fmlyTotNetIncome: 0.0,
+        totNetIncome: 0.0,
+        remark: '',
+        tabletSyncSts: '00',
+        syncSts: '00',
+        pastLoanAmount: 0.0,
+        pastLoanRating: '',
+        pastCreditEmplNm: '',
+        oldApplicationNo: '',
+        loanLimitAmt: 0.0,
+        sysOrganizationCode: '1000',
+        organizationCode: '1000',
+        restFlag: 'Y',
+        transactionDate: '2023-05-07',
+        serialNo: 2594,
+      };
 
       const guaranteeData = await fetchGuaranteeData(applicationNo);
+
+      let gurantor_data = guaranteeData.map(item => {
+        return {
+          organizationCode: item.organization_code,
+          serialNo: item.serial_no,
+          statusCode: '01',
+          createUserId: item.create_user_id,
+          updateUserId: item.update_user_id,
+          tabletAplcNo: item.tablet_aplc_no,
+          applicationNo: item.application_no,
+          guaranteeNo: item.guarantee_no,
+          tabletGuaranteeNo: item.tablet_guarantee_no,
+          guaranteeDate: item.guarantee_date,
+          guarantorNo: item.guarantor_no,
+          guarantorNm: item.guarantor_nm,
+          maritalStatus: item.marital_status,
+          gender: item.gender,
+          residentRgstId: item.resident_rgst_id,
+          telNo: item.tel_no,
+          addr: item.addr,
+          borrowerRltn: item.borrower_rltn,
+          relationPeriod: item.relation_period,
+          houseOcpnType: item.house_ocpn_type,
+          businessOwnType: item.business_own_type,
+          workplaceName: item.workplace_name,
+          workplaceType: item.workplace_type,
+          workplacePeriod: item.workplace_period,
+          employeeNum: item.employee_num,
+          workplaceAddr: item.workplace_addr,
+          landScale: item.land_scale,
+          landOwnType: item.land_own_type,
+          tabletSyncSts: item.tablet_sync_sts,
+          syncSts: '',
+        };
+      });
+      console.log('gurantor_data', gurantor_data);
+      console.log('individual_loan_data', individual_loan_data);
+
       const areaevaluation = await fetchAreaEvaluation(applicationNo);
       const exception_aprv = await fetchExceptionAprv(applicationNo);
       const relation_info = await fetchRelationInfo(applicationNo);
 
       let formData = new FormData();
-      formData.append(
-        'individualApplication',
-        JSON.stringify([individual_loan_data]),
-      );
-      formData.append('guarantee', '[]');
+      formData.append('individualApplication', JSON.stringify([test]));
+      formData.append('guarantee', JSON.stringify(gurantor_data));
       formData.append('areaEvaluation', '[]');
       formData.append('relationInfo', '[]');
       formData.append('approvalRequests', '[]');
 
-      // formData.append(
-      //   'approvalRequests',
-      //   '[{"organizationCode":"","serialNo":"","statusCode":"01","createUserId":"M00547","updateUserId":"M00547","tabletExcptAprvRqstNo":"","excptAprvRqstNo":"55559","tabletGroupAplcNo":"","groupAplcNo":"","tabletAplcNo":"","applicationNo":"10M00172TB2023062123","exceptionRqstDate":"2023-05-07","borrowerName":"John Doe","applicationAmt":500000.0,"birthDate":"1967-06-28","borrowerAge":63.0,"groupMemberNum":6.0,"occupation":"Clothing Shop","netIncome":500000.0,"excptAprvRsn1":"N","excptAprvRsn2":"N","excptAprvRsn3":"N","exceptionReason":"Over 60 Years","recommendNm":"","tabletSyncSts":"00","syncSts":""}]',
-      // );
+      formData.append(
+        'approvalRequests',
+        '[{"organizationCode":"","serialNo":"","statusCode":"01","createUserId":"M00547","updateUserId":"M00547","tabletExcptAprvRqstNo":"","excptAprvRqstNo":"55559","tabletGroupAplcNo":"","groupAplcNo":"","tabletAplcNo":"","applicationNo":"10M00172TB2023062123","exceptionRqstDate":"2023-05-07","borrowerName":"John Doe","applicationAmt":500000.0,"birthDate":"1967-06-28","borrowerAge":63.0,"groupMemberNum":6.0,"occupation":"Clothing Shop","netIncome":500000.0,"excptAprvRsn1":"N","excptAprvRsn2":"N","excptAprvRsn3":"N","exceptionReason":"Over 60 Years","recommendNm":"","tabletSyncSts":"00","syncSts":""}]',
+      );
 
       if (data.borrower_sign) {
         let borrower_sign_form_data = new FormData();
@@ -745,7 +854,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           type: 'image/jpg',
           name: data.borrower_sign,
         });
-
+        console.log('ip', ip);
         let config = {
           method: 'post',
           maxBodyLength: Infinity,
@@ -807,15 +916,28 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           });
       }
 
+      // let config = {
+      //   method: 'post',
+      //   maxBodyLength: Infinity,
+      //   // url: `https://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
+      //   uri: `https://ad1e-211-206-100-66.ngrok-free.app/skylark-m3s/api/individualLoan.m3s`,
+      //   headers: {
+      //     Cookie: 'JSESSIONID=nVnRW80EvQ6teKGkjmeggo86bp_djUvxA44l4y2Q.aungmac',
+      //   },
+      //   data: formData,
+      // };
+
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: `https://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
+        url: 'https://ad1e-211-206-100-66.ngrok-free.app/skylark-m3s/api/individualLoan.m3s',
         headers: {
-          Cookie: 'JSESSIONID=nVnRW80EvQ6teKGkjmeggo86bp_djUvxA44l4y2Q.aungmac',
+          Cookie:
+            'JSESSIONID=ypUFDWdJT0vxoqNXrWZJuPkfdTjYNGWAc9paLsFI.localhost',
         },
         data: formData,
       };
+      console.log('config', config);
       const response = await axios.request(config);
       if (
         response.data.individualApplication &&
@@ -949,6 +1071,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
       return 'success';
     }
   } catch (error) {
+    console.log('error', error);
     return error;
     // Alert.alert('out Error', 'Axios error occurred.');
   }
