@@ -6,6 +6,8 @@ export const SET_EXCEPTIONAL_APPROVAL_STATUS =
   'SET_EXCEPTIONAL_APPROVAL_STATUS';
 export const SET_BORROWER_MAP_PATH = 'SET_BORROWER_MAP_PATH';
 export const SET_EXCEPTIONAL_UPDATE_STATUS = 'SET_EXCEPTIONAL_UPDATE_STATUS';
+export const SET_GUARANTOR_UPDATE_STATUS = 'SET_GUARANTOR_UPDATE_STATUS';
+
 const loan = {
   edit_loandata: {},
   update_status: 'false',
@@ -13,6 +15,7 @@ const loan = {
   except_app_status: 0,
   borrower_map_path: '',
   exceptional_update_status: 'false',
+  gurantor_update_status: 'false',
 };
 
 export const addInquiryLoanData = props => {
@@ -52,6 +55,13 @@ export const setBorrowerMap_Path = props => {
     payload: props,
   };
 };
+export const setGuarantor_UpdateStatus = props => {
+  return {
+    type: 'SET_GUARANTOR_UPDATE_STATUS',
+    payload: props,
+  };
+};
+
 
 export default function LoanReducder(state = loan, action) {
   switch (action.type) {
@@ -67,6 +77,8 @@ export default function LoanReducder(state = loan, action) {
       return { ...state, exceptional_update_status: action.payload };
     case SET_BORROWER_MAP_PATH:
       return { ...state, borrower_map_path: action.payload };
+      case SET_GUARANTOR_UPDATE_STATUS:
+        return { ...state, gurantor_update_status: action.payload };
     default:
       return state;
   }

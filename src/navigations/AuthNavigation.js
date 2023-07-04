@@ -19,6 +19,10 @@ import Exceptional_Approvel_Form from '../screens/Exceptional_Approval_Request/E
 import Edit_Show_Borrower_Map from '../screens/Edit_Loan/Edit_Show_Borrower_Map';
 import Edit_Exceptional_Approvel_Form from '../screens/Edit_Exceptional_Approval_Request/Edit_Exceptional_Approvel_Form';
 import Evidence from '../screens/Evidence/Evidence';
+import Guarantor_Form from '../screens/GuarantorForm/Guarantor_Form';
+import Edit_Guarantor_Form from '../screens/Edit_GuarantorForm/Edit_Guarantor_Form';
+import Relation_Form from '../screens/Relation/Relation_Form';
+import Area_Evaluation_Form from '../screens/Area Evaluation/Area_Evaluation_Form';
 export default function AuthNavigation(props) {
   const Stack = createNativeStackNavigator();
   return (
@@ -33,49 +37,86 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
-      <Stack.Screen
-        name="Evicence"
-        component={Evidence}
-        options={{ headerShown: false }}
-      />
-      {/* <Stack.Screen
-        name="Indi_Staff_loan"
-        component={Individual_Staff_loan_Info}
-        options={{headerShown: false}}
-      /> */}
-      {/* <Stack.Screen
-        name="Customer Management"
-        component={Customer_Management}
-        options={{headerShown: false}}
-      /> */}
 
-      {/* <Stack.Screen
-        name="Individual_loan"
-        component={Individual_Loan}
-        options={{headerShown: false}}
-      /> */}
-
-      {/* <Stack.Screen
-        name="Customer Search"
-        component={CustomerSearch}
-        options={{headerShown: false}}
-      /> */}
 
       {/* <Stack.Screen
         name="Login"
         component={LoginScreen}
         options={{headerShown: false}}
-      /> */}
+      />  */}
       <Stack.Screen
         name="Home"
         component={Home}
         options={{ headerShown: false }}
       />
+      {/* <Stack.Screen
+        name="Individual_loan"
+        component={Individual_Loan}
+        options={{ headerShown: false }}
+      /> */}
+      <Stack.Screen
+        name="Synchronization"
+        component={Synchronization_Screen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Guarantor"
+        component={Guarantor_Form}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Area Evaluation"
+        component={Area_Evaluation_Form}
+        options={{ headerShown: false }}
+      />
+
+
+      <Stack.Screen
+        name="Indi_Staff_loan"
+        component={Individual_Staff_loan_Info}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Customer Management"
+        component={Customer_Management}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="Customer Search"
+        component={CustomerSearch}
+        options={{ headerShown: false }}
+      />
+
+
+
+      <Stack.Screen
+        name="Relation Form"
+        component={Relation_Form}
+        options={{ headerShown: false }}
+      />
+
+
+
+
       <Stack.Screen
         name="Borrower Map"
         component={Show_Borrower_Map}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="Edit Guarantor"
+        component={Edit_Guarantor_Form}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Evicence"
+        component={Evidence}
+        options={{ headerShown: false }}
+      />
+
+
+
       <Stack.Screen
         name="Edit Borrower Map"
         component={Edit_Show_Borrower_Map}
@@ -108,16 +149,13 @@ export default function AuthNavigation(props) {
         component={Edit_Exceptional_Approvel_Form}
         options={{ headerShown: false }}
       />
+
       {/* <Stack.Screen
         name="Sign1"
         component={Sign1}
         options={{headerShown: false}}
       /> */}
-      <Stack.Screen
-        name="Synchronization"
-        component={Synchronization_Screen}
-        options={{ headerShown: false }}
-      />
+
 
       <Stack.Screen
         name="Setting"

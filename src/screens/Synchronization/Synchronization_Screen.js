@@ -25,7 +25,6 @@ import {fetchDataForCheckedData} from '../../query/AllLoan_query';
 import Icon from 'react-native-vector-icons/Feather';
 import {get_loged_branch_code} from '../../query/Employee_query';
 import Spinner from 'react-native-loading-spinner-overlay';
-
 const Error_Log_Modal = props => {
   const {error_modal_visible, hideModal} = props;
 
@@ -120,7 +119,7 @@ export default function Synchronization_Screen() {
   const btnLoanUpload = async checkedItems => {
 
     const filteredArray = loan_data.filter(obj1 =>
-      checkedItems.some(obj2 => obj2.id === obj1.id),
+      checkedItems.some(obj2 => obj2.application_no === obj1.application_no),
     );
 
     try {
@@ -129,6 +128,7 @@ export default function Synchronization_Screen() {
         setLoading(true);
         await fetchDataForCheckedData(filteredArray, branch_code).then(
           async result => {
+            console.log('result',result);
             if (result == 'success') {
               await loadData();
               setLoading(false);
@@ -157,7 +157,7 @@ export default function Synchronization_Screen() {
   };
 
   const loadData = async () => {
-    await getAllLoan_By_application_no()
+    await getAllLoan()
       .then(setAllLoan)
       .catch(error => console.log(error));
 

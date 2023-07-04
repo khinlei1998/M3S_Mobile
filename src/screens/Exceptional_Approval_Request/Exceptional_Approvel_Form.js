@@ -21,8 +21,6 @@ import { storeExceptionalApproval } from '../../query/Exceptional_Approval_query
 import { useNavigation } from '@react-navigation/native';
 import { setExcept_ApprovalStatus } from '../../redux/LoanReducer';
 function Exceptional_Approvel_Form(props) {
-  console.log('all>>>', props);
-
   const navigation = useNavigation();
   const { handleSubmit, setExcept_ApprovalStatus,onSuccess } = props;
   const [show_operation, setOperation] = useState('1');

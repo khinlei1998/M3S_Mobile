@@ -1,67 +1,54 @@
-import { View } from 'react-native';
-import React, { useState } from 'react';
-import { List } from 'react-native-paper';
-import { reduxForm, Field, change } from 'redux-form';
-import { connect } from 'react-redux';
-import { style } from '../../style/Individual_Loan_style';
-import {
-  borrower_type,
-  condition_house,
-  maritail_status,
-  gender,
-  address_type,
-  village_status
-} from '../../common';
+import {View, Text} from 'react-native';
+import React, {useState} from 'react';
+import {List} from 'react-native-paper';
+import {style} from '../../style/Guarantor_style';
 import TextInputFile from '../../components/TextInputFile';
+import {reduxForm, Field, change, reset} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
 import DropDownPicker from '../../components/DropDownPicker';
 import DatePicker from '../../components/DatePicker';
-import RadioButtonFile from '../../components/RadioButtonFile';
-import { useDispatch } from 'react-redux';
-
-function Borrower_Info(props) {
-  const { showLocationSearch, showCustomerSearch, showTownshipSearch, showCitySearch, showVillageSearch, showWardSearch } = props;
-  const [borrower_expanded, setBorrowerExpanded] = React.useState(true);
-  const [show_village, setVillage] = useState('1');
-  const dispatch = useDispatch();
-
-  const handleBorrowerToggle = () => {
-    setBorrowerExpanded(!borrower_expanded);
+import {
+  gender,
+  address_type,
+  maritail_status,
+  condition_house,
+} from '../../common';
+export default function Guarantor_Info(props) {
+  const {showGuarantorSearch}=props
+  const [guarantor_expand, setGuarantorInfoExpand] = useState(true);
+  const handleGuarantorToggle = () => {
+    setGuarantorInfoExpand(!guarantor_expand);
   };
-  const handleRadioButtonChange = (value, input) => {
-    setVillage(value.id);
-    input.onChange(value.id);
-    if (value.id == '2') {
-      dispatch(change('Individual_Loan_Form', 'village_code', ''));
-    }
-    // Dispatch action to clear the field value
-    // dispatch(
-    //   change('myForm', 'fieldName', radioValue === 'clear' ? '' : radioValue),
-    // );
-  };
-
   return (
     <>
       <List.Accordion
-        expanded={borrower_expanded}
-        onPress={handleBorrowerToggle}
+        expanded={guarantor_expand}
+        onPress={handleGuarantorToggle}
         style={style.list_container}
         titleStyle={style.list_title}
         title="Borrower Info">
         <View style={style.sub_container}>
-          <Field
-            data={borrower_type}
-            name={'cst_new_exist_flg'}
-            component={RadioButtonFile}
-          />
+          <View style={style.sub_list_container}>
+            <Field
+              name={'guarantee_no'}
+              title={'Guarantee No'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+              editable
+            />
 
-          <Field
-            name={'customer_no'}
-            title={'Customer No'}
-            component={TextInputFile}
-            cus_width
-            input_mode
-            editable
-          />
+            <Field
+              name={'guarantor_no'}
+              title={'Guarantor No'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+              keyboardType={'numeric'}
+              editable
+            />
+          </View>
+
           <View style={style.sub_list_container}>
             <Field
               name={'resident_rgst_id'}
@@ -71,40 +58,18 @@ function Borrower_Info(props) {
               cus_width
               input_mode
               editable
-              handleTextInputFocus={showCustomerSearch}
-              focusTextInput
               require
+              handleTextInputFocus={showGuarantorSearch}
+
             />
 
             <Field
-              name={'borrower_name'}
-              title={'Borrower Name'}
+              name={'guarantor_nm'}
+              title={'Guarantor Name'}
               component={TextInputFile}
               cus_width
               input_mode
               editable
-              require
-            />
-          </View>
-
-          <View style={style.sub_list_container}>
-            <Field
-              name={'saving_acct_num'}
-              title={'Saving Code'}
-              component={TextInputFile}
-              cus_width
-              input_mode
-            />
-
-            <Field
-              name={'tel_no'}
-              title={'Tel No'}
-              component={TextInputFile}
-              cus_width
-              input_mode
-              keyboardType={'numeric'}
-              require
-
             />
           </View>
 
@@ -149,6 +114,70 @@ function Borrower_Info(props) {
             />
           </View>
 
+          <Field
+            name={'addr'}
+            title={'No,Street '}
+            component={TextInputFile}
+            input_mode
+            inputmax={100}
+            input_cusstyle
+          />
+          <View style={style.sub_list_container}>
+            <Field
+              name={'curr_resident_date'}
+              component={DatePicker}
+              label={'Start Living Date in current address'}
+              icon={'calendar'}
+            />
+
+            <Field
+              name={'tel_no'}
+              title={'Tel No'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+              keyboardType={'numeric'}
+            />
+          </View>
+
+          <View style={style.sub_list_container}>
+            <Field
+              name={'borrower_rltn'}
+              title={'Relationship with borrower'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+              keyboardType={'numeric'}
+            />
+            <Field
+              name={'relation_period'}
+              component={DatePicker}
+              label={'Relationship Period'}
+              icon={'calendar'}
+            />
+          </View>
+          <View style={style.sub_list_container}>
+            <Field
+              data={condition_house}
+              name={'house_ocpn_type'}
+              title={'Condition of house'}
+              component={DropDownPicker}
+              pickerStyle={{
+                width: 300,
+              }}
+            />
+
+            <Field
+              name={'business_own_type'}
+              title={'OwnerShip of business'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+            />
+          </View>
+
+          {/* <View style={style.sub_list_container}>
+
           <View style={style.sub_list_container}>
             <Field
               name={'city_code'}
@@ -159,7 +188,6 @@ function Borrower_Info(props) {
               icon={'magnify'}
               editable
               handleTextInputFocus={showCitySearch}
-
             />
             <Field
               name={'city_name'}
@@ -196,16 +224,18 @@ function Borrower_Info(props) {
               data={village_status}
               name={'village_status'}
               component={RadioButtonFile}
-              ShowRadioBtnChange={(value, input) => handleRadioButtonChange(value, input)}
+              ShowRadioBtnChange={(value, input) =>
+                handleRadioButtonChange(value, input)
+              }
             />
           </View>
 
           {show_village == '1' ? (
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-
-            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
               <Field
                 name={'village_code'}
                 title={'Village Code '}
@@ -215,7 +245,6 @@ function Borrower_Info(props) {
                 icon={'magnify'}
                 editable
                 handleTextInputFocus={showVillageSearch}
-
               />
               <Field
                 name={'village_name'}
@@ -223,14 +252,15 @@ function Borrower_Info(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
-              // editable
+                // editable
               />
             </View>
           ) : (
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
               <Field
                 name={'Wardcode'}
                 title={'Ward Code '}
@@ -240,7 +270,6 @@ function Borrower_Info(props) {
                 icon={'magnify'}
                 editable
                 handleTextInputFocus={showWardSearch}
-
               />
               <Field
                 name={'WardName'}
@@ -272,82 +301,10 @@ function Borrower_Info(props) {
             />
           </View>
 
-          <Field
-            name={'addr'}
-            title={'No,Street '}
-            component={TextInputFile}
-            input_mode
-            inputmax={100}
-            input_cusstyle
-          />
 
-          <View style={style.sub_list_container}>
-            <Field
-              name={'curr_resident_date'}
-              component={DatePicker}
-              label={'Living Time in current address'}
-              icon={'calendar'}
-            />
-
-            <Field
-              name={'family_num'}
-              title={'Number of family'}
-              component={TextInputFile}
-              cus_width
-              input_mode
-              keyboardType={'numeric'}
-            />
-          </View>
-
-          <View style={style.sub_list_container}>
-            <Field
-              name={'hghschl_num'}
-              title={'Number of High school Students'}
-              component={TextInputFile}
-              cus_width
-              input_mode
-              keyboardType={'numeric'}
-            />
-
-            <Field
-              name={'university_num'}
-              title={'Number of University Student'}
-              component={TextInputFile}
-              cus_width
-              input_mode
-              keyboardType={'numeric'}
-            />
-          </View>
-
-          <View style={style.sub_list_container}>
-            <Field
-              data={condition_house}
-              name={'house_ocpn_type'}
-              title={'Condition of house'}
-              component={DropDownPicker}
-              pickerStyle={{
-                width: 300,
-              }}
-            />
-
-            <Field
-              name={'business_own_type'}
-              title={'OwnerShip of business'}
-              component={TextInputFile}
-              cus_width
-              input_mode
-            />
-          </View>
+          </View> */}
         </View>
       </List.Accordion>
     </>
   );
 }
-function mapStateToProps(state) {
-  return {};
-}
-
-export default reduxForm({
-  form: 'Individual_Loan_Form',
-  // validate,
-})(connect(mapStateToProps, {})(Borrower_Info));

@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import React, { useState, useEffect, useRef, createRef } from 'react';
+import React, { useState, useEffect, useRef, createRef, useMemo } from 'react';
 import DividerLine from '../../components/DividerLine';
 import { style } from '../../style/Individual_Loan_style';
 import { getExceptionalApproval } from '../../query/Exceptional_Approval_query';
@@ -24,6 +24,7 @@ import {
   location_code,
 } from '../../common';
 import RNFS from 'react-native-fs';
+import { getGuarantorData } from '../../query/Guarantor_query';
 // import Borrower_Modal from './Borrower_Modal';
 // import {
 //   SketchCanvas,
@@ -78,8 +79,13 @@ import {
 import { deleteLoan_ByID } from '../../query/AllLoan_query';
 // import RNFetchBlob from 'rn-fetch-blob';
 import { useIsFocused } from '@react-navigation/native';
-import { setUpdateStatus } from '../../redux/LoanReducer';
+import {
+  setUpdateStatus,
+  setGuarantor_UpdateStatus,
+} from '../../redux/LoanReducer';
 import { getAllExceptionalApproval } from '../../query/Exceptional_Approval_query';
+import { getRelationData } from '../../query/RelationShip_query';
+// import {RenderBottomSheet} from '../../components/RenderBotttomSheet';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -108,11 +114,11 @@ const Borrower_modal = props => {
 
   const btnSelectEmployee = item => {
     setSelectedValue(item.id);
-    dispatch(change('Individual_Loan_Form', 'borrower_name', item.customer_nm));
+    dispatch(change('Edit_Individual_Loan_Form', 'borrower_name', item.customer_nm));
     dispatch(
-      change('Individual_Loan_Form', 'resident_rgst_id', item.resident_rgst_id),
+      change('Edit_Individual_Loan_Form', 'resident_rgst_id', item.resident_rgst_id),
     );
-    dispatch(change('Individual_Loan_Form', 'customer_no', item.customer_no));
+    dispatch(change('Edit_Individual_Loan_Form', 'customer_no', item.customer_no));
   };
 
   const item = ({ item, index }) => {
@@ -1831,7 +1837,8 @@ function Edit_Individual_Loan(props) {
   const [modal_township_visible, setTownshipCodeModalVisible] = useState(false);
   const [selectedCityItemValue, setCitySelectedItemValue] =
     useState('city_code');
-  const [exceptional_data, setExceptionalData] = useState([])
+  const [exceptional_data, setExceptionalData] = useState([]);
+  const [guarantor_data, setGuarantorData] = useState([]);
   const [all_city, setAllCity] = useState([]);
   const [selectedTownshipItemValue, setTownshipSelectedItemValue] =
     useState('township_code');
@@ -1851,6 +1858,9 @@ function Edit_Individual_Loan(props) {
   const [show_borrower_sign, setShowBorrowerSign] = useState('');
   const [coborrower_sign_path, setCoBorrowerSignPath] = useState('');
   const [show_coborrower_sign, setShowCoBorrowerSign] = useState('');
+  const [renderCount, setRenderCount] = useState(0);
+  const [relation_data, setRelationData] = useState([]);
+
   // const [update_status, setUpdateStatus] = useState(false);
   const [selectedLocationItemValue, setLocationSelectedItemValue] =
     useState('location_code');
@@ -1872,6 +1882,7 @@ function Edit_Individual_Loan(props) {
     update_status,
     setUpdateStatus,
     except_app_status,
+    setGuarantor_UpdateStatus,
   } = props;
   useEffect(() => {
     const loan_data = Object.assign({}, retrive_loan_data, {
@@ -1976,18 +1987,19 @@ function Edit_Individual_Loan(props) {
     ) {
       setBorrowerSignPath(retrive_loan_data.borrower_sign);
     }
-    if (
-      retrive_loan_data.borrower_map != '' &&
-      retrive_loan_data.borrower_map != 'undefined'
-    ) {
-      setBorrowerMap(retrive_loan_data.borrower_map);
-    }
+    // if (
+    //   retrive_loan_data.borrower_map != '' &&
+    //   retrive_loan_data.borrower_map != 'undefined'
+    // ) {
+    //   setBorrowerMap(retrive_loan_data.borrower_map);
+    // }
     if (
       retrive_loan_data.co_borrower_sign != '' &&
       retrive_loan_data.co_borrower_sign != 'undefined'
     ) {
       setCoBorrowerSignPath(retrive_loan_data.co_borrower_sign);
     }
+
     props.initialize(loan_data);
   }, []);
 
@@ -2192,6 +2204,7 @@ function Edit_Individual_Loan(props) {
     setLoanExpanded(!loanexpanded);
   };
   const loadData = async () => {
+    setRenderCount(prevCount => prevCount + 1);
     const user_id = await AsyncStorage.getItem('user_id');
 
     await getAllLoan().then(loan_data => {
@@ -2207,13 +2220,26 @@ function Edit_Individual_Loan(props) {
     await getAllLoanMax().then(loan_max_data => {
       setLoanMaxData(loan_max_data);
     });
-    await getExceptionalApproval(retrive_loan_data.application_no).then(data => {
-      setExceptionalData(data)
+    await getExceptionalApproval(retrive_loan_data.application_no).then(
+      data => {
+        setExceptionalData(data);
+      },
+    );
+    await getGuarantorData(retrive_loan_data.application_no).then(data => {
+      setGuarantorData(data);
     });
-    await getAllExceptionalApproval().then(data => {
-      console.log('data', data);
-    })
+    await getRelationData(retrive_loan_data.application_no).then(data => {
+      setRelationData(data);
+    });
+    const fileExists = await RNFS.exists(
+      `/storage/emulated/0/Pictures/RNSketchCanvas/${retrive_loan_data.application_no}MP01.jpg`,
+    );
+    console.log('sync file exist', fileExists);
 
+    if (fileExists) {
+
+      setBorrowerMap(`/storage/emulated/0/Pictures/RNSketchCanvas/${retrive_loan_data.application_no}MP01.jpg`)
+    }
   };
 
   const hideSignModal = () => {
@@ -2231,12 +2257,6 @@ function Edit_Individual_Loan(props) {
       unsubscribe();
     };
   }, [navigation]);
-  // useEffect(() => {
-  //   if (isFocused) {
-  //     alert('oo')
-  //     loadData();
-  //   }
-  // }, [isFocused]);
 
   const handleCalculate = () => {
     loan_max_data.map(value => {
@@ -2358,6 +2378,283 @@ function Edit_Individual_Loan(props) {
       setUpdateStatus(true);
     }
   };
+
+  const RenderBottomSheet = () =>
+    useMemo(() => {
+      return (
+        <BottomSheet isOpen={false} wrapperStyle={{ backgroundColor: '#3E3E84' }}>
+          <View style={{ padding: 5, marginLeft: 10 }}>
+            <View style={{ flexDirection: 'row' }}>
+              <Icon name="paperclip" size={25} color="#fff" />
+              <Text style={{ color: '#fff', fontSize: 20, marginLeft: 10 }}>
+                Document Submit
+              </Text>
+            </View>
+
+            <View
+              style={{
+                flex: 1,
+                marginTop: 20,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <View
+                style={{
+                  flexDirection: 'column',
+                  marginBottom: 16,
+                }}>
+                <TouchableOpacity
+                  onPress={() =>
+                    update_status == true && guarantor_data.length == 0
+                      ? props.navigation.navigate('Guarantor', {
+                        retrive_loan_data,
+                      })
+                      : update_status == true && guarantor_data.length > 0
+                        ? props.navigation.navigate('Edit Guarantor', {
+                          guarantor_data,
+                        })
+                        : ToastAndroid.show(
+                          `Only update can modify`,
+                          ToastAndroid.SHORT,
+                        )
+                  }
+                  style={{
+                    width: 250,
+                    height: 40,
+                    backgroundColor:
+                      guarantor_data.length > 0 ? '#3E3E84' : '#242157',
+                    margin: 10,
+                  }}>
+                  {guarantor_data.length > 0 ? (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        margin: 5,
+                      }}>
+                      <View
+                        style={{ alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name="check" size={20} color="#ede72d" />
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
+                          Guarantor Form
+                        </Text>
+                      </View>
+                    </View>
+                  ) : (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        margin: 5,
+                      }}>
+                      <View
+                        style={{ alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name="paperclip" size={20} color="#fff" />
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
+                          Guarantor Form
+                        </Text>
+                      </View>
+                      <Icon name="chevron-right" size={25} color="#fff" />
+                    </View>
+                  )}
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    width: 250,
+                    height: 40,
+                    backgroundColor: '#242157',
+                    margin: 10,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      margin: 5,
+                    }}>
+                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                      <Icon name="paperclip" size={20} color="#fff" />
+                      <Text style={{ color: '#fff', marginLeft: 5 }}>
+                        Area Evaluation Form
+                      </Text>
+                    </View>
+                    <Icon name="chevron-right" size={25} color="#fff" />
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() =>
+                    update_status == true && relation_data.length == 0
+                      ? props.navigation.navigate('Relation Form', {
+                        retrive_loan_data,
+                      })
+                      : update_status == true && relation_data.length > 0
+                        ? alert('edit')
+                        : ToastAndroid.show(
+                          `Only update can modify`,
+                          ToastAndroid.SHORT,
+                        )
+                  }
+                  style={{
+                    width: 250,
+                    height: 40,
+                    backgroundColor: '#242157',
+                    margin: 10,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      margin: 5,
+                    }}>
+                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                      <Icon name="paperclip" size={20} color="#fff" />
+                      <Text style={{ color: '#fff', marginLeft: 5 }}>
+                        RelationShip Form
+                      </Text>
+                    </View>
+                    <Icon name="chevron-right" size={25} color="#fff" />
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'column',
+                  marginBottom: 16,
+                }}>
+                <TouchableOpacity
+                  style={{
+                    width: 250,
+                    height: 40,
+                    backgroundColor: '#242157',
+                    margin: 10,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      margin: 5,
+                    }}>
+                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                      <Icon name="paperclip" size={20} color="#fff" />
+                      <Text style={{ color: '#fff', marginLeft: 5 }}>
+                        Evidence Document Form
+                      </Text>
+                    </View>
+                    <Icon name="chevron-right" size={25} color="#fff" />
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() =>
+                    update_status == true && exceptional_data.length == 0
+                      ? props.navigation.navigate('Exceptional_Approvel_Form', {
+                        retrive_loan_data,
+                      })
+                      : update_status == true && exceptional_data.length > 0
+                        ? props.navigation.navigate(
+                          'Edit_Exceptional_Approvel_Form',
+                          { exceptional_data },
+                        )
+                        : ToastAndroid.show(
+                          `Only update can modify`,
+                          ToastAndroid.SHORT,
+                        )
+                  }
+                  style={{
+                    width: 250,
+                    height: 40,
+                    backgroundColor:
+                      exceptional_data.length > 0 ? '#3E3E84' : '#242157',
+                    margin: 10,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      margin: 5,
+                    }}>
+                    {exceptional_data.length > 0 ? (
+                      <View
+                        style={{ alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name="check" size={20} color="#ede72d" />
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
+                          Exceptional Approval Request...
+                        </Text>
+                      </View>
+                    ) : (
+                      <View
+                        style={{ alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name="paperclip" size={20} color="#fff" />
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
+                          Exceptional Approval Request...
+                        </Text>
+                        <Icon name="chevron-right" size={25} color="#fff" />
+                      </View>
+                    )}
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    width: 250,
+                    height: 40,
+                    backgroundColor: '#242157',
+                    margin: 10,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      margin: 5,
+                    }}>
+                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                      <Icon name="paperclip" size={20} color="#fff" />
+                      <Text style={{ color: '#fff', marginLeft: 5 }}>
+                        Passport Photo
+                      </Text>
+                    </View>
+                    <Icon name="chevron-right" size={25} color="#fff" />
+                  </View>
+                </TouchableOpacity>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: 'column',
+                  marginBottom: 16,
+                  justifyContent: 'center',
+                }}>
+                <Button
+                  mode="contained"
+                  buttonColor={'#0480B7'}
+                  style={{
+                    borderRadius: 0,
+                    width: 130,
+                    height: 70,
+                    borderRadius: 10,
+                    justifyContent: 'center',
+                  }}>
+                  Save
+                </Button>
+
+                <Button
+                  mode="contained"
+                  buttonColor={'#6870C3'}
+                  style={{
+                    borderRadius: 0,
+                    width: 130,
+                    height: 70,
+                    borderRadius: 10,
+                    justifyContent: 'center',
+                    marginTop: 5,
+                  }}>
+                  Cancel
+                </Button>
+              </View>
+            </View>
+          </View>
+        </BottomSheet>
+      );
+    }, [guarantor_data, exceptional_data, relation_data]);
+
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
@@ -2566,230 +2863,12 @@ function Edit_Individual_Loan(props) {
         </TouchableWithoutFeedback>
       </ScrollView>
 
-      {/* BottomShet */}
-
-      <BottomSheet isOpen={false} wrapperStyle={{ backgroundColor: '#3E3E84' }}>
-        <View style={{ padding: 5, marginLeft: 10 }}>
-          <View style={{ flexDirection: 'row' }}>
-            <Icon name="paperclip" size={25} color="#fff" />
-            <Text style={{ color: '#fff', fontSize: 20, marginLeft: 10 }}>
-              Document Submit
-            </Text>
-          </View>
-
-          <View
-            style={{
-              flex: 1,
-              marginTop: 20,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
-            <View
-              style={{
-                flexDirection: 'column',
-                marginBottom: 16,
-              }}>
-              <TouchableOpacity
-                style={{
-                  width: 250,
-                  height: 40,
-                  backgroundColor: '#242157',
-                  margin: 10,
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    margin: 5,
-                  }}>
-                  <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                    <Icon name="paperclip" size={20} color="#fff" />
-                    <Text style={{ color: '#fff', marginLeft: 5 }}>
-                      Guarantor Form
-                    </Text>
-                  </View>
-                  <Icon name="chevron-right" size={25} color="#fff" />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  width: 250,
-                  height: 40,
-                  backgroundColor: '#242157',
-                  margin: 10,
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    margin: 5,
-                  }}>
-                  <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                    <Icon name="paperclip" size={20} color="#fff" />
-                    <Text style={{ color: '#fff', marginLeft: 5 }}>
-                      Area Evaluation Form
-                    </Text>
-                  </View>
-                  <Icon name="chevron-right" size={25} color="#fff" />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  width: 250,
-                  height: 40,
-                  backgroundColor: '#242157',
-                  margin: 10,
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    margin: 5,
-                  }}>
-                  <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                    <Icon name="paperclip" size={20} color="#fff" />
-                    <Text style={{ color: '#fff', marginLeft: 5 }}>
-                      RelationShip Form
-                    </Text>
-                  </View>
-                  <Icon name="chevron-right" size={25} color="#fff" />
-                </View>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                flexDirection: 'column',
-                marginBottom: 16,
-              }}>
-              <TouchableOpacity
-                style={{
-                  width: 250,
-                  height: 40,
-                  backgroundColor: '#242157',
-                  margin: 10,
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    margin: 5,
-                  }}>
-                  <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                    <Icon name="paperclip" size={20} color="#fff" />
-                    <Text style={{ color: '#fff', marginLeft: 5 }}>
-                      Evidence Document Form
-                    </Text>
-                  </View>
-                  <Icon name="chevron-right" size={25} color="#fff" />
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={() =>
-                  update_status == true && exceptional_data.length == 0
-                    ? props.navigation.navigate('Exceptional_Approvel_Form', {
-                      retrive_loan_data,
-                    })
-                    : update_status == true && exceptional_data.length > 0
-                      ? props.navigation.navigate(
-                        'Edit_Exceptional_Approvel_Form', { exceptional_data }
-                      )
-                      : ToastAndroid.show(
-                        `Only update can modify`,
-                        ToastAndroid.SHORT,
-                      )
-                }
-                style={{
-                  width: 250,
-                  height: 40,
-                  backgroundColor:
-                    exceptional_data.length > 0 ? '#3E3E84' : '#242157',
-                  margin: 10,
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    margin: 5,
-                  }}>
-                  {exceptional_data.length > 0 ? (
-                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                      <Icon name="check" size={20} color="#ede72d" />
-                      <Text style={{ color: '#fff', marginLeft: 5 }}>
-                        Exceptional Approval Request...
-                      </Text>
-                    </View>
-                  ) : (
-                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                      <Icon name="paperclip" size={20} color="#fff" />
-                      <Text style={{ color: '#fff', marginLeft: 5 }}>
-                        Exceptional Approval Request...
-                      </Text>
-                      <Icon name="chevron-right" size={25} color="#fff" />
-                    </View>
-                  )}
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  width: 250,
-                  height: 40,
-                  backgroundColor: '#242157',
-                  margin: 10,
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    margin: 5,
-                  }}>
-                  <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                    <Icon name="paperclip" size={20} color="#fff" />
-                    <Text style={{ color: '#fff', marginLeft: 5 }}>
-                      Passport Photo
-                    </Text>
-                  </View>
-                  <Icon name="chevron-right" size={25} color="#fff" />
-                </View>
-              </TouchableOpacity>
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'column',
-                marginBottom: 16,
-                justifyContent: 'center',
-              }}>
-              <Button
-                mode="contained"
-                buttonColor={'#0480B7'}
-                style={{
-                  borderRadius: 0,
-                  width: 130,
-                  height: 70,
-                  borderRadius: 10,
-                  justifyContent: 'center',
-                }}>
-                Save
-              </Button>
-
-              <Button
-                mode="contained"
-                buttonColor={'#6870C3'}
-                style={{
-                  borderRadius: 0,
-                  width: 130,
-                  height: 70,
-                  borderRadius: 10,
-                  justifyContent: 'center',
-                  marginTop: 5,
-                }}>
-                Cancel
-              </Button>
-            </View>
-          </View>
-        </View>
-      </BottomSheet>
+      <RenderBottomSheet
+      // update_status={update_status}
+      // guarantor_data={guarantor_data}
+      // exceptional_data={exceptional_data}
+      // navigation={navigation}
+      />
 
       <Borrower_modal
         handleSubmit={handleSubmit}
@@ -2911,5 +2990,6 @@ export default reduxForm({
     resetMonthlyIncome,
     totalLoanAmt,
     setUpdateStatus,
+    setGuarantor_UpdateStatus,
   })(Edit_Individual_Loan),
 );

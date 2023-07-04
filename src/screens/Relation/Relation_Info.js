@@ -1,0 +1,101 @@
+import {View, Text} from 'react-native';
+import React, {useState, useEffect, createRef} from 'react';
+import {reduxForm, Field, change, reset} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
+import {style} from '../../style/Relation_style';
+import TextInputFile from '../../components/TextInputFile';
+import {
+  Button,
+  RadioButton,
+  List,
+  Provider,
+  Portal,
+  Modal,
+  TextInput,
+} from 'react-native-paper';
+import SingleCheckBox from '../../components/SingleCheckBox';
+export default function Relation_Info() {
+  const [relation_info_expanded, setRelationInfoExpanded] = useState(true);
+  const handleRelationInfoToggle = () => {
+    setRelationInfoExpanded(!relation_info_expanded);
+  };
+  return (
+    <>
+      <List.Accordion
+        expanded={relation_info_expanded}
+        onPress={handleRelationInfoToggle}
+        style={style.list_container}
+        titleStyle={style.list_title}
+        title="Relationship Info">
+        <View style={style.sub_container}>
+          <View style={style.sub_list_container}>
+            <Field
+              name={'relation_no'}
+              title={'Relationship No'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+              editable
+              require
+            />
+            <Field
+              name={'transaction_date'}
+              title={'Transaction Date'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+              editable
+              require
+            />
+          </View>
+          <View
+            style={{
+              padding: 5,
+              justifyContent: 'space-between',
+            }}>
+            <Field
+              label={'Grandparent'}
+              name={'grandparent_yn'}
+              component={SingleCheckBox}
+              defaultValue={false}
+              checkedValue="Y"
+              uncheckedValue="N"
+            />
+            <Field
+              label={'Parent'}
+              name={'parent_yn'}
+              component={SingleCheckBox}
+              defaultValue={false}
+              checkedValue="Y"
+              uncheckedValue="N"
+            />
+            <Field
+              label={'Brother & Sister'}
+              name={'brother_sister_yn'}
+              component={SingleCheckBox}
+              defaultValue={false}
+              checkedValue="Y"
+              uncheckedValue="N"
+            />
+            <Field
+              label={'Husband & Wife'}
+              name={'husband_wife_yn'}
+              component={SingleCheckBox}
+              defaultValue={false}
+              checkedValue="Y"
+              uncheckedValue="N"
+            />
+            <Field
+              label={'Son & Daughter'}
+              name={'son_daughter_yn'}
+              component={SingleCheckBox}
+              defaultValue={false}
+              checkedValue="Y"
+              uncheckedValue="N"
+            />
+          </View>
+        </View>
+      </List.Accordion>
+    </>
+  );
+}
