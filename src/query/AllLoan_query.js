@@ -231,7 +231,7 @@ export const storeLoanData = async loan_data => {
       global.db.transaction(trans => {
         trans.executeSql(
           `INSERT INTO Individual_application (serial_no,application_no,group_aplc_no,status_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,loan_status_code,decision_no,contract_no,product_type,channel_device_type,open_branch_code,open_user_id,mngt_branch_code,mngt_user_id,loan_type,cst_new_exist_flg,loan_cycle,application_amt,application_date,loanterm_cnt,borrower_name,customer_no,loan_code,saving_acct_num,gender,birth_date,marital_status,resident_rgst_id,tel_no,mobile_tel_no,employee_no,entry_date,position_title_nm,position_title_code,branch_code,salary_rating_code,addr,family_num,hghschl_num,university_num,students_cnt,curr_resident_perd,house_ocpn_type,business_own_type,co_customer_no,co_brwer_name,co_brwer_birth_dt,co_brwer_rgst_id,co_brwer_tel_no,co_brwer_mble_tel_no,borrower_rltn,co_occupation,workplace_name,workplace_type,workplace_period,employee_num,workplace_addr,curr_workplace_perd,business_sttn_flg,land_scale,land_own_type,tot_sale_income,tot_sale_expense,rawmaterial_expans,wrkp_rent_expns,employee_expns,prmn_empl_expns,tmpy_empl_expns,trnsrt_expns,bus_utlbil_expns,tel_expns,tax_expns,goods_loss_expns,othr_expns_1,othr_expns_2,tot_bus_net_income,fmly_tot_income,fmly_tot_expense,food_expns,house_mngt_expns,utlbil_expns,edct_expns,healthy_expns,fmly_trnsrt_expns,fmly_tax_expns,finance_expns,fmly_otr_expns,fmly_tot_net_income,tot_net_income,otr_mfi_loan_cnt,otr_mfi_nm,remark,borrower_id_no,borrower_age,have_fixed_asset,co_brwer_business,co_brwer_net_income,property_kind,prop_apartment_yn,prop_house_yn,prop_car_yn,prop_motorcycle_yn,prop_machines_yn,prop_farmland_yn,ohtr_own_property,tot_prop_estmtd_val,own_property_estmtd_val,past_loan_cycle,pastdue_month_cnt,past_loan_rating,past_loan_amount,past_credit_empl_nm,check_phone_num_yn,reputation_yn,business_good_yn,real_property_yn,
-          repayment_history_yn,loan_officer_cmnt,tablet_sync_sts,sync_sts,old_application_no,transaction_date,loan_limit_amt,curr_resident_date,workplace_date,curr_workplace_date,err_msg,interest_rates,loan_charges,city_code,city_name,township_code,township_name,village_code,village_name,ward_code,ward_name,location_code,location_name,borrower_sign,co_borrower_sign,borrower_map) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+          repayment_history_yn,loan_officer_cmnt,tablet_sync_sts,sync_sts,old_application_no,transaction_date,loan_limit_amt,curr_resident_date,workplace_date,curr_workplace_date,err_msg,interest_rates,loan_charges,city_code,city_name,township_code,township_name,village_code,village_name,ward_code,ward_name,location_code,location_name,borrower_sign,co_borrower_sign) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
           [
             null, //serialNo
             loan_data.application_no,
@@ -385,7 +385,7 @@ export const storeLoanData = async loan_data => {
             loan_data.location_name,
             loan_data.borrower_sign, //borrower sign
             loan_data.co_borrower_sign,
-            loan_data.borrower_map,
+            // loan_data.borrower_map,
             //146
           ],
           (trans, results) => {
@@ -394,7 +394,7 @@ export const storeLoanData = async loan_data => {
           },
           error => {
             reject(error);
-            console.log('error', error);
+            alert(error);
           },
         );
       });
@@ -555,13 +555,13 @@ export function UploadLoanData(data) {
   });
 }
 
-export async function getAllLoan_By_application_no() {
+export async function getAllLoan_By_application_no(application_no) {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
       tx.executeSql(
         `SELECT *
-        FROM Individual_application `,
-        [],
+        FROM Individual_application where application_no=?  `,
+        [application_no],
         (tx, results) => {
           resolve(results.rows.raw());
         },
@@ -580,6 +580,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
   let success_id = [];
   let ip = await AsyncStorage.getItem('ip');
   let port = await AsyncStorage.getItem('port');
+  let user_id = await AsyncStorage.getItem('user_id');
   try {
     for (const data of checkedItems) {
       const applicationNo = data.application_no;
@@ -716,80 +717,80 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         prop_motorcycle_yn: data.prop_motorcycle_yn,
         property_kind: data.property_kind,
       };
-      let test = {
-        statusCode: '01',
-        createUserId: 'M00110',
-        updateUserId: 'M00110',
-        productType: '',
-        channelDeviceType: '',
-        openBranchCode: '',
-        openUserId: '',
-        mngtBranchCode: '',
-        mngtUserId: '',
-        applicationNo: '42',
-        groupAplcNo: '',
-        tabletAplcNo: '',
-        referAplcNo: '',
-        loanType: '',
-        cstNewExistFlg: 'Y',
-        loanCycle: 6.0,
-        applicationAmt: 1000000.0,
-        applicationDate: '2023-05-07',
-        loantermCnt: 12.0,
-        borrowerName: '',
-        customerNo: '',
-        loanCode: '',
-        savingAcctNum: '',
-        gender: 'M',
-        birthDate: '',
-        maritalStatus: '',
-        residentRgstId: '',
-        telNo: '',
-        mobileTelNo: '',
-        positionTitleNm: '',
-        addr: '',
-        businessOwnType: '',
-        coCustomerNo: '',
-        coBrwerName: '',
-        workplaceName: '',
-        workplaceType: '',
-        workplaceAddr: '',
-        landOwnType: '',
-        totSaleIncome: 0.0,
-        totSaleExpense: 0.0,
-        rawmaterialExpans: 0.0,
-        wrkpRentExpns: 0.0,
-        employeeExpns: 0.0,
-        trnsrtExpns: 0.0,
-        goodsLossExpns: 0.0,
-        othrExpns1: 0.0,
-        othrExpns2: 0.0,
-        totBusNetIncome: 0.0,
-        fmlyTotIncome: 0.0,
-        fmlyTotExpense: 0.0,
-        foodExpns: 0.0,
-        houseMngtExpns: 0.0,
-        utlbilExpns: 0.0,
-        edctExpns: 0.0,
-        healthyExpns: 0.0,
-        financeExpns: 0.0,
-        fmlyOtrExpns: 0.0,
-        fmlyTotNetIncome: 0.0,
-        totNetIncome: 0.0,
-        remark: '',
-        tabletSyncSts: '00',
-        syncSts: '00',
-        pastLoanAmount: 0.0,
-        pastLoanRating: '',
-        pastCreditEmplNm: '',
-        oldApplicationNo: '',
-        loanLimitAmt: 0.0,
-        sysOrganizationCode: '1000',
-        organizationCode: '1000',
-        restFlag: 'Y',
-        transactionDate: '2023-05-07',
-        serialNo: 2594,
-      };
+      // let test = {
+      //   "statusCode": "01",
+      //   "createUserId": "M01237",
+      //   "updateUserId": "M01237",
+      //   "productType": "10",
+      //   "channelDeviceType": "00010",
+      //   "openBranchCode": "7001",
+      //   "openUserId": "M01237",
+      //   "mngtBranchCode": "7001",
+      //   "mngtUserId": "M01237",
+      //   "applicationNo": "10M00172202307042",
+      //   "groupAplcNo": "",
+      //   "tabletAplcNo": "",
+      //   "referAplcNo": "",
+      //   "loanType": "10",
+      //   "cstNewExistFlg": "N",
+      //   "loanCycle": 6.0,
+      //   "applicationAmt": 1000000.0,
+      //   "applicationDate": "2023-07-04",
+      //   "loantermCnt": 12.0,
+      //   "borrowerName": "Customer 9 tk",
+      //   "customerNo": "20230520242",
+      //   "loanCode": "",
+      //   "savingAcctNum": "",
+      //   "gender": "M",
+      //   "birthDate": "1993-01-14",
+      //   "maritalStatus": "20",
+      //   "residentRgstId": "1/BhMaNa(N)123414",
+      //   "telNo": "09852741852",
+      //   "mobileTelNo": "091213",
+      //   "positionTitleNm": "Postion Name",
+      //   "addr": "Mar Lar Myaing main l Street",
+      //   "businessOwnType": "01",
+      //   "coCustomerNo": "20230520244",
+      //   "coBrwerName": "Customer 11 tk",
+      //   "workplaceName": "Sein Gyi",
+      //   "workplaceType": "40",
+      //   "workplaceAddr": "adrress of Sein gyi",
+      //   "landOwnType": "",
+      //   "totSaleIncome": 0.0,
+      //   "totSaleExpense": 0.0,
+      //   "rawmaterialExpans": 0.0,
+      //   "wrkpRentExpns": 0.0,
+      //   "employeeExpns": 0.0,
+      //   "trnsrtExpns": 0.0,
+      //   "goodsLossExpns": 0.0,
+      //   "othrExpns1": 0.0,
+      //   "othrExpns2": 0.0,
+      //   "totBusNetIncome": 0.0,
+      //   "fmlyTotIncome": 0.0,
+      //   "fmlyTotExpense": 0.0,
+      //   "foodExpns": 0.0,
+      //   "houseMngtExpns": 0.0,
+      //   "utlbilExpns": 0.0,
+      //   "edctExpns": 0.0,
+      //   "healthyExpns": 0.0,
+      //   "financeExpns": 0.0,
+      //   "fmlyOtrExpns": 0.0,
+      //   "fmlyTotNetIncome": 0.0,
+      //   "totNetIncome": 10000000.0,
+      //   "remark": "remark",
+      //   "tabletSyncSts": "00",
+      //   "syncSts": "00",
+      //   "pastLoanAmount": 0.0,
+      //   "pastLoanRating": "",
+      //   "pastCreditEmplNm": "",
+      //   "oldApplicationNo": "",
+      //   "loanLimitAmt": 1500000.0,
+      //   "sysOrganizationCode": "1000",
+      //   "organizationCode": "1000",
+      //   "restFlag": "Y",
+      //   "transactionDate": "2023-07-04",
+      //   "serialNo": ""
+      // }
 
       const guaranteeData = await fetchGuaranteeData(applicationNo);
 
@@ -823,19 +824,51 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           workplaceAddr: item.workplace_addr,
           landScale: item.land_scale,
           landOwnType: item.land_own_type,
-          tabletSyncSts: item.tablet_sync_sts,
-          syncSts: '',
+          tabletSyncSts: '00',
+          syncSts: '00',
         };
       });
-      console.log('gurantor_data', gurantor_data);
-      console.log('individual_loan_data', individual_loan_data);
 
       const areaevaluation = await fetchAreaEvaluation(applicationNo);
       const exception_aprv = await fetchExceptionAprv(applicationNo);
+      console.log('individual_loan_data', individual_loan_data);
+      console.log('gurantor_data',gurantor_data);
+      // let approval_request_data = {
+      //   organizationCode: '',
+      //   serialNo: '',
+      //   statusCode: '01',
+      //   createUserId: user_id,
+      //   updateUserId: user_id,
+      //   tabletExcptAprvRqstNo: '',
+      //   excptAprvRqstNo: exception_aprv[0].excpt_aprv_rqst_no,
+      //   tabletGroupAplcNo: '',
+      //   groupAplcNo: exception_aprv[0].group_aplc_no,
+      //   tabletAplcNo: '',
+      //   applicationNo: exception_aprv[0].application_no,
+      //   exceptionRqstDate: exception_aprv[0].exception_rqst_date,
+      //   borrowerName: exception_aprv[0].borrower_name,
+      //   applicationAmt: exception_aprv[0].application_amt,
+      //   birthDate: exception_aprv[0].birth_date,
+      //   borrowerAge: '',
+      //   groupMemberNum: exception_aprv[0].group_member_num,
+      //   occupation: exception_aprv[0].occupation,
+      //   netIncome: exception_aprv[0].net_income,
+      //   excptAprvRsn1: exception_aprv[0].excpt_aprv_rsn_1,
+      //   excptAprvRsn2: exception_aprv[0].excpt_aprv_rsn_2,
+      //   excptAprvRsn3: exception_aprv[0].excpt_aprv_rsn_3,
+      //   exceptionReason: exception_aprv[0].exception_reason,
+      //   recommendNm: exception_aprv[0].recommend_nm,
+      //   tabletSyncSts: '00',
+      //   syncSts: '00',
+      // };
+
       const relation_info = await fetchRelationInfo(applicationNo);
 
       let formData = new FormData();
-      formData.append('individualApplication', JSON.stringify([test]));
+      formData.append(
+        'individualApplication',
+        JSON.stringify([individual_loan_data]),
+      );
       formData.append('guarantee', JSON.stringify(gurantor_data));
       formData.append('areaEvaluation', '[]');
       formData.append('relationInfo', '[]');
@@ -854,7 +887,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           type: 'image/jpg',
           name: data.borrower_sign,
         });
-        console.log('ip', ip);
+        console.log('borrower_sign_form_data', borrower_sign_form_data);
         let config = {
           method: 'post',
           maxBodyLength: Infinity,
@@ -915,17 +948,42 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
             console.log(error);
           });
       }
+      const fileExists = await RNFS.exists(
+        `/storage/emulated/0/Pictures/RNSketchCanvas/${data.application_no}MP01.jpg`,
+      );
+      if (fileExists) {
+        let indi_borrower_map = new FormData();
+        indi_borrower_map.append('description', 'anything');
+        indi_borrower_map.append('file', {
+          uri: `file:///storage/emulated/0/Pictures/RNSketchCanvas/${data.application_no}MP01.jpg`,
+          type: 'image/jpg',
+          name: `/storage/emulated/0/Pictures/RNSketchCanvas/${data.application_no}MP01.jpg`,
+        });
 
-      // let config = {
-      //   method: 'post',
-      //   maxBodyLength: Infinity,
-      //   // url: `https://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
-      //   uri: `https://ad1e-211-206-100-66.ngrok-free.app/skylark-m3s/api/individualLoan.m3s`,
-      //   headers: {
-      //     Cookie: 'JSESSIONID=nVnRW80EvQ6teKGkjmeggo86bp_djUvxA44l4y2Q.aungmac',
-      //   },
-      //   data: formData,
-      // };
+        let config = {
+          method: 'post',
+          maxBodyLength: Infinity,
+          url: `https://${ip}:${port}/skylark-m3s/file/upload.m3s`,
+          headers: {
+            Cookie:
+              'JSESSIONID=0KelytuY8bGOetOcT9iWeIDnpb5zOeBR68hMOxG7.desktop-3jeqpa9',
+            'Content-Type': 'multipart/form-data',
+          },
+          data: indi_borrower_map,
+        };
+
+        axios
+          .request(config)
+          .then(response => {
+            console.log('img response', response.status);
+            // console.log(JSON.stringify(response.data));
+          })
+          .catch(error => {
+            alert('Individual borrower map fail upload');
+            console.log('image error', error);
+            failedData.push('Individual borrower map fail upload');
+          });
+      }
 
       let config = {
         method: 'post',
@@ -937,8 +995,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         },
         data: formData,
       };
-      console.log('config', config);
       const response = await axios.request(config);
+      console.log('indiv response', response);
       if (
         response.data.individualApplication &&
         response.data.individualApplication[0].errMsg
@@ -964,6 +1022,30 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
             },
           );
         });
+      }
+      if (response.data.guarantee) {
+        if (response.data.guarantee[0] && response.data.guarantee[0].errMsg) {
+          const error = {
+            form: 'guarantee',
+            message: response.data.guarantee[0].errMsg,
+          };
+          failedData.push(error);
+        } else {
+          //1
+          global.db.transaction(tx => {
+            tx.executeSql(
+              'UPDATE Guarantee set tablet_sync_sts=? where application_no=?',
+              ['01', response.data.guarantee[0].application_no],
+              (txObj, resultSet) => {
+                console.log('Update successful');
+              },
+              (txObj, error) => {
+                reject(error);
+                console.error('Update error:', error);
+              },
+            );
+          });
+        }
       }
 
       if (response.data.approvalRequests) {
@@ -994,7 +1076,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         }
       }
     }
-
+    console.log('failedData', failedData);
     if (failedData.length > 0) {
       return failedData;
     } else {
@@ -1062,6 +1144,22 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               },
               (txObj, error) => {
                 console.error('Delete from Exception_aprv error:', error);
+                reject(error);
+              },
+            );
+          });
+        });
+        await new Promise((resolve, reject) => {
+          global.db.transaction(tx => {
+            tx.executeSql(
+              `DELETE FROM Guarantee WHERE application_no = ? AND tablet_sync_sts = '01'`,
+              [data.application_no],
+              (txObj, resultSet) => {
+                console.log('Delete from Guarantee successful');
+                resolve();
+              },
+              (txObj, error) => {
+                console.error('Delete from Guarantee error:', error);
                 reject(error);
               },
             );

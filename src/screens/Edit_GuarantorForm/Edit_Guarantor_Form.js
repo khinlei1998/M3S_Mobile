@@ -525,6 +525,7 @@ function Edit_Guarantor_Form(props) {
     props.initialize(initialize_guarantor_data);
     setGuarantorName(retrive_guarantor_data.guarantor_nm);
   };
+  console.log('retrive_guarantor_data',retrive_guarantor_data);
   useEffect(() => {
     loadData();
   }, []);

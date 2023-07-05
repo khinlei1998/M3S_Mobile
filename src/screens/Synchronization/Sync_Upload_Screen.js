@@ -1,12 +1,12 @@
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
 import DividerLine from '../../components/DividerLine';
-import {Button, Checkbox} from 'react-native-paper';
+import { Button, Checkbox } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import CheckBoxFile from '../../components/CheckBoxFile';
-import {UploadCustomerData} from '../../query/Customer_query';
-import {updateTableSyncStatus} from '../../query/Customer_query';
-import {loan_application_type} from '../../common';
+import { UploadCustomerData } from '../../query/Customer_query';
+import { updateTableSyncStatus } from '../../query/Customer_query';
+import { loan_application_type } from '../../common';
 export default function Sync_Upload_Screen(props) {
   const {
     btnUploadCustomer,
@@ -18,9 +18,9 @@ export default function Sync_Upload_Screen(props) {
   } = props;
   const [checkedItems, setCheckedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
-
+  setCheckedItems
   const isChecked = item => {
-    return checkedItems.some(checkedItem => checkedItem.id === item.id);
+    return checkedItems.some(checkedItem => checkedItem.application_no === item.application_no);
   };
 
   const handleSelectAllToggle = () => {
@@ -30,6 +30,7 @@ export default function Sync_Upload_Screen(props) {
       ...item,
       checked: updatedSelectAll,
     }));
+    console.log('updatedData', updatedData);
     // setData(updatedData);
     if (updatedSelectAll) {
       setCheckedItems(updatedData);
@@ -39,16 +40,18 @@ export default function Sync_Upload_Screen(props) {
   };
 
   const handleCheckboxToggle = item => {
+    console.log('check item', item);
+    console.log('checkedItem', checkedItems);
     if (isChecked(item)) {
       setCheckedItems(
-        checkedItems.filter(checkedItem => checkedItem.id !== item.id),
+        checkedItems.filter(checkedItem => checkedItem.application_no !== item.application_no),
       );
     } else {
       setCheckedItems([...checkedItems, item]);
     }
   };
 
-  const item = ({item}) => {
+  const item = ({ item }) => {
     const foundItem = loan_application_type.filter(
       data => data.value == item.product_type,
     );
@@ -65,7 +68,7 @@ export default function Sync_Upload_Screen(props) {
         <Checkbox
           key={item.id}
           status={
-            checkedItems.some(checkedItem => checkedItem.id === item.id)
+            checkedItems.some(checkedItem => checkedItem.application_no === item.application_no)
               ? 'checked'
               : 'unchecked'
           }
@@ -120,7 +123,7 @@ export default function Sync_Upload_Screen(props) {
               name="chevron-right"
               size={30}
               color="#000"
-              style={{marginLeft: 15}}
+              style={{ marginLeft: 15 }}
             />
           </TouchableOpacity>
         </View>
@@ -153,11 +156,11 @@ export default function Sync_Upload_Screen(props) {
   //     console.error('API call failed. Value not changed.');
   //   }
   // };
-
+  console.log('checkedItems', checkedItems);
   return (
-    <View style={{marginTop: 20, marginLeft: 10, marginRight: 10, flex: 1}}>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-        <Text style={{fontWeight: 'bold', fontSize: 18, marginLeft: 10}}>
+    <View style={{ marginTop: 20, marginLeft: 10, marginRight: 10, flex: 1 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ fontWeight: 'bold', fontSize: 18, marginLeft: 10 }}>
           Upload Application
         </Text>
 
@@ -169,7 +172,7 @@ export default function Sync_Upload_Screen(props) {
               color: 'red',
             }}>
             {loan_data.length}
-            <Text style={{color: '#c7c7c7', fontSize: 15}}> PCS</Text>
+            <Text style={{ color: '#c7c7c7', fontSize: 15 }}> PCS</Text>
           </Text>
         </View>
       </View>
@@ -249,9 +252,9 @@ export default function Sync_Upload_Screen(props) {
         renderItem={item}
         keyExtractor={(item, index) => index.toString()}
       />
-      <View style={{flexDirection: 'row', marginLeft: 15}}>
-        <Text style={{fontWeight: 'bold', fontSize: 17}}>New Customer : </Text>
-        <Text style={{fontWeight: 'bold', fontSize: 17}}>
+      <View style={{ flexDirection: 'row', marginLeft: 15 }}>
+        <Text style={{ fontWeight: 'bold', fontSize: 17 }}>New Customer : </Text>
+        <Text style={{ fontWeight: 'bold', fontSize: 17 }}>
           {customer_data.length}
         </Text>
       </View>

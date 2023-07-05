@@ -1,7 +1,5 @@
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import React, {useState, useEffect, createRef} from 'react';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
 import {style} from '../../style/Relation_style';
 import {List} from 'react-native-paper';
 export default function Relation_Contract(props) {
@@ -12,11 +10,7 @@ export default function Relation_Contract(props) {
     borrower_sign_path,
     setCanvas,
     show_canvas,
-    showCanvas,
-    navigation,
-    filePath,
     setCoBorrowerCanvas,
-    co_borrower_filePath,
     show_co_borrower_canvas,
   } = props;
   const [relation_contract_expanded, setRelationContractExpanded] =
@@ -72,11 +66,10 @@ export default function Relation_Contract(props) {
               </Text>
               <Text> Date 17/05/2023</Text>
             </View>
-            {/* <Text>{borrower_sign_path}</Text> */}
-
             <View>
               <Text style={{fontWeight: 'bold', fontSize: 15}}>Sign</Text>
 
+              {show_borrower_sign == '' && (
                 <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
                   <Image
                     source={{
@@ -85,8 +78,17 @@ export default function Relation_Contract(props) {
                     style={{width: 100, height: 50}}
                   />
                 </TouchableOpacity>
-
-
+              )}
+              {borrower_sign_path !== '' && (
+                <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
+                  <Image
+                    source={{
+                      uri: `data:image/png;base64,${show_borrower_sign}`,
+                    }}
+                    style={{width: 100, height: 50}}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
           <View
@@ -106,6 +108,7 @@ export default function Relation_Contract(props) {
             <View>
               <Text style={{fontWeight: 'bold', fontSize: 15}}>Sign</Text>
 
+              {show_coborrower_sign == '' && (
                 <TouchableOpacity
                   onPress={() => setCoBorrowerCanvas(!show_co_borrower_canvas)}>
                   <Image
@@ -115,12 +118,32 @@ export default function Relation_Contract(props) {
                     style={{width: 100, height: 50}}
                   />
                 </TouchableOpacity>
-
-
+              )}
+              {coborrower_sign_path !== '' && (
+                <TouchableOpacity
+                  onPress={() => setCoBorrowerCanvas(!show_co_borrower_canvas)}>
+                  <Image
+                    source={{
+                      uri: `data:image/png;base64,${show_coborrower_sign}`,
+                    }}
+                    style={{width: 100, height: 50}}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
-          <Text style={{fontWeight:'bold',fontSize:15}}>The co-borrower is responsible</Text>
-          <Text style={{fontWeight:'bold',fontSize:15}}>The above mentioned and </Text>
+          <Text style={{fontWeight: 'bold', fontSize: 15}}>
+            The co-borrower is responsible for repaying the loan if it fails to
+            do so.{'\n'}
+          </Text>
+          <Text style={{fontWeight: 'bold', fontSize: 15}}>
+            The above-mentioned borrower and co-borrower are responsible for
+            compliance with the terms and conditions of the contract by
+            confirming that the above-mentioned{'\n'}{' '}
+          </Text>
+          <Text style={{fontWeight: 'bold', fontSize: 15}}>
+            ? relationship is correct
+          </Text>
         </View>
       </List.Accordion>
     </>

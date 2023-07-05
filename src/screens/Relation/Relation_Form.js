@@ -4,26 +4,15 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
-  FlatList,
   TouchableHighlight,
   ToastAndroid,
-  TouchableOpacity,
 } from 'react-native';
 import React, {useState, useEffect, createRef} from 'react';
 import DividerLine from '../../components/DividerLine';
 import {reduxForm, Field, change, reset} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
 import RNFS from 'react-native-fs';
-
-import {
-  Button,
-  RadioButton,
-  List,
-  Provider,
-  Portal,
-  Modal,
-  TextInput,
-} from 'react-native-paper';
+import {Button, RadioButton, List, Modal} from 'react-native-paper';
 import {operations, emp_filter_item} from '../../common';
 import {style} from '../../style/Relation_style';
 import TextInputFile from '../../components/TextInputFile';
@@ -38,96 +27,11 @@ import {storeRelation} from '../../query/RelationShip_query';
 import {useRef} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
-const SignModal = props => {
-  const {
-    _onSaveEvent,
-    saveSign,
-    resetSign,
-    sign,
-    modalVisible,
-    setModalVisible,
-  } = props;
-  return (
-    <Modal
-      visible={modalVisible}
-      animationType="slide"
-      transparent={true}
-      useNativeDriver
-      hideModalContentWhileAnimating
-      dismissable={false}>
-      <View
-        style={{
-          backgroundColor: '#232D57',
-          padding: 25,
-          width: 400,
-          alignSelf: 'center',
-        }}
-        onStartShouldSetResponder={() => setModalVisible(!modalVisible)}>
-        <Icon
-          name="x-circle"
-          size={25}
-          color="#fff"
-          style={style.cancel_icon_style}
-        />
-      </View>
-      <View
-        style={{
-          backgroundColor: '#F5FCFF',
-          width: 400,
-          height: 300,
-          alignSelf: 'center',
-        }}>
-        <SignatureCapture
-          style={{
-            flex: 1,
-          }}
-          ref={ref => (sign = ref)}
-          onSaveEvent={_onSaveEvent}
-          showNativeButtons={false}
-          showTitleLabel={false}
-          minStrokeWidth={10}
-          maxStrokeWidth={10}
-          viewMode={'portrait'}
-        />
-        <View style={{flexDirection: 'row'}}>
-          <TouchableHighlight
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              color: 'white',
-              height: 50,
-              backgroundColor: '#6870C3',
-              margin: 10,
-            }}
-            onPress={() => {
-              saveSign();
-            }}>
-            <Text style={{color: '#fff'}}>Save</Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              color: 'white',
-              height: 50,
-              backgroundColor: '#6870C3',
-              margin: 10,
-            }}
-            onPress={() => {
-              resetSign();
-            }}>
-            <Text style={{color: '#fff'}}>Reset</Text>
-          </TouchableHighlight>
-        </View>
-      </View>
-    </Modal>
-  );
-};
+import {getAllLoan_By_application_no} from '../../query/AllLoan_query';
+import validate from './Validate';
+
 function Relation_Form(props) {
   const navigation = useNavigation();
-
   const {handleSubmit} = props;
   const [show_operation, setOperation] = useState('1');
   const [relation_expanded, setRelationExpanded] = useState(true);
@@ -141,6 +45,211 @@ function Relation_Form(props) {
   const [signature2_path, setSignature2Path] = useState('');
   const [signature3, setSignature3] = useState('');
   const [signature3_path, setSignature3Path] = useState('');
+  const [signature5, setSignature5] = useState('');
+  const [signature5_path, setSignature5Path] = useState('');
+  const [signature4, setSignature4] = useState('');
+  const [signature4_path, setSignature4Path] = useState('');
+  const [signature6, setSignature6] = useState('');
+  const [signature6_path, setSignature6Path] = useState('');
+  const [signature7, setSignature7] = useState('');
+  const [signature7_path, setSignature7Path] = useState('');
+  const [signature8, setSignature8] = useState('');
+  const [signature8_path, setSignature8Path] = useState('');
+  const [signature9, setSignature9] = useState('');
+  const [signature9_path, setSignature9Path] = useState('');
+  const [signature10, setSignature10] = useState('');
+  const [signature10_path, setSignature10Path] = useState('');
+  const [show_canvas, setCanvas] = useState(false);
+  const [show_co_borrower_canvas, setCoBorrowerCanvas] = useState(false);
+  const [showCanvas, setShowCanvas] = useState(false);
+  const [borrower_sign_path, setBorrowerSignPath] = useState('');
+  const [coborrower_sign_path, setCoBorrowerSignPath] = useState('');
+  const [show_coborrower_sign, setShowCoBorrowerSign] = useState('');
+
+  const Borrower_Sign_Modal = props => {
+    const {
+      _onSaveBorrowerEvent,
+      saveBorrowerSign,
+      resetBorrowerSign,
+      borrower_sign,
+      show_canvas,
+    } = props;
+    return (
+      <Modal
+        visible={show_canvas}
+        animationType="slide"
+        transparent={true}
+        useNativeDriver
+        hideModalContentWhileAnimating
+        dismissable={false}
+        onDismiss={hideSignModal}>
+        <View
+          style={{
+            backgroundColor: '#232D57',
+            padding: 25,
+            width: 400,
+            alignSelf: 'center',
+          }}
+          onStartShouldSetResponder={() => setCanvas(!show_canvas)}>
+          <Icon
+            name="x-circle"
+            size={25}
+            color="#fff"
+            style={style.cancel_icon_style}
+          />
+        </View>
+        <View
+          style={{
+            backgroundColor: '#F5FCFF',
+            width: 400,
+            height: 300,
+            alignSelf: 'center',
+          }}>
+          <SignatureCapture
+            style={{
+              flex: 1,
+            }}
+            ref={borrower_sign}
+            onSaveEvent={_onSaveBorrowerEvent}
+            showNativeButtons={false}
+            showTitleLabel={false}
+            minStrokeWidth={10}
+            maxStrokeWidth={10}
+            viewMode={'portrait'}
+          />
+          <View style={{flexDirection: 'row'}}>
+            <TouchableHighlight
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: 'white',
+                height: 50,
+                backgroundColor: '#6870C3',
+                margin: 10,
+              }}
+              onPress={() => {
+                saveBorrowerSign();
+              }}>
+              <Text style={{color: '#fff'}}>Save</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: 'white',
+                height: 50,
+                backgroundColor: '#6870C3',
+                margin: 10,
+              }}
+              onPress={() => {
+                resetBorrowerSign();
+              }}>
+              <Text style={{color: '#fff'}}>Reset</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
+  const Co_Borrower_Sign_Modal = props => {
+    const {
+      show_co_borrower_canvas,
+      hideCoBorrowerSignModal,
+      setCoBorrowerCanvas,
+      _onCoBorrowerSaveEvent,
+      co_borrower_saveSign,
+      co_borrower_resetSign,
+      co_borrower_sign,
+    } = props;
+    return (
+      <Modal
+        visible={show_co_borrower_canvas}
+        animationType="slide"
+        transparent={true}
+        useNativeDriver
+        hideModalContentWhileAnimating
+        dismissable={false}
+        onDismiss={hideCoBorrowerSignModal}>
+        <View
+          style={{
+            backgroundColor: '#232D57',
+            padding: 25,
+            width: 400,
+            alignSelf: 'center',
+          }}
+          onStartShouldSetResponder={() =>
+            setCoBorrowerCanvas(!show_co_borrower_canvas)
+          }>
+          <Icon
+            name="x-circle"
+            size={25}
+            color="#fff"
+            style={style.cancel_icon_style}
+          />
+        </View>
+        <View
+          style={{
+            backgroundColor: '#F5FCFF',
+            width: 400,
+            height: 300,
+            alignSelf: 'center',
+          }}>
+          <SignatureCapture
+            style={{
+              flex: 1,
+            }}
+            ref={co_borrower_sign}
+            onSaveEvent={_onCoBorrowerSaveEvent}
+            showNativeButtons={false}
+            showTitleLabel={false}
+            saveImageFileInExtStorage
+            minStrokeWidth={10}
+            maxStrokeWidth={10}
+            // backgroundColor="transparent"
+            viewMode={'portrait'}
+          />
+          <View style={{flexDirection: 'row'}}>
+            <TouchableHighlight
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: 'white',
+                height: 50,
+                backgroundColor: '#6870C3',
+                margin: 10,
+              }}
+              onPress={() => {
+                co_borrower_saveSign();
+              }}>
+              <Text style={{color: '#fff'}}>Save</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: 'white',
+                height: 50,
+                backgroundColor: '#6870C3',
+                margin: 10,
+              }}
+              onPress={() => {
+                co_borrower_resetSign();
+              }}>
+              <Text style={{color: '#fff'}}>Reset</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
+  const borrower_sign = createRef(null);
+  const co_borrower_sign = createRef();
 
   const handleRelationToggle = () => {
     setRelationExpanded(!relation_expanded);
@@ -177,17 +286,20 @@ function Relation_Form(props) {
     }
   };
   const onSubmit = async values => {
+    console.log('json', JSON.stringify(values));
     try {
       // Save the images
+      let SignatureImagePath;
       let borrowerImagePath;
+      let coBorrowerImagePath;
       let saveImageError = false;
 
       if (signature1_path) {
-        borrowerImagePath = await saveSignatureToInternalStorage(
+        SignatureImagePath = await saveSignatureToInternalStorage(
           signature1,
           '05',
         );
-        if (!borrowerImagePath) {
+        if (!SignatureImagePath) {
           saveImageError = true;
           ToastAndroid.show(
             'Error! Borrower Sign cannot save',
@@ -198,9 +310,39 @@ function Relation_Form(props) {
         }
       }
       if (signature2_path) {
-        borrowerImagePath = await saveSignatureToInternalStorage(
+        SignatureImagePath = await saveSignatureToInternalStorage(
           signature2,
           '06',
+        );
+        if (!SignatureImagePath) {
+          saveImageError = true;
+          ToastAndroid.show(
+            'Error! Borrower Sign cannot save',
+            ToastAndroid.SHORT,
+          );
+        } else {
+          console.log('Borrower image saved successfully:', borrowerImagePath);
+        }
+      }
+      if (signature3_path) {
+        SignatureImagePath = await saveSignatureToInternalStorage(
+          signature3,
+          '07',
+        );
+        if (!SignatureImagePath) {
+          saveImageError = true;
+          ToastAndroid.show(
+            'Error! Borrower Sign cannot save',
+            ToastAndroid.SHORT,
+          );
+        } else {
+          console.log('Borrower image saved successfully:', borrowerImagePath);
+        }
+      }
+      if (borrower_sign_path) {
+        borrowerImagePath = await saveSignatureToInternalStorage(
+          show_borrower_sign,
+          '03',
         );
         if (!borrowerImagePath) {
           saveImageError = true;
@@ -212,19 +354,23 @@ function Relation_Form(props) {
           console.log('Borrower image saved successfully:', borrowerImagePath);
         }
       }
-      if (signature3_path) {
-        borrowerImagePath = await saveSignatureToInternalStorage(
-          signature3,
-          '07',
+
+      if (coborrower_sign_path) {
+        coBorrowerImagePath = await saveSignatureToInternalStorage(
+          show_coborrower_sign,
+          '04',
         );
-        if (!borrowerImagePath) {
+        if (!coBorrowerImagePath) {
           saveImageError = true;
           ToastAndroid.show(
-            'Error! Borrower Sign cannot save',
+            'Error! Co-Borrower Sign cannot save',
             ToastAndroid.SHORT,
           );
         } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
+          console.log(
+            'Co-Borrower image saved successfully:',
+            coBorrowerImagePath,
+          );
         }
       }
 
@@ -265,48 +411,118 @@ function Relation_Form(props) {
         setSignature3Path(pathName);
         setModalVisible(!modalVisible);
         break;
+      case 'btn5':
+        setSignature5(encoded);
+        setSignature5Path(pathName);
+        setModalVisible(!modalVisible);
+        break;
+      case 'btn4':
+        setSignature4(encoded);
+        setSignature4Path(pathName);
+        setModalVisible(!modalVisible);
+        break;
+      case 'btn6':
+        setSignature6(encoded);
+        setSignature6Path(pathName);
+        setModalVisible(!modalVisible);
+        break;
+      case 'btn7':
+        setSignature7(encoded);
+        setSignature7Path(pathName);
+        setModalVisible(!modalVisible);
+        break;
+      case 'btn8':
+        setSignature8(encoded);
+        setSignature8Path(pathName);
+        setModalVisible(!modalVisible);
+        break;
+      case 'btn9':
+        setSignature9(encoded);
+        setSignature9Path(pathName);
+        setModalVisible(!modalVisible);
+        break;
+      case 'btn10':
+        setSignature10(encoded);
+        setSignature10Path(pathName);
+        setModalVisible(!modalVisible);
+        break;
       // Add more cases for other buttons if needed
       default:
         break;
     }
   };
+  const _onSaveBorrowerEvent = async result => {
+    setBorrowerSignPath(result.pathName);
+    setShowBorrowerSign(result.encoded);
+    setCanvas(false);
+  };
 
   const saveSign = async () => {
-    // const pathName = await sign.current.saveImage();
     if (sign) {
       const pathName = await sign.saveImage();
-      console.log('pathName', pathName);
       setSignature(pathName);
     }
   };
+  const saveBorrowerSign = async () => {
+    await borrower_sign.current.saveImage();
+  };
+
   const resetSign = () => {
     if (sign) {
       sign.resetImage();
       setSignature(null);
     }
   };
+  const resetBorrowerSign = () => {
+    borrower_sign.current.resetImage();
+  };
+  const co_borrower_saveSign = async () => {
+    await co_borrower_sign.current.saveImage();
+  };
   const retrive_loan_data = props.route.params.retrive_loan_data;
-  console.log('retrive_loan_data', retrive_loan_data);
 
   const loadData = async () => {
-    let initialize_data = {
-      application_no: retrive_loan_data.application_no,
-      application_date: retrive_loan_data.application_date,
-      resident_rgst_id: retrive_loan_data.guarantor_nm,
-      borrower_name: retrive_loan_data.resident_rgst_id,
-      application_amt: retrive_loan_data.application_amt.toString()
-        ? retrive_loan_data.application_amt.toString()
-        : '',
-      addr: retrive_loan_data.birth_date,
-      relation_no: retrive_loan_data.application_no.replace(/.*?(M)/, 'RIM'),
-    };
-    props.initialize(initialize_data);
+    await getAllLoan_By_application_no(retrive_loan_data.application_no).then(
+      indi_data => {
+        console.log('indi_data', indi_data);
+        let initialize_data = {
+          application_no: retrive_loan_data.application_no,
+          application_date: indi_data[0].application_date,
+          resident_rgst_id: indi_data[0].guarantor_nm,
+          borrower_name: indi_data[0].resident_rgst_id,
+          application_amt: indi_data[0].application_amt.toString()
+            ? indi_data[0].application_amt.toString()
+            : '',
+          addr: indi_data[0].birth_date,
+          co_brwer_rgst_id: indi_data[0].co_brwer_rgst_id,
+          co_brwer_name: indi_data[0].co_brwer_name,
+          relation_no: retrive_loan_data.application_no.replace(
+            /.*?(M)/,
+            'RIM',
+          ),
+        };
+        props.initialize(initialize_data);
+      },
+    );
   };
   useEffect(() => {
     loadData();
   }, []);
-  // const sign = useRef(null);
+  const hideSignModal = () => {
+    setCanvas(!show_canvas);
+  };
+  const hideCoBorrowerSignModal = () => {
+    setCoBorrowerCanvas(!show_co_borrower_canvas);
+  };
+  const co_borrower_resetSign = () => {
+    co_borrower_sign.current.resetImage();
+  };
+  const _onCoBorrowerSaveEvent = async result => {
+    setCoBorrowerSignPath(result.pathName);
+    setShowCoBorrowerSign(result.encoded);
 
+    setCoBorrowerCanvas(false);
+  };
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
@@ -428,13 +644,29 @@ function Relation_Form(props) {
             </List.Accordion>
             <Relation_CoBorrower />
             <Relation_Info />
-            <Relation_Contract />
+            <Relation_Contract
+              setCanvas={setCanvas}
+              show_canvas={show_canvas}
+              showCanvas={showCanvas}
+              borrower_sign_path={borrower_sign_path}
+              show_borrower_sign={show_borrower_sign}
+              show_coborrower_sign={show_coborrower_sign}
+              coborrower_sign_path={coborrower_sign_path}
+              setCoBorrowerCanvas={setCoBorrowerCanvas}
+            />
             <Relation_Member_Sign
               show_borrower_sign={show_borrower_sign}
               handleButtonClick={handleButtonClick}
               signature1={signature1}
               signature2={signature2}
               signature3={signature3}
+              signature5={signature5}
+              signature4={signature4}
+              signature6={signature6}
+              signature7={signature7}
+              signature8={signature8}
+              signature9={signature9}
+              signature10={signature10}
             />
             <DividerLine />
             <View
@@ -538,14 +770,27 @@ function Relation_Form(props) {
           </View>
         </View>
       </Modal>
-      {/* <SignModal
-        _onSaveEvent={_onSaveEvent}
-        saveSign={saveSign}
-        resetSign={resetSign}
-        sign={sign}
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-      /> */}
+
+      <Borrower_Sign_Modal
+        show_canvas={show_canvas}
+        hideSignModal={hideSignModal}
+        setCanvas={setCanvas}
+        _onSaveBorrowerEvent={_onSaveBorrowerEvent}
+        // _onDragEvent={_onDragEvent}
+        saveBorrowerSign={saveBorrowerSign}
+        resetBorrowerSign={resetBorrowerSign}
+        borrower_sign={borrower_sign}
+      />
+
+      <Co_Borrower_Sign_Modal
+        show_co_borrower_canvas={show_co_borrower_canvas}
+        hideCoBorrowerSignModal={hideCoBorrowerSignModal}
+        setCoBorrowerCanvas={setCoBorrowerCanvas}
+        _onCoBorrowerSaveEvent={_onCoBorrowerSaveEvent}
+        co_borrower_saveSign={co_borrower_saveSign}
+        co_borrower_resetSign={co_borrower_resetSign}
+        co_borrower_sign={co_borrower_sign}
+      />
     </>
   );
 }
@@ -555,4 +800,5 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Relation_Form',
+  validate,
 })(connect(mapStateToProps, {})(Relation_Form));

@@ -4,21 +4,15 @@ import {reduxForm, Field, change, reset} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
 import {style} from '../../style/Relation_style';
 import TextInputFile from '../../components/TextInputFile';
-import {
-  Button,
-  RadioButton,
-  List,
-  Provider,
-  Portal,
-  Modal,
-  TextInput,
-} from 'react-native-paper';
+import {List} from 'react-native-paper';
 import SingleCheckBox from '../../components/SingleCheckBox';
+import {relation_data} from '../../common';
 export default function Relation_Info() {
   const [relation_info_expanded, setRelationInfoExpanded] = useState(true);
   const handleRelationInfoToggle = () => {
     setRelationInfoExpanded(!relation_info_expanded);
   };
+
   return (
     <>
       <List.Accordion
@@ -52,47 +46,22 @@ export default function Relation_Info() {
             style={{
               padding: 5,
               justifyContent: 'space-between',
+              marginBottom: 15,
             }}>
-            <Field
-              label={'Grandparent'}
-              name={'grandparent_yn'}
-              component={SingleCheckBox}
-              defaultValue={false}
-              checkedValue="Y"
-              uncheckedValue="N"
-            />
-            <Field
-              label={'Parent'}
-              name={'parent_yn'}
-              component={SingleCheckBox}
-              defaultValue={false}
-              checkedValue="Y"
-              uncheckedValue="N"
-            />
-            <Field
-              label={'Brother & Sister'}
-              name={'brother_sister_yn'}
-              component={SingleCheckBox}
-              defaultValue={false}
-              checkedValue="Y"
-              uncheckedValue="N"
-            />
-            <Field
-              label={'Husband & Wife'}
-              name={'husband_wife_yn'}
-              component={SingleCheckBox}
-              defaultValue={false}
-              checkedValue="Y"
-              uncheckedValue="N"
-            />
-            <Field
-              label={'Son & Daughter'}
-              name={'son_daughter_yn'}
-              component={SingleCheckBox}
-              defaultValue={false}
-              checkedValue="Y"
-              uncheckedValue="N"
-            />
+            <View>
+              {relation_data.map((checkbox, index) => (
+                <Field
+                  key={index}
+                  label={checkbox.label}
+                  name={checkbox.name}
+                  component={SingleCheckBox}
+                  defaultValue={checkbox.defaultValue}
+                  checkedValue={checkbox.checkedValue}
+                  uncheckedValue={checkbox.uncheckedValue}
+                  onChange={(value,label)=>console.log('input',value,label)}
+                />
+              ))}
+            </View>
           </View>
         </View>
       </List.Accordion>

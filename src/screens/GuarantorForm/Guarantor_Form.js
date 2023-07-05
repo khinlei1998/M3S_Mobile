@@ -8,13 +8,13 @@ import {
   TouchableHighlight,
   ToastAndroid,
 } from 'react-native';
-import React, {useState, useEffect, createRef} from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import DividerLine from '../../components/DividerLine';
-import {operations, emp_filter_item} from '../../common';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import { operations, emp_filter_item } from '../../common';
+import { reduxForm, Field, change, reset } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
 import RNFS from 'react-native-fs';
-import {storeGuarantor} from '../../query/Guarantor_query';
+import { storeGuarantor } from '../../query/Guarantor_query';
 import {
   Button,
   RadioButton,
@@ -25,19 +25,21 @@ import {
   TextInput,
 } from 'react-native-paper';
 import SignatureCapture from 'react-native-signature-capture';
-import {style} from '../../style/Guarantor_style';
+import { style } from '../../style/Guarantor_style';
 import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
 import Guarantor_Info from './Guarantor_Info';
 import Guarantor_Business_Info from './Guarantor_Business_Info';
 import Guarantor_Contract from './Guarantor_Contract';
 import Guarantor_Sign from './Guarantor_Sign';
-import {filterCustomer} from '../../query/Customer_query';
+import { filterCustomer } from '../../query/Customer_query';
 import Icon from 'react-native-vector-icons/Feather';
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import validate from './Validate';
+import { getAllLoan_By_application_no } from '../../query/AllLoan_query';
+import moment from 'moment';
 const Borrower_Sign_Modal = props => {
   const {
     show_canvas,
@@ -95,7 +97,7 @@ const Borrower_Sign_Modal = props => {
           // backgroundColor="transparent"
           viewMode={'portrait'}
         />
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <TouchableHighlight
             style={{
               flex: 1,
@@ -109,7 +111,7 @@ const Borrower_Sign_Modal = props => {
             onPress={() => {
               saveSign();
             }}>
-            <Text style={{color: '#fff'}}>Save</Text>
+            <Text style={{ color: '#fff' }}>Save</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={{
@@ -124,7 +126,7 @@ const Borrower_Sign_Modal = props => {
             onPress={() => {
               resetSign();
             }}>
-            <Text style={{color: '#fff'}}>Reset</Text>
+            <Text style={{ color: '#fff' }}>Reset</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -180,7 +182,7 @@ const Guarantor_modal = props => {
     setGuarantorName(item.customer_nm);
   };
 
-  const item = ({item, index}) => {
+  const item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -261,8 +263,8 @@ const Guarantor_modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{marginRight: 10}}>Search Item:</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
@@ -284,7 +286,7 @@ const Guarantor_modal = props => {
                 </Picker>
               </View>
 
-              <View style={{width: '50%'}}>
+              <View style={{ width: '50%' }}>
                 <TextInput
                   style={{
                     backgroundColor: '#fff',
@@ -355,7 +357,7 @@ const Guarantor_modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
               <Button
                 onPress={() => hideGuarantorModal()}
                 mode="contained"
@@ -377,19 +379,20 @@ const Guarantor_modal = props => {
   );
 };
 function Guarantor_Form(props) {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
-  const {handleSubmit} = props;
+  const { handleSubmit } = props;
   const retrive_loan_data = props.route.params.retrive_loan_data;
   const [show_operation, setOperation] = useState('1');
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
   const [show_canvas, setCanvas] = useState(false);
   const [borrower_sign_path, setBorrowerSignPath] = useState('');
   const [show_borrower_sign, setShowBorrowerSign] = useState('');
-
   const [gurarantor_modalVisible, setGuarantorModalVisible] = useState(false);
   const [borroer_info_exxpanded, setBorrowerInfoExpanded] = useState(true);
   const [all_guarantor, setAllGuarantor] = useState([]);
   const [guarantor_name, setGuarantorName] = useState('');
+  const [guarantee_date, setGuaranteeDate] = useState('')
 
   const saveSignatureToInternalStorage = async (image_encode, index) => {
     try {
@@ -457,7 +460,11 @@ function Guarantor_Form(props) {
       }
 
       if (!saveImageError) {
-        await storeGuarantor(values).then(result => {
+        const guarantor_form_data = Object.assign({}, values, {
+          guarantee_date: moment().format('YYYY/MM/DD'),
+
+        });
+        await storeGuarantor(guarantor_form_data).then(result => {
           if (result == 'success') {
             ToastAndroid.show('Create Successfully!', ToastAndroid.SHORT);
             navigation.goBack();
@@ -480,18 +487,20 @@ function Guarantor_Form(props) {
   };
 
   const loadData = async () => {
-    let initialize_data = {
-      application_no: retrive_loan_data.application_no,
-      guarantee_date: retrive_loan_data.application_date,
-      guarantor_nm: retrive_loan_data.guarantor_nm,
-      borrower_nrc: retrive_loan_data.resident_rgst_id,
-      application_amt: retrive_loan_data.application_amt.toString()
-        ? retrive_loan_data.application_amt.toString()
-        : '',
-      birth_date: retrive_loan_data.birth_date,
-      guarantee_no: retrive_loan_data.application_no.replace(/.*?(M)/, 'GTM'),
-    };
-    props.initialize(initialize_data);
+    await getAllLoan_By_application_no(retrive_loan_data.application_no).then(indi_data => {
+      let initialize_data = {
+        application_no: retrive_loan_data.application_no,
+        application_date: indi_data[0].application_date,
+        borrower_nrc: indi_data[0].resident_rgst_id,
+        borrower_name: indi_data[0].borrower_name,
+        application_amt: indi_data[0].application_amt.toString()
+          ? indi_data[0].application_amt.toString()
+          : '',
+        guarantee_no: retrive_loan_data.application_no.replace(/.*?(M)/, 'GTM'),
+      };
+      props.initialize(initialize_data);
+    })
+    setGuaranteeDate(moment().format('YYYY/MM/DD'))
   };
   useEffect(() => {
     loadData();
@@ -523,7 +532,7 @@ function Guarantor_Form(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{flex: 1, backgroundColor: '#fff'}}>
+          <View style={{ flex: 1, backgroundColor: '#fff' }}>
             <Text
               style={{
                 textAlign: 'center',
@@ -534,7 +543,7 @@ function Guarantor_Form(props) {
               }}>
               Guarantor Form
             </Text>
-            <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+            <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>
               (Attach To Application)
             </Text>
             <DividerLine />
@@ -565,7 +574,7 @@ function Guarantor_Form(props) {
                         label={option.label}
                         value={option.value}
                         color="#000"
-                        labelStyle={{marginLeft: 5}}
+                        labelStyle={{ marginLeft: 5 }}
                       />
                     </View>
                   </RadioButton.Group>
@@ -622,7 +631,7 @@ function Guarantor_Form(props) {
                   />
 
                   <Field
-                    name={'guarantee_date'}
+                    name={'application_date'}
                     component={DatePicker}
                     label={'Application Date'}
                     editable={true}
@@ -641,6 +650,8 @@ function Guarantor_Form(props) {
               show_canvas={show_canvas}
               borrower_sign_path={borrower_sign_path}
               show_borrower_sign={show_borrower_sign}
+              guarantor_name={guarantor_name}
+              guarantee_date={guarantee_date}
             />
             <DividerLine />
 

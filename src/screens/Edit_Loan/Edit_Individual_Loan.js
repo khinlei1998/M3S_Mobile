@@ -114,11 +114,19 @@ const Borrower_modal = props => {
 
   const btnSelectEmployee = item => {
     setSelectedValue(item.id);
-    dispatch(change('Individual_Loan_Form', 'borrower_name', item.customer_nm));
     dispatch(
-      change('Individual_Loan_Form', 'resident_rgst_id', item.resident_rgst_id),
+      change('Edit_Individual_Loan_Form', 'borrower_name', item.customer_nm),
     );
-    dispatch(change('Individual_Loan_Form', 'customer_no', item.customer_no));
+    dispatch(
+      change(
+        'Edit_Individual_Loan_Form',
+        'resident_rgst_id',
+        item.resident_rgst_id,
+      ),
+    );
+    dispatch(
+      change('Edit_Individual_Loan_Form', 'customer_no', item.customer_no),
+    );
   };
 
   const item = ({item, index}) => {
@@ -1987,18 +1995,19 @@ function Edit_Individual_Loan(props) {
     ) {
       setBorrowerSignPath(retrive_loan_data.borrower_sign);
     }
-    if (
-      retrive_loan_data.borrower_map != '' &&
-      retrive_loan_data.borrower_map != 'undefined'
-    ) {
-      setBorrowerMap(retrive_loan_data.borrower_map);
-    }
+    // if (
+    //   retrive_loan_data.borrower_map != '' &&
+    //   retrive_loan_data.borrower_map != 'undefined'
+    // ) {
+    //   setBorrowerMap(retrive_loan_data.borrower_map);
+    // }
     if (
       retrive_loan_data.co_borrower_sign != '' &&
       retrive_loan_data.co_borrower_sign != 'undefined'
     ) {
       setCoBorrowerSignPath(retrive_loan_data.co_borrower_sign);
     }
+
     props.initialize(loan_data);
   }, []);
 
@@ -2229,8 +2238,19 @@ function Edit_Individual_Loan(props) {
       setGuarantorData(data);
     });
     await getRelationData(retrive_loan_data.application_no).then(data => {
+      console.log('relation data', data);
       setRelationData(data);
     });
+    const fileExists = await RNFS.exists(
+      `/storage/emulated/0/Pictures/RNSketchCanvas/${retrive_loan_data.application_no}MP01.jpg`,
+    );
+    console.log('sync file exist', fileExists);
+
+    if (fileExists) {
+      setBorrowerMap(
+        `/storage/emulated/0/Pictures/RNSketchCanvas/${retrive_loan_data.application_no}MP01.jpg`,
+      );
+    }
   };
 
   const hideSignModal = () => {
@@ -2487,23 +2507,41 @@ function Edit_Individual_Loan(props) {
                   style={{
                     width: 250,
                     height: 40,
-                    backgroundColor: '#242157',
+                    backgroundColor:   relation_data.length > 0 ? '#3E3E84' : '#242157',
                     margin: 10,
                   }}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      margin: 5,
-                    }}>
-                    <View style={{alignItems: 'center', flexDirection: 'row'}}>
-                      <Icon name="paperclip" size={20} color="#fff" />
-                      <Text style={{color: '#fff', marginLeft: 5}}>
+                  {relation_data.length > 0 ? (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        margin: 5,
+                      }}>
+                      <View
+                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        <Icon name="check" size={20} color="#ede72d" />
+                        <Text style={{color: '#fff', marginLeft: 5}}>
                         RelationShip Form
-                      </Text>
+                        </Text>
+                      </View>
                     </View>
-                    <Icon name="chevron-right" size={25} color="#fff" />
-                  </View>
+                  ) : (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        margin: 5,
+                      }}>
+                      <View
+                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        <Icon name="paperclip" size={20} color="#fff" />
+                        <Text style={{color: '#fff', marginLeft: 5}}>
+                        RelationShip Form
+                        </Text>
+                      </View>
+                      <Icon name="chevron-right" size={25} color="#fff" />
+                    </View>
+                  )}
                 </TouchableOpacity>
               </View>
               <View
@@ -2512,6 +2550,11 @@ function Edit_Individual_Loan(props) {
                   marginBottom: 16,
                 }}>
                 <TouchableOpacity
+                  onPress={() =>
+                    props.navigation.navigate('Evidence', {
+                      retrive_loan_data,
+                    })
+                  }
                   style={{
                     width: 250,
                     height: 40,
@@ -2854,12 +2897,7 @@ function Edit_Individual_Loan(props) {
         </TouchableWithoutFeedback>
       </ScrollView>
 
-      <RenderBottomSheet
-      // update_status={update_status}
-      // guarantor_data={guarantor_data}
-      // exceptional_data={exceptional_data}
-      // navigation={navigation}
-      />
+      <RenderBottomSheet />
 
       <Borrower_modal
         handleSubmit={handleSubmit}

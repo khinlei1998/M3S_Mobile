@@ -18,6 +18,13 @@ export default function Relation_Member_Sign(props) {
     signature2,
     signature1,
     signature3,
+    signature5,
+    signature4,
+    signature6,
+    signature7,
+    signature8,
+    signature9,
+    signature10,
   } = props;
   return (
     <>
@@ -101,14 +108,26 @@ export default function Relation_Member_Sign(props) {
                   margin: 10,
                 }}>
                 <Text>Signature 5</Text>
-                <TouchableOpacity>
-                  <Image
-                    source={{
-                      uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
-                    }}
-                    style={{width: 100, height: 50, marginLeft: 10}}
-                  />
-                </TouchableOpacity>
+                {signature5 == '' ? (
+                  <TouchableOpacity onPress={() => handleButtonClick('btn5')}>
+                    <Image
+                      source={{
+                        uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
+                      }}
+                      style={{width: 100, height: 50, marginLeft: 10}}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => handleButtonClick('btn5')}>
+                    <Image
+                      // source={{uri: `file://${borrower_sign_path}`}}
+                      source={{
+                        uri: `data:image/png;base64,${signature5}`,
+                      }}
+                      style={{width: 100, height: 50, marginLeft: 10}}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
 
               <View
@@ -118,14 +137,26 @@ export default function Relation_Member_Sign(props) {
                   margin: 10,
                 }}>
                 <Text>Signature 7</Text>
-                <TouchableOpacity>
-                  <Image
-                    source={{
-                      uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
-                    }}
-                    style={{width: 100, height: 50, marginLeft: 10}}
-                  />
-                </TouchableOpacity>
+                {signature7 == '' ? (
+                  <TouchableOpacity onPress={() => handleButtonClick('btn7')}>
+                    <Image
+                      source={{
+                        uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
+                      }}
+                      style={{width: 100, height: 50, marginLeft: 10}}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => handleButtonClick('btn7')}>
+                    <Image
+                      // source={{uri: `file://${borrower_sign_path}`}}
+                      source={{
+                        uri: `data:image/png;base64,${signature7}`,
+                      }}
+                      style={{width: 100, height: 50, marginLeft: 10}}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
 
               <View
@@ -135,14 +166,25 @@ export default function Relation_Member_Sign(props) {
                   margin: 10,
                 }}>
                 <Text>Signature 9</Text>
-                <TouchableOpacity>
-                  <Image
-                    source={{
-                      uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
-                    }}
-                    style={{width: 100, height: 50, marginLeft: 10}}
-                  />
-                </TouchableOpacity>
+                {signature9 == '' ? (
+                  <TouchableOpacity onPress={() => handleButtonClick('btn9')}>
+                    <Image
+                      source={{
+                        uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
+                      }}
+                      style={{width: 100, height: 50, marginLeft: 10}}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => handleButtonClick('btn9')}>
+                    <Image
+                      source={{
+                        uri: `data:image/png;base64,${signature9}`,
+                      }}
+                      style={{width: 100, height: 50, marginLeft: 10}}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
 
@@ -154,14 +196,26 @@ export default function Relation_Member_Sign(props) {
                   margin: 10,
                 }}>
                 <Text>Signature 2</Text>
-                <TouchableOpacity>
-                  <Image
-                    source={{
-                      uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
-                    }}
-                    style={{width: 100, height: 50, marginLeft: 10}}
-                  />
-                </TouchableOpacity>
+                {signature2 == '' ? (
+                  <TouchableOpacity onPress={() => handleButtonClick('btn2')}>
+                    <Image
+                      source={{
+                        uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
+                      }}
+                      style={{width: 100, height: 50, marginLeft: 10}}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => handleButtonClick('btn2')}>
+                    <Image
+                      // source={{uri: `file://${borrower_sign_path}`}}
+                      source={{
+                        uri: `data:image/png;base64,${signature2}`,
+                      }}
+                      style={{width: 100, height: 50, marginLeft: 10}}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
 
               <View
@@ -171,14 +225,26 @@ export default function Relation_Member_Sign(props) {
                   margin: 10,
                 }}>
                 <Text>Signature 4</Text>
-                <TouchableOpacity>
-                  <Image
-                    source={{
-                      uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
-                    }}
-                    style={{width: 100, height: 50, marginLeft: 10}}
-                  />
-                </TouchableOpacity>
+                {signature4 == '' ? (
+                  <TouchableOpacity onPress={() => handleButtonClick('btn4')}>
+                    <Image
+                      source={{
+                        uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
+                      }}
+                      style={{width: 100, height: 50, marginLeft: 10}}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => handleButtonClick('btn4')}>
+                    <Image
+                      // source={{uri: `file://${borrower_sign_path}`}}
+                      source={{
+                        uri: `data:image/png;base64,${signature4}`,
+                      }}
+                      style={{width: 100, height: 50, marginLeft: 10}}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
 
               <View
@@ -188,14 +254,26 @@ export default function Relation_Member_Sign(props) {
                   margin: 10,
                 }}>
                 <Text>Signature 6</Text>
-                <TouchableOpacity>
-                  <Image
-                    source={{
-                      uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
-                    }}
-                    style={{width: 100, height: 50, marginLeft: 10}}
-                  />
-                </TouchableOpacity>
+                {signature6 == '' ? (
+                  <TouchableOpacity onPress={() => handleButtonClick('btn6')}>
+                    <Image
+                      source={{
+                        uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
+                      }}
+                      style={{width: 100, height: 50, marginLeft: 10}}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => handleButtonClick('btn6')}>
+                    <Image
+                      // source={{uri: `file://${borrower_sign_path}`}}
+                      source={{
+                        uri: `data:image/png;base64,${signature6}`,
+                      }}
+                      style={{width: 100, height: 50, marginLeft: 10}}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
 
               <View
@@ -205,14 +283,26 @@ export default function Relation_Member_Sign(props) {
                   margin: 10,
                 }}>
                 <Text>Signature 8</Text>
-                <TouchableOpacity>
-                  <Image
-                    source={{
-                      uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
-                    }}
-                    style={{width: 100, height: 50, marginLeft: 10}}
-                  />
-                </TouchableOpacity>
+                {signature8 == '' ? (
+                  <TouchableOpacity onPress={() => handleButtonClick('btn8')}>
+                    <Image
+                      source={{
+                        uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
+                      }}
+                      style={{width: 100, height: 50, marginLeft: 10}}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => handleButtonClick('btn8')}>
+                    <Image
+                      // source={{uri: `file://${borrower_sign_path}`}}
+                      source={{
+                        uri: `data:image/png;base64,${signature8}`,
+                      }}
+                      style={{width: 100, height: 50, marginLeft: 10}}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
 
               <View
@@ -222,14 +312,26 @@ export default function Relation_Member_Sign(props) {
                   margin: 10,
                 }}>
                 <Text>Signature 10</Text>
-                <TouchableOpacity>
-                  <Image
-                    source={{
-                      uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
-                    }}
-                    style={{width: 100, height: 50, marginLeft: 5}}
-                  />
-                </TouchableOpacity>
+                {signature10 == '' ? (
+                  <TouchableOpacity onPress={() => handleButtonClick('btn10')}>
+                    <Image
+                      source={{
+                        uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
+                      }}
+                      style={{width: 100, height: 50, marginLeft: 5}}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => handleButtonClick('btn10')}>
+                    <Image
+                      // source={{uri: `file://${borrower_sign_path}`}}
+                      source={{
+                        uri: `data:image/png;base64,${signature10}`,
+                      }}
+                      style={{width: 100, height: 50, marginLeft: 5}}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
           </View>

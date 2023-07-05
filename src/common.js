@@ -463,5 +463,47 @@ export const loan_application_type = [
   },
 ];
 
+export const relation_data = [
+  {
+    label: 'Parent',
+    name: 'parent_yn',
+    defaultValue: false,
+    checkedValue: 'Y',
+    uncheckedValue: 'N',
+  },
+  {
+    label: 'Brother & Sister',
+    name: 'brother_sister_yn',
+    defaultValue: false,
+    checkedValue: 'Y',
+    uncheckedValue: 'N',
+  },
+  {
+    label: 'GrandParent',
+    name: 'grandparent_yn',
+    defaultValue: false,
+    checkedValue: 'Y',
+    uncheckedValue: 'N',
+  },
+  {
+    label: 'Husband & Wife',
+    name: 'husband_wife_yn',
+    defaultValue: false,
+    checkedValue: 'Y',
+    uncheckedValue: 'N',
+  },
+  {
+    label: 'Son & Daughter',
+    name: 'son_daughter_yn',
+    defaultValue: false,
+    checkedValue: 'Y',
+    uncheckedValue: 'N',
+  },
+
+  // Add more checkbox configurations as needed
+];
+
+
+
 // export const BASE_URL='https://8582-103-231-92-61.ngrok-free.app/'
 export const BASE_URL = 'https://sample-rest.onrender.com/skylark-m3s/'; // static
