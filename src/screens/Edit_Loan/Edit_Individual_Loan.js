@@ -2238,7 +2238,6 @@ function Edit_Individual_Loan(props) {
       setGuarantorData(data);
     });
     await getRelationData(retrive_loan_data.application_no).then(data => {
-      console.log('relation data', data);
       setRelationData(data);
     });
     const fileExists = await RNFS.exists(
@@ -2498,7 +2497,9 @@ function Edit_Individual_Loan(props) {
                           retrive_loan_data,
                         })
                       : update_status == true && relation_data.length > 0
-                      ? alert('edit')
+                      ? props.navigation.navigate('Edit Relation', {
+                          relation_data,
+                        })
                       : ToastAndroid.show(
                           `Only update can modify`,
                           ToastAndroid.SHORT,
@@ -2507,7 +2508,8 @@ function Edit_Individual_Loan(props) {
                   style={{
                     width: 250,
                     height: 40,
-                    backgroundColor:   relation_data.length > 0 ? '#3E3E84' : '#242157',
+                    backgroundColor:
+                      relation_data.length > 0 ? '#3E3E84' : '#242157',
                     margin: 10,
                   }}>
                   {relation_data.length > 0 ? (
@@ -2521,7 +2523,7 @@ function Edit_Individual_Loan(props) {
                         style={{alignItems: 'center', flexDirection: 'row'}}>
                         <Icon name="check" size={20} color="#ede72d" />
                         <Text style={{color: '#fff', marginLeft: 5}}>
-                        RelationShip Form
+                          RelationShip Form
                         </Text>
                       </View>
                     </View>
@@ -2536,7 +2538,7 @@ function Edit_Individual_Loan(props) {
                         style={{alignItems: 'center', flexDirection: 'row'}}>
                         <Icon name="paperclip" size={20} color="#fff" />
                         <Text style={{color: '#fff', marginLeft: 5}}>
-                        RelationShip Form
+                          RelationShip Form
                         </Text>
                       </View>
                       <Icon name="chevron-right" size={25} color="#fff" />

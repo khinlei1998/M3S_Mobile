@@ -23,6 +23,7 @@ import Guarantor_Form from '../screens/GuarantorForm/Guarantor_Form';
 import Edit_Guarantor_Form from '../screens/Edit_GuarantorForm/Edit_Guarantor_Form';
 import Relation_Form from '../screens/Relation/Relation_Form';
 import Area_Evaluation_Form from '../screens/Area Evaluation/Area_Evaluation_Form';
+import EditRelation_Form from '../screens/Edit_Relation/EditRelation_Form';
 export default function AuthNavigation(props) {
   const Stack = createNativeStackNavigator();
   return (
@@ -53,6 +54,12 @@ export default function AuthNavigation(props) {
         component={Home}
         options={{headerShown: false}}
       />
+      <Stack.Screen
+        name="Edit Relation"
+        component={EditRelation_Form}
+        options={{headerShown: false}}
+      />
+
       {/* <Stack.Screen
         name="Individual_loan"
         component={Individual_Loan}
