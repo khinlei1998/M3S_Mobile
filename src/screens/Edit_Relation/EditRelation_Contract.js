@@ -2,7 +2,9 @@ import {View, Text, TouchableOpacity, Image} from 'react-native';
 import React, {useState, useEffect, createRef} from 'react';
 import {style} from '../../style/Relation_style';
 import {List} from 'react-native-paper';
-export default function Relation_Contract(props) {
+import {reduxForm, Field, change, reset} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
+function Edit_Relation_Contract(props) {
   const {
     coborrower_sign_path,
     show_coborrower_sign,
@@ -12,7 +14,8 @@ export default function Relation_Contract(props) {
     show_canvas,
     setCoBorrowerCanvas,
     show_co_borrower_canvas,
-    relation_name
+    btnShowBorrowerSign,
+    relation_update_status,
   } = props;
   const [relation_contract_expanded, setRelationContractExpanded] =
     useState(true);
@@ -70,25 +73,45 @@ export default function Relation_Contract(props) {
             <View>
               <Text style={{fontWeight: 'bold', fontSize: 15}}>Sign</Text>
 
-              {show_borrower_sign == '' && (
-                <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
+              {borrower_sign_path == '' && show_borrower_sign == '' ? (
+                <TouchableOpacity
+                  onPress={() =>
+                    relation_update_status == true
+                      ? setCanvas(!show_canvas)
+                      : ''
+                  }>
+                  <Image
+                    source={require('../../../assets/images/default-sign.png')}
+                    style={{width: 100, height: 50}}
+                  />
+                </TouchableOpacity>
+              ) : borrower_sign_path && show_borrower_sign == '' ? (
+                <TouchableOpacity
+                  onPress={() =>
+                    relation_update_status == true && btnShowBorrowerSign()
+                  }>
                   <Image
                     source={{
-                      uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
+                      uri: `file:///storage/emulated/0/Pictures/Signature/${borrower_sign_path}`,
                     }}
                     style={{width: 100, height: 50}}
                   />
                 </TouchableOpacity>
-              )}
-              {borrower_sign_path !== '' && (
-                <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
-                  <Image
-                    source={{
-                      uri: `data:image/png;base64,${show_borrower_sign}`,
-                    }}
-                    style={{width: 100, height: 50}}
-                  />
-                </TouchableOpacity>
+              ) : (
+                show_borrower_sign &&
+                borrower_sign_path && (
+                  <TouchableOpacity
+                    onPress={() =>
+                      relation_update_status == true && setCanvas(!show_canvas)
+                    }>
+                    <Image
+                      source={{
+                        uri: `data:image/png;base64,${show_borrower_sign}`,
+                      }}
+                      style={{width: 100, height: 50}}
+                    />
+                  </TouchableOpacity>
+                )
               )}
             </View>
           </View>
@@ -109,27 +132,45 @@ export default function Relation_Contract(props) {
             <View>
               <Text style={{fontWeight: 'bold', fontSize: 15}}>Sign</Text>
 
-              {show_coborrower_sign == '' && (
+              {coborrower_sign_path == '' && show_coborrower_sign == '' ? (
                 <TouchableOpacity
-                  onPress={() => setCoBorrowerCanvas(!show_co_borrower_canvas)}>
+                  onPress={() =>
+                    relation_update_status == true
+                      ? setCoBorrowerCanvas(!show_co_borrower_canvas)
+                      : ''
+                  }>
+                  <Image
+                    source={require('../../../assets/images/default-sign.png')}
+                    style={{width: 100, height: 50}}
+                  />
+                </TouchableOpacity>
+              ) : coborrower_sign_path && show_coborrower_sign == '' ? (
+                <TouchableOpacity
+                  onPress={() =>
+                    relation_update_status == true && setCoBorrowerCanvas(!show_co_borrower_canvas)
+                  }>
                   <Image
                     source={{
-                      uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
+                      uri: `file:///storage/emulated/0/Pictures/Signature/${coborrower_sign_path}`,
                     }}
                     style={{width: 100, height: 50}}
                   />
                 </TouchableOpacity>
-              )}
-              {coborrower_sign_path !== '' && (
-                <TouchableOpacity
-                  onPress={() => setCoBorrowerCanvas(!show_co_borrower_canvas)}>
-                  <Image
-                    source={{
-                      uri: `data:image/png;base64,${show_coborrower_sign}`,
-                    }}
-                    style={{width: 100, height: 50}}
-                  />
-                </TouchableOpacity>
+              ) : (
+                show_coborrower_sign &&
+                coborrower_sign_path && (
+                  <TouchableOpacity
+                    onPress={() =>
+                      relation_update_status == true && setCoBorrowerCanvas(!show_co_borrower_canvas)
+                    }>
+                    <Image
+                      source={{
+                        uri: `data:image/png;base64,${show_coborrower_sign}`,
+                      }}
+                      style={{width: 100, height: 50}}
+                    />
+                  </TouchableOpacity>
+                )
               )}
             </View>
           </View>
@@ -143,7 +184,7 @@ export default function Relation_Contract(props) {
             confirming that the above-mentioned{'\n'}{' '}
           </Text>
           <Text style={{fontWeight: 'bold', fontSize: 15}}>
-            {relation_name} relationship is correct
+            ? relationship is correct
           </Text>
         </View>
       </List.Accordion>
@@ -151,3 +192,13 @@ export default function Relation_Contract(props) {
   );
 }
 
+function mapStateToProps(state) {
+  return {
+    relation_update_status: state.loan.relation_update_status,
+  };
+}
+
+export default reduxForm({
+  form: 'Edit_Relation_Form',
+  // validate,
+})(connect(mapStateToProps, {})(Edit_Relation_Contract));

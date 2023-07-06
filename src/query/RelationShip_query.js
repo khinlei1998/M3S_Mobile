@@ -68,3 +68,31 @@ export const storeRelation = async data => {
     }
   });
 };
+
+export async function deleteRelation_ByID(relation_no) {
+  console.log('relationNo',relation_no);
+  try {
+    return new Promise((resolve, reject) => {
+      global.db.transaction(tx => {
+        tx.executeSql(
+          'DELETE FROM Relation_info WHERE relation_no = ?',
+          [relation_no],
+          (txObj, resultSet) => {
+            console.log('resultSet', resultSet);
+            resolve('success');
+            // Delete query successful
+            console.log('Delete successful');
+          },
+          (txObj, error) => {
+            // Error occurred while executing the delete query
+            console.error('Delete error:', error);
+            reject(error);
+          },
+        );
+      });
+    });
+  } catch (error) {
+    console.error('Error deleting loan:', error);
+    throw error;
+  }
+}

@@ -17,10 +17,10 @@ import { operations, emp_filter_item } from '../../common';
 import { style } from '../../style/Relation_style';
 import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
-import Relation_CoBorrower from './Relation_CoBorrower';
-import Relation_Info from './Relation_Info';
-import Relation_Contract from './Relation_Contract';
-import Relation_Member_Sign from './Relation_Member_Sign';
+import EditRelation_CoBorrower from './EditRelation_CoBorrower';
+import EditRelation_Info from './EditRelation_Info';
+import EditRelation_Contract from './EditRelation_Contract';
+import EditRelation_Member_Sign from './EditRelation_Member_Sign';
 import Icon from 'react-native-vector-icons/Feather';
 import SignatureCapture from 'react-native-signature-capture';
 import { storeRelation } from '../../query/RelationShip_query';
@@ -28,12 +28,14 @@ import { useRef } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { getAllLoan_By_application_no } from '../../query/AllLoan_query';
-import validate from './Validate';
+import { setRelation_UpdateStatus } from '../../redux/LoanReducer';
+import { deleteRelation_ByID } from '../../query/RelationShip_query';
+// import validate from './Validate';
 
-function Relation_Form(props) {
+function Edit_Relation_Form(props) {
   const navigation = useNavigation();
-  const { handleSubmit } = props;
-  const [show_operation, setOperation] = useState('1');
+  const { handleSubmit, setRelation_UpdateStatus, relation_update_status } = props;
+  const [show_operation, setOperation] = useState('2');
   const [relation_expanded, setRelationExpanded] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState('');
@@ -198,6 +200,7 @@ function Relation_Form(props) {
             height: 300,
             alignSelf: 'center',
           }}>
+          <Text>Co borrowe</Text>
           <SignatureCapture
             style={{
               flex: 1,
@@ -287,218 +290,160 @@ function Relation_Form(props) {
     }
   };
   const onSubmit = async values => {
-    const add_relation_data= Object.assign({}, values, {
-      parent_yn: values.relationName == 2 ? '1' : '',
-      brother_sister_yn: values.relationName == 3 ? '1' : '',
-      grandparent_yn: values.relationName == 1 ? '1' : '',
-      son_daughter_yn: values.relationName == 5 ? '1' : '',
-      husband_wife_yn: values.relationName == 4 ? '1' : '',
-      relationName: relation_name
+    if (show_operation == '4') {
+      const filePaths = [
+        `/storage/emulated/0/Pictures/Signature/${values.application_no}SG05.jpg`,
+        `/storage/emulated/0/Pictures/Signature/${values.application_no}SG06.jpg`,
+        `/storage/emulated/0/Pictures/Signature/${values.application_no}SG07.jpg`,
+        `/storage/emulated/0/Pictures/Signature/${values.application_no}SG08.jpg`,
+        `/storage/emulated/0/Pictures/Signature/${values.application_no}SG09.jpg`,
+        `/storage/emulated/0/Pictures/Signature/${values.application_no}SG10.jpg`,
+        `/storage/emulated/0/Pictures/Signature/${values.application_no}SG11.jpg`,
+        `/storage/emulated/0/Pictures/Signature/${values.application_no}SG12.jpg`,
+        `/storage/emulated/0/Pictures/Signature/${values.application_no}SG13.jpg`,
+        `/storage/emulated/0/Pictures/Signature/${values.application_no}SG14.jpg`,
+        // Add more file paths as needed
+      ];
+      try {
+        const deleteFilePromises = filePaths.map(async (filePath) => {
+          const fileExists = await RNFS.exists(filePath);
 
-    });
-    try {
-      // Save the images
-      let SignatureImagePath;
-      let borrowerImagePath;
-      let coBorrowerImagePath;
-      let saveImageError = false;
+          if (fileExists) {
+            await RNFS.unlink(filePath);
+            console.log('File deleted successfully:', filePath);
+          } else {
+            console.log('File does not exist:', filePath);
+          }
+        });
 
-      if (signature1_path) {
-        SignatureImagePath = await saveSignatureToInternalStorage(
-          signature1,
-          '05',
-        );
-        if (!SignatureImagePath) {
-          saveImageError = true;
-          ToastAndroid.show(
-            'Error! Borrower Sign cannot save',
-            ToastAndroid.SHORT,
-          );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
-      }
-      if (signature2_path) {
-        SignatureImagePath = await saveSignatureToInternalStorage(
-          signature2,
-          '06',
-        );
-        if (!SignatureImagePath) {
-          saveImageError = true;
-          ToastAndroid.show(
-            'Error! Borrower Sign cannot save',
-            ToastAndroid.SHORT,
-          );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
-      }
-      if (signature3_path) {
-        SignatureImagePath = await saveSignatureToInternalStorage(
-          signature3,
-          '07',
-        );
-        if (!SignatureImagePath) {
-          saveImageError = true;
-          ToastAndroid.show(
-            'Error! Borrower Sign cannot save',
-            ToastAndroid.SHORT,
-          );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
-      }
-      if (signature4_path) {
-        SignatureImagePath = await saveSignatureToInternalStorage(
-          signature4,
-          '08',
-        );
-        if (!SignatureImagePath) {
-          saveImageError = true;
-          ToastAndroid.show(
-            'Error! Borrower Sign cannot save',
-            ToastAndroid.SHORT,
-          );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
-      }
-      if (signature5_path) {
-        SignatureImagePath = await saveSignatureToInternalStorage(
-          signature5,
-          '09',
-        );
-        if (!SignatureImagePath) {
-          saveImageError = true;
-          ToastAndroid.show(
-            'Error! Borrower Sign cannot save',
-            ToastAndroid.SHORT,
-          );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
-      }
-      if (signature6_path) {
-        SignatureImagePath = await saveSignatureToInternalStorage(
-          signature6,
-          '10',
-        );
-        if (!SignatureImagePath) {
-          saveImageError = true;
-          ToastAndroid.show(
-            'Error! Borrower Sign cannot save',
-            ToastAndroid.SHORT,
-          );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
-      }
-      if (signature7_path) {
-        SignatureImagePath = await saveSignatureToInternalStorage(
-          signature7,
-          '11',
-        );
-        if (!SignatureImagePath) {
-          saveImageError = true;
-          ToastAndroid.show(
-            'Error! Borrower Sign cannot save',
-            ToastAndroid.SHORT,
-          );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
-      }
-      if (signature8_path) {
-        SignatureImagePath = await saveSignatureToInternalStorage(
-          signature8,
-          '12',
-        );
-        if (!SignatureImagePath) {
-          saveImageError = true;
-          ToastAndroid.show(
-            'Error! Borrower Sign cannot save',
-            ToastAndroid.SHORT,
-          );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
-      }
-      if (signature9_path) {
-        SignatureImagePath = await saveSignatureToInternalStorage(
-          signature9,
-          '13',
-        );
-        if (!SignatureImagePath) {
-          saveImageError = true;
-          ToastAndroid.show(
-            'Error! Borrower Sign cannot save',
-            ToastAndroid.SHORT,
-          );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
-      }
-      if (signature10_path) {
-        SignatureImagePath = await saveSignatureToInternalStorage(
-          signature10,
-          '14',
-        );
-        if (!SignatureImagePath) {
-          saveImageError = true;
-          ToastAndroid.show(
-            'Error! Borrower Sign cannot save',
-            ToastAndroid.SHORT,
-          );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
-      }
-      if (borrower_sign_path) {
-        borrowerImagePath = await saveSignatureToInternalStorage(
-          show_borrower_sign,
-          '03',
-        );
-        if (!borrowerImagePath) {
-          saveImageError = true;
-          ToastAndroid.show(
-            'Error! Borrower Sign cannot save',
-            ToastAndroid.SHORT,
-          );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
-      }
+        await Promise.all(deleteFilePromises);
 
-      if (coborrower_sign_path) {
-        coBorrowerImagePath = await saveSignatureToInternalStorage(
-          show_coborrower_sign,
-          '04',
-        );
-        if (!coBorrowerImagePath) {
-          saveImageError = true;
-          ToastAndroid.show(
-            'Error! Co-Borrower Sign cannot save',
-            ToastAndroid.SHORT,
-          );
-        } else {
-          console.log(
-            'Co-Borrower image saved successfully:',
-            coBorrowerImagePath,
-          );
-        }
-      }
+        console.log('All files deleted');
 
-      if (!saveImageError) {
-        await storeRelation(add_relation_data).then(result => {
-          if (result == 'success') {
-            ToastAndroid.show('Create Successfully!', ToastAndroid.SHORT);
+        await deleteRelation_ByID(values.relation_no).then((response) => {
+          console.log('response', response);
+          if (response === 'success') {
+            alert('Delete Success');
             navigation.goBack();
           }
         });
+      } catch (error) {
+        alert('Error deleting files')
+        console.log('Error deleting files:', error);
       }
-    } catch (error) {
-      console.log('Error:', error);
+
+
+
+    } else {
+      console.log('values', values);
+      console.log('relationName', values.relationName);
+
+      const test = Object.assign({}, values, {
+        parent_yn: values.relationName == 1 ? '1' : '',
+        brother_sister_yn: values.relationName == 2 ? '1' : '',
+
+      });
+      console.log('test', test);
     }
+
+    // try {
+    //   // Save the images
+    //   let SignatureImagePath;
+    //   let borrowerImagePath;
+    //   let coBorrowerImagePath;
+    //   let saveImageError = false;
+
+    //   if (signature1_path) {
+    //     SignatureImagePath = await saveSignatureToInternalStorage(
+    //       signature1,
+    //       '05',
+    //     );
+    //     if (!SignatureImagePath) {
+    //       saveImageError = true;
+    //       ToastAndroid.show(
+    //         'Error! Borrower Sign cannot save',
+    //         ToastAndroid.SHORT,
+    //       );
+    //     } else {
+    //       console.log('Borrower image saved successfully:', borrowerImagePath);
+    //     }
+    //   }
+    //   if (signature2_path) {
+    //     SignatureImagePath = await saveSignatureToInternalStorage(
+    //       signature2,
+    //       '06',
+    //     );
+    //     if (!SignatureImagePath) {
+    //       saveImageError = true;
+    //       ToastAndroid.show(
+    //         'Error! Borrower Sign cannot save',
+    //         ToastAndroid.SHORT,
+    //       );
+    //     } else {
+    //       console.log('Borrower image saved successfully:', borrowerImagePath);
+    //     }
+    //   }
+    //   if (signature3_path) {
+    //     SignatureImagePath = await saveSignatureToInternalStorage(
+    //       signature3,
+    //       '07',
+    //     );
+    //     if (!SignatureImagePath) {
+    //       saveImageError = true;
+    //       ToastAndroid.show(
+    //         'Error! Borrower Sign cannot save',
+    //         ToastAndroid.SHORT,
+    //       );
+    //     } else {
+    //       console.log('Borrower image saved successfully:', borrowerImagePath);
+    //     }
+    //   }
+    //   if (borrower_sign_path) {
+    //     borrowerImagePath = await saveSignatureToInternalStorage(
+    //       show_borrower_sign,
+    //       '03',
+    //     );
+    //     if (!borrowerImagePath) {
+    //       saveImageError = true;
+    //       ToastAndroid.show(
+    //         'Error! Borrower Sign cannot save',
+    //         ToastAndroid.SHORT,
+    //       );
+    //     } else {
+    //       console.log('Borrower image saved successfully:', borrowerImagePath);
+    //     }
+    //   }
+
+    //   if (coborrower_sign_path) {
+    //     coBorrowerImagePath = await saveSignatureToInternalStorage(
+    //       show_coborrower_sign,
+    //       '04',
+    //     );
+    //     if (!coBorrowerImagePath) {
+    //       saveImageError = true;
+    //       ToastAndroid.show(
+    //         'Error! Co-Borrower Sign cannot save',
+    //         ToastAndroid.SHORT,
+    //       );
+    //     } else {
+    //       console.log(
+    //         'Co-Borrower image saved successfully:',
+    //         coBorrowerImagePath,
+    //       );
+    //     }
+    //   }
+
+    //   if (!saveImageError) {
+    //     await storeRelation(values).then(result => {
+    //       if (result == 'success') {
+    //         ToastAndroid.show('Create Successfully!', ToastAndroid.SHORT);
+    //         navigation.goBack();
+    //       }
+    //     });
+    //   }
+    // } catch (error) {
+    //   console.log('Error:', error);
+    // }
   };
 
   const handleButtonClick = content => {
@@ -593,35 +538,92 @@ function Relation_Form(props) {
   const co_borrower_saveSign = async () => {
     await co_borrower_sign.current.saveImage();
   };
-  // const retrive_loan_data = props.route.params.retrive_loan_data;
+  const retrive_relation_data = props.route.params.relation_data[0];
+  //if navigate back to indi loan and reach relation form set update operation
+  useEffect(() => {
+    if (relation_update_status == true) {
+      setOperation('3');
+    }
+  }, [relation_update_status]);
 
-  // const loadData = async () => {
-  //   await getAllLoan_By_application_no(retrive_loan_data.application_no).then(
-  //     indi_data => {
-  //       console.log('indi_data', indi_data);
-  //       let initialize_data = {
-  //         application_no: retrive_loan_data.application_no,
-  //         application_date: indi_data[0].application_date,
-  //         resident_rgst_id: indi_data[0].guarantor_nm,
-  //         borrower_name: indi_data[0].resident_rgst_id,
-  //         application_amt: indi_data[0].application_amt.toString()
-  //           ? indi_data[0].application_amt.toString()
-  //           : '',
-  //         addr: indi_data[0].birth_date,
-  //         co_brwer_rgst_id: indi_data[0].co_brwer_rgst_id,
-  //         co_brwer_name: indi_data[0].co_brwer_name,
-  //         relation_no: retrive_loan_data.application_no.replace(
-  //           /.*?(M)/,
-  //           'RIM',
-  //         ),
-  //       };
-  //       props.initialize(initialize_data);
-  //     },
-  //   );
-  // };
-  // useEffect(() => {
-  //   loadData();
-  // }, []);
+  const loadData = async () => {
+    props.initialize(retrive_relation_data);
+    const borrowefileExists = await RNFS.exists(
+      `/storage/emulated/0/Pictures/Signature/${retrive_relation_data.application_no}SG03.jpg`,
+    );
+    if (borrowefileExists) {
+      setBorrowerSignPath(retrive_relation_data.application_no + 'SG03.jpg');
+    }
+    const co_borrowerfileExists = await RNFS.exists(
+      `/storage/emulated/0/Pictures/Signature/${retrive_relation_data.application_no}SG04.jpg`,
+    );
+    if (co_borrowerfileExists) {
+      setCoBorrowerSignPath(retrive_relation_data.application_no + 'SG04.jpg');
+    }
+    const sign1Exists = await RNFS.exists(
+      `/storage/emulated/0/Pictures/Signature/${retrive_relation_data.application_no}SG05.jpg`,
+    );
+    if (sign1Exists) {
+      setSignature1Path(retrive_relation_data.application_no + 'SG05.jpg');
+    }
+    const sign2Exists = await RNFS.exists(
+      `/storage/emulated/0/Pictures/Signature/${retrive_relation_data.application_no}SG06.jpg`,
+    );
+    if (sign2Exists) {
+      setSignature2Path(retrive_relation_data.application_no + 'SG06.jpg');
+    }
+    const sign3Exists = await RNFS.exists(
+      `/storage/emulated/0/Pictures/Signature/${retrive_relation_data.application_no}SG07.jpg`,
+    );
+    if (sign3Exists) {
+      setSignature3Path(retrive_relation_data.application_no + 'SG07.jpg');
+    }
+    const sign4Exists = await RNFS.exists(
+      `/storage/emulated/0/Pictures/Signature/${retrive_relation_data.application_no}SG08.jpg`,
+    );
+    if (sign4Exists) {
+      setSignature4Path(retrive_relation_data.application_no + 'SG07.jpg');
+    }
+    const sign5Exists = await RNFS.exists(
+      `/storage/emulated/0/Pictures/Signature/${retrive_relation_data.application_no}SG09.jpg`,
+    );
+    if (sign5Exists) {
+      setSignature5Path(retrive_relation_data.application_no + 'SG09.jpg');
+    }
+    const sign6Exists = await RNFS.exists(
+      `/storage/emulated/0/Pictures/Signature/${retrive_relation_data.application_no}SG10.jpg`,
+    );
+    if (sign6Exists) {
+      setSignature6Path(retrive_relation_data.application_no + 'SG10.jpg');
+    }
+    const sign7Exists = await RNFS.exists(
+      `/storage/emulated/0/Pictures/Signature/${retrive_relation_data.application_no}SG11.jpg`,
+    );
+    if (sign7Exists) {
+      setSignature7Path(retrive_relation_data.application_no + 'SG11.jpg');
+    }
+    const sign8Exists = await RNFS.exists(
+      `/storage/emulated/0/Pictures/Signature/${retrive_relation_data.application_no}SG12.jpg`,
+    );
+    if (sign8Exists) {
+      setSignature8Path(retrive_relation_data.application_no + 'SG12.jpg');
+    }
+    const sign9Exists = await RNFS.exists(
+      `/storage/emulated/0/Pictures/Signature/${retrive_relation_data.application_no}SG13.jpg`,
+    );
+    if (sign9Exists) {
+      setSignature9Path(retrive_relation_data.application_no + 'SG13.jpg');
+    }
+    const sign10Exists = await RNFS.exists(
+      `/storage/emulated/0/Pictures/Signature/${retrive_relation_data.application_no}SG14.jpg`,
+    );
+    if (sign10Exists) {
+      setSignature10Path(retrive_relation_data.application_no + 'SG14.jpg');
+    }
+  };
+  useEffect(() => {
+    loadData();
+  }, []);
   const hideSignModal = () => {
     setCanvas(!show_canvas);
   };
@@ -634,13 +636,17 @@ function Relation_Form(props) {
   const _onCoBorrowerSaveEvent = async result => {
     setCoBorrowerSignPath(result.pathName);
     setShowCoBorrowerSign(result.encoded);
-
     setCoBorrowerCanvas(false);
   };
-  // const handleRelationName = (name) => {
-  //   setRelationName(name)
-
-  // }
+  const filtered_operations = operations.filter(item => item.value != 1);
+  const btnChangeOperation = newValue => {
+    setOperation(newValue);
+    if (newValue == 2 || newValue == 4) {
+      setRelation_UpdateStatus(false);
+    } else {
+      setRelation_UpdateStatus(true);
+    }
+  };
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
@@ -671,10 +677,10 @@ function Relation_Form(props) {
                 style={{
                   flexDirection: 'row',
                 }}>
-                {operations.map((option, index) => (
+                {filtered_operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
-                    onValueChange={newValue => setOperation(newValue)}
+                    onValueChange={newValue => btnChangeOperation(newValue)}
                     value={show_operation}>
                     <View
                       key={option.value}
@@ -683,7 +689,7 @@ function Relation_Form(props) {
                         alignItems: 'center',
                       }}>
                       <RadioButton.Item
-                        disabled={option.value !== show_operation}
+                        // disabled={option.value !== show_operation}
                         label={option.label}
                         value={option.value}
                         color="#000"
@@ -760,10 +766,9 @@ function Relation_Form(props) {
                 </View>
               </View>
             </List.Accordion>
-            <Relation_CoBorrower />
-            <Relation_Info setRelationName={setRelationName} />
-            <Relation_Contract
-              relation_name={relation_name}
+            <EditRelation_CoBorrower />
+            <EditRelation_Info setRelationName={setRelationName} />
+            <EditRelation_Contract
               setCanvas={setCanvas}
               show_canvas={show_canvas}
               showCanvas={showCanvas}
@@ -773,7 +778,7 @@ function Relation_Form(props) {
               coborrower_sign_path={coborrower_sign_path}
               setCoBorrowerCanvas={setCoBorrowerCanvas}
             />
-            <Relation_Member_Sign
+            <EditRelation_Member_Sign
               show_borrower_sign={show_borrower_sign}
               handleButtonClick={handleButtonClick}
               signature1={signature1}
@@ -786,6 +791,16 @@ function Relation_Form(props) {
               signature8={signature8}
               signature9={signature9}
               signature10={signature10}
+              signature1_path={signature1_path}
+              signature2_path={signature2_path}
+              signature3_path={signature3_path}
+              signature4_path={signature4_path}
+              signature5_path={signature5_path}
+              signature6_path={signature6_path}
+              signature7_path={signature7_path}
+              signature8_path={signature8_path}
+              signature9_path={signature9_path}
+              signature10_path={signature10_path}
             />
             <DividerLine />
             <View
@@ -794,7 +809,9 @@ function Relation_Form(props) {
                 justifyContent: 'center',
                 marginBottom: 20,
               }}>
+
               <Button
+                disabled={relation_update_status == true && show_operation == '3' ? false : relation_update_status == false && show_operation == '4' ? false : true}
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
                 buttonColor={'#6870C3'}
@@ -808,6 +825,7 @@ function Relation_Form(props) {
                 <Icon name="paperclip" size={18} color="#fff" />
                 Document Submit
               </Button>
+
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -914,10 +932,12 @@ function Relation_Form(props) {
   );
 }
 function mapStateToProps(state) {
-  return {};
-}
+  return {
+    relation_update_status: state.loan.relation_update_status,
 
+  };
+}
 export default reduxForm({
-  form: 'Relation_Form',
-  validate,
-})(connect(mapStateToProps, {})(Relation_Form));
+  form: 'Edit_Relation_Form',
+  // validate,
+})(connect(mapStateToProps, { setRelation_UpdateStatus })(Edit_Relation_Form));

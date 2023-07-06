@@ -1,36 +1,30 @@
-import { View, Text } from 'react-native';
-import React, { useState, useEffect, createRef } from 'react';
-import { reduxForm, Field, change, reset } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
-import { style } from '../../style/Relation_style';
+import {View, Text} from 'react-native';
+import React, {useState, useEffect, createRef} from 'react';
+import {reduxForm, Field, change, reset} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
+import {style} from '../../style/Relation_style';
 import TextInputFile from '../../components/TextInputFile';
-import { List } from 'react-native-paper';
+import {List} from 'react-native-paper';
 import SingleCheckBox from '../../components/SingleCheckBox';
-import { relation_data, borrower_type } from '../../common';
+import {relation_data} from '../../common';
 import RadioButtonFile from '../../components/RadioButtonFile';
-export default function Relation_Info(props) {
-  const { setRelationName } = props
+ function Edit_Relation_Info(props) {
+  const {relation_update_status,setRelationName}=props
   const [relation_info_expanded, setRelationInfoExpanded] = useState(true);
   const handleRelationInfoToggle = () => {
     setRelationInfoExpanded(!relation_info_expanded);
   };
   const handleRadioButtonChange = (value, input) => {
+    console.log('value', value);
+    console.log('input', input);
     input.onChange(value.id);
     if (value.id == '1') {
-      setRelationName('GrandParent')
-    }
-    if (value.id == '2') {
       setRelationName('Parent')
 
     }
-    if (value.id == '3') {
+    if (value.id == '2') {
       setRelationName('Brother & Sister')
-    }
-    if (value.id == '4') {
-      setRelationName('Husband & Wife')
-    }
-    if (value.id == '5') {
-      setRelationName('Son & Daughter')
+
     }
 
   }
@@ -80,12 +74,11 @@ export default function Relation_Info(props) {
                   defaultValue={checkbox.defaultValue}
                   checkedValue={checkbox.checkedValue}
                   uncheckedValue={checkbox.uncheckedValue}
-                  onChange={(value, name) => handleRelationName(checkbox.name)}
+                  onChange={(value,label)=>console.log('input',value,label)}
+                  disabled={relation_update_status == true ? false : true}
                 />
               ))}
             </View> */}
-
-
             <Field
               data={relation_data}
               name={'relationName'}
@@ -93,13 +86,21 @@ export default function Relation_Info(props) {
               ShowRadioBtnChange={(value, input) =>
                 handleRadioButtonChange(value, input)
               }
-              customstyle
             />
-
-
           </View>
         </View>
       </List.Accordion>
     </>
   );
 }
+function mapStateToProps(state) {
+  return {
+    relation_update_status: state.loan.relation_update_status,
+
+  };
+}
+
+export default reduxForm({
+  form: 'Edit_Relation_Form',
+  // validate,
+})(connect(mapStateToProps, {  })(Edit_Relation_Info));

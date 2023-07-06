@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { Alert, FileSystem } from 'react-native';
+import {Alert, FileSystem} from 'react-native';
 import RNFS from 'react-native-fs';
 const ExecuteQuery = (sql, params = []) =>
   new Promise((resolve, reject) => {
@@ -45,7 +45,7 @@ export function getIndividual_loan() {
       tx.executeSql('DELETE FROM Individual_application', [], (tx, results) => {
         axios
           .get(`https://${ip}:${port}/skylark-m3s/api/individualLoans.m3s`)
-          .then(({ data }) => {
+          .then(({data}) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -394,7 +394,7 @@ export const storeLoanData = async loan_data => {
           },
           error => {
             reject(error);
-            alert(error)
+            alert(error);
           },
         );
       });
@@ -574,14 +574,13 @@ export async function getAllLoan_By_application_no(application_no) {
   });
 }
 
-
-
 export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
   const failedData = [];
   let successCount = 0;
   let success_id = [];
   let ip = await AsyncStorage.getItem('ip');
   let port = await AsyncStorage.getItem('port');
+  let user_id = await AsyncStorage.getItem('user_id');
   try {
     for (const data of checkedItems) {
       const applicationNo = data.application_no;
@@ -825,28 +824,60 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           workplaceAddr: item.workplace_addr,
           landScale: item.land_scale,
           landOwnType: item.land_own_type,
-          tabletSyncSts: item.tablet_sync_sts,
-          syncSts: '',
+          tabletSyncSts: '00',
+          syncSts: '00',
         };
       });
-      console.log('gurantor_data', gurantor_data);
-      console.log('applicationNo', applicationNo);
 
       const areaevaluation = await fetchAreaEvaluation(applicationNo);
       const exception_aprv = await fetchExceptionAprv(applicationNo);
+      console.log('individual_loan_data', individual_loan_data);
+      console.log('gurantor_data',gurantor_data);
+      // let approval_request_data = {
+      //   organizationCode: '',
+      //   serialNo: '',
+      //   statusCode: '01',
+      //   createUserId: user_id,
+      //   updateUserId: user_id,
+      //   tabletExcptAprvRqstNo: '',
+      //   excptAprvRqstNo: exception_aprv[0].excpt_aprv_rqst_no,
+      //   tabletGroupAplcNo: '',
+      //   groupAplcNo: exception_aprv[0].group_aplc_no,
+      //   tabletAplcNo: '',
+      //   applicationNo: exception_aprv[0].application_no,
+      //   exceptionRqstDate: exception_aprv[0].exception_rqst_date,
+      //   borrowerName: exception_aprv[0].borrower_name,
+      //   applicationAmt: exception_aprv[0].application_amt,
+      //   birthDate: exception_aprv[0].birth_date,
+      //   borrowerAge: '',
+      //   groupMemberNum: exception_aprv[0].group_member_num,
+      //   occupation: exception_aprv[0].occupation,
+      //   netIncome: exception_aprv[0].net_income,
+      //   excptAprvRsn1: exception_aprv[0].excpt_aprv_rsn_1,
+      //   excptAprvRsn2: exception_aprv[0].excpt_aprv_rsn_2,
+      //   excptAprvRsn3: exception_aprv[0].excpt_aprv_rsn_3,
+      //   exceptionReason: exception_aprv[0].exception_reason,
+      //   recommendNm: exception_aprv[0].recommend_nm,
+      //   tabletSyncSts: '00',
+      //   syncSts: '00',
+      // };
+
       const relation_info = await fetchRelationInfo(applicationNo);
 
       let formData = new FormData();
-      formData.append('individualApplication', JSON.stringify([individual_loan_data]));
+      formData.append(
+        'individualApplication',
+        JSON.stringify([individual_loan_data]),
+      );
       formData.append('guarantee', JSON.stringify(gurantor_data));
       formData.append('areaEvaluation', '[]');
       formData.append('relationInfo', '[]');
       formData.append('approvalRequests', '[]');
 
-      // formData.append(
-      //   'approvalRequests',
-      //   '[{"organizationCode":"","serialNo":"","statusCode":"01","createUserId":"M00547","updateUserId":"M00547","tabletExcptAprvRqstNo":"","excptAprvRqstNo":"55559","tabletGroupAplcNo":"","groupAplcNo":"","tabletAplcNo":"","applicationNo":"10M00172TB2023062123","exceptionRqstDate":"2023-05-07","borrowerName":"John Doe","applicationAmt":500000.0,"birthDate":"1967-06-28","borrowerAge":63.0,"groupMemberNum":6.0,"occupation":"Clothing Shop","netIncome":500000.0,"excptAprvRsn1":"N","excptAprvRsn2":"N","excptAprvRsn3":"N","exceptionReason":"Over 60 Years","recommendNm":"","tabletSyncSts":"00","syncSts":""}]',
-      // );
+      formData.append(
+        'approvalRequests',
+        '[{"organizationCode":"","serialNo":"","statusCode":"01","createUserId":"M00547","updateUserId":"M00547","tabletExcptAprvRqstNo":"","excptAprvRqstNo":"55559","tabletGroupAplcNo":"","groupAplcNo":"","tabletAplcNo":"","applicationNo":"10M00172TB2023062123","exceptionRqstDate":"2023-05-07","borrowerName":"John Doe","applicationAmt":500000.0,"birthDate":"1967-06-28","borrowerAge":63.0,"groupMemberNum":6.0,"occupation":"Clothing Shop","netIncome":500000.0,"excptAprvRsn1":"N","excptAprvRsn2":"N","excptAprvRsn3":"N","exceptionReason":"Over 60 Years","recommendNm":"","tabletSyncSts":"00","syncSts":""}]',
+      );
 
       if (data.borrower_sign) {
         let borrower_sign_form_data = new FormData();
@@ -950,21 +981,20 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           .catch(error => {
             alert('Individual borrower map fail upload');
             console.log('image error', error);
-            failedData.push('Individual borrower map fail upload')
+            failedData.push('Individual borrower map fail upload');
           });
       }
 
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: `https://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
+        url: 'https://ad1e-211-206-100-66.ngrok-free.app/skylark-m3s/api/individualLoan.m3s',
         headers: {
           Cookie:
             'JSESSIONID=ypUFDWdJT0vxoqNXrWZJuPkfdTjYNGWAc9paLsFI.localhost',
         },
         data: formData,
       };
-      console.log('config', config);
       const response = await axios.request(config);
       console.log('indiv response', response);
       if (
@@ -994,10 +1024,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         });
       }
       if (response.data.guarantee) {
-        if (
-          response.data.guarantee[0] &&
-          response.data.guarantee[0].errMsg
-        ) {
+        if (response.data.guarantee[0] && response.data.guarantee[0].errMsg) {
           const error = {
             form: 'guarantee',
             message: response.data.guarantee[0].errMsg,

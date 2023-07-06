@@ -6,8 +6,7 @@ import { reduxForm, Field, change } from 'redux-form';
 import { connect, useDispatch } from 'react-redux';
 function Borrower_Sign(props) {
   const { update_status, coborrower_sign_path, show_coborrower_sign, show_borrower_sign, borrower_sign_path, setCanvas, show_canvas, showCanvas, navigation, filePath, setCoBorrowerCanvas, co_borrower_filePath, show_co_borrower_canvas } = props;
-  console.log('borrower_sign_path',borrower_sign_path);
-  console.log('show_borrower_sign',show_borrower_sign);
+
   return (
     <>
       <View style={{ flex: 1, padding: 5, margin: 20 }}>
