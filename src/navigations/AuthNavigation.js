@@ -55,17 +55,17 @@ export default function AuthNavigation(props) {
         component={Synchronization_Screen}
         options={{ headerShown: false }}
       /> */}
-      {/* <Stack.Screen
-        name="Relation Form"
-        component={Relation_Form}
-        options={{ headerShown: false }}
-      /> */}
+     
       <Stack.Screen
         name="Home"
         component={Home}
         options={{ headerShown: false }}
       />
-      
+       <Stack.Screen
+        name="Relation Form"
+        component={Relation_Form}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="Edit Relation"
         component={EditRelation_Form}

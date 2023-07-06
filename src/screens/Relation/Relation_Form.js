@@ -296,6 +296,7 @@ function Relation_Form(props) {
       relationName: relation_name
 
     });
+
     try {
       // Save the images
       let SignatureImagePath;
@@ -593,35 +594,35 @@ function Relation_Form(props) {
   const co_borrower_saveSign = async () => {
     await co_borrower_sign.current.saveImage();
   };
-  // const retrive_loan_data = props.route.params.retrive_loan_data;
+  const retrive_loan_data = props.route.params.retrive_loan_data;
 
-  // const loadData = async () => {
-  //   await getAllLoan_By_application_no(retrive_loan_data.application_no).then(
-  //     indi_data => {
-  //       console.log('indi_data', indi_data);
-  //       let initialize_data = {
-  //         application_no: retrive_loan_data.application_no,
-  //         application_date: indi_data[0].application_date,
-  //         resident_rgst_id: indi_data[0].guarantor_nm,
-  //         borrower_name: indi_data[0].resident_rgst_id,
-  //         application_amt: indi_data[0].application_amt.toString()
-  //           ? indi_data[0].application_amt.toString()
-  //           : '',
-  //         addr: indi_data[0].birth_date,
-  //         co_brwer_rgst_id: indi_data[0].co_brwer_rgst_id,
-  //         co_brwer_name: indi_data[0].co_brwer_name,
-  //         relation_no: retrive_loan_data.application_no.replace(
-  //           /.*?(M)/,
-  //           'RIM',
-  //         ),
-  //       };
-  //       props.initialize(initialize_data);
-  //     },
-  //   );
-  // };
-  // useEffect(() => {
-  //   loadData();
-  // }, []);
+  const loadData = async () => {
+    await getAllLoan_By_application_no(retrive_loan_data.application_no).then(
+      indi_data => {
+        console.log('indi_data', indi_data);
+        let initialize_data = {
+          application_no: retrive_loan_data.application_no,
+          application_date: indi_data[0].application_date,
+          resident_rgst_id: indi_data[0].guarantor_nm,
+          borrower_name: indi_data[0].resident_rgst_id,
+          application_amt: indi_data[0].application_amt.toString()
+            ? indi_data[0].application_amt.toString()
+            : '',
+          addr: indi_data[0].birth_date,
+          co_brwer_rgst_id: indi_data[0].co_brwer_rgst_id,
+          co_brwer_name: indi_data[0].co_brwer_name,
+          relation_no: retrive_loan_data.application_no.replace(
+            /.*?(M)/,
+            'RIM',
+          ),
+        };
+        props.initialize(initialize_data);
+      },
+    );
+  };
+  useEffect(() => {
+    loadData();
+  }, []);
   const hideSignModal = () => {
     setCanvas(!show_canvas);
   };
