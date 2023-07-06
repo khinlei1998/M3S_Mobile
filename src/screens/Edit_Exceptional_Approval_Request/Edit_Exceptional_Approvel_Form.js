@@ -88,12 +88,17 @@ function Edit_Exceptional_Approvel_Form(props) {
   }, [])
   const btnChangeOperation = newValue => {
     setOperation(newValue);
-    if (newValue == 2) {
+    if (newValue == 2 || newValue == 4) {
       setExcept_UPDATEStatus(false);
     } else {
       setExcept_UPDATEStatus(true);
     }
   };
+  useEffect(() => {
+    if (exceptional_update_status == true) {
+      setOperation('3');
+    }
+  }, [exceptional_update_status]);
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
@@ -128,7 +133,7 @@ function Edit_Exceptional_Approvel_Form(props) {
                   </RadioButton.Group>
                 ))}
               </View>
-              {exceptional_update_status == true && (
+              {/* {exceptional_update_status == true && (
                 <Button
                   onPress={handleSubmit(onSubmit)}
                   mode="contained"
@@ -136,7 +141,7 @@ function Edit_Exceptional_Approvel_Form(props) {
                   style={style.btnStyle}>
                   OK
                 </Button>
-              )}
+              )} */}
             </View>
             <DividerLine />
             <List.Accordion

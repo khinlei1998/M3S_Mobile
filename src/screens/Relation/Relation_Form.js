@@ -65,6 +65,7 @@ function Relation_Form(props) {
   const [borrower_sign_path, setBorrowerSignPath] = useState('');
   const [coborrower_sign_path, setCoBorrowerSignPath] = useState('');
   const [show_coborrower_sign, setShowCoBorrowerSign] = useState('');
+  const [relation_name, setRelationName] = useState('');
 
   const Borrower_Sign_Modal = props => {
     const {
@@ -286,7 +287,15 @@ function Relation_Form(props) {
     }
   };
   const onSubmit = async values => {
-    console.log('json', JSON.stringify(values));
+    const add_relation_data = Object.assign({}, values, {
+      parent_yn: values.relationName == 2 ? '1' : '',
+      brother_sister_yn: values.relationName == 3 ? '1' : '',
+      grandparent_yn: values.relationName == 1 ? '1' : '',
+      son_daughter_yn: values.relationName == 5 ? '1' : '',
+      husband_wife_yn: values.relationName == 4 ? '1' : '',
+    });
+    console.log('add_relation_data', add_relation_data);
+
     try {
       // Save the images
       let SignatureImagePath;
@@ -339,6 +348,111 @@ function Relation_Form(props) {
           console.log('Borrower image saved successfully:', borrowerImagePath);
         }
       }
+      if (signature4_path) {
+        SignatureImagePath = await saveSignatureToInternalStorage(
+          signature4,
+          '08',
+        );
+        if (!SignatureImagePath) {
+          saveImageError = true;
+          ToastAndroid.show(
+            'Error! Borrower Sign cannot save',
+            ToastAndroid.SHORT,
+          );
+        } else {
+          console.log('Borrower image saved successfully:', borrowerImagePath);
+        }
+      }
+      if (signature5_path) {
+        SignatureImagePath = await saveSignatureToInternalStorage(
+          signature5,
+          '09',
+        );
+        if (!SignatureImagePath) {
+          saveImageError = true;
+          ToastAndroid.show(
+            'Error! Borrower Sign cannot save',
+            ToastAndroid.SHORT,
+          );
+        } else {
+          console.log('Borrower image saved successfully:', borrowerImagePath);
+        }
+      }
+      if (signature6_path) {
+        SignatureImagePath = await saveSignatureToInternalStorage(
+          signature6,
+          '10',
+        );
+        if (!SignatureImagePath) {
+          saveImageError = true;
+          ToastAndroid.show(
+            'Error! Borrower Sign cannot save',
+            ToastAndroid.SHORT,
+          );
+        } else {
+          console.log('Borrower image saved successfully:', borrowerImagePath);
+        }
+      }
+      if (signature7_path) {
+        SignatureImagePath = await saveSignatureToInternalStorage(
+          signature7,
+          '11',
+        );
+        if (!SignatureImagePath) {
+          saveImageError = true;
+          ToastAndroid.show(
+            'Error! Borrower Sign cannot save',
+            ToastAndroid.SHORT,
+          );
+        } else {
+          console.log('Borrower image saved successfully:', borrowerImagePath);
+        }
+      }
+      if (signature8_path) {
+        SignatureImagePath = await saveSignatureToInternalStorage(
+          signature8,
+          '12',
+        );
+        if (!SignatureImagePath) {
+          saveImageError = true;
+          ToastAndroid.show(
+            'Error! Borrower Sign cannot save',
+            ToastAndroid.SHORT,
+          );
+        } else {
+          console.log('Borrower image saved successfully:', borrowerImagePath);
+        }
+      }
+      if (signature9_path) {
+        SignatureImagePath = await saveSignatureToInternalStorage(
+          signature9,
+          '13',
+        );
+        if (!SignatureImagePath) {
+          saveImageError = true;
+          ToastAndroid.show(
+            'Error! Borrower Sign cannot save',
+            ToastAndroid.SHORT,
+          );
+        } else {
+          console.log('Borrower image saved successfully:', borrowerImagePath);
+        }
+      }
+      if (signature10_path) {
+        SignatureImagePath = await saveSignatureToInternalStorage(
+          signature10,
+          '14',
+        );
+        if (!SignatureImagePath) {
+          saveImageError = true;
+          ToastAndroid.show(
+            'Error! Borrower Sign cannot save',
+            ToastAndroid.SHORT,
+          );
+        } else {
+          console.log('Borrower image saved successfully:', borrowerImagePath);
+        }
+      }
       if (borrower_sign_path) {
         borrowerImagePath = await saveSignatureToInternalStorage(
           show_borrower_sign,
@@ -347,11 +461,14 @@ function Relation_Form(props) {
         if (!borrowerImagePath) {
           saveImageError = true;
           ToastAndroid.show(
-            'Error! Borrower Sign cannot save',
+            'Error! Co-Borrower Sign cannot save',
             ToastAndroid.SHORT,
           );
         } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
+          console.log(
+            'Co-Borrower image saved successfully:',
+            coBorrowerImagePath,
+          );
         }
       }
 
@@ -375,7 +492,7 @@ function Relation_Form(props) {
       }
 
       if (!saveImageError) {
-        await storeRelation(values).then(result => {
+        await storeRelation(add_relation_data).then(result => {
           if (result == 'success') {
             ToastAndroid.show('Create Successfully!', ToastAndroid.SHORT);
             navigation.goBack();
@@ -523,6 +640,10 @@ function Relation_Form(props) {
 
     setCoBorrowerCanvas(false);
   };
+  // const handleRelationName = (name) => {
+  //   setRelationName(name)
+
+  // }
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
@@ -643,8 +764,9 @@ function Relation_Form(props) {
               </View>
             </List.Accordion>
             <Relation_CoBorrower />
-            <Relation_Info />
+            <Relation_Info setRelationName={setRelationName} />
             <Relation_Contract
+              relation_name={relation_name}
               setCanvas={setCanvas}
               show_canvas={show_canvas}
               showCanvas={showCanvas}

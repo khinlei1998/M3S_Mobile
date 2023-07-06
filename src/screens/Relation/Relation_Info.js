@@ -1,17 +1,39 @@
-import {View, Text} from 'react-native';
-import React, {useState, useEffect, createRef} from 'react';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
-import {style} from '../../style/Relation_style';
+import { View, Text } from 'react-native';
+import React, { useState, useEffect, createRef } from 'react';
+import { reduxForm, Field, change, reset } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
+import { style } from '../../style/Relation_style';
 import TextInputFile from '../../components/TextInputFile';
-import {List} from 'react-native-paper';
+import { List } from 'react-native-paper';
 import SingleCheckBox from '../../components/SingleCheckBox';
-import {relation_data} from '../../common';
-export default function Relation_Info() {
+import { relation_data, borrower_type } from '../../common';
+import RadioButtonFile from '../../components/RadioButtonFile';
+export default function Relation_Info(props) {
+  const { setRelationName } = props
   const [relation_info_expanded, setRelationInfoExpanded] = useState(true);
   const handleRelationInfoToggle = () => {
     setRelationInfoExpanded(!relation_info_expanded);
   };
+  const handleRadioButtonChange = (value, input) => {
+    input.onChange(value.id);
+    if (value.id == '1') {
+      setRelationName('GrandParent')
+    }
+    if (value.id == '2') {
+      setRelationName('Parent')
+
+    }
+    if (value.id == '3') {
+      setRelationName('Brother & Sister')
+    }
+    if (value.id == '4') {
+      setRelationName('Husband & Wife')
+    }
+    if (value.id == '5') {
+      setRelationName('Son & Daughter')
+    }
+
+  }
 
   return (
     <>
@@ -48,20 +70,17 @@ export default function Relation_Info() {
               justifyContent: 'space-between',
               marginBottom: 15,
             }}>
-            <View>
-              {relation_data.map((checkbox, index) => (
-                <Field
-                  key={index}
-                  label={checkbox.label}
-                  name={checkbox.name}
-                  component={SingleCheckBox}
-                  defaultValue={checkbox.defaultValue}
-                  checkedValue={checkbox.checkedValue}
-                  uncheckedValue={checkbox.uncheckedValue}
-                  onChange={(value,label)=>console.log('input',value,label)}
-                />
-              ))}
-            </View>
+            <Field
+              data={relation_data}
+              name={'relation_name'}
+              component={RadioButtonFile}
+              ShowRadioBtnChange={(value, input) =>
+                handleRadioButtonChange(value, input)
+              }
+              customstyle
+            />
+
+
           </View>
         </View>
       </List.Accordion>

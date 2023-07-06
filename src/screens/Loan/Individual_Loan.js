@@ -1922,7 +1922,8 @@ function Individual_Loan(props) {
     const user_id = await AsyncStorage.getItem('user_id');
     try {
       // Request write storage permission
-      const granted = await requestWriteStoragePermission();
+      // const granted = await requestWriteStoragePermission();
+      const granted = await AsyncStorage.getItem('writeStoragePermission');
 
       if (granted) {
         // Generate a unique filename for the image
@@ -2059,7 +2060,7 @@ function Individual_Loan(props) {
         });
 
         await storeLoanData(loan_data).then(result => {
-          console.log('result',result);
+          console.log('result', result);
           if (result == 'success') {
             dispatch(reset('Individual_Loan_Form'));
             resetMonthlyIncome();
@@ -2102,8 +2103,8 @@ function Individual_Loan(props) {
         change(
           'Individual_Loan_Form',
           'application_no',
-          // `10${user_id}${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
-          `10M001722023070417`
+          `10${user_id}${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
+          // `10M001722023070417`
         ),
       );
       dispatch(

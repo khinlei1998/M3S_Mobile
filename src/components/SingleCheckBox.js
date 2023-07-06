@@ -1,21 +1,26 @@
-import {View, Text} from 'react-native';
-import React, {useState} from 'react';
-import {Checkbox} from 'react-native-paper';
+import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { Checkbox } from 'react-native-paper';
 export default function SingleCheckBox(props) {
+  const [checkedIds, setCheckedIds] = useState([]);
+
   const {
     label,
     disabled,
     defaultValue,
     checkedValue,
     uncheckedValue,
-    input: {value, onChange},
-    meta: {touched, error},
+    input: { value, onChange },
+    meta: { touched, error },
+    name,
     ...rest
   } = props;
 
   const handleToggle = () => {
-    onChange(!value,label);
+    onChange(!value,name);
+
   };
+
 
   return (
     <>
@@ -25,16 +30,11 @@ export default function SingleCheckBox(props) {
           alignItems: 'center',
         }}>
         <Checkbox
-          //  onValueChange={
-          //   ShowRadioBtnChange
-          //     ? () => ShowRadioBtnChange(val, input)
-          //     : input.onChange
-          // }
           status={value == 1 ? 'checked' : 'unchecked'}
-          onPress={handleToggle}
+          onPress={() => handleToggle(value === checkedValue)}
           disabled={disabled}
         />
-        <Text style={{color: 'black'}}>{label}</Text>
+        <Text style={{ color: 'black' }}>{label}</Text>
       </View>
       {touched && error && (
         <Text

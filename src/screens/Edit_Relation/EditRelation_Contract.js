@@ -16,6 +16,7 @@ function Edit_Relation_Contract(props) {
     show_co_borrower_canvas,
     btnShowBorrowerSign,
     relation_update_status,
+    relation_name
   } = props;
   const [relation_contract_expanded, setRelationContractExpanded] =
     useState(true);
@@ -76,7 +77,7 @@ function Edit_Relation_Contract(props) {
               {borrower_sign_path == '' && show_borrower_sign == '' ? (
                 <TouchableOpacity
                   onPress={() =>
-                    guarantor_update_status == true
+                    relation_update_status == true
                       ? setCanvas(!show_canvas)
                       : ''
                   }>
@@ -88,7 +89,7 @@ function Edit_Relation_Contract(props) {
               ) : borrower_sign_path && show_borrower_sign == '' ? (
                 <TouchableOpacity
                   onPress={() =>
-                    guarantor_update_status == true && btnShowBorrowerSign()
+                    relation_update_status == true && btnShowBorrowerSign()
                   }>
                   <Image
                     source={{
@@ -102,7 +103,7 @@ function Edit_Relation_Contract(props) {
                 borrower_sign_path && (
                   <TouchableOpacity
                     onPress={() =>
-                      guarantor_update_status == true && setCanvas(!show_canvas)
+                      relation_update_status == true && setCanvas(!show_canvas)
                     }>
                     <Image
                       source={{
@@ -136,7 +137,7 @@ function Edit_Relation_Contract(props) {
                 <TouchableOpacity
                   onPress={() =>
                     relation_update_status == true
-                      ? setCanvas(!show_canvas)
+                      ? setCoBorrowerCanvas(!show_co_borrower_canvas)
                       : ''
                   }>
                   <Image
@@ -147,7 +148,7 @@ function Edit_Relation_Contract(props) {
               ) : coborrower_sign_path && show_coborrower_sign == '' ? (
                 <TouchableOpacity
                   onPress={() =>
-                    relation_update_status == true && btnShowBorrowerSign()
+                    relation_update_status == true && setCoBorrowerCanvas(!show_co_borrower_canvas)
                   }>
                   <Image
                     source={{
@@ -161,7 +162,7 @@ function Edit_Relation_Contract(props) {
                 coborrower_sign_path && (
                   <TouchableOpacity
                     onPress={() =>
-                      relation_update_status == true && setCanvas(!show_canvas)
+                      relation_update_status == true && setCoBorrowerCanvas(!show_co_borrower_canvas)
                     }>
                     <Image
                       source={{
@@ -184,7 +185,7 @@ function Edit_Relation_Contract(props) {
             confirming that the above-mentioned{'\n'}{' '}
           </Text>
           <Text style={{fontWeight: 'bold', fontSize: 15}}>
-            ? relationship is correct
+            {relation_name} relationship is correct
           </Text>
         </View>
       </List.Accordion>

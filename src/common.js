@@ -465,43 +465,26 @@ export const loan_application_type = [
 
 export const relation_data = [
   {
-    label: 'Parent',
-    name: 'parent_yn',
-    defaultValue: false,
-    checkedValue: 'Y',
-    uncheckedValue: 'N',
+    id: "1",
+    name: 'GrandParent'
   },
   {
-    label: 'Brother & Sister',
-    name: 'brother_sister_yn',
-    defaultValue: false,
-    checkedValue: 'Y',
-    uncheckedValue: 'N',
+    id: "2",
+    name: 'Parent'
   },
   {
-    label: 'GrandParent',
-    name: 'grandparent_yn',
-    defaultValue: false,
-    checkedValue: 'Y',
-    uncheckedValue: 'N',
+    id: "3",
+    name: 'Brother & Sister'
   },
   {
-    label: 'Husband & Wife',
-    name: 'husband_wife_yn',
-    defaultValue: false,
-    checkedValue: 'Y',
-    uncheckedValue: 'N',
+    id: "4",
+    name: 'Husband & Wife'
   },
   {
-    label: 'Son & Daughter',
-    name: 'son_daughter_yn',
-    defaultValue: false,
-    checkedValue: 'Y',
-    uncheckedValue: 'N',
-  },
-
-  // Add more checkbox configurations as needed
-];
+    id: "5",
+    name: 'Son & Daughter'
+  }
+]
 
 
 

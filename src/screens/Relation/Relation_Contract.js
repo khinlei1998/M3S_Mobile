@@ -12,6 +12,7 @@ export default function Relation_Contract(props) {
     show_canvas,
     setCoBorrowerCanvas,
     show_co_borrower_canvas,
+    relation_name
   } = props;
   const [relation_contract_expanded, setRelationContractExpanded] =
     useState(true);
@@ -142,10 +143,11 @@ export default function Relation_Contract(props) {
             confirming that the above-mentioned{'\n'}{' '}
           </Text>
           <Text style={{fontWeight: 'bold', fontSize: 15}}>
-            ? relationship is correct
+            {relation_name} relationship is correct
           </Text>
         </View>
       </List.Accordion>
     </>
   );
 }
+

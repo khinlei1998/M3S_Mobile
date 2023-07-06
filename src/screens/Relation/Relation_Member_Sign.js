@@ -337,7 +337,7 @@ export default function Relation_Member_Sign(props) {
           </View>
           <Text style={{fontWeight: 'bold', fontSize: 15}}>
             {' '}
-            I am personally
+            I am personally aware of this affirmative statement and confirm it.
           </Text>
         </View>
       </List.Accordion>
