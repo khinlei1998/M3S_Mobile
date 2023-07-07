@@ -1,15 +1,14 @@
-import { View, Text } from 'react-native';
-import React, { useState, useEffect, createRef } from 'react';
-import { reduxForm, Field, change, reset } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
-import { style } from '../../style/Relation_style';
+import {View, Text} from 'react-native';
+import React, {useState, useEffect, createRef} from 'react';
+import {reduxForm, Field, change, reset} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
+import {style} from '../../style/Relation_style';
 import TextInputFile from '../../components/TextInputFile';
-import { List } from 'react-native-paper';
-import SingleCheckBox from '../../components/SingleCheckBox';
-import { relation_data, borrower_type } from '../../common';
+import {List} from 'react-native-paper';
+import {relation_data, borrower_type} from '../../common';
 import RadioButtonFile from '../../components/RadioButtonFile';
 export default function Relation_Info(props) {
-  const { setRelationName } = props
+  const {setRelationName} = props;
   const [relation_info_expanded, setRelationInfoExpanded] = useState(true);
   const handleRelationInfoToggle = () => {
     setRelationInfoExpanded(!relation_info_expanded);
@@ -17,23 +16,21 @@ export default function Relation_Info(props) {
   const handleRadioButtonChange = (value, input) => {
     input.onChange(value.id);
     if (value.id == '1') {
-      setRelationName('GrandParent')
+      setRelationName('GrandParent');
     }
     if (value.id == '2') {
-      setRelationName('Parent')
-
+      setRelationName('Parent');
     }
     if (value.id == '3') {
-      setRelationName('Brother & Sister')
+      setRelationName('Brother & Sister');
     }
     if (value.id == '4') {
-      setRelationName('Husband & Wife')
+      setRelationName('Husband & Wife');
     }
     if (value.id == '5') {
-      setRelationName('Son & Daughter')
+      setRelationName('Son & Daughter');
     }
-
-  }
+  };
 
   return (
     <>
@@ -79,8 +76,6 @@ export default function Relation_Info(props) {
               }
               customstyle
             />
-
-
           </View>
         </View>
       </List.Accordion>

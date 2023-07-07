@@ -38,50 +38,47 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
-
-      {/* <Stack.Screen
-        name="Evidence"
-        component={Evidence}
-        options={{headerShown: false}}
-      /> */}
       {/* <Stack.Screen
         name="Individual_loan"
         component={Individual_Loan}
         options={{headerShown: false}}
-      /> */}
-      {/* <Stack.Screen
+      />
+      <Stack.Screen
         name="Synchronization"
         component={Synchronization_Screen}
         options={{ headerShown: false }}
       /> */}
 
       <Stack.Screen
+        name="Area Evaluation"
+        component={Area_Evaluation_Form}
+        options={{headerShown: false}}
+      />
+
+      <Stack.Screen
         name="Home"
         component={Home}
         options={{headerShown: false}}
       />
-       <Stack.Screen
+      <Stack.Screen
+        name="Evidence"
+        component={Evidence}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
         name="Relation Form"
         component={Relation_Form}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Edit Relation"
         component={EditRelation_Form}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
-
-
-
 
       <Stack.Screen
         name="Guarantor"
         component={Guarantor_Form}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Area Evaluation"
-        component={Area_Evaluation_Form}
         options={{headerShown: false}}
       />
 
@@ -149,12 +146,12 @@ export default function AuthNavigation(props) {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Sign1"
         component={Sign1}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
 
       <Stack.Screen

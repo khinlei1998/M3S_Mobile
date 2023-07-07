@@ -590,7 +590,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         createUserId: data.create_user_id,
         updateUserId: data.update_user_id,
         productType: data.product_type, //not null
-        channelDeviceType: '',
+        channelDeviceType: '001100',
         openBranchCode: branch_code, //not null
         openUserId: 'M00172', //not null
         mngtBranchCode: 1000, //not null
@@ -646,8 +646,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         fmlyTotNetIncome: data.fmly_tot_net_income,
         totNetIncome: data.fmly_tot_net_income,
         remark: data.remark,
-        tabletSyncSts: data.tablet_sync_sts,
-        syncSts: data.sync_sts,
+        tabletSyncSts: '00',
+        syncSts: '00',
         pastLoanAmount: data.past_loan_amount,
         pastLoanRating: data.past_loan_rating,
         pastCreditEmplNm: data.past_credit_empl_nm,
@@ -717,80 +717,80 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         prop_motorcycle_yn: data.prop_motorcycle_yn,
         property_kind: data.property_kind,
       };
-      // let test = {
-      //   "statusCode": "01",
-      //   "createUserId": "M01237",
-      //   "updateUserId": "M01237",
-      //   "productType": "10",
-      //   "channelDeviceType": "00010",
-      //   "openBranchCode": "7001",
-      //   "openUserId": "M01237",
-      //   "mngtBranchCode": "7001",
-      //   "mngtUserId": "M01237",
-      //   "applicationNo": "10M00172202307042",
-      //   "groupAplcNo": "",
-      //   "tabletAplcNo": "",
-      //   "referAplcNo": "",
-      //   "loanType": "10",
-      //   "cstNewExistFlg": "N",
-      //   "loanCycle": 6.0,
-      //   "applicationAmt": 1000000.0,
-      //   "applicationDate": "2023-07-04",
-      //   "loantermCnt": 12.0,
-      //   "borrowerName": "Customer 9 tk",
-      //   "customerNo": "20230520242",
-      //   "loanCode": "",
-      //   "savingAcctNum": "",
-      //   "gender": "M",
-      //   "birthDate": "1993-01-14",
-      //   "maritalStatus": "20",
-      //   "residentRgstId": "1/BhMaNa(N)123414",
-      //   "telNo": "09852741852",
-      //   "mobileTelNo": "091213",
-      //   "positionTitleNm": "Postion Name",
-      //   "addr": "Mar Lar Myaing main l Street",
-      //   "businessOwnType": "01",
-      //   "coCustomerNo": "20230520244",
-      //   "coBrwerName": "Customer 11 tk",
-      //   "workplaceName": "Sein Gyi",
-      //   "workplaceType": "40",
-      //   "workplaceAddr": "adrress of Sein gyi",
-      //   "landOwnType": "",
-      //   "totSaleIncome": 0.0,
-      //   "totSaleExpense": 0.0,
-      //   "rawmaterialExpans": 0.0,
-      //   "wrkpRentExpns": 0.0,
-      //   "employeeExpns": 0.0,
-      //   "trnsrtExpns": 0.0,
-      //   "goodsLossExpns": 0.0,
-      //   "othrExpns1": 0.0,
-      //   "othrExpns2": 0.0,
-      //   "totBusNetIncome": 0.0,
-      //   "fmlyTotIncome": 0.0,
-      //   "fmlyTotExpense": 0.0,
-      //   "foodExpns": 0.0,
-      //   "houseMngtExpns": 0.0,
-      //   "utlbilExpns": 0.0,
-      //   "edctExpns": 0.0,
-      //   "healthyExpns": 0.0,
-      //   "financeExpns": 0.0,
-      //   "fmlyOtrExpns": 0.0,
-      //   "fmlyTotNetIncome": 0.0,
-      //   "totNetIncome": 10000000.0,
-      //   "remark": "remark",
-      //   "tabletSyncSts": "00",
-      //   "syncSts": "00",
-      //   "pastLoanAmount": 0.0,
-      //   "pastLoanRating": "",
-      //   "pastCreditEmplNm": "",
-      //   "oldApplicationNo": "",
-      //   "loanLimitAmt": 1500000.0,
-      //   "sysOrganizationCode": "1000",
-      //   "organizationCode": "1000",
-      //   "restFlag": "Y",
-      //   "transactionDate": "2023-07-04",
-      //   "serialNo": ""
-      // }
+      let test = {
+        statusCode: '01',
+        createUserId: 'M01237',
+        updateUserId: 'M01237',
+        productType: '10',
+        channelDeviceType: '00110',
+        openBranchCode: '7001',
+        openUserId: 'M01237',
+        mngtBranchCode: '7001',
+        mngtUserId: 'M01237',
+        applicationNo: '10M0123720230704001',
+        groupAplcNo: '',
+        tabletAplcNo: '',
+        referAplcNo: '',
+        loanType: '10',
+        cstNewExistFlg: 'Y',
+        loanCycle: 6.0,
+        applicationAmt: 1000000.0,
+        applicationDate: '2023-07-04',
+        loantermCnt: 12.0,
+        borrowerName: 'Customer 9 ',
+        customerNo: '20230520242',
+        loanCode: '',
+        savingAcctNum: '',
+        gender: 'M',
+        birthDate: '',
+        maritalStatus: '',
+        residentRgstId: '1/BhMaNa(N)123414',
+        telNo: '',
+        mobileTelNo: '',
+        positionTitleNm: '',
+        addr: '',
+        businessOwnType: '',
+        coCustomerNo: '20230520244',
+        coBrwerName: '',
+        workplaceName: '',
+        workplaceType: '',
+        workplaceAddr: '',
+        landOwnType: '',
+        totSaleIncome: 0.0,
+        totSaleExpense: 0.0,
+        rawmaterialExpans: 0.0,
+        wrkpRentExpns: 0.0,
+        employeeExpns: 0.0,
+        trnsrtExpns: 0.0,
+        goodsLossExpns: 0.0,
+        othrExpns1: 0.0,
+        othrExpns2: 0.0,
+        totBusNetIncome: 0.0,
+        fmlyTotIncome: 0.0,
+        fmlyTotExpense: 0.0,
+        foodExpns: 0.0,
+        houseMngtExpns: 0.0,
+        utlbilExpns: 0.0,
+        edctExpns: 0.0,
+        healthyExpns: 0.0,
+        financeExpns: 0.0,
+        fmlyOtrExpns: 0.0,
+        fmlyTotNetIncome: 0.0,
+        totNetIncome: 0.0,
+        remark: '',
+        tabletSyncSts: '00',
+        syncSts: '00',
+        pastLoanAmount: 0.0,
+        pastLoanRating: '',
+        pastCreditEmplNm: '',
+        oldApplicationNo: '',
+        loanLimitAmt: 0.0,
+        sysOrganizationCode: '1000',
+        organizationCode: '1000',
+        restFlag: 'Y',
+        transactionDate: '2023-07-04',
+        serialNo: 1,
+      };
 
       const guaranteeData = await fetchGuaranteeData(applicationNo);
 
@@ -832,7 +832,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
       const areaevaluation = await fetchAreaEvaluation(applicationNo);
       const exception_aprv = await fetchExceptionAprv(applicationNo);
       console.log('individual_loan_data', individual_loan_data);
-      console.log('gurantor_data',gurantor_data);
+      console.log('gurantor_data', gurantor_data);
       // let approval_request_data = {
       //   organizationCode: '',
       //   serialNo: '',
@@ -873,12 +873,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
       formData.append('areaEvaluation', '[]');
       formData.append('relationInfo', '[]');
       formData.append('approvalRequests', '[]');
-
-      formData.append(
-        'approvalRequests',
-        '[{"organizationCode":"","serialNo":"","statusCode":"01","createUserId":"M00547","updateUserId":"M00547","tabletExcptAprvRqstNo":"","excptAprvRqstNo":"55559","tabletGroupAplcNo":"","groupAplcNo":"","tabletAplcNo":"","applicationNo":"10M00172TB2023062123","exceptionRqstDate":"2023-05-07","borrowerName":"John Doe","applicationAmt":500000.0,"birthDate":"1967-06-28","borrowerAge":63.0,"groupMemberNum":6.0,"occupation":"Clothing Shop","netIncome":500000.0,"excptAprvRsn1":"N","excptAprvRsn2":"N","excptAprvRsn3":"N","exceptionReason":"Over 60 Years","recommendNm":"","tabletSyncSts":"00","syncSts":""}]',
-      );
-
       if (data.borrower_sign) {
         let borrower_sign_form_data = new FormData();
         borrower_sign_form_data.append('description', 'anything');
@@ -988,11 +982,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'https://ad1e-211-206-100-66.ngrok-free.app/skylark-m3s/api/individualLoan.m3s',
-        headers: {
-          Cookie:
-            'JSESSIONID=ypUFDWdJT0vxoqNXrWZJuPkfdTjYNGWAc9paLsFI.localhost',
-        },
+        url: 'https://ff10-211-206-100-66.ngrok-free.app/skylark-m3s/api/individualLoan.m3s',
+
         data: formData,
       };
       const response = await axios.request(config);
@@ -1081,38 +1072,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
       return failedData;
     } else {
       for (const data of checkedItems) {
-        // global.db.transaction(tx => {
-        //   tx.executeSql(
-        //     `DELETE FROM Individual_application WHERE application_no = ? AND tablet_sync_sts = '01'`,
-        //     [data.application_no],
-        //     (txObj, resultSet) => {
-        //       let test = resultSet.rows();
-        //       if (test.length > 0) {
-        //         tx.executeSql(
-        //           `DELETE FROM Exception_aprv WHERE application_no = ? AND tablet_sync_sts = '01'`,
-        //           [data.application_no],
-        //           (txObj, resultSet) => {
-        //             resolve('success')
-        //             console.log('Delete Exception_aprv successful');
-        //           },
-        //           (txObj, error) => {
-        //             // Error occurred while executing the delete query
-        //             console.error('Delete error:', error);
-        //             reject(error);
-        //           },
-        //         );
-        //       }
-        //       resolve('success');
-        //       // Delete query successful
-        //       console.log('Delete Individula Table successful');
-        //     },
-        //     (txObj, error) => {
-        //       // Error occurred while executing the delete query
-        //       console.error('Delete error:', error);
-        //       reject(error);
-        //     },
-        //   );
-        // });
         await new Promise((resolve, reject) => {
           global.db.transaction(tx => {
             tx.executeSql(
@@ -1160,6 +1119,22 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               },
               (txObj, error) => {
                 console.error('Delete from Guarantee error:', error);
+                reject(error);
+              },
+            );
+          });
+        });
+        await new Promise((resolve, reject) => {
+          global.db.transaction(tx => {
+            tx.executeSql(
+              `DELETE FROM Relation_info WHERE application_no = ? AND tablet_sync_sts = '01'`,
+              [data.application_no],
+              (txObj, resultSet) => {
+                console.log('Delete from Relation_info successful');
+                resolve();
+              },
+              (txObj, error) => {
+                console.error('Delete from Relation_info error:', error);
                 reject(error);
               },
             );

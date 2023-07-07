@@ -2103,8 +2103,8 @@ function Individual_Loan(props) {
         change(
           'Individual_Loan_Form',
           'application_no',
-          `10${user_id}${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
-          // `10M001722023070417`
+          // `10${user_id}${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
+          `10M00172202307061`
         ),
       );
       dispatch(
