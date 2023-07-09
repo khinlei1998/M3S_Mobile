@@ -76,6 +76,7 @@ import {
   updateTotalSum,
   totalLoanAmt,
 } from '../../redux/MonthlyReducer';
+import {getEvaluationData} from '../../query/AreaEvaluation_query';
 import {deleteLoan_ByID} from '../../query/AllLoan_query';
 // import RNFetchBlob from 'rn-fetch-blob';
 import {useIsFocused} from '@react-navigation/native';
@@ -1868,6 +1869,7 @@ function Edit_Individual_Loan(props) {
   const [show_coborrower_sign, setShowCoBorrowerSign] = useState('');
   const [renderCount, setRenderCount] = useState(0);
   const [relation_data, setRelationData] = useState([]);
+  const [evaluation_data, setEvaluationData] = useState([]);
 
   // const [update_status, setUpdateStatus] = useState(false);
   const [selectedLocationItemValue, setLocationSelectedItemValue] =
@@ -2240,6 +2242,11 @@ function Edit_Individual_Loan(props) {
     await getRelationData(retrive_loan_data.application_no).then(data => {
       setRelationData(data);
     });
+    await getEvaluationData(retrive_loan_data.application_no).then(data => {
+      console.log('data', data);
+      setEvaluationData(data);
+    });
+
     const fileExists = await RNFS.exists(
       `/storage/emulated/0/Pictures/RNSketchCanvas/${retrive_loan_data.application_no}MP01.jpg`,
     );
@@ -2469,26 +2476,63 @@ function Edit_Individual_Loan(props) {
                   )}
                 </TouchableOpacity>
                 <TouchableOpacity
+                  onPress={() =>
+                    update_status == true && evaluation_data.length == 0
+                      ? props.navigation.navigate('Area Evaluation', {
+                          retrive_loan_data,
+                        })
+                      : update_status == true && evaluation_data.length > 0
+                      ? props.navigation.navigate('Edit Area Evaluation', {
+                          evaluation_data,
+                        })
+                      : ToastAndroid.show(
+                          `Only update can modify`,
+                          ToastAndroid.SHORT,
+                        )
+                  }
+                  // onPress={() =>
+                  //   props.navigation.navigate('Area Evaluation', {
+                  //     retrive_loan_data,
+                  //   })
+                  // }
                   style={{
                     width: 250,
                     height: 40,
                     backgroundColor: '#242157',
                     margin: 10,
                   }}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      margin: 5,
-                    }}>
-                    <View style={{alignItems: 'center', flexDirection: 'row'}}>
-                      <Icon name="paperclip" size={20} color="#fff" />
-                      <Text style={{color: '#fff', marginLeft: 5}}>
-                        Area Evaluation Form
-                      </Text>
+                  {evaluation_data.length > 0 ? (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        margin: 5,
+                      }}>
+                      <View
+                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        <Icon name="check" size={20} color="#ede72d" />
+                        <Text style={{color: '#fff', marginLeft: 5}}>
+                          Area Evaluation Form
+                        </Text>
+                      </View>
                     </View>
-                    <Icon name="chevron-right" size={25} color="#fff" />
-                  </View>
+                  ) : (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        margin: 5,
+                      }}>
+                      <View
+                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        <Icon name="paperclip" size={20} color="#fff" />
+                        <Text style={{color: '#fff', marginLeft: 5}}>
+                          Area Evaluation Form
+                        </Text>
+                      </View>
+                      <Icon name="chevron-right" size={25} color="#fff" />
+                    </View>
+                  )}
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() =>
@@ -2689,7 +2733,7 @@ function Edit_Individual_Loan(props) {
           </View>
         </BottomSheet>
       );
-    }, [guarantor_data, exceptional_data, relation_data]);
+    }, [guarantor_data, exceptional_data, relation_data, evaluation_data]);
 
   return (
     <>

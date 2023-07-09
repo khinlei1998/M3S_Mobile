@@ -24,6 +24,7 @@ import Edit_Guarantor_Form from '../screens/Edit_GuarantorForm/Edit_Guarantor_Fo
 import Relation_Form from '../screens/Relation/Relation_Form';
 import Area_Evaluation_Form from '../screens/Area Evaluation/Area_Evaluation_Form';
 import EditRelation_Form from '../screens/Edit_Relation/EditRelation_Form';
+import Edit_Area_Evaluation_Form from '../screens/Edit_Area Evaluation/Edit_Area_Evaluation_Form';
 export default function AuthNavigation(props) {
   const Stack = createNativeStackNavigator();
   return (
@@ -50,14 +51,18 @@ export default function AuthNavigation(props) {
       /> */}
 
       <Stack.Screen
-        name="Area Evaluation"
-        component={Area_Evaluation_Form}
-        options={{headerShown: false}}
-      />
-
-      <Stack.Screen
         name="Home"
         component={Home}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Edit Area Evaluation"
+        component={Edit_Area_Evaluation_Form}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Area Evaluation"
+        component={Area_Evaluation_Form}
         options={{headerShown: false}}
       />
       <Stack.Screen

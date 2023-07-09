@@ -8,6 +8,7 @@ export default function RadioButtonFile(props) {
     <View
       style={{
         flexDirection: customstyle ? 'column' : 'row',
+
       }}>
       {data.map((val, index) => {
         return (

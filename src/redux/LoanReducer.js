@@ -7,6 +7,8 @@ export const SET_BORROWER_MAP_PATH = 'SET_BORROWER_MAP_PATH';
 export const SET_EXCEPTIONAL_UPDATE_STATUS = 'SET_EXCEPTIONAL_UPDATE_STATUS';
 export const SET_GUARANTOR_UPDATE_STATUS = 'SET_GUARANTOR_UPDATE_STATUS';
 export const SET_RELATION_UPDATE_STATUS = 'SET_RELATION_UPDATE_STATUS';
+export const SET_EVALUATION_SCORE = 'SET_EVALUATION_SCORE';
+export const SET_AREA_UPDATE_STATUS = 'SET_AREA_UPDATE_STATUS';
 
 const loan = {
   edit_loandata: {},
@@ -17,6 +19,8 @@ const loan = {
   exceptional_update_status: 'false',
   gurantor_update_status: 'false',
   relation_update_status: 'false',
+  evaluation_score: 0,
+  area_update_status: 'false',
 };
 
 export const addInquiryLoanData = props => {
@@ -68,6 +72,18 @@ export const setRelation_UpdateStatus = props => {
     payload: props,
   };
 };
+export const setEvaluation_Score = props => {
+  return {
+    type: 'SET_EVALUATION_SCORE',
+    payload: props,
+  };
+};
+export const setAREA_UpdateStatus = props => {
+  return {
+    type: 'SET_AREA_UPDATE_STATUS',
+    payload: props,
+  };
+};
 
 export default function LoanReducder(state = loan, action) {
   switch (action.type) {
@@ -87,6 +103,10 @@ export default function LoanReducder(state = loan, action) {
       return {...state, gurantor_update_status: action.payload};
     case SET_RELATION_UPDATE_STATUS:
       return {...state, relation_update_status: action.payload};
+    case SET_EVALUATION_SCORE:
+      return {...state, evaluation_score: action.payload};
+    case SET_AREA_UPDATE_STATUS:
+      return {...state, area_update_status: action.payload};
     default:
       return state;
   }

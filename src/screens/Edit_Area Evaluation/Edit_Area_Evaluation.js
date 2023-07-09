@@ -7,9 +7,9 @@ import TextInputFile from '../../components/TextInputFile';
 import {reduxForm, Field, change, reset} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
 import {microfinance_data, area_evaluation_result} from '../../common';
-import { setEvaluation_Score } from '../../redux/LoanReducer';
-function Area_Evaluation(props) {
-  const {setEvaluation_Score}=props
+import {setEvaluation_Score} from '../../redux/LoanReducer';
+function Edit_Area_Evaluation(props) {
+  const {setEvaluation_Score, area_update_status} = props;
   const [area_evaluation_form_expanded, setAreaEvaluationFormExpanded] =
     useState(true);
   const [values, setValues] = useState([]);
@@ -23,16 +23,14 @@ function Area_Evaluation(props) {
 
     // Update the selected values array
     const newValues = [...values];
-    newValues[index] =number;
+    newValues[index] = number;
     setValues(newValues);
-    const filteredValues = newValues.filter(
-      value => typeof value === 'number',
-    );
+    const filteredValues = newValues.filter(value => typeof value === 'number');
 
-      let multipliedValue = filteredValues.reduce((total, val) => {
-        return total + val;
-      }, 0);
-      setEvaluation_Score(multipliedValue)
+    let multipliedValue = filteredValues.reduce((total, val) => {
+      return total + val;
+    }, 0);
+    setEvaluation_Score(multipliedValue);
     // Perform any other desired action with the multiplied value
   };
 
@@ -62,6 +60,7 @@ function Area_Evaluation(props) {
               ShowRadioBtnChange={(value, input) =>
                 handleRadioButtonChange(value, input, 0)
               }
+              disabled={area_update_status == true ? false : true}
             />
           </View>
           <Field
@@ -70,6 +69,7 @@ function Area_Evaluation(props) {
             component={TextInputFile}
             input_mode
             input_cusstyle
+            editable={area_update_status == true ? false : true}
           />
 
           <View style={style.sub_list_container}>
@@ -89,6 +89,7 @@ function Area_Evaluation(props) {
               ShowRadioBtnChange={(value, input) =>
                 handleRadioButtonChange(value, input, 1)
               }
+              disabled={area_update_status == true ? false : true}
             />
           </View>
 
@@ -98,6 +99,7 @@ function Area_Evaluation(props) {
             component={TextInputFile}
             input_mode
             input_cusstyle
+            editable={area_update_status == true ? false : true}
           />
 
           <View style={style.sub_list_container}>
@@ -117,6 +119,7 @@ function Area_Evaluation(props) {
               ShowRadioBtnChange={(value, input) =>
                 handleRadioButtonChange(value, input, 2)
               }
+              disabled={area_update_status == true ? false : true}
             />
           </View>
 
@@ -126,6 +129,7 @@ function Area_Evaluation(props) {
             component={TextInputFile}
             input_mode
             input_cusstyle
+            editable={area_update_status == true ? false : true}
           />
 
           <View style={style.sub_list_container}>
@@ -145,6 +149,7 @@ function Area_Evaluation(props) {
               ShowRadioBtnChange={(value, input) =>
                 handleRadioButtonChange(value, input, 3)
               }
+              disabled={area_update_status == true ? false : true}
             />
           </View>
 
@@ -154,6 +159,7 @@ function Area_Evaluation(props) {
             component={TextInputFile}
             input_mode
             input_cusstyle
+            editable={area_update_status == true ? false : true}
           />
           <View style={style.sub_list_container}>
             <Text
@@ -172,6 +178,7 @@ function Area_Evaluation(props) {
               ShowRadioBtnChange={(value, input) =>
                 handleRadioButtonChange(value, input, 4)
               }
+              disabled={area_update_status == true ? false : true}
             />
           </View>
 
@@ -181,6 +188,7 @@ function Area_Evaluation(props) {
             component={TextInputFile}
             input_mode
             input_cusstyle
+            editable={area_update_status == true ? false : true}
           />
           <View style={style.sub_list_container}>
             <Text
@@ -199,6 +207,7 @@ function Area_Evaluation(props) {
               ShowRadioBtnChange={(value, input) =>
                 handleRadioButtonChange(value, input, 5)
               }
+              disabled={area_update_status == true ? false : true}
             />
           </View>
 
@@ -208,6 +217,7 @@ function Area_Evaluation(props) {
             component={TextInputFile}
             input_mode
             input_cusstyle
+            editable={area_update_status == true ? false : true}
           />
           <View style={style.sub_list_container}>
             <Text
@@ -226,6 +236,7 @@ function Area_Evaluation(props) {
               ShowRadioBtnChange={(value, input) =>
                 handleRadioButtonChange(value, input, 6)
               }
+              disabled={area_update_status == true ? false : true}
             />
           </View>
 
@@ -254,6 +265,7 @@ function Area_Evaluation(props) {
               ShowRadioBtnChange={(value, input) =>
                 handleRadioButtonChange(value, input, 7)
               }
+              disabled={area_update_status == true ? false : true}
             />
           </View>
 
@@ -263,6 +275,7 @@ function Area_Evaluation(props) {
             component={TextInputFile}
             input_mode
             input_cusstyle
+            editable={area_update_status == true ? false : true}
           />
 
           <View style={style.sub_list_container}>
@@ -282,6 +295,7 @@ function Area_Evaluation(props) {
               ShowRadioBtnChange={(value, input) =>
                 handleRadioButtonChange(value, input, 8)
               }
+              disabled={area_update_status == true ? false : true}
             />
           </View>
 
@@ -291,6 +305,7 @@ function Area_Evaluation(props) {
             component={TextInputFile}
             input_mode
             input_cusstyle
+            editable={area_update_status == true ? false : true}
           />
         </View>
       </List.Accordion>
@@ -298,9 +313,11 @@ function Area_Evaluation(props) {
   );
 }
 function mapStateToProps(state) {
-  return {};
+  return {
+    area_update_status: state.loan.area_update_status,
+  };
 }
 
 export default reduxForm({
-  form: 'Area_Evaluation_Form',
-})(connect(mapStateToProps, {setEvaluation_Score})(Area_Evaluation));
+  form: 'Edit_Area_Evaluation_Form',
+})(connect(mapStateToProps, {setEvaluation_Score})(Edit_Area_Evaluation));

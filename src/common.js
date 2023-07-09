@@ -465,28 +465,89 @@ export const loan_application_type = [
 
 export const relation_data = [
   {
-    id: "1",
-    name: 'GrandParent'
+    id: '1',
+    name: 'GrandParent',
   },
   {
-    id: "2",
-    name: 'Parent'
+    id: '2',
+    name: 'Parent',
   },
   {
-    id: "3",
-    name: 'Brother & Sister'
+    id: '3',
+    name: 'Brother & Sister',
   },
   {
-    id: "4",
-    name: 'Husband & Wife'
+    id: '4',
+    name: 'Husband & Wife',
   },
   {
-    id: "5",
-    name: 'Son & Daughter'
-  }
-]
+    id: '5',
+    name: 'Son & Daughter',
+  },
+];
 
-
+export const microfinance_data = [
+  {
+    id: '1',
+    name: 'A(0~2)',
+    result:4
+  },
+  {
+    id: '2',
+    name: 'B(3~5)',
+    result:3
+  },
+  {
+    id: '3',
+    name: 'C(6~8)',
+    result:2
+  },
+  {
+    id: '4',
+    name: 'D(above 8)',
+    result:1
+  },
+];
+export const area_evaluation_result = [
+  {
+    id: '1',
+    name: 'A(Excellent)',
+    result:4
+  },
+  {
+    id: '2',
+    name: 'B(Good)',
+    result:3
+  },
+  {
+    id: '3',
+    name: 'A(Fair)',
+    result:2
+  },
+  {
+    id: '4',
+    name: 'D(Bad)',
+    result:1
+  },
+];
+export const area_evaluation_score_result = [
+  {
+    id: '1',
+    name: 'A(Very Well)',
+  },
+  {
+    id: '2',
+    name: 'B(Good)',
+  },
+  {
+    id: '3',
+    name: 'C(Unacceptable)',
+  },
+  {
+    id: '4',
+    name: 'D(Bad)',
+  },
+];
 
 // export const BASE_URL='https://8582-103-231-92-61.ngrok-free.app/'
 export const BASE_URL = 'https://sample-rest.onrender.com/skylark-m3s/'; // static
