@@ -93,12 +93,11 @@ import { connect, useDispatch } from 'react-redux';
 
             <Field
               name={'borrower_rltn'}
-              title={'Relation with Phone Number'}
+              title={'Relation with Borrower'}
               component={TextInputFile}
               cus_width
               input_mode
               inputmax={50}
-              keyboardType={'numeric'}
               editable={update_status == true ? false : true}
 
             />

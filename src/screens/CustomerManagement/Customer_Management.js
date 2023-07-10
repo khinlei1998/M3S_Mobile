@@ -118,8 +118,6 @@ function Customer_Management(props) {
           : values.nrc_statecode + values.nrc_prefix + values.nrcNo,
       start_living_date_status: show_businessdate,
     });
-    // alert(JSON.stringify(data));
-    // console.log('Cust insert data', data);
     await storeCustomerData(data).then(result => {
       if (result == 'success') {
         // dispatch_Reset_Beneficiary([]);

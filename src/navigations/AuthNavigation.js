@@ -24,6 +24,8 @@ import Edit_Guarantor_Form from '../screens/Edit_GuarantorForm/Edit_Guarantor_Fo
 import Relation_Form from '../screens/Relation/Relation_Form';
 import Area_Evaluation_Form from '../screens/Area Evaluation/Area_Evaluation_Form';
 import EditRelation_Form from '../screens/Edit_Relation/EditRelation_Form';
+import Edit_Area_Evaluation_Form from '../screens/Edit_Area Evaluation/Edit_Area_Evaluation_Form';
+import Group_Loan_Form from '../screens/Group_Loan/Group_Loan_Form';
 export default function AuthNavigation(props) {
   const Stack = createNativeStackNavigator();
   return (
@@ -38,30 +40,51 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
-
-      {/* <Stack.Screen
-        name="Evidence"
-        component={Evidence}
-        options={{headerShown: false}}
-      /> */}
-
-      {/* <Stack.Screen
-        name="Individual_loan"
-        component={Individual_Loan}
-        options={{headerShown: false}}
-      /> */}
-      {/* <Stack.Screen
+           <Stack.Screen
         name="Synchronization"
         component={Synchronization_Screen}
         options={{ headerShown: false }}
-      /> */}
-     
+      />
+          <Stack.Screen
+        name="Individual_loan"
+        component={Individual_Loan}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Group Loan"
+        component={Group_Loan_Form}
+        options={{ headerShown: false }}
+      />
+
+    
+   
+      <Stack.Screen
+        name="Area Evaluation"
+        component={Area_Evaluation_Form}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="Home"
         component={Home}
         options={{ headerShown: false }}
       />
-       <Stack.Screen
+      <Stack.Screen
+        name="Edit Area Evaluation"
+        component={Edit_Area_Evaluation_Form}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="Evidence"
+        component={Evidence}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="Relation Form"
         component={Relation_Form}
         options={{ headerShown: false }}
@@ -72,17 +95,9 @@ export default function AuthNavigation(props) {
         options={{ headerShown: false }}
       />
 
-
-
-      
       <Stack.Screen
         name="Guarantor"
         component={Guarantor_Form}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Area Evaluation"
-        component={Area_Evaluation_Form}
         options={{ headerShown: false }}
       />
 
@@ -147,11 +162,7 @@ export default function AuthNavigation(props) {
         component={Edit_Exceptional_Approvel_Form}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{ headerShown: false }}
-      />
+
       <Stack.Screen
         name="Sign1"
         component={Sign1}

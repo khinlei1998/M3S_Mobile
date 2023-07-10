@@ -17,7 +17,7 @@ import DropDownPicker from '../../components/DropDownPicker';
 import DatePicker from '../../components/DatePicker';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import { useDispatch } from 'react-redux';
-
+import CustomTextInput from '../../components/CustomTextInput';
 function Borrower_Info(props) {
   const { showLocationSearch, showCustomerSearch, showTownshipSearch, showCitySearch, showVillageSearch, showWardSearch } = props;
   const [borrower_expanded, setBorrowerExpanded] = React.useState(true);

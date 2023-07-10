@@ -25,7 +25,8 @@ import {
 import {style} from '../../style/Area_Evaluation_style';
 import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
-export default function Area_Info() {
+ function Edit_Area_Info(props) {
+  const {area_update_status}=props
   const [area_info_expanded, setAreaInfoExpanded] = useState(true);
   const handleAreaInfoToggle = () => {
     setAreaInfoExpanded(!area_info_expanded);
@@ -56,7 +57,8 @@ export default function Area_Info() {
               name={'area_evaluation_date'}
               component={DatePicker}
               label={'Evaluation Date'}
-              icon={'calendar'}
+              icon={area_update_status == true && 'calendar'}
+              editable={area_update_status == true ? false : true}
             />
 
             <Field
@@ -65,6 +67,7 @@ export default function Area_Info() {
               component={TextInputFile}
               cus_width
               input_mode
+              editable={area_update_status == true ? false : true}
             />
           </View>
           <View style={style.sub_list_container}>
@@ -74,6 +77,7 @@ export default function Area_Info() {
               component={TextInputFile}
               cus_width
               input_mode
+              editable={area_update_status == true ? false : true}
             />
 
             <Field
@@ -82,6 +86,7 @@ export default function Area_Info() {
               component={TextInputFile}
               cus_width
               input_mode
+              editable={area_update_status == true ? false : true}
             />
           </View>
           <View style={style.sub_list_container}>
@@ -92,7 +97,7 @@ export default function Area_Info() {
               cus_width
               input_mode
               keyboardType={'numeric'}
-
+              editable={area_update_status == true ? false : true}
             />
 
             <Field
@@ -101,6 +106,7 @@ export default function Area_Info() {
               component={TextInputFile}
               cus_width
               input_mode
+              editable={area_update_status == true ? false : true}
             />
           </View>
           <View style={style.sub_list_container}>
@@ -110,6 +116,7 @@ export default function Area_Info() {
               component={TextInputFile}
               cus_width
               input_mode
+              editable={area_update_status == true ? false : true}
             />
 
             <Field
@@ -118,6 +125,7 @@ export default function Area_Info() {
               component={TextInputFile}
               cus_width
               input_mode
+              editable={area_update_status == true ? false : true}
             />
           </View>
           <View style={style.sub_list_container}>
@@ -127,6 +135,7 @@ export default function Area_Info() {
               component={TextInputFile}
               cus_width
               input_mode
+              editable={area_update_status == true ? false : true}
             />
 
             <Field
@@ -135,6 +144,7 @@ export default function Area_Info() {
               component={TextInputFile}
               cus_width
               input_mode
+              editable={area_update_status == true ? false : true}
             />
           </View>
           <View style={style.sub_list_container}>
@@ -144,6 +154,7 @@ export default function Area_Info() {
               component={TextInputFile}
               cus_width
               input_mode
+              editable={area_update_status == true ? false : true}
             />
 
             <Field
@@ -152,6 +163,7 @@ export default function Area_Info() {
               component={TextInputFile}
               cus_width
               input_mode
+              editable={area_update_status == true ? false : true}
             />
           </View>
           <View style={style.sub_list_container}>
@@ -161,6 +173,7 @@ export default function Area_Info() {
               component={TextInputFile}
               cus_width
               input_mode
+              editable={area_update_status == true ? false : true}
             />
 
             <Field
@@ -169,6 +182,7 @@ export default function Area_Info() {
               component={TextInputFile}
               cus_width
               input_mode
+              editable={area_update_status == true ? false : true}
             />
           </View>
         </View>
@@ -176,3 +190,12 @@ export default function Area_Info() {
     </>
   );
 }
+function mapStateToProps(state) {
+  return {
+    area_update_status: state.loan.area_update_status,
+  };
+}
+
+export default reduxForm({
+  form: 'Edit_Area_Evaluation_Form',
+})(connect(mapStateToProps, {})(Edit_Area_Info));

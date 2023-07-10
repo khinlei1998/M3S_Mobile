@@ -88,7 +88,6 @@ const Borrower_modal = props => {
   };
 
   const btnCusSearch = async () => {
-    // alert('oo')
     await filterCustomer(selectedItemValue, emp_data)
       .then(data => (data.length > 0 ? setAllCus(data) : alert('No data')))
       .catch(error => console.log('error', error));
@@ -155,144 +154,140 @@ const Borrower_modal = props => {
     );
   };
   return (
-    <Provider>
-      <Portal>
-        <Modal
-          useNativeDriver
-          hideModalContentWhileAnimating
-          dismissable={false}
-          visible={modalVisible}
-          onDismiss={hideModal}
-          contentContainerStyle={style.modal_container}>
-          <View
-            style={style.modal_header}
-            onStartShouldSetResponder={() => hideModal()}>
-            <Icon
-              name="x-circle"
-              size={25}
-              color="#fff"
-              style={style.cancel_icon_style}
-            />
+    <Modal
+      useNativeDriver
+      hideModalContentWhileAnimating
+      dismissable={false}
+      visible={modalVisible}
+      onDismiss={hideModal}
+      contentContainerStyle={style.modal_container}>
+      <View
+        style={style.modal_header}
+        onStartShouldSetResponder={() => hideModal()}>
+        <Icon
+          name="x-circle"
+          size={25}
+          color="#fff"
+          style={style.cancel_icon_style}
+        />
+      </View>
+      <View style={style.modal_body_container}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+          }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ marginRight: 10 }}>Search Item:</Text>
+
+            <Picker
+              selectedValue={selectedItemValue}
+              onValueChange={handleItemValueChange}
+              style={{
+                width: 200,
+                backgroundColor: 'white',
+                marginTop: 7,
+              }}
+              mode="dropdown">
+              {emp_filter_item.length > 0 &&
+                emp_filter_item.map(val => (
+                  <Picker.Item
+                    label={val.label}
+                    value={val.value}
+                    key={val.id}
+                  />
+                ))}
+            </Picker>
           </View>
-          <View style={style.modal_body_container}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-              }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
-                <Picker
-                  selectedValue={selectedItemValue}
-                  onValueChange={handleItemValueChange}
-                  style={{
-                    width: 200,
-                    backgroundColor: 'white',
-                    marginTop: 7,
-                  }}
-                  mode="dropdown">
-                  {emp_filter_item.length > 0 &&
-                    emp_filter_item.map(val => (
-                      <Picker.Item
-                        label={val.label}
-                        value={val.value}
-                        key={val.id}
-                      />
-                    ))}
-                </Picker>
-              </View>
-
-              <View style={{ width: '50%' }}>
-                <TextInput
-                  style={{
-                    backgroundColor: '#fff',
-                    marginTop: 10,
-                    width: 250,
-                    borderColor: '#303030',
-                    borderWidth: 0.5,
-                  }}
-                  value={emp_data}
-                  onChangeText={onChangeEmpText}
-                  right={
-                    <TextInput.Icon
-                      icon={'magnify'}
-                      onPress={() => btnCusSearch()}
-                    />
-                  }
-                />
-              </View>
-            </View>
-            <View
+          <View style={{ width: '50%' }}>
+            <TextInput
               style={{
-                flexDirection: 'row',
                 backgroundColor: '#fff',
-                borderRadius: 5,
-                padding: 5,
-                margin: 20,
-              }}>
-              <Text
-                style={{
-                  padding: 10,
-                  flex: 1,
-                  fontWeight: 'bold',
-                }}>
-                #
-              </Text>
-              <Text
-                style={{
-                  flex: 1,
-
-                  padding: 10,
-                  fontWeight: 'bold',
-                }}>
-                Name
-              </Text>
-              <Text
-                style={{
-                  flex: 1,
-
-                  padding: 10,
-                  fontWeight: 'bold',
-                }}>
-                NRC
-              </Text>
-              <Text
-                style={{
-                  flex: 1,
-
-                  padding: 10,
-                  fontWeight: 'bold',
-                }}>
-                Phone Number
-              </Text>
-            </View>
-
-            <FlatList
-              data={all_cus}
-              renderItem={item}
-              keyExtractor={(item, index) => index.toString()}
+                marginTop: 10,
+                width: 250,
+                borderColor: '#303030',
+                borderWidth: 0.5,
+              }}
+              value={emp_data}
+              onChangeText={onChangeEmpText}
+              right={
+                <TextInput.Icon
+                  icon={'magnify'}
+                  onPress={() => btnCusSearch()}
+                />
+              }
             />
-
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-              <Button
-                onPress={() => hideModal()}
-                mode="contained"
-                buttonColor={'#6870C3'}
-                style={{
-                  borderRadius: 0,
-                  width: 100,
-                  marginTop: 10,
-                  color: 'black',
-                  marginLeft: 5,
-                }}>
-                OK
-              </Button>
-            </View>
           </View>
-        </Modal>
-      </Portal>
-    </Provider>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            backgroundColor: '#fff',
+            borderRadius: 5,
+            padding: 5,
+            margin: 20,
+          }}>
+          <Text
+            style={{
+              padding: 10,
+              flex: 1,
+              fontWeight: 'bold',
+            }}>
+            #
+          </Text>
+          <Text
+            style={{
+              flex: 1,
+
+              padding: 10,
+              fontWeight: 'bold',
+            }}>
+            Name
+          </Text>
+          <Text
+            style={{
+              flex: 1,
+
+              padding: 10,
+              fontWeight: 'bold',
+            }}>
+            NRC
+          </Text>
+          <Text
+            style={{
+              flex: 1,
+
+              padding: 10,
+              fontWeight: 'bold',
+            }}>
+            Phone Number
+          </Text>
+        </View>
+
+        <FlatList
+          data={all_cus}
+          renderItem={item}
+          keyExtractor={(item, index) => index.toString()}
+        />
+
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+          <Button
+            onPress={() => hideModal()}
+            mode="contained"
+            buttonColor={'#6870C3'}
+            style={{
+              borderRadius: 0,
+              width: 100,
+              marginTop: 10,
+              color: 'black',
+              marginLeft: 5,
+            }}>
+            OK
+          </Button>
+        </View>
+      </View>
+    </Modal>
   );
 };
 
@@ -2099,12 +2094,13 @@ function Individual_Loan(props) {
 
     await getAllLoan().then(loan_data => {
       setAllLoanData(loan_data);
+      console.log('loan_data',loan_data);
       dispatch(
         change(
           'Individual_Loan_Form',
           'application_no',
           `10${user_id}${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
-          // `10M001722023070417`
+          // `10M00172202307061`
         ),
       );
       dispatch(
@@ -2753,7 +2749,7 @@ function Individual_Loan(props) {
         co_borrower_saveSign={co_borrower_saveSign}
         co_borrower_resetSign={co_borrower_resetSign}
         co_borrower_sign={co_borrower_sign}
-      />
+      /> 
       <City_Modal
         hideCityModal={hideCityModal}
         modal_city_visible={modal_city_visible}
@@ -2772,7 +2768,7 @@ function Individual_Loan(props) {
         handleTownshipItemValueChange={handleTownshipItemValueChange}
         setAllTownship={setAllTownship}
         handleSubmit={handleSubmit}
-      />
+      /> 
 
       <Village_Modal
         hideVillageModal={hideVillageModal}

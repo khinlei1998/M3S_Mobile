@@ -63,7 +63,7 @@ import {List, Modal} from 'react-native-paper';
                   margin: 10,
                 }}>
                 <Text>Signature 1</Text>
-               
+
                 {signature1_path == '' && signature1 == '' ? (
                   <TouchableOpacity
                     onPress={() =>

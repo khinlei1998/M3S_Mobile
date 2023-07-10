@@ -13,6 +13,7 @@ import React, { useState, useEffect } from 'react';
 import { Field, reduxForm, change } from 'redux-form';
 import Icon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomTextInput from '../../components/CustomTextInput';
 function SettingScreen(props) {
   const [showDefault, setShowDefault] = useState(false);
   const [ip, setIP] = useState();
@@ -112,7 +113,7 @@ function SettingScreen(props) {
 
 
                   <Field
-                    component={TextInputFile}
+                    component={CustomTextInput}
                     name="ip"
                     showValue={showDefault}
                     defaultData={ip}

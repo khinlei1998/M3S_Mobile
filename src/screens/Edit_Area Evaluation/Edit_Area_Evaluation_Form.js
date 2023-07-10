@@ -28,45 +28,30 @@ import { operations } from '../../common';
 import { style } from '../../style/Area_Evaluation_style';
 import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
-import Area_Info from './Area_Info';
-import Area_Evaluation from './Area_Evaluation';
+import Edit_Area_Info from './Edit_Area_Info';
+import Edit_Area_Evaluation from './Edit_Area_Evaluation';
 import { area_evaluation_result } from '../../common';
-import Area_Evaluation_Score from './Area_Evaluation_Score';
+import Edit_Area_Evaluation_Score from './Edit_Area_Evaluation_Score';
 import { getAllLoan_By_application_no } from '../../query/AllLoan_query';
 import { useNavigation } from '@react-navigation/native';
-
-function Area_Evaluation_Form(props) {
-  console.log('props', props);
+import { setAREA_UpdateStatus } from '../../redux/LoanReducer';
+import { deleteAreaEvaluation_ByID } from '../../query/AreaEvaluation_query';
+function Edit_Area_Evaluation_Form(props) {
   const navigation = useNavigation();
+  const filtered_operations = operations.filter(item => item.value != 1);
 
-  const { handleSubmit, total_score } = props;
-  const [show_operation, setOperation] = useState('1');
-  const [total_sts_flag, setTotal_sts_flag] = useState('');
-
+  const { handleSubmit, area_update_status, setAREA_UpdateStatus } = props;
+  const [show_operation, setOperation] = useState('2');
   const [area_evaluation_expanded, setAreaEvaluationExpanded] = useState(true);
-  const retrive_loan_data = props.route.params.retrive_loan_data;
-
+  const retrive_area_evaluation = props.route.params.evaluation_data[0];
   const loadData = async () => {
-    await getAllLoan_By_application_no(retrive_loan_data.application_no).then(
-      indi_data => {
-        let initialize_data = {
-          application_no: retrive_loan_data.application_no,
-          application_date: indi_data[0].application_date,
-          borrower_nrc: indi_data[0].resident_rgst_id,
-          borrower_name: indi_data[0].borrower_name,
-          application_amt: indi_data[0].application_amt.toString()
-            ? indi_data[0].application_amt.toString()
-            : '',
-          area_evaluation_no: retrive_loan_data.application_no.replace(
-            /.*?(M)/,
-            'AEM',
-          ),
-        };
-        props.initialize(initialize_data);
-      },
-    );
-    // setGuaranteeDate(moment().format('YYYY/MM/DD'))
+    props.initialize(retrive_area_evaluation);
   };
+  useEffect(() => {
+    if (area_update_status == true) {
+      setOperation('3');
+    }
+  }, [area_update_status]);
   useEffect(() => {
     loadData();
   }, []);
@@ -75,18 +60,30 @@ function Area_Evaluation_Form(props) {
     setAreaEvaluationExpanded(!area_evaluation_expanded);
   };
   const onSubmit = async values => {
-    const area_data = Object.assign({}, values, {
-      total_sts_flag: total_sts_flag,
-    });
-    console.log('area_data', area_data);
-    await storeAreaEvaluation(area_data).then(result => {
+    if (show_operation == '4') {
+      await deleteAreaEvaluation_ByID(values.area_evaluation_no).then(response => {
+        console.log('response', response);
+        if (response === 'success') {
+          alert('Delete Success');
+          navigation.goBack();
+        }
+      });
+    }
+    await storeAreaEvaluation(values).then(result => {
       if (result == 'success') {
         ToastAndroid.show(`Insert Success`, ToastAndroid.SHORT);
         navigation.goBack();
       }
     });
   };
-
+  const btnChangeOperation = newValue => {
+    setOperation(newValue);
+    if (newValue == 2 || newValue == 4) {
+      setAREA_UpdateStatus(false);
+    } else {
+      setAREA_UpdateStatus(true);
+    }
+  };
 
   return (
     <>
@@ -118,10 +115,10 @@ function Area_Evaluation_Form(props) {
                 style={{
                   flexDirection: 'row',
                 }}>
-                {operations.map((option, index) => (
+                {filtered_operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
-                    onValueChange={newValue => setOperation(newValue)}
+                    onValueChange={newValue => btnChangeOperation(newValue)}
                     value={show_operation}>
                     <View
                       key={option.value}
@@ -130,11 +127,14 @@ function Area_Evaluation_Form(props) {
                         alignItems: 'center',
                       }}>
                       <RadioButton.Item
-                        disabled={option.value !== show_operation}
                         label={option.label}
                         value={option.value}
                         color="#000"
                         labelStyle={{ marginLeft: 5 }}
+                      // disabled={
+                      //   option.value === '3'
+                      // }
+                      //&& filtered_cus_data.sync_status === '02'
                       />
                     </View>
                   </RadioButton.Group>
@@ -199,9 +199,9 @@ function Area_Evaluation_Form(props) {
                 </View>
               </View>
             </List.Accordion>
-            <Area_Info />
-            <Area_Evaluation setTotal_sts_flag={setTotal_sts_flag} />
-            <Area_Evaluation_Score setTotal_sts_flag={setTotal_sts_flag} total_sts_flag={total_sts_flag} />
+            <Edit_Area_Info />
+            <Edit_Area_Evaluation />
+            <Edit_Area_Evaluation_Score />
             <DividerLine />
 
             <View
@@ -211,6 +211,13 @@ function Area_Evaluation_Form(props) {
                 marginBottom: 20,
               }}>
               <Button
+                disabled={
+                  area_update_status == true && show_operation == '3'
+                    ? false
+                    : area_update_status == false && show_operation == '4'
+                      ? false
+                      : true
+                }
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
                 buttonColor={'#6870C3'}
@@ -233,10 +240,10 @@ function Area_Evaluation_Form(props) {
 }
 function mapStateToProps(state) {
   return {
-    total_score: state.loan.evaluation_score,
+    area_update_status: state.loan.area_update_status,
   };
 }
 
 export default reduxForm({
-  form: 'Area_Evaluation_Form',
-})(connect(mapStateToProps, {})(Area_Evaluation_Form));
+  form: 'Edit_Area_Evaluation_Form',
+})(connect(mapStateToProps, { setAREA_UpdateStatus })(Edit_Area_Evaluation_Form));

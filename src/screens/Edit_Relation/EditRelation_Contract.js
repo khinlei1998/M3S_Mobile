@@ -16,6 +16,7 @@ function Edit_Relation_Contract(props) {
     show_co_borrower_canvas,
     btnShowBorrowerSign,
     relation_update_status,
+    relation_name
   } = props;
   const [relation_contract_expanded, setRelationContractExpanded] =
     useState(true);
@@ -184,7 +185,7 @@ function Edit_Relation_Contract(props) {
             confirming that the above-mentioned{'\n'}{' '}
           </Text>
           <Text style={{fontWeight: 'bold', fontSize: 15}}>
-            ? relationship is correct
+            {relation_name} relationship is correct
           </Text>
         </View>
       </List.Accordion>

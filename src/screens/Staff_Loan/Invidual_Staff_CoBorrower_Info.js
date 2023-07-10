@@ -89,7 +89,6 @@ export default function Invidual_Staff_CoBorrower_Info(props) {
               cus_width
               input_mode
               inputmax={50}
-              keyboardType={'numeric'}
             />
           </View>
         </View>

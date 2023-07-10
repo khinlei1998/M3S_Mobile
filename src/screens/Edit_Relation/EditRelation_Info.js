@@ -8,26 +8,30 @@ import {List} from 'react-native-paper';
 import SingleCheckBox from '../../components/SingleCheckBox';
 import {relation_data} from '../../common';
 import RadioButtonFile from '../../components/RadioButtonFile';
- function Edit_Relation_Info(props) {
-  const {relation_update_status,setRelationName}=props
+function Edit_Relation_Info(props) {
+  const {relation_update_status, setRelationName} = props;
   const [relation_info_expanded, setRelationInfoExpanded] = useState(true);
   const handleRelationInfoToggle = () => {
     setRelationInfoExpanded(!relation_info_expanded);
   };
   const handleRadioButtonChange = (value, input) => {
-    console.log('value', value);
-    console.log('input', input);
     input.onChange(value.id);
     if (value.id == '1') {
-      setRelationName('Parent')
-
+      setRelationName('GrandParent');
     }
     if (value.id == '2') {
-      setRelationName('Brother & Sister')
-
+      setRelationName('Parent');
     }
-
-  }
+    if (value.id == '3') {
+      setRelationName('Brother & Sister');
+    }
+    if (value.id == '4') {
+      setRelationName('Husband & Wife');
+    }
+    if (value.id == '5') {
+      setRelationName('Son & Daughter');
+    }
+  };
 
   return (
     <>
@@ -64,28 +68,14 @@ import RadioButtonFile from '../../components/RadioButtonFile';
               justifyContent: 'space-between',
               marginBottom: 15,
             }}>
-            {/* <View>
-              {relation_data.map((checkbox, index) => (
-                <Field
-                  key={index}
-                  label={checkbox.label}
-                  name={checkbox.name}
-                  component={SingleCheckBox}
-                  defaultValue={checkbox.defaultValue}
-                  checkedValue={checkbox.checkedValue}
-                  uncheckedValue={checkbox.uncheckedValue}
-                  onChange={(value,label)=>console.log('input',value,label)}
-                  disabled={relation_update_status == true ? false : true}
-                />
-              ))}
-            </View> */}
             <Field
               data={relation_data}
-              name={'relationName'}
+              name={'relation_name'}
               component={RadioButtonFile}
               ShowRadioBtnChange={(value, input) =>
                 handleRadioButtonChange(value, input)
               }
+              customstyle
             />
           </View>
         </View>
@@ -96,11 +86,10 @@ import RadioButtonFile from '../../components/RadioButtonFile';
 function mapStateToProps(state) {
   return {
     relation_update_status: state.loan.relation_update_status,
-
   };
 }
 
 export default reduxForm({
   form: 'Edit_Relation_Form',
   // validate,
-})(connect(mapStateToProps, {  })(Edit_Relation_Info));
+})(connect(mapStateToProps, {})(Edit_Relation_Info));

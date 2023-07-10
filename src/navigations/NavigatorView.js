@@ -1,12 +1,12 @@
-import {View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TestScreen from '../screens/CustomerManagement/TestScreen';
 import Home from '../screens/Dashboard/Home';
 import Customer_Management from '../screens/CustomerManagement/Customer_Management';
 import CustomerSearch from '../screens/Customer/CustomerSearch';
 import Icon from 'react-native-vector-icons/Feather';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Edit_Emp_Info from '../screens/EditCustManagement/Edit_Emp_Info';
 import Synchronization_Screen from '../screens/Synchronization/Synchronization_Screen';
 import Individual_Loan from '../screens/Loan/Individual_Loan';
@@ -17,6 +17,14 @@ import Show_Borrower_Map from '../screens/Loan/Show_Borrower_Map';
 import Edit_Show_Borrower_Map from '../screens/Edit_Loan/Edit_Show_Borrower_Map';
 import Edit_Individual_Staff_loan_Info from '../screens/Edit_Staff_Loan/Edit_Individual_Staff_loan_Info';
 import Edit_Exceptional_Approvel_Form from '../screens/Edit_Exceptional_Approval_Request/Edit_Exceptional_Approvel_Form';
+import Area_Evaluation_Form from '../screens/Area Evaluation/Area_Evaluation_Form';
+import Edit_Area_Evaluation_Form from '../screens/Edit_Area Evaluation/Edit_Area_Evaluation_Form';
+import EditRelation_Form from '../screens/Edit_Relation/EditRelation_Form';
+import Relation_Form from '../screens/Relation/Relation_Form';
+import Edit_Guarantor_Form from '../screens/Edit_GuarantorForm/Edit_Guarantor_Form';
+import Guarantor_Form from '../screens/GuarantorForm/Guarantor_Form';
+import Evidence from '../screens/Evidence/Evidence';
+
 const StackNavigationData = [
   {
     name: 'Home',
@@ -136,8 +144,64 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Edit_Exceptional_Approvel_Form',
-    component: Edit_Exceptional_Approvel_Form,
+    name: 'Edit Guarantor',
+    component: Edit_Guarantor_Form,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Area Evaluation',
+    component: Area_Evaluation_Form,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Edit Area Evaluation',
+    component: Edit_Area_Evaluation_Form,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Edit Relation',
+    component: EditRelation_Form,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Guarantor',
+    component: Guarantor_Form,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Relation Form',
+    component: Relation_Form,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  
+  
+  {
+    name: 'Evidence',
+    component: Evidence,
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
       color: '#FFF',
@@ -174,7 +238,7 @@ export default function NavigatorView() {
             headerLeft: item.headerLeft || headerLeftComponentMenu,
             headerTintColor: '#FFF',
             headerTitleStyle: item.headerTitleStyle,
-            headerStyle: {backgroundColor: '#273050'},
+            headerStyle: { backgroundColor: '#273050' },
           }}
         />
       ))}

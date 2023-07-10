@@ -6,6 +6,7 @@ import TextInputFile from '../../components/TextInputFile';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
 import DatePicker from '../../components/DatePicker';
+import CustomTextInput from '../../components/CustomTextInput';
 function Co_Borrower_Info(props) {
     const [co_borrower_expanded, setCoBorrowerExpanded] = useState(true);
     const { showCoBorrowerSearch } = props
