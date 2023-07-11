@@ -601,7 +601,6 @@ function Relation_Form(props) {
   const loadData = async () => {
     await getAllLoan_By_application_no(retrive_loan_data.application_no).then(
       indi_data => {
-        console.log('indi_data', indi_data);
         let initialize_data = {
           application_no: retrive_loan_data.application_no,
           application_date: indi_data[0].application_date,
@@ -845,7 +844,6 @@ function Relation_Form(props) {
             height: 300,
             alignSelf: 'center',
           }}>
-          <Text>{modalContent}</Text>
           <SignatureCapture
             style={{
               flex: 1,

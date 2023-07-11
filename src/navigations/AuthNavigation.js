@@ -9,7 +9,6 @@ import Edit_Emp_Info from '../screens/EditCustManagement/Edit_Emp_Info';
 import CustomerSearch from '../screens/Customer/CustomerSearch';
 import Synchronization_Screen from '../screens/Synchronization/Synchronization_Screen';
 import Individual_Loan from '../screens/Loan/Individual_Loan';
-import Sign1 from '../screens/Loan/Sign1';
 import Home from '../screens/Dashboard/Home';
 import Edit_Individual_Loan from '../screens/Edit_Loan/Edit_Individual_Loan';
 import Individual_Staff_loan_Info from '../screens/Staff_Loan/Individual_Staff_loan_Info';
@@ -25,6 +24,7 @@ import Relation_Form from '../screens/Relation/Relation_Form';
 import Area_Evaluation_Form from '../screens/Area Evaluation/Area_Evaluation_Form';
 import EditRelation_Form from '../screens/Edit_Relation/EditRelation_Form';
 import Edit_Area_Evaluation_Form from '../screens/Edit_Area Evaluation/Edit_Area_Evaluation_Form';
+import Group_Loan_Form from '../screens/Group_Loan/Group_Loan_Form';
 export default function AuthNavigation(props) {
   const Stack = createNativeStackNavigator();
   return (
@@ -43,51 +43,77 @@ export default function AuthNavigation(props) {
         name="Individual_loan"
         component={Individual_Loan}
         options={{headerShown: false}}
+      /> */}
+      {/* <Stack.Screen
+        name="Group Loan"
+        component={Group_Loan_Form}
+        options={{headerShown: false}}
       />
       <Stack.Screen
-        name="Synchronization"
-        component={Synchronization_Screen}
-        options={{ headerShown: false }}
+        name="Borrower Map"
+        component={Show_Borrower_Map}
+        options={{headerShown: false}}
       /> */}
-
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Home"
         component={Home}
         options={{headerShown: false}}
-      />
+      /> */}
+
+      {/*  */}
+      {/*
       <Stack.Screen
-        name="Edit Area Evaluation"
-        component={Edit_Area_Evaluation_Form}
+        name="Synchronization"
+        component={Synchronization_Screen}
         options={{headerShown: false}}
       />
+
       <Stack.Screen
         name="Area Evaluation"
         component={Area_Evaluation_Form}
         options={{headerShown: false}}
       />
+
+      <Stack.Screen
+        name="Edit Area Evaluation"
+        component={Edit_Area_Evaluation_Form}
+        options={{headerShown: false}}
+      />
+
       <Stack.Screen
         name="Evidence"
         component={Evidence}
         options={{headerShown: false}}
-      />
+      /> */}
+
       <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{headerShown: false}}
+      />
+      {/* <Stack.Screen
+        name="Exceptional_Approvel_Form"
+        component={Exceptional_Approvel_Form}
+        options={{headerShown: false}}
+      /> */}
+      {/* <Stack.Screen
         name="Relation Form"
         component={Relation_Form}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Edit Relation"
         component={EditRelation_Form}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
         name="Guarantor"
         component={Guarantor_Form}
-        options={{headerShown: false}}
-      />
+        options={{ headerShown: false }}
+      /> */}
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Indi_Staff_loan"
         component={Individual_Staff_loan_Info}
         options={{headerShown: false}}
@@ -102,13 +128,9 @@ export default function AuthNavigation(props) {
         name="Customer Search"
         component={CustomerSearch}
         options={{headerShown: false}}
-      />
+      /> */}
 
-      <Stack.Screen
-        name="Borrower Map"
-        component={Show_Borrower_Map}
-        options={{headerShown: false}}
-      />
+      {/*
 
       <Stack.Screen
         name="Edit Guarantor"
@@ -119,11 +141,6 @@ export default function AuthNavigation(props) {
       <Stack.Screen
         name="Edit Borrower Map"
         component={Edit_Show_Borrower_Map}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Exceptional_Approvel_Form"
-        component={Exceptional_Approvel_Form}
         options={{headerShown: false}}
       />
 
@@ -147,17 +164,7 @@ export default function AuthNavigation(props) {
         name="Edit_Exceptional_Approvel_Form"
         component={Edit_Exceptional_Approvel_Form}
         options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Sign1"
-        component={Sign1}
-        options={{headerShown: false}}
-      />
+      /> */}
 
       <Stack.Screen
         name="Setting"

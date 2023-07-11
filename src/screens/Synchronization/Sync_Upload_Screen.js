@@ -30,7 +30,6 @@ export default function Sync_Upload_Screen(props) {
       ...item,
       checked: updatedSelectAll,
     }));
-    console.log('updatedData', updatedData);
     // setData(updatedData);
     if (updatedSelectAll) {
       setCheckedItems(updatedData);
@@ -40,8 +39,6 @@ export default function Sync_Upload_Screen(props) {
   };
 
   const handleCheckboxToggle = item => {
-    console.log('check item', item);
-    console.log('checkedItem', checkedItems);
     if (isChecked(item)) {
       setCheckedItems(
         checkedItems.filter(checkedItem => checkedItem.application_no !== item.application_no),

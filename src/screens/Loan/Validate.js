@@ -9,8 +9,8 @@ const validate = (values) => {
     if (!values.application_amt) {
         errors.application_amt = "Loan Apply Amount is required.";
     }
-    if (!values.borrower_name) {
-        errors.borrower_name = "Borrower Name is required.";
+    if (!values.resident_rgst_id) {
+        errors.resident_rgst_id = "Borrower NRC is required.";
     }
     // if (!values.tel_no) {
     //     errors.tel_no = "Tel Number is required.";

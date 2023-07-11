@@ -19,55 +19,12 @@ import Sync_Download_Screen from './Sync_Download_Screen';
 import Sync_Setting_Screen from './Sync_Setting_Screen';
 import {fetchAllCustomerNum} from '../../query/Customer_query';
 import {UploadCustomerData} from '../../query/Customer_query';
-import {UploadLoanData} from '../../query/AllLoan_query';
 import {getAllLoan_By_application_no} from '../../query/AllLoan_query';
 import {fetchDataForCheckedData} from '../../query/AllLoan_query';
 import Icon from 'react-native-vector-icons/Feather';
 import {get_loged_branch_code} from '../../query/Employee_query';
 import Spinner from 'react-native-loading-spinner-overlay';
-const Error_Log_Modal = props => {
-  const {error_modal_visible, hideModal} = props;
 
-  return (
-    <Modal
-      useNativeDriver
-      hideModalContentWhileAnimating
-      dismissable={false}
-      visible={error_modal_visible}
-      onDismiss={hideModal}
-      contentContainerStyle={{
-        backgroundColor: '#e8e8e8',
-        width: '40%',
-        alignSelf: 'center',
-        // flex: 1,
-        // height:200
-      }}>
-      <View
-        style={{backgroundColor: '#232D57', padding: 25}}
-        onStartShouldSetResponder={() => hideModal()}>
-        <Icon
-          name="x-circle"
-          size={25}
-          color="#fff"
-          style={{
-            marginLeft: 20,
-            position: 'absolute',
-            top: 0,
-            right: 10,
-            top: 10,
-          }}
-        />
-      </View>
-      <View style={{padding: 10, height: 200}}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-          }}></View>
-      </View>
-    </Modal>
-  );
-};
 export default function Synchronization_Screen() {
   const [activeTab, setActiveTab] = React.useState(0);
   const [loan_data, setAllLoan] = React.useState([]);
@@ -128,7 +85,6 @@ export default function Synchronization_Screen() {
         setLoading(true);
         await fetchDataForCheckedData(filteredArray, branch_code).then(
           async result => {
-            console.log('result',result);
             if (result == 'success') {
               await loadData();
               setLoading(false);

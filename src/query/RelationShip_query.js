@@ -78,7 +78,6 @@ export async function deleteRelation_ByID(relation_no) {
           'DELETE FROM Relation_info WHERE relation_no = ?',
           [relation_no],
           (txObj, resultSet) => {
-            console.log('resultSet', resultSet);
             resolve('success');
             // Delete query successful
             console.log('Delete successful');

@@ -8,45 +8,13 @@ import {connect, useDispatch} from 'react-redux';
 import {List} from 'react-native-paper';
 import TextInputFile from '../../components/TextInputFile';
 function Area_Evaluation_Score(props) {
-  const dispatch = useDispatch();
-
-  const {total_score, setTotal_sts_flag} = props;
+  const {total_score,total_sts_flag} = props;
   const [area_evaluation_score_expanded, setAreaEvaluationScoreExpanded] =
     useState(true);
   const handleAreaEvaluationScoreToggle = () => {
     setAreaEvaluationScoreExpanded(!area_evaluation_score_expanded);
   };
 
-  const initialSelectedOption = () => {
-    if (total_score >= 35 && total_score <= 40) {
-      setTotal_sts_flag('1');
-      return '1';
-    } else if (total_score >= 25 && total_score <= 34) {
-      // setTotal_sts_flag('2')
-      return '2';
-    } else if (total_score >= 15 && total_score <= 24) {
-      // setTotal_sts_flag('3')
-      return '3';
-    } else if (total_score >= 1 && total_score <= 14) {
-      // setTotal_sts_flag('4')
-      return '4';
-    } else {
-      setTotal_sts_flag('');
-      console.log('nth');
-    }
-  };
-  const initialValues = {
-    c:
-      total_score >= 35 && total_score <= 40
-        ? '1'
-        : total_score >= 25 && total_score <= 34
-        ? '2'
-        : total_score >= 15 && total_score <= 24
-        ? '3'
-        : total_score >= 1 && total_score <= 14
-        ? '4'
-        : '',
-  };
   return (
     <>
       <List.Accordion
@@ -95,7 +63,7 @@ function Area_Evaluation_Score(props) {
                 data={area_evaluation_score_result}
                 name={'total_sts_flag'}
                 component={RadioButtonFile}
-                // get_value={initialSelectedOption()}
+                get_value={total_sts_flag}
                 disabled={true}
               />
             </View>
@@ -149,19 +117,6 @@ function mapStateToProps(state) {
 
   };
 }
-const getAutoSelectedValue = totalScore => {
-  if (totalScore >= 35 && totalScore <= 40) {
-    return '1';
-  } else if (totalScore >= 25 && totalScore <= 34) {
-    return '2';
-  } else if (totalScore >= 15 && totalScore <= 24) {
-    return '3';
-  } else if (totalScore >= 1 && totalScore <= 14) {
-    return '4';
-  } else {
-    return '';
-  }
-};
 
 export default reduxForm({
   form: 'Area_Evaluation_Form',

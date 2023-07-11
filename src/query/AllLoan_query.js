@@ -2,23 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {Alert, FileSystem} from 'react-native';
 import RNFS from 'react-native-fs';
-const ExecuteQuery = (sql, params = []) =>
-  new Promise((resolve, reject) => {
-    global.db.transaction(trans => {
-      trans.executeSql(
-        sql,
-        params,
-        (trans, results) => {
-          resolve(results);
-          console.log('delet Beneficiary Data', results);
-        },
-        error => {
-          reject(error);
-          console.log('error', error);
-        },
-      );
-    });
-  });
+
 export async function getAllLoan() {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
@@ -225,7 +209,6 @@ export function getIndividual_loan() {
 
 export const storeLoanData = async loan_data => {
   const user_id = await AsyncStorage.getItem('user_id');
-  console.log('Before insert loan', loan_data);
   return new Promise(async (resolve, reject) => {
     try {
       global.db.transaction(trans => {
@@ -405,7 +388,6 @@ export const storeLoanData = async loan_data => {
 };
 
 export async function deleteLoan_ByID(data) {
-  console.log('delete data', data);
   try {
     const borrowerImagePath = data.borrower_sign;
     const coBorrowerImagePath = data.co_borrower_sign;
@@ -464,8 +446,44 @@ export async function deleteLoan_ByID(data) {
               'DELETE FROM Exception_aprv WHERE application_no = ?',
               [data.application_no],
               (txObj, resultSet) => {
-                console.log('Delete from Table2 successful');
-                resolve('success');
+                tx.executeSql(
+                  'DELETE FROM Area_evaluation WHERE application_no = ?',
+                  [data.application_no],
+                  (txObj, resultSet) => {
+                    tx.executeSql(
+                      'DELETE FROM Relation_info WHERE application_no = ?',
+                      [data.application_no],
+                      (txObj, resultSet) => {
+                        tx.executeSql(
+                          'DELETE FROM Guarantee WHERE application_no = ?',
+                          [data.application_no],
+                          (txObj, resultSet) => {
+                            console.log('Delete from Guarantee successful');
+                            resolve('success');
+                          },
+                          (txObj, error) => {
+                            console.error(
+                              'Delete from Guarantee error:',
+                              error,
+                            );
+                            reject(error);
+                          },
+                        );
+                      },
+                      (txObj, error) => {
+                        console.error(
+                          'Delete from Relation_info error:',
+                          error,
+                        );
+                        reject(error);
+                      },
+                    );
+                  },
+                  (txObj, error) => {
+                    console.error('Delete from Area_evaluation error:', error);
+                    reject(error);
+                  },
+                );
               },
               (txObj, error) => {
                 console.error('Delete from Table2 error:', error);
@@ -475,7 +493,7 @@ export async function deleteLoan_ByID(data) {
           },
           (txObj, error) => {
             // Error occurred while executing the delete query
-            console.error('Delete error:', error);
+            console.error('Delete error Individual_application:', error);
             reject(error);
           },
         );
@@ -485,74 +503,6 @@ export async function deleteLoan_ByID(data) {
     console.error('Error deleting loan:', error);
     throw error;
   }
-}
-export function UploadLoanData(data) {
-  return new Promise(async (resolve, reject) => {
-    const failedData = [];
-    let ip = await AsyncStorage.getItem('ip');
-    let port = await AsyncStorage.getItem('port');
-    console.log('data', data);
-    // let data = new FormData();
-    // data.append(
-    //   'individualApplication',
-    //   '[{\n\t"statusCode": "01",\n\t"createUserId": "M00110",\n\t"updateUserId": "M00110",\n\t"productType": "",\n\t"channelDeviceType": "",\n\t"openBranchCode": "",\n\t"openUserId": "",\n\t"mngtBranchCode": "",\n\t"mngtUserId": "",\n\t"applicationNo": "4",\n\t"groupAplcNo": "",\n\t"tabletAplcNo": "",\n\t"referAplcNo": "",\n\t"loanType": "",\n\t"cstNewExistFlg": "Y",\n\t"loanCycle": 6.0,\n\t"applicationAmt": 1000000.0,\n\t"applicationDate": "2023-05-07",\n\t"loantermCnt": 12.0,\n\t"borrowerName": "",\n\t"customerNo": "",\n\t"loanCode": "",\n\t"savingAcctNum": "",\n\t"gender": "M",\n\t"birthDate": "",\n\t"maritalStatus": "",\n\t"residentRgstId": "",\n\t"telNo": "",\n\t"mobileTelNo": "",\n\t"positionTitleNm": "",\n\t"addr": "",\n\t"businessOwnType": "",\n\t"coCustomerNo": "",\n\t"coBrwerName": "",\n\t"workplaceName": "",\n\t"workplaceType": "",\n\t"workplaceAddr": "",\n\t"landOwnType": "",\n\t"totSaleIncome": 0.0,\n\t"totSaleExpense": 0.0,\n\t"rawmaterialExpans": 0.0,\n\t"wrkpRentExpns": 0.0,\n\t"employeeExpns": 0.0,\n\t"trnsrtExpns": 0.0,\n\t"goodsLossExpns": 0.0,\n\t"othrExpns1": 0.0,\n\t"othrExpns2": 0.0,\n\t"totBusNetIncome": 0.0,\n\t"fmlyTotIncome": 0.0,\n\t"fmlyTotExpense": 0.0,\n\t"foodExpns": 0.0,\n\t"houseMngtExpns": 0.0,\n\t"utlbilExpns": 0.0,\n\t"edctExpns": 0.0,\n\t"healthyExpns": 0.0,\n\t"financeExpns": 0.0,\n\t"fmlyOtrExpns": 0.0,\n\t"fmlyTotNetIncome": 0.0,\n\t"totNetIncome": 0.0,\n\t"remark": "",\n\t"tabletSyncSts": "00",\n\t"syncSts": "00",\n\t"pastLoanAmount": 0.0,\n\t"pastLoanRating": "",\n\t"pastCreditEmplNm": "",\n\t"oldApplicationNo": "",\n\t"loanLimitAmt": 0.0,\n\t"sysOrganizationCode": "1000",\n\t"organizationCode": "1000",\n\t"restFlag": "Y",\n\t"transactionDate": "2023-05-07",\n\t"serialNo": 2594\n\n}]',
-    // );
-    // data.append('guarantee', '[]');
-    // data.append('areaEvaluation', '[]');
-    // data.append('exceptionAprv', '[]');
-    // data.append('relationInfo', '[]');
-
-    let config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: `https://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
-      headers: {
-        Cookie: 'JSESSIONID=nVnRW80EvQ6teKGkjmeggo86bp_djUvxA44l4y2Q.aungmac',
-      },
-      data,
-    };
-
-    // axios.request(config)
-    // .then((response) => {
-    //   console.log(JSON.stringify(response.data));
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // });
-
-    try {
-      await axios
-        .request(config)
-        .then(response => {
-          console.log('response data', response.data);
-        })
-        .catch(error => {
-          console.log('axios error', error.response.data);
-          Alert.alert('Error', 'Axios error occurred.');
-          reject(error);
-          return; // Stop further execution of the loop
-        });
-      // }
-
-      // console.log('failedData', failedData);
-      // if (failedData.length > 0) {
-      //   Alert.alert(
-      //     'Error',
-      //     `Failed to upload ${failedData.length} data items:\n${JSON.stringify(
-      //       failedData,
-      //     )}`,
-      //   );
-      //   resolve('error');
-      // } else {
-      //   Alert.alert('Success', 'All data successfully uploaded.');
-      //   resolve('success');
-      // }
-    } catch (error) {
-      alert(error);
-      reject(error);
-      console.log('error', error);
-    }
-  });
 }
 
 export async function getAllLoan_By_application_no(application_no) {
@@ -590,7 +540,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         createUserId: data.create_user_id,
         updateUserId: data.update_user_id,
         productType: data.product_type, //not null
-        channelDeviceType: '001100',
+        channelDeviceType: '00110',
         openBranchCode: branch_code, //not null
         openUserId: 'M00172', //not null
         mngtBranchCode: 1000, //not null
@@ -717,80 +667,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         prop_motorcycle_yn: data.prop_motorcycle_yn,
         property_kind: data.property_kind,
       };
-      let test = {
-        statusCode: '01',
-        createUserId: 'M01237',
-        updateUserId: 'M01237',
-        productType: '10',
-        channelDeviceType: '00110',
-        openBranchCode: '7001',
-        openUserId: 'M01237',
-        mngtBranchCode: '7001',
-        mngtUserId: 'M01237',
-        applicationNo: '10M0123720230704001',
-        groupAplcNo: '',
-        tabletAplcNo: '',
-        referAplcNo: '',
-        loanType: '10',
-        cstNewExistFlg: 'Y',
-        loanCycle: 6.0,
-        applicationAmt: 1000000.0,
-        applicationDate: '2023-07-04',
-        loantermCnt: 12.0,
-        borrowerName: 'Customer 9 ',
-        customerNo: '20230520242',
-        loanCode: '',
-        savingAcctNum: '',
-        gender: 'M',
-        birthDate: '',
-        maritalStatus: '',
-        residentRgstId: '1/BhMaNa(N)123414',
-        telNo: '',
-        mobileTelNo: '',
-        positionTitleNm: '',
-        addr: '',
-        businessOwnType: '',
-        coCustomerNo: '20230520244',
-        coBrwerName: '',
-        workplaceName: '',
-        workplaceType: '',
-        workplaceAddr: '',
-        landOwnType: '',
-        totSaleIncome: 0.0,
-        totSaleExpense: 0.0,
-        rawmaterialExpans: 0.0,
-        wrkpRentExpns: 0.0,
-        employeeExpns: 0.0,
-        trnsrtExpns: 0.0,
-        goodsLossExpns: 0.0,
-        othrExpns1: 0.0,
-        othrExpns2: 0.0,
-        totBusNetIncome: 0.0,
-        fmlyTotIncome: 0.0,
-        fmlyTotExpense: 0.0,
-        foodExpns: 0.0,
-        houseMngtExpns: 0.0,
-        utlbilExpns: 0.0,
-        edctExpns: 0.0,
-        healthyExpns: 0.0,
-        financeExpns: 0.0,
-        fmlyOtrExpns: 0.0,
-        fmlyTotNetIncome: 0.0,
-        totNetIncome: 0.0,
-        remark: '',
-        tabletSyncSts: '00',
-        syncSts: '00',
-        pastLoanAmount: 0.0,
-        pastLoanRating: '',
-        pastCreditEmplNm: '',
-        oldApplicationNo: '',
-        loanLimitAmt: 0.0,
-        sysOrganizationCode: '1000',
-        organizationCode: '1000',
-        restFlag: 'Y',
-        transactionDate: '2023-07-04',
-        serialNo: 1,
-      };
 
       const guaranteeData = await fetchGuaranteeData(applicationNo);
 
@@ -830,39 +706,114 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
       });
 
       const areaevaluation = await fetchAreaEvaluation(applicationNo);
+      let area_data = {
+        organizationCode: '',
+        serialNo: '',
+        statusCode: '00',
+        createUserId: areaevaluation[0].create_user_id,
+        updateUserId: areaevaluation[0].update_user_id,
+        tabletAreaEvltNo: '',
+        areaEvaluationNo: areaevaluation[0].area_evaluation_no,
+        areaEvaluationDate: areaevaluation[0].area_evaluation_date,
+        tabletAplcNo: '',
+        applicationNo: areaevaluation[0].application_no,
+        townshipName: areaevaluation[0].township_name,
+        villageName: areaevaluation[0].village_name,
+        authName: areaevaluation[0].auth_name,
+        contractNo: areaevaluation[0].contract_no,
+        streetText: areaevaluation[0].street_text,
+        householdsText: areaevaluation[0].households_text,
+        populationText: areaevaluation[0].population_text,
+        houseText: areaevaluation[0].house_text,
+        houseOwnText: areaevaluation[0].house_own_text,
+        houseRentText: areaevaluation[0].house_rent_text,
+        propertyText: areaevaluation[0].property_text,
+        propertyDocmText: areaevaluation[0].property_docm_text,
+        occupation: areaevaluation[0].occupation,
+        mfiNumFlag: areaevaluation[0].mf_num_flag,
+        mfiRemark: areaevaluation[0].mfi_remark,
+        pastdueStsFlag: areaevaluation[0].pastdue_sts_flag,
+        pastdueStsRemark: areaevaluation[0].pastdue_sta_remark,
+        trnsrtStsFlag: areaevaluation[0].trnsrt_sts_flag,
+        trnsrtStsRemark: areaevaluation[0].trnsrt_sts_remark,
+        chnlDeviceType: areaevaluation[0].chnl_device_type,
+        tabletSyncSts: '00',
+        syncSts: '',
+        areaSecurityFlag: areaevaluation[0].area_security_flag,
+        areaSecurityRemark: areaevaluation[0].area_security_remark,
+        cmncStsFlag: areaevaluation[0].cmnc_sts_flag,
+        cmncStsRemark: areaevaluation[0].cmnc_sts_remark,
+        economyStsFlag: areaevaluation[0].economy_sts_flag,
+        economyStsRemark: areaevaluation[0].economy_sts_remark,
+        incomeStsFlag: areaevaluation[0].income_sts_flag,
+        incomeStsRemark: areaevaluation[0].income_sts_remark,
+        householdsStsFlag: areaevaluation[0].households_sts_flag,
+        householdsStsRemark: areaevaluation[0].households_sts_remark,
+        localAuthSprtFlag: areaevaluation[0].local_auth_sprt_flag,
+        localAuthSprtRmrk: areaevaluation[0].local_auth_sprt_rmrk,
+        totalStsFlag: areaevaluation[0].total_sts_flag,
+        totalStsRemark: areaevaluation[0].total_sts_remark,
+        totalRemark: areaevaluation[0].total_remark,
+        prepareEmplNm: areaevaluation[0].prepare_empl_nm,
+        checkEmplNm: areaevaluation[0].check_empl_nm,
+        summary: areaevaluation[0].summary,
+      };
       const exception_aprv = await fetchExceptionAprv(applicationNo);
       console.log('individual_loan_data', individual_loan_data);
-      console.log('gurantor_data', gurantor_data);
-      // let approval_request_data = {
-      //   organizationCode: '',
-      //   serialNo: '',
-      //   statusCode: '01',
-      //   createUserId: user_id,
-      //   updateUserId: user_id,
-      //   tabletExcptAprvRqstNo: '',
-      //   excptAprvRqstNo: exception_aprv[0].excpt_aprv_rqst_no,
-      //   tabletGroupAplcNo: '',
-      //   groupAplcNo: exception_aprv[0].group_aplc_no,
-      //   tabletAplcNo: '',
-      //   applicationNo: exception_aprv[0].application_no,
-      //   exceptionRqstDate: exception_aprv[0].exception_rqst_date,
-      //   borrowerName: exception_aprv[0].borrower_name,
-      //   applicationAmt: exception_aprv[0].application_amt,
-      //   birthDate: exception_aprv[0].birth_date,
-      //   borrowerAge: '',
-      //   groupMemberNum: exception_aprv[0].group_member_num,
-      //   occupation: exception_aprv[0].occupation,
-      //   netIncome: exception_aprv[0].net_income,
-      //   excptAprvRsn1: exception_aprv[0].excpt_aprv_rsn_1,
-      //   excptAprvRsn2: exception_aprv[0].excpt_aprv_rsn_2,
-      //   excptAprvRsn3: exception_aprv[0].excpt_aprv_rsn_3,
-      //   exceptionReason: exception_aprv[0].exception_reason,
-      //   recommendNm: exception_aprv[0].recommend_nm,
-      //   tabletSyncSts: '00',
-      //   syncSts: '00',
-      // };
+      let approval_request_data = {
+        organizationCode: '',
+        serialNo: '',
+        statusCode: '01',
+        createUserId: user_id,
+        updateUserId: user_id,
+        tabletExcptAprvRqstNo: '',
+        excptAprvRqstNo: exception_aprv[0].excpt_aprv_rqst_no,
+        tabletGroupAplcNo: '',
+        groupAplcNo: exception_aprv[0].group_aplc_no,
+        tabletAplcNo: '',
+        applicationNo: exception_aprv[0].application_no,
+        exceptionRqstDate: exception_aprv[0].exception_rqst_date,
+        borrowerName: exception_aprv[0].borrower_name,
+        applicationAmt: exception_aprv[0].application_amt,
+        birthDate: exception_aprv[0].birth_date,
+        borrowerAge: '',
+        groupMemberNum: exception_aprv[0].group_member_num,
+        occupation: exception_aprv[0].occupation,
+        netIncome: exception_aprv[0].net_income,
+        excptAprvRsn1: exception_aprv[0].excpt_aprv_rsn_1,
+        excptAprvRsn2: exception_aprv[0].excpt_aprv_rsn_2,
+        excptAprvRsn3: exception_aprv[0].excpt_aprv_rsn_3,
+        exceptionReason: exception_aprv[0].exception_reason,
+        recommendNm: exception_aprv[0].recommend_nm,
+        tabletSyncSts: '00',
+        syncSts: '00',
+      };
 
       const relation_info = await fetchRelationInfo(applicationNo);
+      let relation_data = {
+        organizationCode: '',
+        serialNo: '',
+        statusCode: '01',
+        createUserId: relation_info[0].create_user_id,
+        updateUserId: relation_info[0].update_user_id,
+        relationNo: relation_info[0].relation_no,
+        tabletGuaranteeNo: '',
+        applicationNo: relation_info[0].application_no,
+        transactionDate: relation_info[0].transaction_date,
+        borrowerName: relation_info[0].borrower_name,
+        addr: relation_info[0].addr,
+        residentRgstId: relation_info[0].resident_rgst_id,
+        coBrwerName: resident_rgst_id[0].co_brwer_name,
+        coBrwerRgstId: resident_rgst_id[0].co_brwer_rgst_id,
+        grandparentYn: resident_rgst_id[0].grandparent_yn,
+        parentYn: resident_rgst_id[0].parent_yn,
+        brotherSisterYn: resident_rgst_id[0].brother_sister_yn,
+        husbandWifeYn: resident_rgst_id[0].husband_wife_yn,
+        sonDaughterYn: resident_rgst_id[0].son_daughter_yn,
+        tabletSyncSts: '00',
+        syncSts: '',
+        relationName: resident_rgst_id[0].relation_name,
+      };
 
       let formData = new FormData();
       formData.append(
@@ -870,9 +821,12 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         JSON.stringify([individual_loan_data]),
       );
       formData.append('guarantee', JSON.stringify(gurantor_data));
-      formData.append('areaEvaluation', '[]');
-      formData.append('relationInfo', '[]');
-      formData.append('approvalRequests', '[]');
+      formData.append('areaEvaluation', JSON.stringify([area_data]));
+      formData.append('relationInfo', JSON.stringify([relation_data]));
+      formData.append(
+        'approvalRequests',
+        JSON.stringify([approval_request_data]),
+      );
       if (data.borrower_sign) {
         let borrower_sign_form_data = new FormData();
         borrower_sign_form_data.append('description', 'anything');
@@ -982,8 +936,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'https://ff10-211-206-100-66.ngrok-free.app/skylark-m3s/api/individualLoan.m3s',
-
+        url: `https://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
         data: formData,
       };
       const response = await axios.request(config);

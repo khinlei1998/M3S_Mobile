@@ -1894,7 +1894,6 @@ function Individual_Staff_loan_Info(props) {
     const user_id = await AsyncStorage.getItem('user_id');
 
     await getAllLoan().then(loan_data => {
-      console.log('loan_data', loan_data);
       setAllLoanData(loan_data);
       dispatch(
         change(

@@ -83,7 +83,6 @@ export default function App() {
       readOnly: false,
     },
     success => {
-      console.log('DB Connection Created');
     },
     error => {
       console.log('Error', error);
@@ -93,7 +92,7 @@ export default function App() {
   useEffect(() => {
     const saveIp = async user_id => {
       try {
-        await AsyncStorage.setItem('ip', 'ff10-211-206-100-66.ngrok-free.app');
+        await AsyncStorage.setItem('ip', 'e5eb-211-206-100-66.ngrok-free.app');
         await AsyncStorage.setItem('port', '443');
       } catch (e) {
         console.log('error ::', e);

@@ -2126,6 +2126,8 @@ function Edit_Individual_Loan(props) {
           props.navigation.navigate('Home');
         }
       });
+    } else {
+      alert('Update');
     }
     // try {
     //   // Save the images
@@ -2199,7 +2201,6 @@ function Edit_Individual_Loan(props) {
         granted['android.permission.READ_EXTERNAL_STORAGE'] ===
           PermissionsAndroid.RESULTS.GRANTED
       ) {
-        console.log('Storage permissions granted');
       } else {
         console.log('Storage permissions denied');
       }
@@ -2243,7 +2244,6 @@ function Edit_Individual_Loan(props) {
       setRelationData(data);
     });
     await getEvaluationData(retrive_loan_data.application_no).then(data => {
-      console.log('data', data);
       setEvaluationData(data);
     });
 
@@ -2498,7 +2498,8 @@ function Edit_Individual_Loan(props) {
                   style={{
                     width: 250,
                     height: 40,
-                    backgroundColor: '#242157',
+                    backgroundColor:
+                      evaluation_data.length > 0 ? '#3E3E84' : '#242157',
                     margin: 10,
                   }}>
                   {evaluation_data.length > 0 ? (
@@ -2703,6 +2704,7 @@ function Edit_Individual_Loan(props) {
                   justifyContent: 'center',
                 }}>
                 <Button
+                  onPress={() => alert('Hello')}
                   mode="contained"
                   buttonColor={'#0480B7'}
                   style={{
@@ -2716,6 +2718,7 @@ function Edit_Individual_Loan(props) {
                 </Button>
 
                 <Button
+                  disabled={true}
                   mode="contained"
                   buttonColor={'#6870C3'}
                   style={{

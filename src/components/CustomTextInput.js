@@ -1,33 +1,45 @@
 import {
   Text,
   View,
-  TextInput,
+  // TextInput,
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import React from 'react';
 
 const CustomTextInput = props => {
-  const {keyboardType, input,} = props;
+  // const { meta: { touched, error },  input: {onChange, ...restInput},initialValue,focusTextInput,icon,handleTextInputFocus,
+  //   // input, ...inputProps,
+  //   ...rest } = props;
 
   return (
     <>
-      <TextInput
-        placeholder={'oo'}
-        placeholderTextColor="#8D8B8B"
-        style={{
-          shadowOpacity: 0.25,
-          elevation: 3,
-          color: '#8D8B8B',
-          padding: 10,
-          marginLeft: 15,
-          marginBottom: 15,
-          marginTop: 7,
-          width:300
-        }}
+    <Text>kk</Text>
+      {/* <TextInput
+        {...rest}
+        error={touched && error}
         onChangeText={input.onChange}
-        keyboardType={keyboardType && 'phone-pad'}
+        style={{
+          backgroundColor: '#fff',
+          marginTop: 10,
+          width: 301,
+          // marginRight: 10,
+          borderColor: '#303030',
+          borderWidth: 0.5,
+        }}
+        onFocus={focusTextInput && handleTextInputFocus}
+        right={
+          icon == 'eye' ? (
+            <TextInput.Icon icon={icon} onPress={togglePasswordIcon} />
+          ) : icon == 'magnify' ? (
+            <TextInput.Icon icon={icon} onPress={handleTextInputFocus} />
+          ) : icon == 'calendar' ? (
+            <TextInput.Icon icon={icon} />
+          ) : null
+        }
       />
+      {touched && error && <Text style={{ color: 'red' }}>{error}</Text>} */}
     </>
   );
 };

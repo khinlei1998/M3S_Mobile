@@ -30,13 +30,6 @@ function Exceptional_Approvel_Form(props) {
   const retrive_loan_data = props.route.params.retrive_loan_data;
 
   const onSubmit = async values => {
-    console.log(JSON.stringify(values));
-    // setExcept_ApprovalStatus(1)
-    // props.navigation.navigate('Individual_loan','exceptionl_success');
-    // navigation.state.params.updateParent(
-    //   "some data to send back"
-    // )
-    // navigation.goBack('exceptionl_success');
     await storeExceptionalApproval(values).then(result => {
       if (result == 'success') {
         ToastAndroid.show(`Insert Success`, ToastAndroid.SHORT);

@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export async function getEvaluationData(application_no) {
-  console.log('application_no', application_no);
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
       tx.executeSql(
@@ -19,7 +18,6 @@ export async function getEvaluationData(application_no) {
 }
 
 export const storeAreaEvaluation = async data => {
-  console.log('data', data);
   const user_id = await AsyncStorage.getItem('user_id');
   return new Promise(async (resolve, reject) => {
     try {
@@ -70,14 +68,15 @@ export const storeAreaEvaluation = async data => {
             data.households_sts_flag, //40
             data.households_sts_remark,
             data.local_auth_sprt_flag,
+            data.local_auth_sprt_remark,
             data.total_sts_flag, //44
             data.total_sts_remark,
             data.total_remark,
             data.prepare_empl_nm,
             data.check_empl_nm, //48
             data.summary,
-            '00',
-            '00',
+            '00', //tablet
+            '00', //sync
             data.err_msg, //52
           ],
           (trans, results) => {
@@ -95,29 +94,28 @@ export const storeAreaEvaluation = async data => {
     }
   });
 };
-// export async function deleteGuarantor_ByID(guarantee_no) {
-//   try {
-//     return new Promise((resolve, reject) => {
-//       global.db.transaction(tx => {
-//         tx.executeSql(
-//           'DELETE FROM Guarantee WHERE guarantee_no = ?',
-//           [guarantee_no],
-//           (txObj, resultSet) => {
-//             console.log('resultSet', resultSet);
-//             resolve('success');
-//             // Delete query successful
-//             console.log('Delete successful');
-//           },
-//           (txObj, error) => {
-//             // Error occurred while executing the delete query
-//             console.error('Delete error:', error);
-//             reject(error);
-//           },
-//         );
-//       });
-//     });
-//   } catch (error) {
-//     console.error('Error deleting loan:', error);
-//     throw error;
-//   }
-// }
+export async function deleteAreaEvaluation_ByID(area_evaluation_no) {
+  try {
+    return new Promise((resolve, reject) => {
+      global.db.transaction(tx => {
+        tx.executeSql(
+          'DELETE FROM Area_evaluation WHERE area_evaluation_no = ?',
+          [area_evaluation_no],
+          (txObj, resultSet) => {
+            resolve('success');
+            // Delete query successful
+            console.log('Delete successful');
+          },
+          (txObj, error) => {
+            // Error occurred while executing the delete query
+            console.error('Delete error:', error);
+            reject(error);
+          },
+        );
+      });
+    });
+  } catch (error) {
+    console.error('Error deleting loan:', error);
+    throw error;
+  }
+}

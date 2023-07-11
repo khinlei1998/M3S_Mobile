@@ -3,22 +3,13 @@ import React from 'react';
 
 export default function Guarantor_Sign(props) {
   const {
-    coborrower_sign_path,
-    show_coborrower_sign,
     show_borrower_sign,
     borrower_sign_path,
     setCanvas,
     show_canvas,
-    showCanvas,
-    navigation,
-    filePath,
-    setCoBorrowerCanvas,
-    co_borrower_filePath,
-    show_co_borrower_canvas,
     guarantor_name,
     guarantee_date
   } = props;
-  console.log('guarantee_date', guarantee_date);
   return (
     <>
       <View style={{ flex: 1, padding: 5, margin: 20 }}>
@@ -69,7 +60,6 @@ export default function Guarantor_Sign(props) {
             {borrower_sign_path !== '' && (
               <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
                 <Image
-                  // source={{uri: `file://${borrower_sign_path}`}}
                   source={{ uri: `data:image/png;base64,${show_borrower_sign}` }}
                   style={{ width: 100, height: 50 }}
                 />

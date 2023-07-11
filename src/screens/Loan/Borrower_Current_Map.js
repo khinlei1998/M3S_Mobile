@@ -9,13 +9,15 @@ function Borrower_Current_Map(props) {
   const {navigation, all_loandata, map} = props;
   const [borrower_map_expanded, setBorrowerMapExpanded] = useState(true);
   const [map_show, setMapShow] = useState(false);
+  // const [map, setShowMap] = useState('')
 
+  const p_type = 10;
   const handleBorrowerMapToggle = () => {
     setBorrowerMapExpanded(!borrower_map_expanded);
   };
   const btnshowMap = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
-    navigation.navigate('Borrower Map', {all_loandata, user_id});
+    navigation.navigate('Borrower Map', {all_loandata, user_id, p_type});
   };
   return (
     <List.Accordion
@@ -38,7 +40,7 @@ function Borrower_Current_Map(props) {
                 uri: `file://${map}`,
                 // uri: `file:///storage/emulated/0/Pictures/RNSketchCanvas/10M00172TB202306292SG01.jpg`,
               }}
-              style={{ height: 400, }}
+              style={{height: 400}}
               resizeMode="contain"
             />
           ) : (

@@ -190,7 +190,6 @@ export async function deleteStaffLoan_ByID(data) {
           'DELETE FROM Individual_application WHERE id = ?',
           [data.id],
           (txObj, resultSet) => {
-            console.log('resultSet', resultSet);
             resolve('success');
             // Delete query successful
             console.log('Delete successful');

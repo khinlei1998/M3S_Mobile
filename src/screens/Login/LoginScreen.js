@@ -99,9 +99,6 @@ function LoginScreen(props) {
               if (result == 'success') {
                 getNRC_info().then(result => {
                   if (result == 'success') {
-
-                    // getIndividual_loan().then(result => {
-                    //   if (result == 'success') {
                     getLoanMax().then(result => {
                       if (result == 'success') {
                         getSurvey_Item().then(result => {

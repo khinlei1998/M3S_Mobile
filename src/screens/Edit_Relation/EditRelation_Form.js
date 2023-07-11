@@ -333,9 +333,6 @@ function Edit_Relation_Form(props) {
         console.log('Error deleting files:', error);
       }
     } else {
-      console.log('values', values);
-      console.log('relationName', values.relationName);
-
       const test = Object.assign({}, values, {
         parent_yn: values.relationName == 1 ? '1' : '',
         brother_sister_yn: values.relationName == 2 ? '1' : '',

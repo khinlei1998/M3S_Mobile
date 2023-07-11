@@ -1,15 +1,15 @@
-import {View, Text} from 'react-native';
-import React, {useState} from 'react';
-import {List} from 'react-native-paper';
-import {style} from '../../style/Area_Evaluation_style';
+import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { List } from 'react-native-paper';
+import { style } from '../../style/Area_Evaluation_style';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import TextInputFile from '../../components/TextInputFile';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
-import {microfinance_data, area_evaluation_result} from '../../common';
+import { reduxForm, Field, change, reset } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
+import { microfinance_data, area_evaluation_result } from '../../common';
 import { setEvaluation_Score } from '../../redux/LoanReducer';
 function Area_Evaluation(props) {
-  const {setEvaluation_Score}=props
+  const { setEvaluation_Score,setTotal_sts_flag } = props
   const [area_evaluation_form_expanded, setAreaEvaluationFormExpanded] =
     useState(true);
   const [values, setValues] = useState([]);
@@ -23,16 +23,25 @@ function Area_Evaluation(props) {
 
     // Update the selected values array
     const newValues = [...values];
-    newValues[index] =number;
+    newValues[index] = number;
     setValues(newValues);
     const filteredValues = newValues.filter(
       value => typeof value === 'number',
     );
 
-      let multipliedValue = filteredValues.reduce((total, val) => {
-        return total + val;
-      }, 0);
-      setEvaluation_Score(multipliedValue)
+    let multipliedValue = filteredValues.reduce((total, val) => {
+      return total + val;
+    }, 0);
+    setEvaluation_Score(multipliedValue)
+    if (multipliedValue >= 35 && multipliedValue <= 40) {
+      setTotal_sts_flag('1');
+    } else if (multipliedValue >= 25 && multipliedValue <= 34) {
+      setTotal_sts_flag('2');
+    } else if (multipliedValue >= 15 && multipliedValue <= 24) {
+      setTotal_sts_flag('3');
+    } else if (multipliedValue >= 1 && multipliedValue <= 14) {
+      setTotal_sts_flag('4');
+    }
     // Perform any other desired action with the multiplied value
   };
 
@@ -303,4 +312,4 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Area_Evaluation_Form',
-})(connect(mapStateToProps, {setEvaluation_Score})(Area_Evaluation));
+})(connect(mapStateToProps, { setEvaluation_Score })(Area_Evaluation));

@@ -92,7 +92,6 @@ export async function deleteGuarantor_ByID(guarantee_no) {
           'DELETE FROM Guarantee WHERE guarantee_no = ?',
           [guarantee_no],
           (txObj, resultSet) => {
-            console.log('resultSet', resultSet);
             resolve('success');
             // Delete query successful
             console.log('Delete successful');

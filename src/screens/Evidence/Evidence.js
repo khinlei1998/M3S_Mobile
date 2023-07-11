@@ -106,7 +106,6 @@ export default function Evidence(props) {
       if (fileExists) {
         setCapturedFiles(prevFiles => [...prevFiles, type]);
       }
-      console.log('Image saved with custom filename:', filePath);
     } catch (error) {
       console.log('Image saving error:', error);
     }
@@ -147,8 +146,6 @@ export default function Evidence(props) {
       if (fileExists) {
         setCapturedFiles(prevFiles => [...prevFiles, type]);
       }
-
-      console.log('Image saved with custom filename:', filePath);
     } catch (error) {
       console.log('Image saving error:', error);
     }
