@@ -63,7 +63,7 @@ function Area_Evaluation_Score(props) {
                 data={area_evaluation_score_result}
                 name={'total_sts_flag'}
                 component={RadioButtonFile}
-                // get_value={total_sts_flag}
+                get_value={total_sts_flag}
                 disabled={true}
               />
             </View>

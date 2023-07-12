@@ -33,15 +33,15 @@ function Area_Evaluation(props) {
       return total + val;
     }, 0);
     setEvaluation_Score(multipliedValue)
-    // if (multipliedValue >= 35 && multipliedValue <= 40) {
-    //   setTotal_sts_flag('1');
-    // } else if (multipliedValue >= 25 && multipliedValue <= 34) {
-    //   setTotal_sts_flag('2');
-    // } else if (multipliedValue >= 15 && multipliedValue <= 24) {
-    //   setTotal_sts_flag('3');
-    // } else if (multipliedValue >= 1 && multipliedValue <= 14) {
-    //   setTotal_sts_flag('4');
-    // }
+    if (multipliedValue >= 35 && multipliedValue <= 40) {
+      setTotal_sts_flag('1');
+    } else if (multipliedValue >= 25 && multipliedValue <= 34) {
+      setTotal_sts_flag('2');
+    } else if (multipliedValue >= 15 && multipliedValue <= 24) {
+      setTotal_sts_flag('3');
+    } else if (multipliedValue >= 1 && multipliedValue <= 14) {
+      setTotal_sts_flag('4');
+    }
     // Perform any other desired action with the multiplied value
   };
 

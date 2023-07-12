@@ -113,7 +113,7 @@ function SettingScreen(props) {
 
 
                   <Field
-                    component={CustomTextInput}
+                    component={TextInputFile}
                     name="ip"
                     showValue={showDefault}
                     defaultData={ip}

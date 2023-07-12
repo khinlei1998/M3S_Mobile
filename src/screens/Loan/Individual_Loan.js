@@ -7,7 +7,6 @@ import {
   FlatList,
   PermissionsAndroid,
   TouchableHighlight,
-  Image,
   ToastAndroid,
   TouchableOpacity,
 } from 'react-native';
@@ -15,7 +14,6 @@ import React, { useState, useEffect, useRef, createRef } from 'react';
 import DividerLine from '../../components/DividerLine';
 import { style } from '../../style/Individual_Loan_style';
 import BottomSheet from 'react-native-simple-bottom-sheet';
-
 import {
   operations,
   city_code,
@@ -25,13 +23,6 @@ import {
   location_code,
 } from '../../common';
 import RNFS from 'react-native-fs';
-import Borrower_Modal from './Borrower_Modal';
-// import {
-//   SketchCanvas,
-//   RNSketchCanvas,
-// } from '@terrylinla/react-native-sketch-canvas';
-// import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
-import SketchCanvas from '@terrylinla/react-native-sketch-canvas';
 import {
   RadioButton,
   Button,
@@ -65,7 +56,8 @@ import { storeLoanData } from '../../query/AllLoan_query';
 import validate from './Validate';
 import { TextInput } from 'react-native-paper';
 import { resetMonthlyIncome } from '../../redux/MonthlyReducer';
-import { log } from 'console';
+import { cus_filter_item } from '../../common';
+import { setBorrowerMap_Path } from '../../redux/LoanReducer';
 // import RNFetchBlob from 'rn-fetch-blob';
 
 const Borrower_modal = props => {
@@ -80,7 +72,7 @@ const Borrower_modal = props => {
     selectedItemValue,
     handleItemValueChange,
     setAllCus,
-    handleSubmit,
+    change,
   } = props;
 
   const onChangeEmpText = inputText => {
@@ -95,7 +87,7 @@ const Borrower_modal = props => {
 
   const btnSelectEmployee = item => {
     setSelectedValue(item.id);
-    dispatch(change('Individual_Loan_Form', 'borrower_name', item.customer_nm));
+    change('Individual_Loan_Form', 'borrower_name', item.customer_nm);
     dispatch(
       change('Individual_Loan_Form', 'resident_rgst_id', item.resident_rgst_id),
     );
@@ -148,8 +140,6 @@ const Borrower_modal = props => {
             onPress={() => btnSelectEmployee(item)}
           />
         </View>
-
-        {/* <Field component={RadioButton}/> */}
       </View>
     );
   };
@@ -189,8 +179,8 @@ const Borrower_modal = props => {
                 marginTop: 7,
               }}
               mode="dropdown">
-              {emp_filter_item.length > 0 &&
-                emp_filter_item.map(val => (
+              {cus_filter_item.length > 0 &&
+                cus_filter_item.map(val => (
                   <Picker.Item
                     label={val.label}
                     value={val.value}
@@ -303,7 +293,6 @@ const CoBorrower_modal = props => {
     selectedItemValue,
     handleItemValueChange,
     setAllCoBorrower,
-    handleSubmit,
   } = props;
   const btnCusSearch = async () => {
     await filterCustomer(selectedItemValue, co_borrower_data)
@@ -372,8 +361,6 @@ const CoBorrower_modal = props => {
             onPress={() => btnSelectEmployee(item)}
           />
         </View>
-
-        {/* <Field component={RadioButton}/> */}
       </View>
     );
   };
@@ -431,14 +418,6 @@ const CoBorrower_modal = props => {
               </View>
 
               <View style={{ width: '50%' }}>
-                {/* <Field
-                  name={'searchtext'}
-                  component={TextInputFile}
-                  input_mode
-                  inputmax={20}
-                  icon={'magnify'}
-                  handleTextInputFocus={handleSubmit(btnCusSearch)}
-                /> */}
                 <TextInput
                   style={{
                     backgroundColor: '#fff',
@@ -584,8 +563,6 @@ const Borrower_Sign_Modal = props => {
           showTitleLabel={false}
           minStrokeWidth={10}
           maxStrokeWidth={10}
-          // saveImageFileInExtStorage
-          // backgroundColor="transparent"
           viewMode={'portrait'}
         />
         <View style={{ flexDirection: 'row' }}>
@@ -1835,83 +1812,8 @@ function Individual_Loan(props) {
     resetMonthlyIncome,
     map,
     update_status,
+    setBorrowerMap_Path
   } = props;
-
-  // const saveBorrowerSign = async borrower_sign_path => {
-  //   const user_id = await AsyncStorage.getItem('user_id');
-  //   const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/Signature/`;
-  //   let newFilePath;
-
-  //   try {
-  //     await RNFS.mkdir(directoryPath);
-  //     const fileName = `10${user_id}TB${moment().format('YYYYMMDD')}${
-  //       all_loandata.length + 1
-  //     }SG01.jpg`;
-  //     newFilePath = `${directoryPath}${fileName}`;
-  //     console.log('old newFilePath', newFilePath);
-  //     await RNFS.moveFile(borrower_sign_path, newFilePath);
-  //     console.log('Signature saved successfully');
-  //     console.log('newFilePath', newFilePath);
-  //     // setBorrowerSignPath(newFilePath);
-  //     return newFilePath;
-  //   } catch (error) {
-  //     console.log('Error saving signature:', error);
-  //     throw error;
-  //   }
-  // };
-
-  const requestWriteStoragePermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        {
-          title: 'Write Storage Permission',
-          message:
-            'App needs access to your device storage to save the signature image.',
-          buttonPositive: 'OK',
-          buttonNegative: 'Cancel',
-        },
-      );
-
-      return granted === PermissionsAndroid.RESULTS.GRANTED;
-    } catch (error) {
-      console.log('Error requesting write storage permission:', error);
-      return false;
-    }
-  };
-
-  // const saveSignatureToInternalStorage = async (image_encode, index) => {
-  //   const user_id = await AsyncStorage.getItem('user_id');
-  //   try {
-  //     // Request write storage permission
-  //     const granted = await requestWriteStoragePermission();
-
-  //     if (granted) {
-  //       // Get the base64-encoded image data from the result
-  //       // const imageData = result.encoded;
-
-  //       // Generate a unique filename for the image
-  //       const filename = `10${user_id}TB${moment().format('YYYYMMDD')}${
-  //         all_loandata.length + 1
-  //       }SG${index}.jpg`;
-
-  //       // Define the destination path in the app's internal storage
-  //       const destinationPath = `${RNFS.DocumentDirectoryPath}/${filename}`;
-
-  //       // Write the base64-encoded image data to the destination path
-  //       const test=await RNFS.writeFile(destinationPath, image_encode, 'base64');
-  //       console.log('destinationPath', destinationPath);
-  //       console.log('test',test);
-  //       // Set the image path for display
-  //       // setFinalepath(destinationPath);
-  //       return destinationPath;
-  //     } else {
-  //       console.log('Write storage permission denied.');
-  //     }
-  //   } catch (error) {
-  //     console.log('Error saving signature:', error);
-  //   }
-  // };
 
   const saveSignatureToInternalStorage = async (image_encode, index) => {
     const user_id = await AsyncStorage.getItem('user_id');
@@ -1922,21 +1824,10 @@ function Individual_Loan(props) {
 
       if (granted) {
         // Generate a unique filename for the image
-        const filename = `10${user_id}TB${moment().format('YYYYMMDD')}${all_loandata.length + 1
+        const filename = `10${user_id}${moment().format('YYYYMMDD')}${all_loandata.length + 1
           }SG${index}.jpg`;
         const directory = '/storage/emulated/0/Pictures/Signature/';
         const filePath = directory + filename;
-
-        // Define the destination path in the app's internal storage
-        // let destinationPath;
-        // if (Platform.OS === 'android') {
-        //   destinationPath = `${RNFS.ExternalStorageDirectoryPath}/${filename}`;
-        // } else if (Platform.OS === 'ios') {
-        //   destinationPath = `${RNFS.ExternalStorageDirectoryPath}/${filename}`;
-        // } else {
-        //   console.log('Unsupported platform.');
-        //   return null;
-        // }
         await RNFS.mkdir(directory);
 
         // Write the base64-encoded image data to the destination path
@@ -2058,10 +1949,14 @@ function Individual_Loan(props) {
           console.log('result', result);
           if (result == 'success') {
             dispatch(reset('Individual_Loan_Form'));
+            dispatch(setBorrowerMap_Path(''));
+
             resetMonthlyIncome();
 
             ToastAndroid.show('Create Successfully!', ToastAndroid.SHORT);
+            // props.navigation.navigate('Home');
             props.navigation.navigate('Home');
+
           }
         });
       }
@@ -2094,13 +1989,12 @@ function Individual_Loan(props) {
 
     await getAllLoan().then(loan_data => {
       setAllLoanData(loan_data);
-      console.log('loan_data',loan_data);
       dispatch(
         change(
           'Individual_Loan_Form',
           'application_no',
-          `10${user_id}${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
-          // `10M00172202307061`
+          // `10${user_id}${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
+          `10M001722023071139`
         ),
       );
       dispatch(
@@ -2268,7 +2162,6 @@ function Individual_Loan(props) {
   const showLocationSearch = () => {
     setLocationModalVisible(true);
   };
-  const borrowerPath = `${RNFS.DocumentDirectoryPath}/SignatureImages/10M00172TB202306154SG02.jpg`;
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
@@ -2718,6 +2611,7 @@ function Individual_Loan(props) {
         handleItemValueChange={handleItemValueChange}
         selectedItemValue={selectedItemValue}
         all_cus={all_cus}
+        change={change}
       />
 
       <CoBorrower_modal
@@ -2749,7 +2643,7 @@ function Individual_Loan(props) {
         co_borrower_saveSign={co_borrower_saveSign}
         co_borrower_resetSign={co_borrower_resetSign}
         co_borrower_sign={co_borrower_sign}
-      /> 
+      />
       <City_Modal
         hideCityModal={hideCityModal}
         modal_city_visible={modal_city_visible}
@@ -2768,7 +2662,7 @@ function Individual_Loan(props) {
         handleTownshipItemValueChange={handleTownshipItemValueChange}
         setAllTownship={setAllTownship}
         handleSubmit={handleSubmit}
-      /> 
+      />
 
       <Village_Modal
         hideVillageModal={hideVillageModal}
@@ -2816,5 +2710,6 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Individual_Loan_Form',
+  // initialValues,
   validate,
-})(connect(mapStateToProps, { resetMonthlyIncome })(Individual_Loan));
+})(connect(mapStateToProps, { resetMonthlyIncome, setBorrowerMap_Path })(Individual_Loan));

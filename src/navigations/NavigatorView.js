@@ -26,9 +26,20 @@ import Guarantor_Form from '../screens/GuarantorForm/Guarantor_Form';
 import Evidence from '../screens/Evidence/Evidence';
 
 const StackNavigationData = [
+
   {
+
     name: 'Home',
     component: Home,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Synchronization',
+    component: Synchronization_Screen,
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
       color: '#FFF',
@@ -80,15 +91,7 @@ const StackNavigationData = [
       fontSize: 18,
     },
   },
-  {
-    name: 'Synchronization',
-    component: Synchronization_Screen,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
+
   {
     name: 'Edit_Individual_Loan',
     component: Edit_Individual_Loan,
@@ -197,8 +200,8 @@ const StackNavigationData = [
       fontSize: 18,
     },
   },
-  
-  
+
+
   {
     name: 'Evidence',
     component: Evidence,

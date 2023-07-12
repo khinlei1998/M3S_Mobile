@@ -16,20 +16,6 @@ function Edit_Area_Evaluation_Score(props) {
     setAreaEvaluationScoreExpanded(!area_evaluation_score_expanded);
   };
 
-  const initialSelectedOption = () => {
-    if (total_score >= 35 && total_score <= 40) {
-      return '1';
-    } else if (total_score >= 25 && total_score <= 34) {
-      return '2';
-    } else if (total_score >= 15 && total_score <= 24) {
-      return '3';
-    } else if (total_score >= 1 && total_score <= 14) {
-      console.log('gg');
-      return '4';
-    } else {
-      console.log('nth');
-    }
-  };
   return (
     <>
       <List.Accordion
@@ -78,7 +64,7 @@ function Edit_Area_Evaluation_Score(props) {
                 data={area_evaluation_score_result}
                 name={'total_sts_flag'}
                 component={RadioButtonFile}
-                get_value={initialSelectedOption()}
+                // get_value={initialSelectedOption()}
                 disabled={true}
               />
             </View>

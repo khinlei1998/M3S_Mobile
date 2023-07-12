@@ -1,171 +1,138 @@
-import { View, Text } from 'react-native'
-import React, { useState, useEffect, createRef } from 'react';
-import { style } from '../../style/Group_Loan_style';
-import { List } from 'react-native-paper';
-export default function Group_Leader_Info() {
-    const [Group_expand, setGroupInfoExpand] = useState(true);
-    const handleGroupToggle = () => {
-        setGroupInfoExpand(!Group_expand);
-    };
-    return (
-        <>
-            <List.Accordion
-                expanded={Group_expand}
-                onPress={handleGroupToggle}
-                style={style.list_container}
-                titleStyle={style.list_title}
-                title="Borrower Info">
-                <View style={style.sub_container}>
-                    {/* <View style={style.sub_list_container}>
-                        <Field
-                            name={'guarantee_no'}
-                            title={'Guarantee No'}
-                            component={TextInputFile}
-                            cus_width
-                            input_mode
-                            editable
-                        />
+import {View, Text} from 'react-native';
+import React, {useState, useEffect, createRef} from 'react';
+import {style} from '../../style/Group_Loan_style';
+import {List} from 'react-native-paper';
+import DatePicker from '../../components/DatePicker';
+import {reduxForm, Field, change, reset} from 'redux-form';
+import TextInputFile from '../../components/TextInputFile';
+import {connect} from 'react-redux';
 
-                        <Field
-                            name={'guarantor_no'}
-                            title={'Guarantor No'}
-                            component={TextInputFile}
-                            cus_width
-                            input_mode
-                            keyboardType={'numeric'}
-                            editable
-                        />
-                    </View>
+function Group_Leader_Info(props) {
+  const [Group_expand, setGroupInfoExpand] = useState(true);
+  const {showCustomerSearch} = props;
+  const handleGroupToggle = () => {
+    setGroupInfoExpand(!Group_expand);
+  };
+  return (
+    <>
+      <List.Accordion
+        expanded={Group_expand}
+        onPress={handleGroupToggle}
+        style={style.list_container}
+        titleStyle={style.list_title}
+        title="Group Leader Information">
+        <View style={style.sub_container}>
+          <View style={style.sub_list_container}>
+            <Field
+              name={'group_aplc_no'}
+              title={'Group Application No'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+              editable
+            />
 
-                    <View style={style.sub_list_container}>
-                        <Field
-                            name={'resident_rgst_id'}
-                            title={'NRC'}
-                            icon={'magnify'}
-                            component={TextInputFile}
-                            cus_width
-                            input_mode
-                            editable
-                            require
-                            handleTextInputFocus={showGuarantorSearch}
+            <Field
+              name={'product_type'}
+              title={'Product Type'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+              keyboardType={'numeric'}
+              editable
+            />
+          </View>
 
-                        />
+          <View style={style.sub_list_container}>
+            <Field
+              name={'application_date'}
+              component={DatePicker}
+              label={'Application Date'}
+              icon={'calendar'}
+            />
 
-                        <Field
-                            name={'guarantor_nm'}
-                            title={'Guarantor Name'}
-                            component={TextInputFile}
-                            cus_width
-                            input_mode
-                            editable
-                        />
-                    </View>
+            <Field
+              name={'customer_no'}
+              title={'Customer No'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+              editable
+            />
+          </View>
 
-                    <View style={style.sub_list_container}>
-                        <Field
-                            data={gender}
-                            name={'gender'}
-                            title={'Gender'}
-                            component={DropDownPicker}
-                            pickerStyle={{
-                                width: 300,
-                            }}
-                        />
+          <View style={style.sub_list_container}>
+            <Field
+              name={'resident_rgst_id'}
+              title={'NRC'}
+              icon={'magnify'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+              editable
+              handleTextInputFocus={showCustomerSearch}
+              focusTextInput
+              require
+            />
 
-                        <Field
-                            name={'birth_date'}
-                            component={DatePicker}
-                            label={'date of birth'}
-                            icon={'calendar'}
-                        />
-                    </View>
+            <Field
+              name={'leader_name'}
+              title={'Leader Name'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+              editable
+            />
+          </View>
 
-                    <View style={style.sub_list_container}>
-                        <Field
-                            data={maritail_status}
-                            name={'marital_status'}
-                            title={'Maritial Status'}
-                            component={DropDownPicker}
-                            pickerStyle={{
-                                width: 300,
-                            }}
-                        />
+          <View style={style.sub_list_container}>
+            <Field
+              name={'in_charge'}
+              title={'In Charge'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+              editable
+            />
+          </View>
 
-                        <Field
-                            data={address_type}
-                            name={'address_type'}
-                            title={'Address Type'}
-                            component={DropDownPicker}
-                            pickerStyle={{
-                                width: 300,
-                            }}
-                        />
-                    </View>
+          <View style={style.sub_list_container}>
+            <Field
+              name={'father_name'}
+              title={'Father Name'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+              editable
+            />
 
-                    <Field
-                        name={'addr'}
-                        title={'No,Street '}
-                        component={TextInputFile}
-                        input_mode
-                        inputmax={100}
-                        input_cusstyle
-                    />
-                    <View style={style.sub_list_container}>
-                        <Field
-                            name={'curr_resident_date'}
-                            component={DatePicker}
-                            label={'Start Living Date in current address'}
-                            icon={'calendar'}
-                        />
+            <Field
+              name={'township_name'}
+              title={'Name of Township'}
+              component={TextInputFile}
+              cus_width
+              input_mode
+              keyboardType={'numeric'}
+            />
+          </View>
 
-                        <Field
-                            name={'tel_no'}
-                            title={'Tel No'}
-                            component={TextInputFile}
-                            cus_width
-                            input_mode
-                            keyboardType={'numeric'}
-                        />
-                    </View>
-
-                    <View style={style.sub_list_container}>
-                        <Field
-                            name={'borrower_rltn'}
-                            title={'Relationship with borrower'}
-                            component={TextInputFile}
-                            cus_width
-                            input_mode
-                            keyboardType={'numeric'}
-                        />
-                        <Field
-                            name={'relation_period'}
-                            component={DatePicker}
-                            label={'Relationship Period'}
-                            icon={'calendar'}
-                        />
-                    </View>
-                    <View style={style.sub_list_container}>
-                        <Field
-                            data={condition_house}
-                            name={'house_ocpn_type'}
-                            title={'Condition of house'}
-                            component={DropDownPicker}
-                            pickerStyle={{
-                                width: 300,
-                            }}
-                        />
-
-                        <Field
-                            name={'business_own_type'}
-                            title={'OwnerShip of business'}
-                            component={TextInputFile}
-                            cus_width
-                            input_mode
-                        />
-                    </View> */}
-
-                </View>
-            </List.Accordion>
-        </>
-    )
+          <Field
+            name={'addr'}
+            title={'Address'}
+            component={TextInputFile}
+            input_mode
+            keyboardType={'numeric'}
+            input_cusstyle
+          />
+        </View>
+      </List.Accordion>
+    </>
+  );
 }
+function mapStateToProps(state) {
+  return {};
+}
+
+export default reduxForm({
+  form: 'Group_Form',
+})(connect(mapStateToProps, {})(Group_Leader_Info));

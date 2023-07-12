@@ -1894,13 +1894,12 @@ function Individual_Staff_loan_Info(props) {
     const user_id = await AsyncStorage.getItem('user_id');
 
     await getAllLoan().then(loan_data => {
-      console.log('loan_data', loan_data);
       setAllLoanData(loan_data);
       dispatch(
         change(
           'Individual_Staff_Loan_Form',
           'application_no',
-          `20${user_id}TB${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
+          `20${user_id}${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
         ),
       );
       dispatch(

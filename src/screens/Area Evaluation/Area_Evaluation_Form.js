@@ -36,7 +36,6 @@ import { getAllLoan_By_application_no } from '../../query/AllLoan_query';
 import { useNavigation } from '@react-navigation/native';
 
 function Area_Evaluation_Form(props) {
-  console.log('props', props);
   const navigation = useNavigation();
 
   const { handleSubmit, total_score } = props;
@@ -239,4 +238,7 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Area_Evaluation_Form',
+  initialValues: {
+    total_sts_remark: '2',
+  },
 })(connect(mapStateToProps, {})(Area_Evaluation_Form));

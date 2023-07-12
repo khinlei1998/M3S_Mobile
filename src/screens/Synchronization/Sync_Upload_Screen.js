@@ -30,7 +30,6 @@ export default function Sync_Upload_Screen(props) {
       ...item,
       checked: updatedSelectAll,
     }));
-    console.log('updatedData', updatedData);
     // setData(updatedData);
     if (updatedSelectAll) {
       setCheckedItems(updatedData);
@@ -40,8 +39,6 @@ export default function Sync_Upload_Screen(props) {
   };
 
   const handleCheckboxToggle = item => {
-    console.log('check item', item);
-    console.log('checkedItem', checkedItems);
     if (isChecked(item)) {
       setCheckedItems(
         checkedItems.filter(checkedItem => checkedItem.application_no !== item.application_no),
@@ -156,7 +153,6 @@ export default function Sync_Upload_Screen(props) {
   //     console.error('API call failed. Value not changed.');
   //   }
   // };
-  console.log('checkedItems', checkedItems);
   return (
     <View style={{ marginTop: 20, marginLeft: 10, marginRight: 10, flex: 1 }}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -263,8 +259,6 @@ export default function Sync_Upload_Screen(props) {
         style={{
           flexDirection: 'row',
           justifyContent: 'center',
-          // position: 'absolute',
-          // bottom: 0,
           marginBottom: 10,
           alignSelf: 'center',
         }}>

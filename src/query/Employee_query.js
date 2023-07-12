@@ -1,20 +1,10 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BASE_URL } from '../common';
-
 export function getEemployee_info() {
   return new Promise(async (resolve, reject) => {
-    console.log('call function');
     let ip = await AsyncStorage.getItem('ip');
     let port = await AsyncStorage.getItem('port');
     const batchSize = 100;
-    let totalRowsAffected = 0;
-    const searchWord = '/skylark-m3s';
-    const newIP = ip.replace(
-      new RegExp(searchWord, 'g'),
-      ':' + port + searchWord,
-    );
-
     global.db.transaction(tx => {
       tx.executeSql('DELETE FROM Employee', [], (tx, results) => {
         console.log('Delete success');
@@ -100,7 +90,6 @@ export const selectUser = async (user_id, password) => {
         'SELECT * FROM Employee WHERE user_id = ? AND password = ?',
         [user_id, password],
         (tx, results) => {
-          console.log('results', results);
           if (results.rows.length > 0) {
             const user = results.rows.item(0);
             resolve(user);
@@ -166,12 +155,9 @@ export async function filterEmp(selectedColumn, searchTerm) {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
       tx.executeSql(
-        // `SELECT * FROM Customer WHERE ${selectedColumn} = ?`,
-        // [searchTerm],
         sql,
         [],
         (tx, results) => {
-          console.log('result query', results);
           resolve(results.rows.raw());
         },
         (tx, error) => {

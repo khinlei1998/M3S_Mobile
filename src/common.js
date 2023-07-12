@@ -488,44 +488,44 @@ export const relation_data = [
 
 export const microfinance_data = [
   {
-    id: '1',
+    id: '4',
     name: 'A(0~2)',
     result:4
   },
   {
-    id: '2',
+    id: '3',
     name: 'B(3~5)',
     result:3
   },
   {
-    id: '3',
+    id: '2',
     name: 'C(6~8)',
     result:2
   },
   {
-    id: '4',
+    id: '1',
     name: 'D(above 8)',
     result:1
   },
 ];
 export const area_evaluation_result = [
   {
-    id: '1',
+    id: '4',
     name: 'A(Excellent)',
     result:4
   },
   {
-    id: '2',
+    id: '3',
     name: 'B(Good)',
     result:3
   },
   {
-    id: '3',
+    id: '2',
     name: 'A(Fair)',
     result:2
   },
   {
-    id: '4',
+    id: '1',
     name: 'D(Bad)',
     result:1
   },

@@ -2,15 +2,10 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
-  TouchableOpacity,
-  Image,
 } from 'react-native';
 import React, {useRef, useState} from 'react';
 import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
-import RNFS from 'react-native-fs';
 import moment from 'moment';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setBorrowerMap_Path} from '../../redux/LoanReducer';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
@@ -20,35 +15,13 @@ export default function Show_Borrower_Map(props) {
   const navigation = useNavigation();
 
   const [paths, setPaths] = useState('');
-  const [imagetest, setImage] = useState('');
   const [imageQuery, setImageQuery] = useState('');
 
   const loan_data_count = props.route.params.all_loandata.length;
   const user_id = props.route.params.user_id;
+  const p_type=props.route.params.p_type;
+  // console.log('p_type',p_type);
   const sketchRef = useRef(null);
-  const handleSave = async () => {
-    if (sketchRef.current) {
-      setPaths('');
-
-      try {
-        const imagePath = sketchRef.current.save(
-          true, // save with a transparent background
-          'RNSketchCanvas', // folder name (optional)
-          '3', // file name (optional)
-          true, // overwrite existing file (optional)
-          false, // include image in the gallery (optional)
-          false, // include image in the sketcher's album (optional)
-          path => {
-            console.log('Image saved to:', path);
-            // Handle success or failure
-          },
-        );
-      } catch (error) {
-        console.error('Save failed:', error);
-      }
-    }
-  };
-
   return (
     <>
       <View style={styles.container}>
@@ -117,7 +90,7 @@ export default function Show_Borrower_Map(props) {
             savePreference={() => {
               return {
                 folder: 'RNSketchCanvas',
-                filename: `10${user_id}TB${moment().format('YYYYMMDD')}${
+                filename: `${p_type}${user_id}${moment().format('YYYYMMDD')}${
                   loan_data_count + 1
                 }MP01`,
                 transparent: true,
@@ -125,9 +98,6 @@ export default function Show_Borrower_Map(props) {
               };
             }}
             onSketchSaved={(success, path) => {
-              console.log('success path', path);
-              ///storage/emulated/0/Pictures/RNSketchCanvas/10M00172TB2023070215SG01.jpg
-              ///storage/emulated/0/Android/data/com.m3smobile/files/10M00172TB2023070215SG01.jpg
               alert(success ? 'Image saved!' : 'Failed to save image!', path);
               if (path) {
                 const queryParam = `?timestamp=${Date.now()}`;
@@ -139,14 +109,8 @@ export default function Show_Borrower_Map(props) {
               }
             }}
           />
-          {/* <Button title="Savefff" onPress={handleSave} /> */}
         </View>
       </View>
-
-      {/* <Image
-        source={{uri: `file://${paths}${imageQuery}`}}
-        style={{width: 400, height: 500}}
-      /> */}
     </>
   );
 }

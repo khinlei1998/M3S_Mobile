@@ -36,16 +36,19 @@ import { getAllLoan_By_application_no } from '../../query/AllLoan_query';
 import { useNavigation } from '@react-navigation/native';
 import { setAREA_UpdateStatus } from '../../redux/LoanReducer';
 import { deleteAreaEvaluation_ByID } from '../../query/AreaEvaluation_query';
+import { setEvaluation_Score } from '../../redux/LoanReducer';
 function Edit_Area_Evaluation_Form(props) {
   const navigation = useNavigation();
   const filtered_operations = operations.filter(item => item.value != 1);
 
-  const { handleSubmit, area_update_status, setAREA_UpdateStatus } = props;
+  const { handleSubmit, area_update_status, setAREA_UpdateStatus,setEvaluation_Score } = props;
   const [show_operation, setOperation] = useState('2');
   const [area_evaluation_expanded, setAreaEvaluationExpanded] = useState(true);
   const retrive_area_evaluation = props.route.params.evaluation_data[0];
+  console.log('retrive_area_evaluation',retrive_area_evaluation);
   const loadData = async () => {
     props.initialize(retrive_area_evaluation);
+    // setEvaluation_Score()
   };
   useEffect(() => {
     if (area_update_status == true) {
@@ -200,7 +203,7 @@ function Edit_Area_Evaluation_Form(props) {
               </View>
             </List.Accordion>
             <Edit_Area_Info />
-            <Edit_Area_Evaluation />
+            <Edit_Area_Evaluation retrive_area_evaluation={retrive_area_evaluation} />
             <Edit_Area_Evaluation_Score />
             <DividerLine />
 
@@ -246,4 +249,4 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Edit_Area_Evaluation_Form',
-})(connect(mapStateToProps, { setAREA_UpdateStatus })(Edit_Area_Evaluation_Form));
+})(connect(mapStateToProps, { setAREA_UpdateStatus,setEvaluation_Score })(Edit_Area_Evaluation_Form));

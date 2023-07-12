@@ -9,7 +9,6 @@ import { TextInput } from 'react-native-paper';
 import React from 'react';
 
 const CustomTextInput = props => {
-  console.log('props', props);
   // const { meta: { touched, error },  input: {onChange, ...restInput},initialValue,focusTextInput,icon,handleTextInputFocus,
   //   // input, ...inputProps,
   //   ...rest } = props;

@@ -2,7 +2,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const storeExceptionalApproval = async data => {
     const user_id = await AsyncStorage.getItem('user_id');
-    console.log('user id', user_id);
     return new Promise(async (resolve, reject) => {
         try {
             global.db.transaction(trans => {
@@ -12,7 +11,7 @@ export const storeExceptionalApproval = async data => {
                     [
                         null, //serialNo
                         data.excpt_aprv_rqst_no,
-                        '01', //status code 
+                        '01', //status code
                         null, //create_datetime
                         null,//create_user_id
                         null, //deleteDatetime
@@ -81,7 +80,6 @@ export async function deleteExceptional_approval_ByID(excpt_aprv_rqst_no) {
                     'DELETE FROM Exception_aprv WHERE excpt_aprv_rqst_no = ?',
                     [excpt_aprv_rqst_no],
                     (txObj, resultSet) => {
-                        console.log('resultSet', resultSet);
                         resolve('success');
                         // Delete query successful
                         console.log('Delete successful');

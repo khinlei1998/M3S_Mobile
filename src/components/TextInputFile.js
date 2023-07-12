@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
-import { TextInput, DefaultTheme } from 'react-native-paper';
+import {View, Text, StyleSheet} from 'react-native';
+import React, {useState,useRef,useEffect} from 'react';
+import {TextInput, DefaultTheme} from 'react-native-paper';
 
 export default function TextInputFile(props) {
   const [passwordIcon, setPasswordIcon] = useState('eye');
@@ -26,11 +26,12 @@ export default function TextInputFile(props) {
     words_count,
     editable,
     showRightIcon,
-    meta: { touched, error },
+    meta: {touched, error},
     input: {onChange, ...restInput},
-    // input, ...inputProps,
-    ...rest
+    ...restProps
   } = props;
+  const inputRef = useRef(null);
+
 
   const [values, setValues] = useState([]);
   const [total, setTotal] = useState(0);
@@ -59,39 +60,45 @@ export default function TextInputFile(props) {
     }
     setTotalSum(sum);
   };
+  // useEffect(() => {
+  //   // Set the cursor position after each text change
+  //   if (inputRef.current) {
+  //     inputRef.current.setNativeProps({
+  //       selection: {start: restInput.value.length, end: restInput.value.length},
+  //     });
+  //   }
+  // }, [restInput.value]);
 
   return (
     <View>
       <TextInput
+        ref={inputRef}
+        // {...restInput}
         {...restInput}
-        {...rest}
-        // {...inputProps}
+        {...restProps}
+        // value={value}
+        //  defaultValue={value}
         editable={editable ? false : true}
         maxLength={inputmax}
-        // defaultValue={value}
         theme={{
           colors: {
             ...DefaultTheme.colors,
-            // onSurfaceVariant: input_mode ? '#818be3' : '',
             placeholder: 'red',
             primary: '#878787',
           },
         }}
         onFocus={focusTextInput && handleTextInputFocus}
         mode={input_mode ? 'flat' : ''}
-        // label={title}
         label={
           <Text>
-            {title} {require && <Text style={{ color: 'red' }}>*</Text>}
+            {title} {require && <Text style={{color: 'red'}}>*</Text>}
           </Text>
         }
         onChangeText={text => handleTextChange(text)}
-        // onChangeText={text => onChange(text)}
         style={{
           backgroundColor: '#fff',
           marginTop: 10,
           width: input_cusstyle ? '100%' : 301,
-          // marginRight: 10,
           borderColor: '#303030',
           borderWidth: 0.5,
         }}
@@ -109,15 +116,7 @@ export default function TextInputFile(props) {
           ) : null
         }
       />
-      {/* <Text>Total: {total}</Text> */}
-      {/* <Text>{totalSum}</Text> */}
-      {/* {inputmax ? (
-        <Text style={{alignSelf: 'flex-end', color: '#818be3'}}>
-          {wordCount}/{inputmax}
-        </Text>
-      ):
-      <></>} */}
-      {touched && error && <Text style={{ color: 'red' }}>{error}</Text>}
+      {touched && error && <Text style={{color: 'red'}}>{error}</Text>}
     </View>
   );
 }

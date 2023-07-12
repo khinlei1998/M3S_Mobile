@@ -7,7 +7,6 @@ import {connect, useDispatch} from 'react-redux';
 function Borrower_Current_Map(props) {
   const {navigation, map, borrower_map, has_borrower_map, update_status} =
     props;
-    console.log('map',map);
   const [borrower_map_expanded, setBorrowerMapExpanded] = useState(true);
   const handleBorrowerMapToggle = () => {
     setBorrowerMapExpanded(!borrower_map_expanded);
