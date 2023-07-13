@@ -2,7 +2,7 @@ import {View, Text, Image, FlatList} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Viewloan from '../Loan/Viewloan';
 import {fetchEmpName} from '../../query/Employee_query';
-import {getAllLoan} from '../../query/AllLoan_query';
+import {getAllLoanType} from '../../query/AllLoan_query';
 import {Modal, Portal, Button, Provider, Divider} from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -17,7 +17,7 @@ export default function Home(props) {
       .then(data => setEmpName(data[0].employee_name))
       .catch(error => console.log(error));
 
-    await getAllLoan()
+    await getAllLoanType()
       .then(data => setAllLoan(data))
       .catch(error => console.log(error));
   };

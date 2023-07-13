@@ -153,7 +153,6 @@ export default function Sync_Upload_Screen(props) {
   //     console.error('API call failed. Value not changed.');
   //   }
   // };
-  console.log('checkedItems', checkedItems);
   return (
     <View style={{ marginTop: 20, marginLeft: 10, marginRight: 10, flex: 1 }}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -260,8 +259,6 @@ export default function Sync_Upload_Screen(props) {
         style={{
           flexDirection: 'row',
           justifyContent: 'center',
-          // position: 'absolute',
-          // bottom: 0,
           marginBottom: 10,
           alignSelf: 'center',
         }}>
@@ -282,7 +279,7 @@ export default function Sync_Upload_Screen(props) {
         </Button>
 
         <Button
-          disabled={btn_disabled}
+          // disabled={btn_disabled}
           style={{
             borderRadius: 0,
             width: 120,

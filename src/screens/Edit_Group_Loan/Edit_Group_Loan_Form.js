@@ -10,7 +10,7 @@ import React, {useState, useEffect} from 'react';
 import DividerLine from '../../components/DividerLine';
 import {operations, emp_filter_item} from '../../common';
 import {style} from '../../style/Group_Loan_style';
-import Group_Loan_Info from './Group_Loan_Info';
+import Edit_Group_Loan_Info from './Edit_Group_Loan_Info';
 import {connect, useDispatch} from 'react-redux';
 import {filterCustomer} from '../../query/Customer_query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -27,13 +27,13 @@ import Icon from 'react-native-vector-icons/Feather';
 import {Picker} from '@react-native-picker/picker';
 import {TextInput} from 'react-native-paper';
 import {cus_filter_item} from '../../common';
-import Group_Borrower_Map from './Group_Borrower_Map';
+import Edit_Group_Borrower_Map from './Edit_Group_Borrower_Map';
 import {reduxForm, Field, change, reset} from 'redux-form';
 import moment from 'moment';
-import Group_Loan_List from './Group_Loan_List';
+import Edit_Group_Loan_List from './Edit_Group_Loan_List';
 import {getAllGroupLoan} from '../../query/GropuLon_query';
 import {storeGroupData} from '../../query/GropuLon_query';
-import {setBorrowerMap_Path} from '../../redux/LoanReducer';
+import {setGroup_UpdateStatus} from '../../redux/LoanReducer';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -252,15 +252,27 @@ const Borrower_modal = props => {
     </Modal>
   );
 };
-function Group_Loan_Form(props) {
-  const {handleSubmit, navigation, setBorrowerMap_Path} = props;
-  const [show_operation, setOperation] = useState('1');
+
+function Edit_Group_Loan_Form(props) {
+  const {handleSubmit, navigation, setGroup_UpdateStatus} = props;
+  const [show_operation, setOperation] = useState('2');
   const [modalVisible, setModalVisible] = useState(false);
   const [all_cus, setAllCus] = useState([]);
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
   const [all_loandata, setAllGroupLoanData] = useState([]);
-  const dispatch = useDispatch();
+  const [borrower_map, setBorrowerMap] = useState('');
 
+  const dispatch = useDispatch();
+  const filtered_operations = operations.filter(item => item.value != 1);
+  const inquiry_group_data = props.route.params;
+  const btnChangeOperation = newValue => {
+    setOperation(newValue);
+    if (newValue == 2 || newValue == 4) {
+      setGroup_UpdateStatus(false);
+    } else {
+      setGroup_UpdateStatus(true);
+    }
+  };
   const handleItemValueChange = itemValue => {
     setSelectedItemValue(itemValue);
   };
@@ -269,33 +281,25 @@ function Group_Loan_Form(props) {
   const showCustomerSearch = () => {
     setModalVisible(true);
   };
-  const loadData = async () => {
-    const user_id = await AsyncStorage.getItem('user_id');
 
-    await getAllGroupLoan().then(loan_data => {
-      setAllGroupLoanData(loan_data);
-      dispatch(
-        change(
-          'Group_Form',
-          'group_aplc_no',
-          `30${user_id}${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
-        ),
-      );
-      dispatch(change('Group_Form', 'product_type', `Group Loan`));
-    });
+  const loadData = async () => {
+    props.initialize(inquiry_group_data);
+    // const fileExists = await RNFS.exists(
+    //   `/storage/emulated/0/Pictures/RNSketchCanvas/${inquiry_group_data.application_no}MP01.jpg`,
+    // );
+    // console.log('sync file exist', fileExists);
+    // if (fileExists) {
+    //   setBorrowerMap(
+    //     `/storage/emulated/0/Pictures/RNSketchCanvas/${inquiry_group_data.application_no}MP01.jpg`,
+    //   );
+    // }
   };
+
   useEffect(() => {
     loadData();
   }, []);
-  const onSubmit = async values => {
-    await storeGroupData(values).then(result => {
-      const group_length = Object.keys(result).length;
-      if (group_length > 0) {
-        dispatch(setBorrowerMap_Path(''));
-        props.navigation.navigate('Edit Group Loan', result);
-      }
-    });
-  };
+
+  const onSubmit = async values => {};
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
@@ -323,10 +327,10 @@ function Group_Loan_Form(props) {
                 style={{
                   flexDirection: 'row',
                 }}>
-                {operations.map((option, index) => (
+                {filtered_operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
-                    onValueChange={newValue => setOperation(newValue)}
+                    onValueChange={newValue => btnChangeOperation(newValue)}
                     value={show_operation}>
                     <View
                       key={option.value}
@@ -335,7 +339,7 @@ function Group_Loan_Form(props) {
                         alignItems: 'center',
                       }}>
                       <RadioButton.Item
-                        disabled={option.value !== show_operation}
+                        // disabled={option.value !== show_operation}
                         label={option.label}
                         value={option.value}
                         color="#000"
@@ -354,13 +358,16 @@ function Group_Loan_Form(props) {
               </Button>
             </View>
             <DividerLine />
-            <Group_Loan_Info showCustomerSearch={showCustomerSearch} />
-            <Group_Borrower_Map
+            <Edit_Group_Loan_Info showCustomerSearch={showCustomerSearch} />
+            <Edit_Group_Borrower_Map
               navigation={navigation}
               all_loandata={all_loandata}
               p_type={'30'}
             />
-            <Group_Loan_List />
+            <Edit_Group_Loan_List
+              navigation={navigation}
+              inquiry_group_data={inquiry_group_data}
+            />
             <DividerLine />
           </View>
         </TouchableWithoutFeedback>
@@ -382,5 +389,5 @@ function mapStateToProps(state) {
 }
 
 export default reduxForm({
-  form: 'Group_Form',
-})(connect(mapStateToProps, {setBorrowerMap_Path})(Group_Loan_Form));
+  form: 'Edit_Group_Form',
+})(connect(mapStateToProps, {setGroup_UpdateStatus})(Edit_Group_Loan_Form));

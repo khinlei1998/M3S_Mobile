@@ -20,6 +20,7 @@ export default function Show_Borrower_Map(props) {
   const loan_data_count = props.route.params.all_loandata.length;
   const user_id = props.route.params.user_id;
   const p_type=props.route.params.p_type;
+  // console.log('p_type',p_type);
   const sketchRef = useRef(null);
   return (
     <>
@@ -89,7 +90,7 @@ export default function Show_Borrower_Map(props) {
             savePreference={() => {
               return {
                 folder: 'RNSketchCanvas',
-                filename: `${p_type}${user_id}TB${moment().format('YYYYMMDD')}${
+                filename: `${p_type}${user_id}${moment().format('YYYYMMDD')}${
                   loan_data_count + 1
                 }MP01`,
                 transparent: true,

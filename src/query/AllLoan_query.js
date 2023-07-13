@@ -19,6 +19,23 @@ export async function getAllLoan() {
     });
   });
 }
+export async function getAllLoanType() {
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM Individual_application ',
+        [],
+        (tx, results) => {
+          console.log('results',results);
+          resolve(results.rows.raw());
+        },
+        (tx, error) => {
+          reject(error);
+        },
+      );
+    });
+  });
+}
 
 export function getIndividual_loan() {
   return new Promise(async (resolve, reject) => {
@@ -218,7 +235,7 @@ export const storeLoanData = async loan_data => {
           [
             null, //serialNo
             loan_data.application_no,
-            null, //group_aplc_no
+            loan_data.group_aplc_no, //group_aplc_no
             '01', //statusCode
             '2020-09-09', //create Date Time
             user_id,
@@ -533,11 +550,12 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
   let user_id = await AsyncStorage.getItem('user_id');
   try {
     for (const data of checkedItems) {
+      console.log('data', data);
       const applicationNo = data.application_no;
       let individual_loan_data = {
         id: data.id,
-        statusCode: data.status_code,
-        createUserId: data.create_user_id,
+        statusCode: '01',
+        createUserId: user_id,
         updateUserId: data.update_user_id,
         productType: data.product_type, //not null
         channelDeviceType: '00110',
@@ -668,6 +686,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         property_kind: data.property_kind,
       };
 
+      console.log('individual_loan_data', individual_loan_data);
+
       const guaranteeData = await fetchGuaranteeData(applicationNo);
 
       let gurantor_data = guaranteeData.map(item => {
@@ -675,7 +695,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           organizationCode: item.organization_code,
           serialNo: item.serial_no,
           statusCode: '01',
-          createUserId: item.create_user_id,
+          createUserId: user_id,
           updateUserId: item.update_user_id,
           tabletAplcNo: item.tablet_aplc_no,
           applicationNo: item.application_no,
@@ -706,114 +726,119 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
       });
 
       const areaevaluation = await fetchAreaEvaluation(applicationNo);
-      let area_data = {
-        organizationCode: '',
-        serialNo: '',
-        statusCode: '00',
-        createUserId: areaevaluation[0].create_user_id,
-        updateUserId: areaevaluation[0].update_user_id,
-        tabletAreaEvltNo: '',
-        areaEvaluationNo: areaevaluation[0].area_evaluation_no,
-        areaEvaluationDate: areaevaluation[0].area_evaluation_date,
-        tabletAplcNo: '',
-        applicationNo: areaevaluation[0].application_no,
-        townshipName: areaevaluation[0].township_name,
-        villageName: areaevaluation[0].village_name,
-        authName: areaevaluation[0].auth_name,
-        contractNo: areaevaluation[0].contract_no,
-        streetText: areaevaluation[0].street_text,
-        householdsText: areaevaluation[0].households_text,
-        populationText: areaevaluation[0].population_text,
-        houseText: areaevaluation[0].house_text,
-        houseOwnText: areaevaluation[0].house_own_text,
-        houseRentText: areaevaluation[0].house_rent_text,
-        propertyText: areaevaluation[0].property_text,
-        propertyDocmText: areaevaluation[0].property_docm_text,
-        occupation: areaevaluation[0].occupation,
-        mfiNumFlag: areaevaluation[0].mf_num_flag,
-        mfiRemark: areaevaluation[0].mfi_remark,
-        pastdueStsFlag: areaevaluation[0].pastdue_sts_flag,
-        pastdueStsRemark: areaevaluation[0].pastdue_sta_remark,
-        trnsrtStsFlag: areaevaluation[0].trnsrt_sts_flag,
-        trnsrtStsRemark: areaevaluation[0].trnsrt_sts_remark,
-        chnlDeviceType: areaevaluation[0].chnl_device_type,
-        tabletSyncSts: '00',
-        syncSts: '',
-        areaSecurityFlag: areaevaluation[0].area_security_flag,
-        areaSecurityRemark: areaevaluation[0].area_security_remark,
-        cmncStsFlag: areaevaluation[0].cmnc_sts_flag,
-        cmncStsRemark: areaevaluation[0].cmnc_sts_remark,
-        economyStsFlag: areaevaluation[0].economy_sts_flag,
-        economyStsRemark: areaevaluation[0].economy_sts_remark,
-        incomeStsFlag: areaevaluation[0].income_sts_flag,
-        incomeStsRemark: areaevaluation[0].income_sts_remark,
-        householdsStsFlag: areaevaluation[0].households_sts_flag,
-        householdsStsRemark: areaevaluation[0].households_sts_remark,
-        localAuthSprtFlag: areaevaluation[0].local_auth_sprt_flag,
-        localAuthSprtRmrk: areaevaluation[0].local_auth_sprt_rmrk,
-        totalStsFlag: areaevaluation[0].total_sts_flag,
-        totalStsRemark: areaevaluation[0].total_sts_remark,
-        totalRemark: areaevaluation[0].total_remark,
-        prepareEmplNm: areaevaluation[0].prepare_empl_nm,
-        checkEmplNm: areaevaluation[0].check_empl_nm,
-        summary: areaevaluation[0].summary,
-      };
+      let area_data = areaevaluation.map(item => {
+        return {
+          organizationCode: '',
+          serialNo: '',
+          statusCode: '01',
+          createUserId: user_id,
+          updateUserId: user_id,
+          tabletAreaEvltNo: '',
+          areaEvaluationNo: item.area_evaluation_no,
+          areaEvaluationDate: item.area_evaluation_date,
+          tabletAplcNo: '',
+          applicationNo: item.application_no,
+          townshipName: item.township_name,
+          villageName: item.village_name,
+          authName: item.auth_name,
+          contractNo: item.contract_no,
+          streetText: item.street_text,
+          householdsText: item.households_text,
+          populationText: item.population_text,
+          houseText: item.house_text,
+          houseOwnText: item.house_own_text,
+          houseRentText: item.house_rent_text,
+          propertyText: item.property_text,
+          propertyDocmText: item.property_docm_text,
+          occupation: item.occupation,
+          mfiNumFlag: item.mf_num_flag,
+          mfiRemark: item.mfi_remark,
+          pastdueStsFlag: item.pastdue_sts_flag,
+          pastdueStsRemark: item.pastdue_sta_remark,
+          trnsrtStsFlag: item.trnsrt_sts_flag,
+          trnsrtStsRemark: item.trnsrt_sts_remark,
+          chnlDeviceType: '00110',
+          tabletSyncSts: '00',
+          syncSts: '',
+          areaSecurityFlag: item.area_security_flag,
+          areaSecurityRemark: item.area_security_remark,
+          cmncStsFlag: item.cmnc_sts_flag,
+          cmncStsRemark: item.cmnc_sts_remark,
+          economyStsFlag: item.economy_sts_flag,
+          economyStsRemark: item.economy_sts_remark,
+          incomeStsFlag: item.income_sts_flag,
+          incomeStsRemark: item.income_sts_remark,
+          householdsStsFlag: item.households_sts_flag,
+          householdsStsRemark: item.households_sts_remark,
+          localAuthSprtFlag: item.local_auth_sprt_flag,
+          localAuthSprtRmrk: item.local_auth_sprt_rmrk,
+          totalStsFlag: item.total_sts_flag,
+          totalStsRemark: item.total_sts_remark,
+          totalRemark: item.total_remark,
+          prepareEmplNm: item.prepare_empl_nm,
+          checkEmplNm: item.check_empl_nm,
+          summary: item.summary,
+        };
+      });
       const exception_aprv = await fetchExceptionAprv(applicationNo);
-      console.log('individual_loan_data', individual_loan_data);
-      let approval_request_data = {
-        organizationCode: '',
-        serialNo: '',
-        statusCode: '01',
-        createUserId: user_id,
-        updateUserId: user_id,
-        tabletExcptAprvRqstNo: '',
-        excptAprvRqstNo: exception_aprv[0].excpt_aprv_rqst_no,
-        tabletGroupAplcNo: '',
-        groupAplcNo: exception_aprv[0].group_aplc_no,
-        tabletAplcNo: '',
-        applicationNo: exception_aprv[0].application_no,
-        exceptionRqstDate: exception_aprv[0].exception_rqst_date,
-        borrowerName: exception_aprv[0].borrower_name,
-        applicationAmt: exception_aprv[0].application_amt,
-        birthDate: exception_aprv[0].birth_date,
-        borrowerAge: '',
-        groupMemberNum: exception_aprv[0].group_member_num,
-        occupation: exception_aprv[0].occupation,
-        netIncome: exception_aprv[0].net_income,
-        excptAprvRsn1: exception_aprv[0].excpt_aprv_rsn_1,
-        excptAprvRsn2: exception_aprv[0].excpt_aprv_rsn_2,
-        excptAprvRsn3: exception_aprv[0].excpt_aprv_rsn_3,
-        exceptionReason: exception_aprv[0].exception_reason,
-        recommendNm: exception_aprv[0].recommend_nm,
-        tabletSyncSts: '00',
-        syncSts: '00',
-      };
+      let approval_request_data = exception_aprv.map(item => {
+        return {
+          organizationCode: '',
+          serialNo: '',
+          statusCode: '01',
+          createUserId: user_id,
+          updateUserId: user_id,
+          tabletExcptAprvRqstNo: '',
+          excptAprvRqstNo: item.excpt_aprv_rqst_no,
+          tabletGroupAplcNo: '',
+          groupAplcNo: item.group_aplc_no,
+          tabletAplcNo: '',
+          applicationNo: item.application_no,
+          exceptionRqstDate: item.exception_rqst_date,
+          borrowerName: item.borrower_name,
+          applicationAmt: parseInt(item.application_amt),
+          birthDate: item.birth_date,
+          borrowerAge: parseInt(item.borrower_age),
+          groupMemberNum: parseInt(item.group_member_num),
+          occupation: item.occupation,
+          netIncome: parseInt(item.net_income),
+          excptAprvRsn1: item.excpt_aprv_rsn_1,
+          excptAprvRsn2: item.excpt_aprv_rsn_2,
+          excptAprvRsn3: item.excpt_aprv_rsn_3,
+          exceptionReason: item.exception_reason,
+          recommendNm: item.recommend_nm,
+          tabletSyncSts: '00',
+          syncSts: '00',
+        };
+      });
 
       const relation_info = await fetchRelationInfo(applicationNo);
-      let relation_data = {
-        organizationCode: '',
-        serialNo: '',
-        statusCode: '01',
-        createUserId: relation_info[0].create_user_id,
-        updateUserId: relation_info[0].update_user_id,
-        relationNo: relation_info[0].relation_no,
-        tabletGuaranteeNo: '',
-        applicationNo: relation_info[0].application_no,
-        transactionDate: relation_info[0].transaction_date,
-        borrowerName: relation_info[0].borrower_name,
-        addr: relation_info[0].addr,
-        residentRgstId: relation_info[0].resident_rgst_id,
-        coBrwerName: resident_rgst_id[0].co_brwer_name,
-        coBrwerRgstId: resident_rgst_id[0].co_brwer_rgst_id,
-        grandparentYn: resident_rgst_id[0].grandparent_yn,
-        parentYn: resident_rgst_id[0].parent_yn,
-        brotherSisterYn: resident_rgst_id[0].brother_sister_yn,
-        husbandWifeYn: resident_rgst_id[0].husband_wife_yn,
-        sonDaughterYn: resident_rgst_id[0].son_daughter_yn,
-        tabletSyncSts: '00',
-        syncSts: '',
-        relationName: resident_rgst_id[0].relation_name,
-      };
+      let relation_data = relation_info.map(item => {
+        return {
+          organizationCode: '',
+          serialNo: '',
+          statusCode: '01',
+          createUserId: user_id,
+          updateUserId: item.update_user_id,
+          relationNo: item.relation_no,
+          tabletGuaranteeNo: '',
+          applicationNo: item.application_no,
+          transactionDate: item.transaction_date,
+          borrowerName: item.borrower_name,
+          addr: item.addr,
+          residentRgstId: item.resident_rgst_id,
+          coBrwerName: item.co_brwer_name,
+          coBrwerRgstId: item.co_brwer_rgst_id,
+          grandparentYn: item.grandparent_yn,
+          parentYn: item.parent_yn,
+          brotherSisterYn: item.brother_sister_yn,
+          husbandWifeYn: item.husband_wife_yn,
+          sonDaughterYn: item.son_daughter_yn,
+          tabletSyncSts: '00',
+          syncSts: '',
+          relationName: item.relation_name,
+        };
+      });
 
       let formData = new FormData();
       formData.append(
@@ -821,11 +846,11 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         JSON.stringify([individual_loan_data]),
       );
       formData.append('guarantee', JSON.stringify(gurantor_data));
-      formData.append('areaEvaluation', JSON.stringify([area_data]));
-      formData.append('relationInfo', JSON.stringify([relation_data]));
+      formData.append('areaEvaluation', JSON.stringify(area_data));
+      formData.append('relationInfo', JSON.stringify(relation_data));
       formData.append(
         'approvalRequests',
-        JSON.stringify([approval_request_data]),
+        JSON.stringify(approval_request_data),
       );
       if (data.borrower_sign) {
         let borrower_sign_form_data = new FormData();
@@ -913,8 +938,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           maxBodyLength: Infinity,
           url: `https://${ip}:${port}/skylark-m3s/file/upload.m3s`,
           headers: {
-            Cookie:
-              'JSESSIONID=0KelytuY8bGOetOcT9iWeIDnpb5zOeBR68hMOxG7.desktop-3jeqpa9',
             'Content-Type': 'multipart/form-data',
           },
           data: indi_borrower_map,
@@ -938,9 +961,15 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         maxBodyLength: Infinity,
         url: `https://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
         data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'cache-control': 'no-cache',
+          // processData: false,
+          // contentType: false,
+        },
       };
       const response = await axios.request(config);
-      console.log('indiv response', response);
+
       if (
         response.data.individualApplication &&
         response.data.individualApplication[0].errMsg
@@ -1097,11 +1126,181 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
       return 'success';
     }
   } catch (error) {
-    console.log('error', error);
+    console.log('Axios error', error);
     return error;
     // Alert.alert('out Error', 'Axios error occurred.');
   }
 };
+// export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
+//   return new Promise(async (resolve, reject) => {
+//     const failedData = [];
+//     let successCount = 0;
+//     let success_id = [];
+//     let ip = await AsyncStorage.getItem('ip');
+//     let port = await AsyncStorage.getItem('port');
+//     let user_id = await AsyncStorage.getItem('user_id');
+//     for (const data of checkedItems) {
+//       let individual_loan_data = {
+//         id: data.id,
+//         statusCode: '01',
+//         createUserId: user_id,
+//         updateUserId: data.update_user_id,
+//         productType: data.product_type, //not null
+//         channelDeviceType: '00110',
+//         openBranchCode: branch_code, //not null
+//         openUserId: 'M00172', //not null
+//         mngtBranchCode: 1000, //not null
+//         mngtUserId: 'M00172',
+//         applicationNo: data.application_no,
+//         groupAplcNo: '',
+//         tabletAplcNo: '',
+//         referAplcNo: '',
+//         loanType: data.loan_type,
+//         cstNewExistFlg: data.cst_new_exist_flg, //1==Y
+//         loanCycle: data.loan_cycle,
+//         applicationAmt: 1000000.0,
+//         applicationDate: data.application_date,
+//         loantermCnt: data.loanterm_cnt, //not null
+//         borrowerName: 'jj', //data.borrower_name
+//         customerNo: data.customer_no,
+//         loanCode: data.loan_code,
+//         savingAcctNum: data.saving_acct_num,
+//         gender: data.gender,
+//         birthDate: data.birth_date,
+//         maritalStatus: data.marital_status,
+//         residentRgstId: data.resident_rgst_id,
+//         telNo: data.tel_no,
+//         mobileTelNo: data.mobile_tel_no,
+//         positionTitleNm: data.position_title_nm,
+//         addr: data.addr,
+//         businessOwnType: data.business_own_type,
+//         coCustomerNo: data.co_customer_no,
+//         coBrwerName: data.co_brwer_name,
+//         workplaceName: data.workplace_name,
+//         workplaceType: data.workplace_type,
+//         workplaceAddr: data.workplace_addr,
+//         landOwnType: '',
+//         totSaleIncome: data.tot_sale_income,
+//         totSaleExpense: data.tot_sale_expense,
+//         rawmaterialExpans: data.rawmaterial_expans,
+//         wrkpRentExpns: data.wrkp_rent_expns,
+//         employeeExpns: data.employee_expns,
+//         trnsrtExpns: data.trnsrt_expns,
+//         goodsLossExpns: data.goods_loss_expns,
+//         othrExpns1: data.othr_expns_1,
+//         othrExpns2: data.othr_expns_2,
+//         totBusNetIncome: data.tot_bus_net_income,
+//         fmlyTotIncome: data.fmly_tot_income,
+//         fmlyTotExpense: data.fmly_tot_expense,
+//         foodExpns: data.fmly_tot_expense,
+//         houseMngtExpns: data.house_mngt_expns,
+//         utlbilExpns: data.utlbil_expns,
+//         edctExpns: data.edct_expns,
+//         healthyExpns: data.healthy_expns,
+//         financeExpns: data.finance_expns,
+//         fmlyOtrExpns: data.fmly_otr_expns,
+//         fmlyTotNetIncome: data.fmly_tot_net_income,
+//         totNetIncome: data.fmly_tot_net_income,
+//         remark: data.remark,
+//         tabletSyncSts: '00',
+//         syncSts: '00',
+//         pastLoanAmount: data.past_loan_amount,
+//         pastLoanRating: data.past_loan_rating,
+//         pastCreditEmplNm: data.past_credit_empl_nm,
+//         oldApplicationNo: data.old_application_no,
+//         loanLimitAmt: data.loan_limit_amt,
+//         sysOrganizationCode: '1000',
+//         organizationCode: '1000',
+//         restFlag: 'Y',
+//         transactionDate: '2023-05-07',
+//         serialNo: '',
+//         //not include to server
+//         birth_date: data.birth_date,
+//         borrower_age: data.borrower_age,
+//         borrower_id_no: data.borrower_id_no,
+//         borrower_name: data.borrowerf_name,
+//         borrower_rltn: data.borrower_rltn,
+//         branch_code: data.branch_code,
+//         bus_utlbil_expns: data.bus_utlbil_expns,
+//         business_good_yn: data.business_good_yn,
+//         business_sttn_flg: data.business_sttn_flg,
+//         check_phone_num_yn: data.check_phone_num_yn,
+//         city_code: data.city_code,
+//         city_name: data.city_name,
+//         co_brwer_birth_dt: data.co_brwer_birth_dt,
+//         co_brwer_business: data.co_brwer_business,
+//         co_brwer_mble_tel_no: data.co_brwer_mble_tel_no,
+//         co_brwer_net_income: data.co_brwer_net_income,
+//         co_brwer_rgst_id: data.co_brwer_rgst_id,
+//         co_brwer_tel_no: data.co_brwer_tel_no,
+//         co_occupation: data.co_occupation,
+//         contract_no: data.contract_no,
+//         create_datetime: data.create_datetime,
+//         curr_resident_date: data.curr_resident_date,
+//         curr_workplace_date: data.curr_workplace_date,
+//         curr_workplace_perd: data.curr_workplace_perd,
+//         decision_no: data.decision_no,
+//         delete_datetime: data.delete_datetime,
+//         delete_user_id: data.delete_user_id,
+//         employee_no: data.employee_no,
+//         employee_num: data.employee_num,
+//         entry_date: data.entry_date,
+//         family_num: data.family_num,
+//         group_aplc_no: data.group_aplc_no,
+//         have_fixed_asset: data.have_fixed_asset,
+//         hghschl_num: data.hghschl_num,
+//         house_ocpn_type: data.house_ocpn_type,
+//         interest_rates: data.interest_rates,
+//         loan_charges: data.loan_charges,
+//         land_scale: data.land_scale,
+//         loan_officer_cmnt: data.loan_officer_cmnt,
+//         loan_status_code: data.loan_status_code,
+//         location_code: data.location_code,
+//         location_name: data.location_name,
+//         // mngt_user_id: data.mngt_user_id,
+//         ohtr_own_property: data.ohtr_own_property,
+//         otr_mfi_nm: data.otr_mfi_nm,
+//         own_property_estmtd_val: data.own_property_estmtd_val,
+//         past_loan_cycle: data.past_loan_cycle,
+//         pastdue_month_cnt: data.pastdue_month_cnt,
+//         position_title_code: data.position_title_code,
+//         prmn_empl_expns: data.prmn_empl_expns,
+//         prop_apartment_yn: data.prop_apartment_yn,
+//         prop_car_yn: data.prop_car_yn,
+//         prop_farmland_yn: data.prop_farmland_yn,
+//         prop_house_yn: data.prop_house_yn,
+//         prop_machines_yn: data.prop_machines_yn,
+//         prop_motorcycle_yn: data.prop_motorcycle_yn,
+//         property_kind: data.property_kind,
+//       };
+//       let formData = new FormData();
+//       formData.append('individualApplication', '[]');
+//       formData.append('guarantee', '[]');
+//       formData.append('areaEvaluation', '[]');
+//       formData.append('relationInfo', '[]');
+//       formData.append('approvalRequests', '[]');
+
+//       axios
+//         .post(
+//           `https://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
+//           formData,
+//           {
+//             headers: {
+//               'Content-Type': 'multipart/form-data',
+//               'cache-control': 'no-cache',
+//               processData: false,
+//               contentType: false,
+//             },
+//           },
+//         )
+//         .then(response => {
+//           console.log('INSERT disability->>', response);
+//           resolve('success');
+//         })
+//         .then(error => console.log('gu error',error));
+//     }
+//   });
+// };
 
 const fetchGuaranteeData = async applicationNo => {
   return new Promise((resolve, reject) => {

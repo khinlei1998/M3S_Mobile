@@ -7,7 +7,7 @@ import {reduxForm, Field, change, reset} from 'redux-form';
 import TextInputFile from '../../components/TextInputFile';
 import {connect} from 'react-redux';
 
-function Group_Leader_Info(props) {
+function Group_Loan_Info(props) {
   const [Group_expand, setGroupInfoExpand] = useState(true);
   const {showCustomerSearch} = props;
   const handleGroupToggle = () => {
@@ -92,7 +92,6 @@ function Group_Leader_Info(props) {
               component={TextInputFile}
               cus_width
               input_mode
-              editable
             />
           </View>
 
@@ -103,7 +102,6 @@ function Group_Leader_Info(props) {
               component={TextInputFile}
               cus_width
               input_mode
-              editable
             />
 
             <Field
@@ -112,7 +110,6 @@ function Group_Leader_Info(props) {
               component={TextInputFile}
               cus_width
               input_mode
-              keyboardType={'numeric'}
             />
           </View>
 
@@ -121,7 +118,6 @@ function Group_Leader_Info(props) {
             title={'Address'}
             component={TextInputFile}
             input_mode
-            keyboardType={'numeric'}
             input_cusstyle
           />
         </View>
@@ -135,4 +131,4 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Group_Form',
-})(connect(mapStateToProps, {})(Group_Leader_Info));
+})(connect(mapStateToProps, {})(Group_Loan_Info));

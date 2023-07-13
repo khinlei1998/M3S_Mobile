@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {Field, reduxForm, reset, change} from 'redux-form';
 import {addInquiryLoanData} from '../../redux/LoanReducer';
 import {loan_application_type} from '../../common';
+
 function Viewloan(props) {
   const {loan_data, navigation, addInquiryLoanData} = props;
   const btn_inquiry_loan = item => {

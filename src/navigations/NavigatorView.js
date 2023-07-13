@@ -24,11 +24,41 @@ import Relation_Form from '../screens/Relation/Relation_Form';
 import Edit_Guarantor_Form from '../screens/Edit_GuarantorForm/Edit_Guarantor_Form';
 import Guarantor_Form from '../screens/GuarantorForm/Guarantor_Form';
 import Evidence from '../screens/Evidence/Evidence';
-
+import Group_Loan_Form from '../screens/Group_Loan/Group_Loan_Form';
+import Edit_Group_Loan_Form from '../screens/Edit_Group_Loan/Edit_Group_Loan_Form';
 const StackNavigationData = [
+
   {
+
     name: 'Home',
     component: Home,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Synchronization',
+    component: Synchronization_Screen,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Edit Group Loan',
+    component: Edit_Group_Loan_Form,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Group Loan',
+    component: Group_Loan_Form,
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
       color: '#FFF',
@@ -80,15 +110,7 @@ const StackNavigationData = [
       fontSize: 18,
     },
   },
-  {
-    name: 'Synchronization',
-    component: Synchronization_Screen,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
+
   {
     name: 'Edit_Individual_Loan',
     component: Edit_Individual_Loan,
@@ -197,8 +219,8 @@ const StackNavigationData = [
       fontSize: 18,
     },
   },
-  
-  
+
+
   {
     name: 'Evidence',
     component: Evidence,

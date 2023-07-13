@@ -8,32 +8,23 @@ import {
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import DividerLine from '../../components/DividerLine';
-import {operations, emp_filter_item} from '../../common';
-import {style} from '../../style/Group_Loan_style';
-import Group_Loan_Info from './Group_Loan_Info';
-import {connect, useDispatch} from 'react-redux';
-import {filterCustomer} from '../../query/Customer_query';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getAllLoan} from '../../query/AllLoan_query';
-import {
-  RadioButton,
-  Button,
-  List,
-  Modal,
-  Provider,
-  Portal,
-} from 'react-native-paper';
+import {operations} from '../../common';
 import Icon from 'react-native-vector-icons/Feather';
 import {Picker} from '@react-native-picker/picker';
 import {TextInput} from 'react-native-paper';
-import {cus_filter_item} from '../../common';
-import Group_Borrower_Map from './Group_Borrower_Map';
 import {reduxForm, Field, change, reset} from 'redux-form';
 import moment from 'moment';
-import Group_Loan_List from './Group_Loan_List';
-import {getAllGroupLoan} from '../../query/GropuLon_query';
-import {storeGroupData} from '../../query/GropuLon_query';
-import {setBorrowerMap_Path} from '../../redux/LoanReducer';
+import {style} from '../../style/Cover_Loan_style';
+import {
+  RadioButton,
+  Button,
+
+  Modal,
+} from 'react-native-paper';
+import {connect, useDispatch} from 'react-redux';
+import Cover_Loan_Info from './Cover_Loan_Info';
+import Cover_Loan_list from './Cover_Loan_List';
+import { cus_filter_item } from '../../common';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -252,14 +243,15 @@ const Borrower_modal = props => {
     </Modal>
   );
 };
-function Group_Loan_Form(props) {
-  const {handleSubmit, navigation, setBorrowerMap_Path} = props;
+function Cover_Loan_Form(props) {
+
+  const {handleSubmit, navigation} = props;
+
   const [show_operation, setOperation] = useState('1');
   const [modalVisible, setModalVisible] = useState(false);
   const [all_cus, setAllCus] = useState([]);
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
-  const [all_loandata, setAllGroupLoanData] = useState([]);
-  const dispatch = useDispatch();
+  const onSubmit = async values => {};
 
   const handleItemValueChange = itemValue => {
     setSelectedItemValue(itemValue);
@@ -268,33 +260,6 @@ function Group_Loan_Form(props) {
 
   const showCustomerSearch = () => {
     setModalVisible(true);
-  };
-  const loadData = async () => {
-    const user_id = await AsyncStorage.getItem('user_id');
-
-    await getAllGroupLoan().then(loan_data => {
-      setAllGroupLoanData(loan_data);
-      dispatch(
-        change(
-          'Group_Form',
-          'group_aplc_no',
-          `30${user_id}${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
-        ),
-      );
-      dispatch(change('Group_Form', 'product_type', `Group Loan`));
-    });
-  };
-  useEffect(() => {
-    loadData();
-  }, []);
-  const onSubmit = async values => {
-    await storeGroupData(values).then(result => {
-      const group_length = Object.keys(result).length;
-      if (group_length > 0) {
-        dispatch(setBorrowerMap_Path(''));
-        props.navigation.navigate('Edit Group Loan', result);
-      }
-    });
   };
   return (
     <>
@@ -309,7 +274,7 @@ function Group_Loan_Form(props) {
                 color: '#273050',
                 fontWeight: 'bold',
               }}>
-              Group Loan Application
+              Cover Loan Application
             </Text>
 
             <DividerLine />
@@ -354,13 +319,8 @@ function Group_Loan_Form(props) {
               </Button>
             </View>
             <DividerLine />
-            <Group_Loan_Info showCustomerSearch={showCustomerSearch} />
-            <Group_Borrower_Map
-              navigation={navigation}
-              all_loandata={all_loandata}
-              p_type={'30'}
-            />
-            <Group_Loan_List />
+            <Cover_Loan_Info showCustomerSearch={showCustomerSearch}  />
+            <Cover_Loan_list />
             <DividerLine />
           </View>
         </TouchableWithoutFeedback>
@@ -382,5 +342,5 @@ function mapStateToProps(state) {
 }
 
 export default reduxForm({
-  form: 'Group_Form',
-})(connect(mapStateToProps, {setBorrowerMap_Path})(Group_Loan_Form));
+  form: 'Cover Form',
+})(connect(mapStateToProps, {})(Cover_Loan_Form));

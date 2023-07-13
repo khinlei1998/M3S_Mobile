@@ -34,11 +34,11 @@ import { area_evaluation_result } from '../../common';
 import Area_Evaluation_Score from './Area_Evaluation_Score';
 import { getAllLoan_By_application_no } from '../../query/AllLoan_query';
 import { useNavigation } from '@react-navigation/native';
-
+import { setEvaluation_Score } from '../../redux/LoanReducer';
 function Area_Evaluation_Form(props) {
   const navigation = useNavigation();
 
-  const { handleSubmit, total_score } = props;
+  const { handleSubmit, total_score,setEvaluation_Score } = props;
   const [show_operation, setOperation] = useState('1');
   const [total_sts_flag, setTotal_sts_flag] = useState('');
 
@@ -76,11 +76,13 @@ function Area_Evaluation_Form(props) {
   const onSubmit = async values => {
     const area_data = Object.assign({}, values, {
       total_sts_flag: total_sts_flag,
+      total_score:total_score
     });
     console.log('area_data', area_data);
     await storeAreaEvaluation(area_data).then(result => {
       if (result == 'success') {
         ToastAndroid.show(`Insert Success`, ToastAndroid.SHORT);
+        setEvaluation_Score(0)
         navigation.goBack();
       }
     });
@@ -241,4 +243,4 @@ export default reduxForm({
   initialValues: {
     total_sts_remark: '2',
   },
-})(connect(mapStateToProps, {})(Area_Evaluation_Form));
+})(connect(mapStateToProps, {setEvaluation_Score})(Area_Evaluation_Form));

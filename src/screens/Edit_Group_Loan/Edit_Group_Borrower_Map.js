@@ -1,23 +1,20 @@
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import React, {useState} from 'react';
 import {List} from 'react-native-paper';
-import {style} from '../../style/Individual_Loan_style';
 import {reduxForm, Field, change, reset} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-function Borrower_Current_Map(props) {
-  const {navigation, all_loandata, map} = props;
-  const [borrower_map_expanded, setBorrowerMapExpanded] = useState(true);
-  const [map_show, setMapShow] = useState(false);
-  // const [map, setShowMap] = useState('')
+import {style} from '../../style/Group_Loan_style';
+function Edit_Group_Borrower_Map(props) {
+  const {navigation, all_loandata, map, p_type} = props;
 
-  const p_type = 10;
+  const [borrower_map_expanded, setBorrowerMapExpanded] = useState(true);
   const handleBorrowerMapToggle = () => {
     setBorrowerMapExpanded(!borrower_map_expanded);
   };
   const btnshowMap = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
-    navigation.navigate('Borrower Map', {all_loandata, user_id,p_type});
+    navigation.navigate('Borrower Map', {all_loandata, user_id, p_type});
   };
   return (
     <List.Accordion
@@ -61,6 +58,6 @@ function mapStateToProps(state) {
 }
 
 export default reduxForm({
-  form: 'Individual_Loan_Form',
+  form: 'Edit_Group_Form',
   // validate,
-})(connect(mapStateToProps, {})(Borrower_Current_Map));
+})(connect(mapStateToProps, {})(Edit_Group_Borrower_Map));

@@ -56,6 +56,8 @@ import {storeLoanData} from '../../query/AllLoan_query';
 import validate from './Validate';
 import {TextInput} from 'react-native-paper';
 import {resetMonthlyIncome} from '../../redux/MonthlyReducer';
+import {cus_filter_item} from '../../common';
+import {setBorrowerMap_Path} from '../../redux/LoanReducer';
 // import RNFetchBlob from 'rn-fetch-blob';
 
 const Borrower_modal = props => {
@@ -84,8 +86,9 @@ const Borrower_modal = props => {
   };
 
   const btnSelectEmployee = item => {
+    console.log('item', item.customer_nm);
     setSelectedValue(item.id);
-    change('Individual_Loan_Form', 'borrower_name', item.customer_nm);
+    dispatch(change('Individual_Loan_Form', 'borrower_name', item.customer_nm));
     dispatch(
       change('Individual_Loan_Form', 'resident_rgst_id', item.resident_rgst_id),
     );
@@ -177,8 +180,8 @@ const Borrower_modal = props => {
                 marginTop: 7,
               }}
               mode="dropdown">
-              {emp_filter_item.length > 0 &&
-                emp_filter_item.map(val => (
+              {cus_filter_item.length > 0 &&
+                cus_filter_item.map(val => (
                   <Picker.Item
                     label={val.label}
                     value={val.value}
@@ -1802,94 +1805,20 @@ function Individual_Loan(props) {
   const [selectedLocationItemValue, setLocationSelectedItemValue] =
     useState('location_code');
   const [all_loandata, setAllLoanData] = useState([]);
+  console.log('indi props', props);
 
   const {
     handleSubmit,
     totalnet,
     navigation,
     resetMonthlyIncome,
-    // map,
+    map,
     update_status,
+    setBorrowerMap_Path,
   } = props;
-  const initialValues = {
-    application_no: `appno`,
-  };
-
-  // const saveBorrowerSign = async borrower_sign_path => {
-  //   const user_id = await AsyncStorage.getItem('user_id');
-  //   const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/Signature/`;
-  //   let newFilePath;
-
-  //   try {
-  //     await RNFS.mkdir(directoryPath);
-  //     const fileName = `10${user_id}TB${moment().format('YYYYMMDD')}${
-  //       all_loandata.length + 1
-  //     }SG01.jpg`;
-  //     newFilePath = `${directoryPath}${fileName}`;
-  //     console.log('old newFilePath', newFilePath);
-  //     await RNFS.moveFile(borrower_sign_path, newFilePath);
-  //     console.log('Signature saved successfully');
-  //     console.log('newFilePath', newFilePath);
-  //     // setBorrowerSignPath(newFilePath);
-  //     return newFilePath;
-  //   } catch (error) {
-  //     console.log('Error saving signature:', error);
-  //     throw error;
-  //   }
-  // };
-
-  const requestWriteStoragePermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        {
-          title: 'Write Storage Permission',
-          message:
-            'App needs access to your device storage to save the signature image.',
-          buttonPositive: 'OK',
-          buttonNegative: 'Cancel',
-        },
-      );
-
-      return granted === PermissionsAndroid.RESULTS.GRANTED;
-    } catch (error) {
-      console.log('Error requesting write storage permission:', error);
-      return false;
-    }
-  };
-
-  // const saveSignatureToInternalStorage = async (image_encode, index) => {
-  //   const user_id = await AsyncStorage.getItem('user_id');
-  //   try {
-  //     // Request write storage permission
-  //     const granted = await requestWriteStoragePermission();
-
-  //     if (granted) {
-  //       // Get the base64-encoded image data from the result
-  //       // const imageData = result.encoded;
-
-  //       // Generate a unique filename for the image
-  //       const filename = `10${user_id}TB${moment().format('YYYYMMDD')}${
-  //         all_loandata.length + 1
-  //       }SG${index}.jpg`;
-
-  //       // Define the destination path in the app's internal storage
-  //       const destinationPath = `${RNFS.DocumentDirectoryPath}/${filename}`;
-
-  //       // Write the base64-encoded image data to the destination path
-  //       const test=await RNFS.writeFile(destinationPath, image_encode, 'base64');
-  //       console.log('destinationPath', destinationPath);
-  //       console.log('test',test);
-  //       // Set the image path for display
-  //       // setFinalepath(destinationPath);
-  //       return destinationPath;
-  //     } else {
-  //       console.log('Write storage permission denied.');
-  //     }
-  //   } catch (error) {
-  //     console.log('Error saving signature:', error);
-  //   }
-  // };
+  const inquiry_group_data =
+    props.route.params && props.route.params.inquiry_group_data;
+  const p_type = props.route.params && props.route.params.p_type;
 
   const saveSignatureToInternalStorage = async (image_encode, index) => {
     const user_id = await AsyncStorage.getItem('user_id');
@@ -1900,22 +1829,11 @@ function Individual_Loan(props) {
 
       if (granted) {
         // Generate a unique filename for the image
-        const filename = `10${user_id}TB${moment().format('YYYYMMDD')}${
+        const filename = `10${user_id}${moment().format('YYYYMMDD')}${
           all_loandata.length + 1
         }SG${index}.jpg`;
         const directory = '/storage/emulated/0/Pictures/Signature/';
         const filePath = directory + filename;
-
-        // Define the destination path in the app's internal storage
-        // let destinationPath;
-        // if (Platform.OS === 'android') {
-        //   destinationPath = `${RNFS.ExternalStorageDirectoryPath}/${filename}`;
-        // } else if (Platform.OS === 'ios') {
-        //   destinationPath = `${RNFS.ExternalStorageDirectoryPath}/${filename}`;
-        // } else {
-        //   console.log('Unsupported platform.');
-        //   return null;
-        // }
         await RNFS.mkdir(directory);
 
         // Write the base64-encoded image data to the destination path
@@ -1937,51 +1855,7 @@ function Individual_Loan(props) {
     }
   };
 
-  // const onSubmit = async values => {
-  //   try {
-  //     // Save the images
-  //     let borrowerImagePath, coBorrowerImagePath;
-
-  //     if (borrower_sign_path) {
-  //       borrowerImagePath = await saveSignatureToInternalStorage(
-  //         show_borrower_sign,
-  //         '01',
-  //       );
-  //       console.log('Borrower image saved successfully:', borrowerImagePath);
-  //     }
-
-  //     if (coborrower_sign_path) {
-  //       coBorrowerImagePath = await saveSignatureToInternalStorage(
-  //         show_coborrower_sign,
-  //         '02',
-  //       );
-  //       console.log(
-  //         'Co-Borrower image saved successfully:',
-  //         coBorrowerImagePath,
-  //       );
-  //     }
-
-  //     // Only call the store function if at least one image was saved successfully
-
-  //     const loan_data = Object.assign({}, values, {
-  //       borrower_sign: borrowerImagePath,
-  //       co_borrower_sign: coBorrowerImagePath,
-  //     });
-  //     await storeLoanData(loan_data).then(result => {
-  //       if (result == 'success') {
-  //         dispatch(reset('Individual_Loan_Form'));
-  //         resetMonthlyIncome();
-
-  //         ToastAndroid.show(`Create Successfully!`, ToastAndroid.SHORT);
-  //         props.navigation.navigate('Home');
-  //       }
-  //     });
-  //   } catch (error) {
-  //     console.log('Error:', error);
-  //   }
-  // };
   const onSubmit = async values => {
-    console.log('values', values);
     try {
       // Save the images
       let borrowerImagePath, coBorrowerImagePath;
@@ -2038,9 +1912,12 @@ function Individual_Loan(props) {
           console.log('result', result);
           if (result == 'success') {
             dispatch(reset('Individual_Loan_Form'));
+            dispatch(setBorrowerMap_Path(''));
+
             resetMonthlyIncome();
 
             ToastAndroid.show('Create Successfully!', ToastAndroid.SHORT);
+            // props.navigation.navigate('Home');
             props.navigation.navigate('Home');
           }
         });
@@ -2079,12 +1956,24 @@ function Individual_Loan(props) {
           'Individual_Loan_Form',
           'application_no',
           `10${user_id}${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
-          // `10M00172202307061`
+          // `10M001722023071144`,
         ),
       );
-      dispatch(
-        change('Individual_Loan_Form', 'product_type', `Individual Loan`),
-      );
+      if (p_type == '40') {
+        dispatch(change('Individual_Loan_Form', 'product_type', `Cover Loan`));
+      } else if (p_type == '30') {
+        dispatch(change('Individual_Loan_Form', 'product_type', `Group Loan`));
+      } else {
+        dispatch(
+          change('Individual_Loan_Form', 'product_type', `Individual Loan`),
+        );
+      }
+      if (p_type == '40') {
+      } else if (p_type == '30') {
+        dispatch(
+          change('Individual_Loan_Form', 'group_aplc_no', inquiry_group_data),
+        );
+      }
     });
     await getAllLoanMax().then(loan_max_data => {
       setLoanMaxData(loan_max_data);
@@ -2410,6 +2299,7 @@ function Individual_Loan(props) {
               showVillageSearch={showVillageSearch}
               showWardSearch={showWardSearch}
               showLocationSearch={showLocationSearch}
+              p_type={p_type}
             />
 
             <Co_Borrower_Info showCoBorrowerSearch={showCoBorrowerSearch} />
@@ -2788,7 +2678,7 @@ function Individual_Loan(props) {
 function mapStateToProps(state) {
   return {
     totalnet: state.monthly.totalnetincome,
-    // map: state.loan.borrower_map_path,
+    map: state.loan.borrower_map_path,
     update_status: state.loan.update_status,
   };
 }
@@ -2797,4 +2687,8 @@ export default reduxForm({
   form: 'Individual_Loan_Form',
   // initialValues,
   validate,
-})(connect(mapStateToProps, {resetMonthlyIncome})(Individual_Loan));
+})(
+  connect(mapStateToProps, {resetMonthlyIncome, setBorrowerMap_Path})(
+    Individual_Loan,
+  ),
+);

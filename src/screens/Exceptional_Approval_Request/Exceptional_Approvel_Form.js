@@ -56,7 +56,7 @@ function Exceptional_Approvel_Form(props) {
           exception_rqst_date: moment().format('YYYY-MM-DD'),
           excpt_aprv_rqst_no: retrive_loan_data.application_no.replace(
             /^[^M]*M/,
-            'EM',
+            'EAM',
           ),
         };
         props.initialize(initialize_data);

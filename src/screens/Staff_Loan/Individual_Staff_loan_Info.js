@@ -1899,7 +1899,7 @@ function Individual_Staff_loan_Info(props) {
         change(
           'Individual_Staff_Loan_Form',
           'application_no',
-          `20${user_id}TB${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
+          `20${user_id}${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
         ),
       );
       dispatch(
