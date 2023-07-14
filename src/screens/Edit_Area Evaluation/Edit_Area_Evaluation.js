@@ -9,21 +9,21 @@ import {connect, useDispatch} from 'react-redux';
 import {microfinance_data, area_evaluation_result} from '../../common';
 import {setEvaluation_Score} from '../../redux/LoanReducer';
 function Edit_Area_Evaluation(props) {
-  const {setEvaluation_Score, area_update_status, retrive_area_evaluation} =
+  const {setEvaluation_Score, area_update_status, retrive_area_evaluation,setTotal_sts_flag} =
     props;
-  console.log('props', props);
+  console.log('retrive_area_evaluation.area_security_flag', retrive_area_evaluation.area_security_flag);
   const [area_evaluation_form_expanded, setAreaEvaluationFormExpanded] =
     useState(true);
   const [values, setValues] = useState([
-    parseInt(retrive_area_evaluation.mf_num_flag),
-    parseInt(retrive_area_evaluation.pastdue_sts_flag),
-    parseInt(retrive_area_evaluation.trnsrt_sts_flag),
-    parseInt(retrive_area_evaluation.area_security_flag),
-    parseInt(retrive_area_evaluation.cmnc_sts_flag),
-    parseInt(retrive_area_evaluation.economy_sts_flag),
-    parseInt(retrive_area_evaluation.income_sts_flag),
-    parseInt(retrive_area_evaluation.households_sts_flag),
-    parseInt(retrive_area_evaluation.local_auth_sprt_flag),
+    parseInt(retrive_area_evaluation.mf_num_flag?retrive_area_evaluation.mf_num_flag:0),
+    parseInt(retrive_area_evaluation.pastdue_sts_flag?retrive_area_evaluation.pastdue_sts_flag:0),
+    parseInt(retrive_area_evaluation.trnsrt_sts_flag?retrive_area_evaluation.trnsrt_sts_flag:0),
+    parseInt(retrive_area_evaluation.area_security_flag?retrive_area_evaluation.area_security_flag:0),
+    parseInt(retrive_area_evaluation.cmnc_sts_flag?retrive_area_evaluation.cmnc_sts_flag:0),
+    parseInt(retrive_area_evaluation.economy_sts_flag?retrive_area_evaluation.economy_sts_flag:0),
+    parseInt(retrive_area_evaluation.income_sts_flag?retrive_area_evaluation.income_sts_flag:0),
+    parseInt(retrive_area_evaluation.households_sts_flag?retrive_area_evaluation.households_sts_flag:0),
+    parseInt(retrive_area_evaluation.local_auth_sprt_flag?retrive_area_evaluation.local_auth_sprt_flag:0),
   ]);
 
   const handleAreaEvaluationFormToggle = () => {
@@ -32,29 +32,30 @@ function Edit_Area_Evaluation(props) {
   const handleRadioButtonChange = (value, input, index) => {
     input.onChange(value.id);
     const number = parseFloat(value.result);
-    console.log('number',number);
+    console.log('number', number);
+    if (!isNaN(number)) {
+      // Update the selected values array
+      const newValues = [...values];
+      newValues[index] = number;
+      console.log('newValues>>.', newValues);
 
-    // Update the selected values array
-    const newValues = [...values];
-    newValues[index] = number;
-    console.log('newValues>>.', newValues);
-
-    setValues(newValues);
-    const filteredValues = newValues.filter(value => typeof value === 'number');
-    console.log('filteredValues', filteredValues);
-    let multipliedValue = filteredValues.reduce((total, val) => {
-      return total + val;
-    }, 0);
-    console.log('multipliedValue',multipliedValue);
-    setEvaluation_Score(multipliedValue);
-    if (multipliedValue >= 35 && multipliedValue <= 40) {
-      setTotal_sts_flag('1');
-    } else if (multipliedValue >= 25 && multipliedValue <= 34) {
-      setTotal_sts_flag('2');
-    } else if (multipliedValue >= 15 && multipliedValue <= 24) {
-      setTotal_sts_flag('3');
-    } else if (multipliedValue >= 1 && multipliedValue <= 14) {
-      setTotal_sts_flag('4');
+      setValues(newValues);
+      const filteredValues = newValues.filter(
+        value => typeof value === 'number',
+      );
+      let multipliedValue = filteredValues.reduce((total, val) => {
+        return total + val;
+      }, 0);
+      setEvaluation_Score(multipliedValue);
+      if (multipliedValue >= 35 && multipliedValue <= 40) {
+        setTotal_sts_flag('1');
+      } else if (multipliedValue >= 25 && multipliedValue <= 34) {
+        setTotal_sts_flag('2');
+      } else if (multipliedValue >= 15 && multipliedValue <= 24) {
+        setTotal_sts_flag('3');
+      } else if (multipliedValue >= 1 && multipliedValue <= 14) {
+        setTotal_sts_flag('4');
+      }
     }
     // Perform any other desired action with the multiplied value
   };

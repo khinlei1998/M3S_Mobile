@@ -1600,7 +1600,7 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Customer_ManagementForm',
-  // validate,
+  validate,
 })(
   connect(mapStateToProps, {
     setCusFormInitialValues,

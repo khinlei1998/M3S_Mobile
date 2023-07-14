@@ -10,7 +10,7 @@ import React, { useState, useEffect } from 'react';
 import DividerLine from '../../components/DividerLine';
 import { operations, emp_filter_item } from '../../common';
 import { style } from '../../style/Group_Loan_style';
-import Group_Leader_Info from './Group_Leader_Info';
+import Group_Loan_Info from './Group_Loan_Info';
 import { connect, useDispatch } from 'react-redux';
 import { filterCustomer } from '../../query/Customer_query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -33,6 +33,7 @@ import moment from 'moment';
 import Group_Loan_List from './Group_Loan_List';
 import { getAllGroupLoan } from '../../query/GropuLon_query';
 import { storeGroupData } from '../../query/GropuLon_query';
+import { setBorrowerMap_Path } from '../../redux/LoanReducer';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -58,12 +59,11 @@ const Borrower_modal = props => {
   };
 
   const btnSelectEmployee = item => {
+    console.log('item', item);
     setSelectedValue(item.id);
-    dispatch(change('Individual_Loan_Form', 'borrower_name', item.customer_nm));
-    dispatch(
-      change('Individual_Loan_Form', 'resident_rgst_id', item.resident_rgst_id),
-    );
-    dispatch(change('Individual_Loan_Form', 'customer_no', item.customer_no));
+    dispatch(change('Group_Form', 'leader_name', item.customer_nm));
+    dispatch(change('Group_Form', 'resident_rgst_id', item.resident_rgst_id));
+    dispatch(change('Group_Form', 'customer_no', item.customer_no));
   };
 
   const item = ({ item, index }) => {
@@ -253,7 +253,7 @@ const Borrower_modal = props => {
   );
 };
 function Group_Loan_Form(props) {
-  const { handleSubmit, navigation } = props;
+  const { handleSubmit, navigation, setBorrowerMap_Path } = props;
   const [show_operation, setOperation] = useState('1');
   const [modalVisible, setModalVisible] = useState(false);
   const [all_cus, setAllCus] = useState([]);
@@ -287,14 +287,18 @@ function Group_Loan_Form(props) {
   useEffect(() => {
     loadData();
   }, []);
-  const onSubmit = async (values) => {
-    await storeGroupData(values).then(result => {
-      console.log('result', result);
-      if (result == 'success') {
+  const onSubmit = async values => {
+    let data = Object.assign(values, {
+      product_type: '30',
 
+    });
+    await storeGroupData(data).then(result => {
+      if (result == 'success') {
+        dispatch(setBorrowerMap_Path(''));
+        props.navigation.navigate('Home');
       }
     });
-  }
+  };
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
@@ -353,7 +357,7 @@ function Group_Loan_Form(props) {
               </Button>
             </View>
             <DividerLine />
-            <Group_Leader_Info showCustomerSearch={showCustomerSearch} />
+            <Group_Loan_Info showCustomerSearch={showCustomerSearch} />
             <Group_Borrower_Map
               navigation={navigation}
               all_loandata={all_loandata}
@@ -382,4 +386,4 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Group_Form',
-})(connect(mapStateToProps, {})(Group_Loan_Form));
+})(connect(mapStateToProps, { setBorrowerMap_Path })(Group_Loan_Form));

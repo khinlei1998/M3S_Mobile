@@ -279,7 +279,7 @@ export default function Sync_Upload_Screen(props) {
         </Button>
 
         <Button
-          disabled={btn_disabled}
+          // disabled={btn_disabled}
           style={{
             borderRadius: 0,
             width: 120,

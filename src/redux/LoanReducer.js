@@ -9,7 +9,8 @@ export const SET_GUARANTOR_UPDATE_STATUS = 'SET_GUARANTOR_UPDATE_STATUS';
 export const SET_RELATION_UPDATE_STATUS = 'SET_RELATION_UPDATE_STATUS';
 export const SET_EVALUATION_SCORE = 'SET_EVALUATION_SCORE';
 export const SET_AREA_UPDATE_STATUS = 'SET_AREA_UPDATE_STATUS';
-
+export const SET_GROUP_UPDATE_STATUS = 'SET_GROUP_UPDATE_STATUS';
+export const SET_COVER_UPDATE_STATUS = 'SET_COVER_UPDATE_STATUS';
 const loan = {
   edit_loandata: {},
   update_status: 'false',
@@ -21,6 +22,8 @@ const loan = {
   relation_update_status: 'false',
   evaluation_score: 0,
   area_update_status: 'false',
+  group_update_status: 'false',
+  cover_update_status: 'false',
 };
 
 export const addInquiryLoanData = props => {
@@ -84,29 +87,45 @@ export const setAREA_UpdateStatus = props => {
     payload: props,
   };
 };
+export const setGroup_UpdateStatus = props => {
+  return {
+    type: 'SET_GROUP_UPDATE_STATUS',
+    payload: props,
+  };
+};
+export const setCover_UpdateStatus = props => {
+  return {
+    type: 'SET_COVER_UPDATE_STATUS',
+    payload: props,
+  };
+};
 
 export default function LoanReducder(state = loan, action) {
   switch (action.type) {
     case INQUIRY_LOAN_DATA:
-      return {...state, edit_loandata: action.payload};
+      return { ...state, edit_loandata: action.payload };
     case SET_UPDATE_STATUS:
-      return {...state, update_status: action.payload};
+      return { ...state, update_status: action.payload };
     case SET_Staff_Loan_UPDATE_STATUS:
-      return {...state, staff_loan_update_status: action.payload};
+      return { ...state, staff_loan_update_status: action.payload };
     case SET_EXCEPTIONAL_APPROVAL_STATUS:
-      return {...state, except_app_status: action.payload};
+      return { ...state, except_app_status: action.payload };
     case SET_EXCEPTIONAL_UPDATE_STATUS:
-      return {...state, exceptional_update_status: action.payload};
+      return { ...state, exceptional_update_status: action.payload };
     case SET_BORROWER_MAP_PATH:
-      return {...state, borrower_map_path: action.payload};
+      return { ...state, borrower_map_path: action.payload };
     case SET_GUARANTOR_UPDATE_STATUS:
-      return {...state, gurantor_update_status: action.payload};
+      return { ...state, gurantor_update_status: action.payload };
     case SET_RELATION_UPDATE_STATUS:
-      return {...state, relation_update_status: action.payload};
+      return { ...state, relation_update_status: action.payload };
     case SET_EVALUATION_SCORE:
-      return {...state, evaluation_score: action.payload};
+      return { ...state, evaluation_score: action.payload };
     case SET_AREA_UPDATE_STATUS:
-      return {...state, area_update_status: action.payload};
+      return { ...state, area_update_status: action.payload };
+    case SET_GROUP_UPDATE_STATUS:
+      return { ...state, group_update_status: action.payload };
+    case SET_COVER_UPDATE_STATUS:
+      return { ...state, cover_update_status: action.payload };
     default:
       return state;
   }

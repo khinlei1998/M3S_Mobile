@@ -24,7 +24,10 @@ import Relation_Form from '../screens/Relation/Relation_Form';
 import Edit_Guarantor_Form from '../screens/Edit_GuarantorForm/Edit_Guarantor_Form';
 import Guarantor_Form from '../screens/GuarantorForm/Guarantor_Form';
 import Evidence from '../screens/Evidence/Evidence';
-
+import Group_Loan_Form from '../screens/Group_Loan/Group_Loan_Form';
+import Edit_Group_Loan_Form from '../screens/Edit_Group_Loan/Edit_Group_Loan_Form';
+import Edit_Cover_Loan_Form from '../screens/Edit_Cover Loan/Edit_Cover_Loan_Form';
+import Cover_Loan_Form from '../screens/Cover Loan/Cover_Loan_Form';
 const StackNavigationData = [
 
   {
@@ -40,6 +43,33 @@ const StackNavigationData = [
   {
     name: 'Synchronization',
     component: Synchronization_Screen,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Cover Loan',
+    component: Cover_Loan_Form,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Edit_Cover_Loan',
+    component: Edit_Cover_Loan_Form,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Group Loan',
+    component: Group_Loan_Form,
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
       color: '#FFF',

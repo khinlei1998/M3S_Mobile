@@ -1,18 +1,22 @@
-import { View, Text, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import Collapsible from 'react-native-collapsible';
-import { Field, reduxForm } from 'redux-form';
+import {Field, reduxForm} from 'redux-form';
 import TextInputFile from '../../components/TextInputFile';
-import { business_type } from '../../common';
+import {business_type} from '../../common';
 import DropDownPicker from '../../components/DropDownPicker';
-import { RadioButton } from 'react-native-paper';
+import {RadioButton} from 'react-native-paper';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import DatePicker from '../../components/DatePicker';
 import DividerLine from '../../components/DividerLine';
-import { business_situation, owner_shipratio, start_living_date_status } from '../../common';
-import { style } from '../../style/Business_Info_style';
-import { connect } from 'react-redux';
+import {
+  business_situation,
+  owner_shipratio,
+  start_living_date_status,
+} from '../../common';
+import {style} from '../../style/Business_Info_style';
+import {connect} from 'react-redux';
 
 function Busines_Info() {
   const [open_business_info, setBusinessInfo] = useState(false);
@@ -22,30 +26,28 @@ function Busines_Info() {
   const MonthlyIncomeFun = () => {
     setBusinessInfo(!open_business_info);
   };
-  const numbers = Array.from({ length: 60 }, (_, i) => i + 1);
+  const numbers = Array.from({length: 60}, (_, i) => i + 1);
 
   const handlePeroidChange = (value, input) => {
-    input.onChange(value.id)
-    setBusiness(value.id)
-  }
+    input.onChange(value.id);
+    setBusiness(value.id);
+  };
 
-  const handleCurrBusinessChange=(value,input)=>{
-    setBusinessStartDate(value.id)
-    input.onChange(value.id)
-  }
+  const handleCurrBusinessChange = (value, input) => {
+    setBusinessStartDate(value.id);
+    input.onChange(value.id);
+  };
 
   return (
     <>
-      <View
-        style={style.container}>
-        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Business Info</Text>
+      <View style={style.container}>
+        <Text style={{fontWeight: 'bold', fontSize: 20}}>Business Info</Text>
         <TouchableOpacity onPress={MonthlyIncomeFun}>
-          <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
+          <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
         </TouchableOpacity>
       </View>
       <Collapsible collapsed={open_business_info}>
-        <View
-          style={style.collapsible_container}>
+        <View style={style.collapsible_container}>
           <View style={style.input_container_style}>
             <Field
               name={'workplaceName'}
@@ -69,42 +71,26 @@ function Busines_Info() {
               padding: 5,
               marginTop: 10,
             }}>
-            <Text style={{ marginLeft: 10, fontSize: 15, fontWeight: 'bold' }}>
+            <Text style={{marginLeft: 10, fontSize: 15, fontWeight: 'bold'}}>
               Business Period
             </Text>
-
-            {/* <RadioButton.Group
-              onValueChange={newValue => setBusiness(newValue)}
-              value={show_businessdate}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginTop: 10,
-                  marginLeft: 10,
-                }}>
-                <Text style={{marginTop: 5}}>Estimated </Text>
-                <RadioButton value="estimated" />
-
-                <Text style={{marginTop: 5}}>Exact Date</Text>
-                <RadioButton value="exact" />
-              </View>
-            </RadioButton.Group> */}
 
             <View>
               <Field
                 data={start_living_date_status}
                 name={'business_period_status'}
                 component={RadioButtonFile}
-                ShowRadioBtnChange={(value, input) => handlePeroidChange(value, input)}
+                ShowRadioBtnChange={(value, input) =>
+                  handlePeroidChange(value, input)
+                }
               />
             </View>
 
-            <View
-              style={style.input_container_style}>
+            <View style={style.input_container_style}>
               {show_businessdate == '1' ? (
                 <Field
                   num_data={numbers}
-                  name={'workplacePeriod'}
+                  name={'workplace_date'}
                   title={'Select a Value'}
                   component={DropDownPicker}
                   icon={'calendar'}
@@ -114,7 +100,12 @@ function Busines_Info() {
                   }}
                 />
               ) : (
-                <Field name={'workplacePeriod'} component={DatePicker} title={'Select Date'} icon={'calendar'} />
+                <Field
+                  name={'workplace_date'}
+                  component={DatePicker}
+                  title={'Select Date'}
+                  icon={'calendar'}
+                />
               )}
 
               <Field
@@ -127,7 +118,7 @@ function Busines_Info() {
               />
             </View>
 
-            <View style={{ marginRight: 10, marginLeft: 10 }}>
+            <View style={{marginRight: 10, marginLeft: 10}}>
               <Field
                 name={'workplaceAddr'}
                 title={'Address'}
@@ -138,8 +129,8 @@ function Busines_Info() {
               />
             </View>
 
-            <View style={{ marginTop: 15 }}>
-              <Text style={{ marginLeft: 10, fontSize: 15, fontWeight: 'bold' }}>
+            <View style={{marginTop: 15}}>
+              <Text style={{marginLeft: 10, fontSize: 15, fontWeight: 'bold'}}>
                 Current Businesss Start Date
               </Text>
 
@@ -165,12 +156,13 @@ function Busines_Info() {
                   data={start_living_date_status}
                   name={'curr_business_date_status'}
                   component={RadioButtonFile}
-                  ShowRadioBtnChange={(value, input) => handleCurrBusinessChange(value, input)}
+                  ShowRadioBtnChange={(value, input) =>
+                    handleCurrBusinessChange(value, input)
+                  }
                 />
               </View>
 
-              <View
-                style={style.input_container_style}>
+              <View style={style.input_container_style}>
                 {show_business_date == 'estimated' ? (
                   <Field
                     num_data={numbers}
@@ -179,15 +171,18 @@ function Busines_Info() {
                     component={DropDownPicker}
                     pickerStyle={{
                       width: 300,
-
                     }}
                   />
                 ) : (
-                  <Field name={'currWorkplacePerd'} component={DatePicker} icon={'calendar'} />
+                  <Field
+                    name={'currWorkplacePerd'}
+                    component={DatePicker}
+                    icon={'calendar'}
+                  />
                 )}
                 <View>
                   <Text
-                    style={{ fontSize: 15, fontWeight: 'bold', marginLeft: 10 }}>
+                    style={{fontSize: 15, fontWeight: 'bold', marginLeft: 10}}>
                     Business Situation
                   </Text>
                   <Field
@@ -198,8 +193,7 @@ function Busines_Info() {
                 </View>
               </View>
 
-              <View
-                style={style.input_container_style}>
+              <View style={style.input_container_style}>
                 <Field
                   name={'landScale'}
                   title={'Agriculture Land'}
@@ -216,9 +210,7 @@ function Busines_Info() {
                   title={'OwnerShip Ratio'}
                   component={DropDownPicker}
                   pickerStyle={{
-
                     width: 280,
-
                   }}
                 />
               </View>
@@ -238,9 +230,10 @@ function mapStateToProps(state) {
 export default reduxForm({
   form: 'Customer_ManagementForm',
   enableReinitialize: true,
-  initialValues: { village_status: '1', nrc_type: '1', start_living_date_status: '1', curr_business_date_status: '1', }
-})(
-  connect(mapStateToProps, null)(
-    Busines_Info,
-  ),
-);
+  initialValues: {
+    village_status: '1',
+    nrc_type: '1',
+    start_living_date_status: '1',
+    curr_business_date_status: '1',
+  },
+})(connect(mapStateToProps, null)(Busines_Info));
