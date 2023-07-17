@@ -12,7 +12,7 @@ function Viewloan(props) {
     if (item.product_type == 20) {
       navigation.navigate('Edit_Individual_Staff_loan_Info', item);
     } else if (item.product_type == 10) {
-      // addInquiryLoanData(item);
+      addInquiryLoanData(item);
 
       navigation.navigate('Edit_Individual_Loan', item);
     } else if (item.product_type == 30) {
