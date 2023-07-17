@@ -19,14 +19,33 @@ export async function getAllLoan() {
     });
   });
 }
+// Helper function to merge data from two tables
+const mergeTablesData = (dataFromTable1, dataFromTable2) => {
+  // Perform the data merging logic here
+  // For example, you can concatenate the data or create a new array of merged objects.
+
+  const mergedData = [];
+
+  // Merge data from table1
+  dataFromTable1.forEach(item => {
+    mergedData.push(item);
+  });
+
+  // Merge data from table2
+  dataFromTable2.forEach(item => {
+    mergedData.push(item);
+  });
+
+  return mergedData;
+};
 export async function getAllLoanType() {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
       tx.executeSql(
-        'SELECT * FROM Individual_application ',
+        `SELECT * FROM Individual_application`,
         [],
         (tx, results) => {
-          console.log('results',results);
+          console.log('results', results);
           resolve(results.rows.raw());
         },
         (tx, error) => {
@@ -34,6 +53,41 @@ export async function getAllLoanType() {
         },
       );
     });
+    // global.db.transaction(tx => {
+    //   tx.executeSql(
+    //     'SELECT * FROM Individual_application',
+    //     [],
+    //     (tx, results) => {
+    //       const dataFromTable1 = results.rows.raw();
+    //       console.log('Data from table1:', dataFromTable1);
+
+    //       // Retrieve data from table2
+    //       global.db.transaction(tx => {
+    //         tx.executeSql(
+    //           'SELECT * FROM Group_application',
+    //           [],
+    //           (tx, results) => {
+    //             const dataFromTable2 = results.rows.raw();
+    //             console.log('Data from table2:', dataFromTable2);
+
+    //             // Merge the data from table1 and table2
+    //             const mergedData = mergeTablesData(
+    //               dataFromTable1,
+    //               dataFromTable2,
+    //             );
+    //             console.log('Merged Data:', mergedData);
+    //           },
+    //           error => {
+    //             console.log('SELECT error from table2:', error);
+    //           },
+    //         );
+    //       });
+    //     },
+    //     error => {
+    //       console.log('SELECT error from table1:', error);
+    //     },
+    //   );
+    // });
   });
 }
 
@@ -247,7 +301,7 @@ export const storeLoanData = async loan_data => {
             //
             null, //Decison No
             null, //contract no
-            10, // product type
+            loan_data.product_type, // product type
             '001100', //Channel Device type
             null, //open branch code
             null, //Open user id

@@ -10,6 +10,8 @@ export const SET_RELATION_UPDATE_STATUS = 'SET_RELATION_UPDATE_STATUS';
 export const SET_EVALUATION_SCORE = 'SET_EVALUATION_SCORE';
 export const SET_AREA_UPDATE_STATUS = 'SET_AREA_UPDATE_STATUS';
 export const SET_GROUP_UPDATE_STATUS = 'SET_GROUP_UPDATE_STATUS';
+export const SET_COVER_UPDATE_STATUS = 'SET_COVER_UPDATE_STATUS';
+export const SET_RELOAN_UPDATE_STATUS = 'SET_RELOAN_UPDATE_STATUS';
 
 const loan = {
   edit_loandata: {},
@@ -23,6 +25,8 @@ const loan = {
   evaluation_score: 0,
   area_update_status: 'false',
   group_update_status: 'false',
+  cover_update_status: 'false',
+  reloan_update_status: 'false',
 };
 
 export const addInquiryLoanData = props => {
@@ -92,6 +96,18 @@ export const setGroup_UpdateStatus = props => {
     payload: props,
   };
 };
+export const setCover_UpdateStatus = props => {
+  return {
+    type: 'SET_COVER_UPDATE_STATUS',
+    payload: props,
+  };
+};
+export const setReloan_UpdateStatus = props => {
+  return {
+    type: 'SET_RELOAN_UPDATE_STATUS',
+    payload: props,
+  };
+};
 
 export default function LoanReducder(state = loan, action) {
   switch (action.type) {
@@ -117,6 +133,10 @@ export default function LoanReducder(state = loan, action) {
       return {...state, area_update_status: action.payload};
     case SET_GROUP_UPDATE_STATUS:
       return {...state, group_update_status: action.payload};
+    case SET_COVER_UPDATE_STATUS:
+      return {...state, cover_update_status: action.payload};
+    case SET_RELOAN_UPDATE_STATUS:
+      return {...state, reloan_update_status: action.payload};
     default:
       return state;
   }

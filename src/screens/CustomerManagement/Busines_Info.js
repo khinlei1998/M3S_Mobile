@@ -90,7 +90,7 @@ function Busines_Info() {
               {show_businessdate == '1' ? (
                 <Field
                   num_data={numbers}
-                  name={'workplacePeriod'}
+                  name={'workplace_date'}
                   title={'Select a Value'}
                   component={DropDownPicker}
                   icon={'calendar'}
@@ -101,7 +101,7 @@ function Busines_Info() {
                 />
               ) : (
                 <Field
-                  name={'workplacePeriod'}
+                  name={'workplace_date'}
                   component={DatePicker}
                   title={'Select Date'}
                   icon={'calendar'}

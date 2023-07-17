@@ -8,11 +8,11 @@ import {
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import DividerLine from '../../components/DividerLine';
-import {operations, emp_filter_item} from '../../common';
-import {style} from '../../style/Group_Loan_style';
+import { operations, emp_filter_item } from '../../common';
+import { style } from '../../style/Group_Loan_style';
 import Group_Loan_Info from './Group_Loan_Info';
-import {connect, useDispatch} from 'react-redux';
-import {filterCustomer} from '../../query/Customer_query';
+import { connect, useDispatch } from 'react-redux';
+import { filterCustomer } from '../../query/Customer_query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getAllLoan} from '../../query/AllLoan_query';
 import {
@@ -31,9 +31,9 @@ import Group_Borrower_Map from './Group_Borrower_Map';
 import {reduxForm, Field, change, reset} from 'redux-form';
 import moment from 'moment';
 import Group_Loan_List from './Group_Loan_List';
-import {getAllGroupLoan} from '../../query/GropuLon_query';
-import {storeGroupData} from '../../query/GropuLon_query';
-import {setBorrowerMap_Path} from '../../redux/LoanReducer';
+import { getAllGroupLoan } from '../../query/GropuLon_query';
+import { storeGroupData } from '../../query/GropuLon_query';
+import { setBorrowerMap_Path } from '../../redux/LoanReducer';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -162,7 +162,7 @@ const Borrower_modal = props => {
             </Picker>
           </View>
 
-          <View style={{width: '50%'}}>
+          <View style={{width: '40%'}}>
             <TextInput
               style={{
                 backgroundColor: '#fff',
@@ -253,7 +253,7 @@ const Borrower_modal = props => {
   );
 };
 function Group_Loan_Form(props) {
-  const {handleSubmit, navigation, setBorrowerMap_Path} = props;
+  const { handleSubmit, navigation, setBorrowerMap_Path } = props;
   const [show_operation, setOperation] = useState('1');
   const [modalVisible, setModalVisible] = useState(false);
   const [all_cus, setAllCus] = useState([]);
@@ -288,11 +288,14 @@ function Group_Loan_Form(props) {
     loadData();
   }, []);
   const onSubmit = async values => {
-    await storeGroupData(values).then(result => {
-      const group_length = Object.keys(result).length;
-      if (group_length > 0) {
+    let data = Object.assign(values, {
+      product_type: '30',
+
+    });
+    await storeGroupData(data).then(result => {
+      if (result == 'success') {
         dispatch(setBorrowerMap_Path(''));
-        props.navigation.navigate('Edit Group Loan', result);
+        props.navigation.navigate('Home');
       }
     });
   };
@@ -383,4 +386,4 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Group_Form',
-})(connect(mapStateToProps, {setBorrowerMap_Path})(Group_Loan_Form));
+})(connect(mapStateToProps, { setBorrowerMap_Path })(Group_Loan_Form));

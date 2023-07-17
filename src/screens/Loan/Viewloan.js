@@ -8,16 +8,24 @@ import {loan_application_type} from '../../common';
 function Viewloan(props) {
   const {loan_data, navigation, addInquiryLoanData} = props;
   const btn_inquiry_loan = item => {
+    console.log('inquiry', item);
     if (item.product_type == 20) {
       navigation.navigate('Edit_Individual_Staff_loan_Info', item);
     } else if (item.product_type == 10) {
+      // addInquiryLoanData(item);
+
       navigation.navigate('Edit_Individual_Loan', item);
+    } else if (item.product_type == 30) {
+      navigation.navigate('Edit Group Loan', item);
+    } else if (item.product_type == 40) {
+      navigation.navigate('Edit_Cover_Loan', item);
+    } else if (item.product_type == 50) {
+      navigation.navigate('Edit_Reloan', item);
     }
-    addInquiryLoanData(item);
   };
   const item = ({item, index}) => {
     const foundItem = loan_application_type.filter(
-      data =>data.value==item.product_type
+      data => data.value == item.product_type,
     );
     return (
       <TouchableOpacity onPress={() => btn_inquiry_loan(item)}>
@@ -40,14 +48,14 @@ function Viewloan(props) {
               padding: 10,
               flex: 1,
             }}>
-            {foundItem[0].label}
+            {/* {foundItem[0].label} */}
           </Text>
           <Text
             style={{
               padding: 10,
               flex: 1,
             }}>
-            {item.application_no}
+            {item.group_aplc_no}
           </Text>
 
           <Text

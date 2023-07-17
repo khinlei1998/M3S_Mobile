@@ -1894,6 +1894,7 @@ function Edit_Individual_Loan(props) {
     except_app_status,
     setGuarantor_UpdateStatus,
   } = props;
+  console.log('retrive_loan_data', retrive_loan_data);
   useEffect(() => {
     const loan_data = Object.assign({}, retrive_loan_data, {
       loan_cycle: retrive_loan_data.loan_cycle
@@ -2011,6 +2012,21 @@ function Edit_Individual_Loan(props) {
     }
 
     props.initialize(loan_data);
+    if (retrive_loan_data.product_type == '40') {
+      dispatch(
+        change('Edit_Individual_Loan_Form', 'product_type', `Cover Loan`),
+      );
+    } else if (retrive_loan_data.product_type == '30') {
+      dispatch(
+        change('Edit_Individual_Loan_Form', 'product_type', `Group Loan`),
+      );
+    } else if (retrive_loan_data.product_type == '50') {
+      dispatch(change('Edit_Individual_Loan_Form', 'product_type', `ReLoan`));
+    } else {
+      dispatch(
+        change('Edit_Individual_Loan_Form', 'product_type', `Individual Loan`),
+      );
+    }
   }, []);
 
   useEffect(() => {
@@ -2922,9 +2938,9 @@ function Edit_Individual_Loan(props) {
             <Borrower_Current_Map
               borrower_map={borrower_map}
               navigation={navigation}
-              has_borrower_map={
-                retrive_loan_data && retrive_loan_data.borrower_map
-              }
+              // has_borrower_map={
+              //   retrive_loan_data && retrive_loan_data.borrower_map
+              // }
             />
             <Borrower_Contract />
             <Borrower_Sign

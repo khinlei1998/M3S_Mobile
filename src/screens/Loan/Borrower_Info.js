@@ -70,7 +70,7 @@ function Borrower_Info(props) {
               input_mode
               editable
             />
-            {p_type == 30 ? (
+            {p_type == 30||p_type == 40 ||p_type == 50? (
               <Field
                 name={'group_aplc_no'}
                 title={'Groupaplic No'}

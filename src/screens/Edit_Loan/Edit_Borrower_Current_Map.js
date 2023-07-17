@@ -23,7 +23,7 @@ function Borrower_Current_Map(props) {
         <TouchableOpacity
           onPress={() =>
             update_status == true
-              ? navigation.navigate('Edit Borrower Map', {has_borrower_map})
+              ? navigation.navigate('Edit Borrower Map', {borrower_map})
               : ''
           }>
           {map ? (

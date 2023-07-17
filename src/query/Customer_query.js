@@ -182,11 +182,12 @@ export function getCustomer_info() {
                         }
                       },
                       error => {
-                        console.log('error',error);
+                        console.log('Customer error',error);
+                        reject(error);
                         // If insert query fails, rollback the transaction and reject the promise
-                        tx.executeSql('ROLLBACK', [], () => {
-                          reject(error);
-                        });
+                        // tx.executeSql('ROLLBACK', [], () => {
+                        //   reject(error);
+                        // });
                       },
                     );
                   });
@@ -248,7 +249,6 @@ export function storeCustomerData(cus_data) {
                 null, //updateDatetime
                 user_id, //updateUserID
                 cus_data.residentRgstId,
-                //
                 cus_data.employeeNo,
                 cus_data.branchCode,
                 cus_data.entryDate,
@@ -520,8 +520,8 @@ export function updateCustomerData(cus_data) {
           cus_data.nrc_statecode,
           cus_data.nrc_prefix,
           cus_data.nrc_no,
-          null,
-          cus_data.entry_date,
+          cus_data.curr_resident_date,
+          cus_data.workplace_date,
           null,
           null,
           cus_data.postal_code,

@@ -6,7 +6,7 @@ import {connect, useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {style} from '../../style/Group_Loan_style';
 function Edit_Group_Borrower_Map(props) {
-  const {navigation, all_loandata, map, p_type} = props;
+  const {navigation, all_loandata, map, p_type, group_update_status,borrower_map,inquiry_group_data} = props;
 
   const [borrower_map_expanded, setBorrowerMapExpanded] = useState(true);
   const handleBorrowerMapToggle = () => {
@@ -30,7 +30,13 @@ function Edit_Group_Borrower_Map(props) {
           backgroundColor: '#FAFAFA',
           padding: 10,
         }}>
-        <TouchableOpacity onPress={() => btnshowMap()}>
+        <TouchableOpacity
+        onPress={() =>
+          group_update_status == true
+            ? navigation.navigate('Edit Borrower Map',{application_no:inquiry_group_data.group_aplc_no})
+            : ''
+        }
+        >
           {map ? (
             <Image
               source={{
@@ -38,6 +44,14 @@ function Edit_Group_Borrower_Map(props) {
                 // uri: `file:///storage/emulated/0/Pictures/RNSketchCanvas/10M00172TB202306292SG01.jpg`,
               }}
               style={{height: 400}}
+              resizeMode="contain"
+            />
+          ) : borrower_map ? (
+            <Image
+              source={{
+                uri: `file://${borrower_map}`,
+              }}
+              style={{width: '100%', height: 400}}
               resizeMode="contain"
             />
           ) : (
@@ -54,6 +68,7 @@ function Edit_Group_Borrower_Map(props) {
 function mapStateToProps(state) {
   return {
     map: state.loan.borrower_map_path,
+    group_update_status: state.loan.group_update_status,
   };
 }
 

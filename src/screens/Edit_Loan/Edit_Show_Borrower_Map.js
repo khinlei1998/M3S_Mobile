@@ -16,8 +16,10 @@ import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 
 export default function Edit_Show_Borrower_Map(props) {
+  console.log('props', props);
   // const {has_borrower_map} = props;
-  const has_borrower_map = props.route.params.has_borrower_map;
+  // const has_borrower_map = props.route.params.has_borrower_map;
+  const application_no = props.route.params.application_no;
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -117,10 +119,7 @@ export default function Edit_Show_Borrower_Map(props) {
             savePreference={() => {
               return {
                 folder: 'RNSketchCanvas',
-                filename: has_borrower_map ? has_borrower_map : '1',
-                //`10${user_id}TB${moment().format(
-                // 'YYYYMMDD',
-                // )}${loan_data_count}SG01`,
+                filename: `${application_no}MP01`,
                 transparent: true,
                 imageType: 'jpg',
               };

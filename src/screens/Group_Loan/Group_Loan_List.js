@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, ToastAndroid } from 'react-native'
 import React, { useState } from 'react'
 import { style } from '../../style/Group_Loan_style'
 import { List, Button } from 'react-native-paper';
@@ -18,7 +18,10 @@ export default function Group_Loan_List() {
                 title="List of loan application by Group Memebers">
                 <View style={style.sub_container}>
                     <Button
-
+                        onPress={() => ToastAndroid.show(
+                            'You have to save application First!',
+                            ToastAndroid.SHORT,
+                        )}
                         mode="contained"
                         buttonColor={'#6870C3'}
                         style={{
@@ -97,7 +100,7 @@ export default function Group_Loan_List() {
                     </View>
 
                 </View>
-            </List.Accordion>
+            </List.Accordion >
         </>
     )
 }

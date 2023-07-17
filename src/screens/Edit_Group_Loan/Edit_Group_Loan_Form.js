@@ -8,32 +8,24 @@ import {
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import DividerLine from '../../components/DividerLine';
-import {operations, emp_filter_item} from '../../common';
+import {operations, cus_filter_item} from '../../common';
 import {style} from '../../style/Group_Loan_style';
 import Edit_Group_Loan_Info from './Edit_Group_Loan_Info';
 import {connect, useDispatch} from 'react-redux';
 import {filterCustomer} from '../../query/Customer_query';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getAllLoan} from '../../query/AllLoan_query';
-import {
-  RadioButton,
-  Button,
-  List,
-  Modal,
-  Provider,
-  Portal,
-} from 'react-native-paper';
+import {RadioButton, Button, Modal, TextInput} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import {Picker} from '@react-native-picker/picker';
-import {TextInput} from 'react-native-paper';
-import {cus_filter_item} from '../../common';
 import Edit_Group_Borrower_Map from './Edit_Group_Borrower_Map';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import moment from 'moment';
+import {reduxForm, change} from 'redux-form';
 import Edit_Group_Loan_List from './Edit_Group_Loan_List';
-import {getAllGroupLoan} from '../../query/GropuLon_query';
-import {storeGroupData} from '../../query/GropuLon_query';
 import {setGroup_UpdateStatus} from '../../redux/LoanReducer';
+import RNFS from 'react-native-fs';
+import {
+  getLoan_By_GroupID,
+  deleteGroup_LoanID,
+  updateGroupData,
+} from '../../query/GropuLon_query';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -59,7 +51,6 @@ const Borrower_modal = props => {
   };
 
   const btnSelectEmployee = item => {
-    console.log('item', item);
     setSelectedValue(item.id);
     dispatch(change('Group_Form', 'leader_name', item.customer_nm));
     dispatch(change('Group_Form', 'resident_rgst_id', item.resident_rgst_id));
@@ -68,40 +59,12 @@ const Borrower_modal = props => {
 
   const item = ({item, index}) => {
     return (
-      <View
-        style={{
-          flexDirection: 'row',
-          borderBottomWidth: 1,
-          borderBottomColor: '#ccc',
-          padding: 10,
-        }}>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {index + 1}
-        </Text>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.customer_nm}
-        </Text>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.resident_rgst_id}
-        </Text>
+      <View style={style.map_container}>
+        <Text style={style.tbl_content_style}>{index + 1}</Text>
+        <Text style={style.tbl_content_style}>{item.customer_nm}</Text>
+        <Text style={style.tbl_content_style}>{item.resident_rgst_id}</Text>
 
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
+        <Text style={style.tbl_content_style}>
           {item.tel_no == null ? 'No Data' : item.tel_no}
         </Text>
 
@@ -134,11 +97,7 @@ const Borrower_modal = props => {
         />
       </View>
       <View style={style.modal_body_container}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-          }}>
+        <View style={style.sub_modal_container}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={{marginRight: 10}}>Search Item:</Text>
 
@@ -162,15 +121,9 @@ const Borrower_modal = props => {
             </Picker>
           </View>
 
-          <View style={{width: '50%'}}>
+          <View style={{width: '40%'}}>
             <TextInput
-              style={{
-                backgroundColor: '#fff',
-                marginTop: 10,
-                width: 250,
-                borderColor: '#303030',
-                borderWidth: 0.5,
-              }}
+              style={style.input_style}
               value={emp_data}
               onChangeText={onChangeEmpText}
               right={
@@ -182,49 +135,11 @@ const Borrower_modal = props => {
             />
           </View>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            backgroundColor: '#fff',
-            borderRadius: 5,
-            padding: 5,
-            margin: 20,
-          }}>
-          <Text
-            style={{
-              padding: 10,
-              flex: 1,
-              fontWeight: 'bold',
-            }}>
-            #
-          </Text>
-          <Text
-            style={{
-              flex: 1,
-
-              padding: 10,
-              fontWeight: 'bold',
-            }}>
-            Name
-          </Text>
-          <Text
-            style={{
-              flex: 1,
-
-              padding: 10,
-              fontWeight: 'bold',
-            }}>
-            NRC
-          </Text>
-          <Text
-            style={{
-              flex: 1,
-
-              padding: 10,
-              fontWeight: 'bold',
-            }}>
-            Phone Number
-          </Text>
+        <View style={style.tbl_header_container}>
+          <Text style={style.tbl_title_style}>#</Text>
+          <Text style={style.tbl_title_style}>Name</Text>
+          <Text style={style.tbl_title_style}>NRC</Text>
+          <Text style={style.tbl_title_style}>Phone Number</Text>
         </View>
 
         <FlatList
@@ -238,13 +153,7 @@ const Borrower_modal = props => {
             onPress={() => hideModal()}
             mode="contained"
             buttonColor={'#6870C3'}
-            style={{
-              borderRadius: 0,
-              width: 100,
-              marginTop: 10,
-              color: 'black',
-              marginLeft: 5,
-            }}>
+            style={style.btn_style}>
             OK
           </Button>
         </View>
@@ -254,17 +163,19 @@ const Borrower_modal = props => {
 };
 
 function Edit_Group_Loan_Form(props) {
-  const {handleSubmit, navigation, setGroup_UpdateStatus} = props;
+  const {handleSubmit, navigation, setGroup_UpdateStatus, group_update_status} =
+    props;
   const [show_operation, setOperation] = useState('2');
   const [modalVisible, setModalVisible] = useState(false);
   const [all_cus, setAllCus] = useState([]);
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
-  const [all_loandata, setAllGroupLoanData] = useState([]);
   const [borrower_map, setBorrowerMap] = useState('');
+  const [all_loan, setAllLoanData] = useState([]);
 
   const dispatch = useDispatch();
   const filtered_operations = operations.filter(item => item.value != 1);
   const inquiry_group_data = props.route.params;
+  console.log('inquiry_group_data',inquiry_group_data);
   const btnChangeOperation = newValue => {
     setOperation(newValue);
     if (newValue == 2 || newValue == 4) {
@@ -284,45 +195,66 @@ function Edit_Group_Loan_Form(props) {
 
   const loadData = async () => {
     props.initialize(inquiry_group_data);
-    // const fileExists = await RNFS.exists(
-    //   `/storage/emulated/0/Pictures/RNSketchCanvas/${inquiry_group_data.application_no}MP01.jpg`,
-    // );
-    // console.log('sync file exist', fileExists);
-    // if (fileExists) {
-    //   setBorrowerMap(
-    //     `/storage/emulated/0/Pictures/RNSketchCanvas/${inquiry_group_data.application_no}MP01.jpg`,
-    //   );
-    // }
+    if (inquiry_group_data.p_type == '40') {
+      dispatch(change('Edit_Group_Form', 'product_type', `Cover Loan`));
+    } else if (inquiry_group_data.p_type == '30') {
+      dispatch(change('Edit_Group_Form', 'product_type', `Group Loan`));
+    } else {
+      dispatch(change('Edit_Group_Form', 'product_type', `ReLoan`));
+    }
+    //show old map if exists
+    const fileExists = await RNFS.exists(
+      `/storage/emulated/0/Pictures/RNSketchCanvas/${inquiry_group_data.group_aplc_no}MP01.jpg`,
+    );
+    if (fileExists) {
+      setBorrowerMap(
+        `/storage/emulated/0/Pictures/RNSketchCanvas/${inquiry_group_data.group_aplc_no}MP01.jpg`,
+      );
+    }
+    await getLoan_By_GroupID(inquiry_group_data.group_aplc_no).then(
+      loan_data => {
+        setAllLoanData(loan_data);
+      },
+    );
   };
 
   useEffect(() => {
     loadData();
   }, []);
 
-  const onSubmit = async values => {};
+  const onSubmit = async values => {
+    if (show_operation == '4') {
+      await deleteGroup_LoanID(values).then(response => {
+        if (response == 'success') {
+          alert('Delete Success');
+          navigation.goBack();
+          // setUpdateStatus(false);
+          // props.navigation.navigate('Home');
+        }
+      });
+    } else {
+      let data = Object.assign(values, {
+        product_type: '30',
+      });
+      await updateGroupData(data).then(response => {
+        if (response == 'success') {
+          alert('Update Success');
+          navigation.goBack();
+          // setUpdateStatus(false);
+          // props.navigation.navigate('Home');
+        }
+      });
+    }
+  };
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={{flex: 1, backgroundColor: '#fff'}}>
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: 20,
-                marginTop: 20,
-                color: '#273050',
-                fontWeight: 'bold',
-              }}>
-              Group Loan Application
-            </Text>
+            <Text style={style.title_style}>Group Loan Application</Text>
 
             <DividerLine />
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                marginTop: 15,
-              }}>
+            <View style={style.continer}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -332,12 +264,7 @@ function Edit_Group_Loan_Form(props) {
                     key={index}
                     onValueChange={newValue => btnChangeOperation(newValue)}
                     value={show_operation}>
-                    <View
-                      key={option.value}
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                      }}>
+                    <View key={option.value} style={style.operation_style}>
                       <RadioButton.Item
                         // disabled={option.value !== show_operation}
                         label={option.label}
@@ -350,6 +277,13 @@ function Edit_Group_Loan_Form(props) {
                 ))}
               </View>
               <Button
+                disabled={
+                  group_update_status == true && show_operation == '3'
+                    ? false
+                    : group_update_status == false && show_operation == '4'
+                    ? false
+                    : true
+                }
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
                 buttonColor={'#6870C3'}
@@ -361,17 +295,19 @@ function Edit_Group_Loan_Form(props) {
             <Edit_Group_Loan_Info showCustomerSearch={showCustomerSearch} />
             <Edit_Group_Borrower_Map
               navigation={navigation}
-              all_loandata={all_loandata}
-              p_type={'30'}
+              borrower_map={borrower_map}
+              inquiry_group_data={inquiry_group_data}
             />
             <Edit_Group_Loan_List
               navigation={navigation}
               inquiry_group_data={inquiry_group_data}
+              all_loan={all_loan}
             />
             <DividerLine />
           </View>
         </TouchableWithoutFeedback>
       </ScrollView>
+
       <Borrower_modal
         handleSubmit={handleSubmit}
         setAllCus={setAllCus}
@@ -385,9 +321,10 @@ function Edit_Group_Loan_Form(props) {
   );
 }
 function mapStateToProps(state) {
-  return {};
+  return {
+    group_update_status: state.loan.group_update_status,
+  };
 }
-
 export default reduxForm({
   form: 'Edit_Group_Form',
 })(connect(mapStateToProps, {setGroup_UpdateStatus})(Edit_Group_Loan_Form));

@@ -350,17 +350,6 @@ function Customer_Base_Info(props) {
             <Text style={style.radio_title_style}>
               Start Living Date Current Address
             </Text>
-            {/* <RadioButton.Group
-              onValueChange={newValue => handleStartLivingStatus(newValue)}
-              value={show_businessdate}>
-              <View style={style.child_radio_title_style}>
-                <Text style={{ marginTop: 5 }}>Estimated </Text>
-                <RadioButton value="1" />
-
-                <Text style={{ marginTop: 5 }}>Exact Date</Text>
-                <RadioButton value="2" />
-              </View>
-            </RadioButton.Group> */}
 
             <View>
               <Field
@@ -377,7 +366,7 @@ function Customer_Base_Info(props) {
               {show_businessdate == '1' ? (
                 <Field
                   num_data={numbers}
-                  name={'currResidentPerd'}
+                  name={'curr_resident_date'}
                   title={'Select a Value'}
                   component={DropDownPicker}
                   pickerStyle={{
@@ -386,7 +375,7 @@ function Customer_Base_Info(props) {
                 />
               ) : (
                 <Field
-                  name={'currResidentPerd'}
+                  name={'curr_resident_date'}
                   component={DatePicker}
                   label={'Start Living Date'}
                   icon={'calendar'}

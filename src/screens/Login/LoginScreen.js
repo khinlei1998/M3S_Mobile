@@ -96,6 +96,7 @@ function LoginScreen(props) {
         .then(result => {
           if (result == 'success') {
             getCustomer_info().then(result => {
+              console.log('result',result);
               if (result == 'success') {
                 getNRC_info().then(result => {
                   if (result == 'success') {
@@ -118,6 +119,10 @@ function LoginScreen(props) {
                     // });
                   }
                 });
+              }else{
+                console.log(
+                  'Customer error reach'
+                );
               }
             });
           }

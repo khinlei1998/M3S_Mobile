@@ -26,6 +26,8 @@ import Guarantor_Form from '../screens/GuarantorForm/Guarantor_Form';
 import Evidence from '../screens/Evidence/Evidence';
 import Group_Loan_Form from '../screens/Group_Loan/Group_Loan_Form';
 import Edit_Group_Loan_Form from '../screens/Edit_Group_Loan/Edit_Group_Loan_Form';
+import Edit_Cover_Loan_Form from '../screens/Edit_Cover Loan/Edit_Cover_Loan_Form';
+import Cover_Loan_Form from '../screens/Cover Loan/Cover_Loan_Form';
 const StackNavigationData = [
 
   {
@@ -48,8 +50,17 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Edit Group Loan',
-    component: Edit_Group_Loan_Form,
+    name: 'Cover Loan',
+    component: Cover_Loan_Form,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Edit_Cover_Loan',
+    component: Edit_Cover_Loan_Form,
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
       color: '#FFF',

@@ -2,6 +2,7 @@ import {
   View,
   Text,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useRef, useState} from 'react';
 import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
@@ -33,9 +34,11 @@ export default function Show_Borrower_Map(props) {
             defaultStrokeIndex={0}
             defaultStrokeWidth={5}
             closeComponent={
+              <TouchableOpacity onPress={()=>navigation.goBack()}>
               <View style={styles.functionButton}>
                 <Text style={{color: 'white'}}>Close</Text>
               </View>
+              </TouchableOpacity>
             }
             undoComponent={
               <View style={styles.functionButton}>
