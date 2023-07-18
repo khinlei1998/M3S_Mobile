@@ -285,24 +285,34 @@ export const gender = [
 
 export const maritail_status = [
   {
-    id: 1,
+    id: 10,
     label: 'Single',
     value: '01',
   },
   {
-    id: 2,
+    id: 20,
     label: 'Married',
     value: '02',
   },
   {
-    id: 3,
+    id: 30,
     label: 'Divorced',
     value: '03',
   },
   {
-    id: 4,
+    id: 40,
     label: 'Windower/Window',
     value: '04',
+  },
+  {
+    id: 50,
+    label: 'Separacted',
+    value: '05',
+  },
+  {
+    id: 60,
+    label: 'Unknown',
+    value: '06',
   },
 ];
 
@@ -310,27 +320,27 @@ export const condition_house = [
   {
     id: 1,
     label: 'None',
-    value: '01',
+    value: '000',
   },
   {
     id: 2,
     label: 'Own House',
-    value: '02',
+    value: '001',
   },
   {
     id: 3,
     label: 'Rental House',
-    value: '03',
+    value: '002',
   },
   {
     id: 4,
     label: 'Living with Parents',
-    value: '04',
+    value: '003',
   },
   {
     id: 5,
     label: 'Living with Relative',
-    value: '05',
+    value: '004',
   },
 ];
 
@@ -460,6 +470,16 @@ export const loan_application_type = [
     id: 3,
     label: 'Group Loan',
     value: '30',
+  },
+  {
+    id: 4,
+    label: 'Cover Loan',
+    value: '40',
+  },
+  {
+    id: 5,
+    label: 'ReLoan',
+    value: '50',
   },
 ];
 

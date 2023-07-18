@@ -86,7 +86,6 @@ const Borrower_modal = props => {
   };
 
   const btnSelectEmployee = item => {
-    console.log('item', item.customer_nm);
     setSelectedValue(item.id);
     dispatch(change('Individual_Loan_Form', 'borrower_name', item.customer_nm));
     dispatch(
@@ -191,7 +190,7 @@ const Borrower_modal = props => {
             </Picker>
           </View>
 
-          <View style={{width: '50%'}}>
+          <View style={{width: '40%'}}>
             <TextInput
               style={{
                 backgroundColor: '#fff',
@@ -407,8 +406,8 @@ const CoBorrower_modal = props => {
                     marginTop: 7,
                   }}
                   mode="dropdown">
-                  {emp_filter_item.length > 0 &&
-                    emp_filter_item.map(val => (
+                  {cus_filter_item.length > 0 &&
+                    cus_filter_item.map(val => (
                       <Picker.Item
                         label={val.label}
                         value={val.value}
@@ -1895,18 +1894,15 @@ function Individual_Loan(props) {
           );
         }
       }
-      const exists = await RNFS.exists(filePath);
-      if (exists) {
-        console.log('exist');
-      } else {
-        console.log('no exist');
-      }
+
       if (!saveImageError) {
         const loan_data = Object.assign({}, values, {
           borrower_sign: borrowerImagePath,
           co_borrower_sign: coBorrowerImagePath,
-          borrower_map: map,
+          product_type:p_type
+          // borrower_map: map,
         });
+        console.log('loan dataa',loan_data);
 
         await storeLoanData(loan_data).then(result => {
           console.log('result', result);
@@ -1956,20 +1952,20 @@ function Individual_Loan(props) {
           'Individual_Loan_Form',
           'application_no',
           `10${user_id}${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
-          // `10M001722023071144`,
         ),
       );
       if (p_type == '40') {
         dispatch(change('Individual_Loan_Form', 'product_type', `Cover Loan`));
       } else if (p_type == '30') {
         dispatch(change('Individual_Loan_Form', 'product_type', `Group Loan`));
+      } else if (p_type == '50') {
+        dispatch(change('Individual_Loan_Form', 'product_type', `ReLoan`));
       } else {
         dispatch(
           change('Individual_Loan_Form', 'product_type', `Individual Loan`),
         );
       }
-      if (p_type == '40') {
-      } else if (p_type == '30') {
+      if (p_type == '40' || p_type == '30' || p_type == '50') {
         dispatch(
           change('Individual_Loan_Form', 'group_aplc_no', inquiry_group_data),
         );

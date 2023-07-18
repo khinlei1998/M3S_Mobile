@@ -28,6 +28,9 @@ import Group_Loan_Form from '../screens/Group_Loan/Group_Loan_Form';
 import Edit_Group_Loan_Form from '../screens/Edit_Group_Loan/Edit_Group_Loan_Form';
 import Edit_Cover_Loan_Form from '../screens/Edit_Cover Loan/Edit_Cover_Loan_Form';
 import Cover_Loan_Form from '../screens/Cover Loan/Cover_Loan_Form';
+import Reloan_Form from '../screens/Relaon/Reloan_Form';
+import Edit_Reloan_Form from '../screens/Edit_Relaon/Edit_Reloan_Form';
+import Survey from '../screens/Survey/Survey';
 const StackNavigationData = [
 
   {
@@ -50,8 +53,44 @@ const StackNavigationData = [
     },
   },
   {
+    name: 'ReLoan',
+    component: Reloan_Form,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Survey',
+    component: Survey,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Edit_Reloan',
+    component: Edit_Reloan_Form,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
     name: 'Cover Loan',
     component: Cover_Loan_Form,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Edit Group Loan',
+    component: Edit_Group_Loan_Form,
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
       color: '#FFF',
@@ -76,15 +115,7 @@ const StackNavigationData = [
       fontSize: 18,
     },
   },
-  {
-    name: 'Survey',
-    component: TestScreen,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
+ 
   {
     name: 'Customer Management',
     component: Customer_Management,

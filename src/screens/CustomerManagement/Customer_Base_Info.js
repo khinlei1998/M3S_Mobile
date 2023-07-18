@@ -337,16 +337,7 @@ function Customer_Base_Info(props) {
               />
             </View>
 
-            <View style={style.postal_input_style}>
-              <Field
-                name={'postal_code'}
-                title={'Postal Code '}
-                component={TextInputFile}
-                input_mode
-                inputmax={100}
-                input_cusstyle
-              />
-            </View>
+           
             <Text style={style.radio_title_style}>
               Start Living Date Current Address
             </Text>

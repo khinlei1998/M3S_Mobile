@@ -341,17 +341,7 @@ function Edit_Customer_BaseInfo(props) {
               />
             </View>
 
-            <View style={style.postal_input_style}>
-              <Field
-                name={'postal_code'}
-                title={'Postal Code '}
-                component={TextInputFile}
-                input_mode
-                inputmax={100}
-                input_cusstyle
-                editable={update_status == true ? false : true}
-              />
-            </View>
+           
             <Text style={style.radio_title_style}>
               Start Living Date Current Address
             </Text>

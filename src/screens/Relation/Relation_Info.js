@@ -57,7 +57,6 @@ export default function Relation_Info(props) {
               component={TextInputFile}
               cus_width
               input_mode
-              editable
               require
             />
           </View>

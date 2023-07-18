@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ToastAndroid } from 'react-native';
+import {ToastAndroid} from 'react-native';
 export async function getAllGroupLoan() {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
@@ -48,13 +48,11 @@ export const storeGroupData = async data => {
             data.father_name,
             data.addr,
             data.tablet_sync_sts, //application_date,
-            data.sync_sts,
+            '00',
             data.err_msg, //25
           ],
           (trans, results) => {
-
             resolve('success');
-
           },
           error => {
             reject(error);
@@ -134,31 +132,46 @@ export async function deleteGroup_LoanID(data) {
                                       resolve('success');
                                     },
                                     (txObj, error) => {
-                                      console.error('Delete from Exception_aprv error:', error);
+                                      console.error(
+                                        'Delete from Exception_aprv error:',
+                                        error,
+                                      );
                                       reject(error);
                                     },
                                   );
                                 },
                                 (txObj, error) => {
-                                  console.error('Delete from Guarantee error:', error);
+                                  console.error(
+                                    'Delete from Guarantee error:',
+                                    error,
+                                  );
                                   reject(error);
                                 },
                               );
                             },
                             (txObj, error) => {
-                              console.error('Delete from Relation_info error:', error);
+                              console.error(
+                                'Delete from Relation_info error:',
+                                error,
+                              );
                               reject(error);
                             },
                           );
                         },
                         (txObj, error) => {
-                          console.error('Delete from Area_evaluation error:', error);
+                          console.error(
+                            'Delete from Area_evaluation error:',
+                            error,
+                          );
                           reject(error);
                         },
                       );
                     },
                     (txObj, error) => {
-                      console.error('Delete from Individual_application error:', error);
+                      console.error(
+                        'Delete from Individual_application error:',
+                        error,
+                      );
                       reject(error);
                     },
                   );
@@ -171,7 +184,10 @@ export async function deleteGroup_LoanID(data) {
                 }
               },
               (txObj, error) => {
-                console.error('Select from Individual_application error:', error);
+                console.error(
+                  'Select from Individual_application error:',
+                  error,
+                );
                 reject(error);
               },
             );
@@ -188,5 +204,51 @@ export async function deleteGroup_LoanID(data) {
     throw error;
   }
 }
-
-
+export const updateGroupData = async data => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      global.db.transaction(trans => {
+        trans.executeSql(
+          `UPDATE Group_application SET serial_no=?,group_aplc_no=?,status_code=?,create_datetime=?,create_user_id=?,delete_datetime=?,delete_user_id=?,update_datetime=?,update_user_id=?,open_branch_code=?,product_type=?,open_user_id=?,mngt_branch_code=?,mngt_user_id=?,application_date=?,in_charge=?,township_name=?,customer_no=?,leader_name=?,resident_rgst_id=?,father_name=?,addr=?,tablet_sync_sts=?,sync_sts=?,err_msg=? WHERE group_aplc_no=?`,
+          [
+            data.serial_no,
+            data.group_aplc_no,
+            data.status_code,
+            data.create_datetime,
+            data.create_user_id,
+            data.delete_datetime,
+            data.delete_user_id,
+            data.update_datetime,
+            data.update_user_id,
+            data.open_branch_code,
+            data.product_type,
+            data.open_user_id,
+            data.mngt_branch_code,
+            data.mngt_user_id,
+            data.application_date,
+            data.in_charge,
+            data.township_name,
+            data.customer_no,
+            data.leader_name,
+            data.resident_rgst_id,
+            data.father_name,
+            data.addr,
+            data.tablet_sync_sts,
+            data.sync_sts,
+            data.err_msg,
+            data.group_aplc_no,
+          ],
+          (trans, results) => {
+            resolve('success');
+          },
+          error => {
+            reject(error);
+            console.log('error',error);
+          },
+        );
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};

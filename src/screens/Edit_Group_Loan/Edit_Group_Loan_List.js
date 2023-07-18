@@ -1,17 +1,20 @@
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
-import { style } from '../../style/Group_Loan_style';
-import { List, Button } from 'react-native-paper';
-export default function Edit_Group_Loan_List(props) {
+import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {style} from '../../style/Group_Loan_style';
+import {List, Button} from 'react-native-paper';
+import {loan_application_type} from '../../common';
+import { addInquiryLoanData } from '../../redux/LoanReducer';
+import {connect, useDispatch} from 'react-redux';
+import {reduxForm, Field, change} from 'redux-form';
+
+function Edit_Group_Loan_List(props) {
   const [Grouplist_expand, setGroupListExpand] = useState(true);
-  const { inquiry_group_data, navigation, all_loan } = props;
-  console.log('all_loan', all_loan);
+  const {inquiry_group_data, navigation, all_loan,addInquiryLoanData} = props;
 
   const handleGroupListToggle = () => {
     setGroupListExpand(!Grouplist_expand);
   };
   const p_type = 30;
-
   return (
     <>
       <List.Accordion
@@ -23,10 +26,10 @@ export default function Edit_Group_Loan_List(props) {
         <View style={style.sub_container}>
           <Button
             onPress={() => {
-              navigation.navigate(
-                'Individual_loan',
-                { inquiry_group_data: inquiry_group_data.group_aplc_no, p_type }
-              );
+              navigation.navigate('Individual_loan', {
+                inquiry_group_data: inquiry_group_data.group_aplc_no,
+                p_type,
+              });
             }}
             mode="contained"
             buttonColor={'#6870C3'}
@@ -106,9 +109,16 @@ export default function Edit_Group_Loan_List(props) {
           </View>
           {/* show loan data */}
           {all_loan.map((val, index) => {
-            console.log('val', val);
+            const foundItem = loan_application_type.filter(
+              data => data.value == val.product_type,
+            );
             return (
-              <TouchableOpacity key={index} >
+              <TouchableOpacity
+                key={index}
+                onPress={() => {
+                  addInquiryLoanData(val);
+                  navigation.navigate('Edit_Individual_Loan');
+                }}>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -128,7 +138,7 @@ export default function Edit_Group_Loan_List(props) {
                       padding: 10,
                       flex: 1,
                     }}>
-                    {val.product_type}
+                    {foundItem[0].label}
                   </Text>
                   <Text
                     style={{
@@ -158,15 +168,19 @@ export default function Edit_Group_Loan_List(props) {
                     }}>
                     {val.sync_sts}
                   </Text>
-
                 </View>
               </TouchableOpacity>
-            )
-
+            );
           })}
-
         </View>
       </List.Accordion>
     </>
   );
 }
+function mapStateToProps(state) {
+  return {
+  };
+}
+export default reduxForm({
+  form: 'Edit_Group_Form',
+})(connect(mapStateToProps, {addInquiryLoanData})(Edit_Group_Loan_List));

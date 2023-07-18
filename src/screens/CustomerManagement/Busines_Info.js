@@ -166,7 +166,7 @@ function Busines_Info() {
                 {show_business_date == 'estimated' ? (
                   <Field
                     num_data={numbers}
-                    name={'currWorkplacePerd'}
+                    name={'currWorkplaceDate'}
                     title={'Select a Value'}
                     component={DropDownPicker}
                     pickerStyle={{
@@ -175,7 +175,7 @@ function Busines_Info() {
                   />
                 ) : (
                   <Field
-                    name={'currWorkplacePerd'}
+                    name={'currWorkplaceDate'}
                     component={DatePicker}
                     icon={'calendar'}
                   />

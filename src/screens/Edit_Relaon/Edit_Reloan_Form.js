@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   FlatList,
+  ToastAndroid
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import DividerLine from '../../components/DividerLine';
@@ -12,23 +13,18 @@ import { operations } from '../../common';
 import Icon from 'react-native-vector-icons/Feather';
 import { Picker } from '@react-native-picker/picker';
 import { TextInput } from 'react-native-paper';
-import { reduxForm, Field, change, reset } from 'redux-form';
-import moment from 'moment';
+import { reduxForm, change, } from 'redux-form';
 import { style } from '../../style/Cover_Loan_style';
-import {
-  RadioButton,
-  Button,
-
-  Modal,
-} from 'react-native-paper';
+import { RadioButton, Button, Modal } from 'react-native-paper';
 import { connect, useDispatch } from 'react-redux';
-import Cover_Loan_Info from './Cover_Loan_Info';
-import Cover_Loan_list from './Cover_Loan_List';
 import { cus_filter_item } from '../../common';
-import { getAllGroupLoan } from '../../query/GropuLon_query';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { filterCustomer } from '../../query/Customer_query';
-import { storeGroupData } from '../../query/GropuLon_query';
+import Edit_Reloan_Info from './Edit_Reloan_Info';
+import Edit_Reloan_list from './Edit_Reloan_list';
+import { getLoan_By_GroupID } from '../../query/GropuLon_query';
+import { setReloan_UpdateStatus } from '../../redux/LoanReducer';
+import { deleteGroup_LoanID } from '../../query/GropuLon_query';
+import { updateGroupData } from '../../query/GropuLon_query';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -246,27 +242,59 @@ const Borrower_modal = props => {
     </Modal>
   );
 };
-function Cover_Loan_Form(props) {
+function Edit_Reloan_Form(props) {
+  const { handleSubmit, navigation, setReloan_UpdateStatus, reloan_update_status } = props;
 
-  const { handleSubmit, navigation } = props;
-
-  const [show_operation, setOperation] = useState('1');
+  const [show_operation, setOperation] = useState('2');
   const [modalVisible, setModalVisible] = useState(false);
   const [all_cus, setAllCus] = useState([]);
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
-  const [all_loandata, setAllGroupLoanData] = useState([]);
+  const [all_loan, setAllLoanData] = useState([]);
+
   const dispatch = useDispatch();
+  const inquiry_reloan = props.route.params;
+  const btnChangeOperation = newValue => {
+    setOperation(newValue);
+    if (newValue == 2 || newValue == 4) {
+      setReloan_UpdateStatus(false);
+    } else {
+      setReloan_UpdateStatus(true);
+    }
+  };
+  useEffect(() => {
+    if (reloan_update_status == true) {
+      setOperation('3');
+    }
+  }, [reloan_update_status]);
 
   const onSubmit = async values => {
-    let data = Object.assign(values, {
-      product_type: '40',
-
-    });
-    await storeGroupData(data).then(result => {
-      if (result == 'success') {
-        props.navigation.navigate('Home');
-      }
-    });
+    if (show_operation == '4') {
+      await deleteGroup_LoanID(values).then(response => {
+        if (response == 'success') {
+          ToastAndroid.show(
+            `Delete Success`,
+            ToastAndroid.SHORT,
+          )
+          navigation.goBack();
+        }
+        
+      });
+    }
+    else {
+      let data = Object.assign(values, {
+        product_type: '50',
+      });
+      await updateGroupData(data).then(response => {
+        if (response == 'success') {
+          ToastAndroid.show(
+            `Update Success`,
+            ToastAndroid.SHORT,
+          )
+          navigation.goBack();
+        }
+      });
+    }
+    
   };
 
   const handleItemValueChange = itemValue => {
@@ -278,23 +306,24 @@ function Cover_Loan_Form(props) {
     setModalVisible(true);
   };
   const loadData = async () => {
-    const user_id = await AsyncStorage.getItem('user_id');
+    props.initialize(inquiry_reloan);
+    if (inquiry_reloan.p_type == '40') {
+      dispatch(change('Edit_Reloan_Form', 'product_type', `Cover Loan`));
+    } else if (inquiry_reloan.p_type == '30') {
+      dispatch(change('Edit_Reloan_Form', 'product_type', `Group Loan`));
+    } else {
+      dispatch(change('Edit_Reloan_Form', 'product_type', `ReLoan`));
+    }
 
-    await getAllGroupLoan().then(loan_data => {
-      setAllGroupLoanData(loan_data);
-      dispatch(
-        change(
-          'Cover_Form',
-          'group_aplc_no',
-          `40${user_id}${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
-        ),
-      );
-      dispatch(change('Cover_Form', 'product_type', `Cover Loan`));
+    await getLoan_By_GroupID(inquiry_reloan.group_aplc_no).then(loan_data => {
+      setAllLoanData(loan_data);
     });
   };
   useEffect(() => {
     loadData();
   }, []);
+  const filtered_operations = operations.filter(item => item.value != 1);
+
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
@@ -308,7 +337,7 @@ function Cover_Loan_Form(props) {
                 color: '#273050',
                 fontWeight: 'bold',
               }}>
-              Cover Loan Application
+              ReLoan Application
             </Text>
 
             <DividerLine />
@@ -322,10 +351,10 @@ function Cover_Loan_Form(props) {
                 style={{
                   flexDirection: 'row',
                 }}>
-                {operations.map((option, index) => (
+                {filtered_operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
-                    onValueChange={newValue => setOperation(newValue)}
+                    onValueChange={newValue => btnChangeOperation(newValue)}
                     value={show_operation}>
                     <View
                       key={option.value}
@@ -334,7 +363,7 @@ function Cover_Loan_Form(props) {
                         alignItems: 'center',
                       }}>
                       <RadioButton.Item
-                        disabled={option.value !== show_operation}
+                        // disabled={option.value !== show_operation}
                         label={option.label}
                         value={option.value}
                         color="#000"
@@ -353,8 +382,12 @@ function Cover_Loan_Form(props) {
               </Button>
             </View>
             <DividerLine />
-            <Cover_Loan_Info showCustomerSearch={showCustomerSearch} />
-            <Cover_Loan_list />
+            <Edit_Reloan_Info showCustomerSearch={showCustomerSearch} />
+            <Edit_Reloan_list
+              inquiry_reloan={inquiry_reloan}
+              navigation={navigation}
+              all_loan={all_loan}
+            />
             <DividerLine />
           </View>
         </TouchableWithoutFeedback>
@@ -372,9 +405,12 @@ function Cover_Loan_Form(props) {
   );
 }
 function mapStateToProps(state) {
-  return {};
+  return {
+    reloan_update_status: state.loan.reloan_update_status,
+
+  };
 }
 
 export default reduxForm({
-  form: 'Cover_Form',
-})(connect(mapStateToProps, {})(Cover_Loan_Form));
+  form: 'Edit_Reloan_Form',
+})(connect(mapStateToProps, { setReloan_UpdateStatus })(Edit_Reloan_Form));

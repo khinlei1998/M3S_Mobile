@@ -1,21 +1,21 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text,TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {List, Button} from 'react-native-paper';
 import {style} from '../../style/Cover_Loan_style';
-import {loan_application_type} from '../../common';
-export default function Edit_Cover_Loan_list(props) {
-  const [Coverlist_expand, setCoverListExpand] = useState(true);
-  const {inquiry_cover_loan, navigation, all_loan} = props;
-  const handleCoverListToggle = () => {
-    setCoverListExpand(!Coverlist_expand);
-  };
-  const p_type = 40;
+import { loan_application_type } from '../../common';
+export default function Reloan_list(props) {
+  const {navigation, inquiry_reloan,all_loan} = props;
+  const [Reloanlist_expand, setReloanListExpand] = useState(true);
 
+  const handleReloanListToggle = () => {
+    setReloanListExpand(!Coverlist_expand);
+  };
+  const p_type = 50;
   return (
     <>
       <List.Accordion
-        expanded={Coverlist_expand}
-        onPress={handleCoverListToggle}
+        expanded={Reloanlist_expand}
+        onPress={handleReloanListToggle}
         style={style.list_container}
         titleStyle={style.list_title}
         title="List of loan application by Group Memebers">
@@ -23,7 +23,7 @@ export default function Edit_Cover_Loan_list(props) {
           <Button
             onPress={() => {
               navigation.navigate('Individual_loan', {
-                inquiry_group_data: inquiry_cover_loan.group_aplc_no,
+                inquiry_group_data: inquiry_reloan.group_aplc_no,
                 p_type,
               });
             }}

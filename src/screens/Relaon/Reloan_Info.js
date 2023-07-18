@@ -6,22 +6,20 @@ import {reduxForm, Field, change, reset} from 'redux-form';
 import TextInputFile from '../../components/TextInputFile';
 import {connect} from 'react-redux';
 import {style} from '../../style/Cover_Loan_style';
-import {setCover_UpdateStatus} from '../../redux/LoanReducer';
-function Edit_Cover_Loan_Info(props) {
-  const [Cover_expand, setCoverInfoExpand] = useState(true);
-  const {showCustomerSearch, setCover_UpdateStatus, cover_update_status} =
-    props;
-  const handleCoverToggle = () => {
-    setCoverInfoExpand(!Cover_expand);
+export default function Reloan_Info(props) {
+  const [Reloan_expand, setReloanInfoExpand] = useState(true);
+  const {showCustomerSearch} = props;
+  const handleReloanToggle = () => {
+    setReloanInfoExpand(!Reloan_expand);
   };
   return (
     <>
       <List.Accordion
-        expanded={Cover_expand}
-        onPress={handleCoverToggle}
+        expanded={Reloan_expand}
+        onPress={handleReloanToggle}
         style={style.list_container}
         titleStyle={style.list_title}
-        title="CoverLoan Information">
+        title="Reloan Information">
         <View style={style.sub_container}>
           <View style={style.sub_list_container}>
             <Field
@@ -93,7 +91,6 @@ function Edit_Cover_Loan_Info(props) {
               component={TextInputFile}
               cus_width
               input_mode
-              editable={cover_update_status == true ? false : true}
             />
 
             <Field
@@ -102,8 +99,6 @@ function Edit_Cover_Loan_Info(props) {
               component={TextInputFile}
               cus_width
               input_mode
-              editable={cover_update_status == true ? false : true}
-
             />
           </View>
 
@@ -113,20 +108,9 @@ function Edit_Cover_Loan_Info(props) {
             component={TextInputFile}
             input_mode
             input_cusstyle
-            editable={cover_update_status == true ? false : true}
-
           />
         </View>
       </List.Accordion>
     </>
   );
 }
-function mapStateToProps(state) {
-  return {
-    cover_update_status: state.loan.cover_update_status,
-  };
-}
-
-export default reduxForm({
-  form: 'Edit_Cover_Form',
-})(connect(mapStateToProps, {setCover_UpdateStatus})(Edit_Cover_Loan_Info));

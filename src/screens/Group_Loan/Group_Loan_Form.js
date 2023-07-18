@@ -6,7 +6,7 @@ import {
   Keyboard,
   FlatList,
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import DividerLine from '../../components/DividerLine';
 import { operations, emp_filter_item } from '../../common';
 import { style } from '../../style/Group_Loan_style';
@@ -14,7 +14,7 @@ import Group_Loan_Info from './Group_Loan_Info';
 import { connect, useDispatch } from 'react-redux';
 import { filterCustomer } from '../../query/Customer_query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getAllLoan } from '../../query/AllLoan_query';
+import {getAllLoan} from '../../query/AllLoan_query';
 import {
   RadioButton,
   Button,
@@ -24,11 +24,11 @@ import {
   Portal,
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
-import { Picker } from '@react-native-picker/picker';
-import { TextInput } from 'react-native-paper';
-import { cus_filter_item } from '../../common';
+import {Picker} from '@react-native-picker/picker';
+import {TextInput} from 'react-native-paper';
+import {cus_filter_item} from '../../common';
 import Group_Borrower_Map from './Group_Borrower_Map';
-import { reduxForm, Field, change, reset } from 'redux-form';
+import {reduxForm, Field, change, reset} from 'redux-form';
 import moment from 'moment';
 import Group_Loan_List from './Group_Loan_List';
 import { getAllGroupLoan } from '../../query/GropuLon_query';
@@ -66,7 +66,7 @@ const Borrower_modal = props => {
     dispatch(change('Group_Form', 'customer_no', item.customer_no));
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -139,8 +139,8 @@ const Borrower_modal = props => {
             flexDirection: 'row',
             justifyContent: 'space-around',
           }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ marginRight: 10 }}>Search Item:</Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={{marginRight: 10}}>Search Item:</Text>
 
             <Picker
               selectedValue={selectedItemValue}
@@ -162,7 +162,7 @@ const Borrower_modal = props => {
             </Picker>
           </View>
 
-          <View style={{ width: '50%' }}>
+          <View style={{width: '40%'}}>
             <TextInput
               style={{
                 backgroundColor: '#fff',
@@ -233,7 +233,7 @@ const Borrower_modal = props => {
           keyExtractor={(item, index) => index.toString()}
         />
 
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <Button
             onPress={() => hideModal()}
             mode="contained"
@@ -303,7 +303,7 @@ function Group_Loan_Form(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{ flex: 1, backgroundColor: '#fff' }}>
+          <View style={{flex: 1, backgroundColor: '#fff'}}>
             <Text
               style={{
                 textAlign: 'center',
@@ -342,7 +342,7 @@ function Group_Loan_Form(props) {
                         label={option.label}
                         value={option.value}
                         color="#000"
-                        labelStyle={{ marginLeft: 5 }}
+                        labelStyle={{marginLeft: 5}}
                       />
                     </View>
                   </RadioButton.Group>
