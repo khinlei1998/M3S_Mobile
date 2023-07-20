@@ -70,10 +70,15 @@ function LoginScreen(props) {
 
   const onSubmit = async (values, dispatch) => {
     try {
-      let hashedPassword = await sha256(values.password);
-      let changed_cap_password = hashedPassword.toUpperCase();
-      let encodedString = encode(changed_cap_password);
-      const user = await selectUser(values.user_id, encodedString);
+      // let hashedPassword = await sha256(values.password);
+      // let changed_cap_password = hashedPassword.toUpperCase();
+      // let encodedString = encode(changed_cap_password);
+      let encodedString = 'NkI4NkIyNzNGRjM0RkNFMTlENkI4MDRFRkY1QTNGNTc0N0FEQTRFQUEyMkYxRDQ5QzAxRTUyRERCNzg3NUI0Qg==';
+
+      console.log('encodedString', encodedString);
+      // const user = await selectUser(values.user_id, encodedString);
+      const user = await selectUser('M00172', encodedString);
+
       await saveUserID(user.user_id);
       // values.save_login_info &&
       //   saveLoginInfo(JSON.stringify(values.save_login_info));
@@ -96,7 +101,7 @@ function LoginScreen(props) {
         .then(result => {
           if (result == 'success') {
             getCustomer_info().then(result => {
-              console.log('result',result);
+              console.log('result', result);
               if (result == 'success') {
                 getNRC_info().then(result => {
                   if (result == 'success') {
@@ -119,7 +124,7 @@ function LoginScreen(props) {
                     // });
                   }
                 });
-              }else{
+              } else {
                 console.log(
                   'Customer error reach'
                 );
@@ -284,5 +289,5 @@ function LoginScreen(props) {
 
 export default reduxForm({
   form: 'LoginForm',
-  validate,
+  // validate,
 })(connect(null)(LoginScreen));

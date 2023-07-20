@@ -28,9 +28,8 @@ import Group_Loan_Form from '../screens/Group_Loan/Group_Loan_Form';
 import Edit_Group_Loan_Form from '../screens/Edit_Group_Loan/Edit_Group_Loan_Form';
 import Cover_Loan_Form from '../screens/Cover Loan/Cover_Loan_Form';
 import Edit_Cover_Loan_Form from '../screens/Edit_Cover Loan/Edit_Cover_Loan_Form';
-import Reloan_Form from '../screens/Relaon/Reloan_Form';
-import Edit_Reloan_Form from '../screens/Edit_Relaon/Edit_Reloan_Form';
 import Survey from '../screens/Survey/Survey';
+// import Reloan_Form from '../screens/Relaon/Reloan_Form';
 export default function AuthNavigation(props) {
   const Stack = createNativeStackNavigator();
   return (
@@ -45,11 +44,48 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
-          {/* <Stack.Screen
+        {/* <Stack.Screen
+        name="Survey"
+        component={Survey}
+        options={{headerShown: false}}
+      /> */}
+
+      {/* <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{ headerShown: false }}
+      /> */}
+      {/* <Stack.Screen
         name="Group Loan"
         component={Group_Loan_Form}
         options={{ headerShown: false }}
       /> */}
+
+
+
+      {/* <Stack.Screen
+        name="Individual_loan"
+        component={Individual_Loan}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="Indi_Staff_loan"
+        component={Individual_Staff_loan_Info}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Edit_Cover_Loan"
+        component={Edit_Cover_Loan_Form}
+        options={{ headerShown: false }}
+      /> */}
+      {/* <Stack.Screen
+        name="Edit_Reloan"
+        component={Edit_Reloan_Form}
+        options={{ headerShown: false }}
+      />  */}
+
+
       {/* <Stack.Screen
         name="Survey"
         component={Survey}
@@ -156,6 +192,11 @@ export default function AuthNavigation(props) {
         options={{headerShown: false}}
       />
        {/* <Stack.Screen
+        name="Edit Borrower Map"
+        component={Edit_Show_Borrower_Map}
+        options={{ headerShown: false }}
+      />
+      {/* <Stack.Screen
         name="Edit Borrower Map"
         component={Edit_Show_Borrower_Map}
         options={{ headerShown: false }}

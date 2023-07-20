@@ -48,7 +48,7 @@ export const storeGroupData = async data => {
             data.father_name,
             data.addr,
             data.tablet_sync_sts, //application_date,
-            data.sync_sts,
+            '00',
             data.err_msg, //25
           ],
           (trans, results) => {

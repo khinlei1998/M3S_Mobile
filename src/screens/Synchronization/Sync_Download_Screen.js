@@ -1,19 +1,18 @@
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
-import React, { useState } from 'react';
+import {View, Text, TouchableOpacity, FlatList} from 'react-native';
+import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import DividerLine from '../../components/DividerLine';
-import { Button, Checkbox } from 'react-native-paper';
-import { useNetInfo, NetInfo } from '@react-native-community/netinfo';
-import { getEemployee_info } from '../../query/Employee_query';
-import { getCustomer_info } from '../../query/Customer_query';
-import { getNRC_info } from '../../query/NRCinfo_query';
-import { getIndividual_loan } from '../../query/AllLoan_query';
-import { getSurvey_Item } from '../../query/SurveyItem_query';
-import { getLoanMax } from '../../query/LoanMax_query';
+import {Button, Checkbox} from 'react-native-paper';
+import {useNetInfo, NetInfo} from '@react-native-community/netinfo';
+import {getEemployee_info} from '../../query/Employee_query';
+import {getCustomer_info} from '../../query/Customer_query';
+import {getNRC_info} from '../../query/NRCinfo_query';
+import {getIndividual_loan} from '../../query/AllLoan_query';
+import {getSurvey_Item} from '../../query/SurveyItem_query';
+import {getLoanMax} from '../../query/LoanMax_query';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { getCodeInfo } from '../../query/CodeInfo_quey';
+import {getCodeInfo} from '../../query/CodeInfo_quey';
 import moment from 'moment';
-
 export default function Sync_Download_Screen() {
   const [selectAll, setSelectAll] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -28,8 +27,7 @@ export default function Sync_Download_Screen() {
       size: '0KB',
       last_sync_data: '',
       checked: false,
-      api: getEemployee_info
-
+      api: getEemployee_info,
     },
     {
       id: 2,
@@ -37,8 +35,7 @@ export default function Sync_Download_Screen() {
       size: '0KB',
       last_sync_data: '',
       checked: false,
-      api: getSurvey_Item
-
+      api: getSurvey_Item,
     },
     {
       id: 3,
@@ -46,8 +43,7 @@ export default function Sync_Download_Screen() {
       size: '0KB',
       last_sync_data: '',
       checked: false,
-      api: getLoanMax
-
+      api: getLoanMax,
     },
     {
       id: 4,
@@ -55,8 +51,7 @@ export default function Sync_Download_Screen() {
       size: '0KB',
       last_sync_data: '',
       checked: false,
-      api: getCodeInfo
-
+      api: getCodeInfo,
     },
     {
       id: 5,
@@ -64,15 +59,22 @@ export default function Sync_Download_Screen() {
       size: '0KB',
       last_sync_data: '',
       checked: false,
-      api: getCustomer_info
-
-    }
-  ]
+      api: getCustomer_info,
+    },
+    {
+      id: 6,
+      name: 'NRC Info',
+      size: '0KB',
+      last_sync_data: '',
+      checked: false,
+      api: getNRC_info,
+    },
+  ];
 
   const isChecked = item => {
     return checkedItems.some(checkedItem => checkedItem.id === item.id);
   };
-  const handleCheckboxChange = (item) => {
+  const handleCheckboxChange = item => {
     if (isChecked(item)) {
       setCheckedItems(
         checkedItems.filter(checkedItem => checkedItem.id !== item.id),
@@ -81,7 +83,7 @@ export default function Sync_Download_Screen() {
       setCheckedItems([...checkedItems, item]);
     }
   };
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -130,7 +132,6 @@ export default function Sync_Download_Screen() {
           }}>
           {moment().format('YYYY-MM-DD')}
         </Text>
-
       </View>
     );
   };
@@ -138,7 +139,7 @@ export default function Sync_Download_Screen() {
   const handleSelectAllToggle = () => {
     const updatedSelectAll = !selectAll;
     setSelectAll(updatedSelectAll);
-    const updatedData = download_data.map((item) => ({
+    const updatedData = download_data.map(item => ({
       ...item,
       checked: updatedSelectAll,
     }));
@@ -163,14 +164,20 @@ export default function Sync_Download_Screen() {
                   if (result == 'success') {
                     getNRC_info().then(result => {
                       if (result == 'success') {
-                        // setIsLoading(false);
-                        // alert('Sync success');
-                        getIndividual_loan().then(result => {
+                        getSurvey_Item().then(result => {
                           if (result == 'success') {
-                            setIsLoading(false);
-                            setSelectAll(false)
-                            setCheckedItems([])
-                            alert('Sync success');
+                            getLoanMax().then(result => {
+                              if (result == 'success') {
+                                getCodeInfo().then(result => {
+                                  if (result == 'success') {
+                                    setIsLoading(false);
+                                    setSelectAll(false);
+                                    setCheckedItems([]);
+                                    alert('Sync success');
+                                  }
+                                });
+                              }
+                            });
                           }
                         });
                       }
@@ -186,32 +193,29 @@ export default function Sync_Download_Screen() {
         }
       } else {
         setIsLoading(true);
-        checkedItems.forEach((item) => {
+        checkedItems.forEach(item => {
           // if (item.checked) {
-          item.api()
-            .then(result => {
-              if (result == 'success') {
-                setIsLoading(false);
-                setSelectAll(false)
-                setCheckedItems([])
-                alert('Sync success');
-              }
-            })
+          item.api().then(result => {
+            if (result == 'success') {
+              setIsLoading(false);
+              setSelectAll(false);
+              setCheckedItems([]);
+              alert('Sync success');
+            }
+          });
         });
       }
     } else {
-      alert('Choose one')
+      alert('Choose one');
     }
-
-  }
+  };
   return (
     <>
-      <View style={{ marginTop: 20, marginLeft: 10, marginRight: 10, flex: 1 }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Text style={{ fontWeight: 'bold', fontSize: 18, marginLeft: 10 }}>
+      <View style={{marginTop: 20, marginLeft: 10, marginRight: 10, flex: 1}}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <Text style={{fontWeight: 'bold', fontSize: 18, marginLeft: 10}}>
             Download Information
           </Text>
-
         </View>
 
         <DividerLine cuswidth />
@@ -267,22 +271,25 @@ export default function Sync_Download_Screen() {
           renderItem={item}
           keyExtractor={(item, index) => index.toString()}
         />
-        <View style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          position: 'absolute',
-          bottom: 0,
-          marginBottom: 10,
-          alignSelf: 'center',
-        }}>
-          <Button mode="outlined" style={{ width: 200, borderRadius: 0 }} onPress={() => handleDownload()}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            position: 'absolute',
+            bottom: 0,
+            marginBottom: 10,
+            alignSelf: 'center',
+          }}>
+          <Button
+            mode="outlined"
+            style={{width: 200, borderRadius: 0}}
+            onPress={() => handleDownload()}>
             <Text>Download</Text>
           </Button>
         </View>
-
       </View>
 
-      <View style={{ position: 'absolute', top: '50%', right: 0, left: 0 }}>
+      <View style={{position: 'absolute', top: '50%', right: 0, left: 0}}>
         {isLoading ? (
           <Spinner visible={isLoading} textContent={'Please Wait'} />
         ) : (

@@ -156,7 +156,7 @@ const Borrower_modal = props => {
             </Picker>
           </View>
 
-          <View style={{ width: '50%' }}>
+          <View style={{ width: '40%' }}>
             <TextInput
               style={{
                 backgroundColor: '#fff',

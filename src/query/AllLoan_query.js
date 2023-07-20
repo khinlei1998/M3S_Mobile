@@ -32,24 +32,70 @@ const mergeTablesData = (dataFromTable1, dataFromTable2) => {
   });
 
   // Merge data from table2
+  // dataFromTable2.forEach(item => {
+  //   mergedData.push(item);
+  // });
   dataFromTable2.forEach(item => {
     mergedData.push(item);
+    // mergedData.push({
+    //   serial_no: item.serial_no, // Use a unique key for each item in the merged array.
+    //   application_no: item.group_aplc_no,
+    //   status_code: item.status_code,// Since table1 does not have column1, set it to null or any default value.
+    //   create_datetime: item.create_datetime, // Since table1 does not have column2, set it to null or any default value.
+    //   create_user_id: item.create_user_id,
+    //   delete_datetime: item.delete_datetime,
+    //   delete_user_id: item.delete_user_id,
+    //   update_datetime: item.update_datetime,
+    //   update_user_id: item.update_user_id,
+    //   open_branch_code: item.open_branch_code,
+    //   product_type: item.product_type,
+    //   open_user_id: item.open_user_id,
+    //   mngt_branch_code: item.mngt_branch_code,
+    //   mngt_user_id: item.mngt_user_id,
+    //   application_date: item.application_date,
+    //   in_charge: item.in_charge,
+    //   township_name: item.township_name,
+    //   customer_no: item.customer_no,
+    //   borrower_name: item.leader_name,
+    //   resident_rgst_id: item.resident_rgst_id,
+    //   father_name: item.father_name,
+    //   addr: item.addr,
+    //   tablet_sync_sts: item.tablet_sync_sts,
+    //   sync_sts: item.sync_sts,
+    // });
   });
-
   return mergedData;
 };
 export async function getAllLoanType() {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
       tx.executeSql(
-        `SELECT * FROM Individual_application`,
+        'SELECT * FROM Individual_application WHERE group_aplc_no IS NULL',
         [],
         (tx, results) => {
-          console.log('results', results);
-          resolve(results.rows.raw());
+          const dataFromTable1 = results.rows.raw();
+          // Retrieve data from table2
+          global.db.transaction(tx => {
+            tx.executeSql(
+              'SELECT * FROM Group_application',
+              [],
+              (tx, results) => {
+                const dataFromTable2 = results.rows.raw();
+                // Merge the data from table1 and table2
+                const mergedData = mergeTablesData(
+                  dataFromTable1,
+                  dataFromTable2,
+                );
+                resolve(mergedData);
+              },
+              error => {
+                console.log('SELECT error from table2:', error);
+              },
+            );
+          });
         },
-        (tx, error) => {
-          reject(error);
+        error => {
+          console.log('SELECT error from table1:', error);
         },
       );
     });
@@ -613,10 +659,10 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         updateUserId: data.update_user_id,
         productType: data.product_type, //not null
         channelDeviceType: '00110',
-        openBranchCode: branch_code, //not null
-        openUserId: 'M00172', //not null
-        mngtBranchCode: 1000, //not null
-        mngtUserId: 'M00172',
+        openBranchCode: user_id, //not null
+        openUserId: user_id, //not null
+        mngtBranchCode: user_id, //not null
+        mngtUserId: user_id,
         applicationNo: data.application_no,
         groupAplcNo: '',
         tabletAplcNo: '',
@@ -716,8 +762,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         have_fixed_asset: data.have_fixed_asset,
         hghschl_num: data.hghschl_num,
         house_ocpn_type: data.house_ocpn_type,
-        interest_rates: data.interest_rates,
-        loan_charges: data.loan_charges,
+        interest_rate: data.interest_rates,
+        loan_charge: data.loan_charges,
         land_scale: data.land_scale,
         loan_officer_cmnt: data.loan_officer_cmnt,
         loan_status_code: data.loan_status_code,
@@ -883,11 +929,11 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           residentRgstId: item.resident_rgst_id,
           coBrwerName: item.co_brwer_name,
           coBrwerRgstId: item.co_brwer_rgst_id,
-          grandparentYn: item.grandparent_yn,
-          parentYn: item.parent_yn,
-          brotherSisterYn: item.brother_sister_yn,
-          husbandWifeYn: item.husband_wife_yn,
-          sonDaughterYn: item.son_daughter_yn,
+          grandparentYn: item.grandparent_yn == 1 ? 'Y' : 'N',
+          parentYn: item.parent_yn == 1 ? 'Y' : 'N',
+          brotherSisterYn: item.brother_sister_yn == 1 ? 'Y' : 'N',
+          husbandWifeYn: item.husband_wife_yn == 1 ? 'Y' : 'N',
+          sonDaughterYn: item.son_daughter_yn == 1 ? 'Y' : 'N',
           tabletSyncSts: '00',
           syncSts: '',
           relationName: item.relation_name,
@@ -1185,176 +1231,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
     // Alert.alert('out Error', 'Axios error occurred.');
   }
 };
-// export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
-//   return new Promise(async (resolve, reject) => {
-//     const failedData = [];
-//     let successCount = 0;
-//     let success_id = [];
-//     let ip = await AsyncStorage.getItem('ip');
-//     let port = await AsyncStorage.getItem('port');
-//     let user_id = await AsyncStorage.getItem('user_id');
-//     for (const data of checkedItems) {
-//       let individual_loan_data = {
-//         id: data.id,
-//         statusCode: '01',
-//         createUserId: user_id,
-//         updateUserId: data.update_user_id,
-//         productType: data.product_type, //not null
-//         channelDeviceType: '00110',
-//         openBranchCode: branch_code, //not null
-//         openUserId: 'M00172', //not null
-//         mngtBranchCode: 1000, //not null
-//         mngtUserId: 'M00172',
-//         applicationNo: data.application_no,
-//         groupAplcNo: '',
-//         tabletAplcNo: '',
-//         referAplcNo: '',
-//         loanType: data.loan_type,
-//         cstNewExistFlg: data.cst_new_exist_flg, //1==Y
-//         loanCycle: data.loan_cycle,
-//         applicationAmt: 1000000.0,
-//         applicationDate: data.application_date,
-//         loantermCnt: data.loanterm_cnt, //not null
-//         borrowerName: 'jj', //data.borrower_name
-//         customerNo: data.customer_no,
-//         loanCode: data.loan_code,
-//         savingAcctNum: data.saving_acct_num,
-//         gender: data.gender,
-//         birthDate: data.birth_date,
-//         maritalStatus: data.marital_status,
-//         residentRgstId: data.resident_rgst_id,
-//         telNo: data.tel_no,
-//         mobileTelNo: data.mobile_tel_no,
-//         positionTitleNm: data.position_title_nm,
-//         addr: data.addr,
-//         businessOwnType: data.business_own_type,
-//         coCustomerNo: data.co_customer_no,
-//         coBrwerName: data.co_brwer_name,
-//         workplaceName: data.workplace_name,
-//         workplaceType: data.workplace_type,
-//         workplaceAddr: data.workplace_addr,
-//         landOwnType: '',
-//         totSaleIncome: data.tot_sale_income,
-//         totSaleExpense: data.tot_sale_expense,
-//         rawmaterialExpans: data.rawmaterial_expans,
-//         wrkpRentExpns: data.wrkp_rent_expns,
-//         employeeExpns: data.employee_expns,
-//         trnsrtExpns: data.trnsrt_expns,
-//         goodsLossExpns: data.goods_loss_expns,
-//         othrExpns1: data.othr_expns_1,
-//         othrExpns2: data.othr_expns_2,
-//         totBusNetIncome: data.tot_bus_net_income,
-//         fmlyTotIncome: data.fmly_tot_income,
-//         fmlyTotExpense: data.fmly_tot_expense,
-//         foodExpns: data.fmly_tot_expense,
-//         houseMngtExpns: data.house_mngt_expns,
-//         utlbilExpns: data.utlbil_expns,
-//         edctExpns: data.edct_expns,
-//         healthyExpns: data.healthy_expns,
-//         financeExpns: data.finance_expns,
-//         fmlyOtrExpns: data.fmly_otr_expns,
-//         fmlyTotNetIncome: data.fmly_tot_net_income,
-//         totNetIncome: data.fmly_tot_net_income,
-//         remark: data.remark,
-//         tabletSyncSts: '00',
-//         syncSts: '00',
-//         pastLoanAmount: data.past_loan_amount,
-//         pastLoanRating: data.past_loan_rating,
-//         pastCreditEmplNm: data.past_credit_empl_nm,
-//         oldApplicationNo: data.old_application_no,
-//         loanLimitAmt: data.loan_limit_amt,
-//         sysOrganizationCode: '1000',
-//         organizationCode: '1000',
-//         restFlag: 'Y',
-//         transactionDate: '2023-05-07',
-//         serialNo: '',
-//         //not include to server
-//         birth_date: data.birth_date,
-//         borrower_age: data.borrower_age,
-//         borrower_id_no: data.borrower_id_no,
-//         borrower_name: data.borrowerf_name,
-//         borrower_rltn: data.borrower_rltn,
-//         branch_code: data.branch_code,
-//         bus_utlbil_expns: data.bus_utlbil_expns,
-//         business_good_yn: data.business_good_yn,
-//         business_sttn_flg: data.business_sttn_flg,
-//         check_phone_num_yn: data.check_phone_num_yn,
-//         city_code: data.city_code,
-//         city_name: data.city_name,
-//         co_brwer_birth_dt: data.co_brwer_birth_dt,
-//         co_brwer_business: data.co_brwer_business,
-//         co_brwer_mble_tel_no: data.co_brwer_mble_tel_no,
-//         co_brwer_net_income: data.co_brwer_net_income,
-//         co_brwer_rgst_id: data.co_brwer_rgst_id,
-//         co_brwer_tel_no: data.co_brwer_tel_no,
-//         co_occupation: data.co_occupation,
-//         contract_no: data.contract_no,
-//         create_datetime: data.create_datetime,
-//         curr_resident_date: data.curr_resident_date,
-//         curr_workplace_date: data.curr_workplace_date,
-//         curr_workplace_perd: data.curr_workplace_perd,
-//         decision_no: data.decision_no,
-//         delete_datetime: data.delete_datetime,
-//         delete_user_id: data.delete_user_id,
-//         employee_no: data.employee_no,
-//         employee_num: data.employee_num,
-//         entry_date: data.entry_date,
-//         family_num: data.family_num,
-//         group_aplc_no: data.group_aplc_no,
-//         have_fixed_asset: data.have_fixed_asset,
-//         hghschl_num: data.hghschl_num,
-//         house_ocpn_type: data.house_ocpn_type,
-//         interest_rates: data.interest_rates,
-//         loan_charges: data.loan_charges,
-//         land_scale: data.land_scale,
-//         loan_officer_cmnt: data.loan_officer_cmnt,
-//         loan_status_code: data.loan_status_code,
-//         location_code: data.location_code,
-//         location_name: data.location_name,
-//         // mngt_user_id: data.mngt_user_id,
-//         ohtr_own_property: data.ohtr_own_property,
-//         otr_mfi_nm: data.otr_mfi_nm,
-//         own_property_estmtd_val: data.own_property_estmtd_val,
-//         past_loan_cycle: data.past_loan_cycle,
-//         pastdue_month_cnt: data.pastdue_month_cnt,
-//         position_title_code: data.position_title_code,
-//         prmn_empl_expns: data.prmn_empl_expns,
-//         prop_apartment_yn: data.prop_apartment_yn,
-//         prop_car_yn: data.prop_car_yn,
-//         prop_farmland_yn: data.prop_farmland_yn,
-//         prop_house_yn: data.prop_house_yn,
-//         prop_machines_yn: data.prop_machines_yn,
-//         prop_motorcycle_yn: data.prop_motorcycle_yn,
-//         property_kind: data.property_kind,
-//       };
-//       let formData = new FormData();
-//       formData.append('individualApplication', '[]');
-//       formData.append('guarantee', '[]');
-//       formData.append('areaEvaluation', '[]');
-//       formData.append('relationInfo', '[]');
-//       formData.append('approvalRequests', '[]');
-
-//       axios
-//         .post(
-//           `https://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
-//           formData,
-//           {
-//             headers: {
-//               'Content-Type': 'multipart/form-data',
-//               'cache-control': 'no-cache',
-//               processData: false,
-//               contentType: false,
-//             },
-//           },
-//         )
-//         .then(response => {
-//           console.log('INSERT disability->>', response);
-//           resolve('success');
-//         })
-//         .then(error => console.log('gu error',error));
-//     }
-//   });
-// };
 
 const fetchGuaranteeData = async applicationNo => {
   return new Promise((resolve, reject) => {
@@ -1428,5 +1304,184 @@ const fetchRelationInfo = async applicationNo => {
         },
       );
     });
+  });
+};
+export const updateLoanData = async loan_data => {
+  const user_id = await AsyncStorage.getItem('user_id');
+  return new Promise(async (resolve, reject) => {
+    try {
+      global.db.transaction(trans => {
+        trans.executeSql(
+          `UPDATE Individual_application SET(serial_no=?,application_no=?,group_aplc_no=?,status_code=?,create_datetime=?,create_user_id=?,delete_datetime=?,delete_user_id=?,update_datetime=?,update_user_id=?,loan_status_code=?,decision_no=?,contract_no=?,product_type=?,channel_device_type=?,open_branch_code=?,open_user_id=?,mngt_branch_code,mngt_user_id,loan_type,cst_new_exist_flg,loan_cycle,application_amt,application_date,loanterm_cnt,borrower_name,customer_no,loan_code,saving_acct_num,gender,birth_date,marital_status,resident_rgst_id,tel_no,mobile_tel_no,employee_no,entry_date,position_title_nm,position_title_code,branch_code,salary_rating_code,addr,family_num,hghschl_num,university_num,students_cnt,curr_resident_perd,house_ocpn_type,business_own_type,co_customer_no,co_brwer_name,co_brwer_birth_dt,co_brwer_rgst_id,co_brwer_tel_no,co_brwer_mble_tel_no,borrower_rltn,co_occupation,workplace_name,workplace_type,workplace_period,employee_num,workplace_addr,curr_workplace_perd,business_sttn_flg,land_scale,land_own_type,tot_sale_income,tot_sale_expense,rawmaterial_expans,wrkp_rent_expns,employee_expns,prmn_empl_expns,tmpy_empl_expns,trnsrt_expns,bus_utlbil_expns,tel_expns,tax_expns,goods_loss_expns,othr_expns_1,othr_expns_2,tot_bus_net_income,fmly_tot_income,fmly_tot_expense,food_expns,house_mngt_expns,utlbil_expns,edct_expns,healthy_expns,fmly_trnsrt_expns,fmly_tax_expns,finance_expns,fmly_otr_expns,fmly_tot_net_income,tot_net_income,otr_mfi_loan_cnt,otr_mfi_nm,remark,borrower_id_no,borrower_age,have_fixed_asset,co_brwer_business,co_brwer_net_income,property_kind,prop_apartment_yn,prop_house_yn,prop_car_yn,prop_motorcycle_yn,prop_machines_yn,prop_farmland_yn,ohtr_own_property,tot_prop_estmtd_val,own_property_estmtd_val,past_loan_cycle,pastdue_month_cnt,past_loan_rating,past_loan_amount,past_credit_empl_nm,check_phone_num_yn,reputation_yn,business_good_yn,real_property_yn,
+          repayment_history_yn,loan_officer_cmnt,tablet_sync_sts,sync_sts,old_application_no,transaction_date,loan_limit_amt,curr_resident_date,workplace_date,curr_workplace_date,err_msg,interest_rates,loan_charges,city_code,city_name,township_code,township_name,village_code,village_name,ward_code,ward_name,location_code,location_name,borrower_sign,co_borrower_sign) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+          [
+            null, //serialNo
+            loan_data.application_no,
+            loan_data.group_aplc_no, //group_aplc_no
+            '01', //statusCode
+            '2020-09-09', //create Date Time
+            user_id,
+            null, //deleteDatetime
+            null, //delet usr id
+            null, //updateDatetime
+            user_id, //updateUserID
+            null, //loanStatusCode
+            //
+            null, //Decison No
+            null, //contract no
+            loan_data.product_type, // product type
+            '001100', //Channel Device type
+            null, //open branch code
+            null, //Open user id
+            null, //mngt_branch_code
+            null, //mngt_user_id
+            loan_data.loan_type, //20
+            loan_data.cst_new_exist_flg,
+            loan_data.loan_cycle,
+            loan_data.application_amt,
+            loan_data.application_date, //application_date,
+            loan_data.loanterm_cnt,
+            //Borrowe Info
+            loan_data.borrower_name,
+            loan_data.customer_no,
+            loan_data.loan_code,
+            loan_data.saving_acct_num,
+            loan_data.gender,
+            loan_data.birth_date,
+            loan_data.marital_status,
+            loan_data.resident_rgst_id,
+            loan_data.tel_no,
+            null, //mobile tel no
+            null, //employee_no,
+            null, //entry_date,
+            null, //position_title_nm,
+            null, //position_title_code,
+            null, //branch code //40
+            null, //salary rating code
+            loan_data.addr,
+            loan_data.family_num,
+            loan_data.hghschl_num, //hghschl_num,
+            loan_data.university_num, //university_num,
+            null, //students_cnt,
+            loan_data.curr_resident_perd,
+            loan_data.house_ocpn_type,
+            loan_data.business_own_type,
+            //Co Bower
+            loan_data.co_customer_no,
+            loan_data.co_brwer_name,
+            loan_data.co_brwer_birth_dt,
+            loan_data.co_brwer_rgst_id,
+            loan_data.co_brwer_tel_no,
+            null, //co_brwer_mble_tel_no
+            loan_data.borrower_rltn,
+            loan_data.co_occupation,
+            //Business info
+            loan_data.workplace_name,
+            loan_data.workplace_type,
+            loan_data.workplace_period, //60
+            loan_data.employee_num,
+            // loan_data.busutlbilexpns,
+            loan_data.workplace_addr,
+            loan_data.curr_workplace_perd,
+            loan_data.business_sttn_flg,
+            loan_data.land_scale,
+            loan_data.land_own_type,
+            //Monthly Income
+            loan_data.totSaleIncome,
+            loan_data.totSaleExpense,
+            loan_data.rawmaterialExpans,
+            loan_data.wrkpRentExpns,
+            loan_data.employeeExpns,
+            null, //prmn_empl_expns
+            null, //tmpy_empl_expns
+            loan_data.trnsrtExpns,
+            loan_data.busutlbilexpns,
+            loan_data.telExpns,
+            loan_data.taxExpns,
+            loan_data.goodsLossExpns,
+            loan_data.othrExpns1,
+            loan_data.othrExpns2, //80
+            loan_data.totBusNetIncomeitem, //check
+            loan_data.fmlyTotIncome,
+            loan_data.fmlyTotExpense,
+            loan_data.foodExpns,
+            loan_data.houseMngtExpns,
+            loan_data.utlbilExpns,
+            loan_data.edctExpns,
+            loan_data.healthyExpns,
+            loan_data.fmlyTrnsrtExpns,
+            loan_data.fmlyTaxExpns,
+            loan_data.financeExpns,
+            loan_data.fmlyOtrExpns,
+            loan_data.fmlyTotNetIncome,
+            loan_data.totalnet,
+            null, //otr_mfi_loan_cnt
+            null, //otr_mfi_nm
+            loan_data.remark,
+            null, //borrower_id_no
+            null, //borrower_age
+            null, //have_fixed_asset //100
+            null, //co_brwer_business
+            null, //co_brwer_net_income
+            null, //property_kind
+            null, //prop_apartment_yn
+            null, //prop_house_yn
+            null, //prop_car_yn
+            null, //prop_motorcycle_yn
+            null, //prop_machines_yn
+            null, //prop_farmland_yn
+            null, //ohtr_own_property
+            null, //tot_prop_estmtd_val
+            null, //own_property_estmtd_val
+            null, //past_loan_cycle
+            null, //pastdue_month_cnt
+            null, //past_loan_rating
+            null, //past_loan_amount
+            null, //past_credit_empl_nm
+            null, //check_phone_num_yn
+            null, //reputation_yn
+            null, //business_good_yn //120
+            null, //real_property_yn
+            null, //repayment_history_yn
+            null, //loan_officer_cmnt
+            '00', //tablet_sync_sts
+            '00', //
+            null, //old_application_no
+            null, //transaction_date (Date)
+            loan_data.loan_limit_amt,
+            loan_data.curr_resident_date, //curr_resident_date
+            null, //workplace_date //130
+            null, //curr_workplace_date
+            null, //132
+            loan_data.interest_rates,
+            loan_data.loan_charges,
+            loan_data.city_code,
+            loan_data.city_name,
+            loan_data.township_code,
+            loan_data.township_name,
+            loan_data.village_code,
+            loan_data.village_name,
+            loan_data.ward_code,
+            loan_data.ward_name,
+            loan_data.location_code,
+            loan_data.location_name,
+            loan_data.borrower_sign, //borrower sign
+            loan_data.co_borrower_sign,
+            // loan_data.borrower_map,
+            //146
+          ],
+          (trans, results) => {
+            resolve('success');
+            console.log('success', results);
+          },
+          error => {
+            reject(error);
+            alert(error);
+          },
+        );
+      });
+    } catch (error) {
+      reject(error);
+    }
   });
 };

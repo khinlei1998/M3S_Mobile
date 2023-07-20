@@ -5,21 +5,22 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   FlatList,
+  ToastAndroid
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import DividerLine from '../../components/DividerLine';
-import {operations, cus_filter_item} from '../../common';
-import {style} from '../../style/Group_Loan_style';
+import { operations, cus_filter_item } from '../../common';
+import { style } from '../../style/Group_Loan_style';
 import Edit_Group_Loan_Info from './Edit_Group_Loan_Info';
-import {connect, useDispatch} from 'react-redux';
-import {filterCustomer} from '../../query/Customer_query';
-import {RadioButton, Button, Modal, TextInput} from 'react-native-paper';
+import { connect, useDispatch } from 'react-redux';
+import { filterCustomer } from '../../query/Customer_query';
+import { RadioButton, Button, Modal, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 import Edit_Group_Borrower_Map from './Edit_Group_Borrower_Map';
-import {reduxForm, change} from 'redux-form';
+import { reduxForm, change } from 'redux-form';
 import Edit_Group_Loan_List from './Edit_Group_Loan_List';
-import {setGroup_UpdateStatus} from '../../redux/LoanReducer';
+import { setGroup_UpdateStatus } from '../../redux/LoanReducer';
 import RNFS from 'react-native-fs';
 import {
   getLoan_By_GroupID,
@@ -98,8 +99,8 @@ const Borrower_modal = props => {
       </View>
       <View style={style.modal_body_container}>
         <View style={style.sub_modal_container}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{marginRight: 10}}>Search Item:</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
             <Picker
               selectedValue={selectedItemValue}
@@ -121,7 +122,7 @@ const Borrower_modal = props => {
             </Picker>
           </View>
 
-          <View style={{width: '40%'}}>
+          <View style={{ width: '40%' }}>
             <TextInput
               style={style.input_style}
               value={emp_data}
@@ -163,7 +164,7 @@ const Borrower_modal = props => {
 };
 
 function Edit_Group_Loan_Form(props) {
-  const {handleSubmit, navigation, setGroup_UpdateStatus, group_update_status} =
+  const { handleSubmit, navigation, setGroup_UpdateStatus, group_update_status } =
     props;
   const [show_operation, setOperation] = useState('2');
   const [modalVisible, setModalVisible] = useState(false);
@@ -175,7 +176,7 @@ function Edit_Group_Loan_Form(props) {
   const dispatch = useDispatch();
   const filtered_operations = operations.filter(item => item.value != 1);
   const inquiry_group_data = props.route.params;
-  console.log('inquiry_group_data',inquiry_group_data);
+  console.log('inquiry_group_data', inquiry_group_data);
   const btnChangeOperation = newValue => {
     setOperation(newValue);
     if (newValue == 2 || newValue == 4) {
@@ -226,7 +227,10 @@ function Edit_Group_Loan_Form(props) {
     if (show_operation == '4') {
       await deleteGroup_LoanID(values).then(response => {
         if (response == 'success') {
-          alert('Delete Success');
+          ToastAndroid.show(
+            `Delete Success`,
+            ToastAndroid.SHORT,
+          )
           navigation.goBack();
           // setUpdateStatus(false);
           // props.navigation.navigate('Home');
@@ -238,7 +242,10 @@ function Edit_Group_Loan_Form(props) {
       });
       await updateGroupData(data).then(response => {
         if (response == 'success') {
-          alert('Update Success');
+          ToastAndroid.show(
+            `Update Success!`,
+            ToastAndroid.SHORT,
+          )
           navigation.goBack();
           // setUpdateStatus(false);
           // props.navigation.navigate('Home');
@@ -250,7 +257,7 @@ function Edit_Group_Loan_Form(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{flex: 1, backgroundColor: '#fff'}}>
+          <View style={{ flex: 1, backgroundColor: '#fff' }}>
             <Text style={style.title_style}>Group Loan Application</Text>
 
             <DividerLine />
@@ -281,8 +288,8 @@ function Edit_Group_Loan_Form(props) {
                   group_update_status == true && show_operation == '3'
                     ? false
                     : group_update_status == false && show_operation == '4'
-                    ? false
-                    : true
+                      ? false
+                      : true
                 }
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"

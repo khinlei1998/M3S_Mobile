@@ -341,17 +341,7 @@ function Edit_Customer_BaseInfo(props) {
               />
             </View>
 
-            <View style={style.postal_input_style}>
-              <Field
-                name={'postal_code'}
-                title={'Postal Code '}
-                component={TextInputFile}
-                input_mode
-                inputmax={100}
-                input_cusstyle
-                editable={update_status == true ? false : true}
-              />
-            </View>
+
             <Text style={style.radio_title_style}>
               Start Living Date Current Address
             </Text>
@@ -383,7 +373,7 @@ function Edit_Customer_BaseInfo(props) {
               {show_businessdate == '1' ? (
                 <Field
                   num_data={numbers}
-                  name={'curr_resident_perd'}
+                  name={'curr_resident_date'}
                   title={'Select a Value'}
                   component={DropDownPicker}
                   pickerStyle={{
@@ -393,7 +383,7 @@ function Edit_Customer_BaseInfo(props) {
                 />
               ) : (
                 <Field
-                  name={'curr_resident_perd'}
+                  name={'curr_resident_date'}
                   component={DatePicker}
                   label={'Start Living Date'}
                   editable={update_status == true ? false : true}

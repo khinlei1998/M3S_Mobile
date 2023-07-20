@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   FlatList,
+  ToastAndroid
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import DividerLine from '../../components/DividerLine';
@@ -13,21 +14,15 @@ import Icon from 'react-native-vector-icons/Feather';
 import {Picker} from '@react-native-picker/picker';
 import {TextInput} from 'react-native-paper';
 import {reduxForm, Field, change, reset} from 'redux-form';
-import moment from 'moment';
 import {style} from '../../style/Cover_Loan_style';
 import {RadioButton, Button, Modal} from 'react-native-paper';
 import {connect, useDispatch} from 'react-redux';
 import Edit_Cover_Loan_Info from './Edit_Cover_Loan_Info';
 import Edit_Cover_Loan_list from './Edit_Cover_Loan_List';
 import {cus_filter_item} from '../../common';
-import {getAllGroupLoan} from '../../query/GropuLon_query';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {filterCustomer} from '../../query/Customer_query';
-import {storeGroupData} from '../../query/GropuLon_query';
 import {setCover_UpdateStatus} from '../../redux/LoanReducer';
-import RNFS from 'react-native-fs';
-import {getLoan_By_GroupID} from '../../query/GropuLon_query';
-import {deleteGroup_LoanID} from '../../query/GropuLon_query';
+import {getLoan_By_GroupID,deleteGroup_LoanID,updateGroupData} from '../../query/GropuLon_query';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -254,7 +249,6 @@ function Edit_Cover_Loan_Form(props) {
   const [modalVisible, setModalVisible] = useState(false);
   const [all_cus, setAllCus] = useState([]);
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
-  const [all_loandata, setAllGroupLoanData] = useState([]);
   const [all_loan, setAllLoanData] = useState([]);
 
   const dispatch = useDispatch();
@@ -263,10 +257,25 @@ function Edit_Cover_Loan_Form(props) {
     if (show_operation == '4') {
       await deleteGroup_LoanID(values).then(response => {
         if (response == 'success') {
-          alert('Delete Success');
+          ToastAndroid.show(
+            'Delete Success!',
+            ToastAndroid.SHORT,
+          );
           navigation.goBack();
-          // setUpdateStatus(false);
-          // props.navigation.navigate('Home');
+        }
+      });
+    }
+    else {
+      let data = Object.assign(values, {
+        product_type: '40',
+      });
+      await updateGroupData(data).then(response => {
+        if (response == 'success') {
+          ToastAndroid.show(
+            'Update Success!',
+            ToastAndroid.SHORT,
+          );
+          navigation.goBack();
         }
       });
     }
@@ -307,6 +316,11 @@ function Edit_Cover_Loan_Form(props) {
   useEffect(() => {
     loadData();
   }, []);
+  useEffect(() => {
+    if (cover_update_status == true) {
+      setOperation('3');
+    }
+  }, [cover_update_status]);
   const filtered_operations = operations.filter(item => item.value != 1);
 
   return (
@@ -359,6 +373,13 @@ function Edit_Cover_Loan_Form(props) {
                 ))}
               </View>
               <Button
+              disabled={
+                cover_update_status == true && show_operation == '3'
+                  ? false
+                  : cover_update_status == false && show_operation == '4'
+                  ? false
+                  : true
+              }
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
                 buttonColor={'#6870C3'}
@@ -390,7 +411,10 @@ function Edit_Cover_Loan_Form(props) {
   );
 }
 function mapStateToProps(state) {
-  return {};
+  return {
+    cover_update_status: state.loan.cover_update_status,
+
+  };
 }
 
 export default reduxForm({

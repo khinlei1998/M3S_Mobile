@@ -49,9 +49,9 @@ export default function Sync_Upload_Screen(props) {
   };
 
   const item = ({ item }) => {
-    const foundItem = loan_application_type.filter(
-      data => data.value == item.product_type,
-    );
+    // const foundItem = loan_application_type.filter(
+    //   data => data.value == item.product_type,
+    // );
     return (
       <View
         style={{
@@ -83,7 +83,7 @@ export default function Sync_Upload_Screen(props) {
             padding: 10,
             flex: 1,
           }}>
-          {foundItem[0].label}
+          {/* {foundItem[0].label} */}
         </Text>
         <Text
           style={{

@@ -94,7 +94,6 @@ function Co_Borrower_Info(props) {
                             cus_width
                             input_mode
                             inputmax={50}
-                            keyboardType={'numeric'}
                             editable={update_status == true ? false : true}
 
                         />

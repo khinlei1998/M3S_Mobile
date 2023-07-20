@@ -604,12 +604,12 @@ function Relation_Form(props) {
         let initialize_data = {
           application_no: retrive_loan_data.application_no,
           application_date: indi_data[0].application_date,
-          resident_rgst_id: indi_data[0].guarantor_nm,
-          borrower_name: indi_data[0].resident_rgst_id,
+          resident_rgst_id: indi_data[0].resident_rgst_id,
+          borrower_name: indi_data[0].borrower_name,
           application_amt: indi_data[0].application_amt.toString()
             ? indi_data[0].application_amt.toString()
             : '',
-          addr: indi_data[0].birth_date,
+          addr: indi_data[0].addr,
           co_brwer_rgst_id: indi_data[0].co_brwer_rgst_id,
           co_brwer_name: indi_data[0].co_brwer_name,
           relation_no: retrive_loan_data.application_no.replace(
@@ -715,7 +715,7 @@ function Relation_Form(props) {
                     require
                   />
                   <Field
-                    name={'transaction_date'}
+                    name={'application_date'}
                     component={DatePicker}
                     label={'Application Date'}
                     editable={true}

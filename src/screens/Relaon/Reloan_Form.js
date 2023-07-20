@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   FlatList,
+  ToastAndroid
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import DividerLine from '../../components/DividerLine';
@@ -151,7 +152,7 @@ const Borrower_modal = props => {
             </Picker>
           </View>
 
-          <View style={{width: '50%'}}>
+          <View style={{width: '40%'}}>
             <TextInput
               style={{
                 backgroundColor: '#fff',
@@ -257,6 +258,10 @@ const Borrower_modal = props => {
     });
     await storeGroupData(data).then(result => {
       if (result == 'success') {
+        ToastAndroid.show(
+          `Create Success!`,
+          ToastAndroid.SHORT,
+        )
         props.navigation.navigate('Home');
       }
     });

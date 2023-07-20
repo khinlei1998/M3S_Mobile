@@ -25,13 +25,6 @@ import {
 } from '../../common';
 import RNFS from 'react-native-fs';
 import {getGuarantorData} from '../../query/Guarantor_query';
-// import Borrower_Modal from './Borrower_Modal';
-// import {
-//   SketchCanvas,
-//   RNSketchCanvas,
-// } from '@terrylinla/react-native-sketch-canvas';
-// import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
-import SketchCanvas from '@terrylinla/react-native-sketch-canvas';
 import {
   RadioButton,
   Button,
@@ -86,6 +79,8 @@ import {
 } from '../../redux/LoanReducer';
 import {getAllExceptionalApproval} from '../../query/Exceptional_Approval_query';
 import {getRelationData} from '../../query/RelationShip_query';
+import {cus_filter_item} from '../../common';
+import {interest_rate} from '../../common';
 // import {RenderBottomSheet} from '../../components/RenderBotttomSheet';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
@@ -459,8 +454,8 @@ const CoBorrower_modal = props => {
                     marginTop: 7,
                   }}
                   mode="dropdown">
-                  {emp_filter_item.length > 0 &&
-                    emp_filter_item.map(val => (
+                  {cus_filter_item.length > 0 &&
+                    cus_filter_item.map(val => (
                       <Picker.Item
                         label={val.label}
                         value={val.value}
@@ -2405,7 +2400,7 @@ function Edit_Individual_Loan(props) {
   const filtered_operations = operations.filter(item => item.value != 1);
   const btnChangeOperation = newValue => {
     setOperation(newValue);
-    if (newValue == 2) {
+    if (newValue == 2 || newValue == 4) {
       setUpdateStatus(false);
     } else {
       setUpdateStatus(true);
@@ -2792,15 +2787,20 @@ function Edit_Individual_Loan(props) {
                   </RadioButton.Group>
                 ))}
               </View>
-              {update_status == true && (
-                <Button
-                  onPress={handleSubmit(onSubmit)}
-                  mode="contained"
-                  buttonColor={'#6870C3'}
-                  style={style.btnStyle}>
-                  OK
-                </Button>
-              )}
+              <Button
+                disabled={
+                  update_status == true && show_operation == '3'
+                    ? false
+                    : update_status == false && show_operation == '4'
+                    ? false
+                    : true
+                }
+                onPress={handleSubmit(onSubmit)}
+                mode="contained"
+                buttonColor={'#6870C3'}
+                style={style.btnStyle}>
+                OK
+              </Button>
             </View>
             <DividerLine />
             <List.Accordion
@@ -2908,12 +2908,14 @@ function Edit_Individual_Loan(props) {
                   />
 
                   <Field
+                    data={interest_rate}
                     name={'interest_rates'}
                     title={'Interest Rates'}
-                    component={TextInputFile}
-                    cus_width
-                    input_mode
-                    editable={update_status == true ? false : true}
+                    component={DropDownPicker}
+                    pickerStyle={{
+                      width: 300,
+                    }}
+                    enabled={update_status == true ? false : true}
                   />
                 </View>
               </View>

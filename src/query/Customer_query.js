@@ -61,7 +61,7 @@ export function getCustomer_info() {
 
                   records.forEach(item => {
                     tx.executeSql(
-                      `INSERT INTO Customer (serial_no,customer_no,customer_nm,status_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,resident_rgst_id,employee_no,branch_code,entry_date,position_title_nm,salary_rating_code,gender,birth_date,marital_status,saving_acct_num,tel_no,mobile_tel_no,addr,curr_resident_perd,occupation,father_name,family_num,hghschl_num,university_num,house_ocpn_type,remark,business_own_type,prop_apartment_yn,prop_house_yn,prop_car_yn,prop_motorcycle_yn,prop_machines_yn,prop_farmland_yn,prop_other_yn,tot_prop_estmtd_val,ohtr_own_property,otr_prop_estmtd_val,workplace_name,workplace_type,workplace_period,employee_num,workplace_addr,curr_workplace_perd,business_sttn_flg,land_scale,land_own_type,otr_income,tot_sale_income,tot_sale_expense,rawmaterial_expans,wrkp_rent_expns,employee_expns,prmn_empl_expns,tmpy_empl_expns,trnsrt_expns,bus_utlbil_expns,tel_expns,tax_expns,goods_loss_expns,othr_expns_1,othr_expns_2,tot_bus_net_income,fmly_tot_income,fmly_tot_expense,food_expns,house_mngt_expns,utlbil_expns,edct_expns,healthy_expns,fmly_tax_expns,fmly_trnsrt_expns,finance_expns,fmly_otr_expns,fmly_tot_net_income,tablet_sync_sts,sync_sts,nrc_state_code,nrc_prefix_code,nrc_no,curr_resident_date,workplace_date,curr_workplace_date,err_msg,postal_code,total_net,city_code,city_name,township_code,township_name,village_code,village_name,ward_code,ward_name,address_type,business_period_status,curr_business_date_status,village_status,start_living_date_status,nrc_type,open_branch_code) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+                      `INSERT INTO Customer (serial_no,customer_no,customer_nm,status_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,resident_rgst_id,employee_no,branch_code,entry_date,position_title_nm,salary_rating_code,gender,birth_date,marital_status,saving_acct_num,tel_no,mobile_tel_no,addr,curr_resident_perd,occupation,father_name,family_num,hghschl_num,university_num,house_ocpn_type,remark,business_own_type,prop_apartment_yn,prop_house_yn,prop_car_yn,prop_motorcycle_yn,prop_machines_yn,prop_farmland_yn,prop_other_yn,tot_prop_estmtd_val,ohtr_own_property,otr_prop_estmtd_val,workplace_name,workplace_type,workplace_period,employee_num,workplace_addr,curr_workplace_perd,business_sttn_flg,land_scale,land_own_type,otr_income,tot_sale_income,tot_sale_expense,rawmaterial_expans,wrkp_rent_expns,employee_expns,prmn_empl_expns,tmpy_empl_expns,trnsrt_expns,bus_utlbil_expns,tel_expns,tax_expns,goods_loss_expns,othr_expns_1,othr_expns_2,tot_bus_net_income,fmly_tot_income,fmly_tot_expense,food_expns,house_mngt_expns,utlbil_expns,edct_expns,healthy_expns,fmly_tax_expns,fmly_trnsrt_expns,finance_expns,fmly_otr_expns,fmly_tot_net_income,tablet_sync_sts,sync_sts,nrc_state_code,nrc_prefix_code,nrc_no,curr_resident_date,workplace_date,curr_workplace_date,err_msg,postal_code,total_net,city_code,city_name,township_code,township_name,village_code,village_name,ward_code,ward_name,address_type,business_period_status,curr_business_date_status,village_status,start_living_date_status,nrc_type,location_code,location_name,open_branch_code) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
                       [
                         item.serialNo,
                         item.customerNo,
@@ -167,7 +167,9 @@ export function getCustomer_info() {
                         null,
                         null,
                         null, //nrc_type
-                        null,
+                        null, //location code
+                        null, //location name
+                        null, //open branch code
                       ],
                       (tx, results) => {
                         console.log('results',results);
@@ -235,7 +237,7 @@ export function storeCustomerData(cus_data) {
         global.db.transaction(
           trans => {
             trans.executeSql(
-              `INSERT INTO Customer (serial_no,customer_no,customer_nm,status_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,resident_rgst_id,employee_no,branch_code,entry_date,position_title_nm,salary_rating_code,gender,birth_date,marital_status,saving_acct_num,tel_no,mobile_tel_no,addr,curr_resident_perd,occupation,father_name,family_num,hghschl_num,university_num,house_ocpn_type,remark,business_own_type,prop_apartment_yn,prop_house_yn,prop_car_yn,prop_motorcycle_yn,prop_machines_yn,prop_farmland_yn,prop_other_yn,tot_prop_estmtd_val,ohtr_own_property,otr_prop_estmtd_val,workplace_name,workplace_type,workplace_period,employee_num,workplace_addr,curr_workplace_perd,business_sttn_flg,land_scale,land_own_type,otr_income,tot_sale_income,tot_sale_expense,rawmaterial_expans,wrkp_rent_expns,employee_expns,prmn_empl_expns,tmpy_empl_expns,trnsrt_expns,bus_utlbil_expns,tel_expns,tax_expns,goods_loss_expns,othr_expns_1,othr_expns_2,tot_bus_net_income,fmly_tot_income,fmly_tot_expense,food_expns,house_mngt_expns,utlbil_expns,edct_expns,healthy_expns,fmly_tax_expns,fmly_trnsrt_expns,finance_expns,fmly_otr_expns,fmly_tot_net_income,tablet_sync_sts,sync_sts,nrc_state_code,nrc_prefix_code,nrc_no,curr_resident_date,workplace_date,curr_workplace_date,err_msg,postal_code,total_net,city_code,city_name,township_code,township_name,village_code,village_name,ward_code,ward_name,address_type,business_period_status,curr_business_date_status,village_status,start_living_date_status,nrc_type,location_code,location_name) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,COALESCE(?,0),?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+              `INSERT INTO Customer (serial_no,customer_no,customer_nm,status_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,resident_rgst_id,employee_no,branch_code,entry_date,position_title_nm,salary_rating_code,gender,birth_date,marital_status,saving_acct_num,tel_no,mobile_tel_no,addr,curr_resident_perd,occupation,father_name,family_num,hghschl_num,university_num,house_ocpn_type,remark,business_own_type,prop_apartment_yn,prop_house_yn,prop_car_yn,prop_motorcycle_yn,prop_machines_yn,prop_farmland_yn,prop_other_yn,tot_prop_estmtd_val,ohtr_own_property,otr_prop_estmtd_val,workplace_name,workplace_type,workplace_period,employee_num,workplace_addr,curr_workplace_perd,business_sttn_flg,land_scale,land_own_type,otr_income,tot_sale_income,tot_sale_expense,rawmaterial_expans,wrkp_rent_expns,employee_expns,prmn_empl_expns,tmpy_empl_expns,trnsrt_expns,bus_utlbil_expns,tel_expns,tax_expns,goods_loss_expns,othr_expns_1,othr_expns_2,tot_bus_net_income,fmly_tot_income,fmly_tot_expense,food_expns,house_mngt_expns,utlbil_expns,edct_expns,healthy_expns,fmly_tax_expns,fmly_trnsrt_expns,finance_expns,fmly_otr_expns,fmly_tot_net_income,tablet_sync_sts,sync_sts,nrc_state_code,nrc_prefix_code,nrc_no,curr_resident_date,workplace_date,curr_workplace_date,err_msg,postal_code,total_net,city_code,city_name,township_code,township_name,village_code,village_name,ward_code,ward_name,address_type,business_period_status,curr_business_date_status,village_status,start_living_date_status,nrc_type,location_code,location_name,open_branch_code) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,COALESCE(?,0),?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
               [
                 null, //cus_data.serialNo
                 // cus_data.employeeNo,
@@ -262,7 +264,7 @@ export function storeCustomerData(cus_data) {
                 cus_data.telNo,
                 cus_data.mobileTelNo,
                 cus_data.addr, //23
-                cus_data.currResidentPerd,
+                cus_data.curr_resident_date,
                 // 4,
                 cus_data.occupation,
                 null, //father name
@@ -279,17 +281,17 @@ export function storeCustomerData(cus_data) {
                 cus_data.propMotorcycleYn,
                 cus_data.propMachinesYn,
                 cus_data.propFarmlandYn,
-                cus_data.propOtherYn,
+                cus_data.propOtherYn, //40
                 cus_data.totPropEstmtdVal,
                 cus_data.ohtrOwnProperty,
                 cus_data.otrPropEstmtdVal, //43
                 //Business
                 cus_data.workplaceName,
                 cus_data.wokplaceType, //workplaceType
-                cus_data.workplacePeriod,
+                cus_data.workplace_date,
                 cus_data.employeeNum, //employeeNum
                 cus_data.workplaceAddr,
-                cus_data.currWorkplacePerd, //colm changed
+                cus_data.curr_workplace_date, //colm changed
                 cus_data.businessSttnFlg,
                 cus_data.landScale,
                 cus_data.landOwnType,
@@ -331,7 +333,7 @@ export function storeCustomerData(cus_data) {
                 cus_data.entryDate,
                 null,
                 null,
-                cus_data.postal_code,
+                cus_data.postal_code, //90
                 cus_data.totalnet,
                 cus_data.city_code,
                 cus_data.city_name,
@@ -341,15 +343,15 @@ export function storeCustomerData(cus_data) {
                 cus_data.village_name,
                 cus_data.ward_code,
                 cus_data.ward_name,
-                cus_data.address_type,
+                cus_data.address_type, //100
                 cus_data.business_period_status,
                 cus_data.curr_business_date_status,
                 cus_data.village_status,
                 cus_data.start_living_date_status,
                 cus_data.nrc_type,
                 null, //location code
-                null,
-
+                null, //location name
+                user_id//open_branch_code //108
                 //VillageName
               ],
               (trans, results) => {
@@ -427,19 +429,19 @@ export function updateCustomerData(cus_data) {
       trans.executeSql(
         `UPDATE Customer SET serial_no=?,customer_no =?,customer_nm =?,status_code=?,create_datetime =?,create_user_id =?,delete_datetime =?,delete_user_id =?,update_datetime =?,update_user_id =?,
         resident_rgst_id =?,employee_no =?,branch_code =?,entry_date =?,position_title_nm =?,salary_rating_code =?,gender =?,birth_date =?,marital_status =?,saving_acct_num =?,
-        tel_no =?,mobile_tel_no =?,addr =?,curr_resident_perd =?,occupation =?,father_name =?,family_num =?,hghschl_num =?,university_num =?,house_ocpn_type =?,remark =?,business_own_type =?,prop_apartment_yn =?,prop_house_yn =?,prop_car_yn =?,prop_motorcycle_yn =?,prop_machines_yn =?,prop_farmland_yn =?,prop_other_yn =?,tot_prop_estmtd_val =?,ohtr_own_property =?,otr_prop_estmtd_val =?,workplace_name =?,workplace_type =?,workplace_period =?,employee_num =?,workplace_addr =?,curr_workplace_perd =?,business_sttn_flg =?,land_scale =?,land_own_type =?,otr_income =?,tot_sale_income =?,tot_sale_expense =?,rawmaterial_expans =?,wrkp_rent_expns =?,employee_expns =?,prmn_empl_expns =?,tmpy_empl_expns =?,trnsrt_expns =?,bus_utlbil_expns =?,tel_expns =?,tax_expns =?,goods_loss_expns =?,othr_expns_1 =?,othr_expns_2 =?,tot_bus_net_income =?,fmly_tot_income =?,fmly_tot_expense =?,food_expns =?,house_mngt_expns =?,utlbil_expns =?,edct_expns =?,healthy_expns =?,fmly_tax_expns =?,fmly_trnsrt_expns =?,finance_expns =?,fmly_otr_expns =?,fmly_tot_net_income =?,tablet_sync_sts =?,sync_sts =?,nrc_state_code =?,nrc_prefix_code =?,nrc_no =?,curr_resident_date =?,workplace_date =?,curr_workplace_date =?,err_msg =?,postal_code =?,total_net =?,city_code =?,city_name =?,township_code =?,township_name =?,village_code =?,village_name =?,ward_code =?,ward_name =?,address_type =?,business_period_status =?, curr_business_date_status =?, village_status =?,start_living_date_status =?,nrc_type =?, location_code =?, location_name=? WHERE id = ?`,
+        tel_no =?,mobile_tel_no =?,addr =?,curr_resident_perd =?,occupation =?,father_name =?,family_num =?,hghschl_num =?,university_num =?,house_ocpn_type =?,remark =?,business_own_type =?,prop_apartment_yn =?,prop_house_yn =?,prop_car_yn =?,prop_motorcycle_yn =?,prop_machines_yn =?,prop_farmland_yn =?,prop_other_yn =?,tot_prop_estmtd_val =?,ohtr_own_property =?,otr_prop_estmtd_val =?,workplace_name =?,workplace_type =?,workplace_period =?,employee_num =?,workplace_addr =?,curr_workplace_perd =?,business_sttn_flg =?,land_scale =?,land_own_type =?,otr_income =?,tot_sale_income =?,tot_sale_expense =?,rawmaterial_expans =?,wrkp_rent_expns =?,employee_expns =?,prmn_empl_expns =?,tmpy_empl_expns =?,trnsrt_expns =?,bus_utlbil_expns =?,tel_expns =?,tax_expns =?,goods_loss_expns =?,othr_expns_1 =?,othr_expns_2 =?,tot_bus_net_income =?,fmly_tot_income =?,fmly_tot_expense =?,food_expns =?,house_mngt_expns =?,utlbil_expns =?,edct_expns =?,healthy_expns =?,fmly_tax_expns =?,fmly_trnsrt_expns =?,finance_expns =?,fmly_otr_expns =?,fmly_tot_net_income =?,tablet_sync_sts =?,sync_sts =?,nrc_state_code =?,nrc_prefix_code =?,nrc_no =?,curr_resident_date =?,workplace_date =?,curr_workplace_date =?,err_msg =?,postal_code =?,total_net =?,city_code =?,city_name =?,township_code =?,township_name =?,village_code =?,village_name =?,ward_code =?,ward_name =?,address_type =?,business_period_status =?, curr_business_date_status =?, village_status =?,start_living_date_status =?,nrc_type =?, location_code =?, location_name=?,open_branch_code=? WHERE id = ?`,
         [
-          null, //cus_data.serialNo
+          cus_data.serial_no, //cus_data.serialNo
           // cus_data.employeeNo,
           cus_data.customer_no,
           cus_data.customer_nm, //customerNM
-          '01', //statusCode
-          '2020-09-09', //create Date Time
-          cus_data.createUserId,
-          null, //deleteDatetime
-          null, //deleteUserId
-          null, //updateDatetime
-          cus_data.createUserId, //updateUserID //10
+          cus_data.status_code, //statusCode
+          cus_data.create_datetime, //create Date Time
+          cus_data.create_user_id,
+          cus_data.delete_datetime, //deleteDatetime
+          cus_data.delete_user_id,
+          cus_data.update_datetime,
+          cus_data.update_user_id,
           cus_data.residentRgstId,
           //
           cus_data.employee_no,
@@ -456,9 +458,8 @@ export function updateCustomerData(cus_data) {
           cus_data.mobile_tel_no,
           cus_data.addr, //23
           cus_data.curr_resident_perd,
-          // 4,
           cus_data.occupation,
-          null, //father name
+          cus_data.father_name, //father name
           cus_data.family_num,
           cus_data.hghschl_num,
           cus_data.university_num,
@@ -479,22 +480,22 @@ export function updateCustomerData(cus_data) {
           //Business
           cus_data.workplace_name,
           cus_data.workplace_type, //workplaceType
-          cus_data.workplace_period,
+          cus_data.workplace_date,
           cus_data.employee_num, //employeeNum
           cus_data.workplace_addr,
-          cus_data.curr_workplace_perd,
+          cus_data.curr_workplace_date,
           cus_data.business_sttn_flg,
           cus_data.land_scale,
           cus_data.land_own_type,
           //Monthly Income
-          null, //otrIncome
+          cus_data.otr_income, //otrIncome
           cus_data.tot_sale_income,
           cus_data.tot_sale_expense,
           cus_data.rawmaterial_expans,
           cus_data.wrkp_rent_expns,
           cus_data.employee_expns,
-          null, //59 //prmnEmplExpns
-          null, //tmpyEmplExpns
+          cus_data.prmn_empl_expns, //59 //prmnEmplExpns
+          cus_data.tmpy_empl_expns, //tmpyEmplExpns
           cus_data.trnsrt_expns,
           cus_data.bus_utlbil_expns,
           cus_data.tel_expns, //telExpnsitem
@@ -515,15 +516,15 @@ export function updateCustomerData(cus_data) {
           cus_data.finance_expns, //financeExpnsitem
           cus_data.fmly_otr_expns, //fmlyOtrExpnsitem
           cus_data.fmlyTotNetIncome, //fmlyTotNetIncomeitem
-          '00', //81 //tabletSyncStsitem
-          null, //syncStsitem
+          cus_data.tablet_sync_sts, //81 //tabletSyncStsitem
+          cus_data.sync_sts, //syncStsitem
           cus_data.nrc_statecode,
           cus_data.nrc_prefix,
           cus_data.nrc_no,
           cus_data.curr_resident_date,
           cus_data.workplace_date,
-          null,
-          null,
+          cus_data.curr_workplace_date,
+          cus_data.err_msg,
           cus_data.postal_code,
           cus_data.totalnet,
           cus_data.city_code,
@@ -540,8 +541,9 @@ export function updateCustomerData(cus_data) {
           cus_data.village_status,
           cus_data.start_living_date_status,
           cus_data.nrc_type,
-          null, //location code
-          null,
+          cus_data.location_code, //location code
+          cus_data.location_name,
+          cus_data.open_branch_code,
           cus_data.id,
 
           //VillageName

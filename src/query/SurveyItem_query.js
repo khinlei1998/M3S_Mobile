@@ -90,3 +90,20 @@ export async function getSurveyData() {
     });
   });
 }
+
+export async function fetchAllSurvey() {
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        `SELECT * FROM survey_item`,
+        [],
+        (tx, results) => {
+          resolve(results.rows.raw());
+        },
+        (tx, error) => {
+          reject(error);
+        },
+      );
+    });
+  });
+}

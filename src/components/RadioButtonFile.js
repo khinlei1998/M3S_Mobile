@@ -11,6 +11,7 @@ export default function RadioButtonFile(props) {
 
       }}>
       {data.map((val, index) => {
+        console.log('val',val);
         return (
           <RadioButton.Group
             onValueChange={

@@ -58,6 +58,7 @@ import {TextInput} from 'react-native-paper';
 import {resetMonthlyIncome} from '../../redux/MonthlyReducer';
 import {cus_filter_item} from '../../common';
 import {setBorrowerMap_Path} from '../../redux/LoanReducer';
+import {interest_rate} from '../../common';
 // import RNFetchBlob from 'rn-fetch-blob';
 
 const Borrower_modal = props => {
@@ -406,8 +407,8 @@ const CoBorrower_modal = props => {
                     marginTop: 7,
                   }}
                   mode="dropdown">
-                  {emp_filter_item.length > 0 &&
-                    emp_filter_item.map(val => (
+                  {cus_filter_item.length > 0 &&
+                    cus_filter_item.map(val => (
                       <Picker.Item
                         label={val.label}
                         value={val.value}
@@ -1899,10 +1900,10 @@ function Individual_Loan(props) {
         const loan_data = Object.assign({}, values, {
           borrower_sign: borrowerImagePath,
           co_borrower_sign: coBorrowerImagePath,
-          product_type:p_type
+          product_type: p_type ? p_type : 10,
           // borrower_map: map,
         });
-        console.log('loan dataa',loan_data);
+        console.log('loan dataa', loan_data);
 
         await storeLoanData(loan_data).then(result => {
           console.log('result', result);
@@ -2276,13 +2277,14 @@ function Individual_Loan(props) {
                     input_mode
                     keyboardType={'numeric'}
                   />
-
                   <Field
+                    data={interest_rate}
                     name={'interest_rates'}
                     title={'Interest Rates'}
-                    component={TextInputFile}
-                    cus_width
-                    input_mode
+                    component={DropDownPicker}
+                    pickerStyle={{
+                      width: 300,
+                    }}
                   />
                 </View>
               </View>

@@ -1,119 +1,130 @@
 import {View, Text, ScrollView, FlatList, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {style} from '../../style/Survey_style';
-import DividerLine from '../../components/DividerLine';
 import {Button} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/Feather';
 import {getSurveyData} from '../../query/SurveyItem_query';
-import {questions} from '../../common';
-import RadioButtonFile from '../../components/RadioButtonFile';
-import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
-
-function Survey() {
+import {style} from '../../style/Survey_style';
+import {RadioButton} from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment';
+import {fetchAllSurvey} from '../../query/SurveyItem_query';
+export default function Survey(props) {
   const [survey_data, setSurveyData] = useState([]);
+  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [user_id, setUserID] = useState('');
+  const [surveycount, setSurveyCount] = useState('');
+
   const loadData = async () => {
     await getSurveyData().then(data => {
       setSurveyData(data);
+    });
+    await AsyncStorage.getItem('user_id').then(val => {
+      setUserID(val);
+    });
+    await fetchAllSurvey().then(data => {
+      // setSurveyCount(data.length+1);
+      let initialCount = data.length > 0 ? data.length : 1;
+      setSurveyCount(initialCount);
     });
   };
   useEffect(() => {
     loadData();
   }, []);
-
+  console.log('surveycount', surveycount);
+  const onSubmit = values => {
+    console.log('finale value', selectedItems);
+  };
   const renderTableRow = ({item, index}) => {
-    return (
-      <View style={styles.row}>
-        <Text style={styles.cell}> {index + 1}</Text>
-        <Text style={styles.surveyCell}>{item.survey_item_content_eng}</Text>
-        {/* <View style={styles.cell}> */}
-        <Field
-          data={questions}
-          name={`area_security_flag${index}`}
-          component={RadioButtonFile}
-        />
-        {/* </View> */}
+    const isSelectedYes = selectedAnswers[index] === 'Y';
+    const isSelectedNo = selectedAnswers[index] === 'N';
 
-        {/* <Text style={styles.cell}>yes</Text>
-        <Text style={styles.cell}>no</Text> */}
+    const btnChangeOperation = newValue => {
+      setSelectedAnswers(prevSelectedAnswers => ({
+        ...prevSelectedAnswers,
+        [index]: newValue,
+      }));
+
+      setSelectedItems(prevSelectedItems => {
+        // Check if the item with the same serialno is already in the array
+        const existingItemIndex = prevSelectedItems.findIndex(
+          selectedItem => selectedItem.serial_no === item.serial_no,
+        );
+
+        if (existingItemIndex !== -1) {
+          console.log('old select');
+          // Update the item's survey_answer_yn with the newValue
+          return prevSelectedItems.map((selectedItem, index) =>
+            index === existingItemIndex
+              ? {
+                  ...selectedItem,
+                  survey_answer_yn: newValue,
+                  survey_result_no: `SV${user_id}${moment().format(
+                    'YYYYMMDD',
+                  )}${surveycount}`,
+                }
+              : selectedItem,
+          );
+        } else {
+          console.log('new select');
+          setSurveyCount(prevCount => prevCount + 1);
+
+          // Add the item to the selectedItems array with the new survey_answer_yn value
+          return [
+            ...prevSelectedItems,
+            {
+              ...item,
+              survey_answer_yn: newValue,
+              survey_result_no: `SV${user_id}${moment().format(
+                'YYYYMMDD',
+              )}${surveycount}`,
+            },
+          ];
+        }
+      });
+    };
+    console.log();
+    return (
+      <View style={style.row}>
+        <Text style={style.cell}> {index + 1}</Text>
+        <Text style={style.surveyCell}>{item.survey_item_content_eng}</Text>
+
+        <RadioButton.Group
+          onValueChange={btnChangeOperation}
+          value={selectedAnswers[index]}>
+          <View style={{flexDirection: 'row'}}>
+            <RadioButton.Item
+              label="Yes"
+              value="Y"
+              status={isSelectedYes ? 'checked' : 'unchecked'}
+            />
+            <RadioButton.Item
+              label="No"
+              value="N"
+              status={isSelectedNo ? 'checked' : 'unchecked'}
+            />
+          </View>
+        </RadioButton.Group>
       </View>
     );
   };
 
-  const item = ({item, index}) => {
-    return (
-      <View
-        style={{
-          flexDirection: 'row',
-          borderBottomWidth: 1,
-          borderBottomColor: '#ccc',
-          // justifyContent: 'space-around'
-          // padding: 10,
-        }}>
-        <Text
-          style={{
-            flex: 1,
-            padding: 10,
-          }}>
-          {index + 1}
-        </Text>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {/* {foundItem[0].label} */}
-        </Text>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.group_aplc_no}
-        </Text>
-
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.survey_item_content_eng}
-        </Text>
-
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          Yes
-        </Text>
-
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          No
-        </Text>
-      </View>
-    );
-  };
   return (
     <View style={{flex: 1}}>
-      <View style={styles.container}>
+      <View style={style.container}>
         {/* Table Header */}
-        <View style={styles.header}>
-          <Text style={styles.title}>#</Text>
-          <Text style={styles.surveyTitle}>Survey</Text>
+        <View style={style.header}>
+          <Text style={style.title}>#</Text>
+          <Text style={style.surveyTitle}>Survey</Text>
           <Text
             style={{
+              flex: 1,
               padding: 10,
               fontWeight: 'bold',
               textAlign: 'center',
             }}>
             Yes
           </Text>
-          <Text style={styles.title}>No</Text>
+          <Text style={style.title}>No</Text>
         </View>
 
         {/* Table Data */}
@@ -124,7 +135,6 @@ function Survey() {
         />
       </View>
 
-      <DividerLine />
       <View
         style={{
           flexDirection: 'row',
@@ -132,6 +142,7 @@ function Survey() {
           marginBottom: 20,
         }}>
         <Button
+          onPress={() => onSubmit()}
           mode="contained"
           buttonColor={'#6870C3'}
           style={{
@@ -141,55 +152,9 @@ function Survey() {
             borderRadius: 5,
             padding: 5,
           }}>
-          <Icon name="arrow-left" size={18} color="#fff" />
           Submit
         </Button>
       </View>
     </View>
   );
 }
-export default reduxForm({
-  form: 'Survey',
-})(connect(null)(Survey));
-const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    width: '90%',
-    height: 800,
-    backgroundColor: '#fff',
-    marginTop: 50,
-    alignSelf: 'center',
-  },
-  header: {
-    flexDirection: 'row',
-    padding: 5,
-    margin: 10,
-  },
-  title: {
-    flex: 1,
-    padding: 10,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  surveyTitle: {
-    flex: 2, // Adjust the flex value to allocate more space for the "Survey" column
-    padding: 10,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  cell: {
-    flex: 1,
-    padding: 5,
-    textAlign: 'center',
-  },
-  surveyCell: {
-    flex: 2, // Adjust the flex value to allocate more space for the "Survey" column
-    padding: 5,
-    textAlign: 'center',
-  },
-});
