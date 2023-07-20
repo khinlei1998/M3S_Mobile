@@ -1,14 +1,41 @@
 import { View, Text } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { Provider, Portal, Modal, Button } from 'react-native-paper';
 import DropDownPicker from '../../components/DropDownPicker';
-import { gender } from '../../common';
 import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
 import { connect } from 'react-redux';
-
+import { fetchStateName } from '../../query/NRCinfo_query';
 import TextInputFile from '../../components/TextInputFile';
+import { state } from '../../common';
+import { gender } from '../../common';
 function ShowNRC_Modal(props) {
-  const { hideNRCModal, nrc_visible, nrc_statecode, nrc_prefix_code } = props;
+  const { hideNRCModal, nrc_visible, nrc_statecode, nrc_prefix_code, setNRCPrefixCode } = props;
+  console.log('nrc_statecode', nrc_statecode);
+  const [nrc_prefix, setNRCPrefix] = useState([])
+  const [prefix, setPrefix] = useState('')
+  const handlePickerChange = async (newValue) => {
+    console.log('newValue', newValue);
+    setPrefix(newValue)
+    // const indexOfSlash = newValue.indexOf('/');
+    // const part1 = newValue.substring(0, indexOfSlash + 1);
+    // const part2 = newValue.substring(indexOfSlash + 1);
+    // console.log('part1', part1);
+    // console.log('part2', part2);
+    // Dispatch the change action to update the value in the Redux store
+
+    await fetchStateName(newValue)
+      .then(data => {
+        console.log('data', data);
+        const newArray = data.map(item => ({
+          id: item.nrc_prefix_code,
+          label: item.nrc_prefix_code,
+          value: item.nrc_prefix_code,
+        }));
+        console.log('newArray', newArray);
+        setNRCPrefix(newArray)
+      })
+      .catch(error => console.log(error));
+  };
   return (
     <Provider>
       <Portal>
@@ -24,41 +51,83 @@ function ShowNRC_Modal(props) {
             borderWidth: 1,
             margin: 20,
           }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around', }}>
             <View
               style={{
                 flexDirection: 'row',
-                justifyContent: 'space-between',
-                width: '50%',
+                justifyContent: 'space-around',
+                width: '55%',
               }}>
+
+              {/* <Field
+                data={state}
+                name={'nrc_statecode'}
+                title={'PrefixCcode'}
+                component={DropDownPicker}
+                pickerStyle={{
+                  width: 150,
+                }}
+                onChange={handlePickerChange} // Pass the function to handle value change
+
+
+              /> */}
 
               <Field
                 data={nrc_statecode}
                 name={'nrc_statecode'}
-                title={'Select State Code'}
+                title={'nrc_statecode'}
                 component={DropDownPicker}
                 pickerStyle={{
-                  width: 160,
+                  width: 300,
                 }}
+                showDropChange={handlePickerChange}
+                prefix={prefix} // Pass the callback function to the DropDownPicker component
+
               />
 
-              <Field
-                data={nrc_prefix_code}
-                name={'nrc_prefix'}
-                title={'Select Prefix'}
+              {/* <Field
+                data={nrc_statecode}
+                name={'nrc_statecode'}
+                title={'State Name'}
                 component={DropDownPicker}
                 pickerStyle={{
-                  width: 160,
+                  width: 120,
                 }}
+                onChange={handlePickerChange} // Pass the function to handle value change
+
+
+              /> */}
+
+              {/* <Field
+                data={nrc_prefix_code}
+                name={'nrc_prefix'}
+                title={'NRCPrefix'}
+                component={DropDownPicker}
+                pickerStyle={{
+                  width: 120,
+                }}
+              /> */}
+              <Field
+                data={nrc_prefix}
+                name={'nrc_statecode'}
+                title={'NRCPrefix'}
+                component={DropDownPicker}
+                pickerStyle={{
+                  width: 150,
+                }}
+
               />
             </View>
-            <Field
-              name={'nrcNo'}
-              title={'NRC Number'}
-              component={TextInputFile}
-              input_mode
-              inputmax={6}
-            />
+            <View >
+              <Field
+                name={'nrcNo'}
+                title={'NRC Number'}
+                component={TextInputFile}
+                input_mode
+                inputmax={6}
+
+              />
+            </View>
           </View>
           <View
             style={{

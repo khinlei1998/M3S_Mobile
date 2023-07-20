@@ -10,10 +10,12 @@ export default function DropDownPicker(props) {
     data,
     title,
     selectedValue,
-    onValueChange,
+    // onValueChange,
     num_data,
     pickerStyle,
+    showDropChange,
     enabled,
+    prefix,
     ...pickerProps
   } = props;
 
@@ -41,6 +43,7 @@ export default function DropDownPicker(props) {
         enabled={enabled ? false : true}
         selectedValue={value}
         onValueChange={onChange}
+
         style={[pickerStyle, styles.picker]}
         mode="dropdown">
         <Picker.Item label={title} value="" />
@@ -67,8 +70,12 @@ export default function DropDownPicker(props) {
         <Picker
           {...pickerProps}
           enabled={enabled ? false : true}
-          selectedValue={value}
-          onValueChange={onChange}
+          selectedValue={prefix?prefix:value}
+          // onValueChange={onChange}
+          // onValueChange={(itemValue, itemIndex) => {
+          //   onChange(itemValue); // Call the onChange prop with the selected value
+          // }}
+          onValueChange={(itemValue) => showDropChange?showDropChange(itemValue): onChange(itemValue)}
           style={[pickerStyle, {
 
             color: 'black',

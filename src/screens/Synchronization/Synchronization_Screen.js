@@ -1,30 +1,27 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  ScrollView,
-  Keyboard,
   FlatList,
 } from 'react-native';
-import {DataTable} from 'react-native-paper';
-import DividerLine from '../../components/DividerLine';
-import {Divider, Button, Provider, Modal, Portal} from 'react-native-paper';
-import {getAllLoan} from '../../query/AllLoan_query';
+import { Divider, Button, Provider, Modal, Portal } from 'react-native-paper';
+import { getAllLoan } from '../../query/AllLoan_query';
 import Tab from '../../components/Tab';
 import Sync_Upload_Screen from './Sync_Upload_Screen';
 import CheckBoxFile from '../../components/CheckBoxFile';
 import Sync_Download_Screen from './Sync_Download_Screen';
 import Sync_Setting_Screen from './Sync_Setting_Screen';
-import {fetchAllCustomerNum} from '../../query/Customer_query';
-import {UploadCustomerData} from '../../query/Customer_query';
-import {getAllLoan_By_application_no} from '../../query/AllLoan_query';
-import {fetchDataForCheckedData} from '../../query/AllLoan_query';
+import { fetchAllCustomerNum } from '../../query/Customer_query';
+import { UploadCustomerData } from '../../query/Customer_query';
+import { getAllLoan_By_application_no } from '../../query/AllLoan_query';
+import { fetchDataForCheckedData } from '../../query/AllLoan_query';
 import Icon from 'react-native-vector-icons/Feather';
-import {get_loged_branch_code} from '../../query/Employee_query';
+import { get_loged_branch_code } from '../../query/Employee_query';
 import Spinner from 'react-native-loading-spinner-overlay';
-
+import { getAllLoanType } from '../../query/AllLoan_query';
+import { getSurveyResult } from '../../query/SurveyItem_query';
+import { UploadSurveyData } from '../../query/SurveyItem_query';
 export default function Synchronization_Screen() {
   const [activeTab, setActiveTab] = React.useState(0);
   const [loan_data, setAllLoan] = React.useState([]);
@@ -37,6 +34,7 @@ export default function Synchronization_Screen() {
   const [cus_error_modal_visible, setCusErrorModalVisible] = useState(false);
   const [cus_fail_data, setCusFailedData] = useState([]);
   const [isLoading, setLoading] = useState(false);
+  const [all_survey, setAllSurvey] = useState([])
 
   const btnUploadCustomer = async () => {
     setLoading(true);
@@ -46,26 +44,69 @@ export default function Synchronization_Screen() {
     });
     try {
       // Call the API here
-      await UploadCustomerData(customer_data).then(async result => {
-        if (result == 'success') {
-          await loadData();
-          setLoading(false);
+      await UploadSurveyData(all_survey).then(async surveyResult => {
+        if (surveyResult == 'success') {
+          await UploadCustomerData(customer_data).then(async result => {
+            if (result == 'success') {
+              await loadData();
+              setLoading(false);
 
-          alert('All update success');
-        } else if (result.length > 0) {
-          setLoading(false);
+              alert('All update success');
+            } else if (result.length > 0) {
+              setLoading(false);
 
-          setCusFailedData(result);
+              setCusFailedData(result);
+              setCusErrorModalVisible(true);
+              await loadData();
+            } else {
+              await loadData();
+              setLoading(false);
+              alert('Axios Error ');
+            }
+          });
+        } else if (surveyResult.length > 0) {
+          setLoading(false);
+          setCusFailedData(surveyResult);
           setCusErrorModalVisible(true);
           await loadData();
         } else {
           await loadData();
           setLoading(false);
-          alert('Axios Error ');
+          alert('Axios Error');
         }
-      });
+      })
+
+
+      // const uploadCustomerResult = await UploadCustomerData(customer_data);
+      // console.log('uploadCustomerResult', uploadCustomerResult);
+
+      // const uploadSurveyResult = await UploadSurveyData(all_survey);
+      // console.log('uploadSurveyResult', uploadSurveyResult);
+
+      // if (
+      //   uploadCustomerResult === 'success' &&
+      //   uploadSurveyResult === 'success'
+      // ) {
+      //   await loadData();
+      //   setLoading(false);
+
+      //   alert('All update success');
+      // } else if (uploadCustomerResult.length > 0 || uploadSurveyResult.length > 0) {
+      //   const mergedArray = [...uploadCustomerResult, ...uploadSurveyResult];
+
+      //   setLoading(false);
+
+      //   setCusFailedData(mergedArray);
+      //   setCusErrorModalVisible(true);
+      //   await loadData();
+      // } else {
+      //   await loadData();
+      //   setLoading(false);
+      //   alert('Axios Error ');
+      // }
       // updateTableSyncStatus('13')
     } catch (error) {
+      setLoading(false);
       console.error('API call failed. Value not changed.');
     }
   };
@@ -113,7 +154,26 @@ export default function Synchronization_Screen() {
   };
 
   const loadData = async () => {
-    await getAllLoan()
+    const customerData = await fetchAllCustomerNum();
+    const surveyData = await getSurveyResult();
+    const filteredCustomerData = customerData.filter(
+      cus_item => cus_item.tablet_sync_sts == '00',
+    );
+
+    const isCustomerDataAvailable = filteredCustomerData.length > 0;
+    const isSurveyDataAvailable = surveyData.length > 0;
+    if (isCustomerDataAvailable || isSurveyDataAvailable) {
+      seBtnDisabled(true);
+    } else {
+      seBtnDisabled(false);
+      setBtnCustomerDisabled(true);
+
+    }
+
+    setAllCusstomer(filteredCustomerData);
+    setAllSurvey(surveyData);
+
+    await getAllLoanType()
       .then(setAllLoan)
       .catch(error => console.log(error));
 
@@ -121,28 +181,41 @@ export default function Synchronization_Screen() {
       .then(data => setBranchCode(data[0].branch_code))
       .catch(error => console.log(error));
 
-    await fetchAllCustomerNum()
-      .then(data => {
-        const result = data.filter(
-          cus_item => cus_item.tablet_sync_sts == '00',
-        );
-        if (result.length > 0) {
-          setAllCusstomer(result);
-          seBtnDisabled(true);
-        } else {
-          setAllCusstomer(result);
-          setBtnCustomerDisabled(true);
-          seBtnDisabled(false);
-        }
-      })
-      .catch(error => console.log(error));
+    // await fetchAllCustomerNum()
+    //   .then(data => {
+    //     const result = data.filter(
+    //       cus_item => cus_item.tablet_sync_sts == '00',
+    //     );
+    //     if (result.length > 0) {
+    //       setAllCusstomer(result);
+    //       seBtnDisabled(true);
+    //     } else {
+    //       setAllCusstomer(result);
+    //       setBtnCustomerDisabled(true);
+    //       seBtnDisabled(false);
+    //     }
+    //   })
+    // await getSurveyResult()
+    //   .then(data => {
+
+    //     if (data.length > 0) {
+    //       setAllSurvey(data);
+    //       seBtnDisabled(true);
+    //     } else {
+    //       setAllSurvey(data);
+    //       setBtnCustomerDisabled(true);
+    //       seBtnDisabled(false);
+    //     }
+    //   })
+
+    //   .catch(error => console.log(error));
   };
 
   useEffect(() => {
     loadData();
   }, []);
 
-  const error_log = ({item, index}) => {
+  const error_log = ({ item, index }) => {
     return (
       <View
         style={{
@@ -169,7 +242,7 @@ export default function Synchronization_Screen() {
     );
   };
 
-  const cus_error_log = ({item, index}) => {
+  const cus_error_log = ({ item, index }) => {
     return (
       <View
         style={{
@@ -197,20 +270,20 @@ export default function Synchronization_Screen() {
   };
   return (
     <>
-      <Text style={{fontWeight: 'bold', fontSize: 20, padding: 15}}>
+      <Text style={{ fontWeight: 'bold', fontSize: 20, padding: 15 }}>
         Synchronization
       </Text>
 
-      <Text style={{fontSize: 15, padding: 5, marginLeft: 10}}>
+      <Text style={{ fontSize: 15, padding: 5, marginLeft: 10 }}>
         Synchronization is the coordination of events to operate a system in
         union
       </Text>
-      <View style={{flexDirection: 'row', marginLeft: 10, marginRight: 10}}>
+      <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10 }}>
         <Tab
           label="Upload"
           isActive={activeTab === 0}
           onPress={() => handleTabPress(0)}>
-          <View style={{backgroundColor: '#fff'}}>
+          <View style={{ backgroundColor: '#fff' }}>
             <Text>Upload Applications</Text>
           </View>
         </Tab>
@@ -226,7 +299,7 @@ export default function Synchronization_Screen() {
         />
       </View>
 
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
+      <View style={{ flex: 1, backgroundColor: '#fff' }}>
         {activeTab === 0 && (
           <Sync_Upload_Screen
             btnUploadCustomer={btnUploadCustomer}
@@ -235,13 +308,13 @@ export default function Synchronization_Screen() {
             customer_data={customer_data}
             btn_cus_disabled={btn_cus_disabled}
             btnLoanUpload={btnLoanUpload}
+            all_survey={all_survey}
           />
         )}
         {activeTab === 1 && <Sync_Download_Screen />}
         {activeTab === 2 && <Sync_Setting_Screen />}
       </View>
 
-      {/* <Error_Log_Modal visible={error_modal_visible} hideModal={hideModal} /> */}
       <Modal
         useNativeDriver
         hideModalContentWhileAnimating
@@ -254,7 +327,7 @@ export default function Synchronization_Screen() {
           height: '70%',
           alignSelf: 'center',
         }}>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <View
             style={{
               backgroundColor: '#e01b22',
@@ -314,8 +387,6 @@ export default function Synchronization_Screen() {
           backgroundColor: '#e8e8e8',
           width: '60%',
           alignSelf: 'center',
-          // flex: 1,
-          // height: 400,
         }}>
         <View
           style={{
@@ -339,13 +410,12 @@ export default function Synchronization_Screen() {
           </TouchableOpacity>
         </View>
 
-        <View style={{padding: 5, backgroundColor: '#e01b22'}}>
+        <View style={{ padding: 5, backgroundColor: '#e01b22' }}>
           <View
             style={{
               backgroundColor: '#e6ebe7',
               flexDirection: 'row',
             }}>
-            {/* <Text>{failed_data}</Text> */}
             <FlatList
               data={cus_fail_data}
               renderItem={cus_error_log}
@@ -355,7 +425,7 @@ export default function Synchronization_Screen() {
         </View>
       </Modal>
 
-      <View style={{position: 'absolute', top: '50%', right: 0, left: 0}}>
+      <View style={{ position: 'absolute', top: '50%', right: 0, left: 0 }}>
         {isLoading ? (
           <Spinner visible={isLoading} textContent={'Please Wait'} />
         ) : (

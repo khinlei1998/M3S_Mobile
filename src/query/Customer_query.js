@@ -572,226 +572,7 @@ export async function UploadCustomerData(customer_data) {
       const data = [customer_data[i]];
       console.log('data', data);
 
-      // let test = [
-      //   {
-      //     addr: '0',
-      //     address_type: '0',
-      //     birth_date: '0',
-      //     branch_code: '0',
-      //     bus_utlbil_expns: '0',
-      //     business_own_type: '0',
-      //     business_period_status: '0',
-      //     business_period_status: '0',
-      //     business_sttn_flg: 'Y',
-      //     city_code: '0',
-      //     city_name: '0',
-      //     create_datetime: '2020-09-09',
-      //     create_user_id: 'M00172',
-      //     curr_business_date_status: '0',
-      //     curr_resident_date: '0',
-      //     curr_resident_perd: '0',
-      //     curr_workplace_date: '0',
-      //     curr_workplace_perd: 0, //
-      //     customer_nm: 'name',
-      //     customer_no: '567898',
-      //     delete_datetime: '0',
-      //     delete_user_id: '0',
-      //     edct_expns: '0',
-      //     employee_expns: '0',
-      //     employee_no: 'M00243',
-      //     employee_num: 1,
-      //     entry_date: '0',
-      //     family_num: 1,
-      //     father_name: '0',
-      //     finance_expns: '0', //
-      //     fmly_otr_expns: '0',
-      //     fmly_tax_expns: '0',
-      //     fmly_tot_expense: '0',
-      //     fmly_tot_income: '0',
-      //     fmly_tot_net_income: '0',
-      //     fmly_trnsrt_expns: '0',
-      //     food_expns: '0',
-      //     gender: '0',
-      //     goods_loss_expns: '0',
-      //     healthy_expns: '0',
-      //     hghschl_num: 1,
-      //     house_mngt_expns: '0',
-      //     house_ocpn_type: '0',
-      //     land_own_type: '0', //
-      //     land_scale: '0',
-      //     marital_status: 10,
-      //     mobile_tel_no: '0',
-      //     nrc_no: '878765',
-      //     nrc_prefix_code: '0',
-      //     nrc_state_code: '0',
-      //     nrc_type: '0',
-      //     occupation: '0',
-      //     ohtr_own_property: '0',
-      //     othr_expns_1: '0',
-      //     othr_expns_2: '0',
-      //     otr_income: '0',
-      //     otr_prop_estmtd_val: '0',
-      //     position_title_nm: '0', //
-      //     postal_code: '0',
-      //     prmn_empl_expns: '0',
-      //     prop_apartment_yn: '0',
-      //     prop_car_yn: '0',
-      //     prop_farmland_yn: '0',
-      //     prop_house_yn: '0',
-      //     prop_machines_yn: '0', //
-      //     prop_motorcycle_yn: '0',
-      //     prop_other_yn: '0',
-      //     rawmaterial_expans: '0',
-      //     remark: '0',
-      //     resident_rgst_id: '10001019',
-      //     salary_rating_code: '0',
-      //     saving_acct_num: '0',
-
-      //     serial_no: '28',
-      //     start_living_date_status: '1',
-      //     status_code: '01',
-      //     sync_sts: '00',
-      //     tablet_sync_sts: '01',
-      //     tax_expns: '1',
-      //     tel_expns: '1',
-      //     tel_no: '06359', //
-
-      //     tmpy_empl_expns: '0',
-      //     tot_bus_net_income: '0',
-      //     tot_prop_estmtd_val: '0',
-      //     tot_sale_expense: '0',
-      //     tot_sale_income: '0',
-      //     total_net: '0',
-      //     township_code: '0',
-      //     township_name: '0',
-      //     trnsrt_expns: '0',
-      //     university_num: 1,
-      //     update_datetime: '0',
-      //     update_user_id: '0',
-      //     utlbil_expns: '0',
-      //     village_code: '0',
-      //     village_name: '0',
-      //     village_status: '0',
-      //     ward_code: '0',
-      //     ward_name: '0',
-      //     workplace_addr: '0',
-      //     workplace_date: '0',
-      //     workplace_name: '0',
-      //     workplace_period: '0',
-      //     workplace_type: '0',
-      //     wrkp_rent_expns: 0,
-      //   },
-      // ];
-      // let test = [
-      //   {
-      //     addr: data.addr,
-      //     address_type: data.address_type,
-      //     birth_date: data.birth_date,
-      //     branch_code: '1006',
-      //     bus_utlbil_expns: data.bus_utlbil_expns,
-      //     business_own_type: data.business_own_typeb,
-      //     business_period_status: data.business_period_status,
-      //     business_sttn_flg: data.business_sttn_flg,
-      //     city_code: data.city_code,
-      //     city_name: data.city_name,
-      //     create_datetime: data.create_datetime,
-      //     create_user_id: user_id, ///
-      //     curr_business_date_status: data.curr_business_date_status,
-      //     curr_resident_date: data.curr_resident_date,
-      //     curr_resident_perd: data.curr_resident_perd,
-      //     curr_workplace_date: data.curr_workplace_date,
-      //     curr_workplace_perd: data.curr_workplace_perd, // must integer
-      //     customer_nm: data.customer_nm,
-      //     customer_no: data.customer_no,
-      //     delete_datetime: '',
-      //     delete_user_id: '',
-      //     edct_expns: data.edct_expns,
-      //     employee_expns: data.employee_expns,
-      //     employee_no: data.employee_no,
-      //     employee_num: data.employee_num,
-
-      //     entry_date: data.entry_date,
-      //     family_num: 1,
-      //     father_name: '0',
-      //     finance_expns: '0', //
-      //     fmly_otr_expns: '0',
-      //     fmly_tax_expns: '0',
-      //     fmly_tot_expense: '0',
-      //     fmly_tot_income: '0',
-      //     fmly_tot_net_income: '0',
-      //     fmly_trnsrt_expns: '0',
-      //     food_expns: '0',
-      //     gender: '0',
-      //     goods_loss_expns: '0',
-      //     healthy_expns: '0',
-      //     hghschl_num: 1,
-      //     house_mngt_expns: '0',
-      //     house_ocpn_type: '0',
-      //     land_own_type: '0', //
-      //     land_scale: '0',
-      //     marital_status: 10,
-      //     mobile_tel_no: '0',
-      //     nrc_no: '878765',
-      //     nrc_prefix_code: '0',
-      //     nrc_state_code: '0',
-      //     nrc_type: '0',
-      //     occupation: '0',
-      //     ohtr_own_property: '0',
-      //     othr_expns_1: '0',
-      //     othr_expns_2: '0',
-      //     otr_income: '0',
-      //     otr_prop_estmtd_val: '0',
-      //     position_title_nm: '0', //
-      //     postal_code: '0',
-      //     prmn_empl_expns: '0',
-      //     prop_apartment_yn: '0',
-      //     prop_car_yn: '0',
-      //     prop_farmland_yn: '0',
-      //     prop_house_yn: '0',
-      //     prop_machines_yn: '0', //
-      //     prop_motorcycle_yn: '0',
-      //     prop_other_yn: '0',
-      //     rawmaterial_expans: '0',
-      //     remark: '0',
-      //     resident_rgst_id: '10001027',
-      //     salary_rating_code: '0',
-      //     saving_acct_num: '0',
-
-      //     serial_no: '28',
-      //     start_living_date_status: '1',
-      //     status_code: '01',
-      //     sync_sts: '00',
-      //     tablet_sync_sts: '01',
-      //     tax_expns: '1',
-      //     tel_expns: '1',
-      //     tel_no: '06359', //
-
-      //     tmpy_empl_expns: '0',
-      //     tot_bus_net_income: '0',
-      //     tot_prop_estmtd_val: '0',
-      //     tot_sale_expense: '0',
-      //     tot_sale_income: '0',
-      //     total_net: '0',
-      //     township_code: '0',
-      //     township_name: '0',
-      //     trnsrt_expns: '0',
-      //     university_num: 1,
-      //     update_datetime: '0',
-      //     update_user_id: '0',
-      //     utlbil_expns: '0',
-      //     village_code: '0',
-      //     village_name: '0',
-      //     village_status: '0',
-      //     ward_code: '0',
-      //     ward_name: '0',
-      //     workplace_addr: '0',
-      //     workplace_date: '0',
-      //     workplace_name: '0',
-      //     workplace_period: '0',
-      //     workplace_type: '0',
-      //     wrkp_rent_expns: 0,
-      //   },
-      // ];
+      
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
@@ -799,24 +580,12 @@ export async function UploadCustomerData(customer_data) {
         data: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json', // Set the content type as JSON
-
           'cache-control': 'no-cache',
-          // processData: false,
-          // contentType: false,
+
         },
       };
       const response = await axios.request(config);
-      console.log('response', response);
-      // await axios
-      //   .post(`https://${ip}:${port}/skylark-m3s/api/customers.m3s`, test, {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //   })
-      //   .then(response => {
-      //     console.log('res', response);
-      //   });
-
+      
       if (response.data[0].errMsg) {
         const error = {
           resident_rgst_id: response.data[0].residentRgstId,
@@ -840,8 +609,6 @@ export async function UploadCustomerData(customer_data) {
       }
     }
 
-    console.log('failedData', failedData);
-
     if (failedData.length > 0) {
       return failedData;
     } else {
@@ -850,9 +617,6 @@ export async function UploadCustomerData(customer_data) {
   } catch (error) {
     console.log('error', error);
     return error;
-    // alert('Axios error occurred');
-    // // reject(error);
-    // console.log('error', error);
   }
 }
 

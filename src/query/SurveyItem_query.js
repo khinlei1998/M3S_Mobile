@@ -167,3 +167,72 @@ export const storeSurveyResult = async data => {
     }
   });
 };
+
+
+export async function UploadSurveyData(all_survey) {
+  const failedData = [];
+  let ip = await AsyncStorage.getItem('ip');
+  let port = await AsyncStorage.getItem('port');
+  let user_id = await AsyncStorage.getItem('user_id');
+
+  try {
+    for (var i = 0; i < all_survey.length; i++) {
+      const data = [all_survey[i]];
+      console.log('data', data);
+
+
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `https://${ip}:${port}/skylark-m3s/api/surveyResult.m3s`,
+        data: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json', // Set the content type as JSON
+          'cache-control': 'no-cache',
+
+        },
+      };
+      const response = await axios.request(config);
+      console.log('response',response);
+
+      if (response.data[0].errMsg) {
+        const error = {
+          message: response.data[0].errMsg,
+        };
+        failedData.push(error);
+      } else {
+        for (const data of all_survey) {
+          console.log('data',data.survey_result_no);
+          await new Promise((resolve, reject) => {
+            global.db.transaction(tx => {
+              tx.executeSql(
+                `DELETE * FROM survey_result WHERE survey_result_no = ?  `,
+                [data.survey_result_no],
+                (txObj, resultSet) => {
+                  console.log('Delete from survey_result successful');
+                  resolve();
+                },
+                (txObj, error) => {
+                  console.error(
+                    'Delete from survey_result error:',
+                    error,
+                  );
+                  reject(error);
+                },
+              );
+            });
+          });
+        }
+      }
+    }
+
+    if (failedData.length > 0) {
+      return failedData;
+    } else {
+      return 'success';
+    }
+  } catch (error) {
+    console.log('error', error);
+    return error;
+  }
+}

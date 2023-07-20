@@ -44,6 +44,19 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
+        
+      {/* <Stack.Screen
+        name="Synchronization"
+        component={Synchronization_Screen}
+        options={{headerShown: false}}
+      /> */}
+
+        
+       {/* <Stack.Screen
+        name="Customer Management"
+        component={Customer_Management}
+        options={{ headerShown: false }}
+      /> */}
         {/* <Stack.Screen
         name="Survey"
         component={Survey}
@@ -86,11 +99,11 @@ export default function AuthNavigation(props) {
       />  */}
 
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Survey"
         component={Survey}
         options={{headerShown: false}}
-      />
+      /> */}
 
 
       {/* <Stack.Screen
@@ -121,22 +134,7 @@ export default function AuthNavigation(props) {
       /> */}
 
 
-      {/* <Stack.Screen
-        name="Customer Management"
-        component={Customer_Management}
-        options={{ headerShown: false }}
-      /> */}
-      {/* <Stack.Screen
-        name="Synchronization"
-        component={Synchronization_Screen}
-        options={{headerShown: false}}
-      /> */}
-
-      {/* <Stack.Screen
-        name="Customer Management"
-        component={Customer_Management}
-        options={{headerShown: false}}
-      /> */}
+   
       {/* <Stack.Screen
         name="ReLoan"
         component={Reloan_Form}

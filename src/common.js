@@ -581,5 +581,23 @@ export const interest_rate = [
   },
 ];
 
+export const state = [
+  {
+    id: 1,
+    label: '1/',
+    value: 'M',
+  },
+  {
+    id: 2,
+    label: '2/',
+    value: 'F',
+  },
+  {
+    id: 3,
+    label: '3/',
+    value: '0',
+  },
+];
+
 // export const BASE_URL='https://8582-103-231-92-61.ngrok-free.app/'
 export const BASE_URL = 'https://sample-rest.onrender.com/skylark-m3s/'; // static

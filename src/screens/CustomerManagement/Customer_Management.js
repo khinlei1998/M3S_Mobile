@@ -343,11 +343,6 @@ function Customer_Management(props) {
           'CustomerNo',
           `TB${moment().format('YYYYMMDD')}${cust_data.length + 1}`,
         ),
-        // change(
-        //   'Customer_ManagementForm',
-        //   'CustomerNo',
-        //   `88`,
-        // ),
       );
     });
     await fetchNRCinfo()
@@ -355,7 +350,7 @@ function Customer_Management(props) {
         {
           const [nrc_state_code, nrc_prefixdata] = result;
           setNRCStateCode(nrc_state_code);
-          setNRCPrefixCode(nrc_prefixdata);
+          // setNRCPrefixCode(nrc_prefixdata);
         }
       })
       .catch(error => console.log(error));
@@ -734,6 +729,7 @@ function Customer_Management(props) {
         hideNRCModal={hideNRCModal}
         nrc_statecode={nrc_statecode}
         nrc_prefix_code={nrc_prefix_code}
+        setNRCPrefixCode={setNRCPrefixCode}
       />
       <Provider>
         <Portal>
