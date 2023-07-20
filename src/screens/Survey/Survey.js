@@ -33,31 +33,32 @@ function Survey(props) {
 
   const renderTableRow = ({ item, index }) => {
     return (
-      <View style={style.row}>
-        <Text style={style.cell}> {index + 1}</Text>
-        <Text style={style.surveyCell}>{item.survey_item_content_eng}</Text>
-        {survey_gp_no &&
+      <RadioButton.Group onValueChange={(newValue) => setOperation(newValue)} value={operations}>
+        <RadioButton.Item label="First Option" value="first" />
+        <RadioButton.Item label="Second Option" value="second" />
+        <RadioButton.Item label="Third Option" value="third" />
+      </RadioButton.Group>
+      //   <View style={style.row}>
+      //     <Text style={style.cell}> {index + 1}</Text>
+      //     <Text style={style.surveyCell}>{item.survey_item_content_eng}</Text>
+      //     {survey_gp_no &&
 
-          <Field
-            name={`survey_group_no${index}`}
-            component={TextInputFile}
-            value={item.survey_group_no}
-          />
-        }
+      //       <Field
+      //         name={`survey_group_no${index}`}
+      //         component={TextInputFile}
+      //         value={item.survey_group_no}
+      //       />
+      //     }
 
-        {/* <Field
-          data={questions}
-          name={`survey_answer_yn${index}`}
-          component={RadioButtonFile}
-          onChange={(item)=>console.log('select item',item)}
+      //     {/* <Field
+      //       data={questions}
+      //       name={`survey_answer_yn${index}`}
+      //       component={RadioButtonFile}
+      //       onChange={(item)=>console.log('select item',item)}
 
-        /> */}
-        <RadioButton.Group onValueChange={(newValue) => setOperation(newValue)} value={operations}>
-          <RadioButton.Item label="First Option" value="first" />
-          <RadioButton.Item label="Second Option" value="second" />
-          <RadioButton.Item label="Third Option" value="third" />
-        </RadioButton.Group>
-      </View>
+      //     /> */}
+
+      //   </View>
     );
   };
 
@@ -81,12 +82,18 @@ function Survey(props) {
           <Text style={style.title}>No</Text>
         </View>
 
+        <RadioButton.Group onValueChange={(newValue) => setOperation(newValue)} value={operations}>
+        <RadioButton.Item label="First Option" value="first" />
+        <RadioButton.Item label="Second Option" value="second" />
+        <RadioButton.Item label="Third Option" value="third" />
+      </RadioButton.Group>
+
         {/* Table Data */}
-        <FlatList
+        {/* <FlatList
           data={survey_data}
           renderItem={renderTableRow}
           keyExtractor={(item, index) => index.toString()}
-        />
+        /> */}
       </View>
 
       <View
