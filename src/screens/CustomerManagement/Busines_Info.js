@@ -134,23 +134,6 @@ function Busines_Info() {
                 Current Businesss Start Date
               </Text>
 
-              {/* <RadioButton.Group
-                onValueChange={newValue => setBusinessStartDate(newValue)}
-                value={show_business_date}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginTop: 10,
-                    marginLeft: 10,
-                  }}>
-                  <Text style={{ marginTop: 5 }}>Estimated </Text>
-                  <RadioButton value="estimated" />
-
-                  <Text style={{ marginTop: 5 }}>Exact Date</Text>
-                  <RadioButton value="exact" />
-                </View>
-              </RadioButton.Group> */}
-
               <View>
                 <Field
                   data={start_living_date_status}
@@ -166,7 +149,7 @@ function Busines_Info() {
                 {show_business_date == 'estimated' ? (
                   <Field
                     num_data={numbers}
-                    name={'currWorkplaceDate'}
+                    name={'curr_workplace_date'}
                     title={'Select a Value'}
                     component={DropDownPicker}
                     pickerStyle={{
@@ -175,7 +158,7 @@ function Busines_Info() {
                   />
                 ) : (
                   <Field
-                    name={'currWorkplaceDate'}
+                    name={'curr_workplace_date'}
                     component={DatePicker}
                     icon={'calendar'}
                   />

@@ -715,7 +715,7 @@ function Relation_Form(props) {
                     require
                   />
                   <Field
-                    name={'transaction_date'}
+                    name={'application_date'}
                     component={DatePicker}
                     label={'Application Date'}
                     editable={true}

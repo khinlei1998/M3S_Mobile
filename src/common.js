@@ -285,34 +285,34 @@ export const gender = [
 
 export const maritail_status = [
   {
-    id: 10,
+    id: 1,
     label: 'Single',
-    value: '01',
+    value: '10',
   },
   {
-    id: 20,
+    id: 2,
     label: 'Married',
-    value: '02',
+    value: '20',
   },
   {
-    id: 30,
+    id: 3,
     label: 'Divorced',
-    value: '03',
+    value: '30',
   },
   {
-    id: 40,
+    id: 4,
     label: 'Windower/Window',
-    value: '04',
+    value: '40',
   },
   {
-    id: 50,
+    id: 5,
     label: 'Separacted',
-    value: '05',
+    value: '50',
   },
   {
-    id: 60,
+    id: 6,
     label: 'Unknown',
-    value: '06',
+    value: '60',
   },
 ];
 
@@ -510,44 +510,44 @@ export const microfinance_data = [
   {
     id: '4',
     name: 'A(0~2)',
-    result:4
+    result: 4,
   },
   {
     id: '3',
     name: 'B(3~5)',
-    result:3
+    result: 3,
   },
   {
     id: '2',
     name: 'C(6~8)',
-    result:2
+    result: 2,
   },
   {
     id: '1',
     name: 'D(above 8)',
-    result:1
+    result: 1,
   },
 ];
 export const area_evaluation_result = [
   {
     id: '4',
     name: 'A(Excellent)',
-    result:4
+    result: 4,
   },
   {
     id: '3',
     name: 'B(Good)',
-    result:3
+    result: 3,
   },
   {
     id: '2',
     name: 'A(Fair)',
-    result:2
+    result: 2,
   },
   {
     id: '1',
     name: 'D(Bad)',
-    result:1
+    result: 1,
   },
 ];
 export const area_evaluation_score_result = [
@@ -566,6 +566,18 @@ export const area_evaluation_score_result = [
   {
     id: '4',
     name: 'D(Bad)',
+  },
+];
+export const interest_rate = [
+  {
+    id: 1,
+    label: '0%',
+    value: '001',
+  },
+  {
+    id: 2,
+    label: 'Normal',
+    value: '002',
   },
 ];
 

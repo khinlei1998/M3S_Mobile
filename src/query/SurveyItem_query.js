@@ -1,6 +1,7 @@
 import axios from 'axios';
+import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {BASE_URL} from '../common';
+import { BASE_URL } from '../common';
 
 export function getSurvey_Item() {
   return new Promise(async (resolve, reject) => {
@@ -20,7 +21,7 @@ export function getSurvey_Item() {
         axios
           // .get(`https://${newIP}/skylark-m3s/api/employees.m3s`)
           .get(`https://${ip}:${port}/skylark-m3s/api/surveyItems.m3s`)
-          .then(({data}) => {
+          .then(({ data }) => {
             console.log('data', data.length);
             if (data.length > 0) {
               let insertedRows = 0;
@@ -90,3 +91,79 @@ export async function getSurveyData() {
     });
   });
 }
+export async function getSurveyResult() {
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM survey_result',
+        [],
+        (tx, results) => {
+          resolve(results.rows.raw());
+        },
+        (tx, error) => {
+          reject(error);
+        },
+      );
+    });
+  });
+}
+
+export async function fetchAllSurvey() {
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        `SELECT * FROM survey_item`,
+        [],
+        (tx, results) => {
+          resolve(results.rows.raw());
+        },
+        (tx, error) => {
+          reject(error);
+        },
+      );
+    });
+  });
+}
+export const storeSurveyResult = async data => {
+  const user_id = await AsyncStorage.getItem('user_id');
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      global.db.transaction(trans => {
+        for (let i = 0; i < data.length; i++) {
+          trans.executeSql(
+            `INSERT INTO survey_result (serial_no,survey_result_no,survey_group_no,survey_item_no,create_datetime,create_user_id,delete_datetime,delete_user_id,branch_code,transaction_date,survey_answer_yn,err_msg
+) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
+            [
+              null, //serialNo
+              data[i].survey_result_no,
+              data[i].survey_group_no,
+              data[i].survey_item_no,
+              data[i].create_datetime,
+              user_id,
+              moment().format(
+                'YYYY-MM-DD'),
+              data[i].delete_user_id,
+              data[i].branch_code, //login user branch code 
+              moment().format(
+                'YYYY-MM-DD'),
+              data[i].survey_answer_yn,
+              data[i].err_msg
+
+            ],
+            (trans, results) => {
+              resolve('success');
+              console.log('success', results);
+            },
+            error => {
+              reject(error);
+              console.log('error', error);
+            },
+          );
+        }
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};

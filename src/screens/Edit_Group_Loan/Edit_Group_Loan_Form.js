@@ -7,7 +7,7 @@ import {
   FlatList,
   ToastAndroid
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import DividerLine from '../../components/DividerLine';
 import { operations, cus_filter_item } from '../../common';
 import { style } from '../../style/Group_Loan_style';
@@ -58,7 +58,7 @@ const Borrower_modal = props => {
     dispatch(change('Group_Form', 'customer_no', item.customer_no));
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View style={style.map_container}>
         <Text style={style.tbl_content_style}>{index + 1}</Text>
@@ -149,7 +149,7 @@ const Borrower_modal = props => {
           keyExtractor={(item, index) => index.toString()}
         />
 
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <Button
             onPress={() => hideModal()}
             mode="contained"
@@ -277,7 +277,7 @@ function Edit_Group_Loan_Form(props) {
                         label={option.label}
                         value={option.value}
                         color="#000"
-                        labelStyle={{ marginLeft: 5 }}
+                        labelStyle={{marginLeft: 5}}
                       />
                     </View>
                   </RadioButton.Group>
@@ -334,4 +334,4 @@ function mapStateToProps(state) {
 }
 export default reduxForm({
   form: 'Edit_Group_Form',
-})(connect(mapStateToProps, { setGroup_UpdateStatus })(Edit_Group_Loan_Form));
+})(connect(mapStateToProps, {setGroup_UpdateStatus})(Edit_Group_Loan_Form));

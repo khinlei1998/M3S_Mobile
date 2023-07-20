@@ -21,7 +21,7 @@ export const style = StyleSheet.create({
     textAlign: 'center',
   },
   surveyTitle: {
-    flex: 5, 
+    flex: 5,
     padding: 10,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -38,6 +38,6 @@ export const style = StyleSheet.create({
   surveyCell: {
     flex: 1, // Adjust the flex value to allocate more space for the "Survey" column
     padding: 5,
-  
+
   },
 })

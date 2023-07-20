@@ -277,7 +277,7 @@ function Edit_Reloan_Form(props) {
           )
           navigation.goBack();
         }
-        
+
       });
     }
     else {
@@ -294,7 +294,7 @@ function Edit_Reloan_Form(props) {
         }
       });
     }
-    
+
   };
 
   const handleItemValueChange = itemValue => {

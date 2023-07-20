@@ -8,6 +8,7 @@ import {List} from 'react-native-paper';
 import SingleCheckBox from '../../components/SingleCheckBox';
 import {relation_data} from '../../common';
 import RadioButtonFile from '../../components/RadioButtonFile';
+import DatePicker from '../../components/DatePicker';
 function Edit_Relation_Info(props) {
   const {relation_update_status, setRelationName} = props;
   const [relation_info_expanded, setRelationInfoExpanded] = useState(true);
@@ -52,14 +53,13 @@ function Edit_Relation_Info(props) {
               editable
               require
             />
+
             <Field
               name={'transaction_date'}
-              title={'Transaction Date'}
-              component={TextInputFile}
-              cus_width
-              input_mode
-              editable
-              require
+              component={DatePicker}
+              label={'Transaction Date'}
+              icon={'calendar'}
+              editable={relation_update_status == true ? false : true}
             />
           </View>
           <View

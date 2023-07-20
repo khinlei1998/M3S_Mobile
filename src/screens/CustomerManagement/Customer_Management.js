@@ -335,12 +335,19 @@ function Customer_Management(props) {
   };
   const loadData = async () => {
     await fetchAllCustomerNum().then(cust_data => {
+      console.log('cust_data',cust_data.length
+      );
       dispatch(
         change(
           'Customer_ManagementForm',
           'CustomerNo',
           `TB${moment().format('YYYYMMDD')}${cust_data.length + 1}`,
         ),
+        // change(
+        //   'Customer_ManagementForm',
+        //   'CustomerNo',
+        //   `88`,
+        // ),
       );
     });
     await fetchNRCinfo()

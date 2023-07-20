@@ -100,7 +100,7 @@ function Edit_Business_Info(props) {
               {show_businessdate_per == '1' ? (
                 <Field
                   num_data={numbers}
-                  name={'workplace_period'}
+                  name={'workplace_date'}
                   title={'Select a Value'}
                   component={DropDownPicker}
                   keyboardType={'numeric'}
@@ -111,7 +111,7 @@ function Edit_Business_Info(props) {
                 />
               ) : (
                 <Field
-                  name={'workplace_period'}
+                  name={'workplace_date'}
                   component={DatePicker}
                   title={'Select Date'}
                   editable={update_status == true ? false : true}
@@ -145,24 +145,6 @@ function Edit_Business_Info(props) {
               <Text style={{marginLeft: 10, fontSize: 15, fontWeight: 'bold'}}>
                 Current Businesss Start Date
               </Text>
-
-              {/* <RadioButton.Group
-                onValueChange={newValue => setBusinessStartDate(newValue)}
-                value={show_business_date}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginTop: 10,
-                    marginLeft: 10,
-                  }}>
-                  <Text style={{marginTop: 5}}>Estimated </Text>
-                  <RadioButton value="estimated" />
-
-                  <Text style={{marginTop: 5}}>Exact Date</Text>
-                  <RadioButton value="exact" />
-                </View>
-              </RadioButton.Group> */}
-
               <View>
                 <Field
                   data={start_living_date_status}
@@ -180,7 +162,7 @@ function Edit_Business_Info(props) {
                 {show_business_date == '1' ? (
                   <Field
                     num_data={numbers}
-                    name={'curr_workplace_perd'}
+                    name={'curr_workplace_date'}
                     title={'Select a Value'}
                     component={DropDownPicker}
                     pickerStyle={{
@@ -190,7 +172,7 @@ function Edit_Business_Info(props) {
                   />
                 ) : (
                   <Field
-                    name={'curr_workplace_perd'}
+                    name={'curr_workplace_date'}
                     component={DatePicker}
                     editable={update_status == true ? false : true}
                   />

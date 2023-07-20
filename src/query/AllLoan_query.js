@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { Alert, FileSystem } from 'react-native';
+import {Alert, FileSystem} from 'react-native';
 import RNFS from 'react-native-fs';
 
 export async function getAllLoan() {
@@ -39,7 +39,7 @@ const mergeTablesData = (dataFromTable1, dataFromTable2) => {
     mergedData.push(item);
     // mergedData.push({
     //   serial_no: item.serial_no, // Use a unique key for each item in the merged array.
-    //   application_no: item.group_aplc_no, 
+    //   application_no: item.group_aplc_no,
     //   status_code: item.status_code,// Since table1 does not have column1, set it to null or any default value.
     //   create_datetime: item.create_datetime, // Since table1 does not have column2, set it to null or any default value.
     //   create_user_id: item.create_user_id,
@@ -99,6 +99,41 @@ export async function getAllLoanType() {
         },
       );
     });
+    // global.db.transaction(tx => {
+    //   tx.executeSql(
+    //     'SELECT * FROM Individual_application',
+    //     [],
+    //     (tx, results) => {
+    //       const dataFromTable1 = results.rows.raw();
+    //       console.log('Data from table1:', dataFromTable1);
+
+    //       // Retrieve data from table2
+    //       global.db.transaction(tx => {
+    //         tx.executeSql(
+    //           'SELECT * FROM Group_application',
+    //           [],
+    //           (tx, results) => {
+    //             const dataFromTable2 = results.rows.raw();
+    //             console.log('Data from table2:', dataFromTable2);
+
+    //             // Merge the data from table1 and table2
+    //             const mergedData = mergeTablesData(
+    //               dataFromTable1,
+    //               dataFromTable2,
+    //             );
+    //             console.log('Merged Data:', mergedData);
+    //           },
+    //           error => {
+    //             console.log('SELECT error from table2:', error);
+    //           },
+    //         );
+    //       });
+    //     },
+    //     error => {
+    //       console.log('SELECT error from table1:', error);
+    //     },
+    //   );
+    // });
   });
 }
 
@@ -111,7 +146,7 @@ export function getIndividual_loan() {
       tx.executeSql('DELETE FROM Individual_application', [], (tx, results) => {
         axios
           .get(`https://${ip}:${port}/skylark-m3s/api/individualLoans.m3s`)
-          .then(({ data }) => {
+          .then(({data}) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -894,11 +929,11 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           residentRgstId: item.resident_rgst_id,
           coBrwerName: item.co_brwer_name,
           coBrwerRgstId: item.co_brwer_rgst_id,
-          grandparentYn: item.grandparent_yn,
-          parentYn: item.parent_yn,
-          brotherSisterYn: item.brother_sister_yn,
-          husbandWifeYn: item.husband_wife_yn,
-          sonDaughterYn: item.son_daughter_yn,
+          grandparentYn: item.grandparent_yn == 1 ? 'Y' : 'N',
+          parentYn: item.parent_yn == 1 ? 'Y' : 'N',
+          brotherSisterYn: item.brother_sister_yn == 1 ? 'Y' : 'N',
+          husbandWifeYn: item.husband_wife_yn == 1 ? 'Y' : 'N',
+          sonDaughterYn: item.son_daughter_yn == 1 ? 'Y' : 'N',
           tabletSyncSts: '00',
           syncSts: '',
           relationName: item.relation_name,

@@ -6,6 +6,7 @@ import {style} from '../../style/Relation_style';
 import TextInputFile from '../../components/TextInputFile';
 import {List} from 'react-native-paper';
 import {relation_data, borrower_type} from '../../common';
+import DatePicker from '../../components/DatePicker';
 import RadioButtonFile from '../../components/RadioButtonFile';
 export default function Relation_Info(props) {
   const {setRelationName} = props;
@@ -53,11 +54,9 @@ export default function Relation_Info(props) {
             />
             <Field
               name={'transaction_date'}
-              title={'Transaction Date'}
-              component={TextInputFile}
-              cus_width
-              input_mode
-              require
+              component={DatePicker}
+              label={'Transaction Date'}
+              icon={'calendar'}
             />
           </View>
           <View

@@ -1,5 +1,5 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from '../screens/Login/LoginScreen';
 import SplashScreen from '../screens/SplashScreen';
 import SettingScreen from '../screens/Setting/SettingScreen';
@@ -44,11 +44,11 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
-        <Stack.Screen
+        {/* <Stack.Screen
         name="Survey"
         component={Survey}
         options={{headerShown: false}}
-      />
+      /> */}
 
       {/* <Stack.Screen
         name="Home"
@@ -60,7 +60,7 @@ export default function AuthNavigation(props) {
         component={Group_Loan_Form}
         options={{ headerShown: false }}
       /> */}
-      
+
 
 
       {/* <Stack.Screen
@@ -84,6 +84,41 @@ export default function AuthNavigation(props) {
         component={Edit_Reloan_Form}
         options={{ headerShown: false }}
       />  */}
+
+
+      <Stack.Screen
+        name="Survey"
+        component={Survey}
+        options={{headerShown: false}}
+      />
+
+
+      {/* <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{headerShown: false}}
+      />
+       <Stack.Screen
+        name="Individual_loan"
+        component={Individual_Loan}
+        options={{headerShown: false}}
+      />
+
+      <Stack.Screen
+        name="Indi_Staff_loan"
+        component={Individual_Staff_loan_Info}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Edit_Cover_Loan"
+        component={Edit_Cover_Loan_Form}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Edit_Reloan"
+        component={Edit_Reloan_Form}
+        options={{headerShown: false}}
+      /> */}
 
 
       {/* <Stack.Screen
@@ -154,6 +189,11 @@ export default function AuthNavigation(props) {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
+        options={{headerShown: false}}
+      />
+       {/* <Stack.Screen
+        name="Edit Borrower Map"
+        component={Edit_Show_Borrower_Map}
         options={{ headerShown: false }}
       />
       {/* <Stack.Screen
@@ -223,12 +263,12 @@ export default function AuthNavigation(props) {
       <Stack.Screen
         name="Setting"
         component={SettingScreen}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Splash"
         component={SplashScreen}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
     </Stack.Navigator>
   );

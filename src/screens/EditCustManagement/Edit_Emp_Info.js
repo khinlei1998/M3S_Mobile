@@ -62,6 +62,7 @@ import {
 } from '../../redux/MonthlyReducer';
 import { updateCustomerData } from '../../query/Customer_query';
 import { checkDataExists } from '../../query/Customer_query';
+
 function Customer_Management(props) {
   const dispatch = useDispatch();
 
@@ -339,6 +340,12 @@ function Customer_Management(props) {
       setNRC('new');
     }
   }, []);
+
+  useEffect(() => {
+    if (update_status == true) {
+      setOperation('3');
+    }
+  }, [update_status]);
 
   useEffect(() => {
     totalIncome(
@@ -780,7 +787,7 @@ function Customer_Management(props) {
 
   const btnChangeOperation = newValue => {
     setOperation(newValue);
-    if (newValue == 2) {
+    if (newValue == 2 || newValue == 4) {
       setUpdateStatus(false);
     } else {
       setUpdateStatus(true);
@@ -854,15 +861,21 @@ function Customer_Management(props) {
                   </RadioButton.Group>
                 ))}
               </View>
-              {update_status == true && (
                 <Button
+                disabled={
+                  update_status == true && show_operation == '3'
+                    ? false
+                    : update_status == false && show_operation == '4'
+                    ? false
+                    : true
+                }
                   onPress={handleSubmit(onSubmit)}
                   mode="contained"
                   buttonColor={'#6870C3'}
                   style={style.btnStyle}>
                   OK
                 </Button>
-              )}
+
             </View>
             <DividerLine />
             {/* EMployee Information */}

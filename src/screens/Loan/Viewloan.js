@@ -1,21 +1,22 @@
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { Field, reduxForm, reset, change } from 'redux-form';
-import { addInquiryLoanData } from '../../redux/LoanReducer';
-import { loan_application_type } from '../../common';
+import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {connect} from 'react-redux';
+import {Field, reduxForm, reset, change} from 'redux-form';
+import {addInquiryLoanData} from '../../redux/LoanReducer';
+import {loan_application_type} from '../../common';
 
 function Viewloan(props) {
-  const { loan_data, navigation, addInquiryLoanData } = props;
+  const {loan_data, navigation, addInquiryLoanData} = props;
   const btn_inquiry_loan = item => {
     if (item.product_type == 20) {
       navigation.navigate('Edit_Individual_Staff_loan_Info', item);
+      addInquiryLoanData(item);
     } else if (item.product_type == 10) {
       addInquiryLoanData(item);
 
       navigation.navigate('Edit_Individual_Loan', item);
     } else if (item.product_type == 30) {
-      console.log('Group item',item);
+      console.log('Group item', item);
       navigation.navigate('Edit Group Loan', item);
     } else if (item.product_type == 40) {
       navigation.navigate('Edit_Cover_Loan', item);
@@ -23,11 +24,11 @@ function Viewloan(props) {
       navigation.navigate('Edit_Reloan', item);
     }
   };
-  const item = ({ item, index }) => {
-    // const foundItem = loan_application_type.filter(
-    //   data => data.value == item.product_type,
-    // );
+  const item = ({item, index}) => {
     console.log('item', item);
+    const foundItem = loan_application_type.filter(
+      data => data.value == item.product_type,
+    );
     return (
       <TouchableOpacity onPress={() => btn_inquiry_loan(item)}>
         <View
@@ -49,15 +50,14 @@ function Viewloan(props) {
               padding: 10,
               flex: 1,
             }}>
-            {/* {foundItem[0].label} */}
+            {foundItem[0].label}
           </Text>
           <Text
             style={{
               padding: 10,
               flex: 1,
             }}>
-        {item.application_no ?? item.group_aplc_no}
-
+            {item.application_no ?? item.group_aplc_no}
           </Text>
 
           <Text
