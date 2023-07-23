@@ -20,6 +20,8 @@ export async function getAllCustomer() {
 }
 
 export async function filterCustomer(selectedColumn, searchTerm) {
+  console.log('selectedColumn',selectedColumn);
+  console.log('searchTerm',searchTerm);
   let sql;
   if (selectedColumn && searchTerm) {
     sql = `SELECT * FROM Customer  WHERE ${selectedColumn} LIKE '%${searchTerm}%'`;
@@ -32,6 +34,7 @@ export async function filterCustomer(selectedColumn, searchTerm) {
         sql,
         [],
         (tx, results) => {
+          console.log('Customer results',results);
           resolve(results.rows.raw());
         },
         (tx, error) => {
@@ -228,7 +231,7 @@ export function storeCustomerData(cus_data) {
   return new Promise(async (resolve, reject) => {
     const user_id=await AsyncStorage.getItem('user_id')
     try {
-      const dataExists = await checkDataExists(cus_data.residentRgstId);
+      const dataExists = await checkDataExists(cus_data.resident_rgst_id);
       if (dataExists) {
         // Data already exists, handle it as needed
         alert('NRC No already exist');
@@ -250,7 +253,7 @@ export function storeCustomerData(cus_data) {
                 null, //deleteUserId
                 null, //updateDatetime
                 user_id, //updateUserID
-                cus_data.residentRgstId,
+                cus_data.resident_rgst_id,
                 cus_data.employeeNo,
                 cus_data.branchCode,
                 cus_data.entryDate,
@@ -264,7 +267,7 @@ export function storeCustomerData(cus_data) {
                 cus_data.telNo,
                 cus_data.mobileTelNo,
                 cus_data.addr, //23
-                cus_data.curr_resident_date,
+                null, //curr_resident_perd
                 // 4,
                 cus_data.occupation,
                 null, //father name
@@ -291,7 +294,7 @@ export function storeCustomerData(cus_data) {
                 cus_data.workplace_date,
                 cus_data.employeeNum, //employeeNum
                 cus_data.workplaceAddr,
-                cus_data.curr_workplace_date, //colm changed
+                null, //curr_workplace_perd
                 cus_data.businessSttnFlg,
                 cus_data.landScale,
                 cus_data.landOwnType,
@@ -325,14 +328,14 @@ export function storeCustomerData(cus_data) {
                 cus_data.fmlyOtrExpns, //fmlyOtrExpnsitem
                 cus_data.fmlyTotNetIncome, //fmlyTotNetIncomeitem
                 '00', //81 //tabletSyncStsitem
-                null, //syncStsitem
-                cus_data.nrc_statecode,
-                cus_data.nrc_prefix,
+                null, //syncSts
+                cus_data.nrc_state_code,
+                cus_data.nrc_prefix_code,
                 cus_data.nrcNo,
-                null,
-                cus_data.entryDate,
-                null,
-                null,
+                cus_data.curr_resident_date, //curr_residen_date
+                cus_data.workplace_date, //workplace date
+                cus_data.curr_workplace_date, //curr_workplace_date
+                null, //errror msg
                 cus_data.postal_code, //90
                 cus_data.totalnet,
                 cus_data.city_code,
@@ -397,6 +400,8 @@ export async function fetchAllCustomerNum() {
   });
 }
 export async function filterCustomerByEmpno(selectedColumn, searchTerm) {
+  console.log('selectedColumn',selectedColumn);
+  console.log('searchTerm',searchTerm);
   let sql;
   if (selectedColumn && searchTerm) {
     sql = `SELECT * FROM Customer  WHERE  employee_no IS NOT NULL AND employee_no <> '' AND ${selectedColumn} LIKE '%${searchTerm}%'`;
@@ -409,9 +414,11 @@ export async function filterCustomerByEmpno(selectedColumn, searchTerm) {
         sql,
         [],
         (tx, results) => {
+          console.log('total result',results);
           resolve(results.rows.raw());
         },
         (tx, error) => {
+          console.log('error',error);
           reject(error);
         },
       );
@@ -420,16 +427,13 @@ export async function filterCustomerByEmpno(selectedColumn, searchTerm) {
 }
 
 export function updateCustomerData(cus_data) {
-  console.log(
-    'finale  cus_data.village_status,',
-    cus_data.curr_business_date_status,
-  );
+
   return new Promise(async (resolve, reject) => {
     global.db.transaction(trans => {
       trans.executeSql(
         `UPDATE Customer SET serial_no=?,customer_no =?,customer_nm =?,status_code=?,create_datetime =?,create_user_id =?,delete_datetime =?,delete_user_id =?,update_datetime =?,update_user_id =?,
         resident_rgst_id =?,employee_no =?,branch_code =?,entry_date =?,position_title_nm =?,salary_rating_code =?,gender =?,birth_date =?,marital_status =?,saving_acct_num =?,
-        tel_no =?,mobile_tel_no =?,addr =?,curr_resident_perd =?,occupation =?,father_name =?,family_num =?,hghschl_num =?,university_num =?,house_ocpn_type =?,remark =?,business_own_type =?,prop_apartment_yn =?,prop_house_yn =?,prop_car_yn =?,prop_motorcycle_yn =?,prop_machines_yn =?,prop_farmland_yn =?,prop_other_yn =?,tot_prop_estmtd_val =?,ohtr_own_property =?,otr_prop_estmtd_val =?,workplace_name =?,workplace_type =?,workplace_period =?,employee_num =?,workplace_addr =?,curr_workplace_perd =?,business_sttn_flg =?,land_scale =?,land_own_type =?,otr_income =?,tot_sale_income =?,tot_sale_expense =?,rawmaterial_expans =?,wrkp_rent_expns =?,employee_expns =?,prmn_empl_expns =?,tmpy_empl_expns =?,trnsrt_expns =?,bus_utlbil_expns =?,tel_expns =?,tax_expns =?,goods_loss_expns =?,othr_expns_1 =?,othr_expns_2 =?,tot_bus_net_income =?,fmly_tot_income =?,fmly_tot_expense =?,food_expns =?,house_mngt_expns =?,utlbil_expns =?,edct_expns =?,healthy_expns =?,fmly_tax_expns =?,fmly_trnsrt_expns =?,finance_expns =?,fmly_otr_expns =?,fmly_tot_net_income =?,tablet_sync_sts =?,sync_sts =?,nrc_state_code =?,nrc_prefix_code =?,nrc_no =?,curr_resident_date =?,workplace_date =?,curr_workplace_date =?,err_msg =?,postal_code =?,total_net =?,city_code =?,city_name =?,township_code =?,township_name =?,village_code =?,village_name =?,ward_code =?,ward_name =?,address_type =?,business_period_status =?, curr_business_date_status =?, village_status =?,start_living_date_status =?,nrc_type =?, location_code =?, location_name=?,open_branch_code=? WHERE id = ?`,
+        tel_no =?,mobile_tel_no =?,addr =?,curr_resident_perd =?,occupation =?,father_name =?,family_num =?,hghschl_num =?,university_num =?,house_ocpn_type =?,remark =?,business_own_type =?,prop_apartment_yn =?,prop_house_yn =?,prop_car_yn =?,prop_motorcycle_yn =?,prop_machines_yn =?,prop_farmland_yn =?,prop_other_yn =?,tot_prop_estmtd_val =?,ohtr_own_property =?,otr_prop_estmtd_val =?,workplace_name =?,workplace_type =?,workplace_period =?,employee_num =?,workplace_addr =?,curr_workplace_perd =?,business_sttn_flg =?,land_scale =?,land_own_type =?,otr_income =?,tot_sale_income =?,tot_sale_expense =?,rawmaterial_expans =?,wrkp_rent_expns =?,employee_expns =?,prmn_empl_expns =?,tmpy_empl_expns =?,trnsrt_expns =?,bus_utlbil_expns =?,tel_expns =?,tax_expns =?,goods_loss_expns =?,othr_expns_1 =?,othr_expns_2 =?,tot_bus_net_income =?,fmly_tot_income =?,fmly_tot_expense =?,food_expns =?,house_mngt_expns =?,utlbil_expns =?,edct_expns =?,healthy_expns =?,fmly_tax_expns =?,fmly_trnsrt_expns =?,finance_expns =?,fmly_otr_expns =?,fmly_tot_net_income =?,tablet_sync_sts =?,sync_sts =?,nrc_state_code =?,nrc_prefix_code =?,nrc_no =?,curr_resident_date =?,workplace_date =?,curr_workplace_date =?,err_msg =?,postal_code =?,total_net =?,city_code =?,city_name =?,township_code =?,township_name =?,village_code =?,village_name =?,ward_code =?,ward_name =?,address_type =?,business_period_status =?, curr_business_date_status =?, village_status =?,start_living_date_status =?,nrc_type =?, location_code =?, location_name=?,open_branch_code=? WHERE customer_no = ?`,
         [
           cus_data.serial_no, //cus_data.serialNo
           // cus_data.employeeNo,
@@ -442,7 +446,7 @@ export function updateCustomerData(cus_data) {
           cus_data.delete_user_id,
           cus_data.update_datetime,
           cus_data.update_user_id,
-          cus_data.residentRgstId,
+          cus_data.resident_rgst_id,
           //
           cus_data.employee_no,
           cus_data.branch_code,
@@ -544,7 +548,7 @@ export function updateCustomerData(cus_data) {
           cus_data.location_code, //location code
           cus_data.location_name,
           cus_data.open_branch_code,
-          cus_data.id,
+          cus_data.customer_no,
 
           //VillageName
         ],
@@ -570,228 +574,7 @@ export async function UploadCustomerData(customer_data) {
   try {
     for (var i = 0; i < customer_data.length; i++) {
       const data = [customer_data[i]];
-      console.log('data', data);
 
-      // let test = [
-      //   {
-      //     addr: '0',
-      //     address_type: '0',
-      //     birth_date: '0',
-      //     branch_code: '0',
-      //     bus_utlbil_expns: '0',
-      //     business_own_type: '0',
-      //     business_period_status: '0',
-      //     business_period_status: '0',
-      //     business_sttn_flg: 'Y',
-      //     city_code: '0',
-      //     city_name: '0',
-      //     create_datetime: '2020-09-09',
-      //     create_user_id: 'M00172',
-      //     curr_business_date_status: '0',
-      //     curr_resident_date: '0',
-      //     curr_resident_perd: '0',
-      //     curr_workplace_date: '0',
-      //     curr_workplace_perd: 0, //
-      //     customer_nm: 'name',
-      //     customer_no: '567898',
-      //     delete_datetime: '0',
-      //     delete_user_id: '0',
-      //     edct_expns: '0',
-      //     employee_expns: '0',
-      //     employee_no: 'M00243',
-      //     employee_num: 1,
-      //     entry_date: '0',
-      //     family_num: 1,
-      //     father_name: '0',
-      //     finance_expns: '0', //
-      //     fmly_otr_expns: '0',
-      //     fmly_tax_expns: '0',
-      //     fmly_tot_expense: '0',
-      //     fmly_tot_income: '0',
-      //     fmly_tot_net_income: '0',
-      //     fmly_trnsrt_expns: '0',
-      //     food_expns: '0',
-      //     gender: '0',
-      //     goods_loss_expns: '0',
-      //     healthy_expns: '0',
-      //     hghschl_num: 1,
-      //     house_mngt_expns: '0',
-      //     house_ocpn_type: '0',
-      //     land_own_type: '0', //
-      //     land_scale: '0',
-      //     marital_status: 10,
-      //     mobile_tel_no: '0',
-      //     nrc_no: '878765',
-      //     nrc_prefix_code: '0',
-      //     nrc_state_code: '0',
-      //     nrc_type: '0',
-      //     occupation: '0',
-      //     ohtr_own_property: '0',
-      //     othr_expns_1: '0',
-      //     othr_expns_2: '0',
-      //     otr_income: '0',
-      //     otr_prop_estmtd_val: '0',
-      //     position_title_nm: '0', //
-      //     postal_code: '0',
-      //     prmn_empl_expns: '0',
-      //     prop_apartment_yn: '0',
-      //     prop_car_yn: '0',
-      //     prop_farmland_yn: '0',
-      //     prop_house_yn: '0',
-      //     prop_machines_yn: '0', //
-      //     prop_motorcycle_yn: '0',
-      //     prop_other_yn: '0',
-      //     rawmaterial_expans: '0',
-      //     remark: '0',
-      //     resident_rgst_id: '10001019',
-      //     salary_rating_code: '0',
-      //     saving_acct_num: '0',
-
-      //     serial_no: '28',
-      //     start_living_date_status: '1',
-      //     status_code: '01',
-      //     sync_sts: '00',
-      //     tablet_sync_sts: '01',
-      //     tax_expns: '1',
-      //     tel_expns: '1',
-      //     tel_no: '06359', //
-
-      //     tmpy_empl_expns: '0',
-      //     tot_bus_net_income: '0',
-      //     tot_prop_estmtd_val: '0',
-      //     tot_sale_expense: '0',
-      //     tot_sale_income: '0',
-      //     total_net: '0',
-      //     township_code: '0',
-      //     township_name: '0',
-      //     trnsrt_expns: '0',
-      //     university_num: 1,
-      //     update_datetime: '0',
-      //     update_user_id: '0',
-      //     utlbil_expns: '0',
-      //     village_code: '0',
-      //     village_name: '0',
-      //     village_status: '0',
-      //     ward_code: '0',
-      //     ward_name: '0',
-      //     workplace_addr: '0',
-      //     workplace_date: '0',
-      //     workplace_name: '0',
-      //     workplace_period: '0',
-      //     workplace_type: '0',
-      //     wrkp_rent_expns: 0,
-      //   },
-      // ];
-      // let test = [
-      //   {
-      //     addr: data.addr,
-      //     address_type: data.address_type,
-      //     birth_date: data.birth_date,
-      //     branch_code: '1006',
-      //     bus_utlbil_expns: data.bus_utlbil_expns,
-      //     business_own_type: data.business_own_typeb,
-      //     business_period_status: data.business_period_status,
-      //     business_sttn_flg: data.business_sttn_flg,
-      //     city_code: data.city_code,
-      //     city_name: data.city_name,
-      //     create_datetime: data.create_datetime,
-      //     create_user_id: user_id, ///
-      //     curr_business_date_status: data.curr_business_date_status,
-      //     curr_resident_date: data.curr_resident_date,
-      //     curr_resident_perd: data.curr_resident_perd,
-      //     curr_workplace_date: data.curr_workplace_date,
-      //     curr_workplace_perd: data.curr_workplace_perd, // must integer
-      //     customer_nm: data.customer_nm,
-      //     customer_no: data.customer_no,
-      //     delete_datetime: '',
-      //     delete_user_id: '',
-      //     edct_expns: data.edct_expns,
-      //     employee_expns: data.employee_expns,
-      //     employee_no: data.employee_no,
-      //     employee_num: data.employee_num,
-
-      //     entry_date: data.entry_date,
-      //     family_num: 1,
-      //     father_name: '0',
-      //     finance_expns: '0', //
-      //     fmly_otr_expns: '0',
-      //     fmly_tax_expns: '0',
-      //     fmly_tot_expense: '0',
-      //     fmly_tot_income: '0',
-      //     fmly_tot_net_income: '0',
-      //     fmly_trnsrt_expns: '0',
-      //     food_expns: '0',
-      //     gender: '0',
-      //     goods_loss_expns: '0',
-      //     healthy_expns: '0',
-      //     hghschl_num: 1,
-      //     house_mngt_expns: '0',
-      //     house_ocpn_type: '0',
-      //     land_own_type: '0', //
-      //     land_scale: '0',
-      //     marital_status: 10,
-      //     mobile_tel_no: '0',
-      //     nrc_no: '878765',
-      //     nrc_prefix_code: '0',
-      //     nrc_state_code: '0',
-      //     nrc_type: '0',
-      //     occupation: '0',
-      //     ohtr_own_property: '0',
-      //     othr_expns_1: '0',
-      //     othr_expns_2: '0',
-      //     otr_income: '0',
-      //     otr_prop_estmtd_val: '0',
-      //     position_title_nm: '0', //
-      //     postal_code: '0',
-      //     prmn_empl_expns: '0',
-      //     prop_apartment_yn: '0',
-      //     prop_car_yn: '0',
-      //     prop_farmland_yn: '0',
-      //     prop_house_yn: '0',
-      //     prop_machines_yn: '0', //
-      //     prop_motorcycle_yn: '0',
-      //     prop_other_yn: '0',
-      //     rawmaterial_expans: '0',
-      //     remark: '0',
-      //     resident_rgst_id: '10001027',
-      //     salary_rating_code: '0',
-      //     saving_acct_num: '0',
-
-      //     serial_no: '28',
-      //     start_living_date_status: '1',
-      //     status_code: '01',
-      //     sync_sts: '00',
-      //     tablet_sync_sts: '01',
-      //     tax_expns: '1',
-      //     tel_expns: '1',
-      //     tel_no: '06359', //
-
-      //     tmpy_empl_expns: '0',
-      //     tot_bus_net_income: '0',
-      //     tot_prop_estmtd_val: '0',
-      //     tot_sale_expense: '0',
-      //     tot_sale_income: '0',
-      //     total_net: '0',
-      //     township_code: '0',
-      //     township_name: '0',
-      //     trnsrt_expns: '0',
-      //     university_num: 1,
-      //     update_datetime: '0',
-      //     update_user_id: '0',
-      //     utlbil_expns: '0',
-      //     village_code: '0',
-      //     village_name: '0',
-      //     village_status: '0',
-      //     ward_code: '0',
-      //     ward_name: '0',
-      //     workplace_addr: '0',
-      //     workplace_date: '0',
-      //     workplace_name: '0',
-      //     workplace_period: '0',
-      //     workplace_type: '0',
-      //     wrkp_rent_expns: 0,
-      //   },
-      // ];
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
@@ -799,23 +582,11 @@ export async function UploadCustomerData(customer_data) {
         data: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json', // Set the content type as JSON
-
           'cache-control': 'no-cache',
-          // processData: false,
-          // contentType: false,
+
         },
       };
       const response = await axios.request(config);
-      console.log('response', response);
-      // await axios
-      //   .post(`https://${ip}:${port}/skylark-m3s/api/customers.m3s`, test, {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //   })
-      //   .then(response => {
-      //     console.log('res', response);
-      //   });
 
       if (response.data[0].errMsg) {
         const error = {
@@ -840,8 +611,6 @@ export async function UploadCustomerData(customer_data) {
       }
     }
 
-    console.log('failedData', failedData);
-
     if (failedData.length > 0) {
       return failedData;
     } else {
@@ -850,9 +619,6 @@ export async function UploadCustomerData(customer_data) {
   } catch (error) {
     console.log('error', error);
     return error;
-    // alert('Axios error occurred');
-    // // reject(error);
-    // console.log('error', error);
   }
 }
 

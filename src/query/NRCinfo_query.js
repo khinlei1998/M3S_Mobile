@@ -66,6 +66,79 @@ export const getNRC_info = () => {
   });
 };
 
+// export const fetchNRCinfo = async () => {
+//   return new Promise((resolve, reject) => {
+//     global.db.transaction(tx => {
+//       tx.executeSql(
+//         'SELECT * FROM Nrc_prefix ',
+//         [],
+//         (tx, results) => {
+//           if (results.rows.length > 0) {
+//             const collection = {};
+
+//             for (let i = 0; i < results.rows.length; i++) {
+//               const obj = results.rows.item(i);
+//               const key = obj.state_code + obj.state_name;
+
+//               if (!collection[key]) {
+//                 collection[key] = [];
+//               }
+
+//               collection[key].push(obj.nrc_prefix_code);
+//             }
+
+//             const nrc_state_code = Object.entries(collection).map(([name]) => ({
+//               ['id']: name,
+//               ['label']: name,
+//               ['value']: name,
+//             }));
+
+//             console.log('nrc_state_code from table>>>>',nrc_state_code);
+
+//             const nrc_prefixdata = Object.entries(collection).reduce(
+//               (result, [id, values]) => {
+//                 const transformedValues = values.map(value => ({
+//                   id,
+//                   label: value,
+//                   value,
+//                 }));
+
+//                 return result.concat(transformedValues);
+//               },
+//               [],
+//             );
+
+//             console.log('nrc_prefix code from table>>>>',nrc_prefixdata);
+
+//             resolve([nrc_state_code, nrc_prefixdata]);
+//           } else {
+//             reject('No Data');
+//           }
+//         },
+//         (tx, error) => {
+//           reject(error);
+//         },
+//       );
+//     });
+//   });
+// };
+export async function fetchNRCPrefix(statecode, statename) {
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        `SELECT * FROM Nrc_prefix WHERE stateCode = ? AND stateName=? `,
+        [statecode, statename],
+        (tx, results) => {
+          resolve(results.rows.raw());
+        },
+        (tx, error) => {
+          reject(error);
+        },
+      );
+    });
+  });
+}
+
 export const fetchNRCinfo = async () => {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
@@ -87,13 +160,14 @@ export const fetchNRCinfo = async () => {
               collection[key].push(obj.nrc_prefix_code);
             }
 
-            const nrc_state_code = Object.entries(collection).map(([name]) => ({
-              ['id']: name,
-              ['label']: name,
-              ['value']: name,
-            }));
-
-
+            const nrc_state_code = Object.entries(collection).map(
+              ([name, key], index) => ({
+                ['id']: index + 1,
+                ['label']: name,
+                ['value']: name,
+              }),
+            );
+            console.log('nrc_state_code',nrc_state_code);
             const nrc_prefixdata = Object.entries(collection).reduce(
               (result, [id, values]) => {
                 const transformedValues = values.map(value => ({
@@ -107,7 +181,7 @@ export const fetchNRCinfo = async () => {
               [],
             );
 
-            resolve([nrc_state_code,nrc_prefixdata]);
+            resolve([nrc_state_code, nrc_prefixdata]);
           } else {
             reject('No Data');
           }
@@ -119,3 +193,19 @@ export const fetchNRCinfo = async () => {
     });
   });
 };
+export async function fetchStateName(statecode) {
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        `SELECT * FROM Nrc_prefix WHERE state_code = ?  `,
+        [statecode],
+        (tx, results) => {
+          resolve(results.rows.raw());
+        },
+        (tx, error) => {
+          reject(error);
+        },
+      );
+    });
+  });
+}

@@ -9,7 +9,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {Field, reduxForm, change, reset} from 'redux-form';
+import {Field, reduxForm, change, reset, formValueSelector} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
 import {
   RadioButton,
@@ -33,7 +33,7 @@ import {
   Township_code,
   ward_code,
   location_code,
-  operations
+  operations,
 } from '../../common';
 import Monthly_Income from './Monthly_Income';
 import Busines_Info from './Busines_Info';
@@ -54,7 +54,13 @@ import {resetMonthlyIncome} from '../../redux/MonthlyReducer';
 function Customer_Management(props) {
   const dispatch = useDispatch();
 
-  const {handleSubmit, emp_filter_data, resetMonthlyIncome} = props;
+  const {
+    handleSubmit,
+    emp_filter_data,
+    resetMonthlyIncome,
+    nrcNo,
+    nrc_state_code,
+  } = props;
   const [all_emp, setAllEmp] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
@@ -100,6 +106,8 @@ function Customer_Management(props) {
   const [ward_text, setWardText] = useState('');
   const [township_text, setTownshipText] = useState('');
   const [location_text, setLocationText] = useState('');
+  const [prefix, setPrefix] = useState('');
+
   const handleLocationItemValueChange = itemValue => {
     setLocationSelectedItemValue(itemValue);
   };
@@ -110,18 +118,18 @@ function Customer_Management(props) {
     setSelectedItemValue(itemValue);
   };
   const onSubmit = async values => {
+    console.log('emp_filter_data',values);
     let data = Object.assign(values, emp_filter_data, {
       createUserId: empname,
-      residentRgstId:
-        show_nrc == '1'
-          ? values.nrcNo
-          : values.nrc_statecode + values.nrc_prefix + values.nrcNo,
+      nrc_prefix_code: values.nrc_type == '2' ? prefix : '',
+      // nrc_no: values.nrc_type == '1' ?values.resident_rgst_id,
+      resident_rgst_id:
+        values.nrc_type == '1' ? values.nrcNo : values.resident_rgst_id,
       start_living_date_status: show_businessdate,
     });
+    console.log('Customer data', data);
     await storeCustomerData(data).then(result => {
       if (result == 'success') {
-        // dispatch_Reset_Beneficiary([]);
-
         dispatch(reset('Customer_ManagementForm'));
         resetMonthlyIncome();
 
@@ -331,36 +339,47 @@ function Customer_Management(props) {
   };
 
   const hideNRCModal = () => {
-    setNRC_Visible(!nrc_visible), setNRC(show_nrc);
+    const indexOfSlash = prefix.indexOf('/');
+    const prefix_code = prefix.substring(0, indexOfSlash + 1);
+    console.log('prefix',prefix);
+    setNRC_Visible(!nrc_visible),
+    setNRC(show_nrc);
+    dispatch(
+      change(
+        'Customer_ManagementForm',
+        'resident_rgst_id',
+        prefix &&
+          nrc_state_code &&
+          nrcNo &&
+          prefix_code + nrc_state_code + nrcNo,
+        // prefix
+      ),
+    );
+  };
+
+  const btnCancel = () => {
+    setNRC_Visible(!nrc_visible);
   };
   const loadData = async () => {
     await fetchAllCustomerNum().then(cust_data => {
-      console.log('cust_data',cust_data.length
-      );
       dispatch(
         change(
           'Customer_ManagementForm',
           'CustomerNo',
           `TB${moment().format('YYYYMMDD')}${cust_data.length + 1}`,
         ),
-        // change(
-        //   'Customer_ManagementForm',
-        //   'CustomerNo',
-        //   `88`,
-        // ),
       );
     });
     await fetchNRCinfo()
       .then(result => {
         {
-          const [nrc_state_code, nrc_prefixdata] = result;
+          const [nrc_state_code] = result;
           setNRCStateCode(nrc_state_code);
-          setNRCPrefixCode(nrc_prefixdata);
+          // setNRCPrefixCode(nrc_prefixdata);
         }
       })
       .catch(error => console.log(error));
     await fetchEmpName().then(emp_name => {
-      console.log('emp_name', emp_name);
       setEmpName(emp_name[0].employee_name);
     });
   };
@@ -709,31 +728,19 @@ function Customer_Management(props) {
             <Property_Info />
             <Busines_Info />
             <Monthly_Income />
-
-            {/* <Button
-              onPress={handleSubmit(onSubmit)}
-              mode="contained"
-              buttonColor={'#6870C3'}
-              style={{
-                borderRadius: 0,
-                width: '90%',
-                marginTop: 10,
-                color: 'black',
-                marginBottom: 20,
-                alignSelf: 'center',
-              }}>
-              Submit
-            </Button> */}
           </View>
         </TouchableWithoutFeedback>
       </ScrollView>
-      {/* )} */}
 
       <ShowNRC_Modal
         nrc_visible={nrc_visible}
         hideNRCModal={hideNRCModal}
         nrc_statecode={nrc_statecode}
         nrc_prefix_code={nrc_prefix_code}
+        setNRCPrefixCode={setNRCPrefixCode}
+        setPrefix={setPrefix}
+        prefix={prefix}
+        btnCancel={btnCancel}
       />
       <Provider>
         <Portal>
@@ -1600,14 +1607,20 @@ function Customer_Management(props) {
     </>
   );
 }
+const selector = formValueSelector('Customer_ManagementForm');
 
 function mapStateToProps(state) {
-  return {};
+  const nrcNo = selector(state, 'nrcNo');
+  const nrc_state_code = selector(state, 'nrc_state_code');
+  return {
+    nrcNo,
+    nrc_state_code,
+  };
 }
 
 export default reduxForm({
   form: 'Customer_ManagementForm',
-  validate,
+  // validate,
 })(
   connect(mapStateToProps, {
     setCusFormInitialValues,

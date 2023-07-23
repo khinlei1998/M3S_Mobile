@@ -105,7 +105,6 @@ export default function Edit_Cover_Loan_list(props) {
           </View>
           {/* show loan data */}
           {all_loan.map((val, index) => {
-            console.log('val', val);
             const foundItem = loan_application_type.filter(
               data => data.value == val.product_type,
             );

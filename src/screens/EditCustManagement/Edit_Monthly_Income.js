@@ -186,6 +186,8 @@ function Edit_Monthly_Income(props) {
     // Check if the input is a valid number
     if (!isNaN(number)) {
       totalIncome(number);
+    }else{
+      totalIncome(0);
     }
   };
 
@@ -195,11 +197,11 @@ function Edit_Monthly_Income(props) {
     // Check if the input is a valid number
     if (!isNaN(number)) {
       totalFamilyIncome(number);
+    }else{
+      totalFamilyIncome(0);
     }
   };
   const calCulateSum = (total_expense, total_income) => {
-    console.log('total_expense', total_expense);
-    console.log('total_income', total_income);
     const sum = total_income - total_expense;
     setBusinessNet(sum);
     dispatch(
@@ -208,19 +210,13 @@ function Edit_Monthly_Income(props) {
     totalNetBusiness(sum);
   };
   const familyCulateSum = (total_family_income, total_family_expense) => {
-    console.log('total_family_income', total_family_income);
-    console.log('total_family_expense', total_family_expense);
     const sum = total_family_income - total_family_expense;
-    console.log('Family sum', sum);
     setFamilyNet(sum);
     dispatch(change('Customer_ManagementForm', 'fmlyTotNetIncome', `${sum}`));
     totalNetFamily(sum);
   };
   const netCulateSum = (total_net_business, total_net_family) => {
-    console.log('total_net_business', total_net_business);
-    console.log('total_net_family', total_net_family);
     const sum = (total_net_business += total_net_family);
-    console.log('total net sum', sum);
     updateTotalSum(sum);
     setTotalNet(sum);
     dispatch(change('Customer_ManagementForm', 'totalnet', `${sum}`));

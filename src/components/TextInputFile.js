@@ -1,5 +1,5 @@
 import {View, Text, StyleSheet} from 'react-native';
-import React, {useState,useRef,useEffect} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {TextInput, DefaultTheme} from 'react-native-paper';
 
 export default function TextInputFile(props) {
@@ -26,12 +26,12 @@ export default function TextInputFile(props) {
     words_count,
     editable,
     showRightIcon,
+    nrc_cusstyle,
     meta: {touched, error},
     input: {onChange, ...restInput},
     ...restProps
   } = props;
   const inputRef = useRef(null);
-
 
   const [values, setValues] = useState([]);
   const [total, setTotal] = useState(0);
@@ -90,7 +90,7 @@ export default function TextInputFile(props) {
         onFocus={focusTextInput && handleTextInputFocus}
         mode={input_mode ? 'flat' : ''}
         label={
-          <Text>
+          <Text style={{color:'#636Dc6'}}>
             {title} {require && <Text style={{color: 'red'}}>*</Text>}
           </Text>
         }

@@ -12,7 +12,6 @@ export function getEemployee_info() {
         axios
           .get(`https://${ip}:${port}/skylark-m3s/api/employees.m3s`)
           .then(({ data }) => {
-            console.log('data', data.length);
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {

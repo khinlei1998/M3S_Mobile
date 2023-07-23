@@ -1,7 +1,7 @@
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import {View, Text, TouchableOpacity, FlatList} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import Collapsible from 'react-native-collapsible';
-import { RadioButton } from 'react-native-paper';
+import {RadioButton} from 'react-native-paper';
 import {
   Field,
   reduxForm,
@@ -12,9 +12,9 @@ import {
 } from 'redux-form';
 import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import DefaultTextInput from '../../components/DefaultTextInput';
-import { Picker } from '@react-native-picker/picker';
+import {Picker} from '@react-native-picker/picker';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import {
   owner_shipratio,
@@ -25,13 +25,19 @@ import {
 } from '../../common';
 import DividerLine from '../../components/DividerLine';
 import DatePicker from '../../components/DatePicker';
-import { style } from '../../style/Customer_Base_style';
-import { setCusFormInitialValues } from '../../redux/CustomerReducer';
-import { fetchAllCustomerNum } from '../../query/Customer_query';
-import { Modal, Provider, Portal, Button } from 'react-native-paper';
+import {style} from '../../style/Customer_Base_style';
+import {setCusFormInitialValues} from '../../redux/CustomerReducer';
+import {fetchAllCustomerNum} from '../../query/Customer_query';
+import {Modal, Provider, Portal, Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
-import { city_code, owner_ship_business, village_status, start_living_date_status, nrc_type } from '../../common';
-import { useDispatch } from 'react-redux';
+import {
+  city_code,
+  owner_ship_business,
+  village_status,
+  start_living_date_status,
+  nrc_type,
+} from '../../common';
+import {useDispatch} from 'react-redux';
 
 function Customer_Base_Info(props) {
   const {
@@ -44,9 +50,8 @@ function Customer_Base_Info(props) {
     showCitySearch,
     showTownshipSearch,
     showWardSearch,
-    showLocationSearch
+    showLocationSearch,
   } = props;
-  console.log('show_nrc', show_nrc);
   const dispatch = useDispatch();
 
   const [open_cusinfo, setCusInfo] = useState(false);
@@ -60,38 +65,41 @@ function Customer_Base_Info(props) {
     setCusInfo(!open_cusinfo);
   };
 
-  const numbers = Array.from({ length: 60 }, (_, i) => i + 1);
+  // const numbers = Array.from({length: 60}, (_, i) => i + 1);
+  const numbers = Array.from({length: 60}, (_, i) => (i + 1).toString());
+
+  const arrayWithObjects = numbers.map((num, index) => {
+    return {id: num, label: num, value: num};
+  });
+
   const handleRadioButtonChange = (value, input) => {
     setVillage(value.id);
     input.onChange(value.id);
     if (value.id == '2') {
       dispatch(change('Customer_ManagementForm', 'village_code', ''));
     }
-    // Dispatch action to clear the field value
-    // dispatch(
-    //   change('myForm', 'fieldName', radioValue === 'clear' ? '' : radioValue),
-    // );
   };
 
   const handleNRCChange = (value, input) => {
     input.onChange(value.id);
     showNrcFun(value.id);
-    if (value.id == 'old') {
-      dispatch(
-        change('Customer_ManagementForm', 'nrc_statecode', ''),
-      );
-      dispatch(change('Customer_ManagementForm', 'nrc_prefix', ''));
+    if (value.id == '1') {
+      dispatch(change('Customer_ManagementForm', 'nrc_state_code', ''));
+      dispatch(change('Customer_ManagementForm', 'nrc_prefix_code', ''));
       dispatch(change('Customer_ManagementForm', 'nrcNo', ''));
+    } else {
+      dispatch(change('Customer_ManagementForm', 'nrcNo', ''));
+      dispatch(change('Customer_ManagementForm', 'resident_rgst_id', ''));
     }
-  }
+  };
   return (
     <>
       <View style={style.container}>
-        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+        <Text style={{fontWeight: 'bold', fontSize: 20}}>
           Customer Base Information
         </Text>
         <TouchableOpacity onPress={CusInfoFun}>
-          <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
+          <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
         </TouchableOpacity>
       </View>
 
@@ -103,32 +111,14 @@ function Customer_Base_Info(props) {
             }}>
             <Text style={style.radio_title_style}>NRC Type</Text>
 
-            {/* <RadioButton.Group
-              onValueChange={newValue => {
-                showNrcFun(newValue);
-                if (newValue == 'old') {
-                  dispatch(
-                    change('Customer_ManagementForm', 'nrc_statecode', ''),
-                  );
-                  dispatch(change('Customer_ManagementForm', 'nrc_prefix', ''));
-                  dispatch(change('Customer_ManagementForm', 'nrcNo', ''));
-                }
-              }}
-              value={show_nrc}>
-              <View style={style.child_radio_title_style}>
-                <Text style={{marginTop: 5}}>Old </Text>
-                <RadioButton value="old" />
-
-                <Text style={{marginTop: 5}}>New</Text>
-                <RadioButton value="new" />
-              </View>
-            </RadioButton.Group> */}
-
             <Field
               data={nrc_type}
               name={'nrc_type'}
               component={RadioButtonFile}
-              ShowRadioBtnChange={(value, input) => handleNRCChange(value, input)}
+              get_value={1}
+              ShowRadioBtnChange={(value, input) =>
+                handleNRCChange(value, input)
+              }
             />
 
             <View style={style.child_input_style}>
@@ -142,7 +132,14 @@ function Customer_Base_Info(props) {
                   input_mode
                 />
               ) : (
-                <></>
+                <Field
+                  name={'resident_rgst_id'}
+                  title={'NRC'}
+                  component={TextInputFile}
+                  cus_width
+                  input_mode
+                  editable
+                />
               )}
 
               <Field
@@ -188,7 +185,8 @@ function Customer_Base_Info(props) {
                 name={'birthDate'}
                 component={DatePicker}
                 label={'date of birth'}
-                icon={'calendar'} />
+                icon={'calendar'}
+              />
             </View>
 
             <View style={style.child_input_style}>
@@ -251,25 +249,14 @@ function Customer_Base_Info(props) {
                 editable
               />
             </View>
-
-            {/* <RadioButton.Group
-              onValueChange={newValue => handleRadioButtonChange(newValue)}
-              value={show_village}>
-              <View style={style.child_radio_title_style}>
-                <Text style={{marginTop: 5}}>Village </Text>
-                <RadioButton value="village" />
-
-                <Text style={{marginTop: 5}}>Ward</Text>
-                <RadioButton value="ward" />
-              </View>
-            </RadioButton.Group> */}
-
             <View>
               <Field
                 data={village_status}
                 name={'village_status'}
                 component={RadioButtonFile}
-                ShowRadioBtnChange={(value, input) => handleRadioButtonChange(value, input)}
+                ShowRadioBtnChange={(value, input) =>
+                  handleRadioButtonChange(value, input)
+                }
               />
             </View>
 
@@ -291,7 +278,7 @@ function Customer_Base_Info(props) {
                   component={TextInputFile}
                   input_mode
                   inputmax={100}
-                // editable
+                  // editable
                 />
               </View>
             ) : (
@@ -337,7 +324,6 @@ function Customer_Base_Info(props) {
               />
             </View>
 
-           
             <Text style={style.radio_title_style}>
               Start Living Date Current Address
             </Text>
@@ -347,16 +333,17 @@ function Customer_Base_Info(props) {
                 data={start_living_date_status}
                 name={'start_living_date_status'}
                 component={RadioButtonFile}
-                ShowRadioBtnChange={(value, input) => handleStartLivingStatus(value, input)}
+                ShowRadioBtnChange={(value, input) =>
+                  handleStartLivingStatus(value, input)
+                }
               />
             </View>
-
-
 
             <View style={style.child_input_style}>
               {show_businessdate == '1' ? (
                 <Field
-                  num_data={numbers}
+                  // num_data={numbers}
+                  num_data={arrayWithObjects}
                   name={'curr_resident_date'}
                   title={'Select a Value'}
                   component={DropDownPicker}
@@ -473,9 +460,14 @@ function mapStateToProps(state) {
 export default reduxForm({
   form: 'Customer_ManagementForm',
   enableReinitialize: true,
-  initialValues: { village_status: '1', nrc_type: '1', start_living_date_status: '1', curr_business_date_status: '1', }
+  initialValues: {
+    village_status: '1',
+    nrc_type: '1',
+    start_living_date_status: '1',
+    curr_business_date_status: '1',
+  },
 })(
-  connect(mapStateToProps, { setCusFormInitialValues, fetchAllCustomerNum })(
+  connect(mapStateToProps, {setCusFormInitialValues, fetchAllCustomerNum})(
     Customer_Base_Info,
   ),
 );

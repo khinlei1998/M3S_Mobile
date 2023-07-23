@@ -3,8 +3,8 @@ import React, {useState, useEffect} from 'react';
 import {List, Button} from 'react-native-paper';
 import {style} from '../../style/Individual_Loan_style';
 import TextInputFile from '../../components/TextInputFile';
-import {reduxForm, Field,change} from 'redux-form';
-import {connect,useDispatch,} from 'react-redux';
+import {reduxForm, Field, change} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
 import DefaultTextInput from '../../components/DefaultTextInput';
 import {getAllLoanMax} from '../../query/LoanMax_query';
 import {
@@ -14,11 +14,11 @@ import {
   totalFamilyIncome,
   totalNetBusiness,
   totalNetFamily,
-  totalNetIncome
+  totalNetIncome,
 } from '../../redux/MonthlyReducer';
-import { totalLoanAmt } from '../../redux/MonthlyReducer';
+import {totalLoanAmt} from '../../redux/MonthlyReducer';
 function Borrower_Monthly_Income(props) {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const {
     handleCalculate,
@@ -37,14 +37,13 @@ function Borrower_Monthly_Income(props) {
     total_net_family,
     total_business_net_total,
     totalNetIncome,
-    totalLoanAmt
+    totalLoanAmt,
   } = props;
   const [co_borrower_expanded, setBorrowerIncomeExpanded] = useState(true);
   const [values, setValues] = useState([]);
   const [familyvalues, setFamilyValues] = useState([]);
   const [total_fmly_net, setFamilyNet] = useState(0);
   const [totalnet, setTotalNet] = useState(0);
-
 
   const handleBorrowerIncomeToggle = () => {
     setBorrowerIncomeExpanded(!co_borrower_expanded);
@@ -56,6 +55,8 @@ function Borrower_Monthly_Income(props) {
     // Check if the input is a valid number
     if (!isNaN(number)) {
       totalIncome(number);
+    } else {
+      totalIncome(0);
     }
   };
 
@@ -83,11 +84,7 @@ function Borrower_Monthly_Income(props) {
       totalExpense(sum);
 
       dispatch(
-        change(
-          'Individual_Loan_Form',
-          'totSaleExpense',
-          `${sum.toString()}`,
-        ),
+        change('Individual_Loan_Form', 'totSaleExpense', `${sum.toString()}`),
       );
     } else {
       const newValues = [...values];
@@ -103,11 +100,7 @@ function Borrower_Monthly_Income(props) {
       );
       totalExpense(sum);
       dispatch(
-        change(
-          'Individual_Loan_Form',
-          'totSaleExpense',
-          `${sum.toString()}`,
-        ),
+        change('Individual_Loan_Form', 'totSaleExpense', `${sum.toString()}`),
       );
     }
   };
@@ -118,6 +111,8 @@ function Borrower_Monthly_Income(props) {
     // Check if the input is a valid number
     if (!isNaN(number)) {
       totalFamilyIncome(number);
+    } else {
+      totalFamilyIncome(0);
     }
   };
 
@@ -142,11 +137,7 @@ function Borrower_Monthly_Income(props) {
       );
       totalFamilyExpense(sum);
       dispatch(
-        change(
-          'Individual_Loan_Form',
-          'fmlyTotExpense',
-          `${sum.toString()}`,
-        ),
+        change('Individual_Loan_Form', 'fmlyTotExpense', `${sum.toString()}`),
       );
     } else {
       const newValues = [...familyvalues];
@@ -164,11 +155,7 @@ function Borrower_Monthly_Income(props) {
       );
       totalFamilyExpense(sum);
       dispatch(
-        change(
-          'Individual_Loan_Form',
-          'fmlyTotExpense',
-          `${sum.toString()}`,
-        ),
+        change('Individual_Loan_Form', 'fmlyTotExpense', `${sum.toString()}`),
       );
     }
   };
@@ -176,9 +163,7 @@ function Borrower_Monthly_Income(props) {
   const calCulateSum = (total_expense, total_income) => {
     const sum = total_income - total_expense;
     // setBusinessNet(sum);
-    dispatch(
-      change('Individual_Loan_Form', 'totBusNetIncomeitem', `${sum}`),
-    );
+    dispatch(change('Individual_Loan_Form', 'totBusNetIncomeitem', `${sum}`));
     totalNetBusiness(sum);
   };
 
@@ -190,7 +175,7 @@ function Borrower_Monthly_Income(props) {
   };
   const netCulateSum = (total_net_business, total_net_family) => {
     const sum = total_net_business + total_net_family;
-    totalNetIncome(sum)
+    totalNetIncome(sum);
     setTotalNet(sum);
     dispatch(change('Individual_Loan_Form', 'totalnet', `${sum}`));
   };
@@ -371,7 +356,10 @@ function Borrower_Monthly_Income(props) {
                     marginTop: 10,
                   }}>
                   <Text style={{color: '#fff'}}>Total Net Income</Text>
-                  <Text style={{color: '#F9A970'}}> {total_business_net_total}</Text>
+                  <Text style={{color: '#F9A970'}}>
+                    {' '}
+                    {total_business_net_total}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -623,6 +611,6 @@ export default reduxForm({
     totalNetBusiness,
     totalNetFamily,
     totalNetIncome,
-    totalLoanAmt
+    totalLoanAmt,
   })(Borrower_Monthly_Income),
 );

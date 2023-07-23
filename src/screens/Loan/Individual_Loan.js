@@ -59,6 +59,7 @@ import {resetMonthlyIncome} from '../../redux/MonthlyReducer';
 import {cus_filter_item} from '../../common';
 import {setBorrowerMap_Path} from '../../redux/LoanReducer';
 import {interest_rate} from '../../common';
+import { RenderBottomSheet } from '../../components/RenderBotttomSheet';
 // import RNFetchBlob from 'rn-fetch-blob';
 
 const Borrower_modal = props => {
@@ -87,12 +88,94 @@ const Borrower_modal = props => {
   };
 
   const btnSelectEmployee = item => {
+    console.log('Borrower info', item);
     setSelectedValue(item.id);
+    //Borrower info
     dispatch(change('Individual_Loan_Form', 'borrower_name', item.customer_nm));
     dispatch(
       change('Individual_Loan_Form', 'resident_rgst_id', item.resident_rgst_id),
     );
     dispatch(change('Individual_Loan_Form', 'customer_no', item.customer_no));
+    dispatch(
+      change('Individual_Loan_Form', 'saving_acct_num', item.saving_acct_num),
+    );
+    dispatch(change('Individual_Loan_Form', 'tel_no', item.tel_no));
+    dispatch(change('Individual_Loan_Form', 'gender', item.gender));
+    dispatch(change('Individual_Loan_Form', 'birth_date', item.birth_date));
+    dispatch(
+      change('Individual_Loan_Form', 'marital_status', item.marital_status),
+    );
+    dispatch(change('Individual_Loan_Form', 'address_type', item.address_type));
+    dispatch(change('Individual_Loan_Form', 'addr', item.addr));
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'curr_resident_date',
+        item.curr_resident_date,
+      ),
+    );
+    dispatch(change('Individual_Loan_Form', 'family_num', item.family_num?item.family_num.toString():''));
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'hghschl_num',
+        item.hghschl_num ? item.hghschl_num.toString() : '',
+      ),
+    );
+    dispatch(
+      change('Individual_Loan_Form', 'university_num', item.university_num?item.university_num.toString():''),
+    );
+    dispatch(
+      change('Individual_Loan_Form', 'house_ocpn_type', item.house_ocpn_type?item.house_ocpn_type.toString():''),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'business_own_type',
+        item.business_own_type,
+      ),
+    );
+    //business info
+
+    dispatch(
+      change('Individual_Loan_Form', 'workplace_name', item.workplace_name),
+    );
+    dispatch(
+      change('Individual_Loan_Form', 'workplace_type', item.workplace_type),
+    );
+    dispatch(
+      change('Individual_Loan_Form', 'workplace_period', item.workplace_period),
+    );
+    dispatch(change('Individual_Loan_Form', 'employee_num', item.employee_num));
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'co_borrower_address_type',
+        item.co_borrower_address_type,
+      ),
+    );
+    dispatch(
+      change('Individual_Loan_Form', 'workplace_addr', item.workplace_addr),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'curr_workplace_perd',
+        item.curr_workplace_perd,
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'business_sttn_flg',
+        item.business_sttn_flg,
+      ),
+    );
+    dispatch(
+      change('Individual_Loan_Form', 'land_own_type', item.land_own_type),
+    );
+
+    dispatch(change('Individual_Loan_Form', 'land_scale', item.land_scale));
   };
 
   const item = ({item, index}) => {
@@ -304,6 +387,7 @@ const CoBorrower_modal = props => {
   };
 
   const btnSelectEmployee = item => {
+    console.log('co borrrower item',item);
     setCoborrowerSelectedValue(item.id);
     dispatch(
       change('Individual_Loan_Form', 'co_brwer_rgst_id', item.resident_rgst_id),
@@ -312,6 +396,19 @@ const CoBorrower_modal = props => {
     dispatch(
       change('Individual_Loan_Form', 'co_customer_no', item.customer_no),
     );
+    dispatch(
+      change('Individual_Loan_Form', 'co_brwer_birth_dt', item.birth_date),
+    );
+    dispatch(
+      change('Individual_Loan_Form', 'co_brwer_tel_no', item.tel_no),
+    );
+    dispatch(
+      change('Individual_Loan_Form', 'co_occupation', item.occupation),
+    );
+    // dispatch(
+    //   change('Individual_Loan_Form', 'borrower_rltn', item.customer_no),
+    // );
+
   };
 
   const item = ({item, index}) => {
@@ -418,7 +515,7 @@ const CoBorrower_modal = props => {
                 </Picker>
               </View>
 
-              <View style={{width: '50%'}}>
+              <View style={{width: '40%'}}>
                 <TextInput
                   style={{
                     backgroundColor: '#fff',
@@ -1767,7 +1864,7 @@ function Individual_Loan(props) {
   const [show_operation, setOperation] = useState('1');
   const [modalVisible, setModalVisible] = useState(false);
   const [co_borrower_modalVisible, setCoBorrowerModalVisible] = useState(false);
-  const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
+  const [selectedItemValue, setSelectedItemValue] = useState('customer_nm');
   const [all_cus, setAllCus] = useState([]);
   const [all_co_borrower, setAllCoBorrower] = useState([]);
   const [loanexpanded, setLoanExpanded] = React.useState(true);
@@ -2161,7 +2258,7 @@ function Individual_Loan(props) {
                         disabled={option.value !== show_operation}
                         label={option.label}
                         value={option.value}
-                        color="#000"
+                        color="#636Dc6"
                         labelStyle={{marginLeft: 5}}
                       />
                     </View>
@@ -2330,252 +2427,7 @@ function Individual_Loan(props) {
         </TouchableWithoutFeedback>
       </ScrollView>
 
-      <BottomSheet isOpen={false} wrapperStyle={{backgroundColor: '#3E3E84'}}>
-        <View style={{padding: 5, marginLeft: 10}}>
-          <View style={{flexDirection: 'row'}}>
-            <Icon name="paperclip" size={25} color="#fff" />
-            <Text style={{color: '#fff', fontSize: 20, marginLeft: 10}}>
-              Document Submit
-            </Text>
-          </View>
-
-          <View
-            style={{
-              flex: 1,
-              marginTop: 20,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
-            <View
-              style={{
-                flexDirection: 'column',
-                marginBottom: 16,
-              }}>
-              <TouchableOpacity
-                onPress={() =>
-                  update_status == true
-                    ? ''
-                    : ToastAndroid.show(
-                        `Only update can modify`,
-                        ToastAndroid.SHORT,
-                      )
-                }
-                style={{
-                  width: 250,
-                  height: 40,
-                  backgroundColor: '#242157',
-                  margin: 10,
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    margin: 5,
-                  }}>
-                  <View style={{alignItems: 'center', flexDirection: 'row'}}>
-                    <Icon name="paperclip" size={20} color="#fff" />
-                    <Text style={{color: '#fff', marginLeft: 5}}>
-                      Guarantor Form
-                    </Text>
-                  </View>
-                  <Icon name="chevron-right" size={25} color="#fff" />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() =>
-                  update_status == true
-                    ? ''
-                    : ToastAndroid.show(
-                        `Only update can modify`,
-                        ToastAndroid.SHORT,
-                      )
-                }
-                style={{
-                  width: 250,
-                  height: 40,
-                  backgroundColor: '#242157',
-                  margin: 10,
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    margin: 5,
-                  }}>
-                  <View style={{alignItems: 'center', flexDirection: 'row'}}>
-                    <Icon name="paperclip" size={20} color="#fff" />
-                    <Text style={{color: '#fff', marginLeft: 5}}>
-                      Area Evaluation Form
-                    </Text>
-                  </View>
-                  <Icon name="chevron-right" size={25} color="#fff" />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() =>
-                  update_status == true
-                    ? ''
-                    : ToastAndroid.show(
-                        `Only update can modify`,
-                        ToastAndroid.SHORT,
-                      )
-                }
-                style={{
-                  width: 250,
-                  height: 40,
-                  backgroundColor: '#242157',
-                  margin: 10,
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    margin: 5,
-                  }}>
-                  <View style={{alignItems: 'center', flexDirection: 'row'}}>
-                    <Icon name="paperclip" size={20} color="#fff" />
-                    <Text style={{color: '#fff', marginLeft: 5}}>
-                      RelationShip Form
-                    </Text>
-                  </View>
-                  <Icon name="chevron-right" size={25} color="#fff" />
-                </View>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                flexDirection: 'column',
-                marginBottom: 16,
-              }}>
-              <TouchableOpacity
-                onPress={() =>
-                  update_status == true
-                    ? ''
-                    : ToastAndroid.show(
-                        `Only update can modify`,
-                        ToastAndroid.SHORT,
-                      )
-                }
-                style={{
-                  width: 250,
-                  height: 40,
-                  backgroundColor: '#242157',
-                  margin: 10,
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    margin: 5,
-                  }}>
-                  <View style={{alignItems: 'center', flexDirection: 'row'}}>
-                    <Icon name="paperclip" size={20} color="#fff" />
-                    <Text style={{color: '#fff', marginLeft: 5}}>
-                      Evidence Document Form
-                    </Text>
-                  </View>
-                  <Icon name="chevron-right" size={25} color="#fff" />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() =>
-                  update_status == true
-                    ? ''
-                    : ToastAndroid.show(
-                        `Only update can modify`,
-                        ToastAndroid.SHORT,
-                      )
-                }
-                style={{
-                  width: 250,
-                  height: 40,
-                  backgroundColor: '#242157',
-                  margin: 10,
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    margin: 5,
-                  }}>
-                  <View style={{alignItems: 'center', flexDirection: 'row'}}>
-                    <Icon name="paperclip" size={20} color="#fff" />
-                    <Text style={{color: '#fff', marginLeft: 5}}>
-                      Exceptional Approval Request...
-                    </Text>
-                  </View>
-                  <Icon name="chevron-right" size={25} color="#fff" />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() =>
-                  update_status == true
-                    ? ''
-                    : ToastAndroid.show(
-                        `Only update can modify`,
-                        ToastAndroid.SHORT,
-                      )
-                }
-                style={{
-                  width: 250,
-                  height: 40,
-                  backgroundColor: '#242157',
-                  margin: 10,
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    margin: 5,
-                  }}>
-                  <View style={{alignItems: 'center', flexDirection: 'row'}}>
-                    <Icon name="paperclip" size={20} color="#fff" />
-                    <Text style={{color: '#fff', marginLeft: 5}}>
-                      Passport Photo
-                    </Text>
-                  </View>
-                  <Icon name="chevron-right" size={25} color="#fff" />
-                </View>
-              </TouchableOpacity>
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'column',
-                marginBottom: 16,
-                justifyContent: 'center',
-              }}>
-              <Button
-                mode="contained"
-                buttonColor={'#0480B7'}
-                style={{
-                  borderRadius: 0,
-                  width: 130,
-                  height: 70,
-                  borderRadius: 10,
-                  justifyContent: 'center',
-                }}>
-                Save
-              </Button>
-
-              <Button
-                mode="contained"
-                buttonColor={'#6870C3'}
-                style={{
-                  borderRadius: 0,
-                  width: 130,
-                  height: 70,
-                  borderRadius: 10,
-                  justifyContent: 'center',
-                  marginTop: 5,
-                }}>
-                Cancel
-              </Button>
-            </View>
-          </View>
-        </View>
-      </BottomSheet>
-
+    <RenderBottomSheet />
       <Borrower_modal
         handleSubmit={handleSubmit}
         setAllCus={setAllCus}

@@ -21,7 +21,6 @@ export function getCodeInfo() {
                     // .get(`https://${newIP}/skylark-m3s/api/employees.m3s`)
                     .get(`https://${ip}:${port}/skylark-m3s/api/codes.m3s`)
                     .then(({ data }) => {
-                        console.log('data', data.length);
                         if (data.length > 0) {
                             let insertedRows = 0;
                             global.db.transaction(tx => {

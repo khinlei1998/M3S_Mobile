@@ -15,6 +15,7 @@ export default function Sync_Upload_Screen(props) {
     loan_data,
     btn_disabled,
     btn_cus_disabled,
+    all_survey
   } = props;
   const [checkedItems, setCheckedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -49,9 +50,9 @@ export default function Sync_Upload_Screen(props) {
   };
 
   const item = ({ item }) => {
-    // const foundItem = loan_application_type.filter(
-    //   data => data.value == item.product_type,
-    // );
+    const foundItem = loan_application_type.filter(
+      data => data.value == item.product_type,
+    );
     return (
       <View
         style={{
@@ -83,14 +84,14 @@ export default function Sync_Upload_Screen(props) {
             padding: 10,
             flex: 1,
           }}>
-          {/* {foundItem[0].label} */}
+          {foundItem[0].label}
         </Text>
         <Text
           style={{
             padding: 10,
             flex: 1,
           }}>
-          {item.application_no}
+           {item.application_no ?? item.group_aplc_no}
         </Text>
 
         <Text
@@ -98,7 +99,7 @@ export default function Sync_Upload_Screen(props) {
             padding: 10,
             flex: 1,
           }}>
-          {item.borrower_name}
+          {item.borrower_name ?? item.leader_name}
         </Text>
 
         <Text
@@ -127,32 +128,7 @@ export default function Sync_Upload_Screen(props) {
       </View>
     );
   };
-  // const btnUploadCustomer = async () => {
-  //   await customer_data.forEach(obj => {
-  //     obj.tablet_sync_sts = '01';
-  //     obj.customer_no=''
-  //   });
-  //   console.log('customer_data',customer_data);
-
-  //   try {
-  //     // Call the API here
-  //     await UploadCustomerData(customer_data).then(result => {
-  //       console.log('result', result);
-  //       if (result == 'success') {
-  //         alert('Customer Upload Success')
-  //       } else {
-  //         alert('Something Wrong')
-  //       }
-  //     });
-  //     // updateTableSyncStatus('13')
-  //   } catch (error) {
-  //     // If API call fails, revert the value of 'tablet_sync_sts' back to the original value
-  //     // customer_data.forEach(obj => {
-  //     //   obj.tablet_sync_sts = obj.tablet_sync_sts == '01' ? '01' : obj.tablet_sync_sts;
-  //     // });
-  //     console.error('API call failed. Value not changed.');
-  //   }
-  // };
+ 
   return (
     <View style={{ marginTop: 20, marginLeft: 10, marginRight: 10, flex: 1 }}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -254,6 +230,12 @@ export default function Sync_Upload_Screen(props) {
           {customer_data.length}
         </Text>
       </View>
+      <View style={{ flexDirection: 'row', marginLeft: 15 }}>
+        <Text style={{ fontWeight: 'bold', fontSize: 17 }}>New Survey : </Text>
+        <Text style={{ fontWeight: 'bold', fontSize: 17 }}>
+          {all_survey.length}
+        </Text>
+      </View>
 
       <View
         style={{
@@ -279,7 +261,7 @@ export default function Sync_Upload_Screen(props) {
         </Button>
 
         <Button
-          // disabled={btn_disabled}
+          disabled={btn_disabled}
           style={{
             borderRadius: 0,
             width: 120,

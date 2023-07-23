@@ -21,7 +21,6 @@ export function getLoanMax() {
                     // .get(`https://${newIP}/skylark-m3s/api/employees.m3s`)
                     .get(`https://${ip}:${port}/skylark-m3s/api/maxInfo.m3s`)
                     .then(({ data }) => {
-                        console.log('data', data.length);
                         if (data.length > 0) {
                             let insertedRows = 0;
                             global.db.transaction(tx => {
@@ -103,7 +102,7 @@ export async function getAllLoanMax() {
     });
   }
 
- 
+
 
 
 

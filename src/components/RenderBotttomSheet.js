@@ -3,11 +3,13 @@ import React, {useMemo} from 'react';
 import BottomSheet from 'react-native-simple-bottom-sheet';
 import {Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
-
-export const RenderBottomSheet = ({guarantor_data,exceptional_data,update_status,navigation}) =>
+import { ToastAndroid } from 'react-native';
+export const RenderBottomSheet = () =>
   useMemo(() => {
     return (
-      <BottomSheet isOpen={false} wrapperStyle={{backgroundColor: '#3E3E84'}}>
+      <BottomSheet
+        isOpen={false}
+        wrapperStyle={{backgroundColor: '#3E3E84'}}>
         <View style={{padding: 5, marginLeft: 10}}>
           <View style={{flexDirection: 'row'}}>
             <Icon name="paperclip" size={25} color="#fff" />
@@ -30,58 +32,39 @@ export const RenderBottomSheet = ({guarantor_data,exceptional_data,update_status
               }}>
               <TouchableOpacity
                 onPress={() =>
-                  update_status == true && guarantor_data.length == 0
-                    ? navigation.navigate('Guarantor', {
-                        retrive_loan_data,
-                      })
-                    : update_status == true && guarantor_data.length > 0
-                    ? navigation.navigate('Edit Guarantor', {
-                        guarantor_data,
-                      })
-                    : ToastAndroid.show(
-                        `Only update can modify`,
-                        ToastAndroid.SHORT,
-                      )
+                  ToastAndroid.show(
+                    `Only update can modify`,
+                    ToastAndroid.SHORT,
+                  )
                 }
                 style={{
                   width: 250,
                   height: 40,
-                  backgroundColor:
-                    guarantor_data.length > 0 ? '#3E3E84' : '#242157',
+                  backgroundColor: '#242157',
                   margin: 10,
                 }}>
-                {guarantor_data.length > 0 ? (
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      margin: 5,
-                    }}>
-                    <View style={{alignItems: 'center', flexDirection: 'row'}}>
-                      <Icon name="check" size={20} color="#ede72d" />
-                      <Text style={{color: '#fff', marginLeft: 5}}>
-                        Guarantor Form
-                      </Text>
-                    </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    margin: 5,
+                  }}>
+                  <View style={{alignItems: 'center', flexDirection: 'row'}}>
+                    <Icon name="paperclip" size={20} color="#fff" />
+                    <Text style={{color: '#fff', marginLeft: 5}}>
+                      Guarantor Form
+                    </Text>
                   </View>
-                ) : (
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      margin: 5,
-                    }}>
-                    <View style={{alignItems: 'center', flexDirection: 'row'}}>
-                      <Icon name="paperclip" size={20} color="#fff" />
-                      <Text style={{color: '#fff', marginLeft: 5}}>
-                        Guarantor Form
-                      </Text>
-                    </View>
-                    <Icon name="chevron-right" size={25} color="#fff" />
-                  </View>
-                )}
+                  <Icon name="chevron-right" size={25} color="#fff" />
+                </View>
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() =>
+                  ToastAndroid.show(
+                        `Only update can modify`,
+                        ToastAndroid.SHORT,
+                      )
+                }
                 style={{
                   width: 250,
                   height: 40,
@@ -104,6 +87,12 @@ export const RenderBottomSheet = ({guarantor_data,exceptional_data,update_status
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() =>
+                  ToastAndroid.show(
+                        `Only update can modify`,
+                        ToastAndroid.SHORT,
+                      )
+                }
                 style={{
                   width: 250,
                   height: 40,
@@ -132,6 +121,12 @@ export const RenderBottomSheet = ({guarantor_data,exceptional_data,update_status
                 marginBottom: 16,
               }}>
               <TouchableOpacity
+                onPress={() =>
+               ToastAndroid.show(
+                        `Only update can modify`,
+                        ToastAndroid.SHORT,
+                      )
+                }
                 style={{
                   width: 250,
                   height: 40,
@@ -153,19 +148,9 @@ export const RenderBottomSheet = ({guarantor_data,exceptional_data,update_status
                   <Icon name="chevron-right" size={25} color="#fff" />
                 </View>
               </TouchableOpacity>
-
               <TouchableOpacity
                 onPress={() =>
-                  update_status == true && exceptional_data.length == 0
-                    ? navigation.navigate('Exceptional_Approvel_Form', {
-                        retrive_loan_data,
-                      })
-                    : update_status == true && exceptional_data.length > 0
-                    ? navigation.navigate(
-                        'Edit_Exceptional_Approvel_Form',
-                        {exceptional_data},
-                      )
-                    : ToastAndroid.show(
+                  ToastAndroid.show(
                         `Only update can modify`,
                         ToastAndroid.SHORT,
                       )
@@ -173,8 +158,7 @@ export const RenderBottomSheet = ({guarantor_data,exceptional_data,update_status
                 style={{
                   width: 250,
                   height: 40,
-                  backgroundColor:
-                    exceptional_data.length > 0 ? '#3E3E84' : '#242157',
+                  backgroundColor: '#242157',
                   margin: 10,
                 }}>
                 <View
@@ -183,25 +167,22 @@ export const RenderBottomSheet = ({guarantor_data,exceptional_data,update_status
                     justifyContent: 'space-between',
                     margin: 5,
                   }}>
-                  {exceptional_data.length > 0 ? (
-                    <View style={{alignItems: 'center', flexDirection: 'row'}}>
-                      <Icon name="check" size={20} color="#ede72d" />
-                      <Text style={{color: '#fff', marginLeft: 5}}>
-                        Exceptional Approval Request...
-                      </Text>
-                    </View>
-                  ) : (
-                    <View style={{alignItems: 'center', flexDirection: 'row'}}>
-                      <Icon name="paperclip" size={20} color="#fff" />
-                      <Text style={{color: '#fff', marginLeft: 5}}>
-                        Exceptional Approval Request...
-                      </Text>
-                      <Icon name="chevron-right" size={25} color="#fff" />
-                    </View>
-                  )}
+                  <View style={{alignItems: 'center', flexDirection: 'row'}}>
+                    <Icon name="paperclip" size={20} color="#fff" />
+                    <Text style={{color: '#fff', marginLeft: 5}}>
+                      Exceptional Approval Request...
+                    </Text>
+                  </View>
+                  <Icon name="chevron-right" size={25} color="#fff" />
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() =>
+                 ToastAndroid.show(
+                        `Only update can modify`,
+                        ToastAndroid.SHORT,
+                      )
+                }
                 style={{
                   width: 250,
                   height: 40,
@@ -245,6 +226,7 @@ export const RenderBottomSheet = ({guarantor_data,exceptional_data,update_status
               </Button>
 
               <Button
+              disabled
                 mode="contained"
                 buttonColor={'#6870C3'}
                 style={{
@@ -262,4 +244,4 @@ export const RenderBottomSheet = ({guarantor_data,exceptional_data,update_status
         </View>
       </BottomSheet>
     );
-  }, [guarantor_data, exceptional_data,update_status,navigation]);
+  }, []);

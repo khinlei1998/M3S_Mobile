@@ -25,7 +25,12 @@ function Edit_Business_Info(props) {
   const MonthlyIncomeFun = () => {
     setBusinessInfo(!open_business_info);
   };
-  const numbers = Array.from({length: 60}, (_, i) => i + 1);
+  // const numbers = Array.from({length: 60}, (_, i) => i + 1);
+  const numbers = Array.from({length: 60}, (_, i) => (i + 1).toString());
+
+  const arrayWithObjects = numbers.map((num, index) => {
+    return {id: num, label: num, value: num};
+  });
 
   return (
     <>
@@ -66,22 +71,6 @@ function Edit_Business_Info(props) {
               Business Period
             </Text>
 
-            {/* <RadioButton.Group
-              onValueChange={newValue => setBusiness(newValue)}
-              value={show_businessdate}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginTop: 10,
-                  marginLeft: 10,
-                }}>
-                <Text style={{ marginTop: 5 }}>Estimated </Text>
-                <RadioButton value="estimated" />
-
-                <Text style={{ marginTop: 5 }}>Exact Date</Text>
-                <RadioButton value="exact" />
-              </View>
-            </RadioButton.Group> */}
 
             <View>
               <Field
@@ -99,7 +88,7 @@ function Edit_Business_Info(props) {
             <View style={style.input_container_style}>
               {show_businessdate_per == '1' ? (
                 <Field
-                  num_data={numbers}
+                  num_data={arrayWithObjects}
                   name={'workplace_date'}
                   title={'Select a Value'}
                   component={DropDownPicker}
@@ -161,7 +150,7 @@ function Edit_Business_Info(props) {
               <View style={style.input_container_style}>
                 {show_business_date == '1' ? (
                   <Field
-                    num_data={numbers}
+                    num_data={arrayWithObjects}
                     name={'curr_workplace_date'}
                     title={'Select a Value'}
                     component={DropDownPicker}

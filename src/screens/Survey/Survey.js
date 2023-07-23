@@ -1,18 +1,21 @@
-import {View, Text, ScrollView, FlatList, StyleSheet} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {Button} from 'react-native-paper';
-import {getSurveyData} from '../../query/SurveyItem_query';
-import {style} from '../../style/Survey_style';
-import {RadioButton} from 'react-native-paper';
+import { View, Text, ScrollView, FlatList, StyleSheet, ToastAndroid } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Button } from 'react-native-paper';
+import { getSurveyData } from '../../query/SurveyItem_query';
+import { style } from '../../style/Survey_style';
+import { RadioButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
-import {fetchAllSurvey} from '../../query/SurveyItem_query';
+import { getSurveyResult } from '../../query/SurveyItem_query';
+import { storeSurveyResult } from '../../query/SurveyItem_query';
+import { get_loged_branch_code } from '../../query/Employee_query';
 export default function Survey(props) {
   const [survey_data, setSurveyData] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [selectedItems, setSelectedItems] = useState([]);
   const [user_id, setUserID] = useState('');
-  const [surveycount, setSurveyCount] = useState('');
+  const [survey_rsult_count, setSurveyResultCount] = useState('');
+  const [branch_code, setBranchCode] = useState('')
 
   const loadData = async () => {
     await getSurveyData().then(data => {
@@ -21,20 +24,33 @@ export default function Survey(props) {
     await AsyncStorage.getItem('user_id').then(val => {
       setUserID(val);
     });
-    await fetchAllSurvey().then(data => {
-      // setSurveyCount(data.length+1);
-      let initialCount = data.length > 0 ? data.length : 1;
-      setSurveyCount(initialCount);
+    await getSurveyResult().then(data => {
+      setSurveyResultCount(data.length + 1);
+    });
+    await get_loged_branch_code().then(data => {
+      setBranchCode(data[0].branch_code);
     });
   };
   useEffect(() => {
     loadData();
   }, []);
-  console.log('surveycount', surveycount);
-  const onSubmit = values => {
-    console.log('finale value', selectedItems);
+  const onSubmit = async () => {
+    console.log('survey_rsult_count', survey_rsult_count);
+    let survey_rsult = selectedItems.map((v, index) => ({
+      ...v, branch_code: branch_code, survey_result_no: `SV${user_id}${moment().format(
+        'YYYYMMDD',
+      )}${survey_rsult_count + index}`
+    }))
+    // console.log('survey_rsult',survey_rsult);
+    await storeSurveyResult(survey_rsult).then(result => {
+      if (result == 'success') {
+
+        ToastAndroid.show('Survey Create Successfully!', ToastAndroid.SHORT);
+        props.navigation.navigate('Home');
+      }
+    })
   };
-  const renderTableRow = ({item, index}) => {
+  const renderTableRow = ({ item, index }) => {
     const isSelectedYes = selectedAnswers[index] === 'Y';
     const isSelectedNo = selectedAnswers[index] === 'N';
 
@@ -51,38 +67,28 @@ export default function Survey(props) {
         );
 
         if (existingItemIndex !== -1) {
-          console.log('old select');
           // Update the item's survey_answer_yn with the newValue
           return prevSelectedItems.map((selectedItem, index) =>
             index === existingItemIndex
               ? {
-                  ...selectedItem,
-                  survey_answer_yn: newValue,
-                  survey_result_no: `SV${user_id}${moment().format(
-                    'YYYYMMDD',
-                  )}${surveycount}`,
-                }
+                ...selectedItem,
+                survey_answer_yn: newValue,
+
+              }
               : selectedItem,
           );
         } else {
-          console.log('new select');
-          setSurveyCount(prevCount => prevCount + 1);
-
-          // Add the item to the selectedItems array with the new survey_answer_yn value
           return [
             ...prevSelectedItems,
             {
               ...item,
               survey_answer_yn: newValue,
-              survey_result_no: `SV${user_id}${moment().format(
-                'YYYYMMDD',
-              )}${surveycount}`,
+
             },
           ];
         }
       });
     };
-    console.log();
     return (
       <View style={style.row}>
         <Text style={style.cell}> {index + 1}</Text>
@@ -91,7 +97,7 @@ export default function Survey(props) {
         <RadioButton.Group
           onValueChange={btnChangeOperation}
           value={selectedAnswers[index]}>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <RadioButton.Item
               label="Yes"
               value="Y"
@@ -109,7 +115,7 @@ export default function Survey(props) {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <View style={style.container}>
         {/* Table Header */}
         <View style={style.header}>

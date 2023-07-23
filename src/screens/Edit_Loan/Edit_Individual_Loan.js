@@ -15,6 +15,7 @@ import React, {useState, useEffect, useRef, createRef, useMemo} from 'react';
 import DividerLine from '../../components/DividerLine';
 import {style} from '../../style/Individual_Loan_style';
 import {getExceptionalApproval} from '../../query/Exceptional_Approval_query';
+import {updateLoanData} from '../../query/AllLoan_query';
 import {
   operations,
   city_code,
@@ -33,7 +34,7 @@ import {
   Provider,
   Portal,
 } from 'react-native-paper';
-import {reduxForm, Field, change} from 'redux-form';
+import {reduxForm, Field, change,reset} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
@@ -122,6 +123,132 @@ const Borrower_modal = props => {
     );
     dispatch(
       change('Edit_Individual_Loan_Form', 'customer_no', item.customer_no),
+    );
+    dispatch(
+      change(
+        'Edit_Individual_Loan_Form',
+        'saving_acct_num',
+        item.saving_acct_num,
+      ),
+    );
+    dispatch(change('Edit_Individual_Loan_Form', 'tel_no', item.tel_no));
+    dispatch(change('Edit_Individual_Loan_Form', 'gender', item.gender));
+    dispatch(
+      change('Edit_Individual_Loan_Form', 'birth_date', item.birth_date),
+    );
+    dispatch(
+      change(
+        'Edit_Individual_Loan_Form',
+        'marital_status',
+        item.marital_status,
+      ),
+    );
+    dispatch(
+      change('Edit_Individual_Loan_Form', 'address_type', item.address_type),
+    );
+    dispatch(change('Edit_Individual_Loan_Form', 'addr', item.addr));
+    dispatch(
+      change(
+        'Edit_Individual_Loan_Form',
+        'curr_resident_date',
+        item.curr_resident_date,
+      ),
+    );
+    dispatch(
+      change(
+        'Edit_Individual_Loan_Form',
+        'family_num',
+        item.family_num ? item.family_num.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Edit_Individual_Loan_Form',
+        'hghschl_num',
+        item.hghschl_num ? item.hghschl_num.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Edit_Individual_Loan_Form',
+        'university_num',
+        item.university_num ? item.university_num.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Edit_Individual_Loan_Form',
+        'house_ocpn_type',
+        item.house_ocpn_type ? item.house_ocpn_type.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Edit_Individual_Loan_Form',
+        'business_own_type',
+        item.business_own_type,
+      ),
+    );
+    //business info
+
+    dispatch(
+      change(
+        'Edit_Individual_Loan_Form',
+        'workplace_name',
+        item.workplace_name,
+      ),
+    );
+    dispatch(
+      change(
+        'Edit_Individual_Loan_Form',
+        'workplace_type',
+        item.workplace_type,
+      ),
+    );
+    dispatch(
+      change(
+        'Edit_Individual_Loan_Form',
+        'workplace_period',
+        item.workplace_period,
+      ),
+    );
+    dispatch(
+      change('Edit_Individual_Loan_Form', 'employee_num', item.employee_num),
+    );
+    dispatch(
+      change(
+        'Edit_Individual_Loan_Form',
+        'co_borrower_address_type',
+        item.co_borrower_address_type,
+      ),
+    );
+    dispatch(
+      change(
+        'Edit_Individual_Loan_Form',
+        'workplace_addr',
+        item.workplace_addr,
+      ),
+    );
+    dispatch(
+      change(
+        'Edit_Individual_Loan_Form',
+        'curr_workplace_perd',
+        item.curr_workplace_perd,
+      ),
+    );
+    dispatch(
+      change(
+        'Edit_Individual_Loan_Form',
+        'business_sttn_flg',
+        item.business_sttn_flg,
+      ),
+    );
+    dispatch(
+      change('Edit_Individual_Loan_Form', 'land_own_type', item.land_own_type),
+    );
+
+    dispatch(
+      change('Edit_Individual_Loan_Form', 'land_scale', item.land_scale),
     );
   };
 
@@ -351,11 +478,26 @@ const CoBorrower_modal = props => {
   const btnSelectEmployee = item => {
     setCoborrowerSelectedValue(item.id);
     dispatch(
-      change('Individual_Loan_Form', 'co_brwer_rgst_id', item.resident_rgst_id),
+      change(
+        'Edit_Individual_Loan_Form',
+        'co_brwer_rgst_id',
+        item.resident_rgst_id,
+      ),
     );
-    dispatch(change('Individual_Loan_Form', 'co_brwer_name', item.customer_nm));
     dispatch(
-      change('Individual_Loan_Form', 'co_customer_no', item.customer_no),
+      change('Edit_Individual_Loan_Form', 'co_brwer_name', item.customer_nm),
+    );
+    dispatch(
+      change('Edit_Individual_Loan_Form', 'co_customer_no', item.customer_no),
+    );
+    dispatch(
+      change('Edit_Individual_Loan_Form', 'co_brwer_birth_dt', item.birth_date),
+    );
+    dispatch(
+      change('Edit_Individual_Loan_Form', 'co_brwer_tel_no', item.tel_no),
+    );
+    dispatch(
+      change('Edit_Individual_Loan_Form', 'co_occupation', item.occupation),
     );
   };
 
@@ -2093,38 +2235,72 @@ function Edit_Individual_Loan(props) {
   //   }
   // };
 
-  const saveSignatureToInternalStorage = async (signatureData, index) => {
+  // const saveSignatureToInternalStorage = async (signatureData, index) => {
+  //   const user_id = await AsyncStorage.getItem('user_id');
+  //   try {
+  //     // Get the path to the application's internal storage directory
+  //     const internalDir = RNFS.DocumentDirectoryPath;
+  //     console.log('internalDir', internalDir);
+
+  //     // Create the target directory path
+  //     const directoryPath = `${internalDir}/SignatureImages`;
+
+  //     // Check if the directory exists, and create it if it doesn't
+  //     const dirExists = await RNFS.exists(directoryPath);
+  //     if (!dirExists) {
+  //       await RNFS.mkdir(directoryPath);
+  //     }
+
+  //     // Generate a unique file name for the signature image
+  //     const fileName = `10${user_id}TB${moment().format('YYYYMMDD')}${
+  //       all_loandata.length + 1
+  //     }SG${index}.jpg`;
+
+  //     // Construct the file path
+  //     const filePath = `${directoryPath}/${fileName}`;
+
+  //     // Save the signature image to the internal storage
+  //     await RNFS.writeFile(filePath, signatureData, 'base64');
+
+  //     console.log('Signature saved successfully:', filePath);
+  //     return fileName;
+  //   } catch (error) {
+  //     console.log('Error saving signature:', error);
+  //     throw error;
+  //   }
+  // };
+  const saveSignatureToInternalStorage = async (image_encode, index) => {
     const user_id = await AsyncStorage.getItem('user_id');
     try {
-      // Get the path to the application's internal storage directory
-      const internalDir = RNFS.DocumentDirectoryPath;
-      console.log('internalDir', internalDir);
+      // Request write storage permission
+      // const granted = await requestWriteStoragePermission();
+      const granted = await AsyncStorage.getItem('writeStoragePermission');
 
-      // Create the target directory path
-      const directoryPath = `${internalDir}/SignatureImages`;
+      if (granted) {
+        // Generate a unique filename for the image
+        const filename = `10${user_id}${moment().format('YYYYMMDD')}${
+          all_loandata.length + 1
+        }SG${index}.jpg`;
+        const directory = '/storage/emulated/0/Pictures/Signature/';
+        const filePath = directory + filename;
+        await RNFS.mkdir(directory);
 
-      // Check if the directory exists, and create it if it doesn't
-      const dirExists = await RNFS.exists(directoryPath);
-      if (!dirExists) {
-        await RNFS.mkdir(directoryPath);
+        // Write the base64-encoded image data to the destination path
+        await RNFS.writeFile(filePath, image_encode, 'base64');
+        console.log('filePath', filePath);
+
+        // Check if the file exists
+        const fileExists = await RNFS.exists(filePath);
+        console.log('File exists:', fileExists);
+
+        return filePath;
+      } else {
+        console.log('Write storage permission denied.');
+        return null;
       }
-
-      // Generate a unique file name for the signature image
-      const fileName = `10${user_id}TB${moment().format('YYYYMMDD')}${
-        all_loandata.length + 1
-      }SG${index}.jpg`;
-
-      // Construct the file path
-      const filePath = `${directoryPath}/${fileName}`;
-
-      // Save the signature image to the internal storage
-      await RNFS.writeFile(filePath, signatureData, 'base64');
-
-      console.log('Signature saved successfully:', filePath);
-      return fileName;
     } catch (error) {
       console.log('Error saving signature:', error);
-      throw error;
+      return null;
     }
   };
 
@@ -2138,49 +2314,49 @@ function Edit_Individual_Loan(props) {
         }
       });
     } else {
-      alert('Update');
+      try {
+        // Save the images
+        let borrowerImagePath, coBorrowerImagePath;
+        if (show_borrower_sign) {
+          borrowerImagePath = await saveSignatureToInternalStorage(
+            show_borrower_sign,
+            '01',
+          );
+        }
+
+        if (show_coborrower_sign) {
+          coBorrowerImagePath = await saveSignatureToInternalStorage(
+            show_coborrower_sign,
+            '02',
+          );
+          console.log(
+            'Co-Borrower image saved successfully:',
+            coBorrowerImagePath,
+          );
+        }
+
+        const loan_data = Object.assign({}, values, {
+          borrower_sign: borrowerImagePath
+            ? borrowerImagePath
+            : values.borrower_sign,
+          co_borrower_sign: coBorrowerImagePath
+            ? coBorrowerImagePath
+            : values.co_borrower_sign,
+            product_type:10
+        });
+        await updateLoanData(loan_data).then(result => {
+          if (result == 'success') {
+            dispatch(reset('Edit_Individual_Loan_Form'));
+            resetMonthlyIncome();
+
+            ToastAndroid.show(`Update Successfully!`, ToastAndroid.SHORT);
+            props.navigation.navigate('Home');
+          }
+        });
+      } catch (error) {
+        console.log('Error:', error);
+      }
     }
-    // try {
-    //   // Save the images
-    //   let borrowerImagePath, coBorrowerImagePath;
-
-    //   if (borrower_sign_path) {
-    //     borrowerImagePath = await saveSignatureToInternalStorage(
-    //       borrower_sign_path,
-    //       '01',
-    //     );
-    //     console.log('Borrower image saved successfully:', borrowerImagePath);
-    //   }
-
-    //   if (coborrower_sign_path) {
-    //     coBorrowerImagePath = await saveSignatureToInternalStorage(
-    //       coborrower_sign_path,
-    //       '02',
-    //     );
-    //     console.log(
-    //       'Co-Borrower image saved successfully:',
-    //       coBorrowerImagePath,
-    //     );
-    //   }
-
-    // //     // Only call the store function if at least one image was saved successfully
-
-    //   const loan_data = Object.assign({}, values, {
-    //     borrower_sign: borrowerImagePath || null,
-    //     co_borrower_sign: coBorrowerImagePath || null,
-    //   });
-    //   await storeLoanData(loan_data).then(result => {
-    //     if (result == 'success') {
-    //       dispatch(reset('Individual_Loan_Form'));
-    //       resetMonthlyIncome();
-
-    //       ToastAndroid.show(`Create Successfully!`, ToastAndroid.SHORT);
-    //       props.navigation.navigate('Home');
-    //     }
-    //   });
-    // } catch (error) {
-    //   console.log('Error:', error);
-    // }
   };
 
   const showCustomerSearch = () => {
@@ -2286,6 +2462,12 @@ function Edit_Individual_Loan(props) {
     };
   }, [navigation]);
 
+  useEffect(() => {
+    if (update_status == true) {
+      setOperation('3');
+    }
+  }, [update_status]);
+
   const handleCalculate = () => {
     loan_max_data.map(value => {
       if (30 == loan_type_value) {
@@ -2353,8 +2535,11 @@ function Edit_Individual_Loan(props) {
     setCanvas(false);
   };
   const _onCoBorrowerSaveEvent = async result => {
-    setCoBorrowerSignPath(result.pathName);
+    // setCoBorrowerSignPath(result.pathName);
     setShowCoBorrowerSign(result.encoded);
+    if (result.encoded) {
+      setCoBorrowerSignPath('');
+    }
 
     setCoBorrowerCanvas(false);
   };

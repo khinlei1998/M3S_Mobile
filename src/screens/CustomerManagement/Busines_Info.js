@@ -26,7 +26,13 @@ function Busines_Info() {
   const MonthlyIncomeFun = () => {
     setBusinessInfo(!open_business_info);
   };
-  const numbers = Array.from({length: 60}, (_, i) => i + 1);
+  // const numbers = Array.from({length: 60}, (_, i) => i + 1);
+  const numbers = Array.from({length: 60}, (_, i) => (i + 1).toString());
+
+  const arrayWithObjects = numbers.map((num, index) => {
+    return {id: num, label: num, value: num};
+  });
+
 
   const handlePeroidChange = (value, input) => {
     input.onChange(value.id);
@@ -83,13 +89,14 @@ function Busines_Info() {
                 ShowRadioBtnChange={(value, input) =>
                   handlePeroidChange(value, input)
                 }
+                get_value={1}
               />
             </View>
 
             <View style={style.input_container_style}>
               {show_businessdate == '1' ? (
                 <Field
-                  num_data={numbers}
+                  num_data={arrayWithObjects}
                   name={'workplace_date'}
                   title={'Select a Value'}
                   component={DropDownPicker}
@@ -142,13 +149,14 @@ function Busines_Info() {
                   ShowRadioBtnChange={(value, input) =>
                     handleCurrBusinessChange(value, input)
                   }
+                  get_value={1}
                 />
               </View>
 
               <View style={style.input_container_style}>
                 {show_business_date == 'estimated' ? (
                   <Field
-                    num_data={numbers}
+                    num_data={arrayWithObjects}
                     name={'curr_workplace_date'}
                     title={'Select a Value'}
                     component={DropDownPicker}
