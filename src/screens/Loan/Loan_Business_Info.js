@@ -51,7 +51,7 @@ function Loan_Business_Info(props) {
 
           <View style={style.sub_list_container}>
             <Field
-              name={'workplace_period'}
+              name={'workplace_date'}
               component={DatePicker}
               label={'Business Peroid'}
               icon={'calendar'}
@@ -87,7 +87,7 @@ function Loan_Business_Info(props) {
 
           <View style={style.sub_list_container}>
             <Field
-              name={'curr_workplace_perd'}
+              name={'curr_workplace_date'}
               component={DatePicker}
               label={'Working Time in current business'}
               icon={'calendar'}

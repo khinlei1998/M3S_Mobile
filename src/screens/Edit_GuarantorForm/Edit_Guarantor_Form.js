@@ -8,13 +8,13 @@ import {
   TouchableHighlight,
   ToastAndroid,
 } from 'react-native';
-import React, { useState, useEffect, createRef } from 'react';
+import React, {useState, useEffect, createRef} from 'react';
 import DividerLine from '../../components/DividerLine';
-import { operations, emp_filter_item } from '../../common';
-import { reduxForm, Field, change, reset } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import {operations, emp_filter_item} from '../../common';
+import {reduxForm, Field, change, reset} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
 import RNFS from 'react-native-fs';
-import { storeGuarantor } from '../../query/Guarantor_query';
+import {storeGuarantor} from '../../query/Guarantor_query';
 import {
   Button,
   RadioButton,
@@ -25,20 +25,21 @@ import {
   TextInput,
 } from 'react-native-paper';
 import SignatureCapture from 'react-native-signature-capture';
-import { style } from '../../style/Guarantor_style';
+import {style} from '../../style/Guarantor_style';
 import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
 import Edit_Guarantor_Info from './Edit_Guarantor_Info';
 import Edit_Guarantor_Business_Info from './Edit_Guarantor_Business_Info';
 import Edit_Guarantor_Contract from './Edit_Guarantor_Contract';
 import Edit_Guarantor_Sign from './Edit_Guarantor_Sign';
-import { filterCustomer } from '../../query/Customer_query';
+import {filterCustomer} from '../../query/Customer_query';
 import Icon from 'react-native-vector-icons/Feather';
-import { Picker } from '@react-native-picker/picker';
+import {Picker} from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
-import { setGuarantor_UpdateStatus } from '../../redux/LoanReducer';
-import { deleteGuarantor_ByID } from '../../query/Guarantor_query';
+import {useNavigation} from '@react-navigation/native';
+import {setGuarantor_UpdateStatus} from '../../redux/LoanReducer';
+import {deleteGuarantor_ByID} from '../../query/Guarantor_query';
+import {updateGuarantor} from '../../query/Guarantor_query';
 // imprort validate from './Validate';
 const Borrower_Sign_Modal = props => {
   const {
@@ -97,7 +98,7 @@ const Borrower_Sign_Modal = props => {
           // backgroundColor="transparent"
           viewMode={'portrait'}
         />
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{flexDirection: 'row'}}>
           <TouchableHighlight
             style={{
               flex: 1,
@@ -111,7 +112,7 @@ const Borrower_Sign_Modal = props => {
             onPress={() => {
               saveSign();
             }}>
-            <Text style={{ color: '#fff' }}>Save</Text>
+            <Text style={{color: '#fff'}}>Save</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={{
@@ -126,7 +127,7 @@ const Borrower_Sign_Modal = props => {
             onPress={() => {
               resetSign();
             }}>
-            <Text style={{ color: '#fff' }}>Reset</Text>
+            <Text style={{color: '#fff'}}>Reset</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -194,7 +195,7 @@ const Guarantor_modal = props => {
     setGuarantorName(item.customer_nm);
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -275,8 +276,8 @@ const Guarantor_modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
@@ -298,7 +299,7 @@ const Guarantor_modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
+              <View style={{width: '50%'}}>
                 <TextInput
                   style={{
                     backgroundColor: '#fff',
@@ -369,7 +370,7 @@ const Guarantor_modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideGuarantorModal()}
                 mode="contained"
@@ -392,7 +393,7 @@ const Guarantor_modal = props => {
 };
 function Edit_Guarantor_Form(props) {
   const navigation = useNavigation();
-  const { handleSubmit, guarantor_update_status, setGuarantor_UpdateStatus } =
+  const {handleSubmit, guarantor_update_status, setGuarantor_UpdateStatus} =
     props;
   const retrive_guarantor_data = props.route.params.guarantor_data[0];
   const [show_operation, setOperation] = useState('2');
@@ -413,29 +414,21 @@ function Edit_Guarantor_Form(props) {
 
       if (granted) {
         // Generate a unique filename for the image
-        const filename = `${retrive_loan_data.application_no}SG15.jpg`;
-        console.log('Guarantor filename', filename);
+        const filename = `${retrive_guarantor_data.application_no}SG15.jpg`;
 
-        // Define the destination path in the app's internal storage
-        let destinationPath;
-        if (Platform.OS === 'android') {
-          destinationPath = `${RNFS.ExternalDirectoryPath}/${filename}`;
-        } else if (Platform.OS === 'ios') {
-          destinationPath = `${RNFS.LibraryDirectoryPath}/${filename}`;
-        } else {
-          console.log('Unsupported platform.');
-          return null;
-        }
+        const directory = '/storage/emulated/0/Pictures/Signature/';
+        const filePath = directory + filename;
+        await RNFS.mkdir(directory);
 
         // Write the base64-encoded image data to the destination path
-        await RNFS.writeFile(destinationPath, image_encode, 'base64');
-        console.log('destinationPath', destinationPath);
+        await RNFS.writeFile(filePath, image_encode, 'base64');
+        console.log('filePath', filePath);
 
         // Check if the file exists
-        const fileExists = await RNFS.exists(destinationPath);
+        const fileExists = await RNFS.exists(filePath);
         console.log('File exists:', fileExists);
 
-        return destinationPath;
+        return filePath;
       } else {
         console.log('Write storage permission denied.');
         return null;
@@ -450,9 +443,9 @@ function Edit_Guarantor_Form(props) {
     if (show_operation == '4') {
       const filePaths = [
         `/storage/emulated/0/Pictures/Signature/${values.application_no}SG15.jpg`,
-      ]
+      ];
       try {
-        const deleteFilePromises = filePaths.map(async (filePath) => {
+        const deleteFilePromises = filePaths.map(async filePath => {
           const fileExists = await RNFS.exists(filePath);
 
           if (fileExists) {
@@ -467,21 +460,53 @@ function Edit_Guarantor_Form(props) {
 
         console.log('All files deleted');
 
-        await deleteGuarantor_ByID(values.guarantee_no).then(
-          response => {
-            if (response == 'success') {
-              alert('Delete Success');
-              navigation.goBack();
-              // setUpdateStatus(false);
-              // props.navigation.navigate('Home');
-            }
-          },
-        );
+        await deleteGuarantor_ByID(values.guarantee_no).then(response => {
+          if (response == 'success') {
+            alert('Delete Success');
+            navigation.goBack();
+            // setUpdateStatus(false);
+            // props.navigation.navigate('Home');
+          }
+        });
       } catch (error) {
-        alert('Error deleting files')
+        alert('Error deleting files');
         console.log('Error deleting files:', error);
       }
+    } else {
+      try {
+        // Save the images
+        let borrowerImagePath;
+        let saveImageError = false;
+        if (borrower_sign_path) {
+          borrowerImagePath = await saveSignatureToInternalStorage(
+            show_borrower_sign,
+            '01',
+          );
+          if (!borrowerImagePath) {
+            saveImageError = true;
+            ToastAndroid.show(
+              'Error! Borrower Sign cannot save',
+              ToastAndroid.SHORT,
+            );
+          } else {
+            console.log(
+              'Borrower image saved successfully:',
+              borrowerImagePath,
+            );
+          }
+        }
 
+        if (!saveImageError) {
+          await updateGuarantor(values).then(result => {
+            if (result == 'success') {
+              ToastAndroid.show('Update Successfully!', ToastAndroid.SHORT);
+              navigation.goBack();
+            }
+          });
+        }
+      } catch (error) {
+        console.log('Error:', error);
+      }
     }
     // try {
     //   // Save the images
@@ -593,7 +618,7 @@ function Edit_Guarantor_Form(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{ flex: 1, backgroundColor: '#fff' }}>
+          <View style={{flex: 1, backgroundColor: '#fff'}}>
             <Text
               style={{
                 textAlign: 'center',
@@ -604,7 +629,7 @@ function Edit_Guarantor_Form(props) {
               }}>
               Guarantor Form
             </Text>
-            <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>
+            <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
               (Attach To Application)
             </Text>
             <DividerLine />
@@ -635,7 +660,7 @@ function Edit_Guarantor_Form(props) {
                         label={option.label}
                         value={option.value}
                         color="#000"
-                        labelStyle={{ marginLeft: 5 }}
+                        labelStyle={{marginLeft: 5}}
                       />
                     </View>
                   </RadioButton.Group>
@@ -722,7 +747,13 @@ function Edit_Guarantor_Form(props) {
                 marginBottom: 20,
               }}>
               <Button
-                disabled={guarantor_update_status == true && show_operation == '3' ? false : guarantor_update_status == false && show_operation == '4' ? false : true}
+                disabled={
+                  guarantor_update_status == true && show_operation == '3'
+                    ? false
+                    : guarantor_update_status == false && show_operation == '4'
+                    ? false
+                    : true
+                }
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
                 buttonColor={'#6870C3'}
@@ -773,4 +804,4 @@ function mapStateToProps(state) {
 export default reduxForm({
   form: 'Edit_Guarantor_Form',
   // validate,
-})(connect(mapStateToProps, { setGuarantor_UpdateStatus })(Edit_Guarantor_Form));
+})(connect(mapStateToProps, {setGuarantor_UpdateStatus})(Edit_Guarantor_Form));

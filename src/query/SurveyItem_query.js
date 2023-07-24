@@ -1,7 +1,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BASE_URL } from '../common';
+import {BASE_URL} from '../common';
 
 export function getSurvey_Item() {
   return new Promise(async (resolve, reject) => {
@@ -21,8 +21,7 @@ export function getSurvey_Item() {
         axios
           // .get(`https://${newIP}/skylark-m3s/api/employees.m3s`)
           .get(`https://${ip}:${port}/skylark-m3s/api/surveyItems.m3s`)
-          .then(({ data }) => {
-            console.log('data', data.length);
+          .then(({data}) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -141,15 +140,12 @@ export const storeSurveyResult = async data => {
               data[i].survey_item_no,
               data[i].create_datetime,
               user_id,
-              moment().format(
-                'YYYY-MM-DD'),
+              moment().format('YYYY-MM-DD'),
               data[i].delete_user_id,
-              data[i].branch_code, //login user branch code 
-              moment().format(
-                'YYYY-MM-DD'),
+              data[i].branch_code, //login user branch code
+              moment().format('YYYY-MM-DD'),
               data[i].survey_answer_yn,
-              data[i].err_msg
-
+              data[i].err_msg,
             ],
             (trans, results) => {
               resolve('success');
@@ -168,7 +164,6 @@ export const storeSurveyResult = async data => {
   });
 };
 
-
 export async function UploadSurveyData(all_survey) {
   const failedData = [];
   let ip = await AsyncStorage.getItem('ip');
@@ -178,8 +173,6 @@ export async function UploadSurveyData(all_survey) {
   try {
     for (var i = 0; i < all_survey.length; i++) {
       const data = [all_survey[i]];
-      console.log('data', data);
-
 
       let config = {
         method: 'post',
@@ -189,11 +182,10 @@ export async function UploadSurveyData(all_survey) {
         headers: {
           'Content-Type': 'application/json', // Set the content type as JSON
           'cache-control': 'no-cache',
-
         },
       };
       const response = await axios.request(config);
-      console.log('response',response);
+      console.log('response', response);
 
       if (response.data[0].errMsg) {
         const error = {
@@ -201,28 +193,25 @@ export async function UploadSurveyData(all_survey) {
         };
         failedData.push(error);
       } else {
-        for (const data of all_survey) {
-          console.log('data',data.survey_result_no);
-          await new Promise((resolve, reject) => {
-            global.db.transaction(tx => {
-              tx.executeSql(
-                `DELETE * FROM survey_result WHERE survey_result_no = ?  `,
-                [data.survey_result_no],
-                (txObj, resultSet) => {
-                  console.log('Delete from survey_result successful');
-                  resolve();
-                },
-                (txObj, error) => {
-                  console.error(
-                    'Delete from survey_result error:',
-                    error,
-                  );
-                  reject(error);
-                },
-              );
-            });
+        // for (const data of all_survey) {
+        // console.log('data',data.survey_result_no);
+        await new Promise((resolve, reject) => {
+          global.db.transaction(tx => {
+            tx.executeSql(
+              `DELETE  FROM survey_result WHERE survey_result_no = ?  `,
+              [all_survey[i].survey_result_no],
+              (txObj, resultSet) => {
+                console.log('Delete from survey_result successful');
+                resolve();
+              },
+              (txObj, error) => {
+                console.error('Delete from survey_result error:', error);
+                reject(error);
+              },
+            );
           });
-        }
+        });
+        // }
       }
     }
 

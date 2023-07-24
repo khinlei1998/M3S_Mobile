@@ -22,6 +22,7 @@ export default function RadioButtonFile(props) {
             key={index}>
             <View style={{ flexDirection: 'row' }}>
               <RadioButton.Item
+              color="#636Dc6"
                 label={val.name}
                 key={val.id}
 

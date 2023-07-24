@@ -44,66 +44,67 @@ export default function Synchronization_Screen() {
     });
     try {
       // Call the API here
-      await UploadSurveyData(all_survey).then(async surveyResult => {
-        if (surveyResult == 'success') {
-          await UploadCustomerData(customer_data).then(async result => {
-            if (result == 'success') {
-              await loadData();
-              setLoading(false);
+      // await UploadSurveyData(all_survey).then(async surveyResult => {
+      //   if (surveyResult == 'success') {
+      //     await UploadCustomerData(customer_data).then(async result => {
+      //       if (result == 'success') {
+      //         await loadData();
+      //         setLoading(false);
 
-              alert('All update success');
-            } else if (result.length > 0) {
-              setLoading(false);
+      //         alert('All update success');
+      //       } else if (result.length > 0) {
+      //         setLoading(false);
 
-              setCusFailedData(result);
-              setCusErrorModalVisible(true);
-              await loadData();
-            } else {
-              await loadData();
-              setLoading(false);
-              alert('Axios Error ');
-            }
-          });
-        } else if (surveyResult.length > 0) {
-          setLoading(false);
-          setCusFailedData(surveyResult);
-          setCusErrorModalVisible(true);
-          await loadData();
-        } else {
-          await loadData();
-          setLoading(false);
-          alert('Axios Error');
-        }
-      })
+      //         setCusFailedData(result);
+      //         setCusErrorModalVisible(true);
+      //         await loadData();
+      //       } else {
+      //         await loadData();
+      //         setLoading(false);
+      //         alert('Axios Error ');
+      //       }
+      //     });
+      //   } else if (surveyResult.length > 0) {
+      //     setLoading(false);
+      //     setCusFailedData(surveyResult);
+      //     setCusErrorModalVisible(true);
+      //     await loadData();
+      //   } else {
+      //     await loadData();
+      //     setLoading(false);
+      //     alert('Axios Error');
+      //   }
+      // })
 
 
-      // const uploadCustomerResult = await UploadCustomerData(customer_data);
-      // console.log('uploadCustomerResult', uploadCustomerResult);
+      const uploadCustomerResult = await UploadCustomerData(customer_data);
+      console.log('uploadCustomerResult', uploadCustomerResult);
 
-      // const uploadSurveyResult = await UploadSurveyData(all_survey);
-      // console.log('uploadSurveyResult', uploadSurveyResult);
+      const uploadSurveyResult = await UploadSurveyData(all_survey);
+      console.log('uploadSurveyResult', uploadSurveyResult);
 
-      // if (
-      //   uploadCustomerResult === 'success' &&
-      //   uploadSurveyResult === 'success'
-      // ) {
-      //   await loadData();
-      //   setLoading(false);
+      if (
+        uploadCustomerResult === 'success' &&
+        uploadSurveyResult === 'success'
+      ) {
+        await loadData();
+        setLoading(false);
 
-      //   alert('All update success');
-      // } else if (uploadCustomerResult.length > 0 || uploadSurveyResult.length > 0) {
-      //   const mergedArray = [...uploadCustomerResult, ...uploadSurveyResult];
+        alert('All update success');
+      } else if (uploadCustomerResult.length > 0 || uploadSurveyResult.length > 0) {
+        console.log('reach');
+        const mergedArray = [...uploadCustomerResult, ...uploadSurveyResult];
 
-      //   setLoading(false);
+        setLoading(false);
 
-      //   setCusFailedData(mergedArray);
-      //   setCusErrorModalVisible(true);
-      //   await loadData();
-      // } else {
-      //   await loadData();
-      //   setLoading(false);
-      //   alert('Axios Error ');
-      // }
+        setCusFailedData(uploadCustomerResult);
+        setCusErrorModalVisible(true);
+        await loadData();
+      } else {
+        await loadData();
+        setLoading(false);
+        alert('Axios Error ');
+      }
       // updateTableSyncStatus('13')
     } catch (error) {
       setLoading(false);

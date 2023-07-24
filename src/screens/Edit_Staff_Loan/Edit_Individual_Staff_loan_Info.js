@@ -11,8 +11,9 @@ import {
   ToastAndroid,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState, useEffect, useRef, createRef} from 'react';
+import React, {useState, useEffect, useRef, createRef, useMemo} from 'react';
 import DividerLine from '../../components/DividerLine';
+import {updateLoanData} from '../../query/AllLoan_query';
 import {style} from '../../style/Individula_staff_Loan_Style';
 import {
   operations,
@@ -29,6 +30,7 @@ import {reduxForm, Field, change, reset, formValueSelector} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/Feather';
 import {Picker} from '@react-native-picker/picker';
+import BottomSheet from 'react-native-simple-bottom-sheet';
 import {
   RadioButton,
   Button,
@@ -59,6 +61,11 @@ import {
   deleteStaffLoan_ByID,
   updateStaffLoanData,
 } from '../../query/StaffLoan_query';
+import {getGuarantorData} from '../../query/Guarantor_query';
+import {getExceptionalApproval} from '../../query/Exceptional_Approval_query';
+import {getRelationData} from '../../query/RelationShip_query';
+import {getEvaluationData} from '../../query/AreaEvaluation_query';
+import { updateGuarantor } from '../../query/Guarantor_query';
 const Borrower_Sign_Modal = props => {
   const {
     show_canvas,
@@ -70,6 +77,7 @@ const Borrower_Sign_Modal = props => {
     resetSign,
     sign,
   } = props;
+  console.log('show_canvas', show_canvas);
   return (
     <Modal
       visible={show_canvas}
@@ -275,22 +283,21 @@ const Emp_No_Search_modal = props => {
   const btnSelectEmployee = item => {
     setSelectedValue(item.serial_no);
     dispatch(
-      change('Individual_Staff_Loan_Form', 'borrower_name', item.employee_name),
+      change('Edit_Individual_Staff_Loan_Form', 'borrower_name', item.employee_name),
     );
     dispatch(
       change(
-        'Individual_Staff_Loan_Form',
+        'Edit_Individual_Staff_Loan_Form',
         'resident_rgst_id',
         item.resident_rgst_id,
       ),
     );
     dispatch(
-      change('Individual_Staff_Loan_Form', 'employee_no', item.employee_no),
+      change('Edit_Individual_Staff_Loan_Form', 'employee_no', item.employee_no),
     );
   };
 
   const item = ({item, index}) => {
-    console.log('item', item);
     return (
       <View
         style={{
@@ -510,28 +517,27 @@ const CoBorrower_NRC_Search_modal = props => {
       .catch(error => console.log('error', error));
   };
   const btnSelectCustomer = item => {
-    console.log('item', item);
     setSelectedValue(item.id);
     dispatch(
       change(
-        'Individual_Staff_Loan_Form',
+        'Edit_Individual_Staff_Loan_Form',
         'co_customer_no',
         item.co_customer_no,
       ),
     );
     dispatch(
-      change('Individual_Staff_Loan_Form', 'co_brwer_name', item.customer_nm),
+      change('Edit_Individual_Staff_Loan_Form', 'co_brwer_name', item.customer_nm),
     );
     dispatch(
       change(
-        'Individual_Staff_Loan_Form',
+        'Edit_Individual_Staff_Loan_Form',
         'resident_rgst_id',
         item.resident_rgst_id,
       ),
     );
     dispatch(
       change(
-        'Individual_Staff_Loan_Form',
+        'Edit_Individual_Staff_Loan_Form',
         'co_brwer_rgst_id',
         item.resident_rgst_id,
       ),
@@ -1818,6 +1824,10 @@ function Individual_Staff_loan_Info(props) {
   const [all_village, setAllVillage] = useState([]);
   const [all_ward, setAllWard] = useState([]);
   const [all_location, setAllLocation] = useState([]);
+  const [exceptional_data, setExceptionalData] = useState([]);
+  const [guarantor_data, setGuarantorData] = useState([]);
+  const [relation_data, setRelationData] = useState([]);
+  const [evaluation_data, setEvaluationData] = useState([]);
   const [modal_city_visible, setCityCodeModalVisible] = useState(false);
   const [selectedCityItemValue, setCitySelectedItemValue] =
     useState('city_code');
@@ -1856,27 +1866,387 @@ function Individual_Staff_loan_Info(props) {
 
     await getAllLoan().then(loan_data => {
       setAllLoanData(loan_data);
-      dispatch(
-        change(
-          'Individual_Staff_Loan_Form',
-          'application_no',
-          `20${user_id}TB${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
-        ),
-      );
-      dispatch(
-        change(
-          'Individual_Staff_Loan_Form',
-          'product_type',
-          `Individual Staff Loan`,
-        ),
-      );
+      // dispatch(
+      //   change(
+      //     'Individual_Staff_Loan_Form',
+      //     'application_no',
+      //     `20${user_id}TB${moment().format('YYYYMMDD')}${loan_data.length + 1}`,
+      //   ),
+      // );
+      // dispatch(
+      //   change(
+      //     'Individual_Staff_Loan_Form',
+      //     'product_type',
+      //     `Individual Staff Loan`,
+      //   ),
+      // );
     });
+    await getExceptionalApproval(retrive_staff_loan_data.application_no).then(
+      data => {
+        setExceptionalData(data);
+      },
+    );
+    await getGuarantorData(retrive_staff_loan_data.application_no).then(
+      data => {
+        setGuarantorData(data);
+      },
+    );
+    await getRelationData(retrive_staff_loan_data.application_no).then(data => {
+      setRelationData(data);
+    });
+    await getEvaluationData(retrive_staff_loan_data.application_no).then(
+      data => {
+        setEvaluationData(data);
+      },
+    );
   };
+
+  const RenderBottomSheet = () =>
+    useMemo(() => {
+      return (
+        <BottomSheet isOpen={false} wrapperStyle={{backgroundColor: '#3E3E84'}}>
+          <View style={{padding: 5, marginLeft: 10}}>
+            <View style={{flexDirection: 'row'}}>
+              <Icon name="paperclip" size={25} color="#fff" />
+              <Text style={{color: '#fff', fontSize: 20, marginLeft: 10}}>
+                Document Submit
+              </Text>
+            </View>
+
+            <View
+              style={{
+                flex: 1,
+                marginTop: 20,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <View
+                style={{
+                  flexDirection: 'column',
+                  marginBottom: 16,
+                }}>
+                <TouchableOpacity
+                  onPress={() =>
+                    update_status == true && guarantor_data.length == 0
+                      ? props.navigation.navigate('Guarantor', {
+                          retrive_loan_data: retrive_staff_loan_data,
+                        })
+                      : update_status == true && guarantor_data.length > 0
+                      ? props.navigation.navigate('Edit Guarantor', {
+                          guarantor_data,
+                        })
+                      : ToastAndroid.show(
+                          `Only update can modify`,
+                          ToastAndroid.SHORT,
+                        )
+                  }
+                  style={{
+                    width: 250,
+                    height: 40,
+                    backgroundColor:
+                      guarantor_data.length > 0 ? '#3E3E84' : '#242157',
+                    margin: 10,
+                  }}>
+                  {guarantor_data.length > 0 ? (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        margin: 5,
+                      }}>
+                      <View
+                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        <Icon name="check" size={20} color="#ede72d" />
+                        <Text style={{color: '#fff', marginLeft: 5}}>
+                          Guarantor Form
+                        </Text>
+                      </View>
+                    </View>
+                  ) : (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        margin: 5,
+                      }}>
+                      <View
+                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        <Icon name="paperclip" size={20} color="#fff" />
+                        <Text style={{color: '#fff', marginLeft: 5}}>
+                          Guarantor Form
+                        </Text>
+                      </View>
+                      <Icon name="chevron-right" size={25} color="#fff" />
+                    </View>
+                  )}
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() =>
+                    update_status == true && evaluation_data.length == 0
+                      ? props.navigation.navigate('Area Evaluation', {
+                          retrive_loan_data: retrive_staff_loan_data,
+                        })
+                      : update_status == true && evaluation_data.length > 0
+                      ? props.navigation.navigate('Edit Area Evaluation', {
+                          evaluation_data,
+                        })
+                      : ToastAndroid.show(
+                          `Only update can modify`,
+                          ToastAndroid.SHORT,
+                        )
+                  }
+                  // onPress={() =>
+                  //   props.navigation.navigate('Area Evaluation', {
+                  //     retrive_staff_loan_data,
+                  //   })
+                  // }
+                  style={{
+                    width: 250,
+                    height: 40,
+                    backgroundColor:
+                      evaluation_data.length > 0 ? '#3E3E84' : '#242157',
+                    margin: 10,
+                  }}>
+                  {evaluation_data.length > 0 ? (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        margin: 5,
+                      }}>
+                      <View
+                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        <Icon name="check" size={20} color="#ede72d" />
+                        <Text style={{color: '#fff', marginLeft: 5}}>
+                          Area Evaluation Form
+                        </Text>
+                      </View>
+                    </View>
+                  ) : (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        margin: 5,
+                      }}>
+                      <View
+                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        <Icon name="paperclip" size={20} color="#fff" />
+                        <Text style={{color: '#fff', marginLeft: 5}}>
+                          Area Evaluation Form
+                        </Text>
+                      </View>
+                      <Icon name="chevron-right" size={25} color="#fff" />
+                    </View>
+                  )}
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() =>
+                    update_status == true && relation_data.length == 0
+                      ? props.navigation.navigate('Relation Form', {
+                          retrive_loan_data: retrive_staff_loan_data,
+                        })
+                      : update_status == true && relation_data.length > 0
+                      ? props.navigation.navigate('Edit Relation', {
+                          relation_data,
+                        })
+                      : ToastAndroid.show(
+                          `Only update can modify`,
+                          ToastAndroid.SHORT,
+                        )
+                  }
+                  style={{
+                    width: 250,
+                    height: 40,
+                    backgroundColor:
+                      relation_data.length > 0 ? '#3E3E84' : '#242157',
+                    margin: 10,
+                  }}>
+                  {relation_data.length > 0 ? (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        margin: 5,
+                      }}>
+                      <View
+                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        <Icon name="check" size={20} color="#ede72d" />
+                        <Text style={{color: '#fff', marginLeft: 5}}>
+                          RelationShip Form
+                        </Text>
+                      </View>
+                    </View>
+                  ) : (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        margin: 5,
+                      }}>
+                      <View
+                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        <Icon name="paperclip" size={20} color="#fff" />
+                        <Text style={{color: '#fff', marginLeft: 5}}>
+                          RelationShip Form
+                        </Text>
+                      </View>
+                      <Icon name="chevron-right" size={25} color="#fff" />
+                    </View>
+                  )}
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'column',
+                  marginBottom: 16,
+                }}>
+                <TouchableOpacity
+                  onPress={() =>
+                    props.navigation.navigate('Evidence', {
+                      retrive_loan_data: retrive_staff_loan_data,
+                    })
+                  }
+                  style={{
+                    width: 250,
+                    height: 40,
+                    backgroundColor: '#242157',
+                    margin: 10,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      margin: 5,
+                    }}>
+                    <View style={{alignItems: 'center', flexDirection: 'row'}}>
+                      <Icon name="paperclip" size={20} color="#fff" />
+                      <Text style={{color: '#fff', marginLeft: 5}}>
+                        Evidence Document Form
+                      </Text>
+                    </View>
+                    <Icon name="chevron-right" size={25} color="#fff" />
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() =>
+                    update_status == true && exceptional_data.length == 0
+                      ? props.navigation.navigate('Exceptional_Approvel_Form', {
+                          retrive_loan_data: retrive_staff_loan_data,
+                        })
+                      : update_status == true && exceptional_data.length > 0
+                      ? props.navigation.navigate(
+                          'Edit_Exceptional_Approvel_Form',
+                          {exceptional_data},
+                        )
+                      : ToastAndroid.show(
+                          `Only update can modify`,
+                          ToastAndroid.SHORT,
+                        )
+                  }
+                  style={{
+                    width: 250,
+                    height: 40,
+                    backgroundColor:
+                      exceptional_data.length > 0 ? '#3E3E84' : '#242157',
+                    margin: 10,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      margin: 5,
+                    }}>
+                    {exceptional_data.length > 0 ? (
+                      <View
+                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        <Icon name="check" size={20} color="#ede72d" />
+                        <Text style={{color: '#fff', marginLeft: 5}}>
+                          Exceptional Approval Request...
+                        </Text>
+                      </View>
+                    ) : (
+                      <View
+                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        <Icon name="paperclip" size={20} color="#fff" />
+                        <Text style={{color: '#fff', marginLeft: 5}}>
+                          Exceptional Approval Request...
+                        </Text>
+                        <Icon name="chevron-right" size={25} color="#fff" />
+                      </View>
+                    )}
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    width: 250,
+                    height: 40,
+                    backgroundColor: '#242157',
+                    margin: 10,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      margin: 5,
+                    }}>
+                    <View style={{alignItems: 'center', flexDirection: 'row'}}>
+                      <Icon name="paperclip" size={20} color="#fff" />
+                      <Text style={{color: '#fff', marginLeft: 5}}>
+                        Passport Photo
+                      </Text>
+                    </View>
+                    <Icon name="chevron-right" size={25} color="#fff" />
+                  </View>
+                </TouchableOpacity>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: 'column',
+                  marginBottom: 16,
+                  justifyContent: 'center',
+                }}>
+                <Button
+                  onPress={() => alert('Hello')}
+                  mode="contained"
+                  buttonColor={'#0480B7'}
+                  style={{
+                    borderRadius: 0,
+                    width: 130,
+                    height: 70,
+                    borderRadius: 10,
+                    justifyContent: 'center',
+                  }}>
+                  Save
+                </Button>
+
+                <Button
+                  disabled={true}
+                  mode="contained"
+                  buttonColor={'#6870C3'}
+                  style={{
+                    borderRadius: 0,
+                    width: 130,
+                    height: 70,
+                    borderRadius: 10,
+                    justifyContent: 'center',
+                    marginTop: 5,
+                  }}>
+                  Cancel
+                </Button>
+              </View>
+            </View>
+          </View>
+        </BottomSheet>
+      );
+    }, [guarantor_data, exceptional_data, relation_data, evaluation_data]);
 
   useEffect(() => {
     loadData();
   }, []);
-
+  console.log('retrive_staff_loan_data', retrive_staff_loan_data);
   useEffect(() => {
     retrive_staff_loan_data.loan_limit_amt
       ? setLoanLimitAmount(retrive_staff_loan_data.loan_limit_amt)
@@ -1908,98 +2278,101 @@ function Individual_Staff_loan_Info(props) {
       setCoBorrowerSignPath(retrive_staff_loan_data.co_borrower_sign);
     }
     props.initialize(staff_loan_data);
+    if (retrive_staff_loan_data.product_type == '20') {
+      dispatch(
+        change(
+          'Edit_Individual_Staff_Loan_Form',
+          'product_type',
+          `Individual Staff Loan`,
+        ),
+      );
+    }
+    console.log('staff_loan_data', staff_loan_data);
   }, []);
+
+  const saveSignatureToInternalStorage = async (image_encode, index) => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    try {
+      // Request write storage permission
+      // const granted = await requestWriteStoragePermission();
+      const granted = await AsyncStorage.getItem('writeStoragePermission');
+
+      if (granted) {
+        // Generate a unique filename for the image
+        const filename = `20${user_id}${moment().format('YYYYMMDD')}${
+          all_loandata.length + 1
+        }SG${index}.jpg`;
+        const directory = '/storage/emulated/0/Pictures/Signature/';
+        const filePath = directory + filename;
+        await RNFS.mkdir(directory);
+
+        // Write the base64-encoded image data to the destination path
+        await RNFS.writeFile(filePath, image_encode, 'base64');
+        console.log('filePath', filePath);
+
+        // Check if the file exists
+        const fileExists = await RNFS.exists(filePath);
+        console.log('File exists:', fileExists);
+
+        return filePath;
+      } else {
+        console.log('Write storage permission denied.');
+        return null;
+      }
+    } catch (error) {
+      console.log('Error saving signature:', error);
+      return null;
+    }
+  };
 
   const onSubmit = async values => {
     if (show_operation == '4') {
       await deleteStaffLoan_ByID(values).then(response => {
         if (response == 'success') {
-          ToastAndroid.show(
-            'Delete Success',
-            ToastAndroid.SHORT,
-          );
-          // setUpdateStatus(false);
+          ToastAndroid.show('Delete Success', ToastAndroid.SHORT);
           props.navigation.navigate('Home');
         }
       });
     } else {
-      await updateStaffLoanData(values).then(res => {
-        if (res == 'success') {
-          ToastAndroid.show(
-            'Update Success',
-            ToastAndroid.SHORT,
-          );          // setUpdateStatus(false);
-          props.navigation.navigate('Home');
+      try {
+        // Save the images
+        let borrowerImagePath, coBorrowerImagePath;
+        if (show_borrower_sign) {
+          borrowerImagePath = await saveSignatureToInternalStorage(
+            show_borrower_sign,
+            '01',
+          );
         }
-      });
+
+        if (show_coborrower_sign) {
+          coBorrowerImagePath = await saveSignatureToInternalStorage(
+            show_coborrower_sign,
+            '02',
+          );
+        }
+        const loan_data = Object.assign({}, values, {
+          borrower_sign: borrowerImagePath
+            ? borrowerImagePath
+            : values.borrower_sign,
+          co_borrower_sign: coBorrowerImagePath
+            ? coBorrowerImagePath
+            : values.co_borrower_sign,
+          product_type: 20,
+        });
+        console.log('loan_data', loan_data);
+        await updateLoanData(loan_data).then(result => {
+          if (result == 'success') {
+            dispatch(reset('Edit_Individual_Staff_Loan_Form'));
+
+            ToastAndroid.show(`Update Successfully!`, ToastAndroid.SHORT);
+            props.navigation.navigate('Home');
+          }
+        });
+      } catch (error) {
+        console.log('Error:', error);
+      }
     }
-    // try {
-    //   // Save the images
-    //   let borrowerImagePath, coBorrowerImagePath;
-    //   let saveImageError = false;
 
-    //   if (borrower_sign_path) {
-    //     borrowerImagePath = await saveSignatureToInternalStorage(
-    //       show_borrower_sign,
-    //       '01',
-    //     );
-    //     if (!borrowerImagePath) {
-    //       saveImageError = true;
-    //       ToastAndroid.show(
-    //         'Error! Borrower Sign cannot save',
-    //         ToastAndroid.SHORT,
-    //       );
-    //     } else {
-    //       console.log('Borrower image saved successfully:', borrowerImagePath);
-    //     }
-    //   }
-
-    //   if (coborrower_sign_path) {
-    //     coBorrowerImagePath = await saveSignatureToInternalStorage(
-    //       show_coborrower_sign,
-    //       '02',
-    //     );
-    //     if (!coBorrowerImagePath) {
-    //       saveImageError = true;
-    //       ToastAndroid.show(
-    //         'Error! Co-Borrower Sign cannot save',
-    //         ToastAndroid.SHORT,
-    //       );
-    //     } else {
-    //       console.log(
-    //         'Co-Borrower image saved successfully:',
-    //         coBorrowerImagePath,
-    //       );
-    //     }
-    //   }
-    //   console.log('borrowerImagePath', borrowerImagePath);
-    //   const exists = await RNFS.exists(filePath);
-    //   if (exists) {
-    //     console.log('exist');
-    //   } else {
-    //     console.log('no exist');
-    //   }
-    //   if (!saveImageError) {
-    //     const staff_loan = Object.assign({}, values, {
-    //       borrower_sign: borrowerImagePath,
-    //       co_borrower_sign: coBorrowerImagePath,
-    //       loan_limit_amt: loan_limit_amount
-    //     });
-
-    //     console.log('staff_loan', staff_loan);
-
-    //     await storeStaffLoanData(staff_loan).then(result => {
-    //       if (result == 'success') {
-    //         dispatch(reset('Individual_Staff_Loan_Form'));
-
-    //         ToastAndroid.show('Create Successfully!', ToastAndroid.SHORT);
-    //         props.navigation.navigate('Home');
-    //       }
-    //     });
-    //   }
-    // } catch (error) {
-    //   console.log('Error:', error);
-    // }
   };
 
   const showCustomerSearch = () => {
@@ -2054,8 +2427,10 @@ function Individual_Staff_loan_Info(props) {
     setCoBorrowerModalVisible(true);
   };
   const _onSaveEvent = async result => {
-    setBorrowerSignPath(result.pathName);
     setShowBorrowerSign(result.encoded);
+    if (result.encoded) {
+      setBorrowerSignPath('');
+    }
 
     setCanvas(false);
   };
@@ -2070,8 +2445,11 @@ function Individual_Staff_loan_Info(props) {
     console.log('dragged');
   };
   const _onCoBorrowerSaveEvent = async result => {
-    setCoBorrowerSignPath(result.pathName);
+    // setCoBorrowerSignPath(result.pathName);
     setShowCoBorrowerSign(result.encoded);
+    if (result.encoded) {
+      setCoBorrowerSignPath('');
+    }
 
     setCoBorrowerCanvas(false);
   };
@@ -2305,6 +2683,8 @@ function Individual_Staff_loan_Info(props) {
           </View>
         </TouchableWithoutFeedback>
       </ScrollView>
+
+      <RenderBottomSheet />
 
       <Emp_No_Search_modal
         hideModal={hideModal}

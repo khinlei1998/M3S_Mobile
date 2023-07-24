@@ -25,10 +25,9 @@ function Viewloan(props) {
     }
   };
   const item = ({item, index}) => {
-    console.log('item', item);
-    const foundItem = loan_application_type.filter(
-      data => data.value == item.product_type,
-    );
+    // const foundItem = loan_application_type.filter(
+    //   data => data.value == item.product_type,
+    // );
     return (
       <TouchableOpacity onPress={() => btn_inquiry_loan(item)}>
         <View
@@ -50,7 +49,7 @@ function Viewloan(props) {
               padding: 10,
               flex: 1,
             }}>
-            {foundItem[0].label}
+            {/* {foundItem[0].label} */}
           </Text>
           <Text
             style={{

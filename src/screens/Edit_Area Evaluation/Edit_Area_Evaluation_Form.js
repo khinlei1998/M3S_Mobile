@@ -37,6 +37,7 @@ import {useNavigation} from '@react-navigation/native';
 import {setAREA_UpdateStatus} from '../../redux/LoanReducer';
 import {deleteAreaEvaluation_ByID} from '../../query/AreaEvaluation_query';
 import {setEvaluation_Score} from '../../redux/LoanReducer';
+import { updateAreaEvaluation } from '../../query/AreaEvaluation_query';
 function Edit_Area_Evaluation_Form(props) {
   const navigation = useNavigation();
   const filtered_operations = operations.filter(item => item.value != 1);
@@ -46,13 +47,17 @@ function Edit_Area_Evaluation_Form(props) {
     area_update_status,
     setAREA_UpdateStatus,
     setEvaluation_Score,
+    total_score
   } = props;
   const [show_operation, setOperation] = useState('2');
   const [area_evaluation_expanded, setAreaEvaluationExpanded] = useState(true);
   const [updatetotal_sts_flag, setTotal_sts_flag] = useState('');
 
   const retrive_area_evaluation = props.route.params.evaluation_data[0];
-  console.log('retrive_area_evaluation', retrive_area_evaluation.total_sts_flag);
+  console.log(
+    'retrive_area_evaluation',
+    retrive_area_evaluation.total_sts_flag,
+  );
   const loadData = async () => {
     props.initialize(retrive_area_evaluation);
     setEvaluation_Score(retrive_area_evaluation.total_score);
@@ -81,13 +86,18 @@ function Edit_Area_Evaluation_Form(props) {
           }
         },
       );
+    } else {
+      const area_data = Object.assign({}, values, {
+        total_sts_flag: updatetotal_sts_flag,
+        total_score:total_score
+      });
+      await updateAreaEvaluation(area_data).then(result => {
+        if (result == 'success') {
+          ToastAndroid.show(`Update Success`, ToastAndroid.SHORT);
+          navigation.goBack();
+        }
+      });
     }
-    await storeAreaEvaluation(values).then(result => {
-      if (result == 'success') {
-        ToastAndroid.show(`Insert Success`, ToastAndroid.SHORT);
-        navigation.goBack();
-      }
-    });
   };
   const btnChangeOperation = newValue => {
     setOperation(newValue);
@@ -259,6 +269,7 @@ function Edit_Area_Evaluation_Form(props) {
 function mapStateToProps(state) {
   return {
     area_update_status: state.loan.area_update_status,
+    total_score: state.loan.evaluation_score,
   };
 }
 

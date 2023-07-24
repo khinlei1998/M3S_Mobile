@@ -436,11 +436,11 @@ export const location_code = [
 
 export const borrower_type = [
   {
-    id: '1',
+    id: 'N',
     name: 'New Borrower',
   },
   {
-    id: '2',
+    id: 'E',
     name: 'Old Borrower',
   },
 ];
@@ -584,19 +584,15 @@ export const interest_rate = [
 export const state = [
   {
     id: 1,
-    label: '1/',
-    value: 'M',
+    label: '1/Kachin',
+    value: '1/Kachin',
   },
   {
     id: 2,
-    label: '2/',
-    value: 'F',
+    label: '2/Kayah',
+    value: '2/Kayah',
   },
-  {
-    id: 3,
-    label: '3/',
-    value: '0',
-  },
+
 ];
 
 // export const BASE_URL='https://8582-103-231-92-61.ngrok-free.app/'

@@ -11,6 +11,7 @@ function Edit_Guarantor_Sign(props) {
     guarantor_name,
     guarantor_update_status,
   } = props;
+  const queryParam = `?timestamp=${Date.now()}`;
 
   const btnShowBorrowerSign = () => {
     setCanvas(!show_canvas);
@@ -62,7 +63,7 @@ function Edit_Guarantor_Sign(props) {
                 }>
                 <Image
                   source={{
-                    uri: `file:///storage/emulated/0/Pictures/Signature/${borrower_sign_path}`,
+                    uri: `file:///storage/emulated/0/Pictures/Signature/${borrower_sign_path}${queryParam}`,
                   }}
                   style={{width: 100, height: 50}}
                 />

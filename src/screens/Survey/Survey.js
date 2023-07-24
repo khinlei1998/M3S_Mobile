@@ -25,7 +25,6 @@ export default function Survey(props) {
       setUserID(val);
     });
     await getSurveyResult().then(data => {
-      console.log('data',data);
       setSurveyResultCount(data.length + 1);
     });
     await get_loged_branch_code().then(data => {

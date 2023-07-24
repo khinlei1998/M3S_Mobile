@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { BASE_URL } from '../common';
+import {BASE_URL} from '../common';
 
 export const getNRC_info = () => {
   return new Promise(async (resolve, reject) => {
@@ -15,7 +15,7 @@ export const getNRC_info = () => {
           axios
             // .get(`https://${ip}`, {})
             .get(`https://${ip}:${port}/skylark-m3s/api/nrcCodeInfo.m3s`)
-            .then(({ data }) => {
+            .then(({data}) => {
               if (data.length > 0) {
                 global.db.transaction(tx => {
                   data.forEach(item => {
@@ -95,7 +95,6 @@ export const getNRC_info = () => {
 
 //             console.log('nrc_state_code from table>>>>',nrc_state_code);
 
-
 //             const nrc_prefixdata = Object.entries(collection).reduce(
 //               (result, [id, values]) => {
 //                 const transformedValues = values.map(value => ({
@@ -152,7 +151,7 @@ export const fetchNRCinfo = async () => {
 
             for (let i = 0; i < results.rows.length; i++) {
               const obj = results.rows.item(i);
-              const key = obj.state_code  ;
+              const key = obj.state_code + obj.state_name;
 
               if (!collection[key]) {
                 collection[key] = [];
@@ -160,17 +159,15 @@ export const fetchNRCinfo = async () => {
 
               collection[key].push(obj.nrc_prefix_code);
             }
-            console.log('collection',collection);
 
-            const nrc_state_code = Object.entries(collection).map(([name]) => ({
-              ['id']: name,
-              ['label']: name,
-              ['value']: name,
-            }));
-
-            console.log('nrc_state_code from table>>>>',nrc_state_code);
-
-
+            const nrc_state_code = Object.entries(collection).map(
+              ([name, key], index) => ({
+                ['id']: index + 1,
+                ['label']: name,
+                ['value']: name,
+              }),
+            );
+            console.log('nrc_state_code',nrc_state_code);
             const nrc_prefixdata = Object.entries(collection).reduce(
               (result, [id, values]) => {
                 const transformedValues = values.map(value => ({
@@ -183,8 +180,6 @@ export const fetchNRCinfo = async () => {
               },
               [],
             );
-
-            console.log('nrc_prefix code from table>>>>',nrc_prefixdata);
 
             resolve([nrc_state_code, nrc_prefixdata]);
           } else {
