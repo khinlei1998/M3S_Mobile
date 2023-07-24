@@ -789,7 +789,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           console.log('individual_loan_data', individual_loan_data);
           const loan_applicationNo = loan_data.application_no;
 
-          
+
 
           let formData = new FormData();
           formData.append(
@@ -798,7 +798,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           );
           formData.append(
             'individualApplication',
-            JSON.stringify('[]'),
+            JSON.stringify(individual_loan_data),
           );
           formData.append('guarantee', '[]');
           formData.append('areaEvaluation', '[]');
@@ -822,6 +822,110 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           };
           const response = await axios.request(config);
           console.log('Group loan response ', response);
+          if (
+            response.data.groupApplication &&
+            response.data.groupApplication[0].errMsg
+          ) {
+            const error = {
+              form: 'Group Application',
+              message: response.data.groupApplication[0].errMsg,
+            };
+            failedData.push(error);
+          } else {
+            //1
+            successCount++;
+            global.db.transaction(tx => {
+              tx.executeSql(
+                'UPDATE Group_application set tablet_sync_sts=? where group_aplc_no=?',
+                ['01', data.group_aplc_no],
+                (txObj, resultSet) => {
+                  console.log('Update successful');
+                },
+                (txObj, error) => {
+                  reject(error);
+                  console.error('Update error:', error);
+                },
+              );
+            });
+          }
+          if (
+            response.data.individualApplication &&
+            response.data.individualApplication[0].errMsg
+          ) {
+            const error = {
+              form: 'individualApplication',
+              message: response.data.individualApplication[0].errMsg,
+            };
+            failedData.push(error);
+          } else {
+            //1
+            successCount++;
+            global.db.transaction(tx => {
+              tx.executeSql(
+                'UPDATE Individual_application set tablet_sync_sts=? where application_no=?',
+                ['01', data.application_no],
+                (txObj, resultSet) => {
+                  console.log('Update successful');
+                },
+                (txObj, error) => {
+                  reject(error);
+                  console.error('Update error:', error);
+                },
+              );
+            });
+          }
+          if (response.data.guarantee) {
+            if (response.data.guarantee[0] && response.data.guarantee[0].errMsg) {
+              const error = {
+                form: 'guarantee',
+                message: response.data.guarantee[0].errMsg,
+              };
+              failedData.push(error);
+            } else {
+              //1
+              global.db.transaction(tx => {
+                tx.executeSql(
+                  'UPDATE Guarantee set tablet_sync_sts=? where application_no=?',
+                  ['01', response.data.guarantee[0].application_no],
+                  (txObj, resultSet) => {
+                    console.log('Update successful');
+                  },
+                  (txObj, error) => {
+                    reject(error);
+                    console.error('Update error:', error);
+                  },
+                );
+              });
+            }
+          }
+
+          if (response.data.approvalRequests) {
+            if (
+              response.data.approvalRequests[0] &&
+              response.data.approvalRequests[0].errMsg
+            ) {
+              const error = {
+                form: 'approvalRequests',
+                message: response.data.approvalRequests[0].errMsg,
+              };
+              failedData.push(error);
+            } else {
+              //1
+              global.db.transaction(tx => {
+                tx.executeSql(
+                  'UPDATE Exception_aprv set tablet_sync_sts=? where application_no=?',
+                  ['01', response.data.approvalRequests[0].application_no],
+                  (txObj, resultSet) => {
+                    console.log('Update successful');
+                  },
+                  (txObj, error) => {
+                    reject(error);
+                    console.error('Update error:', error);
+                  },
+                );
+              });
+            }
+          }
         }
       } else {
         const applicationNo = data.application_no;
