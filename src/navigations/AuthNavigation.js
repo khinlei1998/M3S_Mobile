@@ -74,7 +74,7 @@ export default function AuthNavigation(props) {
         name="Edit_Cover_Loan"
         component={Edit_Cover_Loan_Form}
         options={{headerShown: false}}
-      />
+      /> */}
 
       <Stack.Screen
         name="Synchronization"
@@ -86,7 +86,7 @@ export default function AuthNavigation(props) {
         name="Survey"
         component={Survey}
         options={{headerShown: false}}
-      /> */}
+      />
 
       {/* <Stack.Screen
         name="Group Loan"
@@ -137,7 +137,7 @@ export default function AuthNavigation(props) {
         name="ReLoan"
         component={Reloan_Form}
         options={{headerShown: false}}
-      />
+      /> */}
       <Stack.Screen
         name="Cover Loan"
         component={Cover_Loan_Form}
@@ -152,7 +152,7 @@ export default function AuthNavigation(props) {
 
 
 
-      */}
+     
 
       {/* <Stack.Screen
         name="Borrower Map"
@@ -184,7 +184,7 @@ export default function AuthNavigation(props) {
         options={{headerShown: false}}
       />
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Edit Borrower Map"
         component={Edit_Show_Borrower_Map}
         options={{headerShown: false}}
@@ -238,7 +238,7 @@ export default function AuthNavigation(props) {
         name="Edit_Exceptional_Approvel_Form"
         component={Edit_Exceptional_Approvel_Form}
         options={{headerShown: false}}
-      />
+      /> */}
 
       <Stack.Screen
         name="Setting"

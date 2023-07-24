@@ -1,16 +1,16 @@
-import {View, Text} from 'react-native';
-import React, {useState, useEffect, createRef} from 'react';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
-import {style} from '../../style/Relation_style';
+import { View, Text } from 'react-native';
+import React, { useState, useEffect, createRef } from 'react';
+import { reduxForm, Field, change, reset } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
+import { style } from '../../style/Relation_style';
 import TextInputFile from '../../components/TextInputFile';
-import {List} from 'react-native-paper';
+import { List } from 'react-native-paper';
 import SingleCheckBox from '../../components/SingleCheckBox';
-import {relation_data} from '../../common';
+import { relation_data } from '../../common';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import DatePicker from '../../components/DatePicker';
 function Edit_Relation_Info(props) {
-  const {relation_update_status, setRelationName} = props;
+  const { relation_update_status, setRelationName } = props;
   const [relation_info_expanded, setRelationInfoExpanded] = useState(true);
   const handleRelationInfoToggle = () => {
     setRelationInfoExpanded(!relation_info_expanded);
@@ -58,7 +58,7 @@ function Edit_Relation_Info(props) {
               name={'transaction_date'}
               component={DatePicker}
               label={'Transaction Date'}
-              icon={'calendar'}
+              icon={relation_update_status && 'calendar'}
               editable={relation_update_status == true ? false : true}
             />
           </View>
@@ -75,6 +75,8 @@ function Edit_Relation_Info(props) {
               ShowRadioBtnChange={(value, input) =>
                 handleRadioButtonChange(value, input)
               }
+              disabled={relation_update_status == true ? false : true}
+
               customstyle
             />
           </View>

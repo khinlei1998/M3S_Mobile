@@ -18,6 +18,8 @@ function Edit_Relation_Contract(props) {
     relation_update_status,
     relation_name
   } = props;
+  const queryParam = `?timestamp=${Date.now()}`;
+
   const [relation_contract_expanded, setRelationContractExpanded] =
     useState(true);
   const handleRelationContractToggle = () => {
@@ -89,11 +91,11 @@ function Edit_Relation_Contract(props) {
               ) : borrower_sign_path && show_borrower_sign == '' ? (
                 <TouchableOpacity
                   onPress={() =>
-                    relation_update_status == true && btnShowBorrowerSign()
+                    relation_update_status == true && setCanvas(!show_canvas)
                   }>
                   <Image
                     source={{
-                      uri: `file:///storage/emulated/0/Pictures/Signature/${borrower_sign_path}`,
+                      uri: `file:///storage/emulated/0/Pictures/Signature/${borrower_sign_path}${queryParam}`,
                     }}
                     style={{width: 100, height: 50}}
                   />
@@ -152,7 +154,7 @@ function Edit_Relation_Contract(props) {
                   }>
                   <Image
                     source={{
-                      uri: `file:///storage/emulated/0/Pictures/Signature/${coborrower_sign_path}`,
+                      uri: `file:///storage/emulated/0/Pictures/Signature/${coborrower_sign_path}${queryParam}`,
                     }}
                     style={{width: 100, height: 50}}
                   />

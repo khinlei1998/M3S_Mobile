@@ -20,8 +20,7 @@ function Borrower_Sign(props) {
     co_borrower_filePath,
     show_co_borrower_canvas,
   } = props;
-  console.log('borrower_sign_path', borrower_sign_path);
-  console.log('show_borrower_sign', show_borrower_sign);
+
   const queryParam = `?timestamp=${Date.now()}`;
 
   return (

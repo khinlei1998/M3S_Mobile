@@ -62,6 +62,15 @@ const StackNavigationData = [
     },
   },
   {
+    name: 'Edit_Exceptional_Approvel_Form',
+    component: Edit_Exceptional_Approvel_Form,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
     name: 'Survey',
     component: Survey,
     // headerLeft: headerLeftComponent,

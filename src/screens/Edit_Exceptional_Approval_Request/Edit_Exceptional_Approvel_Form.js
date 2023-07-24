@@ -21,6 +21,7 @@ import { storeExceptionalApproval } from '../../query/Exceptional_Approval_query
 import { useNavigation } from '@react-navigation/native';
 import { setExcept_UPDATEStatus } from '../../redux/LoanReducer';
 import { deleteExceptional_approval_ByID } from '../../query/Exceptional_Approval_query';
+import { updateExceptionalApproval } from '../../query/Exceptional_Approval_query';
 function Edit_Exceptional_Approvel_Form(props) {
   const navigation = useNavigation();
   const { handleSubmit, exceptional_update_status, setExcept_UPDATEStatus } = props;
@@ -37,34 +38,20 @@ function Edit_Exceptional_Approvel_Form(props) {
           // props.navigation.navigate('Home');
         }
       });
+    } else {
+      await updateExceptionalApproval(values).then(result => {
+        if (result == 'success') {
+          ToastAndroid.show(`Update Success`, ToastAndroid.SHORT);
+          navigation.goBack();
+          // navigation.goBack('exceptionl_success');
+        }
+      })
     }
-    // await storeExceptionalApproval(values).then(result => {
-    //   if (result == 'success') {
-    //     ToastAndroid.show(`Insert Success`, ToastAndroid.SHORT);
-    //     // navigation.goBack('exceptionl_success');
-    //   }
-    // })
+
   };
   const handleLoanToggle = () => {
     setLoanExpanded(!loanexpanded);
   };
-  // const loadData = async () => {
-  //   let initialize_data = {
-  //     application_no: retrive_loan_data.application_no,
-  //     application_date: retrive_loan_data.application_date,
-  //     borrower_name: retrive_loan_data.borrower_name,
-  //     resident_rgst_id: retrive_loan_data.resident_rgst_id,
-  //     application_amt: retrive_loan_data.application_amt.toString()
-  //       ? retrive_loan_data.application_amt.toString()
-  //       : '',
-  //     birth_date: retrive_loan_data.birth_date,
-  //     excpt_aprv_rqst_no: retrive_loan_data.application_no.replace(/^[^M]*M/, 'EM')
-  //   }
-  //   props.initialize(initialize_data);
-  // };
-  // useEffect(() => {
-  //   loadData();
-  // }, []);
 
   const filtered_operations = operations.filter(item => item.value != 1);
   useEffect(() => {

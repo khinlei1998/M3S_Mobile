@@ -70,7 +70,7 @@ export const storeRelation = async data => {
 };
 
 export async function deleteRelation_ByID(relation_no) {
-  console.log('relationNo',relation_no);
+  console.log('relationNo', relation_no);
   try {
     return new Promise((resolve, reject) => {
       global.db.transaction(tx => {
@@ -102,19 +102,19 @@ export const UpdateRelation = async data => {
     try {
       global.db.transaction(trans => {
         trans.executeSql(
-          `INSERT INTO Relation_info (serial_no,relation_no,status_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,application_no,transaction_date,borrower_name,addr,resident_rgst_id,co_brwer_name,co_brwer_rgst_id,grandparent_yn,parent_yn,brother_sister_yn,husband_wife_yn,son_daughter_yn,tablet_sync_sts,sync_sts,relation_name,err_msg)
- VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+          `UPDATE  Relation_info SET serial_no=?,relation_no=?,status_code=?,create_datetime=?,create_user_id=?,delete_datetime=?,delete_user_id=?,update_datetime=?,update_user_id=?,application_no=?,transaction_date=?,borrower_name=?,addr=?,resident_rgst_id=?,co_brwer_name=?,co_brwer_rgst_id=?,grandparent_yn=?,parent_yn=?,brother_sister_yn=?,husband_wife_yn=?,son_daughter_yn=?,tablet_sync_sts=?,sync_sts=?,relation_name=?,err_msg=? WHERE relation_no = ?
+`,
           [
             //25
-            null, //serialNo
+            data.serial_no, //serialNo
             data.relation_no, //org code
-            '01', //status code
-            null, //create_datetime
-            null, //create_user_id
-            null, //deleteDatetime
-            null, //delet usr id
-            null, //updateDatetime
-            user_id, //updateUserID
+            data.status_code, //status code
+            data.create_datetime, //create_datetime
+            data.create_user_id, //create_user_id
+            data.delete_datetime, //deleteDatetime
+            data.delete_user_id, //delet usr id
+            data.update_datetime, //updateDatetime
+            data.update_user_id, //updateUserID
             data.application_no,
             data.transaction_date,
             data.borrower_name,
@@ -130,7 +130,8 @@ export const UpdateRelation = async data => {
             data.tablet_sync_sts,
             data.sync_sts,
             data.relation_name,
-            data.err_msg
+            data.err_msg,
+            data.relation_no
           ],
           (trans, results) => {
             resolve('success');

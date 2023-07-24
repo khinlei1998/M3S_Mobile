@@ -54,11 +54,11 @@ import Borrower_Sign from './Borrower_Sign';
 import SignatureCapture from 'react-native-signature-capture';
 import { storeLoanData } from '../../query/AllLoan_query';
 import validate from './Validate';
-import { TextInput } from 'react-native-paper';
-import { resetMonthlyIncome } from '../../redux/MonthlyReducer';
-import { cus_filter_item } from '../../common';
-import { setBorrowerMap_Path } from '../../redux/LoanReducer';
-import { interest_rate } from '../../common';
+import {TextInput} from 'react-native-paper';
+import {resetMonthlyIncome} from '../../redux/MonthlyReducer';
+import {cus_filter_item} from '../../common';
+import {setBorrowerMap_Path} from '../../redux/LoanReducer';
+import {interest_rate} from '../../common';
 import { RenderBottomSheet } from '../../components/RenderBotttomSheet';
 // import RNFetchBlob from 'rn-fetch-blob';
 
@@ -114,7 +114,7 @@ const Borrower_modal = props => {
         item.curr_resident_date,
       ),
     );
-    dispatch(change('Individual_Loan_Form', 'family_num', item.family_num ? item.family_num.toString() : ''));
+    dispatch(change('Individual_Loan_Form', 'family_num', item.family_num?item.family_num.toString():''));
     dispatch(
       change(
         'Individual_Loan_Form',
@@ -123,10 +123,10 @@ const Borrower_modal = props => {
       ),
     );
     dispatch(
-      change('Individual_Loan_Form', 'university_num', item.university_num ? item.university_num.toString() : ''),
+      change('Individual_Loan_Form', 'university_num', item.university_num?item.university_num.toString():''),
     );
     dispatch(
-      change('Individual_Loan_Form', 'house_ocpn_type', item.house_ocpn_type ? item.house_ocpn_type.toString() : ''),
+      change('Individual_Loan_Form', 'house_ocpn_type', item.house_ocpn_type?item.house_ocpn_type.toString():''),
     );
     dispatch(
       change(
@@ -515,7 +515,7 @@ const CoBorrower_modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '40%' }}>
+              <View style={{width: '40%'}}>
                 <TextInput
                   style={{
                     backgroundColor: '#fff',
@@ -2426,7 +2426,7 @@ function Individual_Loan(props) {
         </TouchableWithoutFeedback>
       </ScrollView>
 
-      <RenderBottomSheet />
+    <RenderBottomSheet />
       <Borrower_modal
         handleSubmit={handleSubmit}
         setAllCus={setAllCus}

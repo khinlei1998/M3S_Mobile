@@ -39,6 +39,8 @@ import {List, Modal} from 'react-native-paper';
     handleButtonClick
   } = props;
   console.log('relation_update_status',relation_update_status);
+  const queryParam = `?timestamp=${Date.now()}`;
+
   return (
     <>
       <List.Accordion
@@ -83,7 +85,7 @@ import {List, Modal} from 'react-native-paper';
                     }>
                     <Image
                       source={{
-                        uri: `file:///storage/emulated/0/Pictures/Signature/${signature1_path}`,
+                        uri: `file:///storage/emulated/0/Pictures/Signature/${signature1_path}${queryParam}`,
                       }}
                       style={{width: 100, height: 50}}
                     />
@@ -248,7 +250,7 @@ import {List, Modal} from 'react-native-paper';
                       }>
                       <Image
                         source={{
-                          uri: `data:image/png;base64,${signature1}`,
+                          uri: `data:image/png;base64,${signature7}`,
                         }}
                         style={{width: 100, height: 50}}
                       />

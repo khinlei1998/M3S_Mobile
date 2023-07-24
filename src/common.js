@@ -47,6 +47,19 @@ export const emp_filter_item = [
   },
 ];
 
+export const staff_loan_emp_filter_item = [
+  {
+    id: 1,
+    label: 'Employee Name',
+    value: 'customer_nm',
+  },
+  {
+    id: 2,
+    label: 'Employee No',
+    value: 'customer_no',
+  },
+];
+
 export const operations = [
   {
     id: 1,

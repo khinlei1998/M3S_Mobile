@@ -7,14 +7,14 @@ import {
   TouchableHighlight,
   ToastAndroid,
 } from 'react-native';
-import React, {useState, useEffect, createRef} from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import DividerLine from '../../components/DividerLine';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import { reduxForm, Field, change, reset } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
 import RNFS from 'react-native-fs';
-import {Button, RadioButton, List, Modal} from 'react-native-paper';
-import {operations, emp_filter_item} from '../../common';
-import {style} from '../../style/Relation_style';
+import { Button, RadioButton, List, Modal } from 'react-native-paper';
+import { operations, emp_filter_item } from '../../common';
+import { style } from '../../style/Relation_style';
 import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
 import EditRelation_CoBorrower from './EditRelation_CoBorrower';
@@ -23,18 +23,18 @@ import EditRelation_Contract from './EditRelation_Contract';
 import EditRelation_Member_Sign from './EditRelation_Member_Sign';
 import Icon from 'react-native-vector-icons/Feather';
 import SignatureCapture from 'react-native-signature-capture';
-import {storeRelation} from '../../query/RelationShip_query';
-import {useRef} from 'react';
+import { storeRelation } from '../../query/RelationShip_query';
+import { useRef } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
-import {getAllLoan_By_application_no} from '../../query/AllLoan_query';
-import {setRelation_UpdateStatus} from '../../redux/LoanReducer';
-import {deleteRelation_ByID} from '../../query/RelationShip_query';
+import { useNavigation } from '@react-navigation/native';
+import { getAllLoan_By_application_no } from '../../query/AllLoan_query';
+import { setRelation_UpdateStatus } from '../../redux/LoanReducer';
+import { deleteRelation_ByID } from '../../query/RelationShip_query';
 // import validate from './Validate';
-
+import { UpdateRelation } from '../../query/RelationShip_query';
 function Edit_Relation_Form(props) {
   const navigation = useNavigation();
-  const {handleSubmit, setRelation_UpdateStatus, relation_update_status} =
+  const { handleSubmit, setRelation_UpdateStatus, relation_update_status } =
     props;
   const [show_operation, setOperation] = useState('2');
   const [relation_expanded, setRelationExpanded] = useState(true);
@@ -121,7 +121,7 @@ function Edit_Relation_Form(props) {
             maxStrokeWidth={10}
             viewMode={'portrait'}
           />
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <TouchableHighlight
               style={{
                 flex: 1,
@@ -135,7 +135,7 @@ function Edit_Relation_Form(props) {
               onPress={() => {
                 saveBorrowerSign();
               }}>
-              <Text style={{color: '#fff'}}>Save</Text>
+              <Text style={{ color: '#fff' }}>Save</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={{
@@ -150,7 +150,7 @@ function Edit_Relation_Form(props) {
               onPress={() => {
                 resetBorrowerSign();
               }}>
-              <Text style={{color: '#fff'}}>Reset</Text>
+              <Text style={{ color: '#fff' }}>Reset</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -216,7 +216,7 @@ function Edit_Relation_Form(props) {
             // backgroundColor="transparent"
             viewMode={'portrait'}
           />
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <TouchableHighlight
               style={{
                 flex: 1,
@@ -230,7 +230,7 @@ function Edit_Relation_Form(props) {
               onPress={() => {
                 co_borrower_saveSign();
               }}>
-              <Text style={{color: '#fff'}}>Save</Text>
+              <Text style={{ color: '#fff' }}>Save</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={{
@@ -245,7 +245,7 @@ function Edit_Relation_Form(props) {
               onPress={() => {
                 co_borrower_resetSign();
               }}>
-              <Text style={{color: '#fff'}}>Reset</Text>
+              <Text style={{ color: '#fff' }}>Reset</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -266,7 +266,7 @@ function Edit_Relation_Form(props) {
 
       if (granted) {
         // Generate a unique filename for the image
-        const filename = `${retrive_loan_data.application_no}SG${index}.jpg`;
+        const filename = `${retrive_relation_data.application_no}SG${index}.jpg`;
         console.log('filename', filename);
 
         const directory = '/storage/emulated/0/Pictures/Signature/';
@@ -322,7 +322,6 @@ function Edit_Relation_Form(props) {
         console.log('All files deleted');
 
         await deleteRelation_ByID(values.relation_no).then(response => {
-          console.log('response', response);
           if (response === 'success') {
             alert('Delete Success');
             navigation.goBack();
@@ -333,111 +332,223 @@ function Edit_Relation_Form(props) {
         console.log('Error deleting files:', error);
       }
     } else {
-      const test = Object.assign({}, values, {
-        parent_yn: values.relationName == 1 ? '1' : '',
-        brother_sister_yn: values.relationName == 2 ? '1' : '',
+      const relation_data = Object.assign({}, values, {
+        parent_yn: values.relationName == 2 ? '1' : '',
+        brother_sister_yn: values.relationName == 3 ? '1' : '',
+        grandparent_yn: values.relationName == 1 ? '1' : '',
+        son_daughter_yn: values.relationName == 5 ? '1' : '',
+        husband_wife_yn: values.relationName == 4 ? '1' : '',
       });
-      console.log('test', test);
+      // console.log('test', test);
+      try {
+        // Save the images
+        let SignatureImagePath;
+        let borrowerImagePath;
+        let coBorrowerImagePath;
+        let saveImageError = false;
+        console.log('signature1',signature1);
+        if (signature1) {
+          SignatureImagePath = await saveSignatureToInternalStorage(
+            signature1,
+            '05',
+          );
+          if (!SignatureImagePath) {
+            saveImageError = true;
+            ToastAndroid.show(
+              'Error! Borrower Sign cannot save',
+              ToastAndroid.SHORT,
+            );
+          } else {
+            console.log('Borrower image saved successfully:', borrowerImagePath);
+          }
+        }
+        if (signature2) {
+          SignatureImagePath = await saveSignatureToInternalStorage(
+            signature2,
+            '06',
+          );
+          if (!SignatureImagePath) {
+            saveImageError = true;
+            ToastAndroid.show(
+              'Error! Borrower Sign cannot save',
+              ToastAndroid.SHORT,
+            );
+          } else {
+            console.log('Borrower image saved successfully:', borrowerImagePath);
+          }
+        }
+        if (signature3) {
+          SignatureImagePath = await saveSignatureToInternalStorage(
+            signature3,
+            '07',
+          );
+          if (!SignatureImagePath) {
+            saveImageError = true;
+            ToastAndroid.show(
+              'Error! Borrower Sign cannot save',
+              ToastAndroid.SHORT,
+            );
+          } else {
+            console.log('Borrower image saved successfully:', borrowerImagePath);
+          }
+        }
+        if (signature4) {
+          SignatureImagePath = await saveSignatureToInternalStorage(
+            signature4,
+            '08',
+          );
+          if (!SignatureImagePath) {
+            saveImageError = true;
+            ToastAndroid.show(
+              'Error! Borrower Sign cannot save',
+              ToastAndroid.SHORT,
+            );
+          } else {
+            console.log('Borrower image saved successfully:', borrowerImagePath);
+          }
+        }
+        if (signature5) {
+          SignatureImagePath = await saveSignatureToInternalStorage(
+            signature5,
+            '09',
+          );
+          if (!SignatureImagePath) {
+            saveImageError = true;
+            ToastAndroid.show(
+              'Error! Borrower Sign cannot save',
+              ToastAndroid.SHORT,
+            );
+          } else {
+            console.log('Borrower image saved successfully:', borrowerImagePath);
+          }
+        }
+        if (signature6) {
+          SignatureImagePath = await saveSignatureToInternalStorage(
+            signature6,
+            '10',
+          );
+          if (!SignatureImagePath) {
+            saveImageError = true;
+            ToastAndroid.show(
+              'Error! Borrower Sign cannot save',
+              ToastAndroid.SHORT,
+            );
+          } else {
+            console.log('Borrower image saved successfully:', borrowerImagePath);
+          }
+        }
+        if (signature7) {
+          SignatureImagePath = await saveSignatureToInternalStorage(
+            signature7,
+            '11',
+          );
+          if (!SignatureImagePath) {
+            saveImageError = true;
+            ToastAndroid.show(
+              'Error! Borrower Sign cannot save',
+              ToastAndroid.SHORT,
+            );
+          } else {
+            console.log('Borrower image saved successfully:', borrowerImagePath);
+          }
+        }
+        if (signature8) {
+          SignatureImagePath = await saveSignatureToInternalStorage(
+            signature8,
+            '12',
+          );
+          if (!SignatureImagePath) {
+            saveImageError = true;
+            ToastAndroid.show(
+              'Error! Borrower Sign cannot save',
+              ToastAndroid.SHORT,
+            );
+          } else {
+            console.log('Borrower image saved successfully:', borrowerImagePath);
+          }
+        }
+        if (signature9) {
+          SignatureImagePath = await saveSignatureToInternalStorage(
+            signature9,
+            '13',
+          );
+          if (!SignatureImagePath) {
+            saveImageError = true;
+            ToastAndroid.show(
+              'Error! Borrower Sign cannot save',
+              ToastAndroid.SHORT,
+            );
+          } else {
+            console.log('Borrower image saved successfully:', borrowerImagePath);
+          }
+        }
+        if (signature10) {
+          SignatureImagePath = await saveSignatureToInternalStorage(
+            signature10,
+            '14',
+          );
+          if (!SignatureImagePath) {
+            saveImageError = true;
+            ToastAndroid.show(
+              'Error! Borrower Sign cannot save',
+              ToastAndroid.SHORT,
+            );
+          } else {
+            console.log('Borrower image saved successfully:', borrowerImagePath);
+          }
+        }
+        if (show_borrower_sign) {
+          borrowerImagePath = await saveSignatureToInternalStorage(
+            show_borrower_sign,
+            '03',
+          );
+          if (!borrowerImagePath) {
+            saveImageError = true;
+            ToastAndroid.show(
+              'Error! Co-Borrower Sign cannot save',
+              ToastAndroid.SHORT,
+            );
+          } else {
+            console.log(
+              'Co-Borrower image saved successfully:',
+              coBorrowerImagePath,
+            );
+          }
+        }
+
+        if (show_coborrower_sign) {
+          coBorrowerImagePath = await saveSignatureToInternalStorage(
+            show_coborrower_sign,
+            '04',
+          );
+          if (!coBorrowerImagePath) {
+            saveImageError = true;
+            ToastAndroid.show(
+              'Error! Co-Borrower Sign cannot save',
+              ToastAndroid.SHORT,
+            );
+          } else {
+            console.log(
+              'Co-Borrower image saved successfully:',
+              coBorrowerImagePath,
+            );
+          }
+        }
+
+        if (!saveImageError) {
+        await UpdateRelation(relation_data).then(result => {
+          if (result == 'success') {
+            ToastAndroid.show('Update Successfully!', ToastAndroid.SHORT);
+            navigation.goBack();
+          }
+        });
+        }
+      } catch (error) {
+        console.log('Error:', error);
+      }
     }
 
-    // try {
-    //   // Save the images
-    //   let SignatureImagePath;
-    //   let borrowerImagePath;
-    //   let coBorrowerImagePath;
-    //   let saveImageError = false;
 
-    //   if (signature1_path) {
-    //     SignatureImagePath = await saveSignatureToInternalStorage(
-    //       signature1,
-    //       '05',
-    //     );
-    //     if (!SignatureImagePath) {
-    //       saveImageError = true;
-    //       ToastAndroid.show(
-    //         'Error! Borrower Sign cannot save',
-    //         ToastAndroid.SHORT,
-    //       );
-    //     } else {
-    //       console.log('Borrower image saved successfully:', borrowerImagePath);
-    //     }
-    //   }
-    //   if (signature2_path) {
-    //     SignatureImagePath = await saveSignatureToInternalStorage(
-    //       signature2,
-    //       '06',
-    //     );
-    //     if (!SignatureImagePath) {
-    //       saveImageError = true;
-    //       ToastAndroid.show(
-    //         'Error! Borrower Sign cannot save',
-    //         ToastAndroid.SHORT,
-    //       );
-    //     } else {
-    //       console.log('Borrower image saved successfully:', borrowerImagePath);
-    //     }
-    //   }
-    //   if (signature3_path) {
-    //     SignatureImagePath = await saveSignatureToInternalStorage(
-    //       signature3,
-    //       '07',
-    //     );
-    //     if (!SignatureImagePath) {
-    //       saveImageError = true;
-    //       ToastAndroid.show(
-    //         'Error! Borrower Sign cannot save',
-    //         ToastAndroid.SHORT,
-    //       );
-    //     } else {
-    //       console.log('Borrower image saved successfully:', borrowerImagePath);
-    //     }
-    //   }
-    //   if (borrower_sign_path) {
-    //     borrowerImagePath = await saveSignatureToInternalStorage(
-    //       show_borrower_sign,
-    //       '03',
-    //     );
-    //     if (!borrowerImagePath) {
-    //       saveImageError = true;
-    //       ToastAndroid.show(
-    //         'Error! Borrower Sign cannot save',
-    //         ToastAndroid.SHORT,
-    //       );
-    //     } else {
-    //       console.log('Borrower image saved successfully:', borrowerImagePath);
-    //     }
-    //   }
-
-    //   if (coborrower_sign_path) {
-    //     coBorrowerImagePath = await saveSignatureToInternalStorage(
-    //       show_coborrower_sign,
-    //       '04',
-    //     );
-    //     if (!coBorrowerImagePath) {
-    //       saveImageError = true;
-    //       ToastAndroid.show(
-    //         'Error! Co-Borrower Sign cannot save',
-    //         ToastAndroid.SHORT,
-    //       );
-    //     } else {
-    //       console.log(
-    //         'Co-Borrower image saved successfully:',
-    //         coBorrowerImagePath,
-    //       );
-    //     }
-    //   }
-
-    //   if (!saveImageError) {
-    //     await storeRelation(values).then(result => {
-    //       if (result == 'success') {
-    //         ToastAndroid.show('Create Successfully!', ToastAndroid.SHORT);
-    //         navigation.goBack();
-    //       }
-    //     });
-    //   }
-    // } catch (error) {
-    //   console.log('Error:', error);
-    // }
   };
 
   const handleButtonClick = content => {
@@ -446,7 +557,7 @@ function Edit_Relation_Form(props) {
   };
   const _onSaveEvent = async result => {
     // Extract the signature image data from the result
-    const {pathName, encoded} = result;
+    const { pathName, encoded } = result;
     console.log('Path name:', pathName);
     switch (modalContent) {
       case 'btn1':
@@ -533,7 +644,6 @@ function Edit_Relation_Form(props) {
     await co_borrower_sign.current.saveImage();
   };
   const retrive_relation_data = props.route.params.relation_data[0];
-  console.log('retrive_relation_data', retrive_relation_data);
   //if navigate back to indi loan and reach relation form set update operation
   useEffect(() => {
     if (relation_update_status == true) {
@@ -662,7 +772,7 @@ function Edit_Relation_Form(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{flex: 1, backgroundColor: '#fff'}}>
+          <View style={{ flex: 1, backgroundColor: '#fff' }}>
             <Text
               style={{
                 textAlign: 'center',
@@ -673,7 +783,7 @@ function Edit_Relation_Form(props) {
               }}>
               RelationShip Form
             </Text>
-            <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+            <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>
               (Attached To Application)
             </Text>
             <DividerLine />
@@ -704,7 +814,7 @@ function Edit_Relation_Form(props) {
                         label={option.label}
                         value={option.value}
                         color="#000"
-                        labelStyle={{marginLeft: 5}}
+                        labelStyle={{ marginLeft: 5 }}
                       />
                     </View>
                   </RadioButton.Group>
@@ -826,8 +936,8 @@ function Edit_Relation_Form(props) {
                   relation_update_status == true && show_operation == '3'
                     ? false
                     : relation_update_status == false && show_operation == '4'
-                    ? false
-                    : true
+                      ? false
+                      : true
                 }
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
@@ -876,7 +986,6 @@ function Edit_Relation_Form(props) {
             height: 300,
             alignSelf: 'center',
           }}>
-          <Text>{modalContent}</Text>
           <SignatureCapture
             style={{
               flex: 1,
@@ -889,7 +998,7 @@ function Edit_Relation_Form(props) {
             maxStrokeWidth={10}
             viewMode={'portrait'}
           />
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <TouchableHighlight
               style={{
                 flex: 1,
@@ -903,7 +1012,7 @@ function Edit_Relation_Form(props) {
               onPress={() => {
                 saveSign();
               }}>
-              <Text style={{color: '#fff'}}>Save</Text>
+              <Text style={{ color: '#fff' }}>Save</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={{
@@ -918,7 +1027,7 @@ function Edit_Relation_Form(props) {
               onPress={() => {
                 resetSign();
               }}>
-              <Text style={{color: '#fff'}}>Reset</Text>
+              <Text style={{ color: '#fff' }}>Reset</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -955,4 +1064,4 @@ function mapStateToProps(state) {
 export default reduxForm({
   form: 'Edit_Relation_Form',
   // validate,
-})(connect(mapStateToProps, {setRelation_UpdateStatus})(Edit_Relation_Form));
+})(connect(mapStateToProps, { setRelation_UpdateStatus })(Edit_Relation_Form));
