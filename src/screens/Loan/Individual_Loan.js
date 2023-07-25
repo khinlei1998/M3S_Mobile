@@ -88,7 +88,6 @@ const Borrower_modal = props => {
   };
 
   const btnSelectEmployee = item => {
-    console.log('Borrower info', item);
     setSelectedValue(item.id);
     //Borrower info
     dispatch(change('Individual_Loan_Form', 'borrower_name', item.customer_nm));
@@ -1902,7 +1901,6 @@ function Individual_Loan(props) {
   const [selectedLocationItemValue, setLocationSelectedItemValue] =
     useState('location_code');
   const [all_loandata, setAllLoanData] = useState([]);
-  console.log('indi props', props);
 
   const {
     handleSubmit,
@@ -1934,7 +1932,6 @@ function Individual_Loan(props) {
 
         // Write the base64-encoded image data to the destination path
         await RNFS.writeFile(filePath, image_encode, 'base64');
-        console.log('filePath', filePath);
 
         // Check if the file exists
         const fileExists = await RNFS.exists(filePath);

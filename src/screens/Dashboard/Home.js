@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import Viewloan from '../Loan/Viewloan';
 import {fetchEmpName} from '../../query/Employee_query';
 import {getAllLoanType} from '../../query/AllLoan_query';
-import {Modal, Portal, Button, Provider, Divider} from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
 
 export default function Home(props) {
@@ -22,36 +21,8 @@ export default function Home(props) {
       .catch(error => console.log(error));
   };
 
-  const data = [
-    {
-      id: 1,
-      type: 'Individual loan Type',
-      no: '2000000000',
-      name: 'Tun Tun',
-      amount: 500000,
-      sync: '00',
-    },
-
-    {
-      id: 2,
-      type: 'Cover loan ',
-      no: '2000000000',
-      name: 'Tun Tun',
-      amount: 900000,
-      sync: '00',
-    },
-    {
-      id: 3,
-      type: 'Individual loan Type',
-      no: '2000000000',
-      name: 'Tun Tun',
-      amount: 250000,
-      sync: '00',
-    },
-  ];
-
-  const totalAmount = data.reduce(
-    (accumulator, currentValue) => accumulator + currentValue.amount,
+  const totalAmount = loan_data.reduce(
+    (accumulator, currentValue) => currentValue.application_amt ?accumulator + currentValue.application_amt:accumulator + 0,
     0,
   );
   const formattedPrice = totalAmount

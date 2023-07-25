@@ -72,7 +72,7 @@ function Viewloan(props) {
               padding: 10,
               flex: 1,
             }}>
-            {item.past_loan_amount}
+            {item.application_amt}
           </Text>
 
           <Text
@@ -80,7 +80,7 @@ function Viewloan(props) {
               padding: 10,
               flex: 1,
             }}>
-            {item.sync_sts}
+            {item.tablet_sync_sts}
           </Text>
         </View>
       </TouchableOpacity>

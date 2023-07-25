@@ -2334,7 +2334,6 @@ function Individual_Staff_loan_Info(props) {
 
         // Write the base64-encoded image data to the destination path
         await RNFS.writeFile(filePath, image_encode, 'base64');
-        console.log('filePath', filePath);
 
         // Check if the file exists
         const fileExists = await RNFS.exists(filePath);

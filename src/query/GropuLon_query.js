@@ -47,7 +47,7 @@ export const storeGroupData = async data => {
             data.resident_rgst_id,
             data.father_name,
             data.addr,
-            data.tablet_sync_sts, //application_date,
+            '00', //application_date,
             '00',
             data.err_msg, //25
           ],
@@ -55,8 +55,8 @@ export const storeGroupData = async data => {
             resolve('success');
           },
           error => {
+            alert(error.message)
             reject(error);
-            alert(error);
           },
         );
       });

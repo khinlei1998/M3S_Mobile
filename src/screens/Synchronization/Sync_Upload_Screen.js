@@ -21,7 +21,7 @@ export default function Sync_Upload_Screen(props) {
   const [selectAll, setSelectAll] = useState(false);
   setCheckedItems
   const isChecked = item => {
-    return checkedItems.some(checkedItem => checkedItem.application_no === item.application_no);
+    return checkedItems.some(checkedItem => checkedItem.application_no?checkedItem.application_no === item.application_no:checkedItem.group_aplc_no === item.group_aplc_no);
   };
 
   const handleSelectAllToggle = () => {
@@ -40,16 +40,18 @@ export default function Sync_Upload_Screen(props) {
   };
 
   const handleCheckboxToggle = item => {
+    console.log('item',item);
     if (isChecked(item)) {
       setCheckedItems(
-        checkedItems.filter(checkedItem => checkedItem.application_no !== item.application_no),
+        checkedItems.filter(checkedItem => checkedItem.application_no?checkedItem.application_no !== item.application_no:checkedItem.group_aplc_no !== item.group_aplc_no),
       );
     } else {
       setCheckedItems([...checkedItems, item]);
     }
   };
+  console.log('checkedItems',checkedItems);
 
-  const item = ({ item }) => {
+  const item = ({ item,index }) => {
     const foundItem = loan_application_type.filter(
       data => data.value == item.product_type,
     );
@@ -66,7 +68,7 @@ export default function Sync_Upload_Screen(props) {
         <Checkbox
           key={item.id}
           status={
-            checkedItems.some(checkedItem => checkedItem.application_no === item.application_no)
+            checkedItems.some(checkedItem => checkedItem.application_no?checkedItem.application_no === item.application_no:checkedItem.group_aplc_no === item.group_aplc_no)
               ? 'checked'
               : 'unchecked'
           }
@@ -77,7 +79,7 @@ export default function Sync_Upload_Screen(props) {
             padding: 10,
             flex: 1,
           }}>
-          {item.id}
+          {index+1}
         </Text>
         <Text
           style={{
@@ -107,7 +109,7 @@ export default function Sync_Upload_Screen(props) {
             padding: 10,
             flex: 1,
           }}>
-          {item.past_loan_amount}
+          {item.application_amt}
         </Text>
         <View
           style={{
@@ -115,7 +117,7 @@ export default function Sync_Upload_Screen(props) {
             flex: 1,
             flexDirection: 'row',
           }}>
-          <Text>{item.sync_sts}</Text>
+          <Text>{item.tablet_sync_sts}</Text>
           <TouchableOpacity onPress={() => alert('pp')}>
             <Icon
               name="chevron-right"
@@ -128,7 +130,7 @@ export default function Sync_Upload_Screen(props) {
       </View>
     );
   };
- 
+
   return (
     <View style={{ marginTop: 20, marginLeft: 10, marginRight: 10, flex: 1 }}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>

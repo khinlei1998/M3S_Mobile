@@ -118,7 +118,7 @@ export default function Synchronization_Screen() {
   const btnLoanUpload = async checkedItems => {
 
     const filteredArray = loan_data.filter(obj1 =>
-      checkedItems.some(obj2 => obj2.application_no === obj1.application_no),
+      checkedItems.some(obj2 => obj2.application_no?obj2.application_no === obj1.application_no:obj2.group_aplc_no === obj1.group_aplc_no),
     );
 
     try {

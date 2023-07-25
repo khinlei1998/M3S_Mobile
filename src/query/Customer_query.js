@@ -400,8 +400,6 @@ export async function fetchAllCustomerNum() {
   });
 }
 export async function filterCustomerByEmpno(selectedColumn, searchTerm) {
-  console.log('selectedColumn',selectedColumn);
-  console.log('searchTerm',searchTerm);
   let sql;
   if (selectedColumn && searchTerm) {
     sql = `SELECT * FROM Customer  WHERE  employee_no IS NOT NULL AND employee_no <> '' AND ${selectedColumn} LIKE '%${searchTerm}%'`;

@@ -17,11 +17,12 @@ export default function DatePicker(props) {
     label,
     onAgeChange,
     icon,
-    meta,
+    meta: {touched, error},
     // input: {value, onChange, ...restInput},
     // ...rest
     onWorkingDateChange,
     input,
+    require
   } = props;
   const [showdate, setShowDate] = useState(false);
   const [date, setDate] = useState('');
@@ -49,10 +50,17 @@ export default function DatePicker(props) {
   };
   return (
     <>
-      <View style={{flexDirection: 'row', height: 66}}>
+      {/* <View style={{flexDirection: 'row', height: 66}}> */}
+      <View style={{flexDirection: 'column', height: 66}}>
+
         <TextInput
           {...input}
-          label={label}
+          // label={label}
+          label={
+            <Text style={{color:'#636Dc6'}}>
+              {label} {require && <Text style={{color: 'red'}}>*</Text>}
+            </Text>
+          }
           mode={'outlined'}
           value={date ? moment(date).format('YYYY-MM-DD') : input.value}
           // editable={editable ? false : true}
@@ -67,6 +75,7 @@ export default function DatePicker(props) {
           activeUnderlineColor="red"
           right={<TextInput.Icon icon={icon} onPress={() => showcalendar()} />}
         />
+        {touched && error && <Text style={{color: 'red'}}>{error}</Text>}
 
         <DateTimePickerModal
           onCancel={hidedate}
@@ -76,6 +85,8 @@ export default function DatePicker(props) {
           maximumDate={new Date()}
         />
       </View>
+
+
     </>
   );
 }

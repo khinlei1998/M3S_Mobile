@@ -28,6 +28,7 @@ import Group_Loan_Form from '../screens/Group_Loan/Group_Loan_Form';
 import Edit_Group_Loan_Form from '../screens/Edit_Group_Loan/Edit_Group_Loan_Form';
 import Cover_Loan_Form from '../screens/Cover Loan/Cover_Loan_Form';
 import Edit_Cover_Loan_Form from '../screens/Edit_Cover Loan/Edit_Cover_Loan_Form';
+import Reloan_Form from '../screens/Relaon/Reloan_Form';
 import Survey from '../screens/Survey/Survey';
 // import Reloan_Form from '../screens/Relaon/Reloan_Form';
 export default function AuthNavigation(props) {
@@ -44,6 +45,26 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
+      {/* <Stack.Screen
+        name="ReLoan"
+        component={Reloan_Form}
+        options={{headerShown: false}}
+      /> */}
+      {/* <Stack.Screen
+        name="Cover Loan"
+        component={Cover_Loan_Form}
+        options={{headerShown: false}}
+      /> */}
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{headerShown: false}}
+      />
+      {/* <Stack.Screen
+        name="Group Loan"
+        component={Group_Loan_Form}
+        options={{ headerShown: false }}
+      /> */}
       {/* <Stack.Screen
         name="Home"
         component={Home}
@@ -76,7 +97,7 @@ export default function AuthNavigation(props) {
         options={{headerShown: false}}
       /> */}
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Synchronization"
         component={Synchronization_Screen}
         options={{headerShown: false}}
@@ -86,12 +107,6 @@ export default function AuthNavigation(props) {
         name="Survey"
         component={Survey}
         options={{headerShown: false}}
-      />
-
-      {/* <Stack.Screen
-        name="Group Loan"
-        component={Group_Loan_Form}
-        options={{ headerShown: false }}
       /> */}
 
       {/* <Stack.Screen
@@ -107,17 +122,6 @@ export default function AuthNavigation(props) {
       /> */}
 
       {/* <Stack.Screen
-        name="Home"
-        component={Home}
-        options={{headerShown: false}}
-      />
-       <Stack.Screen
-        name="Individual_loan"
-        component={Individual_Loan}
-        options={{headerShown: false}}
-      />
-
-      <Stack.Screen
         name="Indi_Staff_loan"
         component={Individual_Staff_loan_Info}
         options={{headerShown: false}}
@@ -126,35 +130,20 @@ export default function AuthNavigation(props) {
         name="Edit_Cover_Loan"
         component={Edit_Cover_Loan_Form}
         options={{headerShown: false}}
-      />
-      <Stack.Screen
+      /> */}
+      {/* <Stack.Screen
         name="Edit_Reloan"
         component={Edit_Reloan_Form}
         options={{headerShown: false}}
       /> */}
 
       {/* <Stack.Screen
-        name="ReLoan"
-        component={Reloan_Form}
-        options={{headerShown: false}}
-      /> */}
-      <Stack.Screen
-        name="Cover Loan"
-        component={Cover_Loan_Form}
-        options={{headerShown: false}}
-      />
-
-      <Stack.Screen
         name="Edit Group Loan"
         component={Edit_Group_Loan_Form}
         options={{headerShown: false}}
       />
 
-
-
-     
-
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Borrower Map"
         component={Show_Borrower_Map}
         options={{headerShown: false}}

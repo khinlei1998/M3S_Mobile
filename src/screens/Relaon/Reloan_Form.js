@@ -25,6 +25,7 @@ import {filterCustomer} from '../../query/Customer_query';
 import {storeGroupData} from '../../query/GropuLon_query';
 import Reloan_Info from './Reloan_Info';
 import Reloan_list from './Reloan_list';
+import validate from '../Group_Loan/validate';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -375,4 +376,5 @@ function mapStateToProps(state) {
 
   export default reduxForm({
     form: 'Reloan_Form',
+    validate
   })(connect(mapStateToProps, {})(Reloan_Form));

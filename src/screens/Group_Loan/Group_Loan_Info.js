@@ -49,6 +49,7 @@ function Group_Loan_Info(props) {
               component={DatePicker}
               label={'Application Date'}
               icon={'calendar'}
+              require
             />
 
             <Field
