@@ -1,11 +1,16 @@
-import {View, Text, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
-import {List, Button} from 'react-native-paper';
-import {style} from '../../style/Cover_Loan_style';
-import {loan_application_type} from '../../common';
-export default function Edit_Cover_Loan_list(props) {
+import { View, Text, TouchableOpacity, LogBox } from 'react-native';
+import React, { useState } from 'react';
+import { List, Button } from 'react-native-paper';
+import { style } from '../../style/Cover_Loan_style';
+import { loan_application_type } from '../../common';
+import {reduxForm, Field, change, reset} from 'redux-form';
+import { addInquiryLoanData } from '../../redux/LoanReducer';
+import { connect, useDispatch } from 'react-redux';
+
+ function Edit_Cover_Loan_list(props) {
   const [Coverlist_expand, setCoverListExpand] = useState(true);
-  const {inquiry_cover_loan, navigation, all_loan} = props;
+  const { inquiry_cover_loan, navigation, all_loan,addInquiryLoanData } = props;
+  console.log('inquiry_cover_loan', inquiry_cover_loan);
   const handleCoverListToggle = () => {
     setCoverListExpand(!Coverlist_expand);
   };
@@ -109,7 +114,10 @@ export default function Edit_Cover_Loan_list(props) {
               data => data.value == val.product_type,
             );
             return (
-              <TouchableOpacity key={index}>
+              <TouchableOpacity key={index} onPress={() => {
+                addInquiryLoanData(val);
+                navigation.navigate('Edit_Individual_Loan');
+              }}>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -168,3 +176,10 @@ export default function Edit_Cover_Loan_list(props) {
     </>
   );
 }
+function mapStateToProps(state) {
+  return {
+  };
+}
+export default reduxForm({
+  form: 'Edit_Cover_Form',
+})(connect(mapStateToProps, {addInquiryLoanData})(Edit_Cover_Loan_list));

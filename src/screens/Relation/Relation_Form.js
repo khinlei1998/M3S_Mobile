@@ -28,7 +28,7 @@ import {useRef} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {getAllLoan_By_application_no} from '../../query/AllLoan_query';
-import validate from './Validate';
+// import validate from './Validate';
 
 function Relation_Form(props) {
   const navigation = useNavigation();
@@ -919,5 +919,5 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Relation_Form',
-  validate,
+  // validate,
 })(connect(mapStateToProps, {})(Relation_Form));

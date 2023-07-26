@@ -40,7 +40,6 @@ export default function Sync_Upload_Screen(props) {
   };
 
   const handleCheckboxToggle = item => {
-    console.log('item',item);
     if (isChecked(item)) {
       setCheckedItems(
         checkedItems.filter(checkedItem => checkedItem.application_no?checkedItem.application_no !== item.application_no:checkedItem.group_aplc_no !== item.group_aplc_no),
@@ -49,7 +48,6 @@ export default function Sync_Upload_Screen(props) {
       setCheckedItems([...checkedItems, item]);
     }
   };
-  console.log('checkedItems',checkedItems);
 
   const item = ({ item,index }) => {
     const foundItem = loan_application_type.filter(

@@ -22,6 +22,7 @@ function Loan_Business_Info(props) {
   const handleLoanBusinessToggle = () => {
     setLoan_BusinessInfo_expanded(!loan_business_expanded);
   };
+
   return (
     <>
       <List.Accordion

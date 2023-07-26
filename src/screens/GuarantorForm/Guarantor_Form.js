@@ -383,6 +383,7 @@ function Guarantor_Form(props) {
   const navigation = useNavigation();
   const { handleSubmit } = props;
   const retrive_loan_data = props.route.params.retrive_loan_data;
+  console.log('guarantor retrive_loan_data',retrive_loan_data);
   const [show_operation, setOperation] = useState('1');
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
   const [show_canvas, setCanvas] = useState(false);
@@ -487,6 +488,7 @@ function Guarantor_Form(props) {
 
   const loadData = async () => {
     await getAllLoan_By_application_no(retrive_loan_data.application_no).then(indi_data => {
+      console.log('indi_data',indi_data);
       let initialize_data = {
         application_no: retrive_loan_data.application_no,
         application_date: indi_data[0].application_date,
@@ -497,6 +499,7 @@ function Guarantor_Form(props) {
           : '',
         guarantee_no: retrive_loan_data.application_no.replace(/.*?(M)/, 'GTM'),
       };
+      console.log('initialize_data',initialize_data);
       props.initialize(initialize_data);
     })
     setGuaranteeDate(moment().format('YYYY/MM/DD'))

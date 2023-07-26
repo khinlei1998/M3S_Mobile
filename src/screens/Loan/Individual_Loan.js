@@ -1949,6 +1949,7 @@ function Individual_Loan(props) {
   };
 
   const onSubmit = async values => {
+    
     try {
       // Save the images
       let borrowerImagePath, coBorrowerImagePath;

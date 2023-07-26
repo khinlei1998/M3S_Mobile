@@ -25,7 +25,7 @@ import {filterCustomer} from '../../query/Customer_query';
 import {storeGroupData} from '../../query/GropuLon_query';
 import Reloan_Info from './Reloan_Info';
 import Reloan_list from './Reloan_list';
-import validate from '../Group_Loan/validate';
+import validate from '../Group_Loan/Validate';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);

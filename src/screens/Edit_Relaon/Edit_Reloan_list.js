@@ -1,10 +1,13 @@
-import {View, Text,TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
-import {List, Button} from 'react-native-paper';
-import {style} from '../../style/Cover_Loan_style';
+import { View, Text, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { List, Button } from 'react-native-paper';
+import { style } from '../../style/Cover_Loan_style';
 import { loan_application_type } from '../../common';
-export default function Reloan_list(props) {
-  const {navigation, inquiry_reloan,all_loan} = props;
+import { addInquiryLoanData } from '../../redux/LoanReducer';
+import {connect, useDispatch} from 'react-redux';
+import {reduxForm, Field, change} from 'redux-form';
+function Reloan_list(props) {
+  const { navigation, inquiry_reloan, all_loan,addInquiryLoanData } = props;
   const [Reloanlist_expand, setReloanListExpand] = useState(true);
 
   const handleReloanListToggle = () => {
@@ -27,6 +30,7 @@ export default function Reloan_list(props) {
                 p_type,
               });
             }}
+
             mode="contained"
             buttonColor={'#6870C3'}
             style={{
@@ -109,7 +113,10 @@ export default function Reloan_list(props) {
               data => data.value == val.product_type,
             );
             return (
-              <TouchableOpacity key={index}>
+              <TouchableOpacity key={index} onPress={() => {
+                addInquiryLoanData(val);
+                navigation.navigate('Edit_Individual_Loan');
+              }}>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -168,3 +175,10 @@ export default function Reloan_list(props) {
     </>
   );
 }
+function mapStateToProps(state) {
+  return {
+  };
+}
+export default reduxForm({
+  form: 'Edit_Reloan_Form',
+})(connect(mapStateToProps, {addInquiryLoanData})(Reloan_list));
