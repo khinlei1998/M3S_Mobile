@@ -383,7 +383,6 @@ function Guarantor_Form(props) {
   const navigation = useNavigation();
   const { handleSubmit } = props;
   const retrive_loan_data = props.route.params.retrive_loan_data;
-  console.log('guarantor retrive_loan_data',retrive_loan_data);
   const [show_operation, setOperation] = useState('1');
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
   const [show_canvas, setCanvas] = useState(false);

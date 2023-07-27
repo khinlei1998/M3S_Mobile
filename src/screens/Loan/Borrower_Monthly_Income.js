@@ -38,16 +38,43 @@ function Borrower_Monthly_Income(props) {
     total_business_net_total,
     totalNetIncome,
     totalLoanAmt,
+    customer_info,
   } = props;
   const [co_borrower_expanded, setBorrowerIncomeExpanded] = useState(true);
   const [values, setValues] = useState([]);
   const [familyvalues, setFamilyValues] = useState([]);
   const [total_fmly_net, setFamilyNet] = useState(0);
   const [totalnet, setTotalNet] = useState(0);
-
   const handleBorrowerIncomeToggle = () => {
     setBorrowerIncomeExpanded(!co_borrower_expanded);
   };
+
+  useEffect(() => {
+    setValues([
+      customer_info.rawmaterial_expans,
+      customer_info.wrkp_rent_expns,
+      customer_info.employee_expns,
+      customer_info.trnsrt_expns,
+      customer_info.bus_utlbil_expns,
+      customer_info.tel_expns,
+      customer_info.tax_expns,
+      customer_info.goods_loss_expns,
+      customer_info.othr_expns_1,
+      customer_info.othr_expns_2,
+    ]);
+
+    setFamilyValues([
+      customer_info.food_expns,
+      customer_info.house_mngt_expns,
+      customer_info.utlbil_expns,
+      customer_info.edct_expns,
+      customer_info.healthy_expns,
+      customer_info.fmly_trnsrt_expns,
+      customer_info.fmly_tax_expns,
+      customer_info.finance_expns,
+      customer_info.fmly_otr_expns,
+    ]);
+  }, [customer_info]);
 
   const handleNetChange = (text, index) => {
     const number = parseFloat(text);
@@ -596,6 +623,7 @@ function mapStateToProps(state) {
     total_net_business: state.monthly.totalnetbusiness,
     total_net_family: state.monthly.totalnetfamily,
     total_business_net_total,
+    customer_info: state.customers.customer_info,
   };
 }
 

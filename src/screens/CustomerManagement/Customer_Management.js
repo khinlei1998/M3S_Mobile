@@ -118,7 +118,6 @@ function Customer_Management(props) {
     setSelectedItemValue(itemValue);
   };
   const onSubmit = async values => {
-    console.log('emp_filter_data',values);
     let data = Object.assign(values, emp_filter_data, {
       createUserId: empname,
       nrc_prefix_code: values.nrc_type == '2' ? prefix : '',
@@ -127,7 +126,6 @@ function Customer_Management(props) {
         values.nrc_type == '1' ? values.nrcNo : values.resident_rgst_id,
       start_living_date_status: show_businessdate,
     });
-    console.log('Customer data', data);
     await storeCustomerData(data).then(result => {
       if (result == 'success') {
         dispatch(reset('Customer_ManagementForm'));
@@ -400,6 +398,7 @@ function Customer_Management(props) {
         item.position_title_nm,
       ),
     );
+    dispatch(change('Customer_ManagementForm', 'employeeName', item.employee_name));
   };
 
   const item = ({item, index}) => {
@@ -1620,7 +1619,7 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Customer_ManagementForm',
-  // validate,
+  validate,
 })(
   connect(mapStateToProps, {
     setCusFormInitialValues,

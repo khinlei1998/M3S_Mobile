@@ -139,6 +139,7 @@ function Customer_Base_Info(props) {
                   cus_width
                   input_mode
                   editable
+                  require
                 />
               )}
 
@@ -149,6 +150,7 @@ function Customer_Base_Info(props) {
                 input_mode
                 inputmax={100}
                 editable
+                require
               />
             </View>
 
@@ -159,6 +161,7 @@ function Customer_Base_Info(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
+                require
               />
 
               <Field

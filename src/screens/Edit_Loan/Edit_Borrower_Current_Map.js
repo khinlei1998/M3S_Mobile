@@ -5,12 +5,13 @@ import {style} from '../../style/Individual_Loan_style';
 import {reduxForm, Field, change, reset} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
 function Borrower_Current_Map(props) {
-  const {navigation, map, borrower_map, has_borrower_map, update_status} =
+  const {navigation, map, borrower_map, has_borrower_map, update_status,retrive_loan_data} =
     props;
   const [borrower_map_expanded, setBorrowerMapExpanded] = useState(true);
   const handleBorrowerMapToggle = () => {
     setBorrowerMapExpanded(!borrower_map_expanded);
   };
+  const queryParam = `?timestamp=${Date.now()}`;
 
   return (
     <List.Accordion
@@ -23,7 +24,7 @@ function Borrower_Current_Map(props) {
         <TouchableOpacity
           onPress={() =>
             update_status == true
-              ? navigation.navigate('Edit Borrower Map', {borrower_map})
+              ? navigation.navigate('Edit Borrower Map', {application_no:retrive_loan_data.application_no})
               : ''
           }>
           {map ? (
@@ -31,13 +32,13 @@ function Borrower_Current_Map(props) {
               source={{
                 uri: `file://${map}`,
               }}
-              style={{ height: 400}}
+              style={{height: 400}}
               resizeMode="contain"
             />
           ) : borrower_map ? (
             <Image
               source={{
-                uri: `file://${borrower_map}`,
+                uri: `file://${borrower_map}${queryParam}`,
               }}
               style={{width: '100%', height: 400}}
               resizeMode="contain"
@@ -57,6 +58,8 @@ function mapStateToProps(state) {
   return {
     map: state.loan.borrower_map_path,
     update_status: state.loan.update_status,
+    retrive_loan_data: state.loan.edit_loandata,
+
   };
 }
 

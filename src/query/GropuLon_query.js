@@ -66,7 +66,6 @@ export const storeGroupData = async data => {
   });
 };
 export async function getLoan_By_GroupID(group_aplc_no) {
-  console.log('reach', group_aplc_no);
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
       tx.executeSql(

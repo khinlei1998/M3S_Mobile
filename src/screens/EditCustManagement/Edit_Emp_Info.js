@@ -206,6 +206,7 @@ function Customer_Management(props) {
   const hideCityModal = () => setCityCodeModalVisible(false);
   const hideWardModal = () => setWardCodeModalVisible(false);
   const filtered_cus_data = props.route.params;
+  console.log('edit customer ',filtered_cus_data);
   const EmpInfoFun = () => {
     setEmpInfo(!open_empinfo);
   };

@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { Alert, FileSystem } from 'react-native';
+import {Alert, FileSystem} from 'react-native';
 import RNFS from 'react-native-fs';
-
+import moment from 'moment';
 export async function getAllLoan() {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
@@ -292,6 +292,7 @@ export async function getAllLoanType() {
 
 export const storeLoanData = async loan_data => {
   const user_id = await AsyncStorage.getItem('user_id');
+  const date = moment().format('YYYY-MM-DD');
   return new Promise(async (resolve, reject) => {
     try {
       global.db.transaction(trans => {
@@ -303,11 +304,11 @@ export const storeLoanData = async loan_data => {
             loan_data.application_no,
             loan_data.group_aplc_no, //group_aplc_no
             '01', //statusCode
-            '2020-09-09', //create Date Time
+            date, //create Date Time
             user_id,
             null, //deleteDatetime
             null, //delet usr id
-            null, //updateDatetime
+            date, //updateDatetime
             user_id, //updateUserID
             null, //loanStatusCode
             //
@@ -472,53 +473,69 @@ export const storeLoanData = async loan_data => {
 };
 
 export async function deleteLoan_ByID(data) {
+  console.log('data',data);
   try {
     const borrowerImagePath = data.borrower_sign;
     const coBorrowerImagePath = data.co_borrower_sign;
 
     // Delete the borrower image if it exists
-    // if (borrowerImagePath) {
-    //   try {
-    //     // await deleteImageFile(borrowerImagePath);
-    //     // await FileSystem.delete(borrowerImagePath);
-    //     const exists = await RNFS.exists(borrowerImagePath);
-    //     if (exists) {
-    //       console.log('exist');
-    //       await RNFS.unlink(borrowerImagePath);
-    //       console.log('File deleted successfully');
-    //     } else {
-    //       console.log('File does not exist');
-    //     }
+    if (borrowerImagePath) {
+      try {
+        // await deleteImageFile(borrowerImagePath);
+        // await FileSystem.delete(borrowerImagePath);
+        const exists = await RNFS.exists(borrowerImagePath);
+        if (exists) {
+          console.log('exist');
+          await RNFS.unlink(borrowerImagePath);
+          console.log('File deleted successfully');
+        } else {
+          console.log('File does not exist');
+        }
 
-    //     console.log('Borrower image deleted successfully:', borrowerImagePath);
-    //   } catch (error) {
-    //     console.error('Error deleting borrower image:', error);
-    //     // Display an alert indicating the error
-    //     alert('Error deleting borrower image');
-    //   }
-    // }
+        console.log('Borrower image deleted successfully:', borrowerImagePath);
+      } catch (error) {
+        console.error('Error deleting borrower image:', error);
+        // Display an alert indicating the error
+        alert('Error deleting borrower image');
+      }
+    }
 
-    // // Delete the co-borrower image if it exists
-    // if (coBorrowerImagePath) {
-    //   try {
-    //     const exists = await RNFS.exists(coBorrowerImagePath);
-    //     if (exists) {
-    //       console.log('co borrower exist', exists);
-    //       await RNFS.unlink(coBorrowerImagePath);
-    //       console.log('File deleted successfully');
-    //     } else {
-    //       console.log('File does not exist');
-    //     }
-    //     console.log(
-    //       'Co-borrower image deleted successfully:',
-    //       coBorrowerImagePath,
-    //     );
-    //   } catch (error) {
-    //     console.error('Error deleting co-borrower image:', error);
-    //     // Display an alert indicating the error
-    //     alert('Error deleting co-borrower image');
-    //   }
-    // }
+    // Delete the co-borrower image if it exists
+    if (coBorrowerImagePath) {
+      try {
+        const exists = await RNFS.exists(coBorrowerImagePath);
+        if (exists) {
+          console.log('co borrower exist', exists);
+          await RNFS.unlink(coBorrowerImagePath);
+          console.log('File deleted successfully');
+        } else {
+          console.log('File does not exist');
+        }
+        console.log(
+          'Co-borrower image deleted successfully:',
+          coBorrowerImagePath,
+        );
+      } catch (error) {
+        console.error('Error deleting co-borrower image:', error);
+        // Display an alert indicating the error
+        alert('Error deleting co-borrower image');
+      }
+    }
+    try {
+      const filePath = `/storage/emulated/0/Pictures/RNSketchCanvas/${data.application_no}MP01.jpg`;
+
+      const exists = await RNFS.exists(filePath);
+      if (exists) {
+        await RNFS.unlink(filePath);
+        console.log('File deleted successfully');
+      } else {
+        console.log('File does not exist');
+      }
+    } catch (error) {
+      console.error('Error deleting map image:', error);
+      // Display an alert indicating the error
+      alert('Error deleting map image');
+    }
 
     return new Promise((resolve, reject) => {
       global.db.transaction(tx => {
@@ -590,7 +607,6 @@ export async function deleteLoan_ByID(data) {
 }
 
 export async function getAllLoan_By_application_no(application_no) {
-  console.log('reach', application_no);
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
       tx.executeSql(
@@ -610,12 +626,96 @@ export async function getAllLoan_By_application_no(application_no) {
   });
 }
 
+// async function uploadImage(filePath, description) {
+//   let ip = await AsyncStorage.getItem('ip');
+//   let port = await AsyncStorage.getItem('port');
+
+//   let indi_borrower_map = new FormData();
+//   indi_borrower_map.append('description', 'anything');
+//   indi_borrower_map.append('file', {
+//     uri: `file://${filePath}`,
+//     type: 'image/jpg',
+//     name: `${filePath}`,
+//   });
+
+//   let config = {
+//     method: 'post',
+//     maxBodyLength: Infinity,
+//     url: `https://${ip}:${port}/skylark-m3s/file/upload.m3s`,
+//     headers: {
+//       'Content-Type': 'multipart/form-data',
+//     },
+//     data: indi_borrower_map,
+//   };
+
+//   axios
+//     .request(config)
+//     .then(response => {
+//       console.log('img response', response);
+//       // console.log(JSON.stringify(response.data));
+//     })
+//     .catch(error => {
+//       alert(' borrower map fail upload');
+//       console.log('image error', error);
+//       failedData.push(' borrower map fail upload');
+//     });
+
+//   // return axios
+//   //   .request(config)
+//   //   .then(response => {
+//   //     console.log('img response', response);
+//   //     return response.data; // Return the response if needed
+//   //   })
+//   //   .catch(error => {
+//   //     console.log('image error', error);
+//   //     throw new Error('Image upload failed');
+//   //   });
+// }
+
+async function uploadImage(filePath, description) {
+  let ip = await AsyncStorage.getItem('ip');
+  let port = await AsyncStorage.getItem('port');
+  try {
+    const fileExists = await RNFS.exists(filePath);
+    console.log('fileexist', filePath, fileExists);
+
+    if (fileExists) {
+      let imageForm = new FormData();
+      imageForm.append('description', description || 'anything');
+      imageForm.append('file', {
+        uri: `file://${filePath}`,
+        type: 'image/jpg',
+        name: `${filePath}`,
+      });
+
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `https://${ip}:${port}/skylark-m3s/file/upload.m3s`,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        data: imageForm,
+      };
+
+      const response = await axios.request(config);
+      console.log('img response', response);
+      return response.data; // Return the response if needed
+    } else {
+      console.log('Image does not exist:', filePath);
+      return null;
+    }
+  } catch (error) {
+    console.log('image error', error);
+    throw new Error('Image upload failed');
+  }
+}
+
 export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
   const failedData = [];
   let applicationNo;
 
   let successCount = 0;
-
 
   let success_id = [];
   let ip = await AsyncStorage.getItem('ip');
@@ -659,10 +759,20 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           tabletSyncSts: '00',
           syncSts: '00',
           customerNo: data.customer_no,
-          transactionDate: '2023-06-28', //today date 
+          transactionDate: '2023-06-28', //today date
           errMsg: '',
         };
         group_data.push(groupApplication);
+
+        // Image upload group data
+        const gp_borrower_map = `/storage/emulated/0/Pictures/RNSketchCanvas/${data.group_aplc_no}MP01.jpg`;
+        try {
+          await uploadImage(gp_borrower_map, 'Group borrower map');
+        } catch (error) {
+          // Handle the error for gp_borrower_map upload, if needed
+          console.log('Error uploading gp_borrower_map:', error);
+          return; // Stop further execution if gp_borrower_map upload fails
+        }
 
         const indiLoanData = await fetchIndiloanData(data.group_aplc_no);
         if (indiLoanData.length > 0) {
@@ -802,171 +912,44 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               address_type: loan_data.address_type,
             };
             loanDataArray.push(gp_individual_loan_data); // Store individual loan data in the array
-            applicationNo = loan_data.application_no;
+            // applicationNo = loan_data.application_no;
 
-            // const guarantee_data = await fetchGuaranteeData(applicationNo);
-            // if (guarantee_data.length > 0) {
-            //   const gurantor_data = guarantee_data.map(item => {
-            //     return {
-            //       organizationCode: item.organization_code,
-            //       serialNo: item.serial_no,
-            //       statusCode: '01',
-            //       createUserId: user_id,
-            //       updateUserId: item.update_user_id,
-            //       tabletAplcNo: item.tablet_aplc_no,
-            //       applicationNo: item.application_no,
-            //       guaranteeNo: item.guarantee_no,
-            //       tabletGuaranteeNo: item.tablet_guarantee_no,
-            //       guaranteeDate: item.guarantee_date,
-            //       guarantorNo: item.guarantor_no,
-            //       guarantorNm: item.guarantor_nm,
-            //       maritalStatus: item.marital_status,
-            //       gender: item.gender,
-            //       residentRgstId: item.resident_rgst_id,
-            //       telNo: item.tel_no,
-            //       addr: item.addr,
-            //       borrowerRltn: item.borrower_rltn,
-            //       relationPeriod: item.relation_period,
-            //       houseOcpnType: item.house_ocpn_type,
-            //       businessOwnType: item.business_own_type,
-            //       workplaceName: item.workplace_name,
-            //       workplaceType: item.workplace_type,
-            //       workplacePeriod: item.workplace_period,
-            //       employeeNum: item.employee_num,
-            //       workplaceAddr: item.workplace_addr,
-            //       landScale: item.land_scale,
-            //       landOwnType: item.land_own_type,
-            //       tabletSyncSts: '00',
-            //       syncSts: '00',
-            //     };
-            //   });
-            //   guaranteeData.push(...gurantor_data)
-            // }
+            // Image upload Indi loan map
+            const indi_loan_borrower_map = `/storage/emulated/0/Pictures/RNSketchCanvas/${loan_data.application_no}MP01.jpg`;
+            try {
+              await uploadImage(
+                indi_loan_borrower_map,
+                'Indi loan borrower map',
+              );
+            } catch (error) {
+              console.log('Error uploading indi borrower map:', error);
+              failedData.push('Error uploading indi borrower map');
 
-            // const areaevaluation = await fetchAreaEvaluation(applicationNo);
-            // if (areaevaluation.length > 0) {
-            //   const area_data = areaevaluation.map(item => {
-            //     return {
-            //       organizationCode: '',
-            //       serialNo: '',
-            //       statusCode: '01',
-            //       createUserId: user_id,
-            //       updateUserId: user_id,
-            //       tabletAreaEvltNo: '',
-            //       areaEvaluationNo: item.area_evaluation_no,
-            //       areaEvaluationDate: item.area_evaluation_date,
-            //       tabletAplcNo: '',
-            //       applicationNo: item.application_no,
-            //       townshipName: item.township_name,
-            //       villageName: item.village_name,
-            //       authName: item.auth_name,
-            //       contractNo: item.contract_no,
-            //       streetText: item.street_text,
-            //       householdsText: item.households_text,
-            //       populationText: item.population_text,
-            //       houseText: item.house_text,
-            //       houseOwnText: item.house_own_text,
-            //       houseRentText: item.house_rent_text,
-            //       propertyText: item.property_text,
-            //       propertyDocmText: item.property_docm_text,
-            //       occupation: item.occupation,
-            //       mfiNumFlag: item.mf_num_flag,
-            //       mfiRemark: item.mfi_remark,
-            //       pastdueStsFlag: item.pastdue_sts_flag,
-            //       pastdueStsRemark: item.pastdue_sta_remark,
-            //       trnsrtStsFlag: item.trnsrt_sts_flag,
-            //       trnsrtStsRemark: item.trnsrt_sts_remark,
-            //       chnlDeviceType: '00110',
-            //       tabletSyncSts: '00',
-            //       syncSts: '00',
-            //       areaSecurityFlag: item.area_security_flag,
-            //       areaSecurityRemark: item.area_security_remark,
-            //       cmncStsFlag: item.cmnc_sts_flag,
-            //       cmncStsRemark: item.cmnc_sts_remark,
-            //       economyStsFlag: item.economy_sts_flag,
-            //       economyStsRemark: item.economy_sts_remark,
-            //       incomeStsFlag: item.income_sts_flag,
-            //       incomeStsRemark: item.income_sts_remark,
-            //       householdsStsFlag: item.households_sts_flag,
-            //       householdsStsRemark: item.households_sts_remark,
-            //       localAuthSprtFlag: item.local_auth_sprt_flag,
-            //       localAuthSprtRmrk: item.local_auth_sprt_rmrk,
-            //       totalStsFlag: item.total_sts_flag,
-            //       totalStsRemark: item.total_sts_remark,
-            //       totalRemark: item.total_remark,
-            //       prepareEmplNm: item.prepare_empl_nm,
-            //       checkEmplNm: item.check_empl_nm,
-            //       summary: item.summary,
-            //     };
-            //   });
-            //   areaData.push(...area_data)
-            // }
+              return; // Stop further execution if gp_borrower_map upload fails
+            }
 
-            // const exception_aprv = await fetchExceptionAprv(applicationNo);
-            // if (exception_aprv.length > 0) {
-            //   const approval_request_data = exception_aprv.map(item => {
-            //     return {
-            //       organizationCode: '',
-            //       serialNo: '',
-            //       statusCode: '01',
-            //       createUserId: user_id,
-            //       updateUserId: user_id,
-            //       tabletExcptAprvRqstNo: '',
-            //       excptAprvRqstNo: item.excpt_aprv_rqst_no,
-            //       tabletGroupAplcNo: '',
-            //       groupAplcNo: item.group_aplc_no,
-            //       tabletAplcNo: '',
-            //       applicationNo: item.application_no,
-            //       exceptionRqstDate: item.exception_rqst_date,
-            //       borrowerName: item.borrower_name,
-            //       applicationAmt: parseInt(item.application_amt),
-            //       birthDate: item.birth_date,
-            //       borrowerAge: parseInt(item.borrower_age),
-            //       groupMemberNum: parseInt(item.group_member_num),
-            //       occupation: item.occupation,
-            //       netIncome: parseInt(item.net_income),
-            //       excptAprvRsn1: item.excpt_aprv_rsn_1,
-            //       excptAprvRsn2: item.excpt_aprv_rsn_2,
-            //       excptAprvRsn3: item.excpt_aprv_rsn_3,
-            //       exceptionReason: item.exception_reason,
-            //       recommendNm: item.recommend_nm,
-            //       tabletSyncSts: '00',
-            //       syncSts: '00',
-            //     };
-            //   });
-            //   approval_requestData.push(...approval_request_data)
-            // }
+            //sign for indi loan
 
-            // const relation_info = await fetchRelationInfo(applicationNo);
-            // if (relation_info.length > 0) {
-            //   const relation_data = relation_info.map(item => {
-            //     return {
-            //       organizationCode: '',
-            //       serialNo: '',
-            //       statusCode: '01',
-            //       createUserId: user_id,
-            //       updateUserId: item.update_user_id,
-            //       relationNo: item.relation_no,
-            //       tabletGuaranteeNo: '',
-            //       applicationNo: item.application_no,
-            //       transactionDate: item.transaction_date,
-            //       borrowerName: item.borrower_name,
-            //       addr: item.addr,
-            //       residentRgstId: item.resident_rgst_id,
-            //       coBrwerName: item.co_brwer_name,
-            //       coBrwerRgstId: item.co_brwer_rgst_id,
-            //       grandparentYn: item.grandparent_yn == 1 ? 'Y' : 'N',
-            //       parentYn: item.parent_yn == 1 ? 'Y' : 'N',
-            //       brotherSisterYn: item.brother_sister_yn == 1 ? 'Y' : 'N',
-            //       husbandWifeYn: item.husband_wife_yn == 1 ? 'Y' : 'N',
-            //       sonDaughterYn: item.son_daughter_yn == 1 ? 'Y' : 'N',
-            //       tabletSyncSts: '00',
-            //       syncSts: '00',
-            //       relationName: item.relation_name,
-            //     };
-            //   });
-            //   relationData.push(relation_data)
-            // }
+            const indi_borrower_sign = `/storage/emulated/0/Pictures/Signature/${loan_data.application_no}SG01.jpg`;
+            try {
+              await uploadImage(indi_borrower_sign, 'Indi  borrower sign');
+            } catch (error) {
+              console.log('Error uploading indi borrower sign:', error);
+              failedData.push('Error uploading indi borrower sign'); // Push the error message to the failedData array
+
+              return;
+            }
+            //coborrower sign for indi loan
+
+            const indi_coborrower_sign = `/storage/emulated/0/Pictures/Signature/${loan_data.application_no}SG02.jpg`;
+            try {
+              await uploadImage(indi_coborrower_sign, 'Indi  coborrower sign');
+            } catch (error) {
+              console.log('Error uploading indi coborrower sign:', error);
+              failedData.push('Error uploading indi coborrower sign'); // Push the error message to the failedData array
+
+              return;
+            }
           }
         }
       } else {
@@ -1104,176 +1087,47 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           prop_motorcycle_yn: data.prop_motorcycle_yn,
           property_kind: data.property_kind,
         };
-        loanDataArray.push(individual_loan_data)
-        // const guaranteeData = await fetchGuaranteeData(applicationNo);
-        // if (guaranteeData.length > 0) {
-        //   const gurantor_data = guaranteeData.map(item => {
-        //     return {
-        //       organizationCode: item.organization_code,
-        //       serialNo: item.serial_no,
-        //       statusCode: '01',
-        //       createUserId: user_id,
-        //       updateUserId: item.update_user_id,
-        //       tabletAplcNo: item.tablet_aplc_no,
-        //       applicationNo: item.application_no,
-        //       guaranteeNo: item.guarantee_no,
-        //       tabletGuaranteeNo: item.tablet_guarantee_no,
-        //       guaranteeDate: item.guarantee_date,
-        //       guarantorNo: item.guarantor_no,
-        //       guarantorNm: item.guarantor_nm,
-        //       maritalStatus: item.marital_status,
-        //       gender: item.gender,
-        //       residentRgstId: item.resident_rgst_id,
-        //       telNo: item.tel_no,
-        //       addr: item.addr,
-        //       borrowerRltn: item.borrower_rltn,
-        //       relationPeriod: item.relation_period,
-        //       houseOcpnType: item.house_ocpn_type,
-        //       businessOwnType: item.business_own_type,
-        //       workplaceName: item.workplace_name,
-        //       workplaceType: item.workplace_type,
-        //       workplacePeriod: item.workplace_period,
-        //       employeeNum: item.employee_num,
-        //       workplaceAddr: item.workplace_addr,
-        //       landScale: item.land_scale,
-        //       landOwnType: item.land_own_type,
-        //       tabletSyncSts: '00',
-        //       syncSts: '00',
-        //     };
-        //   });
-        //   guaranteeData.push(...gurantor_data)
-        // }
+        loanDataArray.push(individual_loan_data);
 
-        // const areaevaluation = await fetchAreaEvaluation(applicationNo);
-        // if (areaevaluation.length > 0) {
-        //   const area_data = areaevaluation.map(item => {
-        //     return {
-        //       organizationCode: '',
-        //       serialNo: '',
-        //       statusCode: '01',
-        //       createUserId: user_id,
-        //       updateUserId: user_id,
-        //       tabletAreaEvltNo: '',
-        //       areaEvaluationNo: item.area_evaluation_no,
-        //       areaEvaluationDate: item.area_evaluation_date,
-        //       tabletAplcNo: '',
-        //       applicationNo: item.application_no,
-        //       townshipName: item.township_name,
-        //       villageName: item.village_name,
-        //       authName: item.auth_name,
-        //       contractNo: item.contract_no,
-        //       streetText: item.street_text,
-        //       householdsText: item.households_text,
-        //       populationText: item.population_text,
-        //       houseText: item.house_text,
-        //       houseOwnText: item.house_own_text,
-        //       houseRentText: item.house_rent_text,
-        //       propertyText: item.property_text,
-        //       propertyDocmText: item.property_docm_text,
-        //       occupation: item.occupation,
-        //       mfiNumFlag: item.mf_num_flag,
-        //       mfiRemark: item.mfi_remark,
-        //       pastdueStsFlag: item.pastdue_sts_flag,
-        //       pastdueStsRemark: item.pastdue_sta_remark,
-        //       trnsrtStsFlag: item.trnsrt_sts_flag,
-        //       trnsrtStsRemark: item.trnsrt_sts_remark,
-        //       chnlDeviceType: '00110',
-        //       tabletSyncSts: '00',
-        //       syncSts: '',
-        //       areaSecurityFlag: item.area_security_flag,
-        //       areaSecurityRemark: item.area_security_remark,
-        //       cmncStsFlag: item.cmnc_sts_flag,
-        //       cmncStsRemark: item.cmnc_sts_remark,
-        //       economyStsFlag: item.economy_sts_flag,
-        //       economyStsRemark: item.economy_sts_remark,
-        //       incomeStsFlag: item.income_sts_flag,
-        //       incomeStsRemark: item.income_sts_remark,
-        //       householdsStsFlag: item.households_sts_flag,
-        //       householdsStsRemark: item.households_sts_remark,
-        //       localAuthSprtFlag: item.local_auth_sprt_flag,
-        //       localAuthSprtRmrk: item.local_auth_sprt_rmrk,
-        //       totalStsFlag: item.total_sts_flag,
-        //       totalStsRemark: item.total_sts_remark,
-        //       totalRemark: item.total_remark,
-        //       prepareEmplNm: item.prepare_empl_nm,
-        //       checkEmplNm: item.check_empl_nm,
-        //       summary: item.summary,
-        //     };
-        //   });
-        //   areaData.push(...area_data)
-        // }
-        // const exception_aprv = await fetchExceptionAprv(applicationNo);
-        // if (exception_aprv.length > 0) {
-        //   const approval_request_data = exception_aprv.map(item => {
-        //     return {
-        //       organizationCode: '',
-        //       serialNo: '',
-        //       statusCode: '01',
-        //       createUserId: user_id,
-        //       updateUserId: user_id,
-        //       tabletExcptAprvRqstNo: '',
-        //       excptAprvRqstNo: item.excpt_aprv_rqst_no,
-        //       tabletGroupAplcNo: '',
-        //       groupAplcNo: item.group_aplc_no,
-        //       tabletAplcNo: '',
-        //       applicationNo: item.application_no,
-        //       exceptionRqstDate: item.exception_rqst_date,
-        //       borrowerName: item.borrower_name,
-        //       applicationAmt: parseInt(item.application_amt),
-        //       birthDate: item.birth_date,
-        //       borrowerAge: parseInt(item.borrower_age),
-        //       groupMemberNum: parseInt(item.group_member_num),
-        //       occupation: item.occupation,
-        //       netIncome: parseInt(item.net_income),
-        //       excptAprvRsn1: item.excpt_aprv_rsn_1,
-        //       excptAprvRsn2: item.excpt_aprv_rsn_2,
-        //       excptAprvRsn3: item.excpt_aprv_rsn_3,
-        //       exceptionReason: item.exception_reason,
-        //       recommendNm: item.recommend_nm,
-        //       tabletSyncSts: '00',
-        //       syncSts: '00',
-        //     };
-        //   });
-        //   approval_requestData.push(...approval_request_data)
-        // }
+        // Image upload Indi loan map
+        const indi_loan_borrower_map = `/storage/emulated/0/Pictures/RNSketchCanvas/${data.application_no}MP01.jpg`;
+        try {
+          await uploadImage(indi_loan_borrower_map, 'Indi loan borrower map');
+        } catch (error) {
+          console.log('Error uploading indi borrower map:', error);
+          failedData.push('Error uploading indi borrower map');
 
-        // const relation_info = await fetchRelationInfo(applicationNo);
-        // if (relation_info.length > 0) {
-        //   const relation_data = relation_info.map(item => {
-        //     return {
-        //       organizationCode: '',
-        //       serialNo: '',
-        //       statusCode: '01',
-        //       createUserId: user_id,
-        //       updateUserId: item.update_user_id,
-        //       relationNo: item.relation_no,
-        //       tabletGuaranteeNo: '',
-        //       applicationNo: item.application_no,
-        //       transactionDate: item.transaction_date,
-        //       borrowerName: item.borrower_name,
-        //       addr: item.addr,
-        //       residentRgstId: item.resident_rgst_id,
-        //       coBrwerName: item.co_brwer_name,
-        //       coBrwerRgstId: item.co_brwer_rgst_id,
-        //       grandparentYn: item.grandparent_yn == 1 ? 'Y' : 'N',
-        //       parentYn: item.parent_yn == 1 ? 'Y' : 'N',
-        //       brotherSisterYn: item.brother_sister_yn == 1 ? 'Y' : 'N',
-        //       husbandWifeYn: item.husband_wife_yn == 1 ? 'Y' : 'N',
-        //       sonDaughterYn: item.son_daughter_yn == 1 ? 'Y' : 'N',
-        //       tabletSyncSts: '00',
-        //       syncSts: '',
-        //       relationName: item.relation_name,
-        //     };
+          return; // Stop further execution if gp_borrower_map upload fails
+        }
 
-        //   })
-        //   relationData.push(relation_data)
+        //sign for indi loan
 
-        // }
+        const indi_borrower_sign = `/storage/emulated/0/Pictures/Signature/${data.application_no}SG01.jpg`;
+        try {
+          await uploadImage(indi_borrower_sign, 'Indi  borrower sign');
+        } catch (error) {
+          console.log('Error uploading indi borrower sign:', error);
+          failedData.push('Error uploading indi borrower sign'); // Push the error message to the failedData array
 
+          return;
+        }
+        //coborrower sign for indi loan
+
+        const indi_coborrower_sign = `/storage/emulated/0/Pictures/Signature/${data.application_no}SG02.jpg`;
+        try {
+          await uploadImage(indi_coborrower_sign, 'Indi  coborrower sign');
+        } catch (error) {
+          console.log('Error uploading indi coborrower sign:', error);
+          failedData.push('Error uploading indi coborrower sign'); // Push the error message to the failedData array
+
+          return;
+        }
       }
       if (loanDataArray.length > 0) {
         for (const loan_data of loanDataArray) {
-          const guarantee_data = await fetchGuaranteeData(loan_data.applicationNo);
+          const guarantee_data = await fetchGuaranteeData(
+            loan_data.applicationNo,
+          );
           if (guarantee_data.length > 0) {
             const gurantor_data = guarantee_data.map(item => {
               return {
@@ -1309,10 +1163,12 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 syncSts: '00',
               };
             });
-            guaranteeData.push(...gurantor_data)
+            guaranteeData.push(...gurantor_data);
           }
 
-          const areaevaluation = await fetchAreaEvaluation(loan_data.applicationNo);
+          const areaevaluation = await fetchAreaEvaluation(
+            loan_data.applicationNo,
+          );
           if (areaevaluation.length > 0) {
             const area_data = areaevaluation.map(item => {
               return {
@@ -1368,10 +1224,12 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 summary: item.summary,
               };
             });
-            areaData.push(...area_data)
+            areaData.push(...area_data);
           }
 
-          const exception_aprv = await fetchExceptionAprv(loan_data.applicationNo);
+          const exception_aprv = await fetchExceptionAprv(
+            loan_data.applicationNo,
+          );
           if (exception_aprv.length > 0) {
             const approval_request_data = exception_aprv.map(item => {
               return {
@@ -1403,10 +1261,12 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 syncSts: '00',
               };
             });
-            approval_requestData.push(...approval_request_data)
+            approval_requestData.push(...approval_request_data);
           }
 
-          const relation_info = await fetchRelationInfo(loan_data.applicationNo);
+          const relation_info = await fetchRelationInfo(
+            loan_data.applicationNo,
+          );
           if (relation_info.length > 0) {
             const relation_data = relation_info.map(item => {
               return {
@@ -1434,12 +1294,78 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 relationName: item.relation_name,
               };
             });
-            relationData.push(...relation_data)
+            relationData.push(...relation_data);
+
+            //Borrower sign relation
+
+            const relation_borrower_sign = `/storage/emulated/0/Pictures/Signature/${loan_data.applicationNo}SG03.jpg`;
+            try {
+              await uploadImage(
+                relation_borrower_sign,
+                'relation borrower sign',
+              );
+            } catch (error) {
+              console.log('Error uploading relation_borrower_sign:', error);
+              failedData.push('Error uploading relation_borrower_sign'); // Push the error message to the failedData array
+
+              return;
+            }
+
+            //Co Borrower sign relation
+
+            const relation_coborrower_sign = `/storage/emulated/0/Pictures/Signature/${loan_data.applicationNo}SG04.jpg`;
+            try {
+              await uploadImage(
+                relation_coborrower_sign,
+                'relation  coborrower sign',
+              );
+            } catch (error) {
+              console.log('Error uploading relation_coborrower_sign:', error);
+              failedData.push('Error uploading relation_coborrower_sign'); // Push the error message to the failedData array
+
+              return;
+            }
+
+            //memeber sign
+
+            for (let index = 5; index <= 14; index++) {
+              const formattedIndex = index.toString().padStart(2, '0'); // Format the index with leading zeros
+
+              const relation_member_sign = `/storage/emulated/0/Pictures/Signature/${loan_data.applicationNo}SG${formattedIndex}.jpg`;
+              try {
+                await uploadImage(
+                  relation_member_sign,
+                  'relation relation_member_sign',
+                );
+              } catch (error) {
+                console.log(
+                  `Error uploading relation_member_sign ${index}:`,
+                  error,
+                );
+                failedData.push(
+                  `Error uploading relation_member_sign ${index}`,
+                );
+                break; // Stop further execution if image upload fails for any of the indices
+              }
+            }
+          }
+
+          //UPLOAD Evidence
+
+          for (let index = 1; index <= 11; index++) {
+            const formattedIndex = index.toString().padStart(2, '0'); // Format the index with leading zeros
+
+            const evidence_img = `/storage/emulated/0/Pictures/Camera/${loan_data.applicationNo}AT${formattedIndex}F.jpg`;
+            try {
+              await uploadImage(evidence_img, 'evidence_img');
+            } catch (error) {
+              console.log(`Error uploading evidence_img ${index}:`, error);
+              failedData.push(`Error uploading evidence_img ${index}`);
+              break; // Stop further execution if image upload fails for any of the indices
+            }
           }
         }
       }
-
-
 
       if (group_data.length > 0) {
         formData.append('groupApplication', JSON.stringify(group_data));
@@ -1463,121 +1389,13 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
       }
       //image upload for individual loan
 
-      if (data.borrower_sign) {
-        let borrower_sign_form_data = new FormData();
-        borrower_sign_form_data.append('description', 'anything');
-        borrower_sign_form_data.append('file', {
-          uri: `file://${data.borrower_sign}`,
-          type: 'image/jpg',
-          name: data.borrower_sign,
-        });
-        console.log('borrower_sign_form_data', borrower_sign_form_data);
-        let config = {
-          method: 'post',
-          maxBodyLength: Infinity,
-          url: `https://${ip}:${port}/skylark-m3s/file/upload.m3s`,
-          headers: {
-            Cookie:
-              'JSESSIONID=0KelytuY8bGOetOcT9iWeIDnpb5zOeBR68hMOxG7.desktop-3jeqpa9',
-            'Content-Type': 'multipart/form-data',
-          },
-          data: borrower_sign_form_data,
-        };
-
-        axios
-          .request(config)
-          .then(response => {
-            console.log('img response', response.status);
-            // console.log(JSON.stringify(response.data));
-          })
-          .catch(error => {
-            // alert('Borrower Sign fail upload')
-            const errorData = {
-              form: 'individualApplication',
-              message: 'Borrower Sign fail upload',
-            };
-            failedData.push(errorData);
-            console.log(error);
-          });
-      }
-
-      if (data.co_borrower_sign) {
-        let co_borrower_sign_form_data = new FormData();
-        co_borrower_sign_form_data.append('description', 'anything');
-        co_borrower_sign_form_data.append('file', {
-          uri: `file://${data.co_borrower_sign}`,
-          type: 'image/jpg',
-          name: data.co_borrower_sign,
-        });
-
-        let config = {
-          method: 'post',
-          maxBodyLength: Infinity,
-          url: `https://${ip}:${port}/skylark-m3s/file/upload.m3s`,
-          headers: {
-            Cookie:
-              'JSESSIONID=0KelytuY8bGOetOcT9iWeIDnpb5zOeBR68hMOxG7.desktop-3jeqpa9',
-            'Content-Type': 'multipart/form-data',
-          },
-          data: co_borrower_sign_form_data,
-        };
-
-        axios
-          .request(config)
-          .then(response => {
-            console.log('img response', response.status);
-            // console.log(JSON.stringify(response.data));
-          })
-          .catch(error => {
-            alert('Co Borrower Sign fail upload');
-            console.log(error);
-          });
-      }
-
-      const fileExists = await RNFS.exists(
-        `/storage/emulated/0/Pictures/RNSketchCanvas/${data.group_aplic_no ? data.group_aplic_no : data.application_no
-        }MP01.jpg`,
-      );
-      if (fileExists) {
-        let indi_borrower_map = new FormData();
-        indi_borrower_map.append('description', 'anything');
-        indi_borrower_map.append('file', {
-          uri: `file:///storage/emulated/0/Pictures/RNSketchCanvas/${data.application_no}MP01.jpg`,
-          type: 'image/jpg',
-          name: `/storage/emulated/0/Pictures/RNSketchCanvas/${data.application_no}MP01.jpg`,
-        });
-
-        let config = {
-          method: 'post',
-          maxBodyLength: Infinity,
-          url: `https://${ip}:${port}/skylark-m3s/file/upload.m3s`,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          data: indi_borrower_map,
-        };
-
-        axios
-          .request(config)
-          .then(response => {
-            console.log('img response', response.status);
-            // console.log(JSON.stringify(response.data));
-          })
-          .catch(error => {
-            alert(' borrower map fail upload');
-            console.log('image error', error);
-            failedData.push(' borrower map fail upload');
-          });
-      }
-      console.log('formData', formData);
-
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
         url:
           data.product_type == 30 ||
-            data.product_type == 40 ||
-            data.product_type == 50
+          data.product_type == 40 ||
+          data.product_type == 50
             ? `https://${ip}:${port}/skylark-m3s/api/groupLoan.m3s`
             : `https://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
         data: formData,
@@ -1917,6 +1735,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
     // Alert.alert('out Error', 'Axios error occurred.');
   }
 };
+
 const fetchGuaranteeData = async applicationNo => {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
@@ -2017,6 +1836,8 @@ const fetchRelationInfo = async applicationNo => {
 };
 export const updateLoanData = async loan_data => {
   const user_id = await AsyncStorage.getItem('user_id');
+  const date = moment().format('YYYY-MM-DD');
+
   return new Promise(async (resolve, reject) => {
     try {
       global.db.transaction(trans => {
@@ -2032,7 +1853,7 @@ export const updateLoanData = async loan_data => {
             loan_data.create_user_id,
             loan_data.delete_datetime, //deleteDatetime
             loan_data.delete_user_id, //delet usr id
-            loan_data.update_datetime, //updateDatetime
+            date, //updateDatetime
             loan_data.update_user_id, //updateUserID
             loan_data.loan_status_code, //loanStatusCode
             //

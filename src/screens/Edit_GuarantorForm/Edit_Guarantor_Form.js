@@ -476,7 +476,9 @@ function Edit_Guarantor_Form(props) {
         // Save the images
         let borrowerImagePath;
         let saveImageError = false;
-        if (borrower_sign_path) {
+        console.log('borrower_sign_path',borrower_sign_path);
+        console.log('show_borrower_sign',show_borrower_sign);
+        if (show_borrower_sign) {
           borrowerImagePath = await saveSignatureToInternalStorage(
             show_borrower_sign,
             '01',

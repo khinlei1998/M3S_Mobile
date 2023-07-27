@@ -10,9 +10,9 @@ import {
   ToastAndroid,
   TouchableOpacity,
 } from 'react-native';
-import React, { useState, useEffect, useRef, createRef } from 'react';
+import React, {useState, useEffect, useRef, createRef} from 'react';
 import DividerLine from '../../components/DividerLine';
-import { style } from '../../style/Individual_Loan_style';
+import {style} from '../../style/Individual_Loan_style';
 import BottomSheet from 'react-native-simple-bottom-sheet';
 import {
   operations,
@@ -31,37 +31,42 @@ import {
   Provider,
   Portal,
 } from 'react-native-paper';
-import { reduxForm, Field, change, reset } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import {reduxForm, Field, change, reset} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
-import { loan_type, emp_filter_item } from '../../common';
+import {loan_type, emp_filter_item} from '../../common';
 import DatePicker from '../../components/DatePicker';
-import { Picker } from '@react-native-picker/picker';
-import { getAllLoan } from '../../query/AllLoan_query';
+import {Picker} from '@react-native-picker/picker';
+import {getAllLoan} from '../../query/AllLoan_query';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Borrower_Info from './Borrower_Info';
 import Icon from 'react-native-vector-icons/Feather';
-import { filterCustomer } from '../../query/Customer_query';
+import {filterCustomer} from '../../query/Customer_query';
 import Co_Borrower_Info from './Co_Borrower_Info';
 import Loan_Business_Info from './Loan_Business_Info';
 import Borrower_Monthly_Income from './Borrower_Monthly_Income';
-import { getAllLoanMax } from '../../query/LoanMax_query';
+import {getAllLoanMax} from '../../query/LoanMax_query';
 import Borrower_Current_Map from './Borrower_Current_Map';
 import Borrower_Contract from './Borrower_Contract';
 import Borrower_Sign from './Borrower_Sign';
 import SignatureCapture from 'react-native-signature-capture';
-import { storeLoanData } from '../../query/AllLoan_query';
+import {storeLoanData} from '../../query/AllLoan_query';
 import validate from './Validate';
 import {TextInput} from 'react-native-paper';
 import {resetMonthlyIncome} from '../../redux/MonthlyReducer';
 import {cus_filter_item} from '../../common';
 import {setBorrowerMap_Path} from '../../redux/LoanReducer';
 import {interest_rate} from '../../common';
-import { RenderBottomSheet } from '../../components/RenderBotttomSheet';
-// import RNFetchBlob from 'rn-fetch-blob';
-
+import {RenderBottomSheet} from '../../components/RenderBotttomSheet';
+import {addCustomerInfo} from '../../redux/CustomerReducer';
+import {
+  totalFamilyExpense,
+  totalIncome,
+  totalExpense,
+  totalFamilyIncome,
+} from '../../redux/MonthlyReducer';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -75,6 +80,11 @@ const Borrower_modal = props => {
     handleItemValueChange,
     setAllCus,
     change,
+    totalIncome,
+    totalExpense,
+    totalFamilyIncome,
+    totalFamilyExpense,
+    addCustomerInfo,
   } = props;
 
   const onChangeEmpText = inputText => {
@@ -88,6 +98,7 @@ const Borrower_modal = props => {
   };
 
   const btnSelectEmployee = item => {
+    addCustomerInfo(item); //to calculate income
     setSelectedValue(item.id);
     //Borrower info
     dispatch(change('Individual_Loan_Form', 'borrower_name', item.customer_nm));
@@ -113,7 +124,13 @@ const Borrower_modal = props => {
         item.curr_resident_date,
       ),
     );
-    dispatch(change('Individual_Loan_Form', 'family_num', item.family_num?item.family_num.toString():''));
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'family_num',
+        item.family_num ? item.family_num.toString() : '',
+      ),
+    );
     dispatch(
       change(
         'Individual_Loan_Form',
@@ -122,10 +139,18 @@ const Borrower_modal = props => {
       ),
     );
     dispatch(
-      change('Individual_Loan_Form', 'university_num', item.university_num?item.university_num.toString():''),
+      change(
+        'Individual_Loan_Form',
+        'university_num',
+        item.university_num ? item.university_num.toString() : '',
+      ),
     );
     dispatch(
-      change('Individual_Loan_Form', 'house_ocpn_type', item.house_ocpn_type?item.house_ocpn_type.toString():''),
+      change(
+        'Individual_Loan_Form',
+        'house_ocpn_type',
+        item.house_ocpn_type ? item.house_ocpn_type.toString() : '',
+      ),
     );
     dispatch(
       change(
@@ -154,7 +179,11 @@ const Borrower_modal = props => {
       ),
     );
     dispatch(
-      change('Individual_Loan_Form', 'curr_workplace_date', item.curr_workplace_date),
+      change(
+        'Individual_Loan_Form',
+        'curr_workplace_date',
+        item.curr_workplace_date,
+      ),
     );
     dispatch(
       change(
@@ -175,9 +204,178 @@ const Borrower_modal = props => {
     );
 
     dispatch(change('Individual_Loan_Form', 'land_scale', item.land_scale));
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'totSaleIncome',
+        item.tot_sale_income ? item.tot_sale_income.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'totSaleExpense',
+        item.tot_sale_expense ? item.tot_sale_expense.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'rawmaterialExpans',
+        item.rawmaterial_expans ? item.rawmaterial_expans.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'wrkpRentExpns',
+        item.wrkp_rent_expns ? item.wrkp_rent_expns.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'employeeExpns',
+        item.employee_expns ? item.employee_expns.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'trnsrtExpns',
+        item.trnsrt_expns ? item.trnsrt_expns.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'busutlbilexpns',
+        item.bus_utlbil_expns ? item.bus_utlbil_expns.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'telExpns',
+        item.tel_expns ? item.tel_expns.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'taxExpns',
+        item.tax_expns ? item.tax_expns.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'goodsLossExpns',
+        item.goods_loss_expns ? item.goods_loss_expns.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'othrExpns1',
+        item.othr_expns_1 ? item.othr_expns_1.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'othrExpns2',
+        item.othr_expns_2 ? item.othr_expns_2.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'fmlyTotIncome',
+        item.fmly_tot_income ? item.fmly_tot_income.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'fmlyTotExpense',
+        item.fmly_tot_expense ? item.fmly_tot_expense.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'foodExpns',
+        item.food_expns ? item.food_expns.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'houseMngtExpns',
+        item.house_mngt_expns ? item.house_mngt_expns.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'utlbilExpns',
+        item.utlbil_expns.toString(),
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'edctExpns',
+        item.edct_expns ? item.edct_expns.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'healthyExpns',
+        item.healthy_expns ? item.healthy_expns.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'fmlyTrnsrtExpns',
+        item.fmly_trnsrt_expns ? item.fmly_trnsrt_expns.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'fmlyTaxExpns',
+        item.fmly_tax_expns ? item.fmly_tax_expns.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'financeExpns',
+        item.finance_expns ? item.finance_expns.toString() : '',
+      ),
+    );
+    dispatch(
+      change(
+        'Individual_Loan_Form',
+        'fmlyOtrExpns',
+        item.fmly_otr_expns ? item.fmly_otr_expns.toString() : '',
+      ),
+    );
+    totalIncome(item.tot_sale_income ? parseFloat(item.tot_sale_income) : 0);
+    totalExpense(item.tot_sale_expense ? parseFloat(item.tot_sale_expense) : 0);
+    totalFamilyIncome(
+      item.fmly_tot_income ? parseFloat(item.fmly_tot_income) : 0,
+    );
+    totalFamilyExpense(
+      item.fmly_tot_expense ? parseFloat(item.fmly_tot_expense) : 0,
+    );
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -250,8 +448,8 @@ const Borrower_modal = props => {
             flexDirection: 'row',
             justifyContent: 'space-around',
           }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ marginRight: 10 }}>Search Item:</Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={{marginRight: 10}}>Search Item:</Text>
 
             <Picker
               selectedValue={selectedItemValue}
@@ -273,7 +471,7 @@ const Borrower_modal = props => {
             </Picker>
           </View>
 
-          <View style={{ width: '40%' }}>
+          <View style={{width: '40%'}}>
             <TextInput
               style={{
                 backgroundColor: '#fff',
@@ -344,7 +542,7 @@ const Borrower_modal = props => {
           keyExtractor={(item, index) => index.toString()}
         />
 
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <Button
             onPress={() => hideModal()}
             mode="contained"
@@ -398,19 +596,14 @@ const CoBorrower_modal = props => {
     dispatch(
       change('Individual_Loan_Form', 'co_brwer_birth_dt', item.birth_date),
     );
-    dispatch(
-      change('Individual_Loan_Form', 'co_brwer_tel_no', item.tel_no),
-    );
-    dispatch(
-      change('Individual_Loan_Form', 'co_occupation', item.occupation),
-    );
+    dispatch(change('Individual_Loan_Form', 'co_brwer_tel_no', item.tel_no));
+    dispatch(change('Individual_Loan_Form', 'co_occupation', item.occupation));
     // dispatch(
     //   change('Individual_Loan_Form', 'borrower_rltn', item.customer_no),
     // );
-
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -491,8 +684,8 @@ const CoBorrower_modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
@@ -585,7 +778,7 @@ const CoBorrower_modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideCoBorrowerModal()}
                 mode="contained"
@@ -613,7 +806,6 @@ const Borrower_Sign_Modal = props => {
     hideSignModal,
     setCanvas,
     _onSaveEvent,
-    _onDragEvent,
     saveSign,
     resetSign,
     sign,
@@ -655,14 +847,13 @@ const Borrower_Sign_Modal = props => {
           }}
           ref={sign}
           onSaveEvent={_onSaveEvent}
-          onDragEvent={_onDragEvent}
           showNativeButtons={false}
           showTitleLabel={false}
           minStrokeWidth={10}
           maxStrokeWidth={10}
           viewMode={'portrait'}
         />
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{flexDirection: 'row'}}>
           <TouchableHighlight
             style={{
               flex: 1,
@@ -676,7 +867,7 @@ const Borrower_Sign_Modal = props => {
             onPress={() => {
               saveSign();
             }}>
-            <Text style={{ color: '#fff' }}>Save</Text>
+            <Text style={{color: '#fff'}}>Save</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={{
@@ -691,7 +882,7 @@ const Borrower_Sign_Modal = props => {
             onPress={() => {
               resetSign();
             }}>
-            <Text style={{ color: '#fff' }}>Reset</Text>
+            <Text style={{color: '#fff'}}>Reset</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -756,7 +947,7 @@ const Co_Borrower_Sign_Modal = props => {
           // backgroundColor="transparent"
           viewMode={'portrait'}
         />
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{flexDirection: 'row'}}>
           <TouchableHighlight
             style={{
               flex: 1,
@@ -770,7 +961,7 @@ const Co_Borrower_Sign_Modal = props => {
             onPress={() => {
               co_borrower_saveSign();
             }}>
-            <Text style={{ color: '#fff' }}>Save</Text>
+            <Text style={{color: '#fff'}}>Save</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={{
@@ -785,7 +976,7 @@ const Co_Borrower_Sign_Modal = props => {
             onPress={() => {
               co_borrower_resetSign();
             }}>
-            <Text style={{ color: '#fff' }}>Reset</Text>
+            <Text style={{color: '#fff'}}>Reset</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -823,7 +1014,7 @@ const City_Modal = props => {
     dispatch(change('Individual_Loan_Form', 'city_name', item.city_name));
   };
 
-  const city_item = ({ item, index }) => {
+  const city_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -890,8 +1081,8 @@ const City_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedCityItemValue}
@@ -913,7 +1104,7 @@ const City_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '40%' }}>
+              <View style={{width: '40%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -983,7 +1174,7 @@ const City_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideCityModal()}
                 mode="contained"
@@ -1035,7 +1226,7 @@ const Township_Modal = props => {
     );
   };
 
-  const township_item = ({ item, index }) => {
+  const township_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -1105,8 +1296,8 @@ const Township_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedTwonshipItemValue}
@@ -1128,7 +1319,7 @@ const Township_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '40%' }}>
+              <View style={{width: '40%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -1199,7 +1390,7 @@ const Township_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideTownshipModal()}
                 mode="contained"
@@ -1250,7 +1441,7 @@ const Village_Modal = props => {
     setVillage_Text(inputText);
   };
 
-  const village_item = ({ item, index }) => {
+  const village_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -1317,8 +1508,8 @@ const Village_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedVillageItemValue}
@@ -1340,7 +1531,7 @@ const Village_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '40%' }}>
+              <View style={{width: '40%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -1410,7 +1601,7 @@ const Village_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideVillageModal()}
                 mode="contained"
@@ -1461,7 +1652,7 @@ const Ward_Modal = props => {
     setWard_Text(inputText);
   };
 
-  const ward_item = ({ item, index }) => {
+  const ward_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -1528,8 +1719,8 @@ const Ward_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedWardItemValue}
@@ -1551,7 +1742,7 @@ const Ward_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
+              <View style={{width: '50%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -1621,7 +1812,7 @@ const Ward_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideWardModal()}
                 mode="contained"
@@ -1676,7 +1867,7 @@ const Location_Modal = props => {
     );
   };
 
-  const location_item = ({ item, index }) => {
+  const location_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -1743,8 +1934,8 @@ const Location_Modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Search Item:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight: 10}}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedLocationItemValue}
@@ -1766,7 +1957,7 @@ const Location_Modal = props => {
                 </Picker>
               </View>
 
-              <View style={{ width: '50%' }}>
+              <View style={{width: '50%'}}>
                 {/* <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -1836,7 +2027,7 @@ const Location_Modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
               <Button
                 onPress={() => hideLocationModal()}
                 mode="contained"
@@ -1907,9 +2098,12 @@ function Individual_Loan(props) {
     totalnet,
     navigation,
     resetMonthlyIncome,
-    map,
-    update_status,
     setBorrowerMap_Path,
+    totalIncome,
+    totalExpense,
+    totalFamilyIncome,
+    totalFamilyExpense,
+    addCustomerInfo,
   } = props;
   const inquiry_group_data =
     props.route.params && props.route.params.inquiry_group_data;
@@ -1924,8 +2118,9 @@ function Individual_Loan(props) {
 
       if (granted) {
         // Generate a unique filename for the image
-        const filename = `10${user_id}${moment().format('YYYYMMDD')}${all_loandata.length + 1
-          }SG${index}.jpg`;
+        const filename = `10${user_id}${moment().format('YYYYMMDD')}${
+          all_loandata.length + 1
+        }SG${index}.jpg`;
         const directory = '/storage/emulated/0/Pictures/Signature/';
         const filePath = directory + filename;
         await RNFS.mkdir(directory);
@@ -1949,7 +2144,6 @@ function Individual_Loan(props) {
   };
 
   const onSubmit = async values => {
-    
     try {
       // Save the images
       let borrowerImagePath, coBorrowerImagePath;
@@ -2117,14 +2311,10 @@ function Individual_Loan(props) {
     });
   };
   const saveSign = async () => {
-    // sign.current.saveImage();
-
-    const pathName = await sign.current.saveImage();
+    await sign.current.saveImage();
   };
   const co_borrower_saveSign = async () => {
-    // sign.current.saveImage();
-
-    const pathName = await co_borrower_sign.current.saveImage();
+    await co_borrower_sign.current.saveImage();
   };
 
   const resetSign = () => {
@@ -2134,51 +2324,9 @@ function Individual_Loan(props) {
     co_borrower_sign.current.resetImage();
   };
 
-  const _onDragEvent = () => {
-    console.log('dragged');
-  };
-
   const _onSaveEvent = async result => {
     setBorrowerSignPath(result.pathName);
     setShowBorrowerSign(result.encoded);
-    // if (result && result.encoded) {
-    //   try {
-    //     // Save the signature to the internal storage
-    //     const savedFilePath = await saveSignatureToInternalStorage(result.encoded);
-
-    //     // Do something with the saved file path
-    //     console.log('Saved signature file path:', savedFilePath);
-    //   } catch (error) {
-    //     // Handle the error
-    //     console.log('Error:', error);
-    //   }
-    // }
-    // setBorrowerSignPath(result.pathName);
-    // setShowBorrowerSign(result.encoded)
-
-    // const pathName = result.pathName;
-    // console.log('pathName', pathName);
-    // const user_id = await AsyncStorage.getItem('user_id');
-
-    // const directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/Signature/`;
-    // let newFilePath;
-    // //RNFS.mkdir(directoryPath) is called to create the directory if it doesn't exist
-    // RNFS.mkdir(directoryPath)
-    //   .then(() => {
-    //     const fileName = `10${user_id}TB${moment().format('YYYYMMDD')}${all_loandata.length + 1}SG01.jpg`;
-    //     newFilePath = `${directoryPath}${fileName}`;
-    //     console.log('old newFilePath', newFilePath);
-    //     //to move the signature image from its current pathName to the new newFilePath
-    //     return RNFS.moveFile(pathName, newFilePath);
-    //   })
-    //   .then(() => {
-    //     console.log('Signature saved successfully');
-    //     console.log('newFilePath', newFilePath);
-    //     setBorrowerSignPath(newFilePath)
-    //   })
-    //   .catch(error => {
-    //     console.log('Error saving signature:', error);
-    //   });
 
     setCanvas(false);
   };
@@ -2231,7 +2379,7 @@ function Individual_Loan(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{ flex: 1, backgroundColor: '#fff' }}>
+          <View style={{flex: 1, backgroundColor: '#fff'}}>
             <Text style={style.title_style}>Individual Loan Application</Text>
             <DividerLine />
 
@@ -2256,7 +2404,7 @@ function Individual_Loan(props) {
                         label={option.label}
                         value={option.value}
                         color="#636Dc6"
-                        labelStyle={{ marginLeft: 5 }}
+                        labelStyle={{marginLeft: 5}}
                       />
                     </View>
                   </RadioButton.Group>
@@ -2424,7 +2572,7 @@ function Individual_Loan(props) {
         </TouchableWithoutFeedback>
       </ScrollView>
 
-    <RenderBottomSheet />
+      <RenderBottomSheet />
       <Borrower_modal
         handleSubmit={handleSubmit}
         setAllCus={setAllCus}
@@ -2434,6 +2582,11 @@ function Individual_Loan(props) {
         selectedItemValue={selectedItemValue}
         all_cus={all_cus}
         change={change}
+        totalIncome={totalIncome}
+        totalExpense={totalExpense}
+        totalFamilyIncome={totalFamilyIncome}
+        totalFamilyExpense={totalFamilyExpense}
+        addCustomerInfo={addCustomerInfo}
       />
 
       <CoBorrower_modal
@@ -2451,7 +2604,6 @@ function Individual_Loan(props) {
         hideSignModal={hideSignModal}
         setCanvas={setCanvas}
         _onSaveEvent={_onSaveEvent}
-        _onDragEvent={_onDragEvent}
         saveSign={saveSign}
         resetSign={resetSign}
         sign={sign}
@@ -2532,10 +2684,15 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Individual_Loan_Form',
-  // initialValues,
   validate,
 })(
-  connect(mapStateToProps, { resetMonthlyIncome, setBorrowerMap_Path })(
-    Individual_Loan,
-  ),
+  connect(mapStateToProps, {
+    resetMonthlyIncome,
+    setBorrowerMap_Path,
+    totalIncome,
+    totalExpense,
+    totalFamilyIncome,
+    totalFamilyExpense,
+    addCustomerInfo,
+  })(Individual_Loan),
 );

@@ -20,6 +20,7 @@ export default function Edit_Show_Borrower_Map(props) {
   // const {has_borrower_map} = props;
   // const has_borrower_map = props.route.params.has_borrower_map;
   const application_no = props.route.params.application_no;
+  console.log('application_no',application_no);
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -137,14 +138,8 @@ export default function Edit_Show_Borrower_Map(props) {
               }
             }}
           />
-          {/* <Button title="Savefff" onPress={handleSave} /> */}
         </View>
       </View>
-
-      {/* <Image
-        source={{uri: `file://${paths}`}}
-        style={{width: 400, height: 500}}
-      /> */}
     </>
   );
 }

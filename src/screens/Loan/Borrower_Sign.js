@@ -2,7 +2,7 @@ import {View, Text, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
 import {Button} from 'react-native-paper';
-
+import moment from 'moment';
 export default function Borrower_Sign(props) {
   const {
     coborrower_sign_path,
@@ -32,7 +32,7 @@ export default function Borrower_Sign(props) {
             <Text style={{fontWeight: 'bold', fontSize: 15}}>
               Borrower Name
             </Text>
-            <Text> Date 17/05/2023</Text>
+            <Text> {moment().format('YYYY-MM-DD')}</Text>
           </View>
           {/* <Text>{borrower_sign_path}</Text> */}
 
@@ -78,7 +78,7 @@ export default function Borrower_Sign(props) {
             <Text style={{fontWeight: 'bold', fontSize: 15}}>
               Co Borrower Name
             </Text>
-            <Text> Date 17/05/2023</Text>
+            <Text> {moment().format('YYYY-MM-DD')}</Text>
           </View>
 
           <View>
@@ -110,7 +110,6 @@ export default function Borrower_Sign(props) {
                 />
               </TouchableOpacity>
             )}
-
           </View>
         </View>
       </View>
