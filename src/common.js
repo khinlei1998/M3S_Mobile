@@ -63,7 +63,7 @@ export const staff_loan_emp_filter_item = [
 export const operations = [
   {
     id: 1,
-    label: 'Create',
+    label: 'New',
     value: '1',
   },
   {

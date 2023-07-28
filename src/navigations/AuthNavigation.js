@@ -46,38 +46,48 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
-
-      <Stack.Screen
-        name="Customer Search"
-        component={CustomerSearch}
-        options={{ headerShown: false }}
-      />
+      
       {/* <Stack.Screen
-        name="Home"
-        component={Home}
-        options={{headerShown: false}}
-      />
-       <Stack.Screen
-        name="Individual_loan"
-        component={Individual_Loan}
-        options={{headerShown: false}}
-      /> */}
-      <Stack.Screen
         name="Customer Management"
         component={Customer_Management}
         options={{ headerShown: false }}
       />
-
+    
       <Stack.Screen
+        name="Customer Search"
+        component={CustomerSearch}
+        options={{ headerShown: false }}
+      /> */}
+         <Stack.Screen
         name="Synchronization"
         component={Synchronization_Screen}
         options={{ headerShown: false }}
       />
+        
+     
+
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Individual_loan"
+        component={Individual_Loan}
+        options={{ headerShown: false }}
+      />
+
+
 
 
       <Stack.Screen
         name="ReLoan"
         component={Reloan_Form}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Edit_Emp_Info"
+        component={Edit_Emp_Info}
         options={{ headerShown: false }}
       />
 
@@ -88,11 +98,7 @@ export default function AuthNavigation(props) {
         component={Group_Loan_Form}
         options={{headerShown: false}}
       />
-      <Stack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{headerShown: false}}
-      /> */}
+    
 
       {/* <Stack.Screen
         name="Cover Loan"
@@ -100,7 +106,7 @@ export default function AuthNavigation(props) {
         options={{headerShown: false}}
       /> */}
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Indi_Staff_loan"
         component={Individual_Staff_loan_Info}
         options={{ headerShown: false }}
@@ -121,7 +127,7 @@ export default function AuthNavigation(props) {
         name="Edit_Reloan"
         component={Edit_Reloan_Form}
         options={{ headerShown: false }}
-      />
+      /> */}
 
       {/* <Stack.Screen
         name="Survey"
@@ -145,7 +151,7 @@ export default function AuthNavigation(props) {
         options={{headerShown: false}}
       /> */}
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Edit Group Loan"
         component={Edit_Group_Loan_Form}
         options={{ headerShown: false }}
@@ -209,11 +215,7 @@ export default function AuthNavigation(props) {
         options={{ headerShown: false }}
       />
 
-      <Stack.Screen
-        name="Edit_Emp_Info"
-        component={Edit_Emp_Info}
-        options={{ headerShown: false }}
-      />
+      
 
       <Stack.Screen
         name="Edit_Individual_Loan"
@@ -228,6 +230,11 @@ export default function AuthNavigation(props) {
       <Stack.Screen
         name="Edit_Exceptional_Approvel_Form"
         component={Edit_Exceptional_Approvel_Form}
+        options={{ headerShown: false }}
+      /> */}
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
         options={{ headerShown: false }}
       />
 

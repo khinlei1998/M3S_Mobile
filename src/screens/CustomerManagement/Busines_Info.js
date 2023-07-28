@@ -89,8 +89,8 @@ function Busines_Info() {
                 ShowRadioBtnChange={(value, input) =>
                   handlePeroidChange(value, input)
                 }
-                get_value={1}
-              />
+                get_value={'1'}
+                />
             </View>
 
             <View style={style.input_container_style}>
@@ -110,7 +110,7 @@ function Busines_Info() {
                 <Field
                   name={'workplace_date'}
                   component={DatePicker}
-                  title={'Select Date'}
+                  label={'Select Date'}
                   icon={'calendar'}
                 />
               )}
@@ -169,6 +169,7 @@ function Busines_Info() {
                     name={'curr_workplace_date'}
                     component={DatePicker}
                     icon={'calendar'}
+                    label={'Select Date'}
                   />
                 )}
                 <View>

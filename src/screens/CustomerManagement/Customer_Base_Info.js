@@ -339,6 +339,7 @@ function Customer_Base_Info(props) {
                 ShowRadioBtnChange={(value, input) =>
                   handleStartLivingStatus(value, input)
                 }
+                get_value={'1'}
               />
             </View>
 

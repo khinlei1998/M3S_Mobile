@@ -3,9 +3,10 @@ import {StyleSheet} from 'react-native';
 export const style = StyleSheet.create({
   title_style: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 23,
     marginTop: 20,
     color: '#273050',
+    fontWeight:'bold'
   },
   continer: {
     flexDirection: 'row',

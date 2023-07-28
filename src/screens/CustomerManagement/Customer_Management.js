@@ -126,6 +126,7 @@ function Customer_Management(props) {
         values.nrc_type == '1' ? values.nrcNo : values.resident_rgst_id,
       start_living_date_status: show_businessdate,
     });
+    console.log('Create customer data',data);
     await storeCustomerData(data).then(result => {
       if (result == 'success') {
         dispatch(reset('Customer_ManagementForm'));
@@ -373,7 +374,6 @@ function Customer_Management(props) {
         {
           const [nrc_state_code] = result;
           setNRCStateCode(nrc_state_code);
-          // setNRCPrefixCode(nrc_prefixdata);
         }
       })
       .catch(error => console.log(error));
