@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 
 export async function getAllCustomer() {
   return new Promise((resolve, reject) => {
@@ -32,7 +32,7 @@ export async function filterCustomer(selectedColumn, searchTerm) {
         sql,
         [],
         (tx, results) => {
-          console.log('Customer results',results);
+          console.log('Customer results', results);
           resolve(results.rows.raw());
         },
         (tx, error) => {
@@ -52,13 +52,13 @@ export function getCustomer_info() {
       tx.executeSql('DELETE FROM Customer', [], (tx, results) => {
         axios
           .get(`https://${ip}:${port}/skylark-m3s/api/customers.m3s`)
-          .then(({data}) => {
+          .then(({ data }) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
                 for (let i = 0; i < data.length; i += batchSize) {
                   const records = data.slice(i, i + batchSize);
-                  console.log('cus records',records);
+                  console.log('cus records', records);
 
                   records.forEach(item => {
                     tx.executeSql(
@@ -173,7 +173,7 @@ export function getCustomer_info() {
                         null, //open branch code
                       ],
                       (tx, results) => {
-                        console.log('results',results);
+                        console.log('results', results);
                         // If insert query succeeds, resolve the promise
                         insertedRows += results.rowsAffected;
                         if (insertedRows === data.length) {
@@ -185,7 +185,7 @@ export function getCustomer_info() {
                         }
                       },
                       error => {
-                        console.log('Customer error',error);
+                        console.log('Customer error', error);
                         reject(error);
                         // If insert query fails, rollback the transaction and reject the promise
                         // tx.executeSql('ROLLBACK', [], () => {
@@ -227,7 +227,7 @@ export const checkDataExists = dataToCheck => {
 
 export function storeCustomerData(cus_data) {
   return new Promise(async (resolve, reject) => {
-    const user_id=await AsyncStorage.getItem('user_id')
+    const user_id = await AsyncStorage.getItem('user_id')
     try {
       const dataExists = await checkDataExists(cus_data.resident_rgst_id);
       if (dataExists) {
@@ -410,11 +410,11 @@ export async function filterCustomerByEmpno(selectedColumn, searchTerm) {
         sql,
         [],
         (tx, results) => {
-          console.log('total result',results);
+          console.log('total result', results);
           resolve(results.rows.raw());
         },
         (tx, error) => {
-          console.log('error',error);
+          console.log('error', error);
           reject(error);
         },
       );

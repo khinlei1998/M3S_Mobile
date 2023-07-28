@@ -287,11 +287,11 @@ function Relation_Form(props) {
   };
   const onSubmit = async values => {
     const add_relation_data = Object.assign({}, values, {
-      parent_yn: values.relationName == 2 ? '1' : '',
-      brother_sister_yn: values.relationName == 3 ? '1' : '',
-      grandparent_yn: values.relationName == 1 ? '1' : '',
-      son_daughter_yn: values.relationName == 5 ? '1' : '',
-      husband_wife_yn: values.relationName == 4 ? '1' : '',
+      parent_yn: values.relation_name == 2 ? '1' : '',
+      brother_sister_yn: values.relation_name == 3 ? '1' : '',
+      grandparent_yn: values.relation_name == 1 ? '1' : '',
+      son_daughter_yn: values.relation_name == 5 ? '1' : '',
+      husband_wife_yn: values.relation_name == 4 ? '1' : '',
     });
     console.log('add_relation_data', add_relation_data);
 

@@ -2337,7 +2337,6 @@ function Edit_Individual_Loan(props) {
     setLoanType(retrive_loan_data.loan_type)
     setLocanCycleValue(retrive_loan_data.loan_cycle)
   }, []);
-  console.log('retrive_loan_data', retrive_loan_data);
 
   useEffect(() => {
     totalIncome(

@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {Alert, FileSystem} from 'react-native';
+import { Alert, FileSystem } from 'react-native';
 import RNFS from 'react-native-fs';
 import moment from 'moment';
 export async function getAllLoan() {
@@ -473,7 +473,7 @@ export const storeLoanData = async loan_data => {
 };
 
 export async function deleteLoan_ByID(data) {
-  console.log('data',data);
+  console.log('data', data);
   try {
     const borrowerImagePath = data.borrower_sign;
     const coBorrowerImagePath = data.co_borrower_sign;
@@ -1252,9 +1252,9 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 groupMemberNum: parseInt(item.group_member_num),
                 occupation: item.occupation,
                 netIncome: parseInt(item.net_income),
-                excptAprvRsn1: item.excpt_aprv_rsn_1,
-                excptAprvRsn2: item.excpt_aprv_rsn_2,
-                excptAprvRsn3: item.excpt_aprv_rsn_3,
+                excptAprvRsn1: item.excpt_aprv_rsn_1 && item.excpt_aprv_rsn_1 == 1 ? 'Y' : 'N',
+                excptAprvRsn2: item.excpt_aprv_rsn_2 && item.excpt_aprv_rsn_2 == 1 ? 'Y' : 'N',
+                excptAprvRsn3: item.excpt_aprv_rsn_3 && item.excpt_aprv_rsn_3 == 1 ? 'Y' : 'N',
                 exceptionReason: item.exception_reason,
                 recommendNm: item.recommend_nm,
                 tabletSyncSts: '00',
@@ -1269,6 +1269,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           );
           if (relation_info.length > 0) {
             const relation_data = relation_info.map(item => {
+              console.log('relation data',item);
               return {
                 organizationCode: '',
                 serialNo: '',
@@ -1394,8 +1395,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         maxBodyLength: Infinity,
         url:
           data.product_type == 30 ||
-          data.product_type == 40 ||
-          data.product_type == 50
+            data.product_type == 40 ||
+            data.product_type == 50
             ? `https://${ip}:${port}/skylark-m3s/api/groupLoan.m3s`
             : `https://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
         data: formData,
@@ -1931,7 +1932,7 @@ export const updateLoanData = async loan_data => {
             loan_data.goods_loss_expns,
             loan_data.othr_expns_1,
             loan_data.othr_expns_2, //80
-            loan_data.totBusNetIncomeitem, 
+            loan_data.totBusNetIncomeitem,
             loan_data.fmly_tot_income,
             loan_data.fmly_tot_expense,
             loan_data.food_expns,

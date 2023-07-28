@@ -41,6 +41,7 @@ export default function Synchronization_Screen() {
     customer_data.forEach(obj => {
       obj.tablet_sync_sts = '01';
       obj.customer_no = '';
+      obj.open_branch_code=branch_code
     });
     try {
       // Call the API here
