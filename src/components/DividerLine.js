@@ -3,7 +3,7 @@ import React from 'react';
 import {Divider} from 'react-native-paper';
 
 export default function DividerLine(props) {
-  const {cuswidth} = props;
+  const {cuswidth,border_width} = props;
   return (
     <Divider
       style={{
@@ -13,6 +13,7 @@ export default function DividerLine(props) {
         width: cuswidth ? '95%' : '90%',
         alignSelf: 'center',
         marginBottom: 10,
+        borderWidth: border_width && 1, // Adjust the border width to make it bolder
       }}
     />
   );

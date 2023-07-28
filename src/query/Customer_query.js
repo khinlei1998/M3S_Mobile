@@ -480,7 +480,7 @@ export function updateCustomerData(cus_data) {
           //Business
           cus_data.workplace_name,
           cus_data.workplace_type, //workplaceType
-          cus_data.workplace_date,
+          null, //wrorkplace period
           cus_data.employee_num, //employeeNum
           cus_data.workplace_addr,
           cus_data.curr_workplace_date,

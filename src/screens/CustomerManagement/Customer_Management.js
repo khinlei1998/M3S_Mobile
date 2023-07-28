@@ -588,7 +588,7 @@ function Customer_Management(props) {
             <Text style={style.title_style}>
               Customer Information Management
             </Text>
-            <DividerLine />
+            <DividerLine border_width />
 
             <View style={style.continer}>
               <View
@@ -610,8 +610,9 @@ function Customer_Management(props) {
                         disabled={option.value !== show_operation}
                         label={option.label}
                         value={option.value}
-                        color="#000"
+                        color="#636Dc6"
                         labelStyle={{marginLeft: 5}}
+                        // uncheckedColor="red" // Color for the disabled radio button
                       />
                     </View>
                   </RadioButton.Group>
@@ -620,12 +621,12 @@ function Customer_Management(props) {
               <Button
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={style.btnStyle}>
                 OK
               </Button>
             </View>
-            <DividerLine />
+            <DividerLine border_width />
             {/* EMployee Information */}
             <View style={style.title_emp_style}>
               <Text style={{fontWeight: 'bold', fontSize: 20}}>
