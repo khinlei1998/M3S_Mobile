@@ -2449,7 +2449,7 @@ function Edit_Individual_Loan(props) {
         await updateLoanData(loan_data).then(result => {
           if (result == 'success') {
             dispatch(reset('Edit_Individual_Loan_Form'));
-            resetMonthlyIncome();
+            // resetMonthlyIncome();
 
             ToastAndroid.show(`Update Successfully!`, ToastAndroid.SHORT);
             props.navigation.navigate('Home');
@@ -3354,7 +3354,7 @@ function Edit_Individual_Loan(props) {
 }
 
 function mapStateToProps(state) {
-  console.log('edit ;+loan state', state);
+  console.log('edit loan state', state);
   return {
     totalnet: state.monthly.totalnetincome,
     retrive_loan_data: state.loan.edit_loandata,
