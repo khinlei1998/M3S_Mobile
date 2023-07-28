@@ -171,18 +171,12 @@ const Borrower_modal = props => {
       change('Individual_Loan_Form', 'workplace_date', item.workplace_date),
     );
     dispatch(change('Individual_Loan_Form', 'employee_num', item.employee_num));
+   
     dispatch(
       change(
         'Individual_Loan_Form',
-        'co_borrower_address_type',
-        item.co_borrower_address_type,
-      ),
-    );
-    dispatch(
-      change(
-        'Individual_Loan_Form',
-        'curr_workplace_date',
-        item.curr_workplace_date,
+        'workplace_addr',
+        item.workplace_addr,
       ),
     );
     dispatch(
@@ -2277,7 +2271,10 @@ function Individual_Loan(props) {
   }, []);
 
   const handleCalculate = () => {
+    console.log('loan_type_value',loan_type_value);
+    console.log('totalnet',totalnet);
     loan_max_data.map(value => {
+      console.log('value',value);
       if (30 == loan_type_value) {
         dispatch(
           change('Individual_Loan_Form', 'loan_limit_amt', totalnet * 2),

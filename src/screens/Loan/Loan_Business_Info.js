@@ -66,24 +66,16 @@ function Loan_Business_Info(props) {
             />
           </View>
 
-          <View style={style.sub_list_container}>
-            <Field
-              data={address_type}
-              name={'co_borrower_address_type'}
-              title={'Address Type'}
-              component={DropDownPicker}
-              pickerStyle={{
-                width: 300,
-              }}
-            />
+       
+           
             <Field
               name={'workplace_addr'}
               title={'Address'}
               component={TextInputFile}
               input_mode
               inputmax={100}
+              input_cusstyle
             />
-          </View>
 
           <View style={style.sub_list_container}>
             <Field

@@ -1,6 +1,6 @@
-import {View, Text} from 'react-native';
-import React, {useState} from 'react';
-import {List} from 'react-native-paper';
+import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { List } from 'react-native-paper';
 import TextInputFile from '../../components/TextInputFile';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import {
@@ -11,11 +11,11 @@ import {
 } from '../../common';
 import DatePicker from '../../components/DatePicker';
 import DropDownPicker from '../../components/DropDownPicker';
-import {style} from '../../style/Individual_Loan_style';
-import {reduxForm, Field} from 'redux-form';
-import {connect} from 'react-redux';
+import { style } from '../../style/Individual_Loan_style';
+import { reduxForm, Field } from 'redux-form';
+import { connect } from 'react-redux';
 function Loan_Business_Info(props) {
-  const {update_status}=props
+  const { update_status } = props
   const [loan_business_expanded, setLoan_BusinessInfo_expanded] =
     useState(true);
 
@@ -58,7 +58,7 @@ function Loan_Business_Info(props) {
               name={'workplace_date'}
               component={DatePicker}
               label={'Business Peroid'}
-              icon={update_status == true &&'calendar'}
+              icon={update_status == true && 'calendar'}
               editable={update_status == true ? false : true}
             />
             <Field
@@ -72,43 +72,32 @@ function Loan_Business_Info(props) {
             />
           </View>
 
-          <View style={style.sub_list_container}>
-            <Field
-              data={address_type}
-              name={'co_borrower_address_type'}
-              title={'Address Type'}
-              component={DropDownPicker}
-              pickerStyle={{
-                width: 300,
-              }}
-              enabled={update_status == true ? false : true}
-            />
-            <Field
-              name={'workplace_addr'}
-              title={'Address'}
-              component={TextInputFile}
-              input_mode
-              inputmax={100}
-              editable={update_status == true ? false : true}
-            />
-          </View>
+
+          <Field
+            name={'workplace_addr'}
+            title={'Address'}
+            component={TextInputFile}
+            input_mode
+            inputmax={100}
+            editable={update_status == true ? false : true}
+          />
 
           <View style={style.sub_list_container}>
             <Field
               name={'curr_workplace_date'}
               component={DatePicker}
               label={'Working Time in current business'}
-              icon={update_status == true &&'calendar'}
+              icon={update_status == true && 'calendar'}
               editable={update_status == true ? false : true}
             />
             <View
               style={{
                 flexDirection: 'column',
                 marginTop: 10,
-                display:'flex',
-                justifyContent:'flex-start',
+                display: 'flex',
+                justifyContent: 'flex-start',
               }}>
-              <Text style={{fontSize: 15, fontWeight: 'bold', marginLeft: 20}}>
+              <Text style={{ fontSize: 15, fontWeight: 'bold', marginLeft: 20 }}>
                 Business Situation
               </Text>
               <View >
