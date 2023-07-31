@@ -15,11 +15,12 @@ import {
   owner_shipratio,
   start_living_date_status,
 } from '../../common';
-import {style} from '../../style/Business_Info_style';
+// import {style} from '../../style/Business_Info_style';
 import {connect} from 'react-redux';
-
+import {style} from '../../style/Customer_Mang_style';
+import {List} from 'react-native-paper';
 function Busines_Info() {
-  const [open_business_info, setBusinessInfo] = useState(false);
+  const [open_business_info, setBusinessInfo] = useState(true);
   const [show_businessdate, setBusiness] = useState('1');
   const [show_business_date, setBusinessStartDate] = useState('estimated');
 
@@ -33,7 +34,6 @@ function Busines_Info() {
     return {id: num, label: num, value: num};
   });
 
-
   const handlePeroidChange = (value, input) => {
     input.onChange(value.id);
     setBusiness(value.id);
@@ -46,15 +46,14 @@ function Busines_Info() {
 
   return (
     <>
-      <View style={style.container}>
-        <Text style={{fontWeight: 'bold', fontSize: 20}}>Business Info</Text>
-        <TouchableOpacity onPress={MonthlyIncomeFun}>
-          <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
-        </TouchableOpacity>
-      </View>
-      <Collapsible collapsed={open_business_info}>
-        <View style={style.collapsible_container}>
-          <View style={style.input_container_style}>
+      <List.Accordion
+        expanded={open_business_info}
+        onPress={MonthlyIncomeFun}
+        style={style.list_container}
+        titleStyle={style.list_title}
+        title="Property Information">
+        <View style={style.sub_container}>
+          <View style={style.sub_list_container}>
             <Field
               name={'workplaceName'}
               title={'Business Name '}
@@ -72,6 +71,7 @@ function Busines_Info() {
               }}
             />
           </View>
+
           <View
             style={{
               padding: 5,
@@ -80,7 +80,6 @@ function Busines_Info() {
             <Text style={{marginLeft: 10, fontSize: 15, fontWeight: 'bold'}}>
               Business Period
             </Text>
-
             <View>
               <Field
                 data={start_living_date_status}
@@ -90,9 +89,8 @@ function Busines_Info() {
                   handlePeroidChange(value, input)
                 }
                 get_value={'1'}
-                />
+              />
             </View>
-
             <View style={style.input_container_style}>
               {show_businessdate == '1' ? (
                 <Field
@@ -124,7 +122,6 @@ function Busines_Info() {
                 keyboardType={'numeric'}
               />
             </View>
-
             <View style={{marginRight: 10, marginLeft: 10}}>
               <Field
                 name={'workplaceAddr'}
@@ -209,7 +206,7 @@ function Busines_Info() {
             </View>
           </View>
         </View>
-      </Collapsible>
+      </List.Accordion>
       <DividerLine />
     </>
   );

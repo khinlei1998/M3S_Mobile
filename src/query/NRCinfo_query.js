@@ -167,7 +167,6 @@ export const fetchNRCinfo = async () => {
                 ['value']: name,
               }),
             );
-            console.log('nrc_state_code',nrc_state_code);
             const nrc_prefixdata = Object.entries(collection).reduce(
               (result, [id, values]) => {
                 const transformedValues = values.map(value => ({

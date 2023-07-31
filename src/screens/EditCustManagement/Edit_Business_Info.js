@@ -6,7 +6,7 @@ import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
 import TextInputFile from '../../components/TextInputFile';
 import {business_type} from '../../common';
 import DropDownPicker from '../../components/DropDownPicker';
-import {RadioButton, TextInput} from 'react-native-paper';
+import {RadioButton, TextInput,List} from 'react-native-paper';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import DatePicker from '../../components/DatePicker';
 import DividerLine from '../../components/DividerLine';
@@ -15,12 +15,19 @@ import {
   owner_shipratio,
   start_living_date_status,
 } from '../../common';
-import {style} from '../../style/Business_Info_style';
+// import {style} from '../../style/Business_Info_style';
 import {connect} from 'react-redux';
 import DefaultTextInput from '../../components/DefaultTextInput';
+import {style} from '../../style/Customer_Mang_style';
 function Edit_Business_Info(props) {
-  const {update_status, handlePeroidChange, show_businessdate_per,handleCurrBusinessChange,show_business_date} = props;
-  const [open_business_info, setBusinessInfo] = useState(false);
+  const {
+    update_status,
+    handlePeroidChange,
+    show_businessdate_per,
+    handleCurrBusinessChange,
+    show_business_date,
+  } = props;
+  const [open_business_info, setBusinessInfo] = useState(true);
 
   const MonthlyIncomeFun = () => {
     setBusinessInfo(!open_business_info);
@@ -34,15 +41,14 @@ function Edit_Business_Info(props) {
 
   return (
     <>
-      <View style={style.container}>
-        <Text style={{fontWeight: 'bold', fontSize: 20}}>Business Info</Text>
-        <TouchableOpacity onPress={MonthlyIncomeFun}>
-          <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
-        </TouchableOpacity>
-      </View>
-      <Collapsible collapsed={open_business_info}>
-        <View style={style.collapsible_container}>
-          <View style={style.input_container_style}>
+      <List.Accordion
+        expanded={open_business_info}
+        onPress={setBusinessInfo}
+        style={style.list_container}
+        titleStyle={style.list_title}
+        title="Business Information">
+        <View style={style.sub_container}>
+          <View style={style.sub_list_container}>
             <Field
               name={'workplace_name'}
               title={'Business Name '}
@@ -71,7 +77,6 @@ function Edit_Business_Info(props) {
               Business Period
             </Text>
 
-
             <View>
               <Field
                 data={start_living_date_status}
@@ -81,7 +86,6 @@ function Edit_Business_Info(props) {
                   handlePeroidChange(value, input)
                 }
                 disabled={update_status == true ? false : true}
-
               />
             </View>
 
@@ -143,7 +147,6 @@ function Edit_Business_Info(props) {
                     handleCurrBusinessChange(value, input)
                   }
                   disabled={update_status == true ? false : true}
-
                 />
               </View>
 
@@ -206,7 +209,7 @@ function Edit_Business_Info(props) {
             </View>
           </View>
         </View>
-      </Collapsible>
+      </List.Accordion>
       <DividerLine />
     </>
   );

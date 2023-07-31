@@ -1,20 +1,21 @@
-import { View, Text, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
 import Collapsible from 'react-native-collapsible';
 import Icon from 'react-native-vector-icons/Feather';
-import { property_type } from '../../common';
+import {property_type} from '../../common';
 import CheckBoxFile from '../../components/CheckBoxFile';
 import TextInputFile from '../../components/TextInputFile';
 import DividerLine from '../../components/DividerLine';
-import { style } from '../../style/Property_Info_style';
+// import {style} from '../../style/Property_Info_style';
 import SingleCheckBox from '../../components/SingleCheckBox';
-import { connect, useDispatch } from 'react-redux';
-import { Field, reduxForm, change } from 'redux-form';
-
+import {connect, useDispatch} from 'react-redux';
+import {Field, reduxForm, change} from 'redux-form';
+import {style} from '../../style/Customer_Mang_style';
+import { List } from 'react-native-paper';
 
 function Edit_property_Info(props) {
-  const { update_status } = props
-  const [show_propertyinfo, setOpenPropertyInfo] = useState(false);
+  const {update_status} = props;
+  const [show_propertyinfo, setOpenPropertyInfo] = useState(true);
 
   const PropertyInfoFun = () => {
     setOpenPropertyInfo(!show_propertyinfo);
@@ -22,13 +23,12 @@ function Edit_property_Info(props) {
 
   return (
     <>
-      <View style={style.container}>
-        <Text style={style.titlestyle}>Property Information</Text>
-        <TouchableOpacity onPress={PropertyInfoFun}>
-          <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
-        </TouchableOpacity>
-      </View>
-      <Collapsible collapsed={show_propertyinfo}>
+      <List.Accordion
+        expanded={show_propertyinfo}
+        onPress={setOpenPropertyInfo}
+        style={style.list_container}
+        titleStyle={style.list_title}
+        title="Property Information">
         <View style={style.collasible_container}>
           <View
             style={{
@@ -37,7 +37,7 @@ function Edit_property_Info(props) {
               marginLeft: 15,
               marginRight: 16,
             }}>
-            <View style={{ padding: 5, flexDirection: 'row' }}>
+            <View style={{padding: 5, flexDirection: 'row'}}>
               <View>
                 <Field
                   label={'House'}
@@ -110,7 +110,7 @@ function Edit_property_Info(props) {
               input_mode
               keyboardType={'numeric'}
               disabled={update_status == true ? false : true}
-              />
+            />
           </View>
 
           <View style={style.input_container_style}>
@@ -120,7 +120,7 @@ function Edit_property_Info(props) {
               component={TextInputFile}
               input_mode
               disabled={update_status == true ? false : true}
-              />
+            />
             <Field
               name={'tot_prop_estmtd_val'}
               title={'Estimated Value'}
@@ -128,10 +128,10 @@ function Edit_property_Info(props) {
               input_mode
               keyboardType={'numeric'}
               disabled={update_status == true ? false : true}
-              />
+            />
           </View>
         </View>
-      </Collapsible>
+      </List.Accordion>
       <DividerLine />
     </>
   );

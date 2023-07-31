@@ -18,6 +18,7 @@ import {
   Provider,
   Portal,
   TextInput,
+  List,
 } from 'react-native-paper';
 import DividerLine from '../../components/DividerLine';
 import Icon from 'react-native-vector-icons/Feather';
@@ -69,7 +70,7 @@ function Customer_Management(props) {
     useState('village_code');
   const [selectedValue, setSelectedValue] = useState(null);
   const [nrc_visible, setNRC_Visible] = useState(false);
-  const [open_empinfo, setEmpInfo] = useState(false);
+  const [open_empinfo, setEmpInfo] = useState(true);
   const [show_nrc, setNRC] = useState('1');
   const [show_operation, setOperation] = useState('1');
   const [show_businessdate, setBusiness] = useState('1');
@@ -126,7 +127,7 @@ function Customer_Management(props) {
         values.nrc_type == '1' ? values.nrcNo : values.resident_rgst_id,
       start_living_date_status: show_businessdate,
     });
-    console.log('Create customer data',data);
+    console.log('Create customer data', data);
     await storeCustomerData(data).then(result => {
       if (result == 'success') {
         dispatch(reset('Customer_ManagementForm'));
@@ -340,9 +341,8 @@ function Customer_Management(props) {
   const hideNRCModal = () => {
     const indexOfSlash = prefix.indexOf('/');
     const prefix_code = prefix.substring(0, indexOfSlash + 1);
-    console.log('prefix',prefix);
-    setNRC_Visible(!nrc_visible),
-    setNRC(show_nrc);
+    console.log('prefix', prefix);
+    setNRC_Visible(!nrc_visible), setNRC(show_nrc);
     dispatch(
       change(
         'Customer_ManagementForm',
@@ -398,7 +398,9 @@ function Customer_Management(props) {
         item.position_title_nm,
       ),
     );
-    dispatch(change('Customer_ManagementForm', 'employeeName', item.employee_name));
+    dispatch(
+      change('Customer_ManagementForm', 'employeeName', item.employee_name),
+    );
   };
 
   const item = ({item, index}) => {
@@ -580,6 +582,9 @@ function Customer_Management(props) {
   const onChangeLocationText = textvalues => {
     setLocationText(textvalues);
   };
+  const handleEmpToggle = () => {
+    setEmpInfo(!open_empinfo);
+  };
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
@@ -607,6 +612,7 @@ function Customer_Management(props) {
                         alignItems: 'center',
                       }}>
                       <RadioButton.Item
+                       uncheckedColor="#636Dc6"
                         disabled={option.value !== show_operation}
                         label={option.label}
                         value={option.value}
@@ -628,27 +634,15 @@ function Customer_Management(props) {
             </View>
             <DividerLine border_width />
             {/* EMployee Information */}
-            <View style={style.title_emp_style}>
-              <Text style={{fontWeight: 'bold', fontSize: 20}}>
-                Employee Information
-              </Text>
-              <TouchableOpacity onPress={EmpInfoFun}>
-                <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
-              </TouchableOpacity>
-            </View>
 
-            <Collapsible collapsed={open_empinfo}>
-              <View
-                style={{
-                  width: '90%',
-                  alignSelf: 'center',
-                  backgroundColor: '#FAFAFA',
-                }}>
-                <View
-                  style={{
-                    padding: 5,
-                    // margin: 10,
-                  }}>
+            <List.Accordion
+              expanded={open_empinfo}
+              onPress={handleEmpToggle}
+              style={style.list_container}
+              titleStyle={style.list_title}
+              title=" Employee Information">
+              <View style={style.sub_container}>
+                <View style={style.sub_list_container}>
                   <Field
                     name={'employeeNo'}
                     title={'Employee No'}
@@ -660,56 +654,46 @@ function Customer_Management(props) {
                     focusTextInput
                     editable
                   />
-
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}>
+                </View>
+                <View style={style.sub_list_container}>
+                  <Field
+                    name={'entryDate'}
+                    title={'Start Working Date at SHM'}
+                    component={TextInputFile}
+                    editable
+                  />
+                  <View style={{marginRight: 10}}>
                     <Field
-                      name={'entryDate'}
-                      title={'Start Working Date at SHM'}
-                      component={TextInputFile}
-                      editable
-                    />
-                    <View style={{marginRight: 10}}>
-                      <Field
-                        name={'positionTitleNm'}
-                        title={'Current Position'}
-                        component={DefaultTextInput}
-                        editable
-                      />
-                    </View>
-                  </View>
-
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}>
-                    <Field
-                      name={'branchCode'}
-                      title={'Branch'}
+                      name={'positionTitleNm'}
+                      title={'Current Position'}
                       component={DefaultTextInput}
-                      cus_width
-                      input_mode
                       editable
                     />
-                    <View style={{marginRight: 10}}>
-                      <Field
-                        data={salary_grade}
-                        name={'salaryRatingCode'}
-                        title={'Salary Grade'}
-                        component={DropDownPicker}
-                        pickerStyle={{
-                          width: 300,
-                        }}
-                      />
-                    </View>
+                  </View>
+                </View>
+                <View style={style.sub_list_container}>
+                  <Field
+                    name={'branchCode'}
+                    title={'Branch'}
+                    component={DefaultTextInput}
+                    cus_width
+                    input_mode
+                    editable
+                  />
+                  <View style={{marginRight: 10}}>
+                    <Field
+                      data={salary_grade}
+                      name={'salaryRatingCode'}
+                      title={'Salary Grade'}
+                      component={DropDownPicker}
+                      pickerStyle={{
+                        width: 300,
+                      }}
+                    />
                   </View>
                 </View>
               </View>
-            </Collapsible>
+            </List.Accordion>
 
             <DividerLine />
 
@@ -772,7 +756,7 @@ function Customer_Management(props) {
                   justifyContent: 'space-around',
                 }}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{marginRight: 10}}>Search Item:</Text>
+                  <Text style={{marginRight: 10,fontWeight:'bold'}}>Search Item:</Text>
 
                   <Picker
                     selectedValue={selectedItemValue}

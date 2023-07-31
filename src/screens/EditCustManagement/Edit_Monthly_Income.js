@@ -16,8 +16,8 @@ import {
   updateTotalSum,
 } from '../../redux/MonthlyReducer';
 import DefaultTextInput from '../../components/DefaultTextInput';
-import { log } from 'console';
-
+import {List} from 'react-native-paper';
+import {style} from '../../style/Customer_Mang_style';
 function Edit_Monthly_Income(props) {
   const {
     dispatch,
@@ -62,7 +62,7 @@ function Edit_Monthly_Income(props) {
     inquiry_cusdata.finance_expns,
     inquiry_cusdata.fmly_otr_expns,
   ]);
-  const [open_monthlyincome, setMonthlyExpense] = useState(false);
+  const [open_monthlyincome, setMonthlyExpense] = useState(true);
   const [total_fmly_net, setFamilyNet] = useState(0);
   const [total_business_net, setBusinessNet] = useState(0);
   const [totalnet, setTotalNet] = useState(0);
@@ -80,7 +80,7 @@ function Edit_Monthly_Income(props) {
       // Update the corresponding value in the values array
       const newValues = [...values];
       newValues[index] = number;
-      console.log('newValues',newValues);
+      console.log('newValues', newValues);
       setValues(newValues);
       const filteredValues = newValues.filter(
         value => typeof value === 'number',
@@ -104,7 +104,7 @@ function Edit_Monthly_Income(props) {
     } else {
       const newValues = [...values];
       newValues[index] = 0;
-      console.log('newValues',newValues);
+      console.log('newValues', newValues);
       setValues(newValues);
       const filteredValues = newValues.filter(
         value => typeof value === 'number',
@@ -155,7 +155,7 @@ function Edit_Monthly_Income(props) {
       );
     } else {
       const newValues = [...familyvalues];
-      console.log('familyvalues',familyvalues);
+      console.log('familyvalues', familyvalues);
       newValues[index] = 0;
 
       setFamilyValues(newValues);
@@ -168,7 +168,7 @@ function Edit_Monthly_Income(props) {
         (accumulator, currentValue) => accumulator + currentValue,
         0,
       );
-      console.log('sum',sum);
+      console.log('sum', sum);
       totalFamilyExpense(sum);
       dispatch(
         change(
@@ -186,7 +186,7 @@ function Edit_Monthly_Income(props) {
     // Check if the input is a valid number
     if (!isNaN(number)) {
       totalIncome(number);
-    }else{
+    } else {
       totalIncome(0);
     }
   };
@@ -197,7 +197,7 @@ function Edit_Monthly_Income(props) {
     // Check if the input is a valid number
     if (!isNaN(number)) {
       totalFamilyIncome(number);
-    }else{
+    } else {
       totalFamilyIncome(0);
     }
   };
@@ -233,28 +233,15 @@ function Edit_Monthly_Income(props) {
     netCulateSum(total_net_business, total_net_family);
   }, [total_net_business, total_net_family]);
 
-
-
   return (
     <>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          padding: 5,
-          marginLeft: 30,
-          marginRight: 20,
-          marginTop: 15,
-        }}>
-        <Text style={{fontWeight: 'bold', fontSize: 20}}>
-          Monthly Income / Expense Statement
-        </Text>
-        <TouchableOpacity onPress={MonthlyIncomeFun}>
-          <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
-        </TouchableOpacity>
-      </View>
-
-      <Collapsible collapsed={open_monthlyincome}>
+      <List.Accordion
+        expanded={open_monthlyincome}
+        onPress={setMonthlyExpense}
+        style={style.list_container}
+        titleStyle={style.list_title}
+        title="     Monthly Income / Expense Statement
+        ">
         <View
           style={{
             width: '90%',
@@ -620,7 +607,7 @@ function Edit_Monthly_Income(props) {
             </View>
           </View>
         </View>
-      </Collapsible>
+      </List.Accordion>
 
       <DividerLine />
     </>

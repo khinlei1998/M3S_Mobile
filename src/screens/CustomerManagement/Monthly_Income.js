@@ -1,11 +1,11 @@
-import { View, Text, TouchableOpacity, Button, TextInput } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import {View, Text, TouchableOpacity, Button, TextInput} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import Collapsible from 'react-native-collapsible';
 import TextInputFile from '../../components/TextInputFile';
 import DividerLine from '../../components/DividerLine';
-import { connect } from 'react-redux';
-import { Field, reduxForm, reset, change } from 'redux-form';
+import {connect} from 'react-redux';
+import {Field, reduxForm, reset, change} from 'redux-form';
 import {
   totalIncome,
   totalExpense,
@@ -15,6 +15,8 @@ import {
   totalNetFamily,
 } from '../../redux/MonthlyReducer';
 import DefaultTextInput from '../../components/DefaultTextInput';
+import {List} from 'react-native-paper';
+import {style} from '../../style/Customer_Mang_style';
 function Monthly_Income(props) {
   const {
     dispatch,
@@ -34,7 +36,7 @@ function Monthly_Income(props) {
   } = props;
   const [values, setValues] = useState([]);
   const [familyvalues, setFamilyValues] = useState([]);
-  const [open_monthlyincome, setMonthlyExpense] = useState(false);
+  const [open_monthlyincome, setMonthlyExpense] = useState(true);
   const [total_fmly_net, setFamilyNet] = useState(0);
   const [total_business_net, setBusinessNet] = useState(0);
   const [totalnet, setTotalNet] = useState(0);
@@ -50,7 +52,7 @@ function Monthly_Income(props) {
       // Update the corresponding value in the values array
       const newValues = [...values];
       newValues[index] = number;
-      console.log('newValues',newValues);
+      console.log('newValues', newValues);
 
       setValues(newValues);
       const filteredValues = newValues.filter(
@@ -185,8 +187,6 @@ function Monthly_Income(props) {
   };
   useEffect(() => {
     calCulateSum(total_expense, total_income);
-
-
   }, [total_expense, total_income]);
 
   useEffect(() => {
@@ -199,24 +199,12 @@ function Monthly_Income(props) {
 
   return (
     <>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          padding: 5,
-          marginLeft: 30,
-          marginRight: 20,
-          marginTop: 15,
-        }}>
-        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
-          Monthly Income / Expense Statement
-        </Text>
-        <TouchableOpacity onPress={MonthlyIncomeFun}>
-          <Icon name="arrow-up" size={30} style={{ marginTop: 10 }} />
-        </TouchableOpacity>
-      </View>
-
-      <Collapsible collapsed={open_monthlyincome}>
+      <List.Accordion
+        expanded={open_monthlyincome}
+        onPress={setMonthlyExpense}
+        style={style.list_container}
+        titleStyle={style.list_title}
+        title="Property Information">
         <View
           style={{
             width: '90%',
@@ -224,9 +212,9 @@ function Monthly_Income(props) {
             backgroundColor: '#FAF8F8',
             margin: 10,
           }}>
-          <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+          <View style={{flexDirection: 'row', alignSelf: 'center'}}>
             <View>
-              <Text style={{ fontWeight: 'bold', padding: 5, marginTop: 10 }}>
+              <Text style={{fontWeight: 'bold', padding: 5, marginTop: 10}}>
                 Business Income/Expense
               </Text>
               <View
@@ -373,8 +361,8 @@ function Monthly_Income(props) {
                     padding: 20,
                     marginTop: 10,
                   }}>
-                  <Text style={{ color: '#fff' }}>Total Net Income</Text>
-                  <Text style={{ color: '#F9A970' }}>
+                  <Text style={{color: '#fff'}}>Total Net Income</Text>
+                  <Text style={{color: '#F9A970'}}>
                     {total_business_net_total}
                   </Text>
                 </View>
@@ -382,8 +370,8 @@ function Monthly_Income(props) {
             </View>
             {/* Family Inccome */}
 
-            <View style={{ marginLeft: 15 }}>
-              <Text style={{ fontWeight: 'bold', padding: 5, marginTop: 10 }}>
+            <View style={{marginLeft: 15}}>
+              <Text style={{fontWeight: 'bold', padding: 5, marginTop: 10}}>
                 Family Income/Expense
               </Text>
               <View
@@ -519,13 +507,13 @@ function Monthly_Income(props) {
                     padding: 20,
                     marginTop: 77,
                   }}>
-                  <Text style={{ color: '#fff' }}>Total Net Income</Text>
-                  <Text style={{ color: '#F9A970' }}>{total_fmly_net}</Text>
+                  <Text style={{color: '#fff'}}>Total Net Income</Text>
+                  <Text style={{color: '#F9A970'}}>{total_fmly_net}</Text>
                 </View>
               </View>
             </View>
           </View>
-          <View style={{ marginLeft: 15, marginRight: 15 }}>
+          <View style={{marginLeft: 15, marginRight: 15}}>
             <Field
               name={'remark'}
               title={'Remark'}
@@ -545,11 +533,11 @@ function Monthly_Income(props) {
             }}>
             <View>
               <View
-                style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Text style={{fontWeight: 'bold', fontSize: 20}}>
                   Total Net Icome=
                 </Text>
-                <Text style={{ color: '#F9A970', fontSize: 15 }}>{totalnet}</Text>
+                <Text style={{color: '#F9A970', fontSize: 15}}>{totalnet}</Text>
               </View>
 
               <Text>
@@ -559,9 +547,7 @@ function Monthly_Income(props) {
             </View>
           </View>
         </View>
-      </Collapsible>
-
-      <DividerLine />
+      </List.Accordion>
     </>
   );
 }

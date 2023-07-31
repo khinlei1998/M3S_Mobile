@@ -63,8 +63,7 @@ import {
 } from '../../redux/MonthlyReducer';
 import {updateCustomerData} from '../../query/Customer_query';
 import {checkDataExists} from '../../query/Customer_query';
-
-function Customer_Management(props) {
+function Edit_Emp_Info(props) {
   const dispatch = useDispatch();
 
   const {
@@ -94,7 +93,7 @@ function Customer_Management(props) {
     useState('village_code');
   const [selectedValue, setSelectedValue] = useState(null);
   const [nrc_visible, setNRC_Visible] = useState(false);
-  const [open_empinfo, setEmpInfo] = useState(false);
+  const [open_empinfo, setEmpInfo] = useState(true);
   const [show_nrc, setNRC] = useState('1');
   const [show_operation, setOperation] = useState('2');
   const [nrc_statecode, setNRCStateCode] = useState([]);
@@ -146,59 +145,10 @@ function Customer_Management(props) {
     input.onChange(value.id);
     setBusinessPer(value.id);
 
-     //if other radio select value must null
-     dispatch(
-      change('Customer_ManagementForm', 'curr_resident_date', ''),
-    );
+    //if other radio select value must null
+    dispatch(change('Customer_ManagementForm', 'curr_resident_date', ''));
   };
-  const onSubmit = async values => {
-    if (show_operation == '4') {
-      await deleteCustomer_ByID(values.id).then(response => {
-        if (response == 'success') {
-          alert('Delete Success');
-          setUpdateStatus(false);
-          props.navigation.navigate('Home');
-        }
-      });
-    } else {
-      let data = Object.assign(values, emp_filter_data, {
-        createUserId: empname,
-        resident_rgst_id:
-          values.nrc_type == '1' ? values.nrc_no : values.resident_rgst_id,
-      });
-      console.log('update data', data);
-      console.log('check nrc filtered_cus_data', filtered_cus_data);
-      if (filtered_cus_data.resident_rgst_id != data.resident_rgst_id) {
-        //if not same old nrc and new nrc
-        const check_nrc = await checkDataExists(data.resident_rgst_id);
-        if (check_nrc == true) {
-          alert('NRC No already exist');
-          console.log('Data already exists in the database');
-        } else {
-          await updateCustomerData(data).then(result => {
-            if (result == 'success') {
-              alert('Update Success');
-              setUpdateStatus(false);
 
-              dispatch(reset('Customer_ManagementForm'));
-              props.navigation.navigate('Home');
-            }
-          });
-        }
-      } else {
-        console.log('Customer update data', data);
-        await updateCustomerData(data).then(result => {
-          if (result == 'success') {
-            alert('Update Success');
-            setUpdateStatus(false);
-
-            dispatch(reset('Customer_ManagementForm'));
-            props.navigation.navigate('Home');
-          }
-        });
-      }
-    }
-  };
   const hideModal = () => setModalVisible(false);
   const hideVillageModal = () => setVillageCodeModalVisible(false);
   const hideTownshipModal = () => setTownshipCodeModalVisible(false);
@@ -206,7 +156,7 @@ function Customer_Management(props) {
   const hideCityModal = () => setCityCodeModalVisible(false);
   const hideWardModal = () => setWardCodeModalVisible(false);
   const filtered_cus_data = props.route.params;
-  console.log('edit customer ',filtered_cus_data);
+  console.log('edit customer ', filtered_cus_data);
   const EmpInfoFun = () => {
     setEmpInfo(!open_empinfo);
   };
@@ -618,27 +568,15 @@ function Customer_Management(props) {
     setBusiness(value.id);
     input.onChange(value.id);
     //if other radio select value must null
-    dispatch(
-      change('Customer_ManagementForm', 'curr_resident_date', ''),
-    );
+    dispatch(change('Customer_ManagementForm', 'curr_resident_date', ''));
   };
 
   const btnSelectEmployee = item => {
     setSelectedValue(item.employee_no);
-    dispatch(
-      change('Customer_ManagementForm', 'branch_code', item.branch_code),
-    );
-    dispatch(
-      change('Customer_ManagementForm', 'employee_no', item.employee_no),
-    );
+    dispatch(change('Customer_ManagementForm', 'branch_code', item.branch_code));
+    dispatch(change('Customer_ManagementForm', 'employee_no', item.employee_no));
     dispatch(change('Customer_ManagementForm', 'entry_date', item.entry_date));
-    dispatch(
-      change(
-        'Customer_ManagementForm',
-        'position_title_nm',
-        item.position_title_nm,
-      ),
-    );
+    dispatch(change('Customer_ManagementForm', 'position_title_nm', item.position_title_nm));
 
     // let emp_data = {
     //   branchCode: item.branch_code,
@@ -838,11 +776,58 @@ function Customer_Management(props) {
     setNRC_Visible(!nrc_visible);
   };
 
+  const onSubmit = async values => {
+    console.log('hello');
+    console.log('values', values);
+    if (show_operation == '4') {
+      await deleteCustomer_ByID(values.id).then(response => {
+        if (response == 'success') {
+          alert('Delete Success');
+          setUpdateStatus(false);
+          props.navigation.navigate('Home');
+        }
+      });
+    } else {
+      let data = Object.assign(values, emp_filter_data, {
+        createUserId: empname,
+        resident_rgst_id:
+          values.nrc_type == '1' ? values.nrc_no : values.resident_rgst_id,
+      });
+      console.log('update data', data);
+      console.log('check nrc filtered_cus_data', filtered_cus_data);
+      if (filtered_cus_data.resident_rgst_id != data.resident_rgst_id) {
+        //if not same old nrc and new nrc
+        const check_nrc = await checkDataExists(data.resident_rgst_id);
+        if (check_nrc == true) {
+          alert('NRC No already exist');
+          console.log('Data already exists in the database');
+        } else {
+          await updateCustomerData(data).then(result => {
+            if (result == 'success') {
+              alert('Update Success');
+              setUpdateStatus(false);
+
+              dispatch(reset('Customer_ManagementForm'));
+              props.navigation.navigate('Home');
+            }
+          });
+        }
+      } else {
+        console.log('Customer update data', data);
+        await updateCustomerData(data).then(result => {
+          if (result == 'success') {
+            alert('Update Success');
+            setUpdateStatus(false);
+
+            dispatch(reset('Customer_ManagementForm'));
+            props.navigation.navigate('Home');
+          }
+        });
+      }
+    }
+  };
   return (
     <>
-      {/* {modalVisible ? (
-          <Employee_Search visible={modalVisible} hideModal={hideModal} />
-        ) : ( */}
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={{flex: 1, backgroundColor: '#fff'}}>
@@ -898,27 +883,15 @@ function Customer_Management(props) {
             </View>
             <DividerLine />
             {/* EMployee Information */}
-            <View style={style.title_emp_style}>
-              <Text style={{fontWeight: 'bold', fontSize: 20}}>
-                Employee Information
-              </Text>
-              <TouchableOpacity onPress={EmpInfoFun}>
-                <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
-              </TouchableOpacity>
-            </View>
 
-            <Collapsible collapsed={open_empinfo}>
-              <View
-                style={{
-                  width: '90%',
-                  alignSelf: 'center',
-                  backgroundColor: '#FAFAFA',
-                }}>
-                <View
-                  style={{
-                    padding: 5,
-                    // margin: 10,
-                  }}>
+            <List.Accordion
+              expanded={open_empinfo}
+              onPress={setEmpInfo}
+              style={style.list_container}
+              titleStyle={style.list_title}
+              title="Employee Information">
+              <View style={style.sub_container}>
+                <View style={style.sub_list_container}>
                   <Field
                     name={'employee_no'}
                     title={'Employee No'}
@@ -930,57 +903,49 @@ function Customer_Management(props) {
                     focusTextInput
                     editable
                   />
+                </View>
 
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}>
+                <View style={style.sub_list_container}>
+                  <Field
+                    name={'entry_date'}
+                    title={'Start Working Date at SHM'}
+                    component={DefaultTextInput}
+                    editable
+                  />
+                  <View style={{marginRight: 10}}>
                     <Field
-                      name={'entry_date'}
-                      title={'Start Working Date at SHM'}
-                      component={DefaultTextInput}
-                      editable
-                    />
-                    <View style={{marginRight: 10}}>
-                      <Field
-                        name={'position_title_nm'}
-                        title={'Current Position'}
-                        component={TextInputFile}
-                        editable
-                      />
-                    </View>
-                  </View>
-
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}>
-                    <Field
-                      name={'branch_code'}
-                      title={'Branch'}
+                      name={'position_title_nm'}
+                      title={'Current Position'}
                       component={TextInputFile}
-                      cus_width
-                      input_mode
                       editable
                     />
-                    <View style={{marginRight: 10}}>
-                      <Field
-                        enabled={update_status == true ? false : true}
-                        data={salary_grade}
-                        name={'salary_rating_code'}
-                        title={'Salary Grade'}
-                        component={DropDownPicker}
-                        pickerStyle={{
-                          width: 300,
-                        }}
-                      />
-                    </View>
+                  </View>
+                </View>
+
+                <View style={style.sub_list_container}>
+                  <Field
+                    name={'branch_code'}
+                    title={'Branch'}
+                    component={TextInputFile}
+                    cus_width
+                    input_mode
+                    editable
+                  />
+                  <View style={{marginRight: 10}}>
+                    <Field
+                      enabled={update_status == true ? false : true}
+                      data={salary_grade}
+                      name={'salary_rating_code'}
+                      title={'Salary Grade'}
+                      component={DropDownPicker}
+                      pickerStyle={{
+                        width: 300,
+                      }}
+                    />
                   </View>
                 </View>
               </View>
-            </Collapsible>
+            </List.Accordion>
 
             <DividerLine />
 
@@ -1009,8 +974,6 @@ function Customer_Management(props) {
           </View>
         </TouchableWithoutFeedback>
       </ScrollView>
-      {/* )} */}
-
       <Edit_NRC_Modal
         nrc_visible={nrc_visible}
         hideNRCModal={hideNRCModal}
@@ -1890,7 +1853,7 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Customer_ManagementForm',
-  validate,
+  // validate,
 })(
   connect(mapStateToProps, {
     setCusFormInitialValues,
@@ -1902,5 +1865,5 @@ export default reduxForm({
     totalExpense,
     totalFamilyExpense,
     updateTotalSum,
-  })(Customer_Management),
+  })(Edit_Emp_Info),
 );

@@ -7,10 +7,13 @@ import CheckBoxFile from '../../components/CheckBoxFile';
 import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
 import TextInputFile from '../../components/TextInputFile';
 import DividerLine from '../../components/DividerLine';
-import {style} from '../../style/Property_Info_style';
+import {style} from '../../style/Customer_Mang_style';
+// import {style} from '../../style/Property_Info_style';
+
 import SingleCheckBox from '../../components/SingleCheckBox';
+import {List} from 'react-native-paper';
 export default function Property_Info() {
-  const [show_propertyinfo, setOpenPropertyInfo] = useState(false);
+  const [show_propertyinfo, setOpenPropertyInfo] = useState(true);
 
   const PropertyInfoFun = () => {
     setOpenPropertyInfo(!show_propertyinfo);
@@ -18,13 +21,12 @@ export default function Property_Info() {
 
   return (
     <>
-      <View style={style.container}>
-        <Text style={style.titlestyle}>Property Information</Text>
-        <TouchableOpacity onPress={PropertyInfoFun}>
-          <Icon name="arrow-up" size={30} style={{marginTop: 10}} />
-        </TouchableOpacity>
-      </View>
-      <Collapsible collapsed={show_propertyinfo}>
+      <List.Accordion
+        expanded={show_propertyinfo}
+        onPress={PropertyInfoFun}
+        style={style.list_container}
+        titleStyle={style.list_title}
+        title="Property Information">
         <View style={style.collasible_container}>
           <View
             style={{
@@ -41,8 +43,8 @@ export default function Property_Info() {
                   component={SingleCheckBox}
                   checkedValue="Y"
                   uncheckedValue="N"
-                    // format={value => !!value}
-                    // parse={value => (value ? true : false)}
+                  // format={value => !!value}
+                  // parse={value => (value ? true : false)}
                 />
                 <Field
                   label={'Motorcycle'}
@@ -53,7 +55,6 @@ export default function Property_Info() {
                   uncheckedValue="N"
                 />
               </View>
-
               <View>
                 <Field
                   label={'Apartment'}
@@ -72,7 +73,6 @@ export default function Property_Info() {
                   uncheckedValue="N"
                 />
               </View>
-
               <View>
                 <Field
                   label={'Car'}
@@ -92,7 +92,6 @@ export default function Property_Info() {
                 />
               </View>
             </View>
-
             <Field
               name={'otrPropEstmtdVal'}
               title={'Estimated Value'}
@@ -118,7 +117,8 @@ export default function Property_Info() {
             />
           </View>
         </View>
-      </Collapsible>
+      </List.Accordion>
+
       <DividerLine />
     </>
   );

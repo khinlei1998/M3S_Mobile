@@ -23,12 +23,13 @@ export default function RadioButtonFile(props) {
             <View style={{ flexDirection: 'row' }}>
               <RadioButton.Item
               color="#636Dc6"
+              uncheckedColor="#636Dc6"
                 label={val.name}
                 key={val.id}
 
                 value={val.id}
                 status={input.checked ? 'checked' : 'unchecked'}
-                style={{ flexDirection: customstyle ? 'row-reverse' : 'row' }}
+                style={{ flexDirection: customstyle ? 'row-reverse' : 'row',}}
                 // disabled={disabled ? true : false}
                 disabled={disabled}
               />
