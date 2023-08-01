@@ -14,7 +14,6 @@ import {
   totalNetBusiness,
   totalNetFamily,
 } from '../../redux/MonthlyReducer';
-import DefaultTextInput from '../../components/DefaultTextInput';
 import {List} from 'react-native-paper';
 import {style} from '../../style/Customer_Mang_style';
 function Monthly_Income(props) {
@@ -239,11 +238,12 @@ function Monthly_Income(props) {
                 <Field
                   name={'totSaleExpense'}
                   title={'Total Sale Expense (-)'}
-                  component={DefaultTextInput}
+                  component={TextInputFile}
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
                   editable
+
                 />
 
                 <Field
@@ -396,7 +396,7 @@ function Monthly_Income(props) {
                 <Field
                   name={'fmlyTotExpense'}
                   title={'Total Family Expense (-)'}
-                  component={DefaultTextInput}
+                  component={TextInputFile}
                   inputmax={28}
                   keyboardType={'numeric'}
                   editable

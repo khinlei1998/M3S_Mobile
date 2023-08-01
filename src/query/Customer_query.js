@@ -32,7 +32,6 @@ export async function filterCustomer(selectedColumn, searchTerm) {
         sql,
         [],
         (tx, results) => {
-          console.log('Customer results', results);
           resolve(results.rows.raw());
         },
         (tx, error) => {

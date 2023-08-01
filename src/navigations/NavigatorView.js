@@ -1,12 +1,12 @@
-import { View, Text } from 'react-native';
+import {View, Text,TouchableOpacity} from 'react-native';
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import TestScreen from '../screens/CustomerManagement/TestScreen';
 import Home from '../screens/Dashboard/Home';
 import Customer_Management from '../screens/CustomerManagement/Customer_Management';
 import CustomerSearch from '../screens/Customer/CustomerSearch';
 import Icon from 'react-native-vector-icons/Feather';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Edit_Emp_Info from '../screens/EditCustManagement/Edit_Emp_Info';
 import Synchronization_Screen from '../screens/Synchronization/Synchronization_Screen';
 import Individual_Loan from '../screens/Loan/Individual_Loan';
@@ -31,10 +31,9 @@ import Cover_Loan_Form from '../screens/Cover Loan/Cover_Loan_Form';
 import Reloan_Form from '../screens/Relaon/Reloan_Form';
 import Edit_Reloan_Form from '../screens/Edit_Relaon/Edit_Reloan_Form';
 import Survey from '../screens/Survey/Survey';
+
 const StackNavigationData = [
-
   {
-
     name: 'Home',
     component: Home,
     // headerLeft: headerLeftComponent,
@@ -124,7 +123,7 @@ const StackNavigationData = [
       fontSize: 18,
     },
   },
- 
+
   {
     name: 'Customer Management',
     component: Customer_Management,
@@ -271,7 +270,6 @@ const StackNavigationData = [
     },
   },
 
-
   {
     name: 'Evidence',
     component: Evidence,
@@ -284,7 +282,7 @@ const StackNavigationData = [
 ];
 const Stack = createNativeStackNavigator();
 
-export default function NavigatorView() {
+export default function NavigatorView(props) {
   const navigation = useNavigation();
 
   const headerLeftComponentMenu = () => {
@@ -298,6 +296,14 @@ export default function NavigatorView() {
       // <></>
     );
   };
+  const renderRightIcon = () => {
+    // Customize this function to render the right icon as you wish
+    return (
+      <TouchableOpacity onPress={() => props.navigation.navigate('Home')}>
+        <Icon name="home" size={30} color="#fff" />
+      </TouchableOpacity>
+    );
+  };
   return (
     <Stack.Navigator>
       {StackNavigationData.map((item, idx) => (
@@ -309,9 +315,11 @@ export default function NavigatorView() {
             headerTitleAlign: 'center',
             title: item.title,
             headerLeft: item.headerLeft || headerLeftComponentMenu,
+            headerRight: renderRightIcon, // Add the custom icon to the right
+
             headerTintColor: '#FFF',
             headerTitleStyle: item.headerTitleStyle,
-            headerStyle: { backgroundColor: '#273050' },
+            headerStyle: {backgroundColor: '#273050'},
           }}
         />
       ))}

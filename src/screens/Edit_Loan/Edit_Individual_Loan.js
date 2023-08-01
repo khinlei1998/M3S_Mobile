@@ -3353,7 +3353,6 @@ function Edit_Individual_Loan(props) {
 }
 
 function mapStateToProps(state) {
-  console.log('edit loan state', state);
   return {
     totalnet: state.monthly.totalnetincome,
     retrive_loan_data: state.loan.edit_loandata,

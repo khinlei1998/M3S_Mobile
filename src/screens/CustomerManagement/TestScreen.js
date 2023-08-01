@@ -21,7 +21,6 @@ import Icon from 'react-native-vector-icons/Feather';
 import Collapsible from 'react-native-collapsible';
 import TextInputFile from '../../components/TextInputFile';
 import Employee_Search from './Employee_Search';
-import DefaultTextInput from '../../components/DefaultTextInput';
 import DropDownPicker from '../../components/DropDownPicker';
 import Customer_Base_Info from './Customer_Base_Info';
 import {fetchAllCustomerNum} from '../../query/Customer_query';
@@ -338,7 +337,7 @@ const TestScreen = props => {
                 submit
               </Button>
 
-              
+
 
               <View style={{marginTop: 20}}>
                 <Button

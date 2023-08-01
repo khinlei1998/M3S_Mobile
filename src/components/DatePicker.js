@@ -22,7 +22,7 @@ export default function DatePicker(props) {
     // ...rest
     onWorkingDateChange,
     input,
-    require
+    require,
   } = props;
   const [showdate, setShowDate] = useState(false);
   const [date, setDate] = useState('');
@@ -46,18 +46,17 @@ export default function DatePicker(props) {
   const getWorkingMonth = (date, chose_date) => {
     const today = moment();
     const monthDiff = today.diff(chose_date, 'months'); // Calculate month difference
-    onWorkingDateChange(monthDiff)
+    onWorkingDateChange(monthDiff);
   };
   return (
     <>
       {/* <View style={{flexDirection: 'row', height: 66}}> */}
       <View style={{flexDirection: 'column', height: 66}}>
-
         <TextInput
           {...input}
           // label={label}
           label={
-            <Text style={{color:'#636Dc6'}}>
+            <Text style={{color: '#636Dc6'}}>
               {label} {require && <Text style={{color: 'red'}}>*</Text>}
             </Text>
           }
@@ -73,7 +72,13 @@ export default function DatePicker(props) {
           }}
           // onFocus={() => showcalendar()}
           activeUnderlineColor="red"
-          right={<TextInput.Icon icon={icon} onPress={() => showcalendar()} />}
+          right={
+            <TextInput.Icon
+              icon={icon}
+              onPress={() => showcalendar()}
+              iconColor="#636Dc6"
+            />
+          }
         />
         {touched && error && <Text style={{color: 'red'}}>{error}</Text>}
 
@@ -85,8 +90,6 @@ export default function DatePicker(props) {
           maximumDate={new Date()}
         />
       </View>
-
-
     </>
   );
 }

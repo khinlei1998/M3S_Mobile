@@ -41,6 +41,7 @@ export default function Survey(props) {
         'YYYYMMDD',
       )}${survey_rsult_count + index}`
     }))
+    console.log('survey_rsult',survey_rsult);
     // console.log('survey_rsult',survey_rsult);
     await storeSurveyResult(survey_rsult).then(result => {
       if (result == 'success') {

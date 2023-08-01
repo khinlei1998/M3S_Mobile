@@ -13,7 +13,6 @@ import {
 import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
 import {connect} from 'react-redux';
-import DefaultTextInput from '../../components/DefaultTextInput';
 import {Picker} from '@react-native-picker/picker';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import {

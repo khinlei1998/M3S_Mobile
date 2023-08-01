@@ -15,7 +15,6 @@ import {
   totalNetFamily,
   updateTotalSum,
 } from '../../redux/MonthlyReducer';
-import DefaultTextInput from '../../components/DefaultTextInput';
 import {List} from 'react-native-paper';
 import {style} from '../../style/Customer_Mang_style';
 function Edit_Monthly_Income(props) {
@@ -72,7 +71,6 @@ function Edit_Monthly_Income(props) {
 
   const handleFieldChange = (value, index) => {
     const number = parseFloat(value);
-    console.log('number', number);
     //2
 
     // Check if the input is a valid number
@@ -278,7 +276,7 @@ function Edit_Monthly_Income(props) {
                 <Field
                   name={'tot_sale_expense'}
                   title={'Total Sale Expense (-)'}
-                  component={DefaultTextInput}
+                  component={TextInputFile}
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
@@ -444,7 +442,7 @@ function Edit_Monthly_Income(props) {
                 <Field
                   name={'fmly_tot_expense'}
                   title={'Total Family Expense (-)'}
-                  component={DefaultTextInput}
+                  component={TextInputFile}
                   inputmax={28}
                   keyboardType={'numeric'}
                   editable

@@ -40,13 +40,19 @@ export default function DropDownPicker(props) {
         enabled={enabled ? false : true}
         selectedValue={value}
         onValueChange={onChange}
-        style={[pickerStyle, styles.picker]}
+        // style={[pickerStyle, styles.picker]}
+        style={[
+          pickerStyle,
+          enabled && {
+            color: '#000',
+          },
+        ]}
         mode="dropdown">
-        <Picker.Item label={title} value="" style={{color:'#636Dc6'}}  />
+        <Picker.Item label={title} value="" style={{color: '#636Dc6'}} />
         {num_data.length > 0 &&
           num_data.map(val => (
             // <Picker.Item key={val} label={val.toString()} value={val} />
-            <Picker.Item key={val.id} label={val.label} value={val.value}  />
+            <Picker.Item key={val.id} label={val.label} value={val.value} />
           ))}
       </Picker>
     </View>
@@ -71,15 +77,15 @@ export default function DropDownPicker(props) {
           }
           style={[
             pickerStyle,
-            {
+            enabled && {
               color: '#000',
             },
           ]}
           mode="dropdown">
-          <Picker.Item label={title} value="" style={{color:'#636Dc6'}} />
+          <Picker.Item label={title} value="" style={{color: '#636Dc6'}} />
           {data.length > 0 &&
             data.map(val => (
-              <Picker.Item label={val.label} value={val.value} key={val.id}  />
+              <Picker.Item label={val.label} value={val.value} key={val.id} />
             ))}
         </Picker>
       </View>
@@ -90,7 +96,7 @@ export default function DropDownPicker(props) {
 }
 
 const styles = StyleSheet.create({
-  picker: {
-    color: '#000',
-  },
+  // picker: {
+  //   color: '#000',
+  // },
 });

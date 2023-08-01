@@ -4,7 +4,6 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   ScrollView,
-  TouchableOpacity,
   FlatList,
   ToastAndroid,
 } from 'react-native';
@@ -48,10 +47,10 @@ import {fetchAllCustomerNum} from '../../query/Customer_query';
 import {emp_filter_item, village_code} from '../../common';
 import {Picker} from '@react-native-picker/picker';
 import {filterEmp} from '../../query/Employee_query';
-import DefaultTextInput from '../../components/DefaultTextInput';
 import {addEmpFilter} from '../../redux/EmployeeReducer';
 import {storeCustomerData} from '../../query/Customer_query';
 import {resetMonthlyIncome} from '../../redux/MonthlyReducer';
+import DatePicker from '../../components/DatePicker';
 function Customer_Management(props) {
   const dispatch = useDispatch();
 
@@ -122,19 +121,18 @@ function Customer_Management(props) {
     let data = Object.assign(values, emp_filter_data, {
       createUserId: empname,
       nrc_prefix_code: values.nrc_type == '2' ? prefix : '',
-      // nrc_no: values.nrc_type == '1' ?values.resident_rgst_id,
       resident_rgst_id:
         values.nrc_type == '1' ? values.nrcNo : values.resident_rgst_id,
       start_living_date_status: show_businessdate,
     });
-    console.log('Create customer data', data);
     await storeCustomerData(data).then(result => {
       if (result == 'success') {
-        dispatch(reset('Customer_ManagementForm'));
+        // dispatch(reset('Customer_ManagementForm'));
         resetMonthlyIncome();
 
         ToastAndroid.show(`Create Successfully!`, ToastAndroid.SHORT);
-        props.navigation.navigate('Customer Search');
+        props.navigation.navigate('Home');
+        // props.navigation.navigate('Customer Search');
       }
     });
   };
@@ -147,9 +145,6 @@ function Customer_Management(props) {
   const hideWardModal = () => setWardCodeModalVisible(false);
   const [city_text, set_cityText] = useState('');
 
-  const EmpInfoFun = () => {
-    setEmpInfo(!open_empinfo);
-  };
   const onChangeCityText = inputText => {
     set_cityText(inputText);
   };
@@ -612,7 +607,7 @@ function Customer_Management(props) {
                         alignItems: 'center',
                       }}>
                       <RadioButton.Item
-                       uncheckedColor="#636Dc6"
+                        uncheckedColor="#636Dc6"
                         disabled={option.value !== show_operation}
                         label={option.label}
                         value={option.value}
@@ -658,15 +653,16 @@ function Customer_Management(props) {
                 <View style={style.sub_list_container}>
                   <Field
                     name={'entryDate'}
-                    title={'Start Working Date at SHM'}
-                    component={TextInputFile}
-                    editable
+                    component={DatePicker}
+                    label={'Start Working Date at SHM'}
+                    icon={'calendar'}
                   />
+
                   <View style={{marginRight: 10}}>
                     <Field
                       name={'positionTitleNm'}
                       title={'Current Position'}
-                      component={DefaultTextInput}
+                      component={TextInputFile}
                       editable
                     />
                   </View>
@@ -675,7 +671,7 @@ function Customer_Management(props) {
                   <Field
                     name={'branchCode'}
                     title={'Branch'}
-                    component={DefaultTextInput}
+                    component={TextInputFile}
                     cus_width
                     input_mode
                     editable
@@ -756,7 +752,9 @@ function Customer_Management(props) {
                   justifyContent: 'space-around',
                 }}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{marginRight: 10,fontWeight:'bold'}}>Search Item:</Text>
+                  <Text style={{marginRight: 10, fontWeight: 'bold'}}>
+                    Search Item:
+                  </Text>
 
                   <Picker
                     selectedValue={selectedItemValue}
@@ -1350,14 +1348,6 @@ function Customer_Management(props) {
                 </View>
 
                 <View style={{width: '50%'}}>
-                  {/* <Field
-                    name={'searchtext'}
-                    component={TextInputFile}
-                    input_mode
-                    inputmax={20}
-                    icon={'magnify'}
-                    handleTextInputFocus={handleSubmit(btnWardSearch)}
-                  /> */}
                   <TextInput
                     style={{
                       backgroundColor: '#fff',

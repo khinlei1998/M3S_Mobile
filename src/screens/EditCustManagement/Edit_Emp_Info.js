@@ -42,7 +42,6 @@ import {fetchAllCustomerNum} from '../../query/Customer_query';
 import {emp_filter_item, village_code} from '../../common';
 import {Picker} from '@react-native-picker/picker';
 import {filterEmp} from '../../query/Employee_query';
-import DefaultTextInput from '../../components/DefaultTextInput';
 import {addEmpFilter} from '../../redux/EmployeeReducer';
 import {operations} from '../../common';
 import {setUpdateStatus} from '../../redux/CustomerReducer';
@@ -63,6 +62,7 @@ import {
 } from '../../redux/MonthlyReducer';
 import {updateCustomerData} from '../../query/Customer_query';
 import {checkDataExists} from '../../query/Customer_query';
+import DatePicker from '../../components/DatePicker';
 function Edit_Emp_Info(props) {
   const dispatch = useDispatch();
 
@@ -156,7 +156,6 @@ function Edit_Emp_Info(props) {
   const hideCityModal = () => setCityCodeModalVisible(false);
   const hideWardModal = () => setWardCodeModalVisible(false);
   const filtered_cus_data = props.route.params;
-  console.log('edit customer ', filtered_cus_data);
   const EmpInfoFun = () => {
     setEmpInfo(!open_empinfo);
   };
@@ -573,10 +572,20 @@ function Edit_Emp_Info(props) {
 
   const btnSelectEmployee = item => {
     setSelectedValue(item.employee_no);
-    dispatch(change('Customer_ManagementForm', 'branch_code', item.branch_code));
-    dispatch(change('Customer_ManagementForm', 'employee_no', item.employee_no));
+    dispatch(
+      change('Customer_ManagementForm', 'branch_code', item.branch_code),
+    );
+    dispatch(
+      change('Customer_ManagementForm', 'employee_no', item.employee_no),
+    );
     dispatch(change('Customer_ManagementForm', 'entry_date', item.entry_date));
-    dispatch(change('Customer_ManagementForm', 'position_title_nm', item.position_title_nm));
+    dispatch(
+      change(
+        'Customer_ManagementForm',
+        'position_title_nm',
+        item.position_title_nm,
+      ),
+    );
 
     // let emp_data = {
     //   branchCode: item.branch_code,
@@ -779,29 +788,43 @@ function Edit_Emp_Info(props) {
   const onSubmit = async values => {
     console.log('hello');
     console.log('values', values);
-    if (show_operation == '4') {
-      await deleteCustomer_ByID(values.id).then(response => {
-        if (response == 'success') {
-          alert('Delete Success');
-          setUpdateStatus(false);
-          props.navigation.navigate('Home');
-        }
-      });
-    } else {
-      let data = Object.assign(values, emp_filter_data, {
-        createUserId: empname,
-        resident_rgst_id:
-          values.nrc_type == '1' ? values.nrc_no : values.resident_rgst_id,
-      });
-      console.log('update data', data);
-      console.log('check nrc filtered_cus_data', filtered_cus_data);
-      if (filtered_cus_data.resident_rgst_id != data.resident_rgst_id) {
-        //if not same old nrc and new nrc
-        const check_nrc = await checkDataExists(data.resident_rgst_id);
-        if (check_nrc == true) {
-          alert('NRC No already exist');
-          console.log('Data already exists in the database');
+    try {
+      if (show_operation == '4') {
+        await deleteCustomer_ByID(values.id).then(response => {
+          if (response == 'success') {
+            alert('Delete Success');
+            setUpdateStatus(false);
+            props.navigation.navigate('Home');
+          }
+        });
+      } else {
+        let data = Object.assign(values, emp_filter_data, {
+          createUserId: empname,
+          resident_rgst_id:
+            values.nrc_type == '1' ? values.nrc_no : values.resident_rgst_id,
+        });
+        if (filtered_cus_data.resident_rgst_id != data.resident_rgst_id) {
+          //if not same old nrc and new nrc
+          const check_nrc = await checkDataExists(data.resident_rgst_id);
+          if (check_nrc == true) {
+            alert('NRC No already exist');
+            console.log('Data already exists in the database');
+          } else {
+            await updateCustomerData(data).then(result => {
+              if (result == 'success') {
+                alert('Update Success');
+                setUpdateStatus(false);
+
+                dispatch(reset('Customer_ManagementForm'));
+                // props.navigation.navigate('Home');
+                // props.navigation.navigate('Customer Search');
+                props.navigation.navigate('Home');
+
+              }
+            });
+          }
         } else {
+          console.log('Customer update data', data);
           await updateCustomerData(data).then(result => {
             if (result == 'success') {
               alert('Update Success');
@@ -812,18 +835,11 @@ function Edit_Emp_Info(props) {
             }
           });
         }
-      } else {
-        console.log('Customer update data', data);
-        await updateCustomerData(data).then(result => {
-          if (result == 'success') {
-            alert('Update Success');
-            setUpdateStatus(false);
-
-            dispatch(reset('Customer_ManagementForm'));
-            props.navigation.navigate('Home');
-          }
-        });
       }
+    } catch (error) {
+      // Handle errors here
+      console.error('Error occurred during onSubmit:', error);
+      // You can add additional error handling or display an error message to the user
     }
   };
   return (
@@ -834,7 +850,7 @@ function Edit_Emp_Info(props) {
             <Text style={style.title_style}>
               Customer Information Management
             </Text>
-            <DividerLine />
+            <DividerLine border_width />
 
             <View style={style.continer}>
               <View
@@ -853,13 +869,14 @@ function Edit_Emp_Info(props) {
                         alignItems: 'center',
                       }}>
                       <RadioButton.Item
+                        uncheckedColor="#636Dc6"
+                        color="#636Dc6"
                         disabled={
                           filtered_cus_data.tablet_sync_sts === '01' &&
                           option.value == 3
                         }
                         label={option.label}
                         value={option.value}
-                        color="#000"
                         labelStyle={{marginLeft: 5}}
                       />
                     </View>
@@ -876,12 +893,12 @@ function Edit_Emp_Info(props) {
                 }
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={style.btnStyle}>
                 OK
               </Button>
             </View>
-            <DividerLine />
+            <DividerLine border_width />
             {/* EMployee Information */}
 
             <List.Accordion
@@ -907,10 +924,11 @@ function Edit_Emp_Info(props) {
 
                 <View style={style.sub_list_container}>
                   <Field
-                    name={'entry_date'}
-                    title={'Start Working Date at SHM'}
-                    component={DefaultTextInput}
-                    editable
+                    name={'entryDate'}
+                    component={DatePicker}
+                    label={'Start Working Date at SHM'}
+                    icon={update_status == true && 'calendar'}
+                    editable={update_status == true ? false : true}
                   />
                   <View style={{marginRight: 10}}>
                     <Field

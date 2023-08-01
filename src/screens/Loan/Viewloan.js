@@ -92,7 +92,7 @@ function Viewloan(props) {
         style={{
           flexDirection: 'row',
           backgroundColor: '#D7D8DC',
-          borderRadius: 5,
+          borderRadius: 10,
           padding: 5,
           margin: 10,
         }}>

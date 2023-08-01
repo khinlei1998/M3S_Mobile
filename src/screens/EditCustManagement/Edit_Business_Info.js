@@ -17,7 +17,6 @@ import {
 } from '../../common';
 // import {style} from '../../style/Business_Info_style';
 import {connect} from 'react-redux';
-import DefaultTextInput from '../../components/DefaultTextInput';
 import {style} from '../../style/Customer_Mang_style';
 function Edit_Business_Info(props) {
   const {

@@ -5,7 +5,6 @@ import {style} from '../../style/Individual_Loan_style';
 import TextInputFile from '../../components/TextInputFile';
 import {reduxForm, Field, change} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
-import DefaultTextInput from '../../components/DefaultTextInput';
 import {getAllLoanMax} from '../../query/LoanMax_query';
 import {
   totalIncome,
@@ -257,7 +256,7 @@ function Borrower_Monthly_Income(props) {
                 <Field
                   name={'totSaleExpense'}
                   title={'Total Sale Expense (-)'}
-                  component={DefaultTextInput}
+                  component={TextInputFile}
                   input_mode
                   inputmax={28}
                   keyboardType={'numeric'}
@@ -417,7 +416,7 @@ function Borrower_Monthly_Income(props) {
                 <Field
                   name={'fmlyTotExpense'}
                   title={'Total Family Expense (-)'}
-                  component={DefaultTextInput}
+                  component={TextInputFile}
                   inputmax={28}
                   keyboardType={'numeric'}
                   editable

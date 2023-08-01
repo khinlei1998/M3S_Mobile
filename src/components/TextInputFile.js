@@ -108,11 +108,13 @@ export default function TextInputFile(props) {
         placeholder={showValue ? defaultData : ''}
         right={
           icon == 'eye' ? (
-            <TextInput.Icon icon={icon} onPress={togglePasswordIcon} />
+            <TextInput.Icon icon={icon} onPress={togglePasswordIcon}   />
           ) : icon == 'magnify' ? (
-            <TextInput.Icon icon={icon} onPress={handleTextInputFocus} color="red" />
+            <TextInput.Icon icon={icon} onPress={handleTextInputFocus}  iconColor="#636Dc6" />
           ) : icon == 'calendar' ? (
-            <TextInput.Icon icon={icon} color="#636Dc6"/>
+            // <TextInput.Icon icon={icon}  iconColor="#636Dc6"/>
+            <TextInput.Icon icon={icon} onPress={handleTextInputFocus}  iconColor="#636Dc6" />
+
           ) : null
         }
       />
