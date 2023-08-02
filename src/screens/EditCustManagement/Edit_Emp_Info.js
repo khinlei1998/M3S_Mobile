@@ -816,7 +816,6 @@ function Edit_Emp_Info(props) {
                 setUpdateStatus(false);
 
                 dispatch(reset('Customer_ManagementForm'));
-                // props.navigation.navigate('Home');
                 // props.navigation.navigate('Customer Search');
                 props.navigation.navigate('Home');
 
