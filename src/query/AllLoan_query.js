@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { Alert, FileSystem } from 'react-native';
+import {Alert, FileSystem} from 'react-native';
 import RNFS from 'react-native-fs';
 import moment from 'moment';
 export async function getAllLoan() {
@@ -21,9 +21,6 @@ export async function getAllLoan() {
 }
 // Helper function to merge data from two tables
 const mergeTablesData = (dataFromTable1, dataFromTable2) => {
-  // Perform the data merging logic here
-  // For example, you can concatenate the data or create a new array of merged objects.
-
   const mergedData = [];
 
   // Merge data from table1
@@ -31,38 +28,8 @@ const mergeTablesData = (dataFromTable1, dataFromTable2) => {
     mergedData.push(item);
   });
 
-  // Merge data from table2
-  // dataFromTable2.forEach(item => {
-  //   mergedData.push(item);
-  // });
   dataFromTable2.forEach(item => {
     mergedData.push(item);
-    // mergedData.push({
-    //   serial_no: item.serial_no, // Use a unique key for each item in the merged array.
-    //   application_no: item.group_aplc_no,
-    //   status_code: item.status_code,// Since table1 does not have column1, set it to null or any default value.
-    //   create_datetime: item.create_datetime, // Since table1 does not have column2, set it to null or any default value.
-    //   create_user_id: item.create_user_id,
-    //   delete_datetime: item.delete_datetime,
-    //   delete_user_id: item.delete_user_id,
-    //   update_datetime: item.update_datetime,
-    //   update_user_id: item.update_user_id,
-    //   open_branch_code: item.open_branch_code,
-    //   product_type: item.product_type,
-    //   open_user_id: item.open_user_id,
-    //   mngt_branch_code: item.mngt_branch_code,
-    //   mngt_user_id: item.mngt_user_id,
-    //   application_date: item.application_date,
-    //   in_charge: item.in_charge,
-    //   township_name: item.township_name,
-    //   customer_no: item.customer_no,
-    //   borrower_name: item.leader_name,
-    //   resident_rgst_id: item.resident_rgst_id,
-    //   father_name: item.father_name,
-    //   addr: item.addr,
-    //   tablet_sync_sts: item.tablet_sync_sts,
-    //   sync_sts: item.sync_sts,
-    // });
   });
   return mergedData;
 };
@@ -86,6 +53,11 @@ export async function getAllLoanType() {
                   dataFromTable1,
                   dataFromTable2,
                 );
+                mergedData.sort(
+                  (a, b) =>
+                    new Date(b.create_datetime) - new Date(a.create_datetime),
+                );
+
                 resolve(mergedData);
               },
               error => {
@@ -292,7 +264,7 @@ export async function getAllLoanType() {
 
 export const storeLoanData = async loan_data => {
   const user_id = await AsyncStorage.getItem('user_id');
-  const date = moment().format('YYYY-MM-DD');
+  const date = moment().format();
   return new Promise(async (resolve, reject) => {
     try {
       global.db.transaction(trans => {
@@ -473,7 +445,6 @@ export const storeLoanData = async loan_data => {
 };
 
 export async function deleteLoan_ByID(data) {
-  console.log('data', data);
   try {
     const borrowerImagePath = data.borrower_sign;
     const coBorrowerImagePath = data.co_borrower_sign;
@@ -1252,9 +1223,18 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 groupMemberNum: parseInt(item.group_member_num),
                 occupation: item.occupation,
                 netIncome: parseInt(item.net_income),
-                excptAprvRsn1: item.excpt_aprv_rsn_1 && item.excpt_aprv_rsn_1 == 1 ? 'Y' : 'N',
-                excptAprvRsn2: item.excpt_aprv_rsn_2 && item.excpt_aprv_rsn_2 == 1 ? 'Y' : 'N',
-                excptAprvRsn3: item.excpt_aprv_rsn_3 && item.excpt_aprv_rsn_3 == 1 ? 'Y' : 'N',
+                excptAprvRsn1:
+                  item.excpt_aprv_rsn_1 && item.excpt_aprv_rsn_1 == 1
+                    ? 'Y'
+                    : 'N',
+                excptAprvRsn2:
+                  item.excpt_aprv_rsn_2 && item.excpt_aprv_rsn_2 == 1
+                    ? 'Y'
+                    : 'N',
+                excptAprvRsn3:
+                  item.excpt_aprv_rsn_3 && item.excpt_aprv_rsn_3 == 1
+                    ? 'Y'
+                    : 'N',
                 exceptionReason: item.exception_reason,
                 recommendNm: item.recommend_nm,
                 tabletSyncSts: '00',
@@ -1269,7 +1249,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           );
           if (relation_info.length > 0) {
             const relation_data = relation_info.map(item => {
-              console.log('relation data',item);
+              console.log('relation data', item);
               return {
                 organizationCode: '',
                 serialNo: '',
@@ -1395,8 +1375,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         maxBodyLength: Infinity,
         url:
           data.product_type == 30 ||
-            data.product_type == 40 ||
-            data.product_type == 50
+          data.product_type == 40 ||
+          data.product_type == 50
             ? `https://${ip}:${port}/skylark-m3s/api/groupLoan.m3s`
             : `https://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
         data: formData,

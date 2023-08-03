@@ -2337,8 +2337,6 @@ function Individual_Staff_loan_Info(props) {
 
         // Check if the file exists
         const fileExists = await RNFS.exists(filePath);
-        console.log('File exists:', fileExists);
-
         return filePath;
       } else {
         console.log('Write storage permission denied.');

@@ -1,6 +1,5 @@
 import {View, Text, TouchableOpacity, FlatList} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import Collapsible from 'react-native-collapsible';
 import {RadioButton,List} from 'react-native-paper';
 import {
   Field,
@@ -13,8 +12,6 @@ import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
 import {connect} from 'react-redux';
 import {Picker} from '@react-native-picker/picker';
-import InputTest from '../../components/InputTest';
-import {state} from '../../common';
 import {
   owner_shipratio,
   gender,

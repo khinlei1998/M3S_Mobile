@@ -3,7 +3,6 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from '../screens/Login/LoginScreen';
 import SplashScreen from '../screens/SplashScreen';
 import SettingScreen from '../screens/Setting/SettingScreen';
-import TestScreen from '../screens/CustomerManagement/TestScreen';
 import Customer_Management from '../screens/CustomerManagement/Customer_Management';
 import Edit_Emp_Info from '../screens/EditCustManagement/Edit_Emp_Info';
 import CustomerSearch from '../screens/Customer/CustomerSearch';
@@ -46,14 +45,24 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
-        {/* <Stack.Screen
+      {/* <Stack.Screen
         name="Customer Management"
         component={Customer_Management}
         options={{headerShown: false}}
-      /> */}
-      {/* <Stack.Screen
+      />
+      <Stack.Screen
         name="Customer Search"
         component={CustomerSearch}
+        options={{headerShown: false}}
+      /> */}
+      {/* <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Individual_loan"
+        component={Individual_Loan}
         options={{headerShown: false}}
       />
 
@@ -61,20 +70,9 @@ export default function AuthNavigation(props) {
         name="Synchronization"
         component={Synchronization_Screen}
         options={{headerShown: false}}
-      /> */}
-
-      {/* <Stack.Screen
-        name="Home"
-        component={Home}
-        options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="Individual_loan"
-        component={Individual_Loan}
-        options={{ headerShown: false }}
-      /> */}
 
-      {/* <Stack.Screen
+      <Stack.Screen
         name="ReLoan"
         component={Reloan_Form}
         options={{headerShown: false}}
@@ -177,9 +175,9 @@ export default function AuthNavigation(props) {
         name="Edit Borrower Map"
         component={Edit_Show_Borrower_Map}
         options={{ headerShown: false }}
-      />
+      /> */}
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Exceptional_Approvel_Form"
         component={Exceptional_Approvel_Form}
         options={{ headerShown: false }}
@@ -206,10 +204,10 @@ export default function AuthNavigation(props) {
         component={Edit_Guarantor_Form}
         options={{ headerShown: false }}
       />
+ */}
 
 
-
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Edit_Individual_Loan"
         component={Edit_Individual_Loan}
         options={{ headerShown: false }}

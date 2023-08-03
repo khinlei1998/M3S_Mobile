@@ -60,7 +60,6 @@ const Borrower_modal = props => {
   };
 
   const btnSelectEmployee = item => {
-    console.log('item', item);
     setSelectedValue(item.id);
     dispatch(change('Group_Form', 'leader_name', item.customer_nm));
     dispatch(change('Group_Form', 'resident_rgst_id', item.resident_rgst_id));

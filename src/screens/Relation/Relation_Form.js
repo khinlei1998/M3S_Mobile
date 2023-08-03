@@ -263,8 +263,6 @@ function Relation_Form(props) {
       if (granted) {
         // Generate a unique filename for the image
         const filename = `${retrive_loan_data.application_no}SG${index}.jpg`;
-        console.log('filename', filename);
-
         const directory = '/storage/emulated/0/Pictures/Signature/';
         const filePath = directory + filename;
         await RNFS.mkdir(directory);
@@ -273,8 +271,6 @@ function Relation_Form(props) {
 
         // Check if the file exists
         const fileExists = await RNFS.exists(filePath);
-        console.log('File exists:', fileExists);
-
         return filePath;
       } else {
         console.log('Write storage permission denied.');

@@ -1,7 +1,5 @@
 import {View, Text, TouchableOpacity, Button} from 'react-native';
 import React, {useState} from 'react';
-import Icon from 'react-native-vector-icons/Feather';
-import Collapsible from 'react-native-collapsible';
 import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
 import TextInputFile from '../../components/TextInputFile';
 import {business_type} from '../../common';

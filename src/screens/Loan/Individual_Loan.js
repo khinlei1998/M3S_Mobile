@@ -171,7 +171,7 @@ const Borrower_modal = props => {
       change('Individual_Loan_Form', 'workplace_date', item.workplace_date),
     );
     dispatch(change('Individual_Loan_Form', 'employee_num', item.employee_num));
-   
+
     dispatch(
       change(
         'Individual_Loan_Form',
@@ -2124,8 +2124,6 @@ function Individual_Loan(props) {
 
         // Check if the file exists
         const fileExists = await RNFS.exists(filePath);
-        console.log('File exists:', fileExists);
-
         return filePath;
       } else {
         console.log('Write storage permission denied.');
@@ -2185,10 +2183,7 @@ function Individual_Loan(props) {
           product_type: p_type ? p_type : 10,
           // borrower_map: map,
         });
-        console.log('loan dataa', loan_data);
-
         await storeLoanData(loan_data).then(result => {
-          console.log('result', result);
           if (result == 'success') {
             dispatch(reset('Individual_Loan_Form'));
             dispatch(setBorrowerMap_Path(''));

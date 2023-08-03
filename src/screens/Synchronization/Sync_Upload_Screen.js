@@ -3,9 +3,6 @@ import React, { useState } from 'react';
 import DividerLine from '../../components/DividerLine';
 import { Button, Checkbox } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
-import CheckBoxFile from '../../components/CheckBoxFile';
-import { UploadCustomerData } from '../../query/Customer_query';
-import { updateTableSyncStatus } from '../../query/Customer_query';
 import { loan_application_type } from '../../common';
 export default function Sync_Upload_Screen(props) {
   const {
@@ -31,7 +28,6 @@ export default function Sync_Upload_Screen(props) {
       ...item,
       checked: updatedSelectAll,
     }));
-    // setData(updatedData);
     if (updatedSelectAll) {
       setCheckedItems(updatedData);
     } else {
@@ -61,8 +57,6 @@ export default function Sync_Upload_Screen(props) {
           borderBottomColor: '#ccc',
           padding: 10,
         }}>
-        {/* <CheckBoxFile/> */}
-
         <Checkbox
           key={item.id}
           status={
@@ -261,7 +255,7 @@ export default function Sync_Upload_Screen(props) {
         </Button>
 
         <Button
-          // disabled={btn_disabled}
+          disabled={btn_disabled}
           style={{
             borderRadius: 0,
             width: 120,

@@ -347,7 +347,6 @@ const Cus_No_Search_modal = props => {
   };
 
   const item = ({ item, index }) => {
-    console.log('item', item);
     return (
       <View
         style={{
@@ -560,7 +559,6 @@ const CoBorrower_NRC_Search_modal = props => {
   };
 
   const btnCusSearch = async () => {
-    console.log('selectedItemValue', selectedItemValue);
     await filterCustomer(selectedItemValue, cus_data)
       .then(data =>
         data.length > 0 ? setAllCoBorrower(data) : alert('No data'),
@@ -568,7 +566,6 @@ const CoBorrower_NRC_Search_modal = props => {
       .catch(error => console.log('error', error));
   };
   const btnSelectCustomer = item => {
-    console.log('item', item);
     setSelectedValue(item.id);
     dispatch(
       change(
@@ -1999,8 +1996,6 @@ function Individual_Staff_loan_Info(props) {
 
         // Check if the file exists
         const fileExists = await RNFS.exists(filePath);
-        console.log('File exists:', fileExists);
-
         return filePath;
       } else {
         console.log('Write storage permission denied.');

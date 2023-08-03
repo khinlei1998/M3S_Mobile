@@ -1,7 +1,5 @@
 import {View, Text, TouchableOpacity, Button, TextInput} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import Icon from 'react-native-vector-icons/Feather';
-import Collapsible from 'react-native-collapsible';
 import TextInputFile from '../../components/TextInputFile';
 import DividerLine from '../../components/DividerLine';
 import {connect} from 'react-redux';

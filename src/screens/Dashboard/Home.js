@@ -11,6 +11,8 @@ export default function Home(props) {
   const [emp_name, setEmpName] = useState();
   const [loan_data, setAllLoan] = useState([]);
 
+
+
   const loadData = async () => {
     await fetchEmpName()
       .then(data => setEmpName(data[0].employee_name))

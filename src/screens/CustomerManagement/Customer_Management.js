@@ -22,7 +22,6 @@ import {
 import DividerLine from '../../components/DividerLine';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
-import Collapsible from 'react-native-collapsible';
 import DropDownPicker from '../../components/DropDownPicker';
 import {fetchNRCinfo} from '../../query/NRCinfo_query';
 import Customer_Base_Info from './Customer_Base_Info';
@@ -33,7 +32,6 @@ import {
   Township_code,
   ward_code,
   location_code,
-  operations,
 } from '../../common';
 import Monthly_Income from './Monthly_Income';
 import Busines_Info from './Busines_Info';
@@ -51,9 +49,9 @@ import {addEmpFilter} from '../../redux/EmployeeReducer';
 import {storeCustomerData} from '../../query/Customer_query';
 import {resetMonthlyIncome} from '../../redux/MonthlyReducer';
 import DatePicker from '../../components/DatePicker';
+import Create_Operation from '../../components/Create_Operation';
 function Customer_Management(props) {
   const dispatch = useDispatch();
-
   const {
     handleSubmit,
     emp_filter_data,
@@ -589,44 +587,8 @@ function Customer_Management(props) {
               Customer Information Management
             </Text>
             <DividerLine border_width />
+            <Create_Operation handleSubmit={handleSubmit(onSubmit)} />
 
-            <View style={style.continer}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                }}>
-                {operations.map((option, index) => (
-                  <RadioButton.Group
-                    key={index}
-                    onValueChange={newValue => setOperation(newValue)}
-                    value={show_operation}>
-                    <View
-                      key={option.value}
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                      }}>
-                      <RadioButton.Item
-                        uncheckedColor="#636Dc6"
-                        disabled={option.value !== show_operation}
-                        label={option.label}
-                        value={option.value}
-                        color="#636Dc6"
-                        labelStyle={{marginLeft: 5}}
-                        // uncheckedColor="red" // Color for the disabled radio button
-                      />
-                    </View>
-                  </RadioButton.Group>
-                ))}
-              </View>
-              <Button
-                onPress={handleSubmit(onSubmit)}
-                mode="contained"
-                buttonColor={'#21316C'}
-                style={style.btnStyle}>
-                OK
-              </Button>
-            </View>
             <DividerLine border_width />
             {/* EMployee Information */}
 

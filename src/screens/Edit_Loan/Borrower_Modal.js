@@ -32,13 +32,11 @@ function Borrower_Modal(props) {
   };
 
   const btnSelectEmployee = item => {
-    console.log('item', item.id);
     setSelectedValue(item.id);
     dispatch(change('Individual_Loan_Form', 'borrower_name', item.customer_nm));
     dispatch(change('Individual_Loan_Form', 'nrc_no', item.resident_rgst_id));
   };
   const item = ({item, index}) => {
-    console.log('item',item);
     return (
       <View
         style={{

@@ -1,11 +1,8 @@
-import {View, Text, TouchableOpacity, Button, TextInput} from 'react-native';
+import {View, Text,} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import Icon from 'react-native-vector-icons/Feather';
-import Collapsible from 'react-native-collapsible';
 import TextInputFile from '../../components/TextInputFile';
-import DividerLine from '../../components/DividerLine';
 import {connect} from 'react-redux';
-import {Field, reduxForm, reset, change} from 'redux-form';
+import {Field, reduxForm, change} from 'redux-form';
 import {
   totalIncome,
   totalExpense,
@@ -37,12 +34,7 @@ function Monthly_Income(props) {
   const [familyvalues, setFamilyValues] = useState([]);
   const [open_monthlyincome, setMonthlyExpense] = useState(true);
   const [total_fmly_net, setFamilyNet] = useState(0);
-  const [total_business_net, setBusinessNet] = useState(0);
   const [totalnet, setTotalNet] = useState(0);
-  const MonthlyIncomeFun = () => {
-    setMonthlyExpense(!open_monthlyincome);
-  };
-
   const handleFieldChange = (value, index) => {
     const number = parseFloat(value);
 
@@ -203,7 +195,7 @@ function Monthly_Income(props) {
         onPress={setMonthlyExpense}
         style={style.list_container}
         titleStyle={style.list_title}
-        title="Property Information">
+        title="Monthly Income/Expense Statement">
         <View
           style={{
             width: '90%',
@@ -557,8 +549,6 @@ function mapStateToProps(state) {
     state.monthly.totalincome - state.monthly.totalexpense;
 
   return {
-    // sale_expense:
-    //   state.form.Customer_ManagementForm?.values?.totSaleExpense || '',
     total_income: state.monthly.totalincome,
     total_expense: state.monthly.totalexpense,
     total_family_income: state.monthly.totalincomeexpense,

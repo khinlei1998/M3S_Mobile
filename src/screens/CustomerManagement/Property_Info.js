@@ -1,15 +1,9 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View,} from 'react-native';
 import React, {useState} from 'react';
-import Collapsible from 'react-native-collapsible';
-import Icon from 'react-native-vector-icons/Feather';
-import {property_type} from '../../common';
-import CheckBoxFile from '../../components/CheckBoxFile';
-import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
+import {Field,} from 'redux-form';
 import TextInputFile from '../../components/TextInputFile';
 import DividerLine from '../../components/DividerLine';
 import {style} from '../../style/Customer_Mang_style';
-// import {style} from '../../style/Property_Info_style';
-
 import SingleCheckBox from '../../components/SingleCheckBox';
 import {List} from 'react-native-paper';
 export default function Property_Info() {

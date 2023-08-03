@@ -4,14 +4,11 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   ScrollView,
-  TouchableOpacity,
   FlatList,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Field, reduxForm, change, reset, formValueSelector} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
-import moment from 'moment';
-import validate from '../CustomerManagement/Validate';
 import {
   RadioButton,
   Button,
@@ -24,10 +21,8 @@ import {
 import DividerLine from '../../components/DividerLine';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
-import Collapsible from 'react-native-collapsible';
 import DropDownPicker from '../../components/DropDownPicker';
 import {fetchNRCinfo} from '../../query/NRCinfo_query';
-import Customer_Base_Info from '../CustomerManagement/Customer_Base_Info';
 import {
   salary_grade,
   city_code,
@@ -36,9 +31,7 @@ import {
   location_code,
 } from '../../common';
 import {style} from '../../style/Customer_Mang_style';
-import {fetchEmpName} from '../../query/Employee_query';
 import {setCusFormInitialValues} from '../../redux/CustomerReducer';
-import {fetchAllCustomerNum} from '../../query/Customer_query';
 import {emp_filter_item, village_code} from '../../common';
 import {Picker} from '@react-native-picker/picker';
 import {filterEmp} from '../../query/Employee_query';
@@ -49,7 +42,6 @@ import Edit_Customer_BaseInfo from './Edit_Customer_BaseInfo';
 import Edit_property_Info from './Edit_Property_Info';
 import Edit_Business_Info from './Edit_Business_Info';
 import Edit_Monthly_Income from './Edit_Monthly_Income';
-import ShowNRC_Modal from '../CustomerManagement/ShowNRC_Modal';
 import {deleteCustomer_ByID} from '../../query/Customer_query';
 import Edit_NRC_Modal from './Edit_NRC_Modal';
 import {
@@ -63,6 +55,7 @@ import {
 import {updateCustomerData} from '../../query/Customer_query';
 import {checkDataExists} from '../../query/Customer_query';
 import DatePicker from '../../components/DatePicker';
+import validate from './validate';
 function Edit_Emp_Info(props) {
   const dispatch = useDispatch();
 
@@ -79,7 +72,6 @@ function Edit_Emp_Info(props) {
     updateTotalSum,
     nrcNo,
     nrc_state_code,
-    // filtered_cus_data
   } = props;
   const [all_emp, setAllEmp] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -100,7 +92,6 @@ function Edit_Emp_Info(props) {
   const [all_location, setAllLocation] = useState([]);
   const [nrc_prefix_code, setNRCPrefixCode] = useState([]);
   const [empname, setEmpName] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
   const [modal_city_visible, setCityCodeModalVisible] = useState(false);
   // Villgae
   const [modal_village_visible, setVillageCodeModalVisible] = useState(false);
@@ -156,9 +147,6 @@ function Edit_Emp_Info(props) {
   const hideCityModal = () => setCityCodeModalVisible(false);
   const hideWardModal = () => setWardCodeModalVisible(false);
   const filtered_cus_data = props.route.params;
-  const EmpInfoFun = () => {
-    setEmpInfo(!open_empinfo);
-  };
 
   const onChangeEmpText = textvalues => {
     setEmpText(textvalues);
@@ -294,7 +282,6 @@ function Edit_Emp_Info(props) {
         ? filtered_cus_data.tot_sale_expense.toString()
         : '',
     });
-    console.log('retrive_cusdata', retrive_cusdata);
     props.initialize(retrive_cusdata);
     if (retrive_cusdata.nrc_type == 2) {
       setNRC('2');
@@ -331,8 +318,6 @@ function Edit_Emp_Info(props) {
     updateTotalSum(
       filtered_cus_data.total_net ? parseFloat(filtered_cus_data.total_net) : 0,
     );
-
-    // totalNetFamily(parseFloat('99'))
   }, []);
 
   const city_item = ({item, index}) => {
@@ -520,11 +505,8 @@ function Edit_Emp_Info(props) {
   };
 
   const hideNRCModal = () => {
-    // setNRC_Visible(!nrc_visible),
-    //  setNRC('old');
     const indexOfSlash = prefix.indexOf('/');
     const prefix_code = prefix.substring(0, indexOfSlash + 1);
-    console.log('prefix', prefix);
     setNRC_Visible(!nrc_visible), setNRC(show_nrc);
     dispatch(
       change(
@@ -534,26 +516,15 @@ function Edit_Emp_Info(props) {
           nrc_state_code &&
           nrcNo &&
           prefix_code + nrc_state_code + nrcNo,
-        // prefix
       ),
     );
   };
   const loadData = async () => {
-    // await fetchNRCinfo()
-    //   .then(result => {
-    //     {
-    //       const [nrc_state_code, nrc_prefixdata] = result;
-    //       setNRCStateCode(nrc_state_code);
-    //       setNRCPrefixCode(nrc_prefixdata);
-    //     }
-    //   })
-    //   .catch(error => console.log(error));
     await fetchNRCinfo()
       .then(result => {
         {
           const [nrc_state_code] = result;
           setNRCStateCode(nrc_state_code);
-          // setNRCPrefixCode(nrc_prefixdata);
         }
       })
       .catch(error => console.log(error));
@@ -761,7 +732,6 @@ function Edit_Emp_Info(props) {
   };
 
   const handleRadioButtonChange = (value, input) => {
-    console.log('vilalage must', value.id);
     setVillage(value.id);
     input.onChange(value.id);
     if (value == '2') {
@@ -786,8 +756,6 @@ function Edit_Emp_Info(props) {
   };
 
   const onSubmit = async values => {
-    console.log('hello');
-    console.log('values', values);
     try {
       if (show_operation == '4') {
         await deleteCustomer_ByID(values.id).then(response => {
@@ -808,7 +776,6 @@ function Edit_Emp_Info(props) {
           const check_nrc = await checkDataExists(data.resident_rgst_id);
           if (check_nrc == true) {
             alert('NRC No already exist');
-            console.log('Data already exists in the database');
           } else {
             await updateCustomerData(data).then(result => {
               if (result == 'success') {
@@ -818,12 +785,10 @@ function Edit_Emp_Info(props) {
                 dispatch(reset('Customer_ManagementForm'));
                 // props.navigation.navigate('Customer Search');
                 props.navigation.navigate('Home');
-
               }
             });
           }
         } else {
-          console.log('Customer update data', data);
           await updateCustomerData(data).then(result => {
             if (result == 'success') {
               alert('Update Success');
@@ -1864,13 +1829,12 @@ function mapStateToProps(state) {
     update_status: state.customers.update_status,
     nrcNo,
     nrc_state_code,
-    // filtered_cus_data:state.customers.inquiry_cusdata
   };
 }
 
 export default reduxForm({
   form: 'Customer_ManagementForm',
-  // validate,
+  validate,
 })(
   connect(mapStateToProps, {
     setCusFormInitialValues,

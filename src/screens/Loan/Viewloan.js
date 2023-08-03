@@ -16,7 +16,6 @@ function Viewloan(props) {
 
       navigation.navigate('Edit_Individual_Loan', item);
     } else if (item.product_type == 30) {
-      console.log('Group item', item);
       navigation.navigate('Edit Group Loan', item);
     } else if (item.product_type == 40) {
       navigation.navigate('Edit_Cover_Loan', item);

@@ -1,12 +1,9 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text,} from 'react-native';
 import React, {useState} from 'react';
-import Icon from 'react-native-vector-icons/Feather';
-import Collapsible from 'react-native-collapsible';
 import {Field, reduxForm} from 'redux-form';
 import TextInputFile from '../../components/TextInputFile';
 import {business_type} from '../../common';
 import DropDownPicker from '../../components/DropDownPicker';
-import {RadioButton} from 'react-native-paper';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import DatePicker from '../../components/DatePicker';
 import DividerLine from '../../components/DividerLine';
@@ -15,7 +12,6 @@ import {
   owner_shipratio,
   start_living_date_status,
 } from '../../common';
-// import {style} from '../../style/Business_Info_style';
 import {connect} from 'react-redux';
 import {style} from '../../style/Customer_Mang_style';
 import {List} from 'react-native-paper';
@@ -51,7 +47,7 @@ function Busines_Info() {
         onPress={MonthlyIncomeFun}
         style={style.list_container}
         titleStyle={style.list_title}
-        title="Property Information">
+        title="Business Information">
         <View style={style.sub_container}>
           <View style={style.sub_list_container}>
             <Field
@@ -212,9 +208,6 @@ function Busines_Info() {
   );
 }
 
-function mapStateToProps(state) {
-  return {};
-}
 
 export default reduxForm({
   form: 'Customer_ManagementForm',
@@ -225,4 +218,4 @@ export default reduxForm({
     start_living_date_status: '1',
     curr_business_date_status: '1',
   },
-})(connect(mapStateToProps, null)(Busines_Info));
+})(connect(null, null)(Busines_Info));

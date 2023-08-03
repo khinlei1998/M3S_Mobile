@@ -7,7 +7,6 @@ export function getEemployee_info() {
     const batchSize = 100;
     global.db.transaction(tx => {
       tx.executeSql('DELETE FROM Employee', [], (tx, results) => {
-        console.log('Delete success');
         console.log(`https://${ip}:${port}/skylark-m3s/api/employees.m3s`);
         axios
           .get(`https://${ip}:${port}/skylark-m3s/api/employees.m3s`)
@@ -49,12 +48,8 @@ export function getEemployee_info() {
                         null,
                       ],
                       (tx, results) => {
-                        // If insert query succeeds, resolve the promise
-                        // console.log('Employee Insert success', results.rowsAffected);
-                        console.log('length', data.length);
 
                         insertedRows += results.rowsAffected;
-                        console.log('insertedRows>>>>', insertedRows);
                         if (insertedRows === data.length) {
                           resolve('success');
                           console.log('All Employee records inserted successfully');

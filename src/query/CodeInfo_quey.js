@@ -43,19 +43,13 @@ export function getCodeInfo() {
 
                                             ],
                                             (tx, results) => {
-                                                // If insert query succeeds, resolve the promise
-                                                // console.log('Employee Insert success', results.rowsAffected);
-                                                console.log('length', data.length);
-
                                                 insertedRows += results.rowsAffected;
-                                                console.log('insertedRows>>>>', insertedRows);
                                                 if (insertedRows === data.length) {
                                                     resolve('success');
                                                     console.log('All code info records inserted successfully');
                                                 }
                                             },
                                             error => {
-                                                console.log('query error', error);
                                                 // If insert query fails, rollback the transaction and reject the promise
                                                 tx.executeSql('ROLLBACK', [], () => {
                                                     reject(error);

@@ -1,7 +1,6 @@
 import {View, Text,TouchableOpacity} from 'react-native';
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import TestScreen from '../screens/CustomerManagement/TestScreen';
 import Home from '../screens/Dashboard/Home';
 import Customer_Management from '../screens/CustomerManagement/Customer_Management';
 import CustomerSearch from '../screens/Customer/CustomerSearch';

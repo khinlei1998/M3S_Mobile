@@ -1,22 +1,15 @@
-import {View, Text, TouchableOpacity, FlatList} from 'react-native';
-import React, {useState, useEffect} from 'react';
-import Collapsible from 'react-native-collapsible';
-import {RadioButton} from 'react-native-paper';
+import {View, Text,} from 'react-native';
+import React, {useState,} from 'react';
 import {
   Field,
   reduxForm,
-  setInitialValues,
-  initialize,
-  reset,
   change,
 } from 'redux-form';
 import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
 import {connect} from 'react-redux';
-import {Picker} from '@react-native-picker/picker';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import {
-  owner_shipratio,
   gender,
   maritail_status,
   address_type,
@@ -26,10 +19,7 @@ import DividerLine from '../../components/DividerLine';
 import DatePicker from '../../components/DatePicker';
 import {setCusFormInitialValues} from '../../redux/CustomerReducer';
 import {fetchAllCustomerNum} from '../../query/Customer_query';
-import {Modal, Provider, Portal, Button} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/Feather';
 import {
-  city_code,
   owner_ship_business,
   village_status,
   start_living_date_status,
@@ -44,7 +34,6 @@ function Customer_Base_Info(props) {
     handleStartLivingStatus,
     showNrcFun,
     show_nrc,
-    handleSubmit,
     showVillageSearch,
     showCitySearch,
     showTownshipSearch,
@@ -56,10 +45,7 @@ function Customer_Base_Info(props) {
   const [open_cusinfo, setCusInfo] = useState(true);
   const [show_village, setVillage] = useState('1');
   const [modal_city_visible, setCityCodeModalVisible] = useState(false);
-  // const [show_businessdate, setBusiness] = useState('estimated');
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
-  const [all_emp, setAllEmp] = useState([]);
-
   // const numbers = Array.from({length: 60}, (_, i) => i + 1);
   const numbers = Array.from({length: 60}, (_, i) => (i + 1).toString());
 
@@ -449,10 +435,6 @@ function Customer_Base_Info(props) {
   );
 }
 
-function mapStateToProps(state) {
-  return {};
-}
-
 export default reduxForm({
   form: 'Customer_ManagementForm',
   enableReinitialize: true,
@@ -463,7 +445,7 @@ export default reduxForm({
     curr_business_date_status: '1',
   },
 })(
-  connect(mapStateToProps, {setCusFormInitialValues, fetchAllCustomerNum})(
+  connect(null, {setCusFormInitialValues, fetchAllCustomerNum})(
     Customer_Base_Info,
   ),
 );

@@ -159,7 +159,6 @@ const Guarantor_modal = props => {
   };
 
   const btnSelectGuarantor = item => {
-    console.log('item', item);
     setGuarantorSelectedValue(item.id);
     dispatch(
       change('Edit_Guarantor_Form', 'resident_rgst_id', item.resident_rgst_id),
@@ -425,8 +424,6 @@ function Edit_Guarantor_Form(props) {
 
         // Check if the file exists
         const fileExists = await RNFS.exists(filePath);
-        console.log('File exists:', fileExists);
-
         return filePath;
       } else {
         console.log('Write storage permission denied.');

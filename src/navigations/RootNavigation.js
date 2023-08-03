@@ -16,7 +16,6 @@ import { AuthContext } from '../components/context';
 import CustomerSearch from '../screens/Customer/CustomerSearch';
 import Customer_Management from '../screens/CustomerManagement/Customer_Management';
 import Survey from '../screens/Survey/Survey';
-import TestScreen from '../screens/CustomerManagement/TestScreen';
 import NavigatorView from './NavigatorView';
 import DrawerContent from './DrawerContent';
 const Drawer = createDrawerNavigator();

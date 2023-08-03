@@ -1,7 +1,5 @@
 import {View, Text, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
-import Collapsible from 'react-native-collapsible';
-import Icon from 'react-native-vector-icons/Feather';
 import {property_type} from '../../common';
 import CheckBoxFile from '../../components/CheckBoxFile';
 import TextInputFile from '../../components/TextInputFile';

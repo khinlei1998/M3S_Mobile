@@ -5,7 +5,6 @@ import {
   Keyboard,
   ScrollView,
   FlatList,
-  PermissionsAndroid,
   TouchableHighlight,
   TouchableOpacity,
   ToastAndroid,
@@ -54,7 +53,6 @@ import Borrower_Current_Map from './Edit_Borrower_Current_Map';
 import Borrower_Contract from './Edit_Borrower_Contract';
 import Borrower_Sign from './Edit_Borrower_Sign';
 import SignatureCapture from 'react-native-signature-capture';
-import { storeLoanData } from '../../query/AllLoan_query';
 import validate from './Edit_loan_Validate';
 import { TextInput } from 'react-native-paper';
 import BottomSheet from 'react-native-simple-bottom-sheet';
@@ -71,17 +69,14 @@ import {
 } from '../../redux/MonthlyReducer';
 import { getEvaluationData } from '../../query/AreaEvaluation_query';
 import { deleteLoan_ByID } from '../../query/AllLoan_query';
-// import RNFetchBlob from 'rn-fetch-blob';
 import { useIsFocused } from '@react-navigation/native';
 import {
   setUpdateStatus,
   setGuarantor_UpdateStatus,
 } from '../../redux/LoanReducer';
-import { getAllExceptionalApproval } from '../../query/Exceptional_Approval_query';
 import { getRelationData } from '../../query/RelationShip_query';
 import { cus_filter_item } from '../../common';
 import { interest_rate } from '../../common';
-// import {RenderBottomSheet} from '../../components/RenderBotttomSheet';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -94,7 +89,6 @@ const Borrower_modal = props => {
     selectedItemValue,
     handleItemValueChange,
     setAllCus,
-    handleSubmit,
     totalIncome,
     totalExpense,
     totalFamilyIncome,
@@ -112,7 +106,6 @@ const Borrower_modal = props => {
   };
 
   const btnSelectEmployee = item => {
-    console.log('Edit loan item>>>', item);
     setSelectedValue(item.id);
     dispatch(
       change('Edit_Individual_Loan_Form', 'borrower_name', item.customer_nm),
@@ -467,8 +460,6 @@ const Borrower_modal = props => {
             onPress={() => btnSelectEmployee(item)}
           />
         </View>
-
-        {/* <Field component={RadioButton}/> */}
       </View>
     );
   };
@@ -2147,7 +2138,6 @@ function Edit_Individual_Loan(props) {
   const [showCanvas, setShowCanvas] = useState(false);
   const [filePath, setFilePath] = useState('');
   const [co_borrower_filePath, setCoBorrowerFilePath] = useState('');
-  const [empname, setEmpName] = useState('');
   const [modal_city_visible, setCityCodeModalVisible] = useState(false);
   const [modal_township_visible, setTownshipCodeModalVisible] = useState(false);
   const [selectedCityItemValue, setCitySelectedItemValue] =
@@ -2186,19 +2176,14 @@ function Edit_Individual_Loan(props) {
     handleSubmit,
     totalnet,
     navigation,
-    resetMonthlyIncome,
     totalFamilyIncome,
     totalIncome,
     totalExpense,
     totalFamilyExpense,
-    totalNetBusiness,
-    totalNetFamily,
     updateTotalSum,
     totalLoanAmt,
     update_status,
     setUpdateStatus,
-    except_app_status,
-    setGuarantor_UpdateStatus,
   } = props;
   useEffect(() => {
     const loan_data = Object.assign({}, retrive_loan_data, {
@@ -2303,12 +2288,6 @@ function Edit_Individual_Loan(props) {
     ) {
       setBorrowerSignPath(retrive_loan_data.borrower_sign);
     }
-    // if (
-    //   retrive_loan_data.borrower_map != '' &&
-    //   retrive_loan_data.borrower_map != 'undefined'
-    // ) {
-    //   setBorrowerMap(retrive_loan_data.borrower_map);
-    // }
     if (
       retrive_loan_data.co_borrower_sign != '' &&
       retrive_loan_data.co_borrower_sign != 'undefined'
@@ -2368,8 +2347,6 @@ function Edit_Individual_Loan(props) {
   const saveSignatureToInternalStorage = async (image_encode, index) => {
     const user_id = await AsyncStorage.getItem('user_id');
     try {
-      // Request write storage permission
-      // const granted = await requestWriteStoragePermission();
       const granted = await AsyncStorage.getItem('writeStoragePermission');
 
       if (granted) {
@@ -2385,8 +2362,6 @@ function Edit_Individual_Loan(props) {
 
         // Check if the file exists
         const fileExists = await RNFS.exists(filePath);
-        console.log('File exists:', fileExists);
-
         return filePath;
       } else {
         console.log('Write storage permission denied.');
@@ -2444,7 +2419,6 @@ function Edit_Individual_Loan(props) {
           // hghschl_num:values.hghschl_num?values.hghschl_num:0,
           // university_num:values.university_num?values.university_num:0
         });
-        console.log('loan_data', loan_data);
         await updateLoanData(loan_data).then(result => {
           if (result == 'success') {
             dispatch(reset('Edit_Individual_Loan_Form'));
@@ -2472,30 +2446,7 @@ function Edit_Individual_Loan(props) {
   const handleItemValueChange = itemValue => {
     setSelectedItemValue(itemValue);
   };
-  useEffect(() => {
-    requestStoragePermission();
-  }, []);
 
-  const requestStoragePermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.requestMultiple([
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-      ]);
-
-      if (
-        granted['android.permission.WRITE_EXTERNAL_STORAGE'] ===
-        PermissionsAndroid.RESULTS.GRANTED &&
-        granted['android.permission.READ_EXTERNAL_STORAGE'] ===
-        PermissionsAndroid.RESULTS.GRANTED
-      ) {
-      } else {
-        console.log('Storage permissions denied');
-      }
-    } catch (error) {
-      console.warn('Error requesting storage permissions:', error);
-    }
-  };
   const isFocused = useIsFocused();
   const hideModal = () => setModalVisible(false);
   const hideCoBorrowerModal = () => setCoBorrowerModalVisible(false);
@@ -2569,8 +2520,6 @@ function Edit_Individual_Loan(props) {
 
   const handleCalculate = () => {
     loan_max_data.map(value => {
-      console.log(value);
-      console.log('loan_type_value', loan_type_value);
       if (30 == loan_type_value) {
         dispatch(
           change('Edit_Individual_Loan_Form', 'loan_limit_amt', totalnet * 2),
@@ -2607,13 +2556,9 @@ function Edit_Individual_Loan(props) {
     });
   };
   const saveSign = async () => {
-    // sign.current.saveImage();
-
     const pathName = await sign.current.saveImage();
   };
   const co_borrower_saveSign = async () => {
-    // sign.current.saveImage();
-
     const pathName = await co_borrower_sign.current.saveImage();
   };
 
@@ -2636,7 +2581,6 @@ function Edit_Individual_Loan(props) {
     setCanvas(false);
   };
   const _onCoBorrowerSaveEvent = async result => {
-    // setCoBorrowerSignPath(result.pathName);
     setShowCoBorrowerSign(result.encoded);
     if (result.encoded) {
       setCoBorrowerSignPath('');

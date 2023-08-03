@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ToastAndroid} from 'react-native';
+import moment from 'moment';
 export async function getAllGroupLoan() {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
@@ -18,6 +19,8 @@ export async function getAllGroupLoan() {
 }
 export const storeGroupData = async data => {
   const user_id = await AsyncStorage.getItem('user_id');
+  const date = moment().format();
+
   return new Promise(async (resolve, reject) => {
     try {
       global.db.transaction(trans => {
@@ -27,7 +30,7 @@ export const storeGroupData = async data => {
             null, //serialNo
             data.group_aplc_no, //group_aplc_no
             '01', //statusCode
-            '2020-09-09', //create Date Time
+            date, //create Date Time
             user_id,
             null, //deleteDatetime
             null, //delet usr id
@@ -55,7 +58,7 @@ export const storeGroupData = async data => {
             resolve('success');
           },
           error => {
-            alert(error.message)
+            alert(error.message);
             reject(error);
           },
         );
@@ -242,7 +245,7 @@ export const updateGroupData = async data => {
           },
           error => {
             reject(error);
-            console.log('error',error);
+            console.log('error', error);
           },
         );
       });

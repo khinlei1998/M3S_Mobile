@@ -406,25 +406,11 @@ function Guarantor_Form(props) {
         const directory = '/storage/emulated/0/Pictures/Signature/';
         const filePath = directory + filename;
         await RNFS.mkdir(directory);
-
-        // Define the destination path in the app's internal storage
-        // let destinationPath;
-        // if (Platform.OS === 'android') {
-        //   destinationPath = `${RNFS.ExternalDirectoryPath}/${filename}`;
-        // } else if (Platform.OS === 'ios') {
-        //   destinationPath = `${RNFS.LibraryDirectoryPath}/${filename}`;
-        // } else {
-        //   console.log('Unsupported platform.');
-        //   return null;
-        // }
-
         // Write the base64-encoded image data to the destination path
         await RNFS.writeFile(filePath, image_encode, 'base64');
 
         // Check if the file exists
         const fileExists = await RNFS.exists(filePath);
-        console.log('File exists:', fileExists);
-
         return filePath;
       } else {
         console.log('Write storage permission denied.');
