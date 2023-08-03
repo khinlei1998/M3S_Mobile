@@ -1,13 +1,13 @@
-import {View, Text} from 'react-native';
-import React, {useState} from 'react';
-import {Provider, Portal, Modal, Button} from 'react-native-paper';
+import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { Provider, Portal, Modal, Button } from 'react-native-paper';
 import DropDownPicker from '../../components/DropDownPicker';
-import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
-import {connect} from 'react-redux';
-import {fetchStateName} from '../../query/NRCinfo_query';
+import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
+import { connect } from 'react-redux';
+import { fetchStateName } from '../../query/NRCinfo_query';
 import TextInputFile from '../../components/TextInputFile';
-import {state} from '../../common';
-import {gender} from '../../common';
+import { state } from '../../common';
+import { gender } from '../../common';
 function ShowNRC_Modal(props) {
   const {
     hideNRCModal,
@@ -30,12 +30,12 @@ function ShowNRC_Modal(props) {
 
     await fetchStateName(prefix_code)
       .then(data => {
-        const tt = data.map(item => ({
+        const state_code_data = data.map(item => ({
           id: item.state_name,
           label: item.state_name,
           value: item.state_name,
         }));
-        setStateName(tt);
+        setStateName(state_code_data);
 
         const newArray = data.map(item => ({
           id: item.nrc_prefix_code,
@@ -62,7 +62,7 @@ function ShowNRC_Modal(props) {
             borderWidth: 1,
             margin: 20,
           }}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
             <View
               style={{
                 flexDirection: 'row',
@@ -71,7 +71,7 @@ function ShowNRC_Modal(props) {
               }}>
               <Field
                 data={nrc_statecode}
-                name={'nrc_prefix_code'}
+                name={'nrc_state_code'}
                 title={'Prefix Code'}
                 component={DropDownPicker}
                 pickerStyle={{
@@ -83,7 +83,7 @@ function ShowNRC_Modal(props) {
 
               <Field
                 data={nrc_prefix}
-                name={'nrc_state_code'}
+                name={'nrc_prefix_code'}
                 title={'State Code'}
                 component={DropDownPicker}
                 pickerStyle={{
@@ -97,7 +97,7 @@ function ShowNRC_Modal(props) {
               component={TextInputFile}
               input_mode
               inputmax={6}
-              // nrc_cusstyle
+            // nrc_cusstyle
             />
           </View>
           <View
@@ -108,18 +108,18 @@ function ShowNRC_Modal(props) {
             }}>
             <Button
               mode="contained"
-              contentStyle={{width: 100, padding: 3}}
+              contentStyle={{ width: 100, padding: 3 }}
               onPress={hideNRCModal}
               buttonColor={'#6870C3'}
-              style={{borderRadius: 0, margin: 10}}>
+              style={{ borderRadius: 0, margin: 10 }}>
               OK
             </Button>
             <Button
               mode="contained"
-              contentStyle={{width: 100, padding: 4}}
+              contentStyle={{ width: 100, padding: 4 }}
               onPress={btnCancel}
               buttonColor={'#6870C3'}
-              style={{borderRadius: 0, margin: 10}}>
+              style={{ borderRadius: 0, margin: 10 }}>
               Cancel
             </Button>
           </View>

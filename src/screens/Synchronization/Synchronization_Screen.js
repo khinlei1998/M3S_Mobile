@@ -22,7 +22,8 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { getAllLoanType } from '../../query/AllLoan_query';
 import { getSurveyResult } from '../../query/SurveyItem_query';
 import { UploadSurveyData } from '../../query/SurveyItem_query';
-export default function Synchronization_Screen() {
+export default function Synchronization_Screen(props) {
+  const {navigation}=props
   const [activeTab, setActiveTab] = React.useState(0);
   const [loan_data, setAllLoan] = React.useState([]);
   const [branch_code, setBranchCode] = React.useState('');
@@ -44,40 +45,6 @@ export default function Synchronization_Screen() {
       obj.open_branch_code=branch_code
     });
     try {
-      // Call the API here
-      // await UploadSurveyData(all_survey).then(async surveyResult => {
-      //   if (surveyResult == 'success') {
-      //     await UploadCustomerData(customer_data).then(async result => {
-      //       if (result == 'success') {
-      //         await loadData();
-      //         setLoading(false);
-
-      //         alert('All update success');
-      //       } else if (result.length > 0) {
-      //         setLoading(false);
-
-      //         setCusFailedData(result);
-      //         setCusErrorModalVisible(true);
-      //         await loadData();
-      //       } else {
-      //         await loadData();
-      //         setLoading(false);
-      //         alert('Axios Error ');
-      //       }
-      //     });
-      //   } else if (surveyResult.length > 0) {
-      //     setLoading(false);
-      //     setCusFailedData(surveyResult);
-      //     setCusErrorModalVisible(true);
-      //     await loadData();
-      //   } else {
-      //     await loadData();
-      //     setLoading(false);
-      //     alert('Axios Error');
-      //   }
-      // })
-
-
       const uploadCustomerResult = await UploadCustomerData(customer_data);
       console.log('uploadCustomerResult', uploadCustomerResult);
 
@@ -182,35 +149,6 @@ export default function Synchronization_Screen() {
     await get_loged_branch_code()
       .then(data => setBranchCode(data[0].branch_code))
       .catch(error => console.log(error));
-
-    // await fetchAllCustomerNum()
-    //   .then(data => {
-    //     const result = data.filter(
-    //       cus_item => cus_item.tablet_sync_sts == '00',
-    //     );
-    //     if (result.length > 0) {
-    //       setAllCusstomer(result);
-    //       seBtnDisabled(true);
-    //     } else {
-    //       setAllCusstomer(result);
-    //       setBtnCustomerDisabled(true);
-    //       seBtnDisabled(false);
-    //     }
-    //   })
-    // await getSurveyResult()
-    //   .then(data => {
-
-    //     if (data.length > 0) {
-    //       setAllSurvey(data);
-    //       seBtnDisabled(true);
-    //     } else {
-    //       setAllSurvey(data);
-    //       setBtnCustomerDisabled(true);
-    //       seBtnDisabled(false);
-    //     }
-    //   })
-
-    //   .catch(error => console.log(error));
   };
 
   useEffect(() => {
@@ -311,6 +249,7 @@ export default function Synchronization_Screen() {
             btn_cus_disabled={btn_cus_disabled}
             btnLoanUpload={btnLoanUpload}
             all_survey={all_survey}
+            navigation={navigation}
           />
         )}
         {activeTab === 1 && <Sync_Download_Screen />}

@@ -1,14 +1,16 @@
-import {View, Text, TouchableWithoutFeedback, Keyboard} from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {cus_filter_item} from '../../common';
+import { View, Text, TouchableWithoutFeedback, Keyboard, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { cus_filter_item } from '../../common';
 import ViewCustomer from './ViewCustomer';
-import {TextInput,Button} from 'react-native-paper';
-import {filterCustomer} from '../../query/Customer_query';
-import {Picker} from '@react-native-picker/picker';
+import { TextInput, Button } from 'react-native-paper';
+import { filterCustomer } from '../../query/Customer_query';
+import { Picker } from '@react-native-picker/picker';
 
 export default function CustomerSearch(props) {
-  const {navigation} = props;
+  const { navigation } = props;
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const [all_customer, setAllCustomer] = useState([]);
   const [selectedItemValue, setSelectedItemValue] = useState('customer_nm');
 
@@ -19,9 +21,17 @@ export default function CustomerSearch(props) {
   }, []);
 
   const handleSearch = async () => {
+    setLoading(!loading)
     await filterCustomer(selectedItemValue, searchTerm)
-      .then(data => (data.length > 0 ? setAllCustomer(data) : alert('No data')))
-      .catch(error => console.log('error', error));
+      .then(data => {
+        if (data.length > 0) {
+          setAllCustomer(data);
+        } else {
+          setAllCustomer(data);
+          alert('No data');
+        }
+        setLoading(false); // Move this line outside the 'then' block
+      })
   };
 
   const handleItemValueChange = itemValue => {
@@ -29,20 +39,20 @@ export default function CustomerSearch(props) {
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <Text
-          style={{fontSize: 20, color: '#273050', marginTop: 10, padding: 10}}>
+          style={{ fontSize: 20, color: '#273050', marginTop: 10, padding: 10 }}>
           Customer Information Management
         </Text>
 
-        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{marginRight: 10}}>Search Item:</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
             <Picker
               selectedValue={selectedItemValue}
               onValueChange={handleItemValueChange}
-              style={{width: 200, backgroundColor: 'white'}}
+              style={{ width: 200, backgroundColor: 'white' }}
               mode="dropdown">
               {cus_filter_item.length > 0 &&
                 cus_filter_item.map(val => (
@@ -55,7 +65,7 @@ export default function CustomerSearch(props) {
             </Picker>
           </View>
 
-          <View style={{width: '50%'}}>
+          <View style={{ width: '50%' }}>
             <TextInput
               value={searchTerm}
               onChangeText={text => setSearchTerm(text)}
@@ -71,7 +81,8 @@ export default function CustomerSearch(props) {
             />
           </View>
         </View>
-        <ViewCustomer customer_data={all_customer} navigation={navigation} />
+        <ViewCustomer customer_data={all_customer} navigation={navigation} setLoading={setLoading} loading={loading} />
+
       </View>
     </TouchableWithoutFeedback>
   );

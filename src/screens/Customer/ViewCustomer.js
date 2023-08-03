@@ -1,4 +1,4 @@
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity,ActivityIndicator} from 'react-native';
 import React from 'react';
 import {Button} from 'react-native-paper';
 import { setInquiryStatus } from '../../redux/CustomerReducer';
@@ -6,7 +6,8 @@ import { getInquiryCusData } from '../../redux/CustomerReducer';
 import {connect} from 'react-redux';
 import {Field, reduxForm, reset, change} from 'redux-form';
  function ViewCustomer(props) {
-  const {customer_data, navigation,getInquiryCusData} = props;
+  const {customer_data, navigation,getInquiryCusData,setLoading,loading} = props;
+
   const btn_inquiry=(item)=>{
     navigation.navigate('Edit_Emp_Info', item)
     getInquiryCusData(item)
@@ -138,12 +139,16 @@ import {Field, reduxForm, reset, change} from 'redux-form';
           Mobile Phone Number
         </Text>
       </View>
-
-      <FlatList
-        data={customer_data}
-        renderItem={item}
-        keyExtractor={(item, index) => index.toString()}
-      />
+    
+       {loading ? ( // Show ActivityIndicator while loading is true
+        <ActivityIndicator size="large" color="#636Dc6" />
+      ) : ( // Show FlatList once loading is false and data is available
+        <FlatList
+          data={customer_data}
+          renderItem={item}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      )}
     </>
   );
 }

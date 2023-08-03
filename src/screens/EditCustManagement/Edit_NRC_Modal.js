@@ -1,11 +1,11 @@
-import {View, Text} from 'react-native';
-import React, {useState} from 'react';
-import {Provider, Portal, Modal, Button} from 'react-native-paper';
+import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { Provider, Portal, Modal, Button } from 'react-native-paper';
 import DropDownPicker from '../../components/DropDownPicker';
-import {gender} from '../../common';
-import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
-import {connect} from 'react-redux';
-import {fetchStateName} from '../../query/NRCinfo_query';
+import { gender } from '../../common';
+import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
+import { connect } from 'react-redux';
+import { fetchStateName } from '../../query/NRCinfo_query';
 import TextInputFile from '../../components/TextInputFile';
 function ShowNRC_Modal(props) {
   const {
@@ -62,7 +62,7 @@ function ShowNRC_Modal(props) {
             borderWidth: 1,
             margin: 20,
           }}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <View
               style={{
                 flexDirection: 'row',
@@ -71,7 +71,7 @@ function ShowNRC_Modal(props) {
               }}>
               <Field
                 data={nrc_statecode}
-                name={'nrc_prefix_code'}
+                name={'nrc_state_code'}
                 title={'Select State COde'}
                 component={DropDownPicker}
                 pickerStyle={{
@@ -85,7 +85,7 @@ function ShowNRC_Modal(props) {
 
               <Field
                 data={nrc_prefix}
-                name={'nrc_state_code'}
+                name={'nrc_prefix_code'}
                 title={'Select Code'}
                 component={DropDownPicker}
                 pickerStyle={{
@@ -111,18 +111,18 @@ function ShowNRC_Modal(props) {
             }}>
             <Button
               mode="contained"
-              contentStyle={{width: 100, padding: 3}}
+              contentStyle={{ width: 100, padding: 3 }}
               onPress={hideNRCModal}
               buttonColor={'#6870C3'}
-              style={{borderRadius: 0, margin: 10}}>
+              style={{ borderRadius: 0, margin: 10 }}>
               OK
             </Button>
             <Button
               mode="contained"
-              contentStyle={{width: 100, padding: 4}}
+              contentStyle={{ width: 100, padding: 4 }}
               onPress={btnCancel}
               buttonColor={'#6870C3'}
-              style={{borderRadius: 0, margin: 10}}>
+              style={{ borderRadius: 0, margin: 10 }}>
               Cancel
             </Button>
           </View>

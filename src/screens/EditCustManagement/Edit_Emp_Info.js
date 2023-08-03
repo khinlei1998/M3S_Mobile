@@ -6,9 +6,9 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {Field, reduxForm, change, reset, formValueSelector} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { Field, reduxForm, change, reset, formValueSelector } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
 import {
   RadioButton,
   Button,
@@ -22,7 +22,7 @@ import DividerLine from '../../components/DividerLine';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
-import {fetchNRCinfo} from '../../query/NRCinfo_query';
+import { fetchNRCinfo } from '../../query/NRCinfo_query';
 import {
   salary_grade,
   city_code,
@@ -30,19 +30,19 @@ import {
   ward_code,
   location_code,
 } from '../../common';
-import {style} from '../../style/Customer_Mang_style';
-import {setCusFormInitialValues} from '../../redux/CustomerReducer';
-import {emp_filter_item, village_code} from '../../common';
-import {Picker} from '@react-native-picker/picker';
-import {filterEmp} from '../../query/Employee_query';
-import {addEmpFilter} from '../../redux/EmployeeReducer';
-import {operations} from '../../common';
-import {setUpdateStatus} from '../../redux/CustomerReducer';
+import { style } from '../../style/Customer_Mang_style';
+import { setCusFormInitialValues } from '../../redux/CustomerReducer';
+import { emp_filter_item, village_code } from '../../common';
+import { Picker } from '@react-native-picker/picker';
+import { filterEmp } from '../../query/Employee_query';
+import { addEmpFilter } from '../../redux/EmployeeReducer';
+import { operations } from '../../common';
+import { setUpdateStatus } from '../../redux/CustomerReducer';
 import Edit_Customer_BaseInfo from './Edit_Customer_BaseInfo';
 import Edit_property_Info from './Edit_Property_Info';
 import Edit_Business_Info from './Edit_Business_Info';
 import Edit_Monthly_Income from './Edit_Monthly_Income';
-import {deleteCustomer_ByID} from '../../query/Customer_query';
+import { deleteCustomer_ByID } from '../../query/Customer_query';
 import Edit_NRC_Modal from './Edit_NRC_Modal';
 import {
   totalIncome,
@@ -52,8 +52,8 @@ import {
   totalFamilyExpense,
   updateTotalSum,
 } from '../../redux/MonthlyReducer';
-import {updateCustomerData} from '../../query/Customer_query';
-import {checkDataExists} from '../../query/Customer_query';
+import { updateCustomerData } from '../../query/Customer_query';
+import { checkDataExists } from '../../query/Customer_query';
 import DatePicker from '../../components/DatePicker';
 import validate from './validate';
 function Edit_Emp_Info(props) {
@@ -71,7 +71,7 @@ function Edit_Emp_Info(props) {
     totalFamilyExpense,
     updateTotalSum,
     nrcNo,
-    nrc_state_code,
+    nrc_prefix_code,
   } = props;
   const [all_emp, setAllEmp] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -90,7 +90,6 @@ function Edit_Emp_Info(props) {
   const [show_operation, setOperation] = useState('2');
   const [nrc_statecode, setNRCStateCode] = useState([]);
   const [all_location, setAllLocation] = useState([]);
-  const [nrc_prefix_code, setNRCPrefixCode] = useState([]);
   const [empname, setEmpName] = useState('');
   const [modal_city_visible, setCityCodeModalVisible] = useState(false);
   // Villgae
@@ -320,7 +319,7 @@ function Edit_Emp_Info(props) {
     );
   }, []);
 
-  const city_item = ({item, index}) => {
+  const city_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -357,13 +356,13 @@ function Edit_Emp_Info(props) {
             status={
               selectedCityItemValue === item.city_code ? 'checked' : 'unchecked'
             }
-            // onPress={() => btnSelectEmployee(item)}
+          // onPress={() => btnSelectEmployee(item)}
           />
         </View>
       </View>
     );
   };
-  const ward_item = ({item, index}) => {
+  const ward_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -400,14 +399,14 @@ function Edit_Emp_Info(props) {
             status={
               wardselectedItemValue === item.ward_code ? 'checked' : 'unchecked'
             }
-            // onPress={() => btnSelectEmployee(item)}
+          // onPress={() => btnSelectEmployee(item)}
           />
         </View>
       </View>
     );
   };
 
-  const township_item = ({item, index}) => {
+  const township_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -446,13 +445,13 @@ function Edit_Emp_Info(props) {
                 ? 'checked'
                 : 'unchecked'
             }
-            // onPress={() => btnSelectEmployee(item)}
+          // onPress={() => btnSelectEmployee(item)}
           />
         </View>
       </View>
     );
   };
-  const location_item = ({item, index}) => {
+  const location_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -486,12 +485,12 @@ function Edit_Emp_Info(props) {
         <View>
           <RadioButton
             value={item.township_code}
-            // status={
-            //   selectedTownshipItemValue === item.township_code
-            //     ? 'checked'
-            //     : 'unchecked'
-            // }
-            // onPress={() => btnSelectEmployee(item)}
+          // status={
+          //   selectedTownshipItemValue === item.township_code
+          //     ? 'checked'
+          //     : 'unchecked'
+          // }
+          // onPress={() => btnSelectEmployee(item)}
           />
         </View>
       </View>
@@ -506,16 +505,16 @@ function Edit_Emp_Info(props) {
 
   const hideNRCModal = () => {
     const indexOfSlash = prefix.indexOf('/');
-    const prefix_code = prefix.substring(0, indexOfSlash + 1);
+    const state_code = prefix.substring(0, indexOfSlash + 1);
     setNRC_Visible(!nrc_visible), setNRC(show_nrc);
     dispatch(
       change(
         'Customer_ManagementForm',
         'resident_rgst_id',
         prefix &&
-          nrc_state_code &&
-          nrcNo &&
-          prefix_code + nrc_state_code + nrcNo,
+        nrc_prefix_code &&
+        nrcNo &&
+        state_code + nrc_prefix_code + nrcNo,
       ),
     );
   };
@@ -567,7 +566,7 @@ function Edit_Emp_Info(props) {
     // addEmpFilter(emp_data);
   };
 
-  const item = ({item, index}) => {
+  const item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -675,7 +674,7 @@ function Edit_Emp_Info(props) {
       .catch(error => console.log('error', error));
   };
 
-  const village_item = ({item, index}) => {
+  const village_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -714,7 +713,7 @@ function Edit_Emp_Info(props) {
                 ? 'checked'
                 : 'unchecked'
             }
-            // onPress={() => btnSelectEmployee(item)}
+          // onPress={() => btnSelectEmployee(item)}
           />
         </View>
       </View>
@@ -770,7 +769,10 @@ function Edit_Emp_Info(props) {
           createUserId: empname,
           resident_rgst_id:
             values.nrc_type == '1' ? values.nrc_no : values.resident_rgst_id,
+            nrc_state_code: values.nrc_type == '2' ? prefix : '',
+
         });
+        console.log('data',data);
         if (filtered_cus_data.resident_rgst_id != data.resident_rgst_id) {
           //if not same old nrc and new nrc
           const check_nrc = await checkDataExists(data.resident_rgst_id);
@@ -810,7 +812,7 @@ function Edit_Emp_Info(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{flex: 1, backgroundColor: '#fff'}}>
+          <View style={{ flex: 1, backgroundColor: '#fff' }}>
             <Text style={style.title_style}>
               Customer Information Management
             </Text>
@@ -841,7 +843,7 @@ function Edit_Emp_Info(props) {
                         }
                         label={option.label}
                         value={option.value}
-                        labelStyle={{marginLeft: 5}}
+                        labelStyle={{ marginLeft: 5 }}
                       />
                     </View>
                   </RadioButton.Group>
@@ -852,8 +854,8 @@ function Edit_Emp_Info(props) {
                   update_status == true && show_operation == '3'
                     ? false
                     : update_status == false && show_operation == '4'
-                    ? false
-                    : true
+                      ? false
+                      : true
                 }
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
@@ -894,7 +896,7 @@ function Edit_Emp_Info(props) {
                     icon={update_status == true && 'calendar'}
                     editable={update_status == true ? false : true}
                   />
-                  <View style={{marginRight: 10}}>
+                  <View style={{ marginRight: 10 }}>
                     <Field
                       name={'position_title_nm'}
                       title={'Current Position'}
@@ -913,7 +915,7 @@ function Edit_Emp_Info(props) {
                     input_mode
                     editable
                   />
-                  <View style={{marginRight: 10}}>
+                  <View style={{ marginRight: 10 }}>
                     <Field
                       enabled={update_status == true ? false : true}
                       data={salary_grade}
@@ -973,7 +975,7 @@ function Edit_Emp_Info(props) {
             onDismiss={hideModal}
             contentContainerStyle={containerStyle}>
             <View
-              style={{backgroundColor: '#232D57', padding: 25}}
+              style={{ backgroundColor: '#232D57', padding: 25 }}
               onStartShouldSetResponder={() => hideModal()}>
               <Icon
                 name="x-circle"
@@ -988,19 +990,19 @@ function Edit_Emp_Info(props) {
                 }}
               />
             </View>
-            <View style={{padding: 10, height: 550}}>
+            <View style={{ padding: 10, height: 550 }}>
               <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-around',
                 }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{marginRight: 10}}>Search Item:</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                   <Picker
                     selectedValue={selectedItemValue}
                     onValueChange={handleItemValueChange}
-                    style={{width: 200, backgroundColor: 'white', marginTop: 7}}
+                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
                     mode="dropdown">
                     {emp_filter_item.length > 0 &&
                       emp_filter_item.map(val => (
@@ -1013,7 +1015,7 @@ function Edit_Emp_Info(props) {
                   </Picker>
                 </View>
 
-                <View style={{width: '50%'}}>
+                <View style={{ width: '50%' }}>
                   <TextInput
                     style={{
                       backgroundColor: '#fff',
@@ -1084,7 +1086,7 @@ function Edit_Emp_Info(props) {
                 keyExtractor={(item, index) => index.toString()}
               />
 
-              <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                 <Button
                   onPress={() => hideModal()}
                   mode="contained"
@@ -1114,7 +1116,7 @@ function Edit_Emp_Info(props) {
             onDismiss={hideCityModal}
             contentContainerStyle={containerStyle}>
             <View
-              style={{backgroundColor: '#232D57', padding: 25}}
+              style={{ backgroundColor: '#232D57', padding: 25 }}
               onStartShouldSetResponder={() => hideCityModal()}>
               <Icon
                 name="x-circle"
@@ -1129,19 +1131,19 @@ function Edit_Emp_Info(props) {
                 }}
               />
             </View>
-            <View style={{padding: 10, height: 550}}>
+            <View style={{ padding: 10, height: 550 }}>
               <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-around',
                 }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{marginRight: 10}}>Search Item:</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                   <Picker
                     selectedValue={selectedItemValue}
                     onValueChange={handleItemValueChange}
-                    style={{width: 200, backgroundColor: 'white', marginTop: 7}}
+                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
                     mode="dropdown">
                     {city_code.length > 0 &&
                       city_code.map(val => (
@@ -1154,7 +1156,7 @@ function Edit_Emp_Info(props) {
                   </Picker>
                 </View>
 
-                <View style={{width: '50%'}}>
+                <View style={{ width: '50%' }}>
                   <TextInput
                     style={{
                       backgroundColor: '#fff',
@@ -1255,7 +1257,7 @@ function Edit_Emp_Info(props) {
             onDismiss={hideVillageModal}
             contentContainerStyle={containerStyle}>
             <View
-              style={{backgroundColor: '#232D57', padding: 25}}
+              style={{ backgroundColor: '#232D57', padding: 25 }}
               onStartShouldSetResponder={() => hideVillageModal()}>
               <Icon
                 name="x-circle"
@@ -1270,19 +1272,19 @@ function Edit_Emp_Info(props) {
                 }}
               />
             </View>
-            <View style={{padding: 10, height: 550}}>
+            <View style={{ padding: 10, height: 550 }}>
               <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-around',
                 }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{marginRight: 10}}>Search Item:</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                   <Picker
                     selectedValue={villageselectedItemValue}
                     onValueChange={handleItemValueChange}
-                    style={{width: 200, backgroundColor: 'white', marginTop: 7}}
+                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
                     mode="dropdown">
                     {village_code.length > 0 &&
                       village_code.map(val => (
@@ -1295,7 +1297,7 @@ function Edit_Emp_Info(props) {
                   </Picker>
                 </View>
 
-                <View style={{width: '50%'}}>
+                <View style={{ width: '50%' }}>
                   <TextInput
                     style={{
                       backgroundColor: '#fff',
@@ -1396,7 +1398,7 @@ function Edit_Emp_Info(props) {
             onDismiss={hideTownshipModal}
             contentContainerStyle={containerStyle}>
             <View
-              style={{backgroundColor: '#232D57', padding: 25}}
+              style={{ backgroundColor: '#232D57', padding: 25 }}
               onStartShouldSetResponder={() => hideTownshipModal()}>
               <Icon
                 name="x-circle"
@@ -1411,19 +1413,19 @@ function Edit_Emp_Info(props) {
                 }}
               />
             </View>
-            <View style={{padding: 10, height: 550}}>
+            <View style={{ padding: 10, height: 550 }}>
               <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-around',
                 }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{marginRight: 10}}>Search Item:</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                   <Picker
                     selectedValue={townshipselectedItemValue}
                     onValueChange={handleItemValueChange}
-                    style={{width: 200, backgroundColor: 'white', marginTop: 7}}
+                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
                     mode="dropdown">
                     {Township_code.length > 0 &&
                       Township_code.map(val => (
@@ -1436,7 +1438,7 @@ function Edit_Emp_Info(props) {
                   </Picker>
                 </View>
 
-                <View style={{width: '50%'}}>
+                <View style={{ width: '50%' }}>
                   {/* <Field
                     name={'searchtext'}
                     component={TextInputFile}
@@ -1546,7 +1548,7 @@ function Edit_Emp_Info(props) {
             onDismiss={hideWardModal}
             contentContainerStyle={containerStyle}>
             <View
-              style={{backgroundColor: '#232D57', padding: 25}}
+              style={{ backgroundColor: '#232D57', padding: 25 }}
               onStartShouldSetResponder={() => hideWardModal()}>
               <Icon
                 name="x-circle"
@@ -1561,19 +1563,19 @@ function Edit_Emp_Info(props) {
                 }}
               />
             </View>
-            <View style={{padding: 10, height: 550}}>
+            <View style={{ padding: 10, height: 550 }}>
               <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-around',
                 }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{marginRight: 10}}>Search Item:</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                   <Picker
                     selectedValue={wardselectedItemValue}
                     onValueChange={handleItemValueChange}
-                    style={{width: 200, backgroundColor: 'white', marginTop: 7}}
+                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
                     mode="dropdown">
                     {ward_code.length > 0 &&
                       ward_code.map(val => (
@@ -1586,7 +1588,7 @@ function Edit_Emp_Info(props) {
                   </Picker>
                 </View>
 
-                <View style={{width: '50%'}}>
+                <View style={{ width: '50%' }}>
                   <TextInput
                     style={{
                       backgroundColor: '#fff',
@@ -1687,7 +1689,7 @@ function Edit_Emp_Info(props) {
             onDismiss={hideLocationModal}
             contentContainerStyle={containerStyle}>
             <View
-              style={{backgroundColor: '#232D57', padding: 25}}
+              style={{ backgroundColor: '#232D57', padding: 25 }}
               onStartShouldSetResponder={() => hideLocationModal()}>
               <Icon
                 name="x-circle"
@@ -1702,19 +1704,19 @@ function Edit_Emp_Info(props) {
                 }}
               />
             </View>
-            <View style={{padding: 10, height: 550}}>
+            <View style={{ padding: 10, height: 550 }}>
               <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-around',
                 }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{marginRight: 10}}>Search Item:</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                   <Picker
                     selectedValue={selectedLocationItemValue}
                     onValueChange={handleLocationItemValueChange}
-                    style={{width: 200, backgroundColor: 'white', marginTop: 7}}
+                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
                     mode="dropdown">
                     {location_code.length > 0 &&
                       location_code.map(val => (
@@ -1727,7 +1729,7 @@ function Edit_Emp_Info(props) {
                   </Picker>
                 </View>
 
-                <View style={{width: '50%'}}>
+                <View style={{ width: '50%' }}>
                   <TextInput
                     style={{
                       backgroundColor: '#fff',
@@ -1824,11 +1826,11 @@ const selector = formValueSelector('Customer_ManagementForm');
 
 function mapStateToProps(state) {
   const nrcNo = selector(state, 'nrc_no');
-  const nrc_state_code = selector(state, 'nrc_state_code');
+  const nrc_prefix_code = selector(state, 'nrc_prefix_code');
   return {
     update_status: state.customers.update_status,
     nrcNo,
-    nrc_state_code,
+    nrc_prefix_code,
   };
 }
 

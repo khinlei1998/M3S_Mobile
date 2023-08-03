@@ -36,7 +36,6 @@ export const getNRC_info = () => {
                       ],
                       (tx, results) => {
                         // If insert query succeeds, resolve the promise
-                        console.log('NRC INFO Insert success', results);
                         resolve('success');
                       },
                       error => {

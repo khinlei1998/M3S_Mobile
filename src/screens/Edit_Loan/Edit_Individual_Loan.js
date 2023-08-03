@@ -2978,7 +2978,7 @@ function Edit_Individual_Loan(props) {
         </BottomSheet>
       );
     }, [guarantor_data, exceptional_data, relation_data, evaluation_data]);
-
+  console.log('retrive_loan_data', retrive_loan_data);
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>

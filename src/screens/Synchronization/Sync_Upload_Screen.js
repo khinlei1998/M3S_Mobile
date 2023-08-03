@@ -4,7 +4,10 @@ import DividerLine from '../../components/DividerLine';
 import { Button, Checkbox } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import { loan_application_type } from '../../common';
-export default function Sync_Upload_Screen(props) {
+import {connect} from 'react-redux';
+import {Field, reduxForm, reset, change} from 'redux-form';
+import { addInquiryLoanData } from '../../redux/LoanReducer';
+ function Sync_Upload_Screen(props) {
   const {
     btnUploadCustomer,
     btnLoanUpload,
@@ -12,7 +15,9 @@ export default function Sync_Upload_Screen(props) {
     loan_data,
     btn_disabled,
     btn_cus_disabled,
-    all_survey
+    all_survey,
+    addInquiryLoanData,
+    navigation
   } = props;
   const [checkedItems, setCheckedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -42,6 +47,23 @@ export default function Sync_Upload_Screen(props) {
       );
     } else {
       setCheckedItems([...checkedItems, item]);
+    }
+  };
+
+  const btn_inquiry_loan = item => {
+    if (item.product_type == 20) {
+     navigation.navigate('Edit_Individual_Staff_loan_Info', item);
+      addInquiryLoanData(item);
+    } else if (item.product_type == 10) {
+      addInquiryLoanData(item);
+
+     navigation.navigate('Edit_Individual_Loan', item);
+    } else if (item.product_type == 30) {
+     navigation.navigate('Edit Group Loan', item);
+    } else if (item.product_type == 40) {
+     navigation.navigate('Edit_Cover_Loan', item);
+    } else if (item.product_type == 50) {
+     navigation.navigate('Edit_Reloan', item);
     }
   };
 
@@ -110,7 +132,7 @@ export default function Sync_Upload_Screen(props) {
             flexDirection: 'row',
           }}>
           <Text>{item.tablet_sync_sts}</Text>
-          <TouchableOpacity onPress={() => alert('pp')}>
+          <TouchableOpacity onPress={() => btn_inquiry_loan(item)}>
             <Icon
               name="chevron-right"
               size={30}
@@ -122,6 +144,7 @@ export default function Sync_Upload_Screen(props) {
       </View>
     );
   };
+
 
   return (
     <View style={{ marginTop: 20, marginLeft: 10, marginRight: 10, flex: 1 }}>
@@ -272,3 +295,10 @@ export default function Sync_Upload_Screen(props) {
     </View>
   );
 }
+export default reduxForm({
+  form: 'SyncUploadForm',
+})(
+  connect(null, {
+    addInquiryLoanData,
+  })(Sync_Upload_Screen),
+);

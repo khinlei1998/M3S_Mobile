@@ -57,7 +57,7 @@ function Customer_Management(props) {
     emp_filter_data,
     resetMonthlyIncome,
     nrcNo,
-    nrc_state_code,
+    nrc_prefix_code,
   } = props;
   const [all_emp, setAllEmp] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -72,7 +72,6 @@ function Customer_Management(props) {
   const [show_operation, setOperation] = useState('1');
   const [show_businessdate, setBusiness] = useState('1');
   const [nrc_statecode, setNRCStateCode] = useState([]);
-  const [nrc_prefix_code, setNRCPrefixCode] = useState([]);
   const [empname, setEmpName] = useState('');
   const [modal_city_visible, setCityCodeModalVisible] = useState(false);
   // Villgae
@@ -116,9 +115,10 @@ function Customer_Management(props) {
     setSelectedItemValue(itemValue);
   };
   const onSubmit = async values => {
+    console.log('prefix',prefix);
     let data = Object.assign(values, emp_filter_data, {
       createUserId: empname,
-      nrc_prefix_code: values.nrc_type == '2' ? prefix : '',
+      nrc_state_code: values.nrc_type == '2' ? prefix : '',
       resident_rgst_id:
         values.nrc_type == '1' ? values.nrcNo : values.resident_rgst_id,
       start_living_date_status: show_businessdate,
@@ -333,7 +333,7 @@ function Customer_Management(props) {
 
   const hideNRCModal = () => {
     const indexOfSlash = prefix.indexOf('/');
-    const prefix_code = prefix.substring(0, indexOfSlash + 1);
+    const state_code = prefix.substring(0, indexOfSlash + 1);
     console.log('prefix', prefix);
     setNRC_Visible(!nrc_visible), setNRC(show_nrc);
     dispatch(
@@ -341,9 +341,9 @@ function Customer_Management(props) {
         'Customer_ManagementForm',
         'resident_rgst_id',
         prefix &&
-          nrc_state_code &&
+        nrc_prefix_code &&
           nrcNo &&
-          prefix_code + nrc_state_code + nrcNo,
+          state_code + nrc_prefix_code + nrcNo,
         // prefix
       ),
     );
@@ -678,8 +678,6 @@ function Customer_Management(props) {
         nrc_visible={nrc_visible}
         hideNRCModal={hideNRCModal}
         nrc_statecode={nrc_statecode}
-        nrc_prefix_code={nrc_prefix_code}
-        setNRCPrefixCode={setNRCPrefixCode}
         setPrefix={setPrefix}
         prefix={prefix}
         btnCancel={btnCancel}
@@ -1547,10 +1545,10 @@ const selector = formValueSelector('Customer_ManagementForm');
 
 function mapStateToProps(state) {
   const nrcNo = selector(state, 'nrcNo');
-  const nrc_state_code = selector(state, 'nrc_state_code');
+  const nrc_prefix_code = selector(state, 'nrc_prefix_code');
   return {
     nrcNo,
-    nrc_state_code,
+    nrc_prefix_code,
   };
 }
 
