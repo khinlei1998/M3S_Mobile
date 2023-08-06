@@ -26,7 +26,7 @@ export default function Guarantor_Info(props) {
         onPress={handleGuarantorToggle}
         style={style.list_container}
         titleStyle={style.list_title}
-        title="Borrower Info">
+        title="Guarantor Info">
         <View style={style.sub_container}>
           <View style={style.sub_list_container}>
             <Field
@@ -147,7 +147,6 @@ export default function Guarantor_Info(props) {
               component={TextInputFile}
               cus_width
               input_mode
-              keyboardType={'numeric'}
             />
             <Field
               name={'relation_period'}

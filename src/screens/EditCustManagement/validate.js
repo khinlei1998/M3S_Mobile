@@ -1,8 +1,6 @@
 const validate = values => {
     const errors = {};
 
-    console.log('update vaues',values);
-
     if (!values.customer_nm) {
       errors.customer_nm = 'CustomerName is required.';
     }

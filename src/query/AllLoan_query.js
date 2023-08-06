@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Alert, FileSystem} from 'react-native';
 import RNFS from 'react-native-fs';
 import moment from 'moment';
+import {microfinance_data, area_evaluation_result,relation_data} from '../common';
 export async function getAllLoan() {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
@@ -899,7 +900,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               return; // Stop further execution if gp_borrower_map upload fails
             }
 
-            //sign for indi loan
+            // //sign for indi loan
 
             const indi_borrower_sign = `/storage/emulated/0/Pictures/Signature/${loan_data.application_no}SG01.jpg`;
             try {
@@ -910,7 +911,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
 
               return;
             }
-            //coborrower sign for indi loan
+            // //coborrower sign for indi loan
 
             const indi_coborrower_sign = `/storage/emulated/0/Pictures/Signature/${loan_data.application_no}SG02.jpg`;
             try {
@@ -1136,12 +1137,57 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
             });
             guaranteeData.push(...gurantor_data);
           }
-
           const areaevaluation = await fetchAreaEvaluation(
             loan_data.applicationNo,
           );
           if (areaevaluation.length > 0) {
             const area_data = areaevaluation.map(item => {
+              const resultObj = microfinance_data.find(
+                data => data.id == item.mf_num_flag,
+              );
+              const mf_num_flag = resultObj ? resultObj.result : '';
+
+              const resultObj1 = area_evaluation_result.find(
+                data => data.id == item.pastdue_sts_flag,
+              );
+              const pastdue_sts_flag = resultObj1 ? resultObj1.result : '';
+
+              const resultObj2 = area_evaluation_result.find(
+                data => data.id == item.trnsrt_sts_flag,
+              );
+              const trnsrt_sts_flag = resultObj2 ? resultObj2.result : '';
+
+              const resultObj3 = area_evaluation_result.find(
+                data => data.id == item.area_security_flag,
+              );
+              const area_security_flag = resultObj3 ? resultObj3.result : '';
+
+              const resultObj4 = area_evaluation_result.find(
+                data => data.id == item.cmnc_sts_flag,
+              );
+              const cmnc_sts_flag = resultObj4 ? resultObj4.result : '';
+
+              const resultObj5 = area_evaluation_result.find(
+                data => data.id == item.economy_sts_flag,
+              );
+              const economy_sts_flag = resultObj5 ? resultObj5.result : '';
+
+              const resultObj6 = area_evaluation_result.find(
+                data => data.id == item.income_sts_flag,
+              );
+              const income_sts_flag = resultObj6 ? resultObj6.result : '';
+
+              const resultObj7 = area_evaluation_result.find(
+                data => data.id == item.households_sts_flag,
+              );
+              const households_sts_flag = resultObj7 ? resultObj7.result : '';
+
+              const resultObj8 = area_evaluation_result.find(
+                data => data.id == item.local_auth_sprt_flag,
+              );
+              const local_auth_sprt_flag = resultObj8 ? resultObj8.result : '';
+
+
               return {
                 organizationCode: '',
                 serialNo: '',
@@ -1166,26 +1212,26 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 propertyText: item.property_text,
                 propertyDocmText: item.property_docm_text,
                 occupation: item.occupation,
-                mfiNumFlag: item.mf_num_flag,
+                mfiNumFlag: mf_num_flag,
                 mfiRemark: item.mfi_remark,
-                pastdueStsFlag: item.pastdue_sts_flag,
+                pastdueStsFlag: pastdue_sts_flag,
                 pastdueStsRemark: item.pastdue_sta_remark,
-                trnsrtStsFlag: item.trnsrt_sts_flag,
+                trnsrtStsFlag: trnsrt_sts_flag,
                 trnsrtStsRemark: item.trnsrt_sts_remark,
                 chnlDeviceType: '00110',
                 tabletSyncSts: '00',
                 syncSts: '00',
-                areaSecurityFlag: item.area_security_flag,
+                areaSecurityFlag: area_security_flag,
                 areaSecurityRemark: item.area_security_remark,
-                cmncStsFlag: item.cmnc_sts_flag,
+                cmncStsFlag: cmnc_sts_flag,
                 cmncStsRemark: item.cmnc_sts_remark,
-                economyStsFlag: item.economy_sts_flag,
+                economyStsFlag: economy_sts_flag,
                 economyStsRemark: item.economy_sts_remark,
-                incomeStsFlag: item.income_sts_flag,
+                incomeStsFlag: income_sts_flag,
                 incomeStsRemark: item.income_sts_remark,
-                householdsStsFlag: item.households_sts_flag,
+                householdsStsFlag: households_sts_flag,
                 householdsStsRemark: item.households_sts_remark,
-                localAuthSprtFlag: item.local_auth_sprt_flag,
+                localAuthSprtFlag: local_auth_sprt_flag,
                 localAuthSprtRmrk: item.local_auth_sprt_rmrk,
                 totalStsFlag: item.total_sts_flag,
                 totalStsRemark: item.total_sts_remark,
@@ -1248,8 +1294,13 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
             loan_data.applicationNo,
           );
           if (relation_info.length > 0) {
-            const relation_data = relation_info.map(item => {
-              console.log('relation data', item);
+
+            const relation_datas = relation_info.map(item => {
+
+              const resultObj9 = relation_data.find(
+                data => data.id == 1,
+              );
+              const relation_name = resultObj9 ? resultObj9.name : '';
               return {
                 organizationCode: '',
                 serialNo: '',
@@ -1272,10 +1323,10 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 sonDaughterYn: item.son_daughter_yn == 1 ? 'Y' : 'N',
                 tabletSyncSts: '00',
                 syncSts: '00',
-                relationName: item.relation_name,
+                relationName: relation_name,
               };
             });
-            relationData.push(...relation_data);
+            relationData.push(...relation_datas);
 
             //Borrower sign relation
 

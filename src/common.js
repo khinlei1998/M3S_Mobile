@@ -523,44 +523,44 @@ export const microfinance_data = [
   {
     id: '4',
     name: 'A(0~2)',
-    result: 4,
+    result: 'A',
   },
   {
     id: '3',
     name: 'B(3~5)',
-    result: 3,
+    result: 'B',
   },
   {
     id: '2',
     name: 'C(6~8)',
-    result: 2,
+    result: 'C',
   },
   {
     id: '1',
     name: 'D(above 8)',
-    result: 1,
+    result: 'D',
   },
 ];
 export const area_evaluation_result = [
   {
     id: '4',
     name: 'A(Excellent)',
-    result: 4,
+    result: 'A',
   },
   {
     id: '3',
     name: 'B(Good)',
-    result: 3,
+    result: 'B',
   },
   {
     id: '2',
-    name: 'A(Fair)',
-    result: 2,
+    name: 'C(Fair)',
+    result: 'C',
   },
   {
     id: '1',
     name: 'D(Bad)',
-    result: 1,
+    result: 'D',
   },
 ];
 export const area_evaluation_score_result = [

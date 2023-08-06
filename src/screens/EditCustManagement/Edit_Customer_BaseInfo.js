@@ -181,7 +181,7 @@ function Edit_Customer_BaseInfo(props) {
           <View style={style.sub_list_container}>
             <Field
               data={address_type}
-              name={'address_type'}
+              name={'addressType'}
               title={'Address Type'}
               component={DropDownPicker}
               pickerStyle={{

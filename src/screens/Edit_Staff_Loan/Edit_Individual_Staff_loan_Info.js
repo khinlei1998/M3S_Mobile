@@ -67,6 +67,7 @@ import { getRelationData } from '../../query/RelationShip_query';
 import { getEvaluationData } from '../../query/AreaEvaluation_query';
 import { updateGuarantor } from '../../query/Guarantor_query';
 import { filterCustomerByEmpno } from '../../query/Customer_query';
+import validate from '../Staff_Loan/Validate';
 const Borrower_Sign_Modal = props => {
   const {
     show_canvas,
@@ -2822,7 +2823,7 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Edit_Individual_Staff_Loan_Form',
-  // validate,
+  validate,
 })(
   connect(mapStateToProps, { setStaffLoanUpdateStatus })(
     Individual_Staff_loan_Info,

@@ -40,7 +40,7 @@ import {useNavigation} from '@react-navigation/native';
 import {setGuarantor_UpdateStatus} from '../../redux/LoanReducer';
 import {deleteGuarantor_ByID} from '../../query/Guarantor_query';
 import {updateGuarantor} from '../../query/Guarantor_query';
-// imprort validate from './Validate';
+import validate from './Validate';
 const Borrower_Sign_Modal = props => {
   const {
     show_canvas,
@@ -801,5 +801,5 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Edit_Guarantor_Form',
-  // validate,
+  validate,
 })(connect(mapStateToProps, {setGuarantor_UpdateStatus})(Edit_Guarantor_Form));

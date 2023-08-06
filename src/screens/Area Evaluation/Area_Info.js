@@ -37,7 +37,7 @@ export default function Area_Info() {
         onPress={handleAreaInfoToggle}
         style={style.list_container}
         titleStyle={style.list_title}
-        title="Borrower Info">
+        title="Area Info">
         <View style={style.sub_container}>
           <View style={style.sub_list_container}>
             <Field

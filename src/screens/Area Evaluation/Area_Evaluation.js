@@ -19,7 +19,9 @@ function Area_Evaluation(props) {
   };
   const handleRadioButtonChange = (value, input, index) => {
     input.onChange(value.id);
-    const number = parseFloat(value.result);
+    // const number = parseFloat(value.result);
+    const number = parseFloat(value.id);
+
 
     // Update the selected values array
     const newValues = [...values];
@@ -52,7 +54,7 @@ function Area_Evaluation(props) {
         onPress={handleAreaEvaluationFormToggle}
         style={style.list_container}
         titleStyle={style.list_title}
-        title="Borrower Info">
+        title="Evaluation">
         <View style={style.sub_container}>
           <View style={style.sub_list_container}>
             <Text

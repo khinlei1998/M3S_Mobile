@@ -27,6 +27,7 @@ import {
   deleteGroup_LoanID,
   updateGroupData,
 } from '../../query/GropuLon_query';
+import validate from '../Group_Loan/validate';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -334,4 +335,5 @@ function mapStateToProps(state) {
 }
 export default reduxForm({
   form: 'Edit_Group_Form',
+  validate
 })(connect(mapStateToProps, {setGroup_UpdateStatus})(Edit_Group_Loan_Form));

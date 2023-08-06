@@ -10,7 +10,6 @@ import {List} from 'react-native-paper';
 import TextInputFile from '../../components/TextInputFile';
 function Edit_Area_Evaluation_Score(props) {
   const {total_score, area_update_status,updatetotal_sts_flag} = props;
-  console.log('updatetotal_sts_flag', updatetotal_sts_flag);
   const [area_evaluation_score_expanded, setAreaEvaluationScoreExpanded] =
     useState(true);
   const handleAreaEvaluationScoreToggle = () => {

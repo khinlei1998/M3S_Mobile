@@ -15,7 +15,7 @@ import { connect, useDispatch } from 'react-redux';
 import { filterCustomer } from '../../query/Customer_query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getAllLoan} from '../../query/AllLoan_query';
-// import validate from './validate';
+import validate from './validate';
 import {
   RadioButton,
   Button,
@@ -386,5 +386,5 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Group_Form',
-  // validate
+  validate
 })(connect(mapStateToProps, { setBorrowerMap_Path })(Group_Loan_Form));

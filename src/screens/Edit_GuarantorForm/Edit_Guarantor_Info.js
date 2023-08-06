@@ -26,7 +26,7 @@ function Edit_Guarantor_Info(props) {
         onPress={handleGuarantorToggle}
         style={style.list_container}
         titleStyle={style.list_title}
-        title="Borrower Info">
+        title="Guarantor Info">
         <View style={style.sub_container}>
           <View style={style.sub_list_container}>
             <Field
@@ -152,7 +152,6 @@ function Edit_Guarantor_Info(props) {
               component={TextInputFile}
               cus_width
               input_mode
-              keyboardType={'numeric'}
               editable={guarantor_update_status == true ? false : true}
             />
             <Field

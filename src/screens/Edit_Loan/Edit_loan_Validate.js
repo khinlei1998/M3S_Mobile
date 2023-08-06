@@ -15,9 +15,12 @@ const validate = (values) => {
     if (!values.tel_no) {
         errors.tel_no = "Tel Number is required.";
     }
-    
-    
-
+     if (!values.product_type) {
+        errors.product_type = "Product Type is required.";
+    }
+    if (!values.loanterm_cnt) {
+        errors.loanterm_cnt = "Loan Term CNT is required.";
+    }
 
     return errors;
 };

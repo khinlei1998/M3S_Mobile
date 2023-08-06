@@ -11,7 +11,6 @@ import {setEvaluation_Score} from '../../redux/LoanReducer';
 function Edit_Area_Evaluation(props) {
   const {setEvaluation_Score, area_update_status, retrive_area_evaluation,setTotal_sts_flag} =
     props;
-  console.log('retrive_area_evaluation.area_security_flag', retrive_area_evaluation.area_security_flag);
   const [area_evaluation_form_expanded, setAreaEvaluationFormExpanded] =
     useState(true);
   const [values, setValues] = useState([
@@ -31,7 +30,10 @@ function Edit_Area_Evaluation(props) {
   };
   const handleRadioButtonChange = (value, input, index) => {
     input.onChange(value.id);
-    const number = parseFloat(value.result);
+    // const number = parseFloat(value.result);
+    const number = parseFloat(value.id);
+
+    console.log('number',number);
     if (!isNaN(number)) {
       // Update the selected values array
       const newValues = [...values];

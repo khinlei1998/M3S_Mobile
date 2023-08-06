@@ -56,7 +56,7 @@ function Edit_Area_Evaluation_Form(props) {
   const retrive_area_evaluation = props.route.params.evaluation_data[0];
   console.log(
     'retrive_area_evaluation',
-    retrive_area_evaluation.total_sts_flag,
+    retrive_area_evaluation,
   );
   const loadData = async () => {
     props.initialize(retrive_area_evaluation);

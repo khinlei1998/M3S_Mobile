@@ -16,7 +16,7 @@ import { connect, useDispatch } from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
 import Exceptional_Approval_Info from './Edit_Exceptional_Approval_Info';
-// import validate from './Validate';
+import validate from './Validate';
 import { storeExceptionalApproval } from '../../query/Exceptional_Approval_query';
 import { useNavigation } from '@react-navigation/native';
 import { setExcept_UPDATEStatus } from '../../redux/LoanReducer';
@@ -259,5 +259,5 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Edit_Exceptional_Approvel_Form',
-  // validate,
+  validate,
 })(connect(mapStateToProps, { setExcept_UPDATEStatus })(Edit_Exceptional_Approvel_Form));
