@@ -162,12 +162,11 @@ export default function Passport(props) {
 
     return (
         <View style={{ flex: 1, backgroundColor: '#fff' }}>
-            <View style={{ height: 900, marginTop: 50,backgroundColor:'red' }}>
+            <View style={{ height: 900, marginTop: 50, }}>
                 <ScrollView
                     contentContainerStyle={{
                         flexGrow: 1,
                         alignItems: 'center',
-                        backgroundColor: 'blue',
                         marginTop: 20,
                     }}>
                     <View
@@ -181,7 +180,6 @@ export default function Passport(props) {
                             <Card
                                 style={{
                                     borderRadius: 0,
-                                    backgroundColor: 'pink',
                                     height: 700,
                                 }}
                                 key={item.id}
@@ -197,57 +195,56 @@ export default function Passport(props) {
                                 }>
                                 <Card.Content
                                     style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        padding: 10,
-                                        margin: 10,
+                                        flexDirection: 'column',
+                                        // alignItems: 'center',
+
                                     }}>
-                                    <View
-                                        style={{
-                                            justifyContent: 'space-between',
-                                            flex: 1,
-                                            flexDirection: 'row',
-                                        }}>
-                                        <View style={{ flexDirection: 'row' }}>
-                                            {capturedFiles.includes(item.value) ? (
-                                                <Image
-                                                    source={{
-                                                        uri: `file:///storage/emulated/0/Pictures/Camera/${retrive_loan_data.application_no
-                                                            }AT${item.value}F.jpg?timestamp=${Date.now()}`,
-                                                    }}
-                                                    style={{ width: 50, height: 50, marginRight: 10 }}
-                                                />
-                                            ) : (
-                                                <TouchableOpacity>
-                                                    <Icon name="camera" size={50} color="#b8a1c4" />
-                                                </TouchableOpacity>
-                                            )}
-                                            <TouchableOpacity
-                                                style={{
-                                                    marginLeft: 30,
-                                                    marginTop: 15,
-                                                }}>
-                                                <Icon
-                                                    name="check"
-                                                    size={30}
-                                                    color={
-                                                        capturedFiles.includes(item.value)
-                                                            ? '#d41913'
-                                                            : '#b8a1c4'
-                                                    } // Change color based on captured files
-                                                />
-                                            </TouchableOpacity>
-                                            <Text
-                                                style={{
-                                                    marginLeft: 30,
-                                                    fontWeight: 'bold',
-                                                    fontSize: 18,
-                                                    marginTop: 15,
-                                                }}>
-                                                {item.name}
-                                            </Text>
-                                        </View>
-                                        <View style={{ flexDirection: 'row' }}>
+
+
+                                    {capturedFiles.includes(item.value) ? (
+                                        <Image
+                                            source={{
+                                                uri: `file:///storage/emulated/0/Pictures/Camera/${retrive_loan_data.application_no
+                                                    }AT${item.value}F.jpg?timestamp=${Date.now()}`,
+                                            }}
+                                            style={{ width: '100%', height: 400, }}
+                                        />
+                                    ) : (
+                                        <TouchableOpacity>
+                                            <Icon name="camera" size={50} color="#b8a1c4" />
+                                        </TouchableOpacity>
+                                    )}
+                                    <View style={{ flexDirection: 'row',  }}>
+
+
+                                        <TouchableOpacity
+                                            style={{
+                                                marginLeft: 30,
+                                                marginTop: 15,
+                                            }}>
+                                            <Icon
+                                                name="check"
+                                                size={30}
+                                                color={
+                                                    capturedFiles.includes(item.value)
+                                                        ? '#d41913'
+                                                        : '#b8a1c4'
+                                                } // Change color based on captured files
+                                            />
+                                        </TouchableOpacity>
+                                        <Text
+                                            style={{
+                                                marginLeft: 30,
+                                                fontWeight: 'bold',
+                                                fontSize: 18,
+                                                marginTop: 15,
+                                            }}>
+                                            {item.name}
+                                        </Text>
+                                    </View>
+
+
+                                    {/* <View style={{ flexDirection: 'row' }}>
                                             <TouchableOpacity
                                                 onPress={() => handleView(item.value)}
                                                 style={{
@@ -293,8 +290,8 @@ export default function Passport(props) {
                                                     color={'#c24640'} // Change color based on captured files
                                                 />
                                             </TouchableOpacity>
-                                        </View>
-                                    </View>
+                                        </View> */}
+
                                 </Card.Content>
                                 <Divider />
                             </Card>
