@@ -24,7 +24,7 @@ export default function Passport(props) {
     const retrive_loan_data = props.route.params.retrive_loan_data;
     const data = [
         { id: 1, name: 'Passport Photo', value: '12' },
-      
+
 
         // Add more data as needed
     ];
@@ -162,12 +162,12 @@ export default function Passport(props) {
 
     return (
         <View style={{ flex: 1, backgroundColor: '#fff' }}>
-            <View style={{ height: 900, marginTop: 50 }}>
+            <View style={{ height: 900, marginTop: 50,backgroundColor:'red' }}>
                 <ScrollView
                     contentContainerStyle={{
                         flexGrow: 1,
                         alignItems: 'center',
-                        backgroundColor: '#fff',
+                        backgroundColor: 'blue',
                         marginTop: 20,
                     }}>
                     <View
@@ -181,6 +181,8 @@ export default function Passport(props) {
                             <Card
                                 style={{
                                     borderRadius: 0,
+                                    backgroundColor: 'pink',
+                                    height: 700,
                                 }}
                                 key={item.id}
                                 onPress={() =>
