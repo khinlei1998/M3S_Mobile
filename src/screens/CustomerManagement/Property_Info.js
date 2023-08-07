@@ -87,7 +87,7 @@ export default function Property_Info() {
               </View>
             </View>
             <Field
-              name={'otrPropEstmtdVal'}
+              name={'totPropEstmtdVal'}
               title={'Estimated Value'}
               component={TextInputFile}
               input_mode
@@ -103,7 +103,8 @@ export default function Property_Info() {
               input_mode
             />
             <Field
-              name={'totPropEstmtdVal'}
+            
+              name={'otrPropEstmtdVal'}
               title={'Estimated Value'}
               component={TextInputFile}
               input_mode

@@ -25,6 +25,7 @@ import {
   ward_code,
   location_code,
   cus_filter_item,
+  sav_product_type
 } from '../../common';
 import { reduxForm, Field, change, reset, formValueSelector } from 'redux-form';
 import { connect, useDispatch } from 'react-redux';
@@ -514,7 +515,7 @@ const CoBorrower_NRC_Search_modal = props => {
 
   const btnCusSearch = async () => {
     console.log('selectedItemValue', selectedItemValue);
-    console.log('cus_data',cus_data);
+    console.log('cus_data', cus_data);
     await filterCustomer(selectedItemValue, cus_data)
       .then(data =>
         data.length > 0 ? setAllCoBorrower(data) : alert('No data'),
@@ -2671,6 +2672,22 @@ function Individual_Staff_loan_Info(props) {
                     input_mode
                     editable={update_status == true ? false : true}
                   />
+                </View>
+
+                <View style={style.sub_list_container}>
+
+
+                  <Field
+                    data={sav_product_type}
+                    name={'sv_pr_type'}
+                    title={'Saving Product Type'}
+                    component={DropDownPicker}
+                    pickerStyle={{
+                      width: 300,
+                    }}
+                    enabled={update_status == true ? false : true}
+                  />
+
                 </View>
               </View>
             </List.Accordion>

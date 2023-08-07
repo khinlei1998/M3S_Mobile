@@ -1,9 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {Alert, FileSystem} from 'react-native';
+import { Alert, FileSystem } from 'react-native';
 import RNFS from 'react-native-fs';
 import moment from 'moment';
-import {microfinance_data, area_evaluation_result,relation_data} from '../common';
+import { microfinance_data, area_evaluation_result, relation_data } from '../common';
 export async function getAllLoan() {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
@@ -271,7 +271,7 @@ export const storeLoanData = async loan_data => {
       global.db.transaction(trans => {
         trans.executeSql(
           `INSERT INTO Individual_application (serial_no,application_no,group_aplc_no,status_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,loan_status_code,decision_no,contract_no,product_type,channel_device_type,open_branch_code,open_user_id,mngt_branch_code,mngt_user_id,loan_type,cst_new_exist_flg,loan_cycle,application_amt,application_date,loanterm_cnt,borrower_name,customer_no,loan_code,saving_acct_num,gender,birth_date,marital_status,resident_rgst_id,tel_no,mobile_tel_no,employee_no,entry_date,position_title_nm,position_title_code,branch_code,salary_rating_code,addr,family_num,hghschl_num,university_num,students_cnt,curr_resident_perd,house_ocpn_type,business_own_type,co_customer_no,co_brwer_name,co_brwer_birth_dt,co_brwer_rgst_id,co_brwer_tel_no,co_brwer_mble_tel_no,borrower_rltn,co_occupation,workplace_name,workplace_type,workplace_period,employee_num,workplace_addr,curr_workplace_perd,business_sttn_flg,land_scale,land_own_type,tot_sale_income,tot_sale_expense,rawmaterial_expans,wrkp_rent_expns,employee_expns,prmn_empl_expns,tmpy_empl_expns,trnsrt_expns,bus_utlbil_expns,tel_expns,tax_expns,goods_loss_expns,othr_expns_1,othr_expns_2,tot_bus_net_income,fmly_tot_income,fmly_tot_expense,food_expns,house_mngt_expns,utlbil_expns,edct_expns,healthy_expns,fmly_trnsrt_expns,fmly_tax_expns,finance_expns,fmly_otr_expns,fmly_tot_net_income,tot_net_income,otr_mfi_loan_cnt,otr_mfi_nm,remark,borrower_id_no,borrower_age,have_fixed_asset,co_brwer_business,co_brwer_net_income,property_kind,prop_apartment_yn,prop_house_yn,prop_car_yn,prop_motorcycle_yn,prop_machines_yn,prop_farmland_yn,ohtr_own_property,tot_prop_estmtd_val,own_property_estmtd_val,past_loan_cycle,pastdue_month_cnt,past_loan_rating,past_loan_amount,past_credit_empl_nm,check_phone_num_yn,reputation_yn,business_good_yn,real_property_yn,
-          repayment_history_yn,loan_officer_cmnt,tablet_sync_sts,sync_sts,old_application_no,transaction_date,loan_limit_amt,curr_resident_date,workplace_date,curr_workplace_date,err_msg,interest_rates,loan_charges,city_code,city_name,township_code,township_name,village_code,village_name,ward_code,ward_name,location_code,location_name,borrower_sign,co_borrower_sign,address_type) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+          repayment_history_yn,loan_officer_cmnt,tablet_sync_sts,sync_sts,old_application_no,transaction_date,loan_limit_amt,curr_resident_date,workplace_date,curr_workplace_date,err_msg,interest_rates,loan_charges,city_code,city_name,township_code,township_name,village_code,village_name,ward_code,ward_name,location_code,location_name,borrower_sign,co_borrower_sign,address_type,sv_pr_type) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
           [
             null, //serialNo
             loan_data.application_no,
@@ -426,6 +426,7 @@ export const storeLoanData = async loan_data => {
             loan_data.borrower_sign, //borrower sign
             loan_data.co_borrower_sign,
             loan_data.address_type,
+            loan_data.sv_pr_type
             // loan_data.borrower_map,
             //146
           ],
@@ -1426,8 +1427,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         maxBodyLength: Infinity,
         url:
           data.product_type == 30 ||
-          data.product_type == 40 ||
-          data.product_type == 50
+            data.product_type == 40 ||
+            data.product_type == 50
             ? `https://${ip}:${port}/skylark-m3s/api/groupLoan.m3s`
             : `https://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
         data: formData,
@@ -1871,11 +1872,13 @@ export const updateLoanData = async loan_data => {
   const date = moment().format('YYYY-MM-DD');
 
   return new Promise(async (resolve, reject) => {
+    console.log('loan_data.wrkp_rent_expns', loan_data.wrkp_rent_expns)
+
     try {
       global.db.transaction(trans => {
         trans.executeSql(
           `UPDATE Individual_application set serial_no =?, application_no =?, group_aplc_no =?, status_code =?, create_datetime =?, create_user_id =?, delete_datetime =?, delete_user_id =?, update_datetime =?, update_user_id =?, loan_status_code =?, decision_no =?, contract_no =?, product_type =?, channel_device_type =?, open_branch_code =?, open_user_id =?, mngt_branch_code =?, mngt_user_id =?, loan_type =?, cst_new_exist_flg =?, loan_cycle =?, application_amt =?, application_date =?, loanterm_cnt =?, borrower_name =?, customer_no =?, loan_code =?, saving_acct_num =?, gender =?, birth_date =?, marital_status =?, resident_rgst_id =?, tel_no =?, mobile_tel_no =?, employee_no =?, entry_date =?, position_title_nm =?, position_title_code =?, branch_code =?, salary_rating_code =?, addr =?, family_num =?, hghschl_num =?, university_num =?, students_cnt =?, curr_resident_perd =?, house_ocpn_type =?, business_own_type =?, co_customer_no =?, co_brwer_name =?, co_brwer_birth_dt =?, co_brwer_rgst_id =?, co_brwer_tel_no =?, co_brwer_mble_tel_no =?, borrower_rltn =?, co_occupation =?, workplace_name =?, workplace_type =?, workplace_period =?, employee_num =?, workplace_addr =?, curr_workplace_perd =?, business_sttn_flg =?, land_scale =?, land_own_type =?, tot_sale_income =?, tot_sale_expense =?, rawmaterial_expans =?, wrkp_rent_expns =?, employee_expns =?, prmn_empl_expns =?, tmpy_empl_expns =?, trnsrt_expns =?, bus_utlbil_expns =?, tel_expns =?, tax_expns =?, goods_loss_expns =?, othr_expns_1 =?, othr_expns_2 =?, tot_bus_net_income =?, fmly_tot_income =?, fmly_tot_expense =?, food_expns =?, house_mngt_expns =?, utlbil_expns =?, edct_expns =?, healthy_expns =?, fmly_trnsrt_expns =?, fmly_tax_expns =?, finance_expns =?, fmly_otr_expns =?, fmly_tot_net_income =?, tot_net_income =?, otr_mfi_loan_cnt =?, otr_mfi_nm =?, remark =?, borrower_id_no =?, borrower_age =?, have_fixed_asset =?, co_brwer_business =?, co_brwer_net_income =?, property_kind =?, prop_apartment_yn =?, prop_house_yn =?, prop_car_yn =?, prop_motorcycle_yn =?, prop_machines_yn =?, prop_farmland_yn =?, ohtr_own_property =?, tot_prop_estmtd_val =?, own_property_estmtd_val =?, past_loan_cycle =?, pastdue_month_cnt =?, past_loan_rating =?, past_loan_amount =?, past_credit_empl_nm =?, check_phone_num_yn =?, reputation_yn =?, business_good_yn =?, real_property_yn =?,
-        repayment_history_yn =?, loan_officer_cmnt =?, tablet_sync_sts =?, sync_sts =?, old_application_no =?, transaction_date =?, loan_limit_amt =?, curr_resident_date =?, workplace_date =?, curr_workplace_date =?, err_msg =?, interest_rates =?, loan_charges =?, city_code =?, city_name =?, township_code =?, township_name =?, village_code =?, village_name =?, ward_code =?, ward_name =?, location_code =?, location_name =?, borrower_sign =?, co_borrower_sign =?, borrower_map =?, address_type =? WHERE application_no = ? `,
+        repayment_history_yn =?, loan_officer_cmnt =?, tablet_sync_sts =?, sync_sts =?, old_application_no =?, transaction_date =?, loan_limit_amt =?, curr_resident_date =?, workplace_date =?, curr_workplace_date =?, err_msg =?, interest_rates =?, loan_charges =?, city_code =?, city_name =?, township_code =?, township_name =?, village_code =?, village_name =?, ward_code =?, ward_name =?, location_code =?, location_name =?, borrower_sign =?, co_borrower_sign =?, borrower_map =?, address_type =?,sv_pr_type=? WHERE application_no = ? `,
           [
             loan_data.serial_no, //serialNo
             loan_data.application_no,
@@ -1949,34 +1952,34 @@ export const updateLoanData = async loan_data => {
             loan_data.land_scale,
             loan_data.land_own_type,
             //Monthly Income
-            loan_data.tot_sale_income,
-            loan_data.tot_sale_expense,
-            loan_data.rawmaterial_expans,
-            loan_data.wrkp_rent_expns,
-            loan_data.employee_expns,
-            loan_data.prmn_empl_expns, //prmn_empl_expns
-            loan_data.tmpy_empl_expns, //tmpy_empl_expns
-            loan_data.trnsrt_expns,
-            loan_data.bus_utlbil_expns,
-            loan_data.tel_expns,
-            loan_data.tax_expns,
-            loan_data.goods_loss_expns,
-            loan_data.othr_expns_1,
-            loan_data.othr_expns_2, //80
-            loan_data.totBusNetIncomeitem,
-            loan_data.fmly_tot_income,
-            loan_data.fmly_tot_expense,
-            loan_data.food_expns,
-            loan_data.house_mngt_expns,
-            loan_data.utlbil_expns,
-            loan_data.edct_expns,
-            loan_data.healthy_expns,
-            loan_data.fmly_trnsrt_expns,
-            loan_data.fmly_tax_expns,
-            loan_data.finance_expns,
-            loan_data.fmly_otr_expns,
-            loan_data.fmlyTotNetIncome,
-            loan_data.totalnet,
+            loan_data.tot_sale_income  == '' ? 0 : loan_data.tot_sale_income,
+            loan_data.tot_sale_expense, //auto cal
+            loan_data.rawmaterial_expans  == '' ? 0 : loan_data.rawmaterial_expans,
+            loan_data.wrkp_rent_expns == '' ? 0 : loan_data.wrkp_rent_expns,
+            loan_data.employee_expns == '' ? 0 : loan_data.employee_expns,
+            loan_data.prmn_empl_expns == '' ? 0 : loan_data.prmn_empl_expns, //prmn_empl_expns
+            loan_data.tmpy_empl_expns == '' ? 0 : loan_data.tmpy_empl_expns, //tmpy_empl_expns
+            loan_data.trnsrt_expns == '' ? 0 : loan_data.trnsrt_expns,
+            loan_data.bus_utlbil_expns == '' ? 0 : loan_data.bus_utlbil_expns,
+            loan_data.tel_expns == '' ? 0 : loan_data.tel_expns,
+            loan_data.tax_expns == '' ? 0 : loan_data.tax_expns,
+            loan_data.goods_loss_expns == '' ? 0 : loan_data.goods_loss_expns,
+            loan_data.othr_expns_1 == '' ? 0 : loan_data.othr_expns_1,
+            loan_data.othr_expns_2 == '' ? 0 : loan_data.othr_expns_2, //80
+            loan_data.totBusNetIncomeitem, //auto cal
+            loan_data.fmly_tot_income == '' ? 0 : loan_data.fmly_tot_income,
+            loan_data.fmly_tot_expense , //auto cal
+            loan_data.food_expns  == '' ? 0 : loan_data.food_expns,
+            loan_data.house_mngt_expns == '' ? 0 : loan_data.house_mngt_expns,
+            loan_data.utlbil_expns  == '' ? 0 : loan_data.utlbil_expns,
+            loan_data.edct_expns == '' ? 0 : loan_data.edct_expns,
+            loan_data.healthy_expns == '' ? 0 : loan_data.healthy_expns,
+            loan_data.fmly_trnsrt_expns  == '' ? 0 : loan_data.fmly_trnsrt_expns,
+            loan_data.fmly_tax_expns  == '' ? 0 : loan_data.fmly_tax_expns,
+            loan_data.finance_expns  == '' ? 0 : loan_data.finance_expns,
+            loan_data.fmly_otr_expns  == '' ? 0 : loan_data.fmly_otr_expns,
+            loan_data.fmlyTotNetIncome  == '' ? 0 : loan_data.fmlyTotNetIncome,
+            loan_data.totalnet, //auto cal
             loan_data.otr_mfi_loan_cnt, //otr_mfi_loan_cnt
             loan_data.otr_mfi_nm, //otr_mfi_nm
             loan_data.remark,
@@ -2031,6 +2034,7 @@ export const updateLoanData = async loan_data => {
             loan_data.co_borrower_sign,
             loan_data.borrower_map,
             loan_data.address_type,
+            loan_data.sv_pr_type,
             loan_data.application_no,
             // loan_data.borrower_map,
             //146

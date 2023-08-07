@@ -102,7 +102,7 @@ function Edit_property_Info(props) {
             </View>
 
             <Field
-              name={'otr_prop_estmtd_val'}
+              name={'tot_prop_estmtd_val'}             
               title={'Estimated Value'}
               component={TextInputFile}
               input_mode
@@ -120,7 +120,7 @@ function Edit_property_Info(props) {
               disabled={update_status == true ? false : true}
             />
             <Field
-              name={'tot_prop_estmtd_val'}
+              name={'otr_prop_estmtd_val'}
               title={'Estimated Value'}
               component={TextInputFile}
               input_mode

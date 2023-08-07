@@ -24,6 +24,7 @@ import {
   ward_code,
   location_code,
   cus_filter_item,
+  sav_product_type
 } from '../../common';
 import { reduxForm, Field, change, reset, formValueSelector } from 'redux-form';
 import { connect, useDispatch } from 'react-redux';
@@ -2319,6 +2320,20 @@ function Individual_Staff_loan_Info(props) {
                     cus_width
                     input_mode
                   />
+                </View>
+                <View style={style.sub_list_container}>
+
+
+                  <Field
+                    data={sav_product_type}
+                    name={'sv_pr_type'}
+                    title={'Saving Product Type'}
+                    component={DropDownPicker}
+                    pickerStyle={{
+                      width: 300,
+                    }}
+                  />
+
                 </View>
               </View>
             </List.Accordion>

@@ -29,7 +29,7 @@ import { getAllGroupLoan } from '../../query/GropuLon_query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { filterCustomer } from '../../query/Customer_query';
 import { storeGroupData } from '../../query/GropuLon_query';
-import validate from '../Group_Loan/validate';
+import validate from '../Group_Loan/Validate';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);

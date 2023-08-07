@@ -608,5 +608,113 @@ export const state = [
 
 ];
 
+export const sav_product_type = [
+  {
+    id: 1,
+    label: 'Complusory Saving ',
+    value: '11',
+  },
+  {
+    id: 2,
+    label: 'Voluntary Saving',
+    value: '12',
+  },
+  {
+    id: 3,
+    label: '14%- Complusory Saving',
+    value: '13',
+  },
+  {
+    id: 4,
+    label: 'Internal Staff Saving ',
+    value: '14',
+  },
+  {
+    id: 5,
+    label: 'Indiv Agriculture Saving ',
+    value: '15',
+  },
+  {
+    id: 6,
+    label: 'External Staff Saving',
+    value: '16',
+  },
+  {
+    id: 7,
+    label: 'Indivi Business Saving',
+    value: '17',
+  },
+  {
+    id: 8,
+    label: '12 Month Group Saving',
+    value: '18',
+  },
+  {
+    id: 9,
+    label: '15 Month Group Saving',
+    value: '19',
+  },
+  {
+    id: 10,
+    label: '18 Month Group Saving',
+    value: '20',
+  },
+  {
+    id: 11,
+    label: '12 M Group Saving',
+    value: '21',
+  },
+  {
+    id: 12,
+    label: '15 M Group Saving',
+    value: '22',
+  },
+  {
+    id: 13,
+    label: '18 M Group Saving',
+    value: '23',
+  },
+  {
+    id: 14,
+    label: ' Internal Staff-Saving ',
+    value: '24',
+  },
+  {
+    id: 15,
+    label: ' External Staff-Saving ',
+    value: '25',
+  },
+  {
+    id: 16,
+    label: ' Indi Business Saving',
+    value: '26',
+  },
+  {
+    id: 17,
+    label: '12 M G-Saving ',
+    value: '27',
+  },
+  {
+    id: 18,
+    label: ' 15 M G-Saving  ',
+    value: '28',
+  },
+  {
+    id: 19,
+    label: '18 M G-Saving ',
+    value: '29',
+  },
+  {
+    id: 20,
+    label: ' Tea Shop Loan Saving ',
+    value: '30',
+  },
+  {
+    id: 21,
+    label: 'Re Loan Saving',
+    value: '31',
+  },
+];
+
 // export const BASE_URL='https://8582-103-231-92-61.ngrok-free.app/'
 export const BASE_URL = 'https://sample-rest.onrender.com/skylark-m3s/'; // static

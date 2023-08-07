@@ -27,7 +27,7 @@ import {
   deleteGroup_LoanID,
   updateGroupData,
 } from '../../query/GropuLon_query';
-import validate from '../Group_Loan/validate';
+import validate from '../Group_Loan/Validate';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);

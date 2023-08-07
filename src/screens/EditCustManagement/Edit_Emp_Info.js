@@ -146,6 +146,7 @@ function Edit_Emp_Info(props) {
   const hideCityModal = () => setCityCodeModalVisible(false);
   const hideWardModal = () => setWardCodeModalVisible(false);
   const filtered_cus_data = props.route.params;
+  console.log('edit customer data', filtered_cus_data);
 
   const onChangeEmpText = textvalues => {
     setEmpText(textvalues);
@@ -185,6 +186,10 @@ function Edit_Emp_Info(props) {
     if (filtered_cus_data.curr_business_date_status == '2') {
       setBusinessStartDate('2');
     }
+    // if (filtered_cus_data.curr_workplace_date) {
+    //   setBusinessStartDate('2');
+    // }
+
 
     const retrive_cusdata = Object.assign({}, filtered_cus_data, {
       hghschl_num: filtered_cus_data.hghschl_num
@@ -769,10 +774,10 @@ function Edit_Emp_Info(props) {
           createUserId: empname,
           resident_rgst_id:
             values.nrc_type == '1' ? values.nrc_no : values.resident_rgst_id,
-            nrc_state_code: values.nrc_type == '2' ? prefix : '',
+          nrc_state_code: values.nrc_type == '2' ? prefix : '',
 
         });
-        console.log('data',data);
+        console.log('data', data);
         if (filtered_cus_data.resident_rgst_id != data.resident_rgst_id) {
           //if not same old nrc and new nrc
           const check_nrc = await checkDataExists(data.resident_rgst_id);

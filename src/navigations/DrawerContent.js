@@ -18,7 +18,7 @@ export default function DrawerContent(props) {
       <DrawerContentScrollView {...props}>
         <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
           <Image
-            source={require('../../assets/images/logo_shin_02.png')}
+            source={require('../../assets/images/logo3.png')}
             style={{
               height: 100,
               resizeMode: 'contain',

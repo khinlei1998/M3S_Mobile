@@ -15,7 +15,7 @@ import { connect, useDispatch } from 'react-redux';
 import { filterCustomer } from '../../query/Customer_query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getAllLoan} from '../../query/AllLoan_query';
-import validate from './validate';
+import validate from './Validate';
 import {
   RadioButton,
   Button,

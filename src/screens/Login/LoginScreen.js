@@ -173,11 +173,11 @@ function LoginScreen(props) {
             </View>
             <View style={{ alignItems: 'center', marginTop: 20 }}>
               <Image
-                source={require('../../../assets/images/logo_shin_02.png')}
-                style={{ width: 90, height: 90 }}
+                source={require('../../../assets/images/logo3.png')}
+                style={{ width: 130, height: 130 }}
               />
               <View
-                style={{ flexDirection: 'row', marginTop: 30, marginBottom: 20 }}>
+                style={{ flexDirection: 'row', marginTop: 10, marginBottom: 20 }}>
                 <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20 }}>
                   BC NeO{' '}
                 </Text>
@@ -186,7 +186,7 @@ function LoginScreen(props) {
 
               <Image
                 source={require('../../../assets/images/default-user.png')}
-                style={{ width: 50, height: 50, marginTop: 20 }}
+                style={{ width: 50, height: 50, marginTop: 10 }}
               />
             </View>
             <View

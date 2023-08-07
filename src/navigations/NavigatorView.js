@@ -30,7 +30,7 @@ import Cover_Loan_Form from '../screens/Cover Loan/Cover_Loan_Form';
 import Reloan_Form from '../screens/Relaon/Reloan_Form';
 import Edit_Reloan_Form from '../screens/Edit_Relaon/Edit_Reloan_Form';
 import Survey from '../screens/Survey/Survey';
-
+import Passport from '../screens/Passport/Passport';
 const StackNavigationData = [
   {
     name: 'Home',
@@ -53,6 +53,15 @@ const StackNavigationData = [
   {
     name: 'ReLoan',
     component: Reloan_Form,
+    // headerLeft: headerLeftComponent,
+    headerTitleStyle: {
+      color: '#FFF',
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Passport',
+    component: Passport,
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
       color: '#FFF',

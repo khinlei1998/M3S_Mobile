@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 
 export async function getAllCustomer() {
   return new Promise((resolve, reject) => {
@@ -52,7 +52,7 @@ export function getCustomer_info() {
       tx.executeSql('DELETE FROM Customer', [], (tx, results) => {
         axios
           .get(`https://${ip}:${port}/skylark-m3s/api/customers.m3s`)
-          .then(({data}) => {
+          .then(({ data }) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -96,13 +96,13 @@ export function getCustomer_info() {
                         item.houseOcpnType,
                         item.remark,
                         item.businessOwnType,
-                        item.propApartmentYn,
-                        item.propHouseYn,
-                        item.propCarYn,
-                        item.propMotorcycleYn,
-                        item.propMachinesYn,
-                        item.propFarmlandYn,
-                        item.propOtherYn,
+                        item.propApartmentYn == 'Y' ? '1' : '',
+                        item.propHouseYn == 'Y' ? '1' : '',
+                        item.propCarYn == 'Y' ? '1' : '',
+                        item.propMotorcycleYn == 'Y' ? '1' : '',
+                        item.propMachinesYn == 'Y' ? '1' : '',
+                        item.propFarmlandYn == 'Y' ? '1' : '',
+                        item.propOtherYn == 'Y' ? '1' : '',
                         item.totPropEstmtdVal,
                         item.ohtrOwnProperty,
                         item.otrPropEstmtdVal, //43
@@ -125,30 +125,30 @@ export function getCustomer_info() {
                         item.tmpyEmplExpns,
                         item.trnsrtExpns,
                         item.busUtlbilExpns,
-                        item.telExpnsitem,
-                        item.taxExpnsitem,
-                        item.goodsLossExpnsitem,
-                        item.othrExpns1item,
-                        item.othrExpns2item,
-                        item.totBusNetIncomeitem,
-                        item.fmlyTotIncomeitem,
-                        item.fmlyTotExpenseitem,
-                        item.foodExpnsitem, //71
-                        item.houseMngtExpnsitem,
+                        item.telExpns,
+                        item.taxExpns,
+                        item.goodsLossExpns,
+                        item.othrExpns1,
+                        item.othrExpns2,
+                        item.totBusNetIncome,
+                        item.fmlyTotIncome,
+                        item.fmlyTotExpense,
+                        item.foodExpns, //71
+                        item.houseMngtExpns,
                         item.utlbilExpns,
-                        item.edctExpnsitem,
-                        item.healthyExpnsitem,
-                        item.fmlyTaxExpnsitem,
-                        item.fmlyTrnsrtExpnsitem,
-                        item.financeExpnsitem,
-                        item.fmlyOtrExpnsitem,
-                        item.fmlyTotNetIncomeitem,
+                        item.edctExpns,
+                        item.healthyExpns,
+                        item.fmlyTaxExpn,
+                        item.fmlyTrnsrtExpns,
+                        item.financeExpns,
+                        item.fmlyOtrExpn,
+                        item.fmlyTotNetIncome,
                         item.tabletSyncStsitem, //81
                         item.syncStsitem,
                         item.nrcStateCode,
                         item.nrcPrefixCode,
                         item.nrcNo,
-                        null,
+                        item.currResidentDate,
                         item.workplaceDate,
                         null,
                         null,
@@ -715,17 +715,24 @@ export async function UploadCustomerData(customer_data) {
         indexOfSlash + 1,
       );
       customer_data[i].nrc_state_code = state_code;
-      let addressTypeValue;
+      customer_data[i].prop_house_yn = customer_data[i].prop_house_yn == 1 ? 'Y' : ''
+      customer_data[i].prop_motorcycle_yn = customer_data[i].prop_motorcycle_yn == 1 ? 'Y' : ''
+      customer_data[i].prop_apartment_yn = customer_data[i].prop_apartment_yn == 1 ? 'Y' : ''
+      customer_data[i].prop_machines_yn = customer_data[i].prop_machines_yn == 1 ? 'Y' : ''
+      customer_data[i].prop_car_yn = customer_data[i].prop_car_yn == 1 ? 'Y' : ''
+      customer_data[i].prop_farmland_yn = customer_data[i].prop_farmland_yn == 1 ? 'Y' : ''
 
-      if (customer_data[i].hasOwnProperty('address_type')) {
-        addressTypeValue = customer_data[i].address_type;
 
-        // Create a new property "address_Type" with the same value as "address_type"
-        customer_data[i].addressType = addressTypeValue;
 
-        // Remove the old property "address_type"
-        delete customer_data[i].address_type;
-      }
+      // if (customer_data[i].hasOwnProperty('address_type')) {
+      //   addressTypeValue = customer_data[i].address_type;
+
+      //   // Create a new property "address_Type" with the same value as "address_type"
+      //   customer_data[i].addressType = addressTypeValue;
+
+      //   // Remove the old property "address_type"
+      //   delete customer_data[i].address_type;
+      // }
       console.log('data', data);
 
       // }
@@ -741,7 +748,7 @@ export async function UploadCustomerData(customer_data) {
 
       //   },
       // };
-      // const response = await axios.request(config);
+      // // const response = await axios.request(config);
 
       // if (response.data[0].errMsg) {
       //   const error = {

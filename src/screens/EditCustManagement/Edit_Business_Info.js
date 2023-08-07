@@ -103,7 +103,7 @@ function Edit_Business_Info(props) {
                 <Field
                   name={'workplace_date'}
                   component={DatePicker}
-                  title={'Select Date'}
+                  label={'Select workplace Date'}
                   editable={update_status == true ? false : true}
                   icon={update_status == true && 'calendar'}
                 />
@@ -163,6 +163,7 @@ function Edit_Business_Info(props) {
                   <Field
                     name={'curr_workplace_date'}
                     component={DatePicker}
+                    label={'Select Business Start Date'}
                     editable={update_status == true ? false : true}
                   />
                 )}
