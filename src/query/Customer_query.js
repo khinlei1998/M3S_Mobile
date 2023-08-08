@@ -722,55 +722,42 @@ export async function UploadCustomerData(customer_data) {
       customer_data[i].prop_car_yn = customer_data[i].prop_car_yn == 1 ? 'Y' : ''
       customer_data[i].prop_farmland_yn = customer_data[i].prop_farmland_yn == 1 ? 'Y' : ''
 
-
-
-      // if (customer_data[i].hasOwnProperty('address_type')) {
-      //   addressTypeValue = customer_data[i].address_type;
-
-      //   // Create a new property "address_Type" with the same value as "address_type"
-      //   customer_data[i].addressType = addressTypeValue;
-
-      //   // Remove the old property "address_type"
-      //   delete customer_data[i].address_type;
-      // }
-      console.log('data', data);
-
       // }
 
-      // let config = {
-      //   method: 'post',
-      //   maxBodyLength: Infinity,
-      //   url: `https://${ip}:${port}/skylark-m3s/api/customers.m3s`,
-      //   data: JSON.stringify(data),
-      //   headers: {
-      //     'Content-Type': 'application/json', // Set the content type as JSON
-      //     'cache-control': 'no-cache',
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `https://${ip}:${port}/skylark-m3s/api/customers.m3s`,
+        data: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json', // Set the content type as JSON
+          'cache-control': 'no-cache',
 
-      //   },
-      // };
-      // // const response = await axios.request(config);
+        },
+      };
+      const response = await axios.request(config);
 
-      // if (response.data[0].errMsg) {
-      //   const error = {
-      //     resident_rgst_id: response.data[0].residentRgstId,
-      //     message: response.data[0].errMsg,
-      //   };
-      //   failedData.push(error);
-      // } else {
-      //   global.db.transaction(tx => {
-      //     tx.executeSql(
-      //       'UPDATE Customer set tablet_sync_sts=? where id=?',
-      //       ['01', response.data[0].id],
-      //       (txObj, resultSet) => {
-      //         console.log('Update successful');
-      //       },
-      //       (txObj, error) => {
-      //         reject(error);
-      //         console.error('Update error:', error);
-      //       },
-      //     );
-      //   });
-      // }
+      if (response.data[0].errMsg) {
+        const error = {
+          resident_rgst_id: response.data[0].residentRgstId,
+          message: response.data[0].errMsg,
+        };
+        failedData.push(error);
+      } else {
+        global.db.transaction(tx => {
+          tx.executeSql(
+            'UPDATE Customer set tablet_sync_sts=? where id=?',
+            ['01', response.data[0].id],
+            (txObj, resultSet) => {
+              console.log('Update successful');
+            },
+            (txObj, error) => {
+              reject(error);
+              console.error('Update error:', error);
+            },
+          );
+        });
+      }
     }
 
     if (failedData.length > 0) {
