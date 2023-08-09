@@ -1,5 +1,5 @@
-import {View, Text,} from 'react-native';
-import React, {useState,} from 'react';
+import { View, Text, } from 'react-native';
+import React, { useState, } from 'react';
 import {
   Field,
   reduxForm,
@@ -7,7 +7,7 @@ import {
 } from 'redux-form';
 import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import {
   gender,
@@ -17,17 +17,17 @@ import {
 } from '../../common';
 import DividerLine from '../../components/DividerLine';
 import DatePicker from '../../components/DatePicker';
-import {setCusFormInitialValues} from '../../redux/CustomerReducer';
-import {fetchAllCustomerNum} from '../../query/Customer_query';
+import { setCusFormInitialValues } from '../../redux/CustomerReducer';
+import { fetchAllCustomerNum } from '../../query/Customer_query';
 import {
   owner_ship_business,
   village_status,
   start_living_date_status,
   nrc_type,
 } from '../../common';
-import {useDispatch} from 'react-redux';
-import {style} from '../../style/Customer_Mang_style';
-import {List} from 'react-native-paper';
+import { useDispatch } from 'react-redux';
+import { style } from '../../style/Customer_Mang_style';
+import { List } from 'react-native-paper';
 function Customer_Base_Info(props) {
   const {
     show_businessdate,
@@ -47,10 +47,10 @@ function Customer_Base_Info(props) {
   const [modal_city_visible, setCityCodeModalVisible] = useState(false);
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
   // const numbers = Array.from({length: 60}, (_, i) => i + 1);
-  const numbers = Array.from({length: 60}, (_, i) => (i + 1).toString());
+  const numbers = Array.from({ length: 60 }, (_, i) => (i + 1).toString());
 
   const arrayWithObjects = numbers.map((num, index) => {
-    return {id: num, label: num, value: num};
+    return { id: num, label: num, value: num };
   });
 
   const handleRadioButtonChange = (value, input) => {
@@ -212,7 +212,7 @@ function Customer_Base_Info(props) {
 
           <View style={style.sub_list_container}>
             <Field
-              name={'TownshipCode'}
+              name={'ts_code'}
               title={'Township Code '}
               component={TextInputFile}
               input_mode
@@ -222,8 +222,8 @@ function Customer_Base_Info(props) {
               handleTextInputFocus={showTownshipSearch}
             />
             <Field
-              name={'VillageName'}
-              title={'Village Name '}
+              name={'ts_name'}
+              title={'Township Name '}
               component={TextInputFile}
               input_mode
               inputmax={100}
@@ -259,7 +259,7 @@ function Customer_Base_Info(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
-                // editable
+              // editable
               />
             </View>
           ) : (
@@ -445,7 +445,7 @@ export default reduxForm({
     curr_business_date_status: '1',
   },
 })(
-  connect(null, {setCusFormInitialValues, fetchAllCustomerNum})(
+  connect(null, { setCusFormInitialValues, fetchAllCustomerNum })(
     Customer_Base_Info,
   ),
 );

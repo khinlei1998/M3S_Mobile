@@ -388,12 +388,12 @@ export const city_code = [
   {
     id: 1,
     label: 'City Code',
-    value: 'city_code',
+    value: 'code_value',
   },
   {
     id: 2,
     label: 'City Name',
-    value: 'city_name',
+    value: 'code_short_desc',
   },
 ];
 export const village_code = [
@@ -413,12 +413,12 @@ export const Township_code = [
   {
     id: 1,
     label: 'Township Code',
-    value: 'township_code',
+    value: 'ts_code',
   },
   {
     id: 2,
     label: 'Township Name',
-    value: 'township_name',
+    value: 'ts_name',
   },
 ];
 

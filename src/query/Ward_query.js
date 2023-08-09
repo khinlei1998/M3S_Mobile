@@ -21,10 +21,10 @@ export function get_Ward() {
                     tx.executeSql(
                       'INSERT INTO Ward (ward_code,ward_name,ts_code,ts_name) VALUES (?,?,?,?)',
                       [
-                        item.ward_code,
-                        item.ward_name,
-                        item.ts_code,
-                        item.ts_name,
+                        item.wardCode,
+                        item.wardName,
+                        item.townshipCode,
+                        item.townshipName,
                       ],
                       (tx, results) => {
                         insertedRows += results.rowsAffected;

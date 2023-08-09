@@ -17,13 +17,14 @@ export function get_Village() {
                 for (let i = 0; i < data.length; i += batchSize) {
                   const records = data.slice(i, i + batchSize);
                   records.forEach(item => {
+                    
                     tx.executeSql(
-                      'INSERT INTO Village (ward_code,ward_name,ts_code,ts_name) VALUES (?,?,?,?)',
+                      'INSERT INTO Village (village_code,village_name,ts_code,ts_name) VALUES (?,?,?,?)',
                       [
-                        item.ward_code,
-                        item.ward_name,
-                        item.ts_code,
-                        item.ts_name,
+                        item.villageCode,
+                        item.villageName,
+                        item.townshipCode,
+                        item.townshipName,
                       ],
                       (tx, results) => {
                         insertedRows += results.rowsAffected;

@@ -33,6 +33,9 @@ import { getIndividual_loan } from '../../query/AllLoan_query';
 import { getSurvey_Item } from '../../query/SurveyItem_query';
 import { getCodeInfo } from '../../query/CodeInfo_quey';
 import { getLoanMax } from '../../query/LoanMax_query';
+import { get_Village } from '../../query/Village_query';
+import { get_Township } from '../../query/Township_query';
+import { get_Ward } from '../../query/Ward_query';
 function LoginScreen(props) {
   const dispatch = useDispatch();
   const [id, setID] = useState('');
@@ -111,8 +114,23 @@ function LoginScreen(props) {
                           if (result == 'success') {
                             getCodeInfo().then(result => {
                               if (result == 'success') {
-                                setIsLoading(false);
-                                alert('Sync success');
+                                get_Village().then(result => {
+                                  if (result == 'success') {
+                                    get_Township().then(result => {
+                                      if (result == 'success') {
+                                        get_Ward().then(result => {
+                                          if (result == 'success') {
+                                            setIsLoading(false);
+                                            alert('Sync success');
+                                          }
+
+                                        })
+                                      }
+
+                                    })
+                                  }
+                                })
+
 
                               }
                             });

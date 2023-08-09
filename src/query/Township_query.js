@@ -10,7 +10,7 @@ export function get_Township() {
       tx.executeSql('DELETE FROM Township', [], (tx, results) => {
         axios
           .get(`https://${ip}:${port}/skylark-m3s/api/townships.m3s`)
-          .then(({data}) => {
+          .then(({ data }) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -20,10 +20,10 @@ export function get_Township() {
                     tx.executeSql(
                       'INSERT INTO Township (ts_code,ts_name,city_code,city_name) VALUES (?,?,?,?)',
                       [
-                        item.ts_code,
-                        item.ts_name,
-                        item.city_code,
-                        item.city_name,
+                        item.townshipCode,
+                        item.townshipName,
+                        item.cityCode,
+                        item.cityName,
                       ],
                       (tx, results) => {
                         insertedRows += results.rowsAffected;
@@ -55,3 +55,29 @@ export function get_Township() {
     });
   });
 }
+
+export async function filterTownship(selectedColumn, searchTerm, city_code) {
+  let sql;
+  if (selectedColumn && searchTerm) {
+    sql = `SELECT * FROM Township  WHERE ${selectedColumn} LIKE '%${searchTerm}%' AND city_code = '${city_code}'`;
+  } else {
+    sql = `SELECT * FROM Township WHERE city_code = '${city_code}'`
+
+  }
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        sql,
+        [],
+        (tx, results) => {
+          console.log('tsp', results.rows.raw());
+          resolve(results.rows.raw());
+        },
+        (tx, error) => {
+          reject(error);
+        },
+      );
+    });
+  });
+}
+

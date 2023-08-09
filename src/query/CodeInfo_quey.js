@@ -70,4 +70,50 @@ export function getCodeInfo() {
     });
 }
 
+export const getCityData = async () => {
+    return new Promise((resolve, reject) => {
+        global.db.transaction(tx => {
+            tx.executeSql(
+                'SELECT * FROM Code WHERE category_id = ? ',
+                ['CITY_CODE'],
+                (tx, results) => {
+                    if (results.rows.length > 0) {
+                        const city_data = results.rows.raw();
+                        resolve(city_data);
+                    } else {
+                        reject('Invalid email or password');
+                    }
+                },
+                (tx, error) => {
+                    reject(error);
+                },
+            );
+        });
+    });
+};
+
+export async function filterCity(selectedColumn, searchTerm) {
+    let sql;
+    if (selectedColumn && searchTerm) {
+        sql = `SELECT * FROM Code  WHERE ${selectedColumn} LIKE '%${searchTerm}%'`;
+    } else {
+        sql = "SELECT * FROM Code WHERE category_id = 'CITY_CODE'";
+
+    }
+    return new Promise((resolve, reject) => {
+        global.db.transaction(tx => {
+            tx.executeSql(
+                sql,
+                [],
+                (tx, results) => {
+                    console.log('city', results.rows.raw());
+                    resolve(results.rows.raw());
+                },
+                (tx, error) => {
+                    reject(error);
+                },
+            );
+        });
+    });
+}
 
