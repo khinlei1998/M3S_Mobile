@@ -21,7 +21,7 @@ export default function Ward_Model(props) {
                     contentContainerStyle={containerStyle}>
                     <View
                         style={{ backgroundColor: '#232D57', padding: 25 }}
-                        onStartShouldSetResponder={() => hideVillageModal()}>
+                        onStartShouldSetResponder={() => hideWardModal()}>
                         <Icon
                             name="x-circle"
                             size={25}
