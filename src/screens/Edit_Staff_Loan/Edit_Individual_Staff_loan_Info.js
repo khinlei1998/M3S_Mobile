@@ -2197,6 +2197,10 @@ function Individual_Staff_loan_Info(props) {
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity
+                 onPress={() =>
+                  props.navigation.navigate('Passport', {
+                    retrive_loan_data: retrive_staff_loan_data,
+                  })}
                   style={{
                     width: 250,
                     height: 40,
