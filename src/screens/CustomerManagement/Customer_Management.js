@@ -57,6 +57,9 @@ import { filterTownship } from '../../query/Township_query';
 import City_Modal from '../../components/City_Modal';
 import Township_Modal from '../../components/Township_Modal';
 import Village_Modal from '../../components/Village_Modal';
+import { filterVillage } from '../../query/Village_query';
+import Ward_Model from '../../components/Ward_Model';
+import { filterWard } from '../../query/Ward_query';
 function Customer_Management(props) {
   const dispatch = useDispatch();
   const {
@@ -85,6 +88,8 @@ function Customer_Management(props) {
   // Villgae
   const [modal_village_visible, setVillageCodeModalVisible] = useState(false);
   const [all_village, setAllVillage] = useState([]);
+  const [selected_villagevalue, setSelectedVillageValue] = useState(null)
+
   //township
   const [modal_township_visible, setTownshipCodeModalVisible] = useState(false);
   const [all_township, setAllTownship] = useState([]);
@@ -104,6 +109,8 @@ function Customer_Management(props) {
   const [all_ward, setAllWard] = useState([]);
   const [wardselectedItemValue, setSelectedWardItemValue] =
     useState('ward_code');
+  const [selected_wardvalue, setSelectedWardValue] = useState(null)
+
 
   //location
   const [modal_location_visible, setLocationModalVisible] = useState(false);
@@ -207,19 +214,19 @@ function Customer_Management(props) {
       </View>
     );
   };
-  const ward_item = ({ item, index }) => {
+  const village_item = ({ item, index }) => {
     return (
       <View
         style={{
           flexDirection: 'row',
           borderBottomWidth: 1,
           borderBottomColor: '#ccc',
-          padding: 10,
+          padding: 15,
         }}>
         <Text
           style={{
             padding: 10,
-            flex: 1,
+            flex: 0.5,
           }}>
           {index + 1}
         </Text>
@@ -227,6 +234,54 @@ function Customer_Management(props) {
           style={{
             padding: 10,
             flex: 1,
+            marginLeft: 10
+          }}>
+          {item.village_code}
+        </Text>
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+            marginLeft: 10
+          }}>
+          {item.village_name}
+        </Text>
+
+        <View>
+          <RadioButton
+            value={item.village_code}
+            status={
+              selected_villagevalue === item.village_code
+                ? 'checked'
+                : 'unchecked'
+            }
+            onPress={() => btnSelectVillage(item)}
+          />
+        </View>
+      </View>
+    );
+  };
+  const ward_item = ({ item, index }) => {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          borderBottomWidth: 1,
+          borderBottomColor: '#ccc',
+          padding: 15,
+        }}>
+        <Text
+          style={{
+            padding: 10,
+            flex: 0.5,
+          }}>
+          {index + 1}
+        </Text>
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+            marginLeft: 10
           }}>
           {item.ward_code}
         </Text>
@@ -234,6 +289,7 @@ function Customer_Management(props) {
           style={{
             padding: 10,
             flex: 1,
+            marginLeft: 10
           }}>
           {item.ward_name}
         </Text>
@@ -244,7 +300,7 @@ function Customer_Management(props) {
             status={
               wardselectedItemValue === item.ward_code ? 'checked' : 'unchecked'
             }
-          // onPress={() => btnSelectEmployee(item)}
+            onPress={() => btnSelectWard(item)}
           />
         </View>
       </View>
@@ -421,20 +477,43 @@ function Customer_Management(props) {
 
   const btnSelectCity = item => {
     setSelectedCityValue(item.code_value);
+    setSelectedTspValue(null) //selected Township value 
+    setSelectedVillageValue(null)
     setAllTownship([])
+    setAllVillage([])
     dispatch(change('Customer_ManagementForm', 'city_code', item.code_value));
     dispatch(change('Customer_ManagementForm', 'city_name', item.code_short_desc));
     dispatch(change('Customer_ManagementForm', 'ts_code', ''));
     dispatch(change('Customer_ManagementForm', 'ts_name', ''));
+    dispatch(change('Customer_ManagementForm', 'village_code', ''));
+    dispatch(change('Customer_ManagementForm', 'village_name', ''));
 
   }
 
   const btnSelectTownship = item => {
     setSelectedTspValue(item.ts_code);
+    setSelectedVillageValue(null)
+    setAllVillage([])
     dispatch(change('Customer_ManagementForm', 'ts_code', item.ts_code));
     dispatch(change('Customer_ManagementForm', 'ts_name', item.ts_name));
+    dispatch(change('Customer_ManagementForm', 'village_code', ''));
+    dispatch(change('Customer_ManagementForm', 'village_name', ''));
 
   }
+
+  const btnSelectVillage = item => {
+    setSelectedVillageValue(item.village_code);
+    dispatch(change('Customer_ManagementForm', 'village_code', item.village_code));
+    dispatch(change('Customer_ManagementForm', 'village_name', item.village_name));
+
+  }
+  const btnSelectWard = item => {
+    setSelectedWardValue(item.ward_code);
+    dispatch(change('Customer_ManagementForm', 'ward_code', item.ward_code));
+    dispatch(change('Customer_ManagementForm', 'ward_name', item.ward_name));
+
+  }
+
 
   const item = ({ item, index }) => {
     return (
@@ -525,8 +604,6 @@ function Customer_Management(props) {
   const btnCitySearch = async () => {
     setLoading(!loading)
     await filterCity(selectedCityItemValue, city_text)
-      // .then(data => (data.length > 0 ? setAllCity(data) : alert('No data')))
-      // .catch(error => console.log('error', error));
       .then(data => {
         if (data.length > 0) {
           setAllCity(data);
@@ -535,7 +612,11 @@ function Customer_Management(props) {
           alert('No data');
         }
         setLoading(false);
-      }).catch(error => console.log('error', error));
+      }).catch(error => {
+        alert('Something Wrong')
+        setAllCity([]);
+        setLoading(false)
+      });
   };
   const btnLocationSearch = async () => {
     await filterEmp(selectedLocationItemValue, location_text)
@@ -543,9 +624,20 @@ function Customer_Management(props) {
       .catch(error => console.log('error', error));
   };
   const btnVillageSearch = async () => {
-    await filterEmp(villageselectedItemValue, village_text)
-      .then(data => (data.length > 0 ? setAllCity(data) : alert('No data')))
-      .catch(error => console.log('error', error));
+    await filterVillage(villageselectedItemValue, village_text, selected_tspvalue)
+      .then(data => {
+        if (data.length > 0) {
+          setAllVillage(data);
+        } else {
+          setAllVillage(data);
+          alert('No data');
+        }
+        setLoading(false);
+      }).catch(error => {
+        alert('Something Wrong')
+        setAllVillage([]);
+        setLoading(false)
+      });
   };
   const btnTownshipSearch = async () => {
     setLoading(!loading)
@@ -569,55 +661,22 @@ function Customer_Management(props) {
   };
 
   const btnWardSearch = async () => {
-    await filterEmp(wardselectedItemValue, ward_text)
-      .then(data => (data.length > 0 ? setAllWard(data) : alert('No data')))
-      .catch(error => console.log('error', error));
-  };
-
-  const village_item = ({ item, index }) => {
-    return (
-      <View
-        style={{
-          flexDirection: 'row',
-          borderBottomWidth: 1,
-          borderBottomColor: '#ccc',
-          padding: 10,
-        }}>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {index + 1}
-        </Text>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.village_code}
-        </Text>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.village_name}
-        </Text>
-
-        <View>
-          <RadioButton
-            value={item.city_code}
-            status={
-              villageselectedItemValue === item.city_code
-                ? 'checked'
-                : 'unchecked'
-            }
-          // onPress={() => btnSelectEmployee(item)}
-          />
-        </View>
-      </View>
-    );
+    await filterWard(wardselectedItemValue, ward_text, selected_tspvalue)
+      // .then(data => (data.length > 0 ? setAllWard(data) : alert('No data')))
+      // .catch(error => console.log('error', error));
+      .then(data => {
+        if (data.length > 0) {
+          setAllWard(data);
+        } else {
+          setAllWard(data);
+          alert('No data');
+        }
+        setLoading(false);
+      }).catch(error => {
+        alert('Something Wrong')
+        setAllWard([]);
+        setLoading(false)
+      });
   };
 
   const handleStartLivingStatus = (value, input) => {
@@ -893,159 +952,27 @@ function Customer_Management(props) {
       <City_Modal modal_city_visible={modal_city_visible}
         hideCityModal={hideCityModal} selectedItemValue={selectedItemValue} handleCityItemValueChange={handleCityItemValueChange}
         selected_cityvalue={selected_cityvalue} btnCitySearch={btnCitySearch} city_text={city_text} onChangeCityText={onChangeCityText}
-        loading={loading} all_city={all_city} city_items={city_item} />
+        loading={loading} all_city={all_city} city_items={city_item} selectedCityItemValue={selectedCityItemValue} />
 
       <Township_Modal all_township={all_township} loading={loading} btnTownshipSearch={btnTownshipSearch}
         onChangeTownshipText={onChangeTownshipText} township_text={township_text} hideTownshipModal={hideTownshipModal}
         modal_township_visible={modal_township_visible} townshipselectedItemValue={townshipselectedItemValue}
-        handleItemValueChange={handleItemValueChange} township_item={township_item}
-         handleTownshipItemValueChange={handleTownshipItemValueChange} />
+        township_item={township_item}
+        handleTownshipItemValueChange={handleTownshipItemValueChange} />
 
       <Village_Modal village_item={village_item} btnVillageSearch={btnVillageSearch}
         onChangeVillageText={onChangeVillageText} village_text={village_text} modal_village_visible={modal_village_visible}
         hideVillageModal={hideVillageModal}
         villageselectedItemValue={villageselectedItemValue}
-        handleItemValueChange={handleItemValueChange} />
+        all_village={all_village} setVillageSelectedValue={setVillageSelectedValue} />
 
+      <Ward_Model all_ward={all_ward} ward_item={ward_item} btnWardSearch={btnWardSearch}
+        ward_text={ward_text} onChangeWardText={onChangeWardText} modal_ward_visible={modal_ward_visible} hideWardModal={hideWardModal}
+        wardselectedItemValue={wardselectedItemValue}
+        handleItemValueChange={handleItemValueChange}
+        setSelectedWardItemValue={setSelectedWardItemValue}
+        loading={loading} />
 
-      <Provider>
-        <Portal>
-          <Modal
-            dismissable={false}
-            visible={modal_ward_visible}
-            onDismiss={hideWardModal}
-            contentContainerStyle={containerStyle}>
-            <View
-              style={{ backgroundColor: '#232D57', padding: 25 }}
-              onStartShouldSetResponder={() => hideWardModal()}>
-              <Icon
-                name="x-circle"
-                size={25}
-                color="#fff"
-                style={{
-                  marginLeft: 20,
-                  position: 'absolute',
-                  top: 0,
-                  right: 10,
-                  top: 10,
-                }}
-              />
-            </View>
-            <View style={{ padding: 10, height: 550 }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
-
-                  <Picker
-                    selectedValue={wardselectedItemValue}
-                    onValueChange={handleItemValueChange}
-                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
-                    mode="dropdown">
-                    {ward_code.length > 0 &&
-                      ward_code.map(val => (
-                        <Picker.Item
-                          label={val.label}
-                          value={val.value}
-                          key={val.id}
-                        />
-                      ))}
-                  </Picker>
-                </View>
-
-                <View style={{ width: '50%' }}>
-                  <TextInput
-                    style={{
-                      backgroundColor: '#fff',
-                      marginTop: 10,
-                      width: 301,
-                      borderColor: '#303030',
-                      borderWidth: 0.5,
-                    }}
-                    value={ward_text}
-                    onChangeText={onChangeWardText}
-                    right={
-                      <TextInput.Icon
-                        icon={'magnify'}
-                        onPress={() => btnWardSearch()}
-                      />
-                    }
-                  />
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  backgroundColor: '#fff',
-                  borderRadius: 5,
-                  padding: 5,
-                  margin: 20,
-                }}>
-                <Text
-                  style={{
-                    padding: 10,
-                    flex: 1,
-                    fontWeight: 'bold',
-                  }}>
-                  #
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-
-                    padding: 10,
-                    fontWeight: 'bold',
-                  }}>
-                  Ward Code
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-
-                    padding: 10,
-                    fontWeight: 'bold',
-                  }}>
-                  Ward Name
-                </Text>
-              </View>
-              <View>
-                <FlatList
-                  data={all_ward}
-                  renderItem={ward_item}
-                  keyExtractor={(item, index) => index.toString()}
-                />
-              </View>
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  position: 'absolute',
-                  bottom: 0,
-                  marginBottom: 10,
-                  alignSelf: 'center',
-                }}>
-                <Button
-                  onPress={() => hideWardModal()}
-                  mode="contained"
-                  buttonColor={'#6870C3'}
-                  style={{
-                    borderRadius: 0,
-                    width: 100,
-                    marginTop: 10,
-                    color: 'black',
-                    marginLeft: 5,
-                  }}>
-                  OK
-                </Button>
-              </View>
-            </View>
-          </Modal>
-        </Portal>
-      </Provider>
 
       {/* location */}
 

@@ -10,14 +10,14 @@ export function get_Village() {
       tx.executeSql('DELETE FROM Village', [], (tx, results) => {
         axios
           .get(`https://${ip}:${port}/skylark-m3s/api/villages.m3s`)
-          .then(({data}) => {
+          .then(({ data }) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
                 for (let i = 0; i < data.length; i += batchSize) {
                   const records = data.slice(i, i + batchSize);
                   records.forEach(item => {
-                    
+
                     tx.executeSql(
                       'INSERT INTO Village (village_code,village_name,ts_code,ts_name) VALUES (?,?,?,?)',
                       [
@@ -53,6 +53,31 @@ export function get_Village() {
             reject(error);
           });
       });
+    });
+  });
+}
+
+export async function filterVillage(selectedColumn, searchTerm, ts_code) {
+  console.log('ts_code',ts_code);
+  let sql;
+  if (selectedColumn && searchTerm) {
+    sql = `SELECT * FROM Village  WHERE ${selectedColumn} LIKE '%${searchTerm}%' AND ts_code = '${ts_code}'`;
+  } else {
+    sql = `SELECT * FROM Village WHERE ts_code = '${ts_code}'`
+
+  }
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        sql,
+        [],
+        (tx, results) => {
+          resolve(results.rows.raw());
+        },
+        (tx, error) => {
+          reject(error);
+        },
+      );
     });
   });
 }

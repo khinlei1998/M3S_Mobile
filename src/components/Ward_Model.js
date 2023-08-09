@@ -3,21 +3,21 @@ import React from 'react'
 import { Provider, Portal, Modal, TextInput, Button } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/Feather';
 import { Picker } from '@react-native-picker/picker';
-import { village_code } from '../common';
-export default function Village_Modal(props) {
-    const { setVillageSelectedValue,loading,all_village, village_item, btnVillageSearch, onChangeVillageText, village_text, modal_village_visible, hideVillageModal, villageselectedItemValue, } = props
+import { ward_code } from '../common';
+export default function Ward_Model(props) {
     const containerStyle = {
         backgroundColor: '#e8e8e8',
         width: '85%',
         alignSelf: 'center',
     };
+    const {loading, setSelectedWardItemValue,all_ward, ward_item, btnWardSearch, ward_text, onChangeWardText, modal_ward_visible, hideWardModal, wardselectedItemValue, handleItemValueChange } = props
     return (
         <Provider>
             <Portal>
                 <Modal
                     dismissable={false}
-                    visible={modal_village_visible}
-                    onDismiss={hideVillageModal}
+                    visible={modal_ward_visible}
+                    onDismiss={hideWardModal}
                     contentContainerStyle={containerStyle}>
                     <View
                         style={{ backgroundColor: '#232D57', padding: 25 }}
@@ -47,12 +47,12 @@ export default function Village_Modal(props) {
                                 </Text>
 
                                 <Picker
-                                    selectedValue={villageselectedItemValue}
-                                    onValueChange={setVillageSelectedValue}
+                                    selectedValue={wardselectedItemValue}
+                                    onValueChange={setSelectedWardItemValue}
                                     style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
                                     mode="dropdown">
-                                    {village_code.length > 0 &&
-                                        village_code.map(val => (
+                                    {ward_code.length > 0 &&
+                                        ward_code.map(val => (
                                             <Picker.Item
                                                 label={val.label}
                                                 value={val.value}
@@ -71,12 +71,12 @@ export default function Village_Modal(props) {
                                         borderColor: '#303030',
                                         borderWidth: 0.5,
                                     }}
-                                    value={village_text}
-                                    onChangeText={onChangeVillageText}
+                                    value={ward_text}
+                                    onChangeText={onChangeWardText}
                                     right={
                                         <TextInput.Icon
                                             icon={'magnify'}
-                                            onPress={() => btnVillageSearch()}
+                                            onPress={() => btnWardSearch()}
                                         />
                                     }
                                 />
@@ -105,7 +105,7 @@ export default function Village_Modal(props) {
                                     padding: 10,
                                     fontWeight: 'bold',
                                 }}>
-                                City Code
+                                Ward Code
                             </Text>
                             <Text
                                 style={{
@@ -114,7 +114,7 @@ export default function Village_Modal(props) {
                                     padding: 10,
                                     fontWeight: 'bold',
                                 }}>
-                                City Name
+                                Ward Name
                             </Text>
 
                         </View>
@@ -123,15 +123,15 @@ export default function Village_Modal(props) {
                         ) : (
                             <>
                                 <FlatList
-                                    data={all_village}
-                                    renderItem={village_item}
+                                    data={all_ward}
+                                    renderItem={ward_item}
                                     keyExtractor={(item, index) => index.toString()}
                                 />
 
 
                                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                                     <Button
-                                        onPress={() => hideVillageModal()}
+                                        onPress={() => hideWardModal()}
                                         mode="contained"
                                         buttonColor={'#6870C3'}
                                         style={{
@@ -150,6 +150,5 @@ export default function Village_Modal(props) {
                 </Modal>
             </Portal>
         </Provider>
-
     )
 }

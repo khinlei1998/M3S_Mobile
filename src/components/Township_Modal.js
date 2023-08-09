@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import { Picker } from '@react-native-picker/picker';
 import { Township_code } from '../common';
 export default function Township_Modal(props) {
-    const {handleTownshipItemValueChange,all_township,loading, btnTownshipSearch, onChangeTownshipText, township_text, hideTownshipModal, modal_township_visible, townshipselectedItemValue, handleItemValueChange,township_item } = props
+    const {handleTownshipItemValueChange,all_township,loading, btnTownshipSearch, onChangeTownshipText, township_text, hideTownshipModal, modal_township_visible, townshipselectedItemValue,township_item } = props
 
    
     const containerStyle = {

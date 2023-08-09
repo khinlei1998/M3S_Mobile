@@ -15,8 +15,10 @@ export default function City_Modal(props) {
         alignSelf: 'center',
     };
 
-    const { selected_cityvalue, btnCitySearch, all_city, modal_city_visible,
+    const { selectedCityItemValue,selected_cityvalue, btnCitySearch, all_city, modal_city_visible,
         hideCityModal, selectedItemValue, handleCityItemValueChange, city_text, onChangeCityText, loading, city_items } = props
+
+        console.log('handleCityItemValueChange',handleCityItemValueChange);
     return (
         <Provider>
             <Portal>
@@ -53,7 +55,7 @@ export default function City_Modal(props) {
                                 </Text>
 
                                 <Picker
-                                    selectedValue={selectedItemValue}
+                                    selectedValue={selectedCityItemValue}
                                     onValueChange={handleCityItemValueChange}
                                     style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
                                     mode="dropdown">

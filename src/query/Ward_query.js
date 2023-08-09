@@ -56,3 +56,27 @@ export function get_Ward() {
     });
   });
 }
+
+export async function filterWard(selectedColumn, searchTerm, ts_code) {
+  let sql;
+  if (selectedColumn && searchTerm) {
+    sql = `SELECT * FROM Ward  WHERE ${selectedColumn} LIKE '%${searchTerm}%' AND ts_code = '${ts_code}'`;
+  } else {
+    sql = `SELECT * FROM Ward WHERE ts_code = '${ts_code}'`
+
+  }
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        sql,
+        [],
+        (tx, results) => {
+          resolve(results.rows.raw());
+        },
+        (tx, error) => {
+          reject(error);
+        },
+      );
+    });
+  });
+}

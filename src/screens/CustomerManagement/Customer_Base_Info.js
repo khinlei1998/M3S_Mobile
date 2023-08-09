@@ -58,6 +58,7 @@ function Customer_Base_Info(props) {
     input.onChange(value.id);
     if (value.id == '2') {
       dispatch(change('Customer_ManagementForm', 'village_code', ''));
+      dispatch(change('Customer_ManagementForm', 'village_name', ''));
     }
   };
 
@@ -92,17 +93,17 @@ function Customer_Base_Info(props) {
               data={nrc_type}
               name={'nrc_type'}
               component={RadioButtonFile}
-              get_value={1}
               ShowRadioBtnChange={(value, input) =>
                 handleNRCChange(value, input)
               }
+              get_value={'1'}
             />
           </View>
 
           <View style={style.sub_list_container}>
             {show_nrc == '1' ? (
               <Field
-                name={'nrcNo'}
+                name={'nrcNo'} //resident_rgst_id
                 title={'NRC'}
                 inputmax={6}
                 component={TextInputFile}
@@ -238,6 +239,8 @@ function Customer_Base_Info(props) {
               ShowRadioBtnChange={(value, input) =>
                 handleRadioButtonChange(value, input)
               }
+              get_value={'1'}
+             
             />
           </View>
 
