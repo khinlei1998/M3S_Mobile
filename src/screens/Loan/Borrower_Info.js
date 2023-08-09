@@ -17,7 +17,6 @@ import DropDownPicker from '../../components/DropDownPicker';
 import DatePicker from '../../components/DatePicker';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import {useDispatch} from 'react-redux';
-import CustomTextInput from '../../components/CustomTextInput';
 function Borrower_Info(props) {
   const {
     showLocationSearch,
@@ -39,12 +38,12 @@ function Borrower_Info(props) {
     setVillage(value.id);
     input.onChange(value.id);
     if (value.id == '2') {
+      dispatch(change('Individual_Loan_Form', 'village_name', ''));
       dispatch(change('Individual_Loan_Form', 'village_code', ''));
+    } else {
+      dispatch(change('Individual_Loan_Form', 'ward_code', ''));
+      dispatch(change('Individual_Loan_Form', 'ward_name', ''));
     }
-    // Dispatch action to clear the field value
-    // dispatch(
-    //   change('myForm', 'fieldName', radioValue === 'clear' ? '' : radioValue),
-    // );
   };
 
   return (
@@ -60,6 +59,7 @@ function Borrower_Info(props) {
             data={borrower_type}
             name={'cst_new_exist_flg'}
             component={RadioButtonFile}
+            get_value={'N'}
           />
           <View style={style.sub_list_container}>
             <Field
@@ -70,7 +70,7 @@ function Borrower_Info(props) {
               input_mode
               editable
             />
-            {p_type == 30||p_type == 40 ||p_type == 50? (
+            {p_type == 30 || p_type == 40 || p_type == 50 ? (
               <Field
                 name={'group_aplc_no'}
                 title={'Groupaplic No'}
@@ -192,7 +192,7 @@ function Borrower_Info(props) {
           </View>
           <View style={style.sub_list_container}>
             <Field
-              name={'TownshipCode'}
+              name={'ts_code'}
               title={'Township Code '}
               component={TextInputFile}
               input_mode
@@ -202,8 +202,8 @@ function Borrower_Info(props) {
               handleTextInputFocus={showTownshipSearch}
             />
             <Field
-              name={'VillageName'}
-              title={'Village Name '}
+              name={'ts_name'}
+              title={'Township Name '}
               component={TextInputFile}
               input_mode
               inputmax={100}
@@ -219,6 +219,7 @@ function Borrower_Info(props) {
               ShowRadioBtnChange={(value, input) =>
                 handleRadioButtonChange(value, input)
               }
+              get_value={'1'}
             />
           </View>
 
@@ -254,7 +255,7 @@ function Borrower_Info(props) {
                 justifyContent: 'space-between',
               }}>
               <Field
-                name={'Wardcode'}
+                name={'ward_code'}
                 title={'Ward Code '}
                 component={TextInputFile}
                 input_mode
@@ -264,7 +265,7 @@ function Borrower_Info(props) {
                 handleTextInputFocus={showWardSearch}
               />
               <Field
-                name={'WardName'}
+                name={'ward_name'}
                 title={'Ward Name '}
                 component={TextInputFile}
                 input_mode

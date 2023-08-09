@@ -59,6 +59,9 @@ function Customer_Base_Info(props) {
     if (value.id == '2') {
       dispatch(change('Customer_ManagementForm', 'village_code', ''));
       dispatch(change('Customer_ManagementForm', 'village_name', ''));
+    }else{
+      dispatch(change('Customer_ManagementForm', 'ward_code', ''));
+      dispatch(change('Customer_ManagementForm', 'ward_name', ''));
     }
   };
 
@@ -240,7 +243,7 @@ function Customer_Base_Info(props) {
                 handleRadioButtonChange(value, input)
               }
               get_value={'1'}
-             
+
             />
           </View>
 
@@ -268,7 +271,7 @@ function Customer_Base_Info(props) {
           ) : (
             <View style={style.sub_list_container}>
               <Field
-                name={'Wardcode'}
+                name={'ward_code'}
                 title={'Ward Code '}
                 component={TextInputFile}
                 input_mode
@@ -278,7 +281,7 @@ function Customer_Base_Info(props) {
                 handleTextInputFocus={showWardSearch}
               />
               <Field
-                name={'WardName'}
+                name={'ward_name'}
                 title={'Ward Name '}
                 component={TextInputFile}
                 input_mode

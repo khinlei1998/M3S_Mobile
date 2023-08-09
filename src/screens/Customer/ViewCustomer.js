@@ -50,7 +50,7 @@ import {Field, reduxForm, reset, change} from 'redux-form';
               padding: 10,
               flex: 1,
             }}>
-            {item.nrc_no == null ? 'No Data' : item.nrc_no}
+            {item.resident_rgst_id }
           </Text>
 
           <Text
@@ -61,13 +61,7 @@ import {Field, reduxForm, reset, change} from 'redux-form';
             {item.tel_no == null ? 'No Data' : item.tel_no}
           </Text>
 
-          <Text
-            style={{
-              padding: 10,
-              flex: 1,
-            }}>
-            {item.mobile_tel_no == null ? 'NO Data' : item.mobile_tel_no}
-          </Text>
+
         </View>
       </TouchableOpacity>
     );
@@ -129,17 +123,9 @@ import {Field, reduxForm, reset, change} from 'redux-form';
           Phone Number
         </Text>
 
-        <Text
-          style={{
-            flex: 1,
 
-            padding: 10,
-            fontWeight: 'bold',
-          }}>
-          Mobile Phone Number
-        </Text>
       </View>
-    
+
        {loading ? ( // Show ActivityIndicator while loading is true
         <ActivityIndicator size="large" color="#636Dc6" />
       ) : ( // Show FlatList once loading is false and data is available

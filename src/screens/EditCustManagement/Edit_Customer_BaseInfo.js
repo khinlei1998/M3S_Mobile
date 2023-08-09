@@ -223,7 +223,7 @@ function Edit_Customer_BaseInfo(props) {
 
           <View style={style.sub_list_container}>
             <Field
-              name={'township_code'}
+              name={'ts_code'}
               title={'Township Code '}
               component={TextInputFile}
               input_mode
@@ -234,7 +234,7 @@ function Edit_Customer_BaseInfo(props) {
               handleTextInputFocus={showTownshipSearch}
             />
             <Field
-              name={'township_name'}
+              name={'ts_name'}
               title={'Township Name '}
               component={TextInputFile}
               input_mode

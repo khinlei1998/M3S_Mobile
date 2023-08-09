@@ -17,7 +17,11 @@ import DatePicker from '../../components/DatePicker';
 import DropDownPicker from '../../components/DropDownPicker';
 import {Button} from 'react-native-paper';
 import {connect} from 'react-redux';
+import { useDispatch } from 'react-redux';
+
 export default function Individual_staff_Emp_loan(props) {
+  const dispatch = useDispatch();
+
   const {
     showCustomerSearch,
     showLocationSearch,
@@ -64,6 +68,7 @@ export default function Individual_staff_Emp_loan(props) {
             data={borrower_type}
             name={'cst_new_exist_flg'}
             component={RadioButtonFile}
+            get_value={'N'}
           />
 
           <View style={style.sub_list_container}>
@@ -235,7 +240,7 @@ export default function Individual_staff_Emp_loan(props) {
           </View>
           <View style={style.sub_list_container}>
             <Field
-              name={'TownshipCode'}
+              name={'ts_code'}
               title={'Township Code '}
               component={TextInputFile}
               input_mode
@@ -245,7 +250,7 @@ export default function Individual_staff_Emp_loan(props) {
               handleTextInputFocus={showTownshipSearch}
             />
             <Field
-              name={'TownshipName'}
+              name={'ts_name'}
               title={'Township Name '}
               component={TextInputFile}
               input_mode
@@ -262,6 +267,7 @@ export default function Individual_staff_Emp_loan(props) {
               ShowRadioBtnChange={(value, input) =>
                 handleRadioButtonChange(value, input)
               }
+              get_value={'1'}
             />
           </View>
 
@@ -297,7 +303,7 @@ export default function Individual_staff_Emp_loan(props) {
                 justifyContent: 'space-between',
               }}>
               <Field
-                name={'Wardcode'}
+                name={'ward_code'}
                 title={'Ward Code '}
                 component={TextInputFile}
                 input_mode
@@ -307,7 +313,7 @@ export default function Individual_staff_Emp_loan(props) {
                 handleTextInputFocus={showWardSearch}
               />
               <Field
-                name={'WardName'}
+                name={'ward_name'}
                 title={'Ward Name '}
                 component={TextInputFile}
                 input_mode
@@ -351,7 +357,7 @@ export default function Individual_staff_Emp_loan(props) {
               input_mode
               inputmax={100}
               keyboardType={'numeric'}
-            
+
             />
           </View>
 
@@ -392,7 +398,7 @@ export default function Individual_staff_Emp_loan(props) {
             </Text>
           </View>
 
-        
+
         </View>
       </List.Accordion>
     </>

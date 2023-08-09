@@ -182,7 +182,7 @@ function Borrower_Info(props) {
           </View>
           <View style={style.sub_list_container}>
             <Field
-              name={'TownshipCode'}
+              name={'ts_code'}
               title={'Township Code '}
               component={TextInputFile}
               input_mode
@@ -192,8 +192,8 @@ function Borrower_Info(props) {
               handleTextInputFocus={showTownshipSearch}
             />
             <Field
-              name={'VillageName'}
-              title={'Village Name '}
+              name={'ts_name'}
+              title={'Township Name '}
               component={TextInputFile}
               input_mode
               inputmax={100}
@@ -202,7 +202,7 @@ function Borrower_Info(props) {
           </View>
 
           <View style={style.sub_list_container}>
-            <Field 
+            <Field
               data={village_status}
               name={'village_status'}
               disabled={update_status == true ? false : true}
@@ -243,7 +243,7 @@ function Borrower_Info(props) {
               justifyContent: 'space-between',
             }}>
               <Field
-                name={'Wardcode'}
+                name={'ward_code'}
                 title={'Ward Code '}
                 component={TextInputFile}
                 input_mode
@@ -254,7 +254,7 @@ function Borrower_Info(props) {
 
               />
               <Field
-                name={'WardName'}
+                name={'ward_name'}
                 title={'Ward Name '}
                 component={TextInputFile}
                 input_mode

@@ -6,9 +6,9 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { Field, reduxForm, change, reset, formValueSelector } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {Field, reduxForm, change, reset, formValueSelector} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
 import {
   RadioButton,
   Button,
@@ -22,28 +22,24 @@ import DividerLine from '../../components/DividerLine';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
-import { fetchNRCinfo } from '../../query/NRCinfo_query';
-import {
-  salary_grade,
-  city_code,
-  Township_code,
-  ward_code,
-  location_code,
-} from '../../common';
-import { style } from '../../style/Customer_Mang_style';
-import { setCusFormInitialValues } from '../../redux/CustomerReducer';
-import { emp_filter_item, village_code } from '../../common';
-import { Picker } from '@react-native-picker/picker';
-import { filterEmp } from '../../query/Employee_query';
-import { addEmpFilter } from '../../redux/EmployeeReducer';
-import { operations } from '../../common';
-import { setUpdateStatus } from '../../redux/CustomerReducer';
+import {fetchNRCinfo} from '../../query/NRCinfo_query';
+import {salary_grade} from '../../common';
+import {style} from '../../style/Customer_Mang_style';
+import {setCusFormInitialValues} from '../../redux/CustomerReducer';
+import {emp_filter_item, village_code} from '../../common';
+import {Picker} from '@react-native-picker/picker';
+import {filterEmp} from '../../query/Employee_query';
+import {addEmpFilter} from '../../redux/EmployeeReducer';
+import {operations} from '../../common';
+import {setUpdateStatus} from '../../redux/CustomerReducer';
 import Edit_Customer_BaseInfo from './Edit_Customer_BaseInfo';
 import Edit_property_Info from './Edit_Property_Info';
 import Edit_Business_Info from './Edit_Business_Info';
 import Edit_Monthly_Income from './Edit_Monthly_Income';
-import { deleteCustomer_ByID } from '../../query/Customer_query';
+import {deleteCustomer_ByID} from '../../query/Customer_query';
 import Edit_NRC_Modal from './Edit_NRC_Modal';
+import City_Modal from '../../components/City_Modal';
+import {filterCity} from '../../query/CodeInfo_quey';
 import {
   totalIncome,
   totalFamilyIncome,
@@ -52,13 +48,20 @@ import {
   totalFamilyExpense,
   updateTotalSum,
 } from '../../redux/MonthlyReducer';
-import { updateCustomerData } from '../../query/Customer_query';
-import { checkDataExists } from '../../query/Customer_query';
+import {updateCustomerData} from '../../query/Customer_query';
+import {checkDataExists} from '../../query/Customer_query';
 import DatePicker from '../../components/DatePicker';
+import Village_Modal from '../../components/Village_Modal';
+import Township_Modal from '../../components/Township_Modal';
+import Ward_Model from '../../components/Ward_Model';
 import validate from './validate';
+import Location_Modal from '../../components/Location_Modal';
+import {filterTownship} from '../../query/Township_query';
+import {filterLocation} from '../../query/CodeInfo_quey';
+import {filterWard} from '../../query/Ward_query';
+import {filterVillage} from '../../query/Village_query';
 function Edit_Emp_Info(props) {
   const dispatch = useDispatch();
-
   const {
     handleSubmit,
     setUpdateStatus,
@@ -66,7 +69,6 @@ function Edit_Emp_Info(props) {
     emp_filter_data,
     totalIncome,
     totalFamilyIncome,
-    totalNetFamily,
     totalExpense,
     totalFamilyExpense,
     updateTotalSum,
@@ -74,50 +76,54 @@ function Edit_Emp_Info(props) {
     nrc_prefix_code,
   } = props;
   const [all_emp, setAllEmp] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [show_businessdate, setBusiness] = useState('1');
   const [show_village, setVillage] = useState('1');
   const [show_business_date, setBusinessStartDate] = useState('1');
-  const [modal_location_visible, setLocationModalVisible] = useState(false);
-
-  const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
-  const [villageselectedItemValue, setVillageSelectedValue] =
-    useState('village_code');
   const [selectedValue, setSelectedValue] = useState(null);
   const [nrc_visible, setNRC_Visible] = useState(false);
   const [open_empinfo, setEmpInfo] = useState(true);
   const [show_nrc, setNRC] = useState('1');
   const [show_operation, setOperation] = useState('2');
   const [nrc_statecode, setNRCStateCode] = useState([]);
-  const [all_location, setAllLocation] = useState([]);
   const [empname, setEmpName] = useState('');
-  const [modal_city_visible, setCityCodeModalVisible] = useState(false);
+  const [show_businessdate_per, setBusinessPer] = useState('1');
+  const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
+
   // Villgae
   const [modal_village_visible, setVillageCodeModalVisible] = useState(false);
   const [all_village, setAllVillage] = useState([]);
+  const [selected_villagevalue, setSelectedVillageValue] = useState(null);
+  const [villageselectedItemValue, setVillageSelectedValue] =
+    useState('village_code');
+
   //township
   const [modal_township_visible, setTownshipCodeModalVisible] = useState(false);
   const [all_township, setAllTownship] = useState([]);
   const [townshipselectedItemValue, setSelectedTownshipItemValue] =
-    useState('township_code');
-
+    useState('ts_code');
+  const [selected_tspvalue, setSelectedTspValue] = useState(null);
+  //city
+  const [selected_cityvalue, setSelectedCityValue] = useState(null);
+  const [modal_city_visible, setCityCodeModalVisible] = useState(false);
   const [selectedCityItemValue, setSelectedCityItemValue] =
-    useState('city_code');
+    useState('code_value');
   const [all_city, setAllCity] = useState([]);
 
   //Ward
   const [modal_ward_visible, setWardCodeModalVisible] = useState(false);
   const [all_ward, setAllWard] = useState([]);
-  const [show_businessdate_per, setBusinessPer] = useState('1');
-
   const [wardselectedItemValue, setSelectedWardItemValue] =
     useState('ward_code');
+  const [selected_wardvalue, setSelectedWardValue] = useState(null);
 
+  //location
+  const [modal_location_visible, setLocationModalVisible] = useState(false);
   const [selectedLocationItemValue, setLocationSelectedItemValue] =
-    useState('location_code');
-  const handleLocationItemValueChange = itemValue => {
-    setLocationSelectedItemValue(itemValue);
-  };
+    useState('code_value');
+  const [selected_locationvalue, setSelectedLocationValue] = useState(null);
+  const [all_location, setAllLocation] = useState([]);
 
   const [emp_text, setEmpText] = useState('');
   const [village_text, setVillageText] = useState('');
@@ -150,6 +156,9 @@ function Edit_Emp_Info(props) {
 
   const onChangeEmpText = textvalues => {
     setEmpText(textvalues);
+  };
+  const handleCityItemValueChange = itemValue => {
+    setSelectedCityItemValue(itemValue);
   };
   const onChangeVillageText = textvalues => {
     setVillageText(textvalues);
@@ -186,10 +195,6 @@ function Edit_Emp_Info(props) {
     if (filtered_cus_data.curr_business_date_status == '2') {
       setBusinessStartDate('2');
     }
-    // if (filtered_cus_data.curr_workplace_date) {
-    //   setBusinessStartDate('2');
-    // }
-
 
     const retrive_cusdata = Object.assign({}, filtered_cus_data, {
       hghschl_num: filtered_cus_data.hghschl_num
@@ -322,21 +327,41 @@ function Edit_Emp_Info(props) {
     updateTotalSum(
       filtered_cus_data.total_net ? parseFloat(filtered_cus_data.total_net) : 0,
     );
+    setSelectedCityValue(filtered_cus_data.city_code);
+    setSelectedTspValue(filtered_cus_data.ts_code);
   }, []);
 
-  const city_item = ({ item, index }) => {
+  const btnSelectCity = item => {
+    setSelectedCityValue(item.code_value);
+    setSelectedTspValue(null); //selected Township value
+    setSelectedVillageValue(null);
+    setAllTownship([]);
+    setAllVillage([]);
+    dispatch(change('Customer_ManagementForm', 'city_code', item.code_value));
+    dispatch(
+      change('Customer_ManagementForm', 'city_name', item.code_short_desc),
+    );
+    dispatch(change('Customer_ManagementForm', 'ts_code', ''));
+    dispatch(change('Customer_ManagementForm', 'ts_name', ''));
+    dispatch(change('Customer_ManagementForm', 'village_code', ''));
+    dispatch(change('Customer_ManagementForm', 'village_name', ''));
+    dispatch(change('Customer_ManagementForm', 'ward_code', ''));
+    dispatch(change('Customer_ManagementForm', 'ward_name', ''));
+  };
+
+  const city_item = ({item, index}) => {
     return (
       <View
         style={{
           flexDirection: 'row',
           borderBottomWidth: 1,
           borderBottomColor: '#ccc',
-          padding: 10,
+          padding: 15,
         }}>
         <Text
           style={{
             padding: 10,
-            flex: 1,
+            flex: 0.5,
           }}>
           {index + 1}
         </Text>
@@ -344,42 +369,44 @@ function Edit_Emp_Info(props) {
           style={{
             padding: 10,
             flex: 1,
+            marginLeft: 10,
           }}>
-          {item.city_code}
+          {item.code_value}
         </Text>
         <Text
           style={{
-            padding: 10,
+            padding: 8,
             flex: 1,
+            marginLeft: 10,
           }}>
-          {item.city_name}
+          {item.code_short_desc}
         </Text>
 
         <View>
           <RadioButton
             value={item.city_code}
             status={
-              selectedCityItemValue === item.city_code ? 'checked' : 'unchecked'
+              selected_cityvalue === item.code_value ? 'checked' : 'unchecked'
             }
-          // onPress={() => btnSelectEmployee(item)}
+            onPress={() => btnSelectCity(item)}
           />
         </View>
       </View>
     );
   };
-  const ward_item = ({ item, index }) => {
+  const ward_item = ({item, index}) => {
     return (
       <View
         style={{
           flexDirection: 'row',
           borderBottomWidth: 1,
           borderBottomColor: '#ccc',
-          padding: 10,
+          padding: 15,
         }}>
         <Text
           style={{
             padding: 10,
-            flex: 1,
+            flex: 0.5,
           }}>
           {index + 1}
         </Text>
@@ -387,6 +414,7 @@ function Edit_Emp_Info(props) {
           style={{
             padding: 10,
             flex: 1,
+            marginLeft: 10,
           }}>
           {item.ward_code}
         </Text>
@@ -394,6 +422,7 @@ function Edit_Emp_Info(props) {
           style={{
             padding: 10,
             flex: 1,
+            marginLeft: 10,
           }}>
           {item.ward_name}
         </Text>
@@ -402,16 +431,61 @@ function Edit_Emp_Info(props) {
           <RadioButton
             value={item.ward_code}
             status={
-              wardselectedItemValue === item.ward_code ? 'checked' : 'unchecked'
+              selected_wardvalue === item.ward_code ? 'checked' : 'unchecked'
             }
-          // onPress={() => btnSelectEmployee(item)}
+            onPress={() => btnSelectWard(item)}
           />
         </View>
       </View>
     );
   };
 
-  const township_item = ({ item, index }) => {
+  const township_item = ({item, index}) => {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          borderBottomWidth: 1,
+          borderBottomColor: '#ccc',
+          padding: 15,
+        }}>
+        <Text
+          style={{
+            padding: 10,
+            flex: 0.5,
+          }}>
+          {index + 1}
+        </Text>
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+            marginLeft: 10,
+          }}>
+          {item.ts_code}
+        </Text>
+        <Text
+          style={{
+            padding: 10,
+            flex: 1,
+            marginLeft: 10,
+          }}>
+          {item.ts_name}
+        </Text>
+
+        <View>
+          <RadioButton
+            value={item.ts_code}
+            status={
+              selected_tspvalue === item.ts_code ? 'checked' : 'unchecked'
+            }
+            onPress={() => btnSelectTownship(item)}
+          />
+        </View>
+      </View>
+    );
+  };
+  const location_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -432,70 +506,25 @@ function Edit_Emp_Info(props) {
             padding: 10,
             flex: 1,
           }}>
-          {item.township_code}
+          {item.code_value}
         </Text>
         <Text
           style={{
             padding: 10,
             flex: 1,
           }}>
-          {item.township_name}
+          {item.code_short_desc}
         </Text>
 
         <View>
           <RadioButton
-            value={item.township_code}
+            value={item.code_value}
             status={
-              townshipselectedItemValue === item.township_code
+              selected_locationvalue === item.code_value
                 ? 'checked'
                 : 'unchecked'
             }
-          // onPress={() => btnSelectEmployee(item)}
-          />
-        </View>
-      </View>
-    );
-  };
-  const location_item = ({ item, index }) => {
-    return (
-      <View
-        style={{
-          flexDirection: 'row',
-          borderBottomWidth: 1,
-          borderBottomColor: '#ccc',
-          padding: 10,
-        }}>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {index + 1}
-        </Text>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.location_code}
-        </Text>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.location_name}
-        </Text>
-
-        <View>
-          <RadioButton
-            value={item.township_code}
-          // status={
-          //   selectedTownshipItemValue === item.township_code
-          //     ? 'checked'
-          //     : 'unchecked'
-          // }
-          // onPress={() => btnSelectEmployee(item)}
+            onPress={() => btnSelectLocation(item)}
           />
         </View>
       </View>
@@ -517,9 +546,9 @@ function Edit_Emp_Info(props) {
         'Customer_ManagementForm',
         'resident_rgst_id',
         prefix &&
-        nrc_prefix_code &&
-        nrcNo &&
-        state_code + nrc_prefix_code + nrcNo,
+          nrc_prefix_code &&
+          nrcNo &&
+          state_code + nrc_prefix_code + nrcNo,
       ),
     );
   };
@@ -571,7 +600,7 @@ function Edit_Emp_Info(props) {
     // addEmpFilter(emp_data);
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -658,40 +687,101 @@ function Edit_Emp_Info(props) {
   };
 
   const btnCitySearch = async () => {
-    await filterEmp(selectedCityItemValue, city_text)
-      .then(data => (data.length > 0 ? setAllCity(data) : alert('No data')))
-      .catch(error => console.log('error', error));
+    setLoading(!loading);
+    await filterCity(selectedCityItemValue, city_text)
+      .then(data => {
+        if (data.length > 0) {
+          setAllCity(data);
+        } else {
+          setAllCity(data);
+          alert('No data');
+        }
+        setLoading(false);
+      })
+      .catch(error => {
+        alert('Something Wrong');
+        setAllCity([]);
+        setLoading(false);
+      });
   };
   const btnVillageSearch = async () => {
-    await filterEmp(villageselectedItemValue, village_text)
-      .then(data => (data.length > 0 ? setAllCity(data) : alert('No data')))
-      .catch(error => console.log('error', error));
+    await filterVillage(
+      villageselectedItemValue,
+      village_text,
+      selected_tspvalue,
+    )
+      .then(data => {
+        if (data.length > 0) {
+          setAllVillage(data);
+        } else {
+          setAllVillage(data);
+          alert('No data');
+        }
+        setLoading(false);
+      })
+      .catch(error => {
+        alert('Something Wrong');
+        setAllVillage([]);
+        setLoading(false);
+      });
   };
   const btnTownshipSearch = async () => {
-    await filterEmp(townshipselectedItemValue, township_text)
-      .then(data => (data.length > 0 ? setAllTownship(data) : alert('No data')))
-      .catch(error => console.log('error', error));
+    setLoading(!loading);
+    await filterTownship(
+      townshipselectedItemValue,
+      township_text,
+      selected_cityvalue,
+    )
+      .then(data => {
+        if (data.length > 0) {
+          setAllTownship(data);
+        } else {
+          setAllTownship(data);
+          alert('No data');
+        }
+        setLoading(false);
+      })
+      .catch(error => {
+        alert('Something Wrong');
+        setAllTownship([]);
+        setLoading(false);
+      });
   };
 
   const btnWardSearch = async () => {
-    await filterEmp(wardselectedItemValue, ward_text)
-      .then(data => (data.length > 0 ? setAllWard(data) : alert('No data')))
-      .catch(error => console.log('error', error));
+    await filterWard(wardselectedItemValue, ward_text, selected_tspvalue)
+      .then(data => {
+        if (data.length > 0) {
+          setAllWard(data);
+        } else {
+          setAllWard(data);
+          alert('No data');
+        }
+        setLoading(false);
+      })
+      .catch(error => {
+        alert('Something Wrong');
+        setAllWard([]);
+        setLoading(false);
+      });
+  };
+  const handleTownshipItemValueChange = itemValue => {
+    setSelectedTownshipItemValue(itemValue);
   };
 
-  const village_item = ({ item, index }) => {
+  const village_item = ({item, index}) => {
     return (
       <View
         style={{
           flexDirection: 'row',
           borderBottomWidth: 1,
           borderBottomColor: '#ccc',
-          padding: 10,
+          padding: 15,
         }}>
         <Text
           style={{
             padding: 10,
-            flex: 1,
+            flex: 0.5,
           }}>
           {index + 1}
         </Text>
@@ -699,6 +789,7 @@ function Edit_Emp_Info(props) {
           style={{
             padding: 10,
             flex: 1,
+            marginLeft: 10,
           }}>
           {item.village_code}
         </Text>
@@ -706,19 +797,20 @@ function Edit_Emp_Info(props) {
           style={{
             padding: 10,
             flex: 1,
+            marginLeft: 10,
           }}>
           {item.village_name}
         </Text>
 
         <View>
           <RadioButton
-            value={item.city_code}
+            value={item.village_code}
             status={
-              villageselectedItemValue === item.city_code
+              selected_villagevalue === item.village_code
                 ? 'checked'
                 : 'unchecked'
             }
-          // onPress={() => btnSelectEmployee(item)}
+            onPress={() => btnSelectVillage(item)}
           />
         </View>
       </View>
@@ -751,12 +843,27 @@ function Edit_Emp_Info(props) {
   };
 
   const btnLocationSearch = async () => {
-    await filterCustomer(selectedLocationItemValue, location_text)
-      .then(data => (data.length > 0 ? setAllLocation(data) : alert('No data')))
-      .catch(error => console.log('error', error));
+    await filterLocation(selectedLocationItemValue, location_text)
+      .then(data => {
+        if (data.length > 0) {
+          setAllLocation(data);
+        } else {
+          setAllLocation(data);
+          alert('No data');
+        }
+        setLoading(false);
+      })
+      .catch(error => {
+        alert('Something Wrong');
+        setAllLocation([]);
+        setLoading(false);
+      });
   };
   const btnCancel = () => {
     setNRC_Visible(!nrc_visible);
+  };
+  const handleLocationItemValueChange = itemValue => {
+    setLocationSelectedItemValue(itemValue);
   };
 
   const onSubmit = async values => {
@@ -775,7 +882,6 @@ function Edit_Emp_Info(props) {
           resident_rgst_id:
             values.nrc_type == '1' ? values.nrc_no : values.resident_rgst_id,
           nrc_state_code: values.nrc_type == '2' ? prefix : '',
-
         });
         console.log('data', data);
         if (filtered_cus_data.resident_rgst_id != data.resident_rgst_id) {
@@ -813,11 +919,46 @@ function Edit_Emp_Info(props) {
       // You can add additional error handling or display an error message to the user
     }
   };
+  const btnSelectTownship = item => {
+    setSelectedTspValue(item.ts_code);
+    setSelectedVillageValue(null);
+    setAllVillage([]);
+    setAllWard([]);
+    dispatch(change('Customer_ManagementForm', 'ts_code', item.ts_code));
+    dispatch(change('Customer_ManagementForm', 'ts_name', item.ts_name));
+    dispatch(change('Customer_ManagementForm', 'village_code', ''));
+    dispatch(change('Customer_ManagementForm', 'village_name', ''));
+    dispatch(change('Customer_ManagementForm', 'ward_code', ''));
+    dispatch(change('Customer_ManagementForm', 'ward_name', ''));
+  };
+  const btnSelectVillage = item => {
+    setSelectedVillageValue(item.village_code);
+    dispatch(
+      change('Customer_ManagementForm', 'village_code', item.village_code),
+    );
+    dispatch(
+      change('Customer_ManagementForm', 'village_name', item.village_name),
+    );
+  };
+  const btnSelectWard = item => {
+    setSelectedWardValue(item.ward_code);
+    dispatch(change('Customer_ManagementForm', 'ward_code', item.ward_code));
+    dispatch(change('Customer_ManagementForm', 'ward_name', item.ward_name));
+  };
+  const btnSelectLocation = item => {
+    setSelectedLocationValue(item.code_value);
+    dispatch(
+      change('Customer_ManagementForm', 'location_code', item.code_value),
+    );
+    dispatch(
+      change('Customer_ManagementForm', 'location_name', item.code_short_desc),
+    );
+  };
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{ flex: 1, backgroundColor: '#fff' }}>
+          <View style={{flex: 1, backgroundColor: '#fff'}}>
             <Text style={style.title_style}>
               Customer Information Management
             </Text>
@@ -848,7 +989,7 @@ function Edit_Emp_Info(props) {
                         }
                         label={option.label}
                         value={option.value}
-                        labelStyle={{ marginLeft: 5 }}
+                        labelStyle={{marginLeft: 5}}
                       />
                     </View>
                   </RadioButton.Group>
@@ -859,8 +1000,8 @@ function Edit_Emp_Info(props) {
                   update_status == true && show_operation == '3'
                     ? false
                     : update_status == false && show_operation == '4'
-                      ? false
-                      : true
+                    ? false
+                    : true
                 }
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
@@ -901,7 +1042,7 @@ function Edit_Emp_Info(props) {
                     icon={update_status == true && 'calendar'}
                     editable={update_status == true ? false : true}
                   />
-                  <View style={{ marginRight: 10 }}>
+                  <View style={{marginRight: 10}}>
                     <Field
                       name={'position_title_nm'}
                       title={'Current Position'}
@@ -920,7 +1061,7 @@ function Edit_Emp_Info(props) {
                     input_mode
                     editable
                   />
-                  <View style={{ marginRight: 10 }}>
+                  <View style={{marginRight: 10}}>
                     <Field
                       enabled={update_status == true ? false : true}
                       data={salary_grade}
@@ -980,7 +1121,7 @@ function Edit_Emp_Info(props) {
             onDismiss={hideModal}
             contentContainerStyle={containerStyle}>
             <View
-              style={{ backgroundColor: '#232D57', padding: 25 }}
+              style={{backgroundColor: '#232D57', padding: 25}}
               onStartShouldSetResponder={() => hideModal()}>
               <Icon
                 name="x-circle"
@@ -995,19 +1136,19 @@ function Edit_Emp_Info(props) {
                 }}
               />
             </View>
-            <View style={{ padding: 10, height: 550 }}>
+            <View style={{padding: 10, height: 550}}>
               <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-around',
                 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={{marginRight: 10}}>Search Item:</Text>
 
                   <Picker
                     selectedValue={selectedItemValue}
                     onValueChange={handleItemValueChange}
-                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
+                    style={{width: 200, backgroundColor: 'white', marginTop: 7}}
                     mode="dropdown">
                     {emp_filter_item.length > 0 &&
                       emp_filter_item.map(val => (
@@ -1020,7 +1161,7 @@ function Edit_Emp_Info(props) {
                   </Picker>
                 </View>
 
-                <View style={{ width: '50%' }}>
+                <View style={{width: '50%'}}>
                   <TextInput
                     style={{
                       backgroundColor: '#fff',
@@ -1091,7 +1232,7 @@ function Edit_Emp_Info(props) {
                 keyExtractor={(item, index) => index.toString()}
               />
 
-              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                 <Button
                   onPress={() => hideModal()}
                   mode="contained"
@@ -1111,719 +1252,74 @@ function Edit_Emp_Info(props) {
         </Portal>
       </Provider>
 
-      {/* City Modal */}
-
-      <Provider>
-        <Portal>
-          <Modal
-            dismissable={false}
-            visible={modal_city_visible}
-            onDismiss={hideCityModal}
-            contentContainerStyle={containerStyle}>
-            <View
-              style={{ backgroundColor: '#232D57', padding: 25 }}
-              onStartShouldSetResponder={() => hideCityModal()}>
-              <Icon
-                name="x-circle"
-                size={25}
-                color="#fff"
-                style={{
-                  marginLeft: 20,
-                  position: 'absolute',
-                  top: 0,
-                  right: 10,
-                  top: 10,
-                }}
-              />
-            </View>
-            <View style={{ padding: 10, height: 550 }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
-
-                  <Picker
-                    selectedValue={selectedItemValue}
-                    onValueChange={handleItemValueChange}
-                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
-                    mode="dropdown">
-                    {city_code.length > 0 &&
-                      city_code.map(val => (
-                        <Picker.Item
-                          label={val.label}
-                          value={val.value}
-                          key={val.id}
-                        />
-                      ))}
-                  </Picker>
-                </View>
-
-                <View style={{ width: '50%' }}>
-                  <TextInput
-                    style={{
-                      backgroundColor: '#fff',
-                      marginTop: 10,
-                      width: 301,
-                      borderColor: '#303030',
-                      borderWidth: 0.5,
-                    }}
-                    value={city_text}
-                    onChangeText={onChangeCityText}
-                    right={
-                      <TextInput.Icon
-                        icon={'magnify'}
-                        onPress={() => btnCitySearch()}
-                      />
-                    }
-                  />
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  backgroundColor: '#fff',
-                  borderRadius: 5,
-                  padding: 5,
-                  margin: 20,
-                }}>
-                <Text
-                  style={{
-                    padding: 10,
-                    flex: 1,
-                    fontWeight: 'bold',
-                  }}>
-                  #
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-
-                    padding: 10,
-                    fontWeight: 'bold',
-                  }}>
-                  City Code
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-
-                    padding: 10,
-                    fontWeight: 'bold',
-                  }}>
-                  City Name
-                </Text>
-              </View>
-              <View>
-                <FlatList
-                  data={all_city}
-                  renderItem={city_item}
-                  keyExtractor={(item, index) => index.toString()}
-                />
-              </View>
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  position: 'absolute',
-                  bottom: 0,
-                  marginBottom: 10,
-                  alignSelf: 'center',
-                }}>
-                <Button
-                  onPress={() => hideCityModal()}
-                  mode="contained"
-                  buttonColor={'#6870C3'}
-                  style={{
-                    borderRadius: 0,
-                    width: 100,
-                    marginTop: 10,
-                    color: 'black',
-                    marginLeft: 5,
-                  }}>
-                  OK
-                </Button>
-              </View>
-            </View>
-          </Modal>
-        </Portal>
-      </Provider>
+      <City_Modal
+        modal_city_visible={modal_city_visible}
+        hideCityModal={hideCityModal}
+        selectedItemValue={selectedItemValue}
+        handleCityItemValueChange={handleCityItemValueChange}
+        selected_cityvalue={selected_cityvalue}
+        btnCitySearch={btnCitySearch}
+        city_text={city_text}
+        onChangeCityText={onChangeCityText}
+        loading={loading}
+        all_city={all_city}
+        city_items={city_item}
+        selectedCityItemValue={selectedCityItemValue}
+      />
 
       {/* Village  Modal */}
 
-      <Provider>
-        <Portal>
-          <Modal
-            dismissable={false}
-            visible={modal_village_visible}
-            onDismiss={hideVillageModal}
-            contentContainerStyle={containerStyle}>
-            <View
-              style={{ backgroundColor: '#232D57', padding: 25 }}
-              onStartShouldSetResponder={() => hideVillageModal()}>
-              <Icon
-                name="x-circle"
-                size={25}
-                color="#fff"
-                style={{
-                  marginLeft: 20,
-                  position: 'absolute',
-                  top: 0,
-                  right: 10,
-                  top: 10,
-                }}
-              />
-            </View>
-            <View style={{ padding: 10, height: 550 }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
-
-                  <Picker
-                    selectedValue={villageselectedItemValue}
-                    onValueChange={handleItemValueChange}
-                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
-                    mode="dropdown">
-                    {village_code.length > 0 &&
-                      village_code.map(val => (
-                        <Picker.Item
-                          label={val.label}
-                          value={val.value}
-                          key={val.id}
-                        />
-                      ))}
-                  </Picker>
-                </View>
-
-                <View style={{ width: '50%' }}>
-                  <TextInput
-                    style={{
-                      backgroundColor: '#fff',
-                      marginTop: 10,
-                      width: 301,
-                      borderColor: '#303030',
-                      borderWidth: 0.5,
-                    }}
-                    value={village_text}
-                    onChangeText={onChangeVillageText}
-                    right={
-                      <TextInput.Icon
-                        icon={'magnify'}
-                        onPress={() => btnVillageSearch()}
-                      />
-                    }
-                  />
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  backgroundColor: '#fff',
-                  borderRadius: 5,
-                  padding: 5,
-                  margin: 20,
-                }}>
-                <Text
-                  style={{
-                    padding: 10,
-                    flex: 1,
-                    fontWeight: 'bold',
-                  }}>
-                  #
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-
-                    padding: 10,
-                    fontWeight: 'bold',
-                  }}>
-                  Village Code
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-
-                    padding: 10,
-                    fontWeight: 'bold',
-                  }}>
-                  Village Name
-                </Text>
-              </View>
-              <View>
-                <FlatList
-                  data={all_village}
-                  renderItem={village_item}
-                  keyExtractor={(item, index) => index.toString()}
-                />
-              </View>
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  position: 'absolute',
-                  bottom: 0,
-                  marginBottom: 10,
-                  alignSelf: 'center',
-                }}>
-                <Button
-                  onPress={() => hideVillageModal()}
-                  mode="contained"
-                  buttonColor={'#6870C3'}
-                  style={{
-                    borderRadius: 0,
-                    width: 100,
-                    marginTop: 10,
-                    color: 'black',
-                    marginLeft: 5,
-                  }}>
-                  OK
-                </Button>
-              </View>
-            </View>
-          </Modal>
-        </Portal>
-      </Provider>
-
+      <Village_Modal
+        village_item={village_item}
+        btnVillageSearch={btnVillageSearch}
+        onChangeVillageText={onChangeVillageText}
+        village_text={village_text}
+        modal_village_visible={modal_village_visible}
+        hideVillageModal={hideVillageModal}
+        villageselectedItemValue={villageselectedItemValue}
+        all_village={all_village}
+        setVillageSelectedValue={setVillageSelectedValue}
+      />
       {/* Township  Modal */}
 
-      <Provider>
-        <Portal>
-          <Modal
-            dismissable={false}
-            visible={modal_township_visible}
-            onDismiss={hideTownshipModal}
-            contentContainerStyle={containerStyle}>
-            <View
-              style={{ backgroundColor: '#232D57', padding: 25 }}
-              onStartShouldSetResponder={() => hideTownshipModal()}>
-              <Icon
-                name="x-circle"
-                size={25}
-                color="#fff"
-                style={{
-                  marginLeft: 20,
-                  position: 'absolute',
-                  top: 0,
-                  right: 10,
-                  top: 10,
-                }}
-              />
-            </View>
-            <View style={{ padding: 10, height: 550 }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
+      <Township_Modal
+        all_township={all_township}
+        loading={loading}
+        btnTownshipSearch={btnTownshipSearch}
+        onChangeTownshipText={onChangeTownshipText}
+        township_text={township_text}
+        hideTownshipModal={hideTownshipModal}
+        modal_township_visible={modal_township_visible}
+        townshipselectedItemValue={townshipselectedItemValue}
+        township_item={township_item}
+        handleTownshipItemValueChange={handleTownshipItemValueChange}
+      />
 
-                  <Picker
-                    selectedValue={townshipselectedItemValue}
-                    onValueChange={handleItemValueChange}
-                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
-                    mode="dropdown">
-                    {Township_code.length > 0 &&
-                      Township_code.map(val => (
-                        <Picker.Item
-                          label={val.label}
-                          value={val.value}
-                          key={val.id}
-                        />
-                      ))}
-                  </Picker>
-                </View>
-
-                <View style={{ width: '50%' }}>
-                  {/* <Field
-                    name={'searchtext'}
-                    component={TextInputFile}
-                    input_mode
-                    inputmax={20}
-                    icon={'magnify'}
-                    handleTextInputFocus={handleSubmit(btnTownshipSearch)}
-                  /> */}
-
-                  <TextInput
-                    style={{
-                      backgroundColor: '#fff',
-                      marginTop: 10,
-                      width: 301,
-                      borderColor: '#303030',
-                      borderWidth: 0.5,
-                    }}
-                    value={township_text}
-                    onChangeText={onChangeTownshipText}
-                    right={
-                      <TextInput.Icon
-                        icon={'magnify'}
-                        onPress={() => btnTownshipSearch()}
-                      />
-                    }
-                  />
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  backgroundColor: '#fff',
-                  borderRadius: 5,
-                  padding: 5,
-                  margin: 20,
-                }}>
-                <Text
-                  style={{
-                    padding: 10,
-                    flex: 1,
-                    fontWeight: 'bold',
-                  }}>
-                  #
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-
-                    padding: 10,
-                    fontWeight: 'bold',
-                  }}>
-                  Township Code
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-
-                    padding: 10,
-                    fontWeight: 'bold',
-                  }}>
-                  Township Name
-                </Text>
-              </View>
-              <View>
-                <FlatList
-                  data={all_township}
-                  renderItem={township_item}
-                  keyExtractor={(item, index) => index.toString()}
-                />
-              </View>
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  position: 'absolute',
-                  bottom: 0,
-                  marginBottom: 10,
-                  alignSelf: 'center',
-                }}>
-                <Button
-                  onPress={() => hideTownshipModal()}
-                  mode="contained"
-                  buttonColor={'#6870C3'}
-                  style={{
-                    borderRadius: 0,
-                    width: 100,
-                    marginTop: 10,
-                    color: 'black',
-                    marginLeft: 5,
-                  }}>
-                  OK
-                </Button>
-              </View>
-            </View>
-          </Modal>
-        </Portal>
-      </Provider>
-
-      {/* Ward  Modal */}
-
-      <Provider>
-        <Portal>
-          <Modal
-            dismissable={false}
-            visible={modal_ward_visible}
-            onDismiss={hideWardModal}
-            contentContainerStyle={containerStyle}>
-            <View
-              style={{ backgroundColor: '#232D57', padding: 25 }}
-              onStartShouldSetResponder={() => hideWardModal()}>
-              <Icon
-                name="x-circle"
-                size={25}
-                color="#fff"
-                style={{
-                  marginLeft: 20,
-                  position: 'absolute',
-                  top: 0,
-                  right: 10,
-                  top: 10,
-                }}
-              />
-            </View>
-            <View style={{ padding: 10, height: 550 }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
-
-                  <Picker
-                    selectedValue={wardselectedItemValue}
-                    onValueChange={handleItemValueChange}
-                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
-                    mode="dropdown">
-                    {ward_code.length > 0 &&
-                      ward_code.map(val => (
-                        <Picker.Item
-                          label={val.label}
-                          value={val.value}
-                          key={val.id}
-                        />
-                      ))}
-                  </Picker>
-                </View>
-
-                <View style={{ width: '50%' }}>
-                  <TextInput
-                    style={{
-                      backgroundColor: '#fff',
-                      marginTop: 10,
-                      width: 301,
-                      borderColor: '#303030',
-                      borderWidth: 0.5,
-                    }}
-                    value={ward_text}
-                    onChangeText={onChangeWardText}
-                    right={
-                      <TextInput.Icon
-                        icon={'magnify'}
-                        onPress={() => btnWardSearch()}
-                      />
-                    }
-                  />
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  backgroundColor: '#fff',
-                  borderRadius: 5,
-                  padding: 5,
-                  margin: 20,
-                }}>
-                <Text
-                  style={{
-                    padding: 10,
-                    flex: 1,
-                    fontWeight: 'bold',
-                  }}>
-                  #
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-
-                    padding: 10,
-                    fontWeight: 'bold',
-                  }}>
-                  Ward Code
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-
-                    padding: 10,
-                    fontWeight: 'bold',
-                  }}>
-                  Ward Name
-                </Text>
-              </View>
-              <View>
-                <FlatList
-                  data={all_ward}
-                  renderItem={ward_item}
-                  keyExtractor={(item, index) => index.toString()}
-                />
-              </View>
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  position: 'absolute',
-                  bottom: 0,
-                  marginBottom: 10,
-                  alignSelf: 'center',
-                }}>
-                <Button
-                  onPress={() => hideWardModal()}
-                  mode="contained"
-                  buttonColor={'#6870C3'}
-                  style={{
-                    borderRadius: 0,
-                    width: 100,
-                    marginTop: 10,
-                    color: 'black',
-                    marginLeft: 5,
-                  }}>
-                  OK
-                </Button>
-              </View>
-            </View>
-          </Modal>
-        </Portal>
-      </Provider>
-
-      {/* location */}
-
-      <Provider>
-        <Portal>
-          <Modal
-            dismissable={false}
-            visible={modal_location_visible}
-            onDismiss={hideLocationModal}
-            contentContainerStyle={containerStyle}>
-            <View
-              style={{ backgroundColor: '#232D57', padding: 25 }}
-              onStartShouldSetResponder={() => hideLocationModal()}>
-              <Icon
-                name="x-circle"
-                size={25}
-                color="#fff"
-                style={{
-                  marginLeft: 20,
-                  position: 'absolute',
-                  top: 0,
-                  right: 10,
-                  top: 10,
-                }}
-              />
-            </View>
-            <View style={{ padding: 10, height: 550 }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
-
-                  <Picker
-                    selectedValue={selectedLocationItemValue}
-                    onValueChange={handleLocationItemValueChange}
-                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
-                    mode="dropdown">
-                    {location_code.length > 0 &&
-                      location_code.map(val => (
-                        <Picker.Item
-                          label={val.label}
-                          value={val.value}
-                          key={val.id}
-                        />
-                      ))}
-                  </Picker>
-                </View>
-
-                <View style={{ width: '50%' }}>
-                  <TextInput
-                    style={{
-                      backgroundColor: '#fff',
-                      marginTop: 10,
-                      width: 301,
-                      borderColor: '#303030',
-                      borderWidth: 0.5,
-                    }}
-                    value={location_text}
-                    onChangeText={onChangeLocationText}
-                    right={
-                      <TextInput.Icon
-                        icon={'magnify'}
-                        onPress={() => btnLocationSearch()}
-                      />
-                    }
-                  />
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  backgroundColor: '#fff',
-                  borderRadius: 5,
-                  padding: 5,
-                  margin: 20,
-                }}>
-                <Text
-                  style={{
-                    padding: 10,
-                    flex: 1,
-                    fontWeight: 'bold',
-                  }}>
-                  #
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-
-                    padding: 10,
-                    fontWeight: 'bold',
-                  }}>
-                  Location Code
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-
-                    padding: 10,
-                    fontWeight: 'bold',
-                  }}>
-                  Location Name
-                </Text>
-              </View>
-              <View>
-                <FlatList
-                  data={all_location}
-                  renderItem={location_item}
-                  keyExtractor={(item, index) => index.toString()}
-                />
-              </View>
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  position: 'absolute',
-                  bottom: 0,
-                  marginBottom: 10,
-                  alignSelf: 'center',
-                }}>
-                <Button
-                  onPress={() => hideLocationModal()}
-                  mode="contained"
-                  buttonColor={'#6870C3'}
-                  style={{
-                    borderRadius: 0,
-                    width: 100,
-                    marginTop: 10,
-                    color: 'black',
-                    marginLeft: 5,
-                  }}>
-                  OK
-                </Button>
-              </View>
-            </View>
-          </Modal>
-        </Portal>
-      </Provider>
+      <Ward_Model
+        all_ward={all_ward}
+        ward_item={ward_item}
+        btnWardSearch={btnWardSearch}
+        ward_text={ward_text}
+        onChangeWardText={onChangeWardText}
+        modal_ward_visible={modal_ward_visible}
+        hideWardModal={hideWardModal}
+        wardselectedItemValue={wardselectedItemValue}
+        handleItemValueChange={handleItemValueChange}
+        setSelectedWardItemValue={setSelectedWardItemValue}
+        loading={loading}
+      />
+      <Location_Modal
+        location_item={location_item}
+        btnLocationSearch={btnLocationSearch}
+        location_text={location_text}
+        modal_location_visible={modal_location_visible}
+        hideLocationModal={hideLocationModal}
+        selectedLocationItemValue={selectedLocationItemValue}
+        handleLocationItemValueChange={handleLocationItemValueChange}
+        onChangeLocationText={onChangeLocationText}
+        all_location={all_location}
+        setLocationSelectedItemValue={setLocationSelectedItemValue}
+      />
     </>
   );
 }

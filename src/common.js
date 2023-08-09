@@ -438,12 +438,12 @@ export const location_code = [
   {
     id: 1,
     label: 'Location Code',
-    value: 'location_code',
+    value: 'code_value',
   },
   {
     id: 2,
     label: 'Location Name',
-    value: 'location_name',
+    value: 'code_short_desc',
   },
 ];
 
