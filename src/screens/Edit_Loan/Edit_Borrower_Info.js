@@ -1,27 +1,36 @@
-import { View } from 'react-native';
-import React, { useState } from 'react';
-import { List } from 'react-native-paper';
-import { reduxForm, Field, change } from 'redux-form';
-import { connect } from 'react-redux';
-import { style } from '../../style/Individual_Loan_style';
+import {View} from 'react-native';
+import React, {useState} from 'react';
+import {List} from 'react-native-paper';
+import {reduxForm, Field, change} from 'redux-form';
+import {connect} from 'react-redux';
+import {style} from '../../style/Individual_Loan_style';
 import {
   borrower_type,
   condition_house,
   maritail_status,
   gender,
   address_type,
-  village_status
+  village_status,
 } from '../../common';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
 import DatePicker from '../../components/DatePicker';
 import RadioButtonFile from '../../components/RadioButtonFile';
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 function Borrower_Info(props) {
-  const { showLocationSearch, update_status, showCustomerSearch, showTownshipSearch, showCitySearch, showVillageSearch, showWardSearch } = props;
+  const {
+    show_village,
+    setVillage,
+    showLocationSearch,
+    update_status,
+    showCustomerSearch,
+    showTownshipSearch,
+    showCitySearch,
+    showVillageSearch,
+    showWardSearch,
+  } = props;
   const [borrower_expanded, setBorrowerExpanded] = React.useState(true);
-  const [show_village, setVillage] = useState('1');
   const dispatch = useDispatch();
 
   const handleBorrowerToggle = () => {
@@ -83,7 +92,6 @@ function Borrower_Info(props) {
               cus_width
               input_mode
               editable
-
             />
           </View>
 
@@ -95,7 +103,6 @@ function Borrower_Info(props) {
               cus_width
               input_mode
               editable={update_status == true ? false : true}
-
             />
 
             <Field
@@ -106,8 +113,6 @@ function Borrower_Info(props) {
               input_mode
               keyboardType={'numeric'}
               editable={update_status == true ? false : true}
-
-
             />
           </View>
 
@@ -121,7 +126,6 @@ function Borrower_Info(props) {
                 width: 300,
               }}
               enabled={update_status == true ? false : true}
-
             />
 
             <Field
@@ -143,7 +147,6 @@ function Borrower_Info(props) {
                 width: 300,
               }}
               enabled={update_status == true ? false : true}
-
             />
 
             <Field
@@ -155,7 +158,6 @@ function Borrower_Info(props) {
                 width: 300,
               }}
               enabled={update_status == true ? false : true}
-
             />
           </View>
 
@@ -169,7 +171,6 @@ function Borrower_Info(props) {
               icon={update_status == true && 'magnify'}
               editable
               handleTextInputFocus={showCitySearch}
-
             />
             <Field
               name={'city_name'}
@@ -207,16 +208,18 @@ function Borrower_Info(props) {
               name={'village_status'}
               disabled={update_status == true ? false : true}
               component={RadioButtonFile}
-              ShowRadioBtnChange={(value, input) => handleRadioButtonChange(value, input)}
+              ShowRadioBtnChange={(value, input) =>
+                handleRadioButtonChange(value, input)
+              }
             />
           </View>
 
           {show_village == '1' ? (
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-
-            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
               <Field
                 name={'village_code'}
                 title={'Village Code '}
@@ -226,7 +229,6 @@ function Borrower_Info(props) {
                 icon={update_status == true && 'magnify'}
                 editable
                 handleTextInputFocus={showVillageSearch}
-
               />
               <Field
                 name={'village_name'}
@@ -238,10 +240,11 @@ function Borrower_Info(props) {
               />
             </View>
           ) : (
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
               <Field
                 name={'ward_code'}
                 title={'Ward Code '}
@@ -251,7 +254,6 @@ function Borrower_Info(props) {
                 icon={update_status == true && 'magnify'}
                 editable
                 handleTextInputFocus={showWardSearch}
-
               />
               <Field
                 name={'ward_name'}
@@ -292,7 +294,6 @@ function Borrower_Info(props) {
             inputmax={100}
             input_cusstyle
             editable={update_status == true ? false : true}
-
           />
 
           <View style={style.sub_list_container}>
@@ -300,7 +301,7 @@ function Borrower_Info(props) {
               name={'curr_resident_date'}
               component={DatePicker}
               label={'Living Time in current address'}
-              icon={update_status == true &&'calendar'}
+              icon={update_status == true && 'calendar'}
               editable={update_status == true ? false : true}
             />
 
@@ -312,7 +313,6 @@ function Borrower_Info(props) {
               input_mode
               keyboardType={'numeric'}
               editable={update_status == true ? false : true}
-
             />
           </View>
 
@@ -325,7 +325,6 @@ function Borrower_Info(props) {
               input_mode
               keyboardType={'numeric'}
               editable={update_status == true ? false : true}
-
             />
 
             <Field
@@ -336,7 +335,6 @@ function Borrower_Info(props) {
               input_mode
               keyboardType={'numeric'}
               editable={update_status == true ? false : true}
-
             />
           </View>
 
@@ -369,7 +367,6 @@ function Borrower_Info(props) {
 function mapStateToProps(state) {
   return {
     update_status: state.loan.update_status,
-
   };
 }
 

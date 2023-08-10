@@ -590,14 +590,6 @@ function Edit_Emp_Info(props) {
         item.position_title_nm,
       ),
     );
-
-    // let emp_data = {
-    //   branchCode: item.branch_code,
-    //   employeeNo: item.employee_no,
-    //   entryDate: item.entry_date,
-    //   positionTitleNm: item.position_title_nm,
-    // };
-    // addEmpFilter(emp_data);
   };
 
   const item = ({item, index}) => {
@@ -705,6 +697,7 @@ function Edit_Emp_Info(props) {
       });
   };
   const btnVillageSearch = async () => {
+    setLoading(!loading);
     await filterVillage(
       villageselectedItemValue,
       village_text,
@@ -843,6 +836,8 @@ function Edit_Emp_Info(props) {
   };
 
   const btnLocationSearch = async () => {
+    setLoading(false);
+
     await filterLocation(selectedLocationItemValue, location_text)
       .then(data => {
         if (data.length > 0) {

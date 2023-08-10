@@ -46,11 +46,6 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
-         <Stack.Screen
-        name="Indi_Staff_loan"
-        component={Individual_Staff_loan_Info}
-        options={{headerShown: false}}
-      />
       <Stack.Screen
         name="Home"
         component={Home}
@@ -61,6 +56,18 @@ export default function AuthNavigation(props) {
         component={Individual_Loan}
         options={{headerShown: false}}
       />
+
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Indi_Staff_loan"
+        component={Individual_Staff_loan_Info}
+        options={{headerShown: false}}
+      />
+
       <Stack.Screen
         name="Customer Search"
         component={CustomerSearch}
@@ -69,11 +76,6 @@ export default function AuthNavigation(props) {
       <Stack.Screen
         name="Customer Management"
         component={Customer_Management}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Login"
-        component={LoginScreen}
         options={{headerShown: false}}
       />
 
@@ -88,8 +90,6 @@ export default function AuthNavigation(props) {
         component={Passport}
         options={{headerShown: false}}
       />
-
-
 
       <Stack.Screen
         name="ReLoan"
