@@ -8,7 +8,7 @@ import { city_code } from '../common';
 
 export default function City_Modal(props) {
 
-   
+
     const containerStyle = {
         backgroundColor: '#e8e8e8',
         width: '85%',
@@ -18,7 +18,6 @@ export default function City_Modal(props) {
     const { selectedCityItemValue,selected_cityvalue, btnCitySearch, all_city, modal_city_visible,
         hideCityModal, selectedItemValue, handleCityItemValueChange, city_text, onChangeCityText, loading, city_items } = props
 
-        console.log('handleCityItemValueChange',handleCityItemValueChange);
     return (
         <Provider>
             <Portal>

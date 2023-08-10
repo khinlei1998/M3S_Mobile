@@ -1221,10 +1221,7 @@ function Individual_Loan(props) {
   }, []);
 
   const handleCalculate = () => {
-    console.log('loan_type_value', loan_type_value);
-    console.log('totalnet', totalnet);
     loan_max_data.map(value => {
-      console.log('value', value);
       if (30 == loan_type_value) {
         dispatch(
           change('Individual_Loan_Form', 'loan_limit_amt', totalnet * 2),

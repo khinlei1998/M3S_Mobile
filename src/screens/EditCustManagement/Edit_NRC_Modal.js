@@ -41,7 +41,6 @@ function ShowNRC_Modal(props) {
           label: item.nrc_prefix_code,
           value: item.nrc_prefix_code,
         }));
-        console.log('newArray', newArray);
         setNRCPrefix(newArray);
       })
       .catch(error => console.log(error));

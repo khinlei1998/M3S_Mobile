@@ -108,7 +108,7 @@ function Edit_Customer_BaseInfo(props) {
           <View style={style.sub_list_container}>
             {show_nrc == '1' ? (
               <Field
-                name={'nrc_no'}
+                name={'resident_rgst_id'}
                 title={'NRC'}
                 component={TextInputFile}
                 cus_width

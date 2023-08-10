@@ -33,10 +33,11 @@ import {connect} from 'react-redux';
     setLoanLimitAmount,
     working_month,
     workingDateRef,
-    update_status
+    update_status,
+    show_village,
+    setVillage
   } = props;
   const [borrower_expanded, setBorrowerExpanded] = React.useState(true);
-  const [show_village, setVillage] = useState('1');
 
   const handleBorrowerToggle = () => {
     setBorrowerExpanded(!borrower_expanded);
@@ -47,10 +48,6 @@ import {connect} from 'react-redux';
     if (value.id == '2') {
       dispatch(change('Individual_Staff_Loan_Form', 'village_code', ''));
     }
-    // Dispatch action to clear the field value
-    // dispatch(
-    //   change('myForm', 'fieldName', radioValue === 'clear' ? '' : radioValue),
-    // );
   };
   return (
     <>
@@ -73,7 +70,7 @@ import {connect} from 'react-redux';
             <Field
               name={'employee_no'}
               title={'Employee No'}
-              icon={'magnify'}
+              icon={update_status == true &&'magnify'}
               handleTextInputFocus={showCustomerSearch}
               component={TextInputFile}
               cus_width
@@ -99,7 +96,7 @@ import {connect} from 'react-redux';
               name={'entry_date'}
               component={DatePicker}
               label={'Start Working Date at SHM'}
-              icon={'calendar'}
+              icon={update_status == true &&'calendar'}
               editable={update_status == true ? false : true}
               // ref={workingDateRef}
               onWorkingDateChange={(month)=>{
@@ -206,7 +203,7 @@ import {connect} from 'react-redux';
               name={'birth_date'}
               component={DatePicker}
               label={'date of birth'}
-              icon={'calendar'}
+              icon={update_status == true &&'calendar'}
               editable={update_status == true ? false : true}
             />
           </View>
@@ -242,8 +239,9 @@ import {connect} from 'react-redux';
               component={TextInputFile}
               input_mode
               inputmax={100}
-              icon={'magnify'}
               editable
+              icon={update_status == true && 'magnify'}
+
               handleTextInputFocus={showCitySearch}
 
             />
@@ -259,17 +257,17 @@ import {connect} from 'react-redux';
           </View>
           <View style={style.sub_list_container}>
             <Field
-              name={'TownshipCode'}
+              name={'ts_code'}
               title={'Township Code '}
               component={TextInputFile}
               input_mode
               inputmax={100}
-              icon={'magnify'}
+              icon={update_status == true &&'magnify'}
               editable
               handleTextInputFocus={showTownshipSearch}
             />
             <Field
-              name={'TownshipName'}
+              name={'ts_name'}
               title={'Township Name '}
               component={TextInputFile}
               input_mode
@@ -301,7 +299,7 @@ import {connect} from 'react-redux';
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
-                icon={'magnify'}
+                icon={update_status == true &&'magnify'}
                 editable
                 handleTextInputFocus={showVillageSearch}
               />
@@ -321,17 +319,17 @@ import {connect} from 'react-redux';
                 justifyContent: 'space-between',
               }}>
               <Field
-                name={'Wardcode'}
+                name={'ward_code'}
                 title={'Ward Code '}
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
-                icon={'magnify'}
+                icon={update_status == true &&'magnify'}
                 editable
                 handleTextInputFocus={showWardSearch}
               />
               <Field
-                name={'WardName'}
+                name={'ward_name'}
                 title={'Ward Name '}
                 component={TextInputFile}
                 input_mode
@@ -346,7 +344,7 @@ import {connect} from 'react-redux';
               component={TextInputFile}
               input_mode
               inputmax={100}
-              icon={'magnify'}
+              icon={update_status == true &&'magnify'}
               handleTextInputFocus={showLocationSearch}
               editable
             />

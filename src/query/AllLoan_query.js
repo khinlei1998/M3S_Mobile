@@ -1,9 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { Alert, FileSystem } from 'react-native';
+import {Alert, FileSystem} from 'react-native';
 import RNFS from 'react-native-fs';
 import moment from 'moment';
-import { microfinance_data, area_evaluation_result, relation_data } from '../common';
+import {
+  microfinance_data,
+  area_evaluation_result,
+  relation_data,
+} from '../common';
 export async function getAllLoan() {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
@@ -427,7 +431,7 @@ export const storeLoanData = async loan_data => {
             loan_data.co_borrower_sign,
             loan_data.address_type,
             loan_data.sv_pr_type,
-            loan_data.village_status
+            loan_data.village_status,
             // loan_data.borrower_map,
             //146
           ],
@@ -599,52 +603,6 @@ export async function getAllLoan_By_application_no(application_no) {
     });
   });
 }
-
-// async function uploadImage(filePath, description) {
-//   let ip = await AsyncStorage.getItem('ip');
-//   let port = await AsyncStorage.getItem('port');
-
-//   let indi_borrower_map = new FormData();
-//   indi_borrower_map.append('description', 'anything');
-//   indi_borrower_map.append('file', {
-//     uri: `file://${filePath}`,
-//     type: 'image/jpg',
-//     name: `${filePath}`,
-//   });
-
-//   let config = {
-//     method: 'post',
-//     maxBodyLength: Infinity,
-//     url: `https://${ip}:${port}/skylark-m3s/file/upload.m3s`,
-//     headers: {
-//       'Content-Type': 'multipart/form-data',
-//     },
-//     data: indi_borrower_map,
-//   };
-
-//   axios
-//     .request(config)
-//     .then(response => {
-//       console.log('img response', response);
-//       // console.log(JSON.stringify(response.data));
-//     })
-//     .catch(error => {
-//       alert(' borrower map fail upload');
-//       console.log('image error', error);
-//       failedData.push(' borrower map fail upload');
-//     });
-
-//   // return axios
-//   //   .request(config)
-//   //   .then(response => {
-//   //     console.log('img response', response);
-//   //     return response.data; // Return the response if needed
-//   //   })
-//   //   .catch(error => {
-//   //     console.log('image error', error);
-//   //     throw new Error('Image upload failed');
-//   //   });
-// }
 
 async function uploadImage(filePath, description) {
   let ip = await AsyncStorage.getItem('ip');
@@ -1189,7 +1147,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               );
               const local_auth_sprt_flag = resultObj8 ? resultObj8.result : '';
 
-
               return {
                 organizationCode: '',
                 serialNo: '',
@@ -1296,12 +1253,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
             loan_data.applicationNo,
           );
           if (relation_info.length > 0) {
-
             const relation_datas = relation_info.map(item => {
-
-              const resultObj9 = relation_data.find(
-                data => data.id == 1,
-              );
+              const resultObj9 = relation_data.find(data => data.id == 1);
               const relation_name = resultObj9 ? resultObj9.name : '';
               return {
                 organizationCode: '',
@@ -1398,6 +1351,17 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               break; // Stop further execution if image upload fails for any of the indices
             }
           }
+
+          //UPLOAD Passport
+
+          const passport_img = `/storage/emulated/0/Pictures/Camera/${loan_data.applicationNo}AT12F.jpg`;
+          try {
+            await uploadImage(passport_img, 'passport_img');
+          } catch (error) {
+            console.log(`Error uploading passport_img ${index}:`, error);
+            failedData.push(`Error uploading passport_img ${index}`);
+            break; // Stop further execution if image upload fails for any of the indices
+          }
         }
       }
 
@@ -1428,8 +1392,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         maxBodyLength: Infinity,
         url:
           data.product_type == 30 ||
-            data.product_type == 40 ||
-            data.product_type == 50
+          data.product_type == 40 ||
+          data.product_type == 50
             ? `https://${ip}:${port}/skylark-m3s/api/groupLoan.m3s`
             : `https://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
         data: formData,
@@ -1873,7 +1837,7 @@ export const updateLoanData = async loan_data => {
   const date = moment().format('YYYY-MM-DD');
 
   return new Promise(async (resolve, reject) => {
-    console.log('loan_data.wrkp_rent_expns', loan_data.wrkp_rent_expns)
+    console.log('loan_data.wrkp_rent_expns', loan_data.wrkp_rent_expns);
 
     try {
       global.db.transaction(trans => {
@@ -1953,9 +1917,11 @@ export const updateLoanData = async loan_data => {
             loan_data.land_scale,
             loan_data.land_own_type,
             //Monthly Income
-            loan_data.tot_sale_income  == '' ? 0 : loan_data.tot_sale_income,
+            loan_data.tot_sale_income == '' ? 0 : loan_data.tot_sale_income,
             loan_data.tot_sale_expense, //auto cal
-            loan_data.rawmaterial_expans  == '' ? 0 : loan_data.rawmaterial_expans,
+            loan_data.rawmaterial_expans == ''
+              ? 0
+              : loan_data.rawmaterial_expans,
             loan_data.wrkp_rent_expns == '' ? 0 : loan_data.wrkp_rent_expns,
             loan_data.employee_expns == '' ? 0 : loan_data.employee_expns,
             loan_data.prmn_empl_expns == '' ? 0 : loan_data.prmn_empl_expns, //prmn_empl_expns
@@ -1969,17 +1935,17 @@ export const updateLoanData = async loan_data => {
             loan_data.othr_expns_2 == '' ? 0 : loan_data.othr_expns_2, //80
             loan_data.totBusNetIncomeitem, //auto cal
             loan_data.fmly_tot_income == '' ? 0 : loan_data.fmly_tot_income,
-            loan_data.fmly_tot_expense , //auto cal
-            loan_data.food_expns  == '' ? 0 : loan_data.food_expns,
+            loan_data.fmly_tot_expense, //auto cal
+            loan_data.food_expns == '' ? 0 : loan_data.food_expns,
             loan_data.house_mngt_expns == '' ? 0 : loan_data.house_mngt_expns,
-            loan_data.utlbil_expns  == '' ? 0 : loan_data.utlbil_expns,
+            loan_data.utlbil_expns == '' ? 0 : loan_data.utlbil_expns,
             loan_data.edct_expns == '' ? 0 : loan_data.edct_expns,
             loan_data.healthy_expns == '' ? 0 : loan_data.healthy_expns,
-            loan_data.fmly_trnsrt_expns  == '' ? 0 : loan_data.fmly_trnsrt_expns,
-            loan_data.fmly_tax_expns  == '' ? 0 : loan_data.fmly_tax_expns,
-            loan_data.finance_expns  == '' ? 0 : loan_data.finance_expns,
-            loan_data.fmly_otr_expns  == '' ? 0 : loan_data.fmly_otr_expns,
-            loan_data.fmlyTotNetIncome  == '' ? 0 : loan_data.fmlyTotNetIncome,
+            loan_data.fmly_trnsrt_expns == '' ? 0 : loan_data.fmly_trnsrt_expns,
+            loan_data.fmly_tax_expns == '' ? 0 : loan_data.fmly_tax_expns,
+            loan_data.finance_expns == '' ? 0 : loan_data.finance_expns,
+            loan_data.fmly_otr_expns == '' ? 0 : loan_data.fmly_otr_expns,
+            loan_data.fmlyTotNetIncome == '' ? 0 : loan_data.fmlyTotNetIncome,
             loan_data.totalnet, //auto cal
             loan_data.otr_mfi_loan_cnt, //otr_mfi_loan_cnt
             loan_data.otr_mfi_nm, //otr_mfi_nm

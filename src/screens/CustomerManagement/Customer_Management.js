@@ -126,12 +126,11 @@ function Customer_Management(props) {
     setSelectedCityItemValue(itemValue);
   };
   const onSubmit = async values => {
-    console.log('prefix', prefix);
     let data = Object.assign(values, emp_filter_data, {
       createUserId: empname,
       nrc_state_code: values.nrc_type == '2' ? prefix : '',
-      resident_rgst_id:
-        values.nrc_type == '1' ? values.nrcNo : values.resident_rgst_id,
+      // resident_rgst_id:
+      //   values.nrc_type == '1' ? values.nrcNo : values.resident_rgst_id,
       start_living_date_status: show_businessdate,
     });
     console.log('customer data',data);

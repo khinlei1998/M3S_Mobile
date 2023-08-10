@@ -7,7 +7,7 @@ export const storeStaffLoanData = async loan_data => {
       global.db.transaction(trans => {
         trans.executeSql(
           `INSERT INTO Individual_application (serial_no,application_no,group_aplc_no,status_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,loan_status_code,decision_no,contract_no,product_type,channel_device_type,open_branch_code,open_user_id,mngt_branch_code,mngt_user_id,loan_type,cst_new_exist_flg,loan_cycle,application_amt,application_date,loanterm_cnt,borrower_name,customer_no,loan_code,saving_acct_num,gender,birth_date,marital_status,resident_rgst_id,tel_no,mobile_tel_no,employee_no,entry_date,position_title_nm,position_title_code,branch_code,salary_rating_code,addr,family_num,hghschl_num,university_num,students_cnt,curr_resident_perd,house_ocpn_type,business_own_type,co_customer_no,co_brwer_name,co_brwer_birth_dt,co_brwer_rgst_id,co_brwer_tel_no,co_brwer_mble_tel_no,borrower_rltn,co_occupation,workplace_name,workplace_type,workplace_period,employee_num,workplace_addr,curr_workplace_perd,business_sttn_flg,land_scale,land_own_type,tot_sale_income,tot_sale_expense,rawmaterial_expans,wrkp_rent_expns,employee_expns,prmn_empl_expns,tmpy_empl_expns,trnsrt_expns,bus_utlbil_expns,tel_expns,tax_expns,goods_loss_expns,othr_expns_1,othr_expns_2,tot_bus_net_income,fmly_tot_income,fmly_tot_expense,food_expns,house_mngt_expns,utlbil_expns,edct_expns,healthy_expns,fmly_trnsrt_expns,fmly_tax_expns,finance_expns,fmly_otr_expns,fmly_tot_net_income,tot_net_income,otr_mfi_loan_cnt,otr_mfi_nm,remark,borrower_id_no,borrower_age,have_fixed_asset,co_brwer_business,co_brwer_net_income,property_kind,prop_apartment_yn,prop_house_yn,prop_car_yn,prop_motorcycle_yn,prop_machines_yn,prop_farmland_yn,ohtr_own_property,tot_prop_estmtd_val,own_property_estmtd_val,past_loan_cycle,pastdue_month_cnt,past_loan_rating,past_loan_amount,past_credit_empl_nm,check_phone_num_yn,reputation_yn,business_good_yn,real_property_yn,
-            repayment_history_yn,loan_officer_cmnt,tablet_sync_sts,sync_sts,old_application_no,transaction_date,loan_limit_amt,curr_resident_date,workplace_date,curr_workplace_date,err_msg,interest_rates,loan_charges,city_code,city_name,township_code,township_name,village_code,village_name,ward_code,ward_name,location_code,location_name,borrower_sign,co_borrower_sign,sv_pr_type) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+            repayment_history_yn,loan_officer_cmnt,tablet_sync_sts,sync_sts,old_application_no,transaction_date,loan_limit_amt,curr_resident_date,workplace_date,curr_workplace_date,err_msg,interest_rates,loan_charges,city_code,city_name,ts_code,ts_name,village_code,village_name,ward_code,ward_name,location_code,location_name,borrower_sign,co_borrower_sign,sv_pr_type,village_status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,COALESCE(?,0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
           [
             null, //serialNo
             loan_data.application_no,
@@ -154,8 +154,8 @@ export const storeStaffLoanData = async loan_data => {
             loan_data.loan_charges,
             loan_data.city_code,
             loan_data.city_name,
-            loan_data.township_code,
-            loan_data.township_name,
+            loan_data.ts_code,
+            loan_data.ts_name,
             loan_data.village_code,
             loan_data.village_name,
             loan_data.ward_code,
@@ -164,7 +164,8 @@ export const storeStaffLoanData = async loan_data => {
             loan_data.location_name,
             loan_data.borrower_sign, //borrower sign
             loan_data.co_borrower_sign,
-            loan_data.sv_pr_type
+            loan_data.sv_pr_type,
+            loan_data.village_status
             //146
           ],
           (trans, results) => {
@@ -214,7 +215,7 @@ export const updateStaffLoanData = async loan_data => {
       global.db.transaction(trans => {
         trans.executeSql(
           `UPDATE Individual_application set serial_no=?,application_no=?,group_aplc_no=?,status_code=?,create_datetime=?,create_user_id=?,delete_datetime=?,delete_user_id=?,update_datetime=?,update_user_id=?,loan_status_code=?,decision_no=?,contract_no=?,product_type=?,channel_device_type=?,open_branch_code=?,open_user_id=?,mngt_branch_code=?,mngt_user_id=?,loan_type=?,cst_new_exist_flg=?,loan_cycle=?,application_amt=?,application_date=?,loanterm_cnt=?,borrower_name=?,customer_no=?,loan_code=?,saving_acct_num=?,gender=?,birth_date=?,marital_status=?,resident_rgst_id=?,tel_no=?,mobile_tel_no=?,employee_no=?,entry_date=?,position_title_nm=?,position_title_code=?,branch_code=?,salary_rating_code=?,addr=?,family_num=?,hghschl_num=?,university_num=?,students_cnt=?,curr_resident_perd=?,house_ocpn_type=?,business_own_type=?,co_customer_no=?,co_brwer_name=?,co_brwer_birth_dt=?,co_brwer_rgst_id=?,co_brwer_tel_no=?,co_brwer_mble_tel_no=?,borrower_rltn=?,co_occupation=?,workplace_name=?,workplace_type=?,workplace_period=?,employee_num=?,workplace_addr=?,curr_workplace_perd=?,business_sttn_flg=?,land_scale=?,land_own_type=?,tot_sale_income=?,tot_sale_expense=?,rawmaterial_expans=?,wrkp_rent_expns=?,employee_expns=?,prmn_empl_expns=?,tmpy_empl_expns=?,trnsrt_expns=?,bus_utlbil_expns=?,tel_expns=?,tax_expns=?,goods_loss_expns=?,othr_expns_1=?,othr_expns_2=?,tot_bus_net_income=?,fmly_tot_income=?,fmly_tot_expense=?,food_expns=?,house_mngt_expns=?,utlbil_expns=?,edct_expns=?,healthy_expns=?,fmly_trnsrt_expns=?,fmly_tax_expns=?,finance_expns=?,fmly_otr_expns=?,fmly_tot_net_income=?,tot_net_income=?,otr_mfi_loan_cnt=?,otr_mfi_nm=?,remark=?,borrower_id_no=?,borrower_age=?,have_fixed_asset=?,co_brwer_business=?,co_brwer_net_income=?,property_kind=?,prop_apartment_yn=?,prop_house_yn=?,prop_car_yn=?,prop_motorcycle_yn=?,prop_machines_yn=?,prop_farmland_yn=?,ohtr_own_property=?,tot_prop_estmtd_val=?,own_property_estmtd_val=?,past_loan_cycle=?,pastdue_month_cnt=?,past_loan_rating=?,past_loan_amount=?,past_credit_empl_nm=?,check_phone_num_yn=?,reputation_yn=?,business_good_yn=?,real_property_yn=?,
-repayment_history_yn=?,loan_officer_cmnt=?,tablet_sync_sts=?,sync_sts=?,old_application_no=?,transaction_date=?,loan_limit_amt=?,curr_resident_date=?,workplace_date=?,curr_workplace_date=?,err_msg=?,interest_rates=?,loan_charges=?,city_code=?,city_name=?,township_code=?,township_name=?,village_code=?,village_name=?,ward_code=?,ward_name=?,location_code=?,location_name=?,borrower_sign=?,co_borrower_sign=?,borrower_map=? WHERE application_no = ?,sv_pr_type=?`,
+repayment_history_yn=?,loan_officer_cmnt=?,tablet_sync_sts=?,sync_sts=?,old_application_no=?,transaction_date=?,loan_limit_amt=?,curr_resident_date=?,workplace_date=?,curr_workplace_date=?,err_msg=?,interest_rates=?,loan_charges=?,city_code=?,city_name=?,ts_code=?,ts_name=?,village_code=?,village_name=?,ward_code=?,ward_name=?,location_code=?,location_name=?,borrower_sign=?,co_borrower_sign=?,borrower_map=? WHERE application_no = ?,sv_pr_type=?`,
           [
             loan_data.serial_no, //serialNo
             loan_data.application_no,
@@ -358,8 +359,8 @@ repayment_history_yn=?,loan_officer_cmnt=?,tablet_sync_sts=?,sync_sts=?,old_appl
             loan_data.loan_charges,
             loan_data.city_code,
             loan_data.city_name,
-            loan_data.township_code,
-            loan_data.township_name,
+            loan_data.ts_code,
+            loan_data.ts_name,
             loan_data.village_code,
             loan_data.village_name,
             loan_data.ward_code,

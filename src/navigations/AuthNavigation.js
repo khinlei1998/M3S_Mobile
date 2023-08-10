@@ -47,19 +47,18 @@ export default function AuthNavigation(props) {
         },
       }}>
       <Stack.Screen
+        name="Customer Search"
+        component={CustomerSearch}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Customer Management"
+        component={Customer_Management}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
         name="Home"
         component={Home}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Individual_loan"
-        component={Individual_Loan}
-        options={{headerShown: false}}
-      />
-
-      <Stack.Screen
-        name="Login"
-        component={LoginScreen}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -69,13 +68,14 @@ export default function AuthNavigation(props) {
       />
 
       <Stack.Screen
-        name="Customer Search"
-        component={CustomerSearch}
+        name="Individual_loan"
+        component={Individual_Loan}
         options={{headerShown: false}}
       />
+
       <Stack.Screen
-        name="Customer Management"
-        component={Customer_Management}
+        name="Login"
+        component={LoginScreen}
         options={{headerShown: false}}
       />
 

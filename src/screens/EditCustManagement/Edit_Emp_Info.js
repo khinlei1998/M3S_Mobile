@@ -874,8 +874,8 @@ function Edit_Emp_Info(props) {
       } else {
         let data = Object.assign(values, emp_filter_data, {
           createUserId: empname,
-          resident_rgst_id:
-            values.nrc_type == '1' ? values.nrc_no : values.resident_rgst_id,
+          // resident_rgst_id:
+          //   values.nrc_type == '1' ? values.nrc_no : values.resident_rgst_id,
           nrc_state_code: values.nrc_type == '2' ? prefix : '',
         });
         console.log('data', data);

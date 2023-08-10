@@ -34,7 +34,7 @@ import { connect, useDispatch } from 'react-redux';
             <Field
               name={'co_brwer_rgst_id'}
               title={'NRC'}
-              icon={'magnify'}
+              icon={update_status == true &&'magnify'}
               component={TextInputFile}
               cus_width
               inputmax={20}
@@ -60,9 +60,9 @@ import { connect, useDispatch } from 'react-redux';
               name={'co_brwer_birth_dt'}
               component={DatePicker}
               label={'Date Of Birth'}
-              icon={'calendar'}
+              icon={update_status == true &&'calendar'}
               editable={update_status == true ? false : true}
-              
+
 
             />
 
