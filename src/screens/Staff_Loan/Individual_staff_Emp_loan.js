@@ -1,8 +1,8 @@
-import {View, Text} from 'react-native';
-import React, {useState} from 'react';
-import {List} from 'react-native-paper';
-import {reduxForm, Field, change} from 'redux-form';
-import {style} from '../../style/Individula_staff_Loan_Style';
+import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { List } from 'react-native-paper';
+import { reduxForm, Field, change } from 'redux-form';
+import { style } from '../../style/Individula_staff_Loan_Style';
 import {
   borrower_type,
   salary_grade,
@@ -15,10 +15,10 @@ import RadioButtonFile from '../../components/RadioButtonFile';
 import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
 import DropDownPicker from '../../components/DropDownPicker';
-import {Button} from 'react-native-paper';
-import {connect} from 'react-redux';
+import { Button } from 'react-native-paper';
+import { connect } from 'react-redux';
 import { useDispatch } from 'react-redux';
-
+import { nrc_type } from '../../common';
 export default function Individual_staff_Emp_loan(props) {
   const dispatch = useDispatch();
 
@@ -54,6 +54,9 @@ export default function Individual_staff_Emp_loan(props) {
     //   change('myForm', 'fieldName', radioValue === 'clear' ? '' : radioValue),
     // );
   };
+  const handleBrChange = (value) => {
+    input.onChange(value.id);
+  }
   return (
     <>
       <List.Accordion
@@ -67,10 +70,9 @@ export default function Individual_staff_Emp_loan(props) {
           <Field
             data={borrower_type}
             name={'cst_new_exist_flg'}
-            component={RadioButtonFile}
+            component={RadioButtonFile}         
             get_value={'N'}
           />
-
           <View style={style.sub_list_container}>
             <Field
               name={'employee_no'}
@@ -102,8 +104,7 @@ export default function Individual_staff_Emp_loan(props) {
               component={DatePicker}
               label={'Start Working Date at SHM'}
               icon={'calendar'}
-              // ref={workingDateRef}
-              onWorkingDateChange={(month)=>{
+              onWorkingDateChange={(month) => {
                 setLoanLimitAmount(0)
 
               }}
@@ -293,7 +294,7 @@ export default function Individual_staff_Emp_loan(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
-                // editable
+              // editable
               />
             </View>
           ) : (
@@ -357,7 +358,6 @@ export default function Individual_staff_Emp_loan(props) {
               input_mode
               inputmax={100}
               keyboardType={'numeric'}
-
             />
           </View>
 
@@ -389,11 +389,11 @@ export default function Individual_staff_Emp_loan(props) {
                 }}>
                 Calculation
               </Button>
-              <Text style={{color: '#fff', marginLeft: 15}}>
+              <Text style={{ color: '#fff', marginLeft: 15 }}>
                 Loan Limit Amount
               </Text>
             </View>
-            <Text style={{color: '#F9A970', fontSize: 15, marginRight: 5}}>
+            <Text style={{ color: '#F9A970', fontSize: 15, marginRight: 5 }}>
               {loan_limit_amount}
             </Text>
           </View>

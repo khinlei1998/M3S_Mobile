@@ -41,6 +41,7 @@ import {setGuarantor_UpdateStatus} from '../../redux/LoanReducer';
 import {deleteGuarantor_ByID} from '../../query/Guarantor_query';
 import {updateGuarantor} from '../../query/Guarantor_query';
 import validate from './Validate';
+import { cus_filter_item } from '../../common';
 const Borrower_Sign_Modal = props => {
   const {
     show_canvas,
@@ -94,8 +95,6 @@ const Borrower_Sign_Modal = props => {
           showTitleLabel={false}
           minStrokeWidth={10}
           maxStrokeWidth={10}
-          // saveImageFileInExtStorage
-          // backgroundColor="transparent"
           viewMode={'portrait'}
         />
         <View style={{flexDirection: 'row'}}>
@@ -287,8 +286,8 @@ const Guarantor_modal = props => {
                     marginTop: 7,
                   }}
                   mode="dropdown">
-                  {emp_filter_item.length > 0 &&
-                    emp_filter_item.map(val => (
+                  {cus_filter_item.length > 0 &&
+                    cus_filter_item.map(val => (
                       <Picker.Item
                         label={val.label}
                         value={val.value}
@@ -396,7 +395,7 @@ function Edit_Guarantor_Form(props) {
     props;
   const retrive_guarantor_data = props.route.params.guarantor_data[0];
   const [show_operation, setOperation] = useState('2');
-  const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
+  const [selectedItemValue, setSelectedItemValue] = useState('customer_nm');
   const [show_canvas, setCanvas] = useState(false);
   const [borrower_sign_path, setBorrowerSignPath] = useState('');
   const [show_borrower_sign, setShowBorrowerSign] = useState('');
@@ -735,6 +734,7 @@ function Edit_Guarantor_Form(props) {
               borrower_sign_path={borrower_sign_path}
               show_borrower_sign={show_borrower_sign}
               guarantor_name={guarantor_name}
+              retrive_guarantor_data={retrive_guarantor_data}
             />
             <DividerLine />
 

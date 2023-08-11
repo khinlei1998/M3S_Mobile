@@ -1,9 +1,13 @@
-import {View, Text} from 'react-native';
-import React, {useState} from 'react';
-import {Field, reduxForm, change} from 'redux-form';
+import { View, Text, } from 'react-native';
+import React, { useState, } from 'react';
+import {
+  Field,
+  reduxForm,
+  change,
+} from 'redux-form';
 import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import {
   gender,
@@ -13,17 +17,17 @@ import {
 } from '../../common';
 import DividerLine from '../../components/DividerLine';
 import DatePicker from '../../components/DatePicker';
-import {setCusFormInitialValues} from '../../redux/CustomerReducer';
-import {fetchAllCustomerNum} from '../../query/Customer_query';
+import { setCusFormInitialValues } from '../../redux/CustomerReducer';
+import { fetchAllCustomerNum } from '../../query/Customer_query';
 import {
   owner_ship_business,
   village_status,
   start_living_date_status,
   nrc_type,
 } from '../../common';
-import {useDispatch} from 'react-redux';
-import {style} from '../../style/Customer_Mang_style';
-import {List} from 'react-native-paper';
+import { useDispatch } from 'react-redux';
+import { style } from '../../style/Customer_Mang_style';
+import { List } from 'react-native-paper';
 function Customer_Base_Info(props) {
   const {
     show_businessdate,
@@ -40,11 +44,13 @@ function Customer_Base_Info(props) {
 
   const [open_cusinfo, setCusInfo] = useState(true);
   const [show_village, setVillage] = useState('1');
+  const [modal_city_visible, setCityCodeModalVisible] = useState(false);
+  const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
   // const numbers = Array.from({length: 60}, (_, i) => i + 1);
-  const numbers = Array.from({length: 60}, (_, i) => (i + 1).toString());
+  const numbers = Array.from({ length: 60 }, (_, i) => (i + 1).toString());
 
   const arrayWithObjects = numbers.map((num, index) => {
-    return {id: num, label: num, value: num};
+    return { id: num, label: num, value: num };
   });
 
   const handleRadioButtonChange = (value, input) => {
@@ -53,9 +59,6 @@ function Customer_Base_Info(props) {
     if (value.id == '2') {
       dispatch(change('Customer_ManagementForm', 'village_code', ''));
       dispatch(change('Customer_ManagementForm', 'village_name', ''));
-    } else {
-      dispatch(change('Customer_ManagementForm', 'ward_code', ''));
-      dispatch(change('Customer_ManagementForm', 'ward_name', ''));
     }
   };
 
@@ -66,7 +69,6 @@ function Customer_Base_Info(props) {
       dispatch(change('Customer_ManagementForm', 'nrc_state_code', ''));
       dispatch(change('Customer_ManagementForm', 'nrc_prefix_code', ''));
       dispatch(change('Customer_ManagementForm', 'nrcNo', ''));
-      dispatch(change('Customer_ManagementForm', 'resident_rgst_id', ''));
     } else {
       dispatch(change('Customer_ManagementForm', 'nrcNo', ''));
       dispatch(change('Customer_ManagementForm', 'resident_rgst_id', ''));
@@ -101,7 +103,7 @@ function Customer_Base_Info(props) {
           <View style={style.sub_list_container}>
             {show_nrc == '1' ? (
               <Field
-                name={'resident_rgst_id'}
+                name={'resident_rgst_id'} //
                 title={'NRC'}
                 inputmax={6}
                 component={TextInputFile}
@@ -238,6 +240,7 @@ function Customer_Base_Info(props) {
                 handleRadioButtonChange(value, input)
               }
               get_value={'1'}
+             
             />
           </View>
 
@@ -259,13 +262,13 @@ function Customer_Base_Info(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
-                // editable
+              // editable
               />
             </View>
           ) : (
             <View style={style.sub_list_container}>
               <Field
-                name={'ward_code'}
+                name={'Wardcode'}
                 title={'Ward Code '}
                 component={TextInputFile}
                 input_mode
@@ -275,7 +278,7 @@ function Customer_Base_Info(props) {
                 handleTextInputFocus={showWardSearch}
               />
               <Field
-                name={'ward_name'}
+                name={'WardName'}
                 title={'Ward Name '}
                 component={TextInputFile}
                 input_mode
@@ -445,7 +448,7 @@ export default reduxForm({
     curr_business_date_status: '1',
   },
 })(
-  connect(null, {setCusFormInitialValues, fetchAllCustomerNum})(
+  connect(null, { setCusFormInitialValues, fetchAllCustomerNum })(
     Customer_Base_Info,
   ),
 );

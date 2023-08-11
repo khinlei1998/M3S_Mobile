@@ -10,6 +10,7 @@ function Edit_Guarantor_Sign(props) {
     show_canvas,
     guarantor_name,
     guarantor_update_status,
+    retrive_guarantor_data
   } = props;
   const queryParam = `?timestamp=${Date.now()}`;
 
@@ -41,7 +42,7 @@ function Edit_Guarantor_Sign(props) {
                 {guarantor_name}
               </Text>
             </View>
-            <Text> Date 17/05/2023</Text>
+            <Text>{moment(retrive_guarantor_data.create_datetime).format('YYYY-MM-DD')}</Text>
           </View>
 
           <View>

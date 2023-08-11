@@ -40,6 +40,7 @@ import { useNavigation } from '@react-navigation/native';
 import validate from './Validate';
 import { getAllLoan_By_application_no } from '../../query/AllLoan_query';
 import moment from 'moment';
+import { cus_filter_item } from '../../common';
 const Borrower_Sign_Modal = props => {
   const {
     show_canvas,
@@ -275,8 +276,8 @@ const Guarantor_modal = props => {
                     marginTop: 7,
                   }}
                   mode="dropdown">
-                  {emp_filter_item.length > 0 &&
-                    emp_filter_item.map(val => (
+                  {cus_filter_item.length > 0 &&
+                    cus_filter_item.map(val => (
                       <Picker.Item
                         label={val.label}
                         value={val.value}
@@ -379,12 +380,11 @@ const Guarantor_modal = props => {
   );
 };
 function Guarantor_Form(props) {
-  const dispatch = useDispatch();
   const navigation = useNavigation();
   const { handleSubmit } = props;
   const retrive_loan_data = props.route.params.retrive_loan_data;
   const [show_operation, setOperation] = useState('1');
-  const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
+  const [selectedItemValue, setSelectedItemValue] = useState('customer_nm');
   const [show_canvas, setCanvas] = useState(false);
   const [borrower_sign_path, setBorrowerSignPath] = useState('');
   const [show_borrower_sign, setShowBorrowerSign] = useState('');
@@ -473,7 +473,6 @@ function Guarantor_Form(props) {
 
   const loadData = async () => {
     await getAllLoan_By_application_no(retrive_loan_data.application_no).then(indi_data => {
-      console.log('indi_data',indi_data);
       let initialize_data = {
         application_no: retrive_loan_data.application_no,
         application_date: indi_data[0].application_date,
@@ -484,7 +483,6 @@ function Guarantor_Form(props) {
           : '',
         guarantee_no: retrive_loan_data.application_no.replace(/.*?(M)/, 'GTM'),
       };
-      console.log('initialize_data',initialize_data);
       props.initialize(initialize_data);
     })
     setGuaranteeDate(moment().format('YYYY/MM/DD'))

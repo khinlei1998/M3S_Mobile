@@ -9,10 +9,10 @@ import {
   ToastAndroid,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState, useEffect, useRef, createRef, useMemo} from 'react';
+import React, { useState, useEffect, useRef, createRef, useMemo } from 'react';
 import DividerLine from '../../components/DividerLine';
-import {updateLoanData} from '../../query/AllLoan_query';
-import {style} from '../../style/Individula_staff_Loan_Style';
+import { updateLoanData } from '../../query/AllLoan_query';
+import { style } from '../../style/Individula_staff_Loan_Style';
 import {
   operations,
   loan_type,
@@ -20,10 +20,10 @@ import {
   cus_filter_item,
   sav_product_type,
 } from '../../common';
-import {reduxForm, Field, change, reset, formValueSelector} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import { reduxForm, Field, change, reset, formValueSelector } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/Feather';
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 import BottomSheet from 'react-native-simple-bottom-sheet';
 import {
   RadioButton,
@@ -41,31 +41,31 @@ import Edit_Individual_staff_Emp_loan from './Edit_Individual_staff_Emp_loan';
 import Edit_Individual_Staff_CoBorrower_Info from './Edit_Invidual_Staff_CoBorrower_Info';
 import Edit_Individual_staff_Contract from './Edit_Individual_staff_Contract';
 import Edit_Individual_Staff_Sign from './Edit_Individual_Staff_Sign';
-import {getAllLoan} from '../../query/AllLoan_query';
+import { getAllLoan } from '../../query/AllLoan_query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
-import {filterCustomer} from '../../query/Customer_query';
+import { filterCustomer } from '../../query/Customer_query';
 import SignatureCapture from 'react-native-signature-capture';
 import RNFS from 'react-native-fs';
-import {setStaffLoanUpdateStatus} from '../../redux/LoanReducer';
+import { setStaffLoanUpdateStatus } from '../../redux/LoanReducer';
 import {
   deleteStaffLoan_ByID,
 } from '../../query/StaffLoan_query';
-import {getGuarantorData} from '../../query/Guarantor_query';
-import {getExceptionalApproval} from '../../query/Exceptional_Approval_query';
-import {getRelationData} from '../../query/RelationShip_query';
-import {getEvaluationData} from '../../query/AreaEvaluation_query';
-import {filterCustomerByEmpno} from '../../query/Customer_query';
+import { getGuarantorData } from '../../query/Guarantor_query';
+import { getExceptionalApproval } from '../../query/Exceptional_Approval_query';
+import { getRelationData } from '../../query/RelationShip_query';
+import { getEvaluationData } from '../../query/AreaEvaluation_query';
+import { filterCustomerByEmpno } from '../../query/Customer_query';
 import validate from '../Staff_Loan/Validate';
 import City_Modal from '../../components/City_Modal';
-import {filterCity} from '../../query/CodeInfo_quey';
-import {filterTownship} from '../../query/Township_query';
+import { filterCity } from '../../query/CodeInfo_quey';
+import { filterTownship } from '../../query/Township_query';
 import Ward_Model from '../../components/Ward_Model';
 import Location_Modal from '../../components/Location_Modal';
 import Township_Modal from '../../components/Township_Modal';
-import {filterVillage} from '../../query/Village_query';
-import {filterWard} from '../../query/Ward_query';
-import {filterLocation} from '../../query/CodeInfo_quey';
+import { filterVillage } from '../../query/Village_query';
+import { filterWard } from '../../query/Ward_query';
+import { filterLocation } from '../../query/CodeInfo_quey';
 import Village_Modal from '../../components/Village_Modal';
 const Borrower_Sign_Modal = props => {
   const {
@@ -78,7 +78,6 @@ const Borrower_Sign_Modal = props => {
     resetSign,
     sign,
   } = props;
-  console.log('show_canvas', show_canvas);
   return (
     <Modal
       visible={show_canvas}
@@ -125,7 +124,7 @@ const Borrower_Sign_Modal = props => {
           // backgroundColor="transparent"
           viewMode={'portrait'}
         />
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <TouchableHighlight
             style={{
               flex: 1,
@@ -139,7 +138,7 @@ const Borrower_Sign_Modal = props => {
             onPress={() => {
               saveSign();
             }}>
-            <Text style={{color: '#fff'}}>Save</Text>
+            <Text style={{ color: '#fff' }}>Save</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={{
@@ -154,7 +153,7 @@ const Borrower_Sign_Modal = props => {
             onPress={() => {
               resetSign();
             }}>
-            <Text style={{color: '#fff'}}>Reset</Text>
+            <Text style={{ color: '#fff' }}>Reset</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -219,7 +218,7 @@ const Co_Borrower_Sign_Modal = props => {
           // backgroundColor="transparent"
           viewMode={'portrait'}
         />
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <TouchableHighlight
             style={{
               flex: 1,
@@ -233,7 +232,7 @@ const Co_Borrower_Sign_Modal = props => {
             onPress={() => {
               co_borrower_saveSign();
             }}>
-            <Text style={{color: '#fff'}}>Save</Text>
+            <Text style={{ color: '#fff' }}>Save</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={{
@@ -248,7 +247,7 @@ const Co_Borrower_Sign_Modal = props => {
             onPress={() => {
               co_borrower_resetSign();
             }}>
-            <Text style={{color: '#fff'}}>Reset</Text>
+            <Text style={{ color: '#fff' }}>Reset</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -268,6 +267,8 @@ const Emp_No_Search_modal = props => {
     selectedItemValue,
     handleItemValueChange,
     setAllCus,
+    setBorrowerName,
+    setLoanLimitAmount
   } = props;
 
   const onChangeEmpText = inputText => {
@@ -285,7 +286,7 @@ const Emp_No_Search_modal = props => {
       change(
         'Edit_Individual_Staff_Loan_Form',
         'borrower_name',
-        item.employee_name,
+        item.customer_nm,
       ),
     );
     dispatch(
@@ -302,9 +303,68 @@ const Emp_No_Search_modal = props => {
         item.employee_no,
       ),
     );
+    dispatch(
+      change('Edit_Individual_Staff_Loan_Form', 'entry_date', item.entry_date),
+    );
+    dispatch(
+      change(
+        'Edit_Individual_Staff_Loan_Form',
+        'position_title_nm',
+        item.position_title_nm,
+      ),
+    );
+    dispatch(
+      change('Edit_Individual_Staff_Loan_Form', 'branch_code', item.branch_code),
+    );
+    dispatch(
+      change(
+        'Edit_Individual_Staff_Loan_Form',
+        'salary_rating_code',
+        JSON.stringify(item.salary_rating_code),
+      ),
+    );
+    dispatch(
+      change('Edit_Individual_Staff_Loan_Form', 'customer_no', item.customer_no),
+    );
+    dispatch(
+      change(
+        'Edit_Individual_Staff_Loan_Form',
+        'saving_acct_num',
+        item.saving_acct_num,
+      ),
+    );
+    dispatch(change('Edit_Individual_Staff_Loan_Form', 'tel_no', item.tel_no));
+    dispatch(change('Edit_Individual_Staff_Loan_Form', 'gender', item.gender));
+    dispatch(
+      change('Edit_Individual_Staff_Loan_Form', 'birth_date', item.birth_date),
+    );
+    dispatch(
+      change(
+        'Edit_Individual_Staff_Loan_Form',
+        'marital_status',
+        JSON.stringify(item.marital_status),
+      ),
+    );
+    dispatch(
+      change(
+        'Edit_Individual_Staff_Loan_Form',
+        'address_type',
+        JSON.stringify(item.address_type),
+      ),
+    );
+    dispatch(change('Edit_Individual_Staff_Loan_Form', 'addr', item.addr));
+    dispatch(
+      change(
+        'Edit_Individual_Staff_Loan_Form',
+        'salary_amount',
+        JSON.stringify(item.tot_sale_income),
+      ),
+    );
+    setBorrowerName(item.customer_nm)
+    setLoanLimitAmount(0)
   };
 
-  const item = ({item, index}) => {
+  const item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -381,8 +441,8 @@ const Emp_No_Search_modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{marginRight: 10}}>Search Item:</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
@@ -404,7 +464,7 @@ const Emp_No_Search_modal = props => {
                 </Picker>
               </View>
 
-              <View style={{width: '40%'}}>
+              <View style={{ width: '40%' }}>
                 <TextInput
                   style={{
                     backgroundColor: '#fff',
@@ -475,7 +535,7 @@ const Emp_No_Search_modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
               <Button
                 onPress={() => hideModal()}
                 mode="contained"
@@ -509,7 +569,7 @@ const CoBorrower_NRC_Search_modal = props => {
     all_co_borrower,
     selectedItemValue,
     handleItemValueChange,
-    handleSubmit,
+    setCoBorrowerName
   } = props;
 
   const onChangeCusText = inputText => {
@@ -517,8 +577,6 @@ const CoBorrower_NRC_Search_modal = props => {
   };
 
   const btnCusSearch = async () => {
-    console.log('selectedItemValue', selectedItemValue);
-    console.log('cus_data', cus_data);
     await filterCustomer(selectedItemValue, cus_data)
       .then(data =>
         data.length > 0 ? setAllCoBorrower(data) : alert('No data'),
@@ -555,9 +613,10 @@ const CoBorrower_NRC_Search_modal = props => {
         item.resident_rgst_id,
       ),
     );
+    setCoBorrowerName(item.customer_nm)
   };
 
-  const item = ({item, index}) => {
+  const item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -632,8 +691,8 @@ const CoBorrower_NRC_Search_modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{marginRight: 10}}>Search Item:</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
@@ -655,7 +714,7 @@ const CoBorrower_NRC_Search_modal = props => {
                 </Picker>
               </View>
 
-              <View style={{width: '40%'}}>
+              <View style={{ width: '40%' }}>
                 <TextInput
                   style={{
                     backgroundColor: '#fff',
@@ -726,7 +785,7 @@ const CoBorrower_NRC_Search_modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
               <Button
                 onPress={() => CoBorrowerhideModal()}
                 mode="contained"
@@ -822,11 +881,12 @@ function Individual_Staff_loan_Info(props) {
   const [all_location, setAllLocation] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const {handleSubmit} = props;
+  const { handleSubmit } = props;
   const handleLoanToggle = () => {
     setLoanExpanded(!loanexpanded);
   };
-
+  const [borrower_name, setBorrowerName] = useState('');
+  const [coborrower_name, setCoBorrowerName] = useState('');
   const [show_co_borrower_canvas, setCoBorrowerCanvas] = useState(false);
 
   const loadData = async () => {
@@ -866,11 +926,11 @@ function Individual_Staff_loan_Info(props) {
   const RenderBottomSheet = () =>
     useMemo(() => {
       return (
-        <BottomSheet isOpen={false} wrapperStyle={{backgroundColor: '#3E3E84'}}>
-          <View style={{padding: 5, marginLeft: 10}}>
-            <View style={{flexDirection: 'row'}}>
+        <BottomSheet isOpen={false} wrapperStyle={{ backgroundColor: '#3E3E84' }}>
+          <View style={{ padding: 5, marginLeft: 10 }}>
+            <View style={{ flexDirection: 'row' }}>
               <Icon name="paperclip" size={25} color="#fff" />
-              <Text style={{color: '#fff', fontSize: 20, marginLeft: 10}}>
+              <Text style={{ color: '#fff', fontSize: 20, marginLeft: 10 }}>
                 Document Submit
               </Text>
             </View>
@@ -891,13 +951,13 @@ function Individual_Staff_loan_Info(props) {
                   onPress={() =>
                     update_status == true && guarantor_data.length == 0
                       ? props.navigation.navigate('Guarantor', {
-                          retrive_loan_data: retrive_staff_loan_data,
-                        })
+                        retrive_loan_data: retrive_staff_loan_data,
+                      })
                       : update_status == true && guarantor_data.length > 0
-                      ? props.navigation.navigate('Edit Guarantor', {
+                        ? props.navigation.navigate('Edit Guarantor', {
                           guarantor_data,
                         })
-                      : ToastAndroid.show(
+                        : ToastAndroid.show(
                           `Only update can modify`,
                           ToastAndroid.SHORT,
                         )
@@ -917,9 +977,9 @@ function Individual_Staff_loan_Info(props) {
                         margin: 5,
                       }}>
                       <View
-                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="check" size={20} color="#ede72d" />
-                        <Text style={{color: '#fff', marginLeft: 5}}>
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
                           Guarantor Form
                         </Text>
                       </View>
@@ -932,9 +992,9 @@ function Individual_Staff_loan_Info(props) {
                         margin: 5,
                       }}>
                       <View
-                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="paperclip" size={20} color="#fff" />
-                        <Text style={{color: '#fff', marginLeft: 5}}>
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
                           Guarantor Form
                         </Text>
                       </View>
@@ -946,13 +1006,13 @@ function Individual_Staff_loan_Info(props) {
                   onPress={() =>
                     update_status == true && evaluation_data.length == 0
                       ? props.navigation.navigate('Area Evaluation', {
-                          retrive_loan_data: retrive_staff_loan_data,
-                        })
+                        retrive_loan_data: retrive_staff_loan_data,
+                      })
                       : update_status == true && evaluation_data.length > 0
-                      ? props.navigation.navigate('Edit Area Evaluation', {
+                        ? props.navigation.navigate('Edit Area Evaluation', {
                           evaluation_data,
                         })
-                      : ToastAndroid.show(
+                        : ToastAndroid.show(
                           `Only update can modify`,
                           ToastAndroid.SHORT,
                         )
@@ -977,9 +1037,9 @@ function Individual_Staff_loan_Info(props) {
                         margin: 5,
                       }}>
                       <View
-                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="check" size={20} color="#ede72d" />
-                        <Text style={{color: '#fff', marginLeft: 5}}>
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
                           Area Evaluation Form
                         </Text>
                       </View>
@@ -992,9 +1052,9 @@ function Individual_Staff_loan_Info(props) {
                         margin: 5,
                       }}>
                       <View
-                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="paperclip" size={20} color="#fff" />
-                        <Text style={{color: '#fff', marginLeft: 5}}>
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
                           Area Evaluation Form
                         </Text>
                       </View>
@@ -1006,13 +1066,13 @@ function Individual_Staff_loan_Info(props) {
                   onPress={() =>
                     update_status == true && relation_data.length == 0
                       ? props.navigation.navigate('Relation Form', {
-                          retrive_loan_data: retrive_staff_loan_data,
-                        })
+                        retrive_loan_data: retrive_staff_loan_data,
+                      })
                       : update_status == true && relation_data.length > 0
-                      ? props.navigation.navigate('Edit Relation', {
+                        ? props.navigation.navigate('Edit Relation', {
                           relation_data,
                         })
-                      : ToastAndroid.show(
+                        : ToastAndroid.show(
                           `Only update can modify`,
                           ToastAndroid.SHORT,
                         )
@@ -1032,9 +1092,9 @@ function Individual_Staff_loan_Info(props) {
                         margin: 5,
                       }}>
                       <View
-                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="check" size={20} color="#ede72d" />
-                        <Text style={{color: '#fff', marginLeft: 5}}>
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
                           RelationShip Form
                         </Text>
                       </View>
@@ -1047,9 +1107,9 @@ function Individual_Staff_loan_Info(props) {
                         margin: 5,
                       }}>
                       <View
-                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="paperclip" size={20} color="#fff" />
-                        <Text style={{color: '#fff', marginLeft: 5}}>
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
                           RelationShip Form
                         </Text>
                       </View>
@@ -1081,9 +1141,9 @@ function Individual_Staff_loan_Info(props) {
                       justifyContent: 'space-between',
                       margin: 5,
                     }}>
-                    <View style={{alignItems: 'center', flexDirection: 'row'}}>
+                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
                       <Icon name="paperclip" size={20} color="#fff" />
-                      <Text style={{color: '#fff', marginLeft: 5}}>
+                      <Text style={{ color: '#fff', marginLeft: 5 }}>
                         Evidence Document Form
                       </Text>
                     </View>
@@ -1095,14 +1155,14 @@ function Individual_Staff_loan_Info(props) {
                   onPress={() =>
                     update_status == true && exceptional_data.length == 0
                       ? props.navigation.navigate('Exceptional_Approvel_Form', {
-                          retrive_loan_data: retrive_staff_loan_data,
-                        })
+                        retrive_loan_data: retrive_staff_loan_data,
+                      })
                       : update_status == true && exceptional_data.length > 0
-                      ? props.navigation.navigate(
+                        ? props.navigation.navigate(
                           'Edit_Exceptional_Approvel_Form',
-                          {exceptional_data},
+                          { exceptional_data },
                         )
-                      : ToastAndroid.show(
+                        : ToastAndroid.show(
                           `Only update can modify`,
                           ToastAndroid.SHORT,
                         )
@@ -1122,17 +1182,17 @@ function Individual_Staff_loan_Info(props) {
                     }}>
                     {exceptional_data.length > 0 ? (
                       <View
-                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="check" size={20} color="#ede72d" />
-                        <Text style={{color: '#fff', marginLeft: 5}}>
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
                           Exceptional Approval Request...
                         </Text>
                       </View>
                     ) : (
                       <View
-                        style={{alignItems: 'center', flexDirection: 'row'}}>
+                        style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="paperclip" size={20} color="#fff" />
-                        <Text style={{color: '#fff', marginLeft: 5}}>
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
                           Exceptional Approval Request...
                         </Text>
                         <Icon name="chevron-right" size={25} color="#fff" />
@@ -1158,9 +1218,9 @@ function Individual_Staff_loan_Info(props) {
                       justifyContent: 'space-between',
                       margin: 5,
                     }}>
-                    <View style={{alignItems: 'center', flexDirection: 'row'}}>
+                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
                       <Icon name="paperclip" size={20} color="#fff" />
-                      <Text style={{color: '#fff', marginLeft: 5}}>
+                      <Text style={{ color: '#fff', marginLeft: 5 }}>
                         Passport Photo
                       </Text>
                     </View>
@@ -1272,20 +1332,21 @@ function Individual_Staff_loan_Info(props) {
     if (retrive_staff_loan_data.village_status == 2) {
       setVillage('2');
     }
+    setBorrowerName(retrive_staff_loan_data.borrower_name)
+    setCoBorrowerName(retrive_staff_loan_data.co_brwer_name)
+
   }, []);
 
   const saveSignatureToInternalStorage = async (image_encode, index) => {
     const user_id = await AsyncStorage.getItem('user_id');
     try {
       // Request write storage permission
-      // const granted = await requestWriteStoragePermission();
       const granted = await AsyncStorage.getItem('writeStoragePermission');
 
       if (granted) {
         // Generate a unique filename for the image
-        const filename = `20${user_id}${moment().format('YYYYMMDD')}${
-          all_loandata.length + 1
-        }SG${index}.jpg`;
+        const filename = `20${user_id}${moment().format('YYYYMMDD')}${all_loandata.length + 1
+          }SG${index}.jpg`;
         const directory = '/storage/emulated/0/Pictures/Signature/';
         const filePath = directory + filename;
         await RNFS.mkdir(directory);
@@ -1491,7 +1552,7 @@ function Individual_Staff_loan_Info(props) {
         setLoading(false);
       });
   };
-  const township_item = ({item, index}) => {
+  const township_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -1536,7 +1597,7 @@ function Individual_Staff_loan_Info(props) {
       </View>
     );
   };
-  const village_item = ({item, index}) => {
+  const village_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -1586,7 +1647,7 @@ function Individual_Staff_loan_Info(props) {
   const onChangeVillageText = textvalues => {
     setVillageText(textvalues);
   };
-  const location_item = ({item, index}) => {
+  const location_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -1631,7 +1692,7 @@ function Individual_Staff_loan_Info(props) {
       </View>
     );
   };
-  const ward_item = ({item, index}) => {
+  const ward_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -1710,7 +1771,7 @@ function Individual_Staff_loan_Info(props) {
   const onChangeTownshipText = textvalues => {
     setTownshipText(textvalues);
   };
-  const city_item = ({item, index}) => {
+  const city_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -1899,7 +1960,7 @@ function Individual_Staff_loan_Info(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{flex: 1, backgroundColor: '#fff'}}>
+          <View style={{ flex: 1, backgroundColor: '#fff' }}>
             <Text style={style.title_style}>
               Individual Staff Loan Application
             </Text>
@@ -1926,7 +1987,7 @@ function Individual_Staff_loan_Info(props) {
                         label={option.label}
                         value={option.value}
                         color="#000"
-                        labelStyle={{marginLeft: 5}}
+                        labelStyle={{ marginLeft: 5 }}
                       />
                     </View>
                   </RadioButton.Group>
@@ -1937,8 +1998,8 @@ function Individual_Staff_loan_Info(props) {
                   update_status == true && show_operation == '3'
                     ? false
                     : update_status == false && show_operation == '4'
-                    ? false
-                    : true
+                      ? false
+                      : true
                 }
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
@@ -2090,6 +2151,8 @@ function Individual_Staff_loan_Info(props) {
               show_borrower_sign={show_borrower_sign}
               show_coborrower_sign={show_coborrower_sign}
               coborrower_sign_path={coborrower_sign_path}
+              borrower_name={borrower_name}
+              coborrower_name={coborrower_name}
             />
           </View>
         </TouchableWithoutFeedback>
@@ -2104,6 +2167,8 @@ function Individual_Staff_loan_Info(props) {
         all_cus={all_cus}
         selectedItemValue={selectedItemValue}
         handleItemValueChange={handleItemValueChange}
+        setBorrowerName={setBorrowerName}
+        setLoanLimitAmount={setLoanLimitAmount}
       />
 
       <City_Modal
@@ -2180,6 +2245,8 @@ function Individual_Staff_loan_Info(props) {
         all_co_borrower={all_co_borrower}
         selectedItemValue={selectedItemValue}
         handleItemValueChange={handleItemValueChange}
+        setCoBorrowerName={setCoBorrowerName}
+
       />
       <Borrower_Sign_Modal
         show_canvas={show_canvas}
@@ -2221,7 +2288,7 @@ export default reduxForm({
   form: 'Edit_Individual_Staff_Loan_Form',
   validate,
 })(
-  connect(mapStateToProps, {setStaffLoanUpdateStatus})(
+  connect(mapStateToProps, { setStaffLoanUpdateStatus })(
     Individual_Staff_loan_Info,
   ),
 );

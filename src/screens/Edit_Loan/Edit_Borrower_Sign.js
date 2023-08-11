@@ -1,9 +1,8 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
-import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
-import {Button} from 'react-native-paper';
-import {reduxForm, Field, change} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import { reduxForm, } from 'redux-form';
+import { connect} from 'react-redux';
+import moment from 'moment';
 function Borrower_Sign(props) {
   const {
     update_status,
@@ -13,19 +12,18 @@ function Borrower_Sign(props) {
     borrower_sign_path,
     setCanvas,
     show_canvas,
-    showCanvas,
-    navigation,
-    filePath,
     setCoBorrowerCanvas,
-    co_borrower_filePath,
     show_co_borrower_canvas,
+    borrower_name,
+    coborrower_name,
+    retrive_loan_data
   } = props;
 
   const queryParam = `?timestamp=${Date.now()}`;
 
   return (
     <>
-      <View style={{flex: 1, padding: 5, margin: 20}}>
+      <View style={{ flex: 1, padding: 5, margin: 20 }}>
         <View
           style={{
             flexDirection: 'row',
@@ -34,15 +32,26 @@ function Borrower_Sign(props) {
             margin: 10,
           }}>
           <View>
-            <Text style={{fontWeight: 'bold', fontSize: 15}}>
-              Borrower Name
-            </Text>
-            <Text> Date 17/05/2023</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
+                Borrower Name
+              </Text>
+              <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
+                {borrower_name}
+              </Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
+                Date
+              </Text>
+              <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
+                <Text>{moment(retrive_loan_data.create_datetime).format('YYYY-MM-DD')}</Text>
+              </Text>
+            </View>
           </View>
-          {/* <Text>{borrower_sign_path}</Text> */}
 
           <View>
-            <Text style={{fontWeight: 'bold', fontSize: 15}}>Sign</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Sign</Text>
             {borrower_sign_path == null && (
               <TouchableOpacity
                 onPress={() =>
@@ -50,7 +59,7 @@ function Borrower_Sign(props) {
                 }>
                 <Image
                   source={require('../../../assets/images/default-sign.png')}
-                  style={{width: 100, height: 50}}
+                  style={{ width: 100, height: 50 }}
                 />
               </TouchableOpacity>
             )}
@@ -60,9 +69,9 @@ function Borrower_Sign(props) {
                   update_status == true && setCanvas(!show_canvas)
                 }>
                 <Image
-                  source={{uri: `file://${borrower_sign_path}${queryParam}`}}
+                  source={{ uri: `file://${borrower_sign_path}${queryParam}` }}
                   // source={{ uri: `data:image/png;base64,${show_borrower_sign}` }}
-                  style={{width: 100, height: 50}}
+                  style={{ width: 100, height: 50 }}
                 />
               </TouchableOpacity>
             ) : (
@@ -73,7 +82,7 @@ function Borrower_Sign(props) {
                     source={{
                       uri: `data:image/png;base64,${show_borrower_sign}`,
                     }}
-                    style={{width: 100, height: 50}}
+                    style={{ width: 100, height: 50 }}
                   />
                 </TouchableOpacity>
               )
@@ -96,14 +105,26 @@ function Borrower_Sign(props) {
             margin: 10,
           }}>
           <View>
-            <Text style={{fontWeight: 'bold', fontSize: 15}}>
-              Co Borrower Name
-            </Text>
-            <Text> Date 17/05/2023</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
+                Co Borrower Name
+              </Text>
+              <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
+                {coborrower_name}
+              </Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
+                Date
+              </Text>
+              <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
+              <Text>{moment(retrive_loan_data.create_datetime).format('YYYY-MM-DD')}</Text>
+              </Text>
+            </View>
           </View>
 
           <View>
-            <Text style={{fontWeight: 'bold', fontSize: 15}}>Sign</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Sign</Text>
             {coborrower_sign_path == null && (
               <TouchableOpacity
                 onPress={() =>
@@ -112,7 +133,7 @@ function Borrower_Sign(props) {
                 }>
                 <Image
                   source={require('../../../assets/images/default-sign.png')}
-                  style={{width: 100, height: 50}}
+                  style={{ width: 100, height: 50 }}
                 />
               </TouchableOpacity>
             )}
@@ -123,9 +144,8 @@ function Borrower_Sign(props) {
                   setCoBorrowerCanvas(!show_co_borrower_canvas)
                 }>
                 <Image
-                  source={{uri: `file://${coborrower_sign_path}${queryParam}`}}
-                  // source={{ uri: `data:image/png;base64,${show_borrower_sign}` }}
-                  style={{width: 100, height: 50}}
+                  source={{ uri: `file://${coborrower_sign_path}${queryParam}` }}
+                  style={{ width: 100, height: 50 }}
                 />
               </TouchableOpacity>
             ) : (
@@ -136,7 +156,7 @@ function Borrower_Sign(props) {
                     source={{
                       uri: `data:image/png;base64,${show_coborrower_sign}`,
                     }}
-                    style={{width: 100, height: 50}}
+                    style={{ width: 100, height: 50 }}
                   />
                 </TouchableOpacity>
               )
@@ -151,6 +171,7 @@ function Borrower_Sign(props) {
 function mapStateToProps(state) {
   return {
     update_status: state.loan.update_status,
+    retrive_loan_data: state.loan.edit_loandata,
   };
 }
 

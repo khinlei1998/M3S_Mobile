@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import moment from 'moment';
 export async function getGuarantorData(application_no) {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
@@ -19,6 +19,7 @@ export async function getGuarantorData(application_no) {
 
 export const storeGuarantor = async data => {
   const user_id = await AsyncStorage.getItem('user_id');
+  const date = moment().format();
   return new Promise(async (resolve, reject) => {
     try {
       global.db.transaction(trans => {
@@ -29,7 +30,7 @@ export const storeGuarantor = async data => {
             null, //serialNo
             null, //org code
             '01', //status code
-            null, //create_datetime
+            date, //create_datetime
             null, //create_user_id
             null, //deleteDatetime
             null, //delet usr id
@@ -110,7 +111,6 @@ export async function deleteGuarantor_ByID(guarantee_no) {
   }
 }
 export const updateGuarantor = async data => {
-  const user_id = await AsyncStorage.getItem('user_id');
   return new Promise(async (resolve, reject) => {
     try {
       global.db.transaction(trans => {

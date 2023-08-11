@@ -8,9 +8,9 @@ import {
   TouchableHighlight,
   ToastAndroid,
 } from 'react-native';
-import React, {useState, useEffect, useRef, createRef} from 'react';
+import React, { useState, useEffect, useRef, createRef } from 'react';
 import DividerLine from '../../components/DividerLine';
-import {style} from '../../style/Individual_Loan_style';
+import { style } from '../../style/Individual_Loan_style';
 import {
   operations,
 } from '../../common';
@@ -23,39 +23,39 @@ import {
   Provider,
   Portal,
 } from 'react-native-paper';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import { reduxForm, Field, change, reset } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
 import DatePicker from '../../components/DatePicker';
-import {Picker} from '@react-native-picker/picker';
-import {getAllLoan} from '../../query/AllLoan_query';
+import { Picker } from '@react-native-picker/picker';
+import { getAllLoan } from '../../query/AllLoan_query';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Borrower_Info from './Borrower_Info';
 import Icon from 'react-native-vector-icons/Feather';
-import {filterCustomer} from '../../query/Customer_query';
+import { filterCustomer } from '../../query/Customer_query';
 import Co_Borrower_Info from './Co_Borrower_Info';
 import Loan_Business_Info from './Loan_Business_Info';
 import Borrower_Monthly_Income from './Borrower_Monthly_Income';
-import {getAllLoanMax} from '../../query/LoanMax_query';
+import { getAllLoanMax } from '../../query/LoanMax_query';
 import Borrower_Current_Map from './Borrower_Current_Map';
 import Borrower_Contract from './Borrower_Contract';
 import Borrower_Sign from './Borrower_Sign';
 import SignatureCapture from 'react-native-signature-capture';
-import {storeLoanData} from '../../query/AllLoan_query';
+import { storeLoanData } from '../../query/AllLoan_query';
 import validate from './Validate';
-import {TextInput} from 'react-native-paper';
-import {resetMonthlyIncome} from '../../redux/MonthlyReducer';
+import { TextInput } from 'react-native-paper';
+import { resetMonthlyIncome } from '../../redux/MonthlyReducer';
 import {
   cus_filter_item,
   sav_product_type,
   interest_rate,
   loan_type,
 } from '../../common';
-import {setBorrowerMap_Path} from '../../redux/LoanReducer';
-import {RenderBottomSheet} from '../../components/RenderBotttomSheet';
-import {addCustomerInfo} from '../../redux/CustomerReducer';
+import { setBorrowerMap_Path } from '../../redux/LoanReducer';
+import { RenderBottomSheet } from '../../components/RenderBotttomSheet';
+import { addCustomerInfo } from '../../redux/CustomerReducer';
 import {
   totalFamilyExpense,
   totalIncome,
@@ -66,7 +66,7 @@ import City_Modal from '../../components/City_Modal';
 import Village_Modal from '../../components/Village_Modal';
 import Ward_Model from '../../components/Ward_Model';
 import Township_Modal from '../../components/Township_Modal';
-import {filterCity, filterLocation} from '../../query/CodeInfo_quey';
+import { filterCity, filterLocation } from '../../query/CodeInfo_quey';
 import { filterTownship } from '../../query/Township_query';
 import { filterVillage } from '../../query/Village_query';
 import Location_Modal from '../../components/Location_Modal';
@@ -89,6 +89,7 @@ const Borrower_modal = props => {
     totalFamilyIncome,
     totalFamilyExpense,
     addCustomerInfo,
+    setBorrowerName
   } = props;
 
   const onChangeEmpText = inputText => {
@@ -102,6 +103,7 @@ const Borrower_modal = props => {
   };
 
   const btnSelectEmployee = item => {
+    console.log('item',item);
     addCustomerInfo(item); //to calculate income
     setSelectedValue(item.id);
     //Borrower info
@@ -367,9 +369,10 @@ const Borrower_modal = props => {
     totalFamilyExpense(
       item.fmly_tot_expense ? parseFloat(item.fmly_tot_expense) : 0,
     );
+    setBorrowerName(item.customer_nm)
   };
 
-  const item = ({item, index}) => {
+  const item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -443,8 +446,8 @@ const Borrower_modal = props => {
             flexDirection: 'row',
             justifyContent: 'space-around',
           }}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{marginRight: 10}}>Search Item:</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
             <Picker
               selectedValue={selectedItemValue}
@@ -466,7 +469,7 @@ const Borrower_modal = props => {
             </Picker>
           </View>
 
-          <View style={{width: '40%'}}>
+          <View style={{ width: '40%' }}>
             <TextInput
               style={{
                 backgroundColor: '#fff',
@@ -537,7 +540,7 @@ const Borrower_modal = props => {
           keyExtractor={(item, index) => index.toString()}
         />
 
-        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <Button
             onPress={() => hideModal()}
             mode="contained"
@@ -569,6 +572,7 @@ const CoBorrower_modal = props => {
     selectedItemValue,
     handleItemValueChange,
     setAllCoBorrower,
+    setCoBorrowerName
   } = props;
   const btnCusSearch = async () => {
     await filterCustomer(selectedItemValue, co_borrower_data)
@@ -579,7 +583,6 @@ const CoBorrower_modal = props => {
   };
 
   const btnSelectEmployee = item => {
-    console.log('co borrrower item', item);
     setCoborrowerSelectedValue(item.id);
     dispatch(
       change('Individual_Loan_Form', 'co_brwer_rgst_id', item.resident_rgst_id),
@@ -593,12 +596,10 @@ const CoBorrower_modal = props => {
     );
     dispatch(change('Individual_Loan_Form', 'co_brwer_tel_no', item.tel_no));
     dispatch(change('Individual_Loan_Form', 'co_occupation', item.occupation));
-    // dispatch(
-    //   change('Individual_Loan_Form', 'borrower_rltn', item.customer_no),
-    // );
+    setCoBorrowerName(item.customer_nm)
   };
 
-  const item = ({item, index}) => {
+  const item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -679,8 +680,8 @@ const CoBorrower_modal = props => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{marginRight: 10}}>Search Item:</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
@@ -702,7 +703,7 @@ const CoBorrower_modal = props => {
                 </Picker>
               </View>
 
-              <View style={{width: '40%'}}>
+              <View style={{ width: '40%' }}>
                 <TextInput
                   style={{
                     backgroundColor: '#fff',
@@ -773,7 +774,7 @@ const CoBorrower_modal = props => {
               keyExtractor={(item, index) => index.toString()}
             />
 
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
               <Button
                 onPress={() => hideCoBorrowerModal()}
                 mode="contained"
@@ -848,7 +849,7 @@ const Borrower_Sign_Modal = props => {
           maxStrokeWidth={10}
           viewMode={'portrait'}
         />
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <TouchableHighlight
             style={{
               flex: 1,
@@ -862,7 +863,7 @@ const Borrower_Sign_Modal = props => {
             onPress={() => {
               saveSign();
             }}>
-            <Text style={{color: '#fff'}}>Save</Text>
+            <Text style={{ color: '#fff' }}>Save</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={{
@@ -877,7 +878,7 @@ const Borrower_Sign_Modal = props => {
             onPress={() => {
               resetSign();
             }}>
-            <Text style={{color: '#fff'}}>Reset</Text>
+            <Text style={{ color: '#fff' }}>Reset</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -942,7 +943,7 @@ const Co_Borrower_Sign_Modal = props => {
           // backgroundColor="transparent"
           viewMode={'portrait'}
         />
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <TouchableHighlight
             style={{
               flex: 1,
@@ -956,7 +957,7 @@ const Co_Borrower_Sign_Modal = props => {
             onPress={() => {
               co_borrower_saveSign();
             }}>
-            <Text style={{color: '#fff'}}>Save</Text>
+            <Text style={{ color: '#fff' }}>Save</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={{
@@ -971,7 +972,7 @@ const Co_Borrower_Sign_Modal = props => {
             onPress={() => {
               co_borrower_resetSign();
             }}>
-            <Text style={{color: '#fff'}}>Reset</Text>
+            <Text style={{ color: '#fff' }}>Reset</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -1041,6 +1042,8 @@ function Individual_Loan(props) {
   const [show_coborrower_sign, setShowCoBorrowerSign] = useState('');
   const [loading, setLoading] = useState(false);
   const [all_loandata, setAllLoanData] = useState([]);
+  const [borrower_name, setBorrowerName] = useState('');
+  const [coborrower_name, setCoBorrowerName] = useState('');
 
   const {
     handleSubmit,
@@ -1067,9 +1070,8 @@ function Individual_Loan(props) {
 
       if (granted) {
         // Generate a unique filename for the image
-        const filename = `10${user_id}${moment().format('YYYYMMDD')}${
-          all_loandata.length + 1
-        }SG${index}.jpg`;
+        const filename = `10${user_id}${moment().format('YYYYMMDD')}${all_loandata.length + 1
+          }SG${index}.jpg`;
         const directory = '/storage/emulated/0/Pictures/Signature/';
         const filePath = directory + filename;
         await RNFS.mkdir(directory);
@@ -1177,7 +1179,6 @@ function Individual_Loan(props) {
   };
   const loadData = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
-
     await getAllLoan().then(loan_data => {
       setAllLoanData(loan_data);
       dispatch(
@@ -1391,12 +1392,6 @@ function Individual_Loan(props) {
   const handleTownshipItemValueChange = itemValue => {
     setSelectedTownshipItemValue(itemValue);
   };
-  const handleVllageItemValueChange = itemValue => {
-    setVillageSelectedItemValue(itemValue);
-  };
-  const handleWardItemValueChange = itemValue => {
-    setWardSelectedItemValue(itemValue);
-  };
 
   const handleLocationItemValueChange = itemValue => {
     setLocationSelectedItemValue(itemValue);
@@ -1466,7 +1461,7 @@ function Individual_Loan(props) {
   const onChangeCityText = inputText => {
     set_cityText(inputText);
   };
-  const city_item = ({item, index}) => {
+  const city_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -1514,7 +1509,7 @@ function Individual_Loan(props) {
   const onChangeTownshipText = textvalues => {
     setTownshipText(textvalues);
   };
-  const township_item = ({item, index}) => {
+  const township_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -1559,7 +1554,7 @@ function Individual_Loan(props) {
       </View>
     );
   };
-  const village_item = ({item, index}) => {
+  const village_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -1609,7 +1604,7 @@ function Individual_Loan(props) {
   const onChangeVillageText = textvalues => {
     setVillageText(textvalues);
   };
-  const location_item = ({item, index}) => {
+  const location_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -1654,7 +1649,7 @@ function Individual_Loan(props) {
       </View>
     );
   };
-  const ward_item = ({item, index}) => {
+  const ward_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -1710,7 +1705,7 @@ function Individual_Loan(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{flex: 1, backgroundColor: '#fff'}}>
+          <View style={{ flex: 1, backgroundColor: '#fff' }}>
             <Text style={style.title_style}>Individual Loan Application</Text>
             <DividerLine />
 
@@ -1735,7 +1730,7 @@ function Individual_Loan(props) {
                         label={option.label}
                         value={option.value}
                         color="#636Dc6"
-                        labelStyle={{marginLeft: 5}}
+                        labelStyle={{ marginLeft: 5 }}
                       />
                     </View>
                   </RadioButton.Group>
@@ -1909,6 +1904,9 @@ function Individual_Loan(props) {
               borrower_sign_path={borrower_sign_path}
               show_borrower_sign={show_borrower_sign}
               show_coborrower_sign={show_coborrower_sign}
+              borrower_name={borrower_name}
+              coborrower_name={coborrower_name}
+
             />
           </View>
         </TouchableWithoutFeedback>
@@ -1929,6 +1927,7 @@ function Individual_Loan(props) {
         totalFamilyIncome={totalFamilyIncome}
         totalFamilyExpense={totalFamilyExpense}
         addCustomerInfo={addCustomerInfo}
+        setBorrowerName={setBorrowerName}
       />
 
       <CoBorrower_modal
@@ -1939,6 +1938,7 @@ function Individual_Loan(props) {
         handleItemValueChange={handleItemValueChange}
         selectedItemValue={selectedItemValue}
         all_co_borrower={all_co_borrower}
+        setCoBorrowerName={setCoBorrowerName}
       />
 
       <Borrower_Sign_Modal
@@ -2013,7 +2013,7 @@ function Individual_Loan(props) {
         setSelectedWardItemValue={setSelectedWardItemValue}
         loading={loading}
       />
-       <Location_Modal
+      <Location_Modal
         location_item={location_item}
         btnLocationSearch={btnLocationSearch}
         location_text={location_text}
