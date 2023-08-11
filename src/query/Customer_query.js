@@ -138,10 +138,10 @@ export function getCustomer_info() {
                         item.utlbilExpns,
                         item.edctExpns,
                         item.healthyExpns,
-                        item.fmlyTaxExpn,
+                        item.fmlyTaxExpns,
                         item.fmlyTrnsrtExpns,
                         item.financeExpns,
-                        item.fmlyOtrExpn,
+                        item.fmlyOtrExpns,
                         item.fmlyTotNetIncome,
                         item.tabletSyncStsitem, //81
                         item.syncStsitem,

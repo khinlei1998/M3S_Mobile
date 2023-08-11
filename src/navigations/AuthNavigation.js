@@ -46,9 +46,15 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
+         
          <Stack.Screen
         name="Individual_loan"
         component={Individual_Loan}
+        options={{ headerShown: false }}
+      />
+       <Stack.Screen
+        name="Synchronization"
+        component={Synchronization_Screen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -90,11 +96,7 @@ export default function AuthNavigation(props) {
 
 
 
-      <Stack.Screen
-        name="Synchronization"
-        component={Synchronization_Screen}
-        options={{ headerShown: false }}
-      />
+    
 
       <Stack.Screen
         name="Passport"
