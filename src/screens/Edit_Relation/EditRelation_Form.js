@@ -327,7 +327,7 @@ function Edit_Relation_Form(props) {
         console.log('Error deleting files:', error);
       }
     } else {
-      console.log('update values',values);
+      console.log('update values', values);
       const relation_data = Object.assign({}, values, {
         parent_yn: values.relation_name == 2 ? '1' : '',
         brother_sister_yn: values.relation_name == 3 ? '1' : '',
@@ -821,8 +821,9 @@ function Edit_Relation_Form(props) {
                 style={{
                   flexDirection: 'row',
                 }}>
-                {filtered_operations.map((option, index) => (
+                {operations.map((option, index) => (
                   <RadioButton.Group
+                    disabled={option.value == '1'}
                     key={index}
                     onValueChange={newValue => btnChangeOperation(newValue)}
                     value={show_operation}>
@@ -830,10 +831,9 @@ function Edit_Relation_Form(props) {
                       key={option.value}
                       style={{
                         flexDirection: 'row',
-                        // s                alignItems: 'center',
                       }}>
                       <RadioButton.Item
-                        // disabled={option.value !== show_operation}
+                        disabled={option.value == '1'}
                         label={option.label}
                         value={option.value}
                         color="#000"

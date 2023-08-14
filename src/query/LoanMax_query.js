@@ -26,7 +26,6 @@ export function getLoanMax() {
                             global.db.transaction(tx => {
                                 for (let i = 0; i < data.length; i += batchSize) {
                                     const records = data.slice(i, i + batchSize);
-                                    console.log('records>>>>>>', records.length);
                                     records.forEach(item => {
                                         tx.executeSql(
                                             'INSERT INTO Application_limit (serial_no,organization_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,status_code,product_type,loan_type,loan_cycle,calculate_type,start_month_num,end_month_num,loan_limit_amount,loan_limit_rate,err_msg) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',

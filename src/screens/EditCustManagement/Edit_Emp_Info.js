@@ -673,9 +673,22 @@ function Edit_Emp_Info(props) {
   };
 
   const btnCusSearch = async () => {
+    setLoading(!loading);
     await filterEmp(selectedItemValue, emp_text)
-      .then(data => (data.length > 0 ? setAllEmp(data) : alert('No data')))
-      .catch(error => console.log('error', error));
+      .then(data => {
+        if (data.length > 0) {
+          setAllEmp(data);
+        } else {
+          setAllEmp(data);
+          alert('No data');
+        }
+        setLoading(false);
+      })
+      .catch(error => {
+        alert('Something Wrong');
+        setAllEmp([]);
+        setLoading(false);
+      });
   };
 
   const btnCitySearch = async () => {
@@ -964,7 +977,7 @@ function Edit_Emp_Info(props) {
                 style={{
                   flexDirection: 'row',
                 }}>
-                {filtered_operations.map((option, index) => (
+                {operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
                     onValueChange={newValue => btnChangeOperation(newValue)}
@@ -979,8 +992,9 @@ function Edit_Emp_Info(props) {
                         uncheckedColor="#636Dc6"
                         color="#636Dc6"
                         disabled={
-                          filtered_cus_data.tablet_sync_sts === '01' &&
-                          option.value == 3
+                          option.value == '1' ||
+                          (filtered_cus_data.tablet_sync_sts === '01' &&
+                            option.value == 3)
                         }
                         label={option.label}
                         value={option.value}

@@ -1,5 +1,5 @@
-import {View, Text, StyleSheet} from 'react-native';
-import React, {useState, useRef, useEffect} from 'react';
+import {View, Text, } from 'react-native';
+import React, {useState, useRef, } from 'react';
 import {TextInput, DefaultTheme} from 'react-native-paper';
 
 export default function TextInputFile(props) {
@@ -96,7 +96,7 @@ export default function TextInputFile(props) {
         }
         onChangeText={text => handleTextChange(text)}
         style={{
-          backgroundColor: '#fff',
+          backgroundColor: editable?'#f8f8f8':'#fff',
           marginTop: 10,
           width: input_cusstyle ? '100%' : 301,
           borderColor: '#303030',
@@ -112,7 +112,6 @@ export default function TextInputFile(props) {
           ) : icon == 'magnify' ? (
             <TextInput.Icon icon={icon} onPress={handleTextInputFocus}  iconColor="#636Dc6" />
           ) : icon == 'calendar' ? (
-            // <TextInput.Icon icon={icon}  iconColor="#636Dc6"/>
             <TextInput.Icon icon={icon} onPress={handleTextInputFocus}  iconColor="#636Dc6" />
 
           ) : null

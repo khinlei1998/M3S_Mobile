@@ -5,26 +5,26 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   FlatList,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import DividerLine from '../../components/DividerLine';
-import { operations } from '../../common';
+import {operations} from '../../common';
 import Icon from 'react-native-vector-icons/Feather';
-import { Picker } from '@react-native-picker/picker';
-import { TextInput } from 'react-native-paper';
-import { reduxForm, change, } from 'redux-form';
-import { style } from '../../style/Cover_Loan_style';
-import { RadioButton, Button, Modal } from 'react-native-paper';
-import { connect, useDispatch } from 'react-redux';
-import { cus_filter_item } from '../../common';
-import { filterCustomer } from '../../query/Customer_query';
+import {Picker} from '@react-native-picker/picker';
+import {TextInput} from 'react-native-paper';
+import {reduxForm, change} from 'redux-form';
+import {style} from '../../style/Cover_Loan_style';
+import {RadioButton, Button, Modal} from 'react-native-paper';
+import {connect, useDispatch} from 'react-redux';
+import {cus_filter_item} from '../../common';
+import {filterCustomer} from '../../query/Customer_query';
 import Edit_Reloan_Info from './Edit_Reloan_Info';
 import Edit_Reloan_list from './Edit_Reloan_list';
-import { getLoan_By_GroupID } from '../../query/GropuLon_query';
-import { setReloan_UpdateStatus } from '../../redux/LoanReducer';
-import { deleteGroup_LoanID } from '../../query/GropuLon_query';
-import { updateGroupData } from '../../query/GropuLon_query';
+import {getLoan_By_GroupID} from '../../query/GropuLon_query';
+import {setReloan_UpdateStatus} from '../../redux/LoanReducer';
+import {deleteGroup_LoanID} from '../../query/GropuLon_query';
+import {updateGroupData} from '../../query/GropuLon_query';
 import validate from '../Group_Loan/Validate';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
@@ -57,7 +57,7 @@ const Borrower_modal = props => {
     dispatch(change('Cover_Form', 'customer_no', item.customer_no));
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -130,8 +130,8 @@ const Borrower_modal = props => {
             flexDirection: 'row',
             justifyContent: 'space-around',
           }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ marginRight: 10 }}>Search Item:</Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={{marginRight: 10}}>Search Item:</Text>
 
             <Picker
               selectedValue={selectedItemValue}
@@ -153,7 +153,7 @@ const Borrower_modal = props => {
             </Picker>
           </View>
 
-          <View style={{ width: '40%' }}>
+          <View style={{width: '40%'}}>
             <TextInput
               style={{
                 backgroundColor: '#fff',
@@ -224,7 +224,7 @@ const Borrower_modal = props => {
           keyExtractor={(item, index) => index.toString()}
         />
 
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <Button
             onPress={() => hideModal()}
             mode="contained"
@@ -244,7 +244,12 @@ const Borrower_modal = props => {
   );
 };
 function Edit_Reloan_Form(props) {
-  const { handleSubmit, navigation, setReloan_UpdateStatus, reloan_update_status } = props;
+  const {
+    handleSubmit,
+    navigation,
+    setReloan_UpdateStatus,
+    reloan_update_status,
+  } = props;
 
   const [show_operation, setOperation] = useState('2');
   const [modalVisible, setModalVisible] = useState(false);
@@ -272,30 +277,21 @@ function Edit_Reloan_Form(props) {
     if (show_operation == '4') {
       await deleteGroup_LoanID(values).then(response => {
         if (response == 'success') {
-          ToastAndroid.show(
-            `Delete Success`,
-            ToastAndroid.SHORT,
-          )
+          ToastAndroid.show(`Delete Success`, ToastAndroid.SHORT);
           navigation.goBack();
         }
-
       });
-    }
-    else {
+    } else {
       let data = Object.assign(values, {
         product_type: '50',
       });
       await updateGroupData(data).then(response => {
         if (response == 'success') {
-          ToastAndroid.show(
-            `Update Success`,
-            ToastAndroid.SHORT,
-          )
+          ToastAndroid.show(`Update Success`, ToastAndroid.SHORT);
           navigation.goBack();
         }
       });
     }
-
   };
 
   const handleItemValueChange = itemValue => {
@@ -329,7 +325,7 @@ function Edit_Reloan_Form(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{ flex: 1, backgroundColor: '#fff' }}>
+          <View style={{flex: 1, backgroundColor: '#fff'}}>
             <Text
               style={{
                 textAlign: 'center',
@@ -352,7 +348,7 @@ function Edit_Reloan_Form(props) {
                 style={{
                   flexDirection: 'row',
                 }}>
-                {filtered_operations.map((option, index) => (
+                {operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
                     onValueChange={newValue => btnChangeOperation(newValue)}
@@ -364,11 +360,11 @@ function Edit_Reloan_Form(props) {
                         alignItems: 'center',
                       }}>
                       <RadioButton.Item
-                        // disabled={option.value !== show_operation}
+                        disabled={option.value == '1'}
                         label={option.label}
                         value={option.value}
                         color="#000"
-                        labelStyle={{ marginLeft: 5 }}
+                        labelStyle={{marginLeft: 5}}
                       />
                     </View>
                   </RadioButton.Group>
@@ -408,11 +404,10 @@ function Edit_Reloan_Form(props) {
 function mapStateToProps(state) {
   return {
     reloan_update_status: state.loan.reloan_update_status,
-
   };
 }
 
 export default reduxForm({
   form: 'Edit_Reloan_Form',
-  validate
-})(connect(mapStateToProps, { setReloan_UpdateStatus })(Edit_Reloan_Form));
+  validate,
+})(connect(mapStateToProps, {setReloan_UpdateStatus})(Edit_Reloan_Form));

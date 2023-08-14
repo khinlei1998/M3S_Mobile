@@ -1,10 +1,10 @@
-import {View} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 import React, {useState} from 'react';
 import {style} from '../style/Customer_Mang_style';
 import {operations} from '../common';
 import {RadioButton, Button} from 'react-native-paper';
 export default function Create_Operation(props) {
-  const {handleSubmit} = props;
+  const {handleSubmit, btn_loading} = props;
   const [show_operation, setOperation] = useState('1');
 
   return (
@@ -36,13 +36,15 @@ export default function Create_Operation(props) {
           </RadioButton.Group>
         ))}
       </View>
-      <Button
-        onPress={handleSubmit}
-        mode="contained"
-        buttonColor={'#21316C'}
-        style={style.btnStyle}>
-        OK
-      </Button>
+      <>
+        {/* <ActivityIndicator size="small" color="red" /> */}
+        <Button
+          onPress={handleSubmit}
+          mode="contained"
+          buttonColor={'#21316C'}
+          style={style.btnStyle}>
+        </Button>
+      </>
     </View>
   );
 }

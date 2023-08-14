@@ -65,7 +65,8 @@ export default function DatePicker(props) {
           // editable={editable ? false : true}
           editable={false}
           style={{
-            backgroundColor: '#FFF',
+            // backgroundColor: '#FFF',
+            backgroundColor: '#FAFAFA',
             marginTop: 10,
             width: 300,
             // marginRight: 10,

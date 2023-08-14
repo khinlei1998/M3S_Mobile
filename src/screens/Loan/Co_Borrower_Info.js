@@ -52,7 +52,7 @@ function Co_Borrower_Info(props) {
                             component={TextInputFile}
                             cus_width
                             input_mode
-                            editable
+
                         />
                     </View>
 

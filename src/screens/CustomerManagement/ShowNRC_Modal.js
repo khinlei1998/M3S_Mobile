@@ -6,15 +6,11 @@ import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
 import { connect } from 'react-redux';
 import { fetchStateName } from '../../query/NRCinfo_query';
 import TextInputFile from '../../components/TextInputFile';
-import { state } from '../../common';
-import { gender } from '../../common';
 function ShowNRC_Modal(props) {
   const {
     hideNRCModal,
     nrc_visible,
     nrc_statecode,
-    nrc_prefix_code,
-    setNRCPrefixCode,
     setPrefix,
     btnCancel,
     prefix,

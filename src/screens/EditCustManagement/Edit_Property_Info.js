@@ -81,7 +81,7 @@ function Edit_property_Info(props) {
 
               <View>
                 <Field
-                  label={'prop_car_yn'}
+                  label={'Car'}
                   name={'prop_car_yn'}
                   component={SingleCheckBox}
                   initialValue={false}
@@ -102,7 +102,7 @@ function Edit_property_Info(props) {
             </View>
 
             <Field
-              name={'tot_prop_estmtd_val'}             
+              name={'tot_prop_estmtd_val'}
               title={'Estimated Value'}
               component={TextInputFile}
               input_mode

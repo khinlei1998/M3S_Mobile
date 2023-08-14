@@ -76,7 +76,6 @@ export async function getLoan_By_GroupID(group_aplc_no) {
         FROM Individual_application where group_aplc_no=?`,
         [group_aplc_no],
         (tx, results) => {
-          console.log('results', results);
           resolve(results.rows.raw());
         },
         (tx, error) => {

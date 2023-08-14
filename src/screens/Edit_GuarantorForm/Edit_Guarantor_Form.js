@@ -41,7 +41,7 @@ import {setGuarantor_UpdateStatus} from '../../redux/LoanReducer';
 import {deleteGuarantor_ByID} from '../../query/Guarantor_query';
 import {updateGuarantor} from '../../query/Guarantor_query';
 import validate from './Validate';
-import { cus_filter_item } from '../../common';
+import {cus_filter_item} from '../../common';
 const Borrower_Sign_Modal = props => {
   const {
     show_canvas,
@@ -472,8 +472,8 @@ function Edit_Guarantor_Form(props) {
         // Save the images
         let borrowerImagePath;
         let saveImageError = false;
-        console.log('borrower_sign_path',borrower_sign_path);
-        console.log('show_borrower_sign',show_borrower_sign);
+        console.log('borrower_sign_path', borrower_sign_path);
+        console.log('show_borrower_sign', show_borrower_sign);
         if (show_borrower_sign) {
           borrowerImagePath = await saveSignatureToInternalStorage(
             show_borrower_sign,
@@ -641,7 +641,7 @@ function Edit_Guarantor_Form(props) {
                 style={{
                   flexDirection: 'row',
                 }}>
-                {filtered_operations.map((option, index) => (
+                {operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
                     onValueChange={newValue => btnChangeOperation(newValue)}
@@ -653,7 +653,7 @@ function Edit_Guarantor_Form(props) {
                         alignItems: 'center',
                       }}>
                       <RadioButton.Item
-                        // disabled={option.value !== show_operation}
+                        disabled={option.value == '1'}
                         label={option.label}
                         value={option.value}
                         color="#000"

@@ -68,7 +68,6 @@ function Borrower_Info(props) {
               component={TextInputFile}
               cus_width
               input_mode
-              editable
             />
             {p_type == 30 || p_type == 40 || p_type == 50 ? (
               <Field
@@ -104,7 +103,7 @@ function Borrower_Info(props) {
               component={TextInputFile}
               cus_width
               input_mode
-              editable
+
               require
             />
           </View>

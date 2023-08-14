@@ -2,6 +2,7 @@ import {View, Text, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import {reduxForm, Field, change} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
+import moment from 'moment';
 function Edit_Guarantor_Sign(props) {
   const {
     show_borrower_sign,

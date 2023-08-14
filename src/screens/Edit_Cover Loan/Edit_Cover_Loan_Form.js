@@ -5,7 +5,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   FlatList,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import DividerLine from '../../components/DividerLine';
@@ -22,7 +22,11 @@ import Edit_Cover_Loan_list from './Edit_Cover_Loan_List';
 import {cus_filter_item} from '../../common';
 import {filterCustomer} from '../../query/Customer_query';
 import {setCover_UpdateStatus} from '../../redux/LoanReducer';
-import {getLoan_By_GroupID,deleteGroup_LoanID,updateGroupData} from '../../query/GropuLon_query';
+import {
+  getLoan_By_GroupID,
+  deleteGroup_LoanID,
+  updateGroupData,
+} from '../../query/GropuLon_query';
 import validate from '../Group_Loan/Validate';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
@@ -258,24 +262,17 @@ function Edit_Cover_Loan_Form(props) {
     if (show_operation == '4') {
       await deleteGroup_LoanID(values).then(response => {
         if (response == 'success') {
-          ToastAndroid.show(
-            'Delete Success!',
-            ToastAndroid.SHORT,
-          );
+          ToastAndroid.show('Delete Success!', ToastAndroid.SHORT);
           navigation.goBack();
         }
       });
-    }
-    else {
+    } else {
       let data = Object.assign(values, {
         product_type: '40',
       });
       await updateGroupData(data).then(response => {
         if (response == 'success') {
-          ToastAndroid.show(
-            'Update Success!',
-            ToastAndroid.SHORT,
-          );
+          ToastAndroid.show('Update Success!', ToastAndroid.SHORT);
           navigation.goBack();
         }
       });
@@ -309,7 +306,6 @@ function Edit_Cover_Loan_Form(props) {
     }
     await getLoan_By_GroupID(inquiry_cover_loan.group_aplc_no).then(
       loan_data => {
-        console.log('loan_data', loan_data);
         setAllLoanData(loan_data);
       },
     );
@@ -351,7 +347,7 @@ function Edit_Cover_Loan_Form(props) {
                 style={{
                   flexDirection: 'row',
                 }}>
-                {filtered_operations.map((option, index) => (
+                {operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
                     onValueChange={newValue => btnChangeOperation(newValue)}
@@ -363,7 +359,7 @@ function Edit_Cover_Loan_Form(props) {
                         alignItems: 'center',
                       }}>
                       <RadioButton.Item
-                        // disabled={option.value !== show_operation}
+                        disabled={option.value == '1'}
                         label={option.label}
                         value={option.value}
                         color="#000"
@@ -374,13 +370,13 @@ function Edit_Cover_Loan_Form(props) {
                 ))}
               </View>
               <Button
-              disabled={
-                cover_update_status == true && show_operation == '3'
-                  ? false
-                  : cover_update_status == false && show_operation == '4'
-                  ? false
-                  : true
-              }
+                disabled={
+                  cover_update_status == true && show_operation == '3'
+                    ? false
+                    : cover_update_status == false && show_operation == '4'
+                    ? false
+                    : true
+                }
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
                 buttonColor={'#6870C3'}
@@ -414,11 +410,10 @@ function Edit_Cover_Loan_Form(props) {
 function mapStateToProps(state) {
   return {
     cover_update_status: state.loan.cover_update_status,
-
   };
 }
 
 export default reduxForm({
   form: 'Edit_Cover_Form',
-  validate
+  validate,
 })(connect(mapStateToProps, {setCover_UpdateStatus})(Edit_Cover_Loan_Form));

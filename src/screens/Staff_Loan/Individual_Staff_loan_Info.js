@@ -1465,7 +1465,6 @@ function Individual_Staff_loan_Info(props) {
     setWardText(textvalues);
   };
   const btnLocationSearch = async () => {
-    console.log('selectedLocationItemValue', selectedLocationItemValue);
     await filterLocation(selectedLocationItemValue, location_text)
       .then(data => {
         if (data.length > 0) {
@@ -1795,5 +1794,7 @@ export default reduxForm({
   validate,
   initialValues: {
     cst_new_exist_flg: 'N',
+    village_status: '1',
+
   },
 })(connect(mapStateToProps, {})(Individual_Staff_loan_Info));

@@ -26,7 +26,6 @@ export function getCodeInfo() {
               global.db.transaction(tx => {
                 for (let i = 0; i < data.length; i += batchSize) {
                   const records = data.slice(i, i + batchSize);
-                  console.log('records>>>>>>', records.length);
                   records.forEach(item => {
                     tx.executeSql(
                       'INSERT INTO Code (serial_no,category_id,category_desc,language_code,code_value,code_short_desc,code_desc,sort_seq) VALUES (?,?,?,?,?,?,?,?)',

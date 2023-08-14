@@ -98,7 +98,7 @@ function Edit_Exceptional_Approvel_Form(props) {
                 style={{
                   flexDirection: 'row',
                 }}>
-                {filtered_operations.map((option, index) => (
+                {operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
                     onValueChange={newValue => btnChangeOperation(newValue)}
@@ -110,7 +110,7 @@ function Edit_Exceptional_Approvel_Form(props) {
                         alignItems: 'center',
                       }}>
                       <RadioButton.Item
-                        // disabled={option.value !== show_operation}
+                       disabled={option.value == '1'}
                         label={option.label}
                         value={option.value}
                         color="#000"

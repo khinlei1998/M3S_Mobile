@@ -25,7 +25,7 @@ export const cus_filter_item = [
   {
     id: 3,
     label: 'NRC',
-    value: 'nrc_no',
+    value: 'resident_rgst_id',
   },
   {
     id: 4,
@@ -87,17 +87,17 @@ export const address_type = [
   {
     id: 1,
     label: 'Home',
-    value: '01',
+    value: '001',
   },
   {
     id: 2,
     label: 'Business',
-    value: '02',
+    value: '002',
   },
   {
     id: 3,
     label: 'Other',
-    value: '03',
+    value: '003',
   },
 ];
 
@@ -605,7 +605,6 @@ export const state = [
     label: '2/Kayah',
     value: '2/Kayah',
   },
-
 ];
 
 export const sav_product_type = [

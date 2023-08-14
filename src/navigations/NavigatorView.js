@@ -1,4 +1,4 @@
-import {View, Text,TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from '../screens/Dashboard/Home';
@@ -70,6 +70,7 @@ const StackNavigationData = [
   },
   {
     name: 'Edit_Exceptional_Approvel_Form',
+    title: 'Exceptional Approval ',
     component: Edit_Exceptional_Approvel_Form,
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
@@ -88,6 +89,7 @@ const StackNavigationData = [
   },
   {
     name: 'Edit_Reloan',
+    title: 'Reloan',
     component: Edit_Reloan_Form,
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
@@ -106,6 +108,7 @@ const StackNavigationData = [
   },
   {
     name: 'Edit Group Loan',
+    title: 'Group Loan',
     component: Edit_Group_Loan_Form,
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
@@ -115,6 +118,7 @@ const StackNavigationData = [
   },
   {
     name: 'Edit_Cover_Loan',
+    title: 'Cover Loan',
     component: Edit_Cover_Loan_Form,
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
@@ -153,6 +157,7 @@ const StackNavigationData = [
   {
     name: 'Edit_Emp_Info',
     component: Edit_Emp_Info,
+    title: 'Customer Management',
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
       color: '#FFF',
@@ -161,6 +166,7 @@ const StackNavigationData = [
   },
   {
     name: 'Individual_loan',
+    title: 'Individual Loan Application',
     component: Individual_Loan,
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
@@ -172,6 +178,7 @@ const StackNavigationData = [
   {
     name: 'Edit_Individual_Loan',
     component: Edit_Individual_Loan,
+    title: 'Individual Loan Application',
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
       color: '#FFF',
@@ -181,6 +188,7 @@ const StackNavigationData = [
   {
     name: 'Indi_Staff_loan',
     component: Individual_Staff_loan_Info,
+    title: 'Individual Staff Loan Application',
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
       color: '#FFF',
@@ -190,6 +198,7 @@ const StackNavigationData = [
   {
     name: 'Exceptional_Approvel_Form',
     component: Exceptional_Approvel_Form,
+    title: 'Exceptional Approval',
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
       color: '#FFF',
@@ -207,6 +216,7 @@ const StackNavigationData = [
   },
   {
     name: 'Edit Borrower Map',
+    title: 'Borrower Map',
     component: Edit_Show_Borrower_Map,
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
@@ -217,6 +227,7 @@ const StackNavigationData = [
   {
     name: 'Edit_Individual_Staff_loan_Info',
     component: Edit_Individual_Staff_loan_Info,
+    title: 'Individual Staff Loan Application',
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
       color: '#FFF',
@@ -226,6 +237,7 @@ const StackNavigationData = [
   {
     name: 'Edit Guarantor',
     component: Edit_Guarantor_Form,
+    title: 'Guarantor',
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
       color: '#FFF',
@@ -243,6 +255,7 @@ const StackNavigationData = [
   },
   {
     name: 'Edit Area Evaluation',
+    title: 'Area Evaluation',
     component: Edit_Area_Evaluation_Form,
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
@@ -252,6 +265,7 @@ const StackNavigationData = [
   },
   {
     name: 'Edit Relation',
+    title: 'Relation',
     component: EditRelation_Form,
     // headerLeft: headerLeftComponent,
     headerTitleStyle: {
@@ -322,6 +336,8 @@ export default function NavigatorView(props) {
           options={{
             headerTitleAlign: 'center',
             title: item.title,
+            headerTitle: item.title, // Use headerTitle instead of title
+
             headerLeft: item.headerLeft || headerLeftComponentMenu,
             headerRight: renderRightIcon, // Add the custom icon to the right
 

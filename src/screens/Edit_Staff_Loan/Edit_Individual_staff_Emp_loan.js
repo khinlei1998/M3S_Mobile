@@ -398,8 +398,10 @@ import {connect} from 'react-redux';
               <Button
                 onPress={() => handleCalculate()}
                 mode="contained"
+                disabled={update_status==true? false:true}
                 buttonColor={'#6870C3'}
                 style={{
+                  backgroundColor: '#6870C3',
                   borderRadius: 0,
                   width: 150,
                   color: 'black',

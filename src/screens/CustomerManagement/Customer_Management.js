@@ -6,6 +6,7 @@ import {
   ScrollView,
   FlatList,
   ToastAndroid,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Field, reduxForm, change, reset, formValueSelector} from 'redux-form';
@@ -26,9 +27,7 @@ import DropDownPicker from '../../components/DropDownPicker';
 import {fetchNRCinfo} from '../../query/NRCinfo_query';
 import Customer_Base_Info from './Customer_Base_Info';
 import Property_Info from './Property_Info';
-import {
-  salary_grade,
-} from '../../common';
+import {salary_grade} from '../../common';
 import Monthly_Income from './Monthly_Income';
 import Busines_Info from './Busines_Info';
 import {style} from '../../style/Customer_Mang_style';
@@ -38,9 +37,12 @@ import moment from 'moment';
 import {setCusFormInitialValues} from '../../redux/CustomerReducer';
 import {emp_filter_item, village_code} from '../../common';
 import {Picker} from '@react-native-picker/picker';
-import {filterEmp,fetchEmpName} from '../../query/Employee_query';
+import {filterEmp, fetchEmpName} from '../../query/Employee_query';
 import {addEmpFilter} from '../../redux/EmployeeReducer';
-import {storeCustomerData,fetchAllCustomerNum} from '../../query/Customer_query';
+import {
+  storeCustomerData,
+  fetchAllCustomerNum,
+} from '../../query/Customer_query';
 import {resetMonthlyIncome} from '../../redux/MonthlyReducer';
 import DatePicker from '../../components/DatePicker';
 import Create_Operation from '../../components/Create_Operation';
@@ -52,7 +54,7 @@ import {filterVillage} from '../../query/Village_query';
 import Ward_Model from '../../components/Ward_Model';
 import {filterWard} from '../../query/Ward_query';
 import Location_Modal from '../../components/Location_Modal';
-import {filterLocation,filterCity} from '../../query/CodeInfo_quey';
+import {filterLocation, filterCity} from '../../query/CodeInfo_quey';
 function Customer_Management(props) {
   const dispatch = useDispatch();
   const {
@@ -112,6 +114,7 @@ function Customer_Management(props) {
   const [township_text, setTownshipText] = useState('');
   const [location_text, setLocationText] = useState('');
   const [prefix, setPrefix] = useState('');
+  const [btn_loading, setbtnloading] = useState(false);
 
   const handleLocationItemValueChange = itemValue => {
     setLocationSelectedItemValue(itemValue);
@@ -126,6 +129,7 @@ function Customer_Management(props) {
     setSelectedCityItemValue(itemValue);
   };
   const onSubmit = async values => {
+    setbtnloading(!btn_loading);
     let data = Object.assign(values, emp_filter_data, {
       createUserId: empname,
       nrc_state_code: values.nrc_type == '2' ? prefix : '',
@@ -133,15 +137,19 @@ function Customer_Management(props) {
       //   values.nrc_type == '1' ? values.nrcNo : values.resident_rgst_id,
       start_living_date_status: show_businessdate,
     });
-    console.log('customer data',data);
+    console.log('customer data', data);
     await storeCustomerData(data).then(result => {
       if (result == 'success') {
-        // dispatch(reset('Customer_ManagementForm'));
+        setbtnloading(!btn_loading);
+
+        dispatch(reset('Customer_ManagementForm'));
         resetMonthlyIncome();
 
         ToastAndroid.show(`Create Successfully!`, ToastAndroid.SHORT);
         props.navigation.navigate('Home');
         // props.navigation.navigate('Customer Search');
+      } else {
+        setbtnloading(!btn_loading);
       }
     });
   };
@@ -478,7 +486,7 @@ function Customer_Management(props) {
     setSelectedTspValue(item.ts_code);
     setSelectedVillageValue(null);
     setAllVillage([]);
-    setAllWard([])
+    setAllWard([]);
     dispatch(change('Customer_ManagementForm', 'ts_code', item.ts_code));
     dispatch(change('Customer_ManagementForm', 'ts_name', item.ts_name));
     dispatch(change('Customer_ManagementForm', 'village_code', ''));
@@ -592,9 +600,22 @@ function Customer_Management(props) {
   };
 
   const btnCusSearch = async () => {
+    setLoading(!loading);
     await filterEmp(selectedItemValue, emp_text)
-      .then(data => (data.length > 0 ? setAllEmp(data) : alert('No data')))
-      .catch(error => console.log('error', error));
+      .then(data => {
+        if (data.length > 0) {
+          setAllEmp(data);
+        } else {
+          setAllEmp(data);
+          alert('No data');
+        }
+        setLoading(false);
+      })
+      .catch(error => {
+        alert('Something Wrong');
+        setAllEmp([]);
+        setLoading(false);
+      });
   };
 
   const btnCitySearch = async () => {
@@ -616,7 +637,6 @@ function Customer_Management(props) {
       });
   };
   const btnLocationSearch = async () => {
-    console.log('selectedLocationItemValue',selectedLocationItemValue);
     await filterLocation(selectedLocationItemValue, location_text)
       .then(data => {
         if (data.length > 0) {
@@ -727,7 +747,10 @@ function Customer_Management(props) {
               Customer Information Management
             </Text>
             <DividerLine border_width />
-            <Create_Operation handleSubmit={handleSubmit(onSubmit)} />
+            <Create_Operation
+              handleSubmit={handleSubmit(onSubmit)}
+              btn_loading={btn_loading}
+            />
 
             <DividerLine border_width />
             {/* EMployee Information */}
@@ -892,7 +915,6 @@ function Customer_Management(props) {
                   />
                 </View>
               </View>
-              {/* <ViewEmployee emp_data={all_emp} hideModal={hideModal} /> */}
               <View
                 style={{
                   flexDirection: 'row',
@@ -937,28 +959,34 @@ function Customer_Management(props) {
                   Positon Name
                 </Text>
               </View>
+              {loading ? ( // Show ActivityIndicator while loading is true
+                <ActivityIndicator size="large" color="#636Dc6" />
+              ) : (
+                <>
+                  <FlatList
+                    data={all_emp}
+                    renderItem={item}
+                    keyExtractor={(item, index) => index.toString()}
+                  />
 
-              <FlatList
-                data={all_emp}
-                renderItem={item}
-                keyExtractor={(item, index) => index.toString()}
-              />
-
-              <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                <Button
-                  onPress={() => hideModal()}
-                  mode="contained"
-                  buttonColor={'#6870C3'}
-                  style={{
-                    borderRadius: 0,
-                    width: 100,
-                    marginTop: 10,
-                    color: 'black',
-                    marginLeft: 5,
-                  }}>
-                  OK
-                </Button>
-              </View>
+                  <View
+                    style={{flexDirection: 'row', justifyContent: 'center'}}>
+                    <Button
+                      onPress={() => hideModal()}
+                      mode="contained"
+                      buttonColor={'#6870C3'}
+                      style={{
+                        borderRadius: 0,
+                        width: 100,
+                        marginTop: 10,
+                        color: 'black',
+                        marginLeft: 5,
+                      }}>
+                      OK
+                    </Button>
+                  </View>
+                </>
+              )}
             </View>
           </Modal>
         </Portal>

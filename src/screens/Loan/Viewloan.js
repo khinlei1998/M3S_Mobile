@@ -1,4 +1,4 @@
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity, LogBox} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm, reset, change} from 'redux-form';

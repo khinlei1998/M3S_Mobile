@@ -49,13 +49,13 @@ export default function Passport(props) {
   useEffect(() => {
     const checkFileExists = async () => {
       try {
-          const fileName = `${retrive_loan_data.application_no}AT12F.jpg`;
-          const directory = `/storage/emulated/0/Pictures/Camera/`;
-          const filePath = directory + fileName;
-          const fileExists = await RNFS.exists(filePath);
-          if (fileExists) {
-            setCapturedFiles(true);
-          }
+        const fileName = `${retrive_loan_data.application_no}AT12F.jpg`;
+        const directory = `/storage/emulated/0/Pictures/Camera/`;
+        const filePath = directory + fileName;
+        const fileExists = await RNFS.exists(filePath);
+        if (fileExists) {
+          setCapturedFiles(true);
+        }
       } catch (error) {
         console.log('Error checking file existence:', error);
       }
@@ -64,8 +64,8 @@ export default function Passport(props) {
     checkFileExists();
   }, [capturedFiles]);
 
-  const handleImageUpload = async (response) => {
-    setCapturedFiles(false)
+  const handleImageUpload = async response => {
+    setCapturedFiles(false);
     if (response.didCancel) {
       // User canceled the capture
       return;
@@ -175,14 +175,11 @@ export default function Passport(props) {
                 retrive_loan_data.application_no
               }AT12F.jpg?timestamp=${Date.now()}`,
             }}
-            style={{width: '100%', height: 200, resizeMode: 'cover'}}
-
+            style={{width: '100%', height: 200, resizeMode: 'contain'}}
           />
         ) : (
           <Image
-            source={{
-              uri: `https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg`,
-            }}
+            source={require('../../../assets/images/default_camera.jpeg')}
             style={{width: 300, height: 200}}
           />
         )}
@@ -220,6 +217,19 @@ export default function Passport(props) {
           mode="contained"
           onPress={() => handleDelete()}>
           Delete Photo
+        </Button>
+
+        <Button
+          style={{
+            width: 300,
+            marginTop: 30,
+            color: 'black',
+            padding: 5,
+          }}
+          icon="chevron-back"
+          mode="contained"
+          onPress={() => handleDelete()}>
+          Go Back
         </Button>
         {/* </Card.Content>
         </Card> */}

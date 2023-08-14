@@ -815,6 +815,7 @@ function Individual_Staff_loan_Info(props) {
     update_status,
     retrive_staff_loan_data,
   } = props;
+  console.log('retrive_staff_loan_data',retrive_staff_loan_data);
   const dispatch = useDispatch();
   const [selectedItemValue, setSelectedItemValue] = useState('customer_nm');
   const [show_village, setVillage] = useState('1');
@@ -1273,7 +1274,6 @@ function Individual_Staff_loan_Info(props) {
   useEffect(() => {
     loadData();
   }, []);
-  console.log('retrive_staff_loan_data', retrive_staff_loan_data);
   useEffect(() => {
     retrive_staff_loan_data.loan_limit_amt
       ? setLoanLimitAmount(retrive_staff_loan_data.loan_limit_amt)
@@ -1324,7 +1324,6 @@ function Individual_Staff_loan_Info(props) {
         retrive_staff_loan_data.entry_date,
         'months',
       ); // Calculate month difference
-      console.log('monthDiff', monthDiff);
       setWorkingMonth(monthDiff);
     }
     setSelectedCityValue(retrive_staff_loan_data.city_code);
@@ -1403,7 +1402,6 @@ function Individual_Staff_loan_Info(props) {
 
           product_type: 20,
         });
-        console.log('loan_data', loan_data);
         await updateLoanData(loan_data).then(result => {
           if (result == 'success') {
             dispatch(reset('Edit_Individual_Staff_Loan_Form'));
@@ -1516,7 +1514,7 @@ function Individual_Staff_loan_Info(props) {
       setLoanLimitAmount(0);
     }
   };
-  const filtered_operations = operations.filter(item => item.value != 1);
+  // const filtered_operations = operations.filter(item => item.value != 1);
   const btnChangeOperation = newValue => {
     setOperation(newValue);
     //Inquiry
@@ -1971,7 +1969,7 @@ function Individual_Staff_loan_Info(props) {
                 style={{
                   flexDirection: 'row',
                 }}>
-                {filtered_operations.map((option, index) => (
+                {operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
                     onValueChange={newValue => btnChangeOperation(newValue)}
@@ -1983,7 +1981,7 @@ function Individual_Staff_loan_Info(props) {
                         alignItems: 'center',
                       }}>
                       <RadioButton.Item
-                        // disabled={option.value !== show_operation}
+                       disabled={option.value == '1'}
                         label={option.label}
                         value={option.value}
                         color="#000"

@@ -1,13 +1,9 @@
 import {
   View,
   Text,
-  TouchableWithoutFeedback,
-  Keyboard,
-  TouchableOpacity,
-  TextInput
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { Field, reduxForm, change } from 'redux-form';
+import { Field, reduxForm,  } from 'redux-form';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
 import {
@@ -15,18 +11,15 @@ import {
   Portal,
   Button,
   Provider,
-  Divider,
 } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 import { emp_filter_item } from '../../common';
 import { filterEmp } from '../../query/Employee_query';
 import ViewEmployee from './ViewEmployee';
 import { TestAction } from '../../redux/EmployeeReducer';
-import { connect, useDispatch } from 'react-redux';
+import { connect,  } from 'react-redux';
 
 function Employee_Search(props) {
-  const { TestAction } = props;
-
   const containerStyle = {
     backgroundColor: '#e8e8e8',
     width: '85%',
@@ -43,20 +36,9 @@ function Employee_Search(props) {
       setAllEmp([]);
     };
   }, []);
-
-  const handleSearch = async () => {
-    await filterEmp(selectedItemValue, searchTerm)
-      .then(data => (data.length > 0 ? setAllEmp(data) : alert('No data')))
-      .catch(error => console.log('error', error));
-  };
-
   const handleItemValueChange = itemValue => {
     setSelectedItemValue(itemValue);
-  };
-
-  const handleChangeText = newText => {
-    setSearchTerm(newText);
-  };
+  }
 
   const onSubmit = async(values) => {
     await filterEmp(selectedItemValue, values.searchtext)
@@ -65,22 +47,9 @@ function Employee_Search(props) {
   };
 
   return (
-    // /
     <Provider>
       <Portal>
         <Modal
-          // theme={
-          //   {
-          //     colors: {
-          //       backdrop: 'tra',
-          //     },
-          //   }
-          // }
-          // animationType="fade"
-          // transparent={true}
-          // backdrop={false}
-          //  onBackdropPress={() => {}}
-
           dismissable={false}
           visible={visible}
           onDismiss={hideModal}
@@ -127,20 +96,6 @@ function Employee_Search(props) {
               </View>
 
               <View style={{ width: '50%' }}>
-                {/* <TextInput
-                  value={searchTerm}
-                  onChangeText={text => setSearchTerm(text)}
-                  // right={
-                  //   <TextInput.Icon
-                  //     icon={'magnify'}
-                  //     onPress={() => handleSearch()}
-                  //   />
-                  // }
-                  style={{
-                    backgroundColor: 'white',
-                  }}
-                /> */}
-
                 <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -169,29 +124,13 @@ function Employee_Search(props) {
                 }}>
                 OK
               </Button>
-              {/* <Button
-                onPress={() => hideModal()}
-                mode="contained"
-                buttonColor={'#6870C3'}
-                style={{
-                  borderRadius: 0,
-                  width: 100,
-                  marginTop: 10,
-                  color: 'black',
-                  marginLeft: 5,
-                }}>
-                Cancel
-              </Button> */}
             </View>
           </View>
         </Modal>
       </Portal>
     </Provider>
-    // </View>
   );
 }
-
-// export default reduxForm({form: 'Customer_ManagementForm'})(Employee_Search);
 
 export default reduxForm({
   form: 'Customer_ManagementForm',

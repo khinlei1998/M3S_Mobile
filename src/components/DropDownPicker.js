@@ -61,7 +61,7 @@ export default function DropDownPicker(props) {
       <View
         style={{
           borderColor: 'black',
-          backgroundColor: '#FFF',
+          backgroundColor: enabled?'#FAFAFA':'#FFF',
           borderWidth: 0.5,
           marginTop: 10,
           width: pickerStyle.width,

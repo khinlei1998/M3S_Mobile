@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import moment from 'moment';
 export const storeStaffLoanData = async loan_data => {
   const user_id = await AsyncStorage.getItem('user_id');
+  const date = moment().format();
   return new Promise(async (resolve, reject) => {
     try {
       global.db.transaction(trans => {
@@ -13,7 +14,7 @@ export const storeStaffLoanData = async loan_data => {
             loan_data.application_no,
             null, //group_aplc_no
             '01', //statusCode
-            '2020-09-09', //create Date Time
+            date, //create Date Time
             user_id,
             null, //deleteDatetime
             null, //delet usr id
@@ -166,7 +167,7 @@ export const storeStaffLoanData = async loan_data => {
             loan_data.co_borrower_sign,
             loan_data.sv_pr_type,
             loan_data.village_status,
-            loan_data.salary_amount
+            loan_data.salary_amount,
             //146
           ],
           (trans, results) => {
@@ -370,7 +371,7 @@ repayment_history_yn=?,loan_officer_cmnt=?,tablet_sync_sts=?,sync_sts=?,old_appl
             loan_data.location_name,
             loan_data.borrower_sign, //borrower sign
             loan_data.co_borrower_sign,
-            loan_data.sv_pr_type
+            loan_data.sv_pr_type,
             // loan_data.borrower_map,
             //146
           ],

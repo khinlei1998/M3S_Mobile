@@ -138,7 +138,7 @@ function Edit_Area_Evaluation_Form(props) {
                 style={{
                   flexDirection: 'row',
                 }}>
-                {filtered_operations.map((option, index) => (
+                {operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
                     onValueChange={newValue => btnChangeOperation(newValue)}
@@ -154,10 +154,7 @@ function Edit_Area_Evaluation_Form(props) {
                         value={option.value}
                         color="#000"
                         labelStyle={{marginLeft: 5}}
-                        // disabled={
-                        //   option.value === '3'
-                        // }
-                        //&& filtered_cus_data.sync_status === '02'
+                        disabled={option.value == '1'}
                       />
                     </View>
                   </RadioButton.Group>

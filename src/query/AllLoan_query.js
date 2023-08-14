@@ -42,7 +42,7 @@ export async function getAllLoanType() {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
       tx.executeSql(
-        'SELECT * FROM Individual_application WHERE group_aplc_no IS NULL',
+        'SELECT * FROM Individual_application WHERE group_aplc_no IS NULL ORDER BY create_datetime DESC',
         [],
         (tx, results) => {
           const dataFromTable1 = results.rows.raw();
@@ -593,7 +593,6 @@ export async function getAllLoan_By_application_no(application_no) {
         FROM Individual_application where application_no=?`,
         [application_no],
         (tx, results) => {
-          console.log('results', results);
           resolve(results.rows.raw());
         },
         (tx, error) => {
@@ -1762,7 +1761,6 @@ const fetchIndiloanData = async group_aplc_no => {
         FROM Individual_application WHERE group_aplc_no = ?`,
         [group_aplc_no],
         (tx, results) => {
-          console.log('results', results);
           if (results.rows.length > 0) {
             resolve(results.rows.raw());
           } else {

@@ -29,7 +29,7 @@ export const style = StyleSheet.create({
   sub_container: {
     width: '90%',
     alignSelf: 'center',
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#f8f8f8',
     padding: 10,
   },
   sub_list_container: {
