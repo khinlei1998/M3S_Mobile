@@ -105,7 +105,7 @@ export default function Village_Modal(props) {
                                     padding: 10,
                                     fontWeight: 'bold',
                                 }}>
-                                City Code
+                                Village Code
                             </Text>
                             <Text
                                 style={{
@@ -114,7 +114,7 @@ export default function Village_Modal(props) {
                                     padding: 10,
                                     fontWeight: 'bold',
                                 }}>
-                                City Name
+                                Village Name
                             </Text>
 
                         </View>

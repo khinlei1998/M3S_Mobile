@@ -1,6 +1,6 @@
-import {View, Text, } from 'react-native';
-import React, {useState, useRef, } from 'react';
-import {TextInput, DefaultTheme} from 'react-native-paper';
+import { View, Text, } from 'react-native';
+import React, { useState, useRef, } from 'react';
+import { TextInput, DefaultTheme } from 'react-native-paper';
 
 export default function TextInputFile(props) {
   const [passwordIcon, setPasswordIcon] = useState('eye');
@@ -27,8 +27,8 @@ export default function TextInputFile(props) {
     editable,
     showRightIcon,
     nrc_cusstyle,
-    meta: {touched, error},
-    input: {onChange, ...restInput},
+    meta: { touched, error },
+    input: { onChange, ...restInput },
     ...restProps
   } = props;
   const inputRef = useRef(null);
@@ -37,6 +37,7 @@ export default function TextInputFile(props) {
   const [total, setTotal] = useState(0);
 
   const togglePasswordIcon = () => {
+    console.log('kk', passwordIcon);
     if (passwordIcon == 'eye') {
       setPasswordIcon('eye-off-outline');
       setIsPassword(false);
@@ -68,7 +69,7 @@ export default function TextInputFile(props) {
   //     });
   //   }
   // }, [restInput.value]);
-
+  console.log('eye-off-outline', passwordIcon);
   return (
     <View>
       <TextInput
@@ -90,13 +91,13 @@ export default function TextInputFile(props) {
         onFocus={focusTextInput && handleTextInputFocus}
         mode={input_mode ? 'flat' : ''}
         label={
-          <Text style={{color:'#636Dc6'}}>
-            {title} {require && <Text style={{color: 'red'}}>*</Text>}
+          <Text style={{ color: '#636Dc6' }}>
+            {title} {require && <Text style={{ color: 'red' }}>*</Text>}
           </Text>
         }
         onChangeText={text => handleTextChange(text)}
         style={{
-          backgroundColor: editable?'#f8f8f8':'#fff',
+          backgroundColor: editable ? '#f8f8f8' : '#fff',
           marginTop: 10,
           width: input_cusstyle ? '100%' : 301,
           borderColor: '#303030',
@@ -108,16 +109,16 @@ export default function TextInputFile(props) {
         placeholder={showValue ? defaultData : ''}
         right={
           icon == 'eye' ? (
-            <TextInput.Icon icon={icon} onPress={togglePasswordIcon}   />
+            <TextInput.Icon icon={passwordIcon} onPress={togglePasswordIcon} />
           ) : icon == 'magnify' ? (
-            <TextInput.Icon icon={icon} onPress={handleTextInputFocus}  iconColor="#636Dc6" />
+            <TextInput.Icon icon={icon} onPress={handleTextInputFocus} iconColor="#636Dc6" />
           ) : icon == 'calendar' ? (
-            <TextInput.Icon icon={icon} onPress={handleTextInputFocus}  iconColor="#636Dc6" />
+            <TextInput.Icon icon={icon} onPress={handleTextInputFocus} iconColor="#636Dc6" />
 
           ) : null
         }
       />
-      {touched && error && <Text style={{color: 'red'}}>{error}</Text>}
+      {touched && error && <Text style={{ color: 'red' }}>{error}</Text>}
     </View>
   );
 }

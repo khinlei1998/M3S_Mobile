@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 import moment from 'moment';
 export async function getAllCustomer() {
   return new Promise((resolve, reject) => {
@@ -52,7 +52,7 @@ export function getCustomer_info() {
       tx.executeSql('DELETE FROM Customer', [], (tx, results) => {
         axios
           .get(`https://${ip}:${port}/skylark-m3s/api/customers.m3s`)
-          .then(({data}) => {
+          .then(({ data }) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -194,7 +194,11 @@ export function getCustomer_info() {
                 }
               });
             }
-          });
+          })
+          .catch(error => {
+            alert(error);
+            reject(error);
+          })
       });
     });
   });

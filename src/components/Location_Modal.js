@@ -1,9 +1,9 @@
-import {View, Text, ActivityIndicator, FlatList} from 'react-native';
+import { View, Text, ActivityIndicator, FlatList } from 'react-native';
 import React from 'react';
-import {Provider, Portal, Modal, TextInput, Button} from 'react-native-paper';
+import { Provider, Portal, Modal, TextInput, Button } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
-import {Picker} from '@react-native-picker/picker';
-import {location_code} from '../common';
+import { Picker } from '@react-native-picker/picker';
+import { location_code } from '../common';
 export default function Location_Modal(props) {
   const {
     location_item,
@@ -15,7 +15,8 @@ export default function Location_Modal(props) {
     handleLocationItemValueChange,
     onChangeLocationText,
     all_location,
-    setLocationSelectedItemValue
+    setLocationSelectedItemValue,
+    loading
   } = props;
   const containerStyle = {
     backgroundColor: '#e8e8e8',
@@ -31,7 +32,7 @@ export default function Location_Modal(props) {
           onDismiss={hideLocationModal}
           contentContainerStyle={containerStyle}>
           <View
-            style={{backgroundColor: '#232D57', padding: 25}}
+            style={{ backgroundColor: '#232D57', padding: 25 }}
             onStartShouldSetResponder={() => hideLocationModal()}>
             <Icon
               name="x-circle"
@@ -46,19 +47,21 @@ export default function Location_Modal(props) {
               }}
             />
           </View>
-          <View style={{padding: 10, height: 550}}>
+          <View style={{ padding: 10, height: 550 }}>
             <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{marginRight: 10}}>Search Item:</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10, fontWeight: 'bold' }}>
+                  Search Item:
+                </Text>
 
                 <Picker
                   selectedValue={selectedLocationItemValue}
                   onValueChange={setLocationSelectedItemValue}
-                  style={{width: 200, backgroundColor: 'white', marginTop: 7}}
+                  style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
                   mode="dropdown">
                   {location_code.length > 0 &&
                     location_code.map(val => (
@@ -71,7 +74,7 @@ export default function Location_Modal(props) {
                 </Picker>
               </View>
 
-              <View style={{width: '50%'}}>
+              <View style={{ width: '50%' }}>
                 <TextInput
                   style={{
                     backgroundColor: '#fff',
@@ -114,7 +117,7 @@ export default function Location_Modal(props) {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Location Code
+                Employee No
               </Text>
               <Text
                 style={{
@@ -123,40 +126,46 @@ export default function Location_Modal(props) {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Location Name
+                Employee Name
+              </Text>
+              <Text
+                style={{
+                  flex: 1,
+
+                  padding: 10,
+                  fontWeight: 'bold',
+                }}>
+                Positon Name
               </Text>
             </View>
-            <View>
-              <FlatList
-                data={all_location}
-                renderItem={location_item}
-                keyExtractor={(item, index) => index.toString()}
-              />
-            </View>
+            {loading ? ( // Show ActivityIndicator while loading is true
+              <ActivityIndicator size="large" color="#636Dc6" />
+            ) : (
+              <>
+                <FlatList
+                  data={all_location}
+                  renderItem={location_item}
+                  keyExtractor={(item, index) => index.toString()}
+                />
 
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                position: 'absolute',
-                bottom: 0,
-                marginBottom: 10,
-                alignSelf: 'center',
-              }}>
-              <Button
-                onPress={() => hideLocationModal()}
-                mode="contained"
-                buttonColor={'#6870C3'}
-                style={{
-                  borderRadius: 0,
-                  width: 100,
-                  marginTop: 10,
-                  color: 'black',
-                  marginLeft: 5,
-                }}>
-                OK
-              </Button>
-            </View>
+                <View
+                  style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                  <Button
+                    onPress={() => hideLocationModal()}
+                    mode="contained"
+                    buttonColor={'#6870C3'}
+                    style={{
+                      borderRadius: 0,
+                      width: 100,
+                      marginTop: 10,
+                      color: 'black',
+                      marginLeft: 5,
+                    }}>
+                    OK
+                  </Button>
+                </View>
+              </>
+            )}
           </View>
         </Modal>
       </Portal>

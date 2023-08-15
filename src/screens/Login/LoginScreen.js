@@ -63,6 +63,10 @@ function LoginScreen(props) {
     // fetchData();
   }, []);
 
+  const handleLngChange = () => {
+    alert('kk')
+  }
+
   const saveLoginInfo = async login_info => {
     try {
       await AsyncStorage.setItem('login_info', login_info);
@@ -94,68 +98,110 @@ function LoginScreen(props) {
       console.log('Error:', error);
     }
   };
-
   const btnSync = async () => {
     if (!netInfo.isConnected) {
-      alert('Internet Connection is need');
+      alert('Internet Connection is needed');
     } else {
       setIsLoading(true);
-      getEemployee_info()
-        .then(result => {
-          if (result == 'success') {
-            getCustomer_info().then(result => {
-              console.log('result', result);
-              if (result == 'success') {
-                getNRC_info().then(result => {
-                  if (result == 'success') {
-                    getLoanMax().then(result => {
-                      if (result == 'success') {
-                        getSurvey_Item().then(result => {
-                          if (result == 'success') {
-                            getCodeInfo().then(result => {
-                              if (result == 'success') {
-                                get_Village().then(result => {
-                                  if (result == 'success') {
-                                    get_Township().then(result => {
-                                      if (result == 'success') {
-                                        get_Ward().then(result => {
-                                          if (result == 'success') {
-                                            setIsLoading(false);
-                                            alert('Sync success');
-                                          }
 
-                                        })
-                                      }
+      const timeoutDuration = 10000; // Adjust the timeout duration as needed (in milliseconds)
 
-                                    })
-                                  }
-                                })
+      const timeoutPromise = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          reject('Sync process timed out');
+        }, timeoutDuration);
+      });
 
-
-                              }
-                            });
-                          }
-                        });
-                      }
-                    });
-                    //   }
-                    // });
-                  }
-                });
-              } else {
-                console.log(
-                  'Customer error reach'
-                );
-              }
-            });
-          }
+      Promise.race([timeoutPromise, netInfo.waitForConnection])
+        .then(() => {
+          return Promise.all([
+            // getEemployee_info(),
+            // getCustomer_info(),
+            getNRC_info(),
+            getLoanMax(),//2
+            getSurvey_Item(), //1
+            // getCodeInfo(),
+            // get_Village(),
+            get_Township(), //3
+            get_Ward()//4
+          ]);
+        })
+        .then(results => {
+          console.log('Sync success', results);
+          setIsLoading(false);
+          alert('Sync success');
         })
         .catch(error => {
           setIsLoading(false);
-          console.log('doSomething failed with error:', error);
+          console.log('Sync failed:', error);
+          alert('Sync failed: ' + error);
         });
     }
   };
+
+
+  // const btnSync = async () => {
+  //   if (!netInfo.isConnected) {
+  //     alert('Internet Connection is need');
+  //   } else {
+  //     setIsLoading(true);
+  //     getEemployee_info()
+  //       .then(result => {
+  //         if (result == 'success') {
+  //           getCustomer_info().then(result => {
+  //             console.log('result', result);
+  //             if (result == 'success') {
+  //               getNRC_info().then(result => {
+  //                 if (result == 'success') {
+  //                   getLoanMax().then(result => {
+  //                     if (result == 'success') {
+  //                       getSurvey_Item().then(result => {
+  //                         if (result == 'success') {
+  //                           getCodeInfo().then(result => {
+  //                             if (result == 'success') {
+  //                               // get_Village().then(result => {
+  //                               //   if (result == 'success') {
+  //                               get_Township().then(result => {
+  //                                 if (result == 'success') {
+  //                                   get_Ward().then(result => {
+  //                                     if (result == 'success') {
+  //                                       setIsLoading(false);
+  //                                       alert('Sync success');
+  //                                     }
+
+  //                                   })
+  //                                 }
+
+  //                               })
+  //                               // }
+  //                               // })
+
+
+  //                             }
+  //                           });
+  //                         }
+  //                       });
+  //                     }
+  //                   });
+  //                   //   }
+  //                   // });
+  //                 }
+  //               });
+  //             } else {
+  //               setIsLoading(false);
+  //               console.log(
+  //                 'Customer error reach'
+  //               );
+  //             }
+  //           });
+  //         }
+  //       })
+  //       .catch(error => {
+  //         setIsLoading(false);
+  //         console.log('doSomething failed with error:', error);
+  //       });
+  //   }
+  // };
 
   return (
     <>
@@ -247,6 +293,7 @@ function LoginScreen(props) {
                   pickerStyle={{
                     width: 355,
                   }}
+                  showDropChange={handleLngChange}
                   title={'Select Language'}
                 />
 

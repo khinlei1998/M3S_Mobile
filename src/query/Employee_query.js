@@ -7,7 +7,6 @@ export function getEemployee_info() {
     const batchSize = 100;
     global.db.transaction(tx => {
       tx.executeSql('DELETE FROM Employee', [], (tx, results) => {
-        console.log(`https://${ip}:${port}/skylark-m3s/api/employees.m3s`);
         axios
           .get(`https://${ip}:${port}/skylark-m3s/api/employees.m3s`)
           .then(({ data }) => {
