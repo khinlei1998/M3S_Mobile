@@ -47,6 +47,12 @@ export default function AuthNavigation(props) {
         },
       }}>
          {/* <Stack.Screen
+        name="Synchronization"
+        component={Synchronization_Screen}
+        options={{ headerShown: false }}
+      /> */}
+
+         {/* <Stack.Screen
         name="Customer Management"
         component={Customer_Management}
         options={{ headerShown: false }}
@@ -56,7 +62,7 @@ export default function AuthNavigation(props) {
         component={Home}
         options={{headerShown: false}}
       />
-     
+
 
       <Stack.Screen
         name="Individual_loan"
@@ -75,16 +81,12 @@ export default function AuthNavigation(props) {
         component={Edit_Emp_Info}
         options={{ headerShown: false }}
       />
-     
 
-      <Stack.Screen
-        name="Synchronization"
-        component={Synchronization_Screen}
-        options={{ headerShown: false }}
-      /> */}
+
+     */}
       {/*
- 
-    
+
+
 
       <Stack.Screen
         name="Indi_Staff_loan"
@@ -116,7 +118,7 @@ export default function AuthNavigation(props) {
         component={Reloan_Form}
         options={{headerShown: false}}
       />
-    
+
 
       <Stack.Screen
         name="Group Loan"
@@ -199,8 +201,8 @@ export default function AuthNavigation(props) {
         options={{headerShown: false}}
       />
 
-      
-      
+
+
       <Stack.Screen
         name="Edit_Individual_Staff_loan_Info"
         component={Edit_Individual_Staff_loan_Info}

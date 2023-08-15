@@ -49,7 +49,6 @@ export function get_Township() {
             }
           })
           .catch(error => {
-            alert(error);
             reject(error);
           });
       });

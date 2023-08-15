@@ -57,9 +57,9 @@ export function getEemployee_info() {
                       error => {
                         console.log('query error', error);
                         // If insert query fails, rollback the transaction and reject the promise
-                        tx.executeSql('ROLLBACK', [], () => {
+                        // tx.executeSql('ROLLBACK', [], () => {
                           reject(error);
-                        });
+                        // });
                       },
                     );
                   });
@@ -68,7 +68,7 @@ export function getEemployee_info() {
             }
           })
           .catch(error => {
-            alert(error);
+            // alert(error);
             reject(error);
           });
       });

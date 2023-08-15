@@ -1,7 +1,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { connection_name } from '../common';
+import {connection_name} from '../common';
 export function getSurvey_Item() {
   return new Promise(async (resolve, reject) => {
     let ip = await AsyncStorage.getItem('ip');
@@ -11,7 +11,9 @@ export function getSurvey_Item() {
       tx.executeSql('DELETE FROM survey_item', [], (tx, results) => {
         axios
           // .get(`https://${newIP}/skylark-m3s/api/employees.m3s`)
-          .get(`${connection_name}://${ip}:${port}/skylark-m3s/api/surveyItems.m3s`)
+          .get(
+            `${connection_name}://${ip}:${port}/skylark-m3s/api/surveyItems.m3s`,
+          )
           .then(({data}) => {
             if (data.length > 0) {
               let insertedRows = 0;
@@ -41,9 +43,7 @@ export function getSurvey_Item() {
                       error => {
                         console.log('query error', error);
                         // If insert query fails, rollback the transaction and reject the promise
-                        tx.executeSql('ROLLBACK', [], () => {
-                          reject(error);
-                        });
+                        reject(error);
                       },
                     );
                   });
@@ -52,7 +52,6 @@ export function getSurvey_Item() {
             }
           })
           .catch(error => {
-            alert(error);
             reject(error);
           });
       });
@@ -162,7 +161,7 @@ export async function UploadSurveyData(all_survey) {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: `https://${ip}:${port}/skylark-m3s/api/surveyResult.m3s`,
+        url: `${connection_name}://${ip}:${port}/skylark-m3s/api/surveyResult.m3s`,
         data: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json', // Set the content type as JSON
@@ -170,8 +169,6 @@ export async function UploadSurveyData(all_survey) {
         },
       };
       const response = await axios.request(config);
-      console.log('response', response);
-
       if (response.data[0].errMsg) {
         const error = {
           message: response.data[0].errMsg,

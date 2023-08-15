@@ -39,9 +39,7 @@ export function get_Village() {
                       error => {
                         console.log('query error', error);
                         // If insert query fails, rollback the transaction and reject the promise
-                        tx.executeSql('ROLLBACK', [], () => {
                           reject(error);
-                        });
                       },
                     );
                   });
@@ -50,7 +48,6 @@ export function get_Village() {
             }
           })
           .catch(error => {
-            alert(error);
             reject(error);
           });
       });

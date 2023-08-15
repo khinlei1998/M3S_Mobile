@@ -57,9 +57,8 @@ export const getNRC_info = () => {
         },
         error => {
           // If delete query fails, rollback the transaction and reject the promise
-          tx.executeSql('ROLLBACK', [], () => {
+
             reject(error);
-          });
         },
       );
     });

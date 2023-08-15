@@ -71,7 +71,6 @@ export function getLoanMax() {
                         }
                     })
                     .catch(error => {
-                        alert(error);
                         reject(error);
                     });
             });

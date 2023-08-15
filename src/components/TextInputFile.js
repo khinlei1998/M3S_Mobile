@@ -70,8 +70,8 @@ export default function TextInputFile(props) {
   //     });
   //   }
   // }, [restInput.value]);
-  console.log('restInput',restInput);
-  console.log('restProps',restProps);
+  // console.log('restInput',restInput);
+  // console.log('restProps',restProps);
   return (
     <View>
       <TextInput

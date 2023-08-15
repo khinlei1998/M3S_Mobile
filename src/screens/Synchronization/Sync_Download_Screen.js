@@ -13,6 +13,9 @@ import {getLoanMax} from '../../query/LoanMax_query';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {getCodeInfo} from '../../query/CodeInfo_quey';
 import moment from 'moment';
+import {get_Village} from '../../query/Village_query';
+import {get_Township} from '../../query/Township_query';
+import {get_Ward} from '../../query/Ward_query';
 export default function Sync_Download_Screen() {
   const [selectAll, setSelectAll] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -68,6 +71,30 @@ export default function Sync_Download_Screen() {
       last_sync_data: '',
       checked: false,
       api: getNRC_info,
+    },
+    {
+      id: 7,
+      name: 'Village',
+      size: '0KB',
+      last_sync_data: '',
+      checked: false,
+      api: get_Village,
+    },
+    {
+      id: 8,
+      name: 'Township',
+      size: '0KB',
+      last_sync_data: '',
+      checked: false,
+      api: get_Township,
+    },
+    {
+      id: 9,
+      name: 'Ward',
+      size: '0KB',
+      last_sync_data: '',
+      checked: false,
+      api: get_Ward,
     },
   ];
 
@@ -153,44 +180,98 @@ export default function Sync_Download_Screen() {
   const handleDownload = () => {
     if (checkedItems.length > 0) {
       if (selectAll) {
-        if (!netInfo.isConnected) {
-          alert('Internet Connection is need');
-        } else {
-          setIsLoading(true);
-          getEemployee_info()
-            .then(result => {
-              if (result == 'success') {
-                getCustomer_info().then(result => {
-                  if (result == 'success') {
-                    getNRC_info().then(result => {
-                      if (result == 'success') {
-                        getSurvey_Item().then(result => {
-                          if (result == 'success') {
-                            getLoanMax().then(result => {
-                              if (result == 'success') {
-                                getCodeInfo().then(result => {
-                                  if (result == 'success') {
-                                    setIsLoading(false);
-                                    setSelectAll(false);
-                                    setCheckedItems([]);
-                                    alert('Sync success');
-                                  }
-                                });
-                              }
-                            });
-                          }
-                        });
-                      }
-                    });
-                  }
-                });
-              }
-            })
-            .catch(error => {
-              setIsLoading(false);
-              console.log('doSomething failed with error:', error);
-            });
+        // if (!netInfo.isConnected) {
+        //   alert('Internet Connection is need');
+        // } else {
+        setIsLoading(true);
+        const timeoutDuration = 60000; // Adjust the timeout duration as needed (in milliseconds)
+
+        function timeoutPromise() {
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              reject('Sync process timed out');
+            }, timeoutDuration);
+          });
         }
+        const networkCheckPromise = new Promise(async (resolve, reject) => {
+          try {
+            if (netInfo.isConnected) {
+              resolve('Network is available');
+            } else {
+              reject('Network is not available');
+            }
+          } catch (error) {
+            reject('Network check failed');
+          }
+        });
+        Promise.race([timeoutPromise(), networkCheckPromise])
+          .then(() => {
+            return Promise.all([
+              getEemployee_info(),
+              getCustomer_info(),
+              getNRC_info(),
+              getLoanMax(),
+              getSurvey_Item(),
+              getCodeInfo(),
+              get_Village(),
+              get_Township(),
+              get_Ward(),
+            ]);
+          })
+          .then(results => {
+            console.log('Sync success', results);
+            setIsLoading(false);
+            alert('Sync success');
+          })
+          .catch(error => {
+            console.log('error', error);
+            setIsLoading(false);
+            if (error === 'Sync process timed out') {
+              alert('Sync process timed out. Please try again.');
+            } else if (error === 'Network is not available') {
+              alert('Connection Error! Check the connection info');
+            } else if (error === 'Network check failed') {
+              alert('Network check failed');
+            } else if (error.message) {
+              alert('Query Fail!');
+            } else {
+              alert('Only Possible download in network');
+            }
+          });
+        // getEemployee_info()
+        //   .then(result => {
+        //     if (result == 'success') {
+        //       getCustomer_info().then(result => {
+        //         if (result == 'success') {
+        //           getNRC_info().then(result => {
+        //             if (result == 'success') {
+        //               getSurvey_Item().then(result => {
+        //                 if (result == 'success') {
+        //                   getLoanMax().then(result => {
+        //                     if (result == 'success') {
+        //                       getCodeInfo().then(result => {
+        //                         if (result == 'success') {
+        //                           setIsLoading(false);
+        //                           setSelectAll(false);
+        //                           setCheckedItems([]);
+        //                           alert('Sync success');
+        //                         }
+        //                       });
+        //                     }
+        //                   });
+        //                 }
+        //               });
+        //             }
+        //           });
+        //         }
+        //       });
+        //     }
+        //   })
+        //   .catch(error => {
+        //     setIsLoading(false);
+        //     console.log('doSomething failed with error:', error);
+        //   });
+        // // }
       } else {
         setIsLoading(true);
         checkedItems.forEach(item => {

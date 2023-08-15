@@ -7,35 +7,35 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import React, { useContext, useState, useEffect } from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
 import CheckBoxFile from '../../components/CheckBoxFile';
-import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
 import DropDownPicker from '../../components/DropDownPicker';
 import SettingScreen from '../Setting/SettingScreen';
-import { languages } from '../../common';
-import { Button } from 'react-native-paper';
-import { useNetInfo, NetInfo } from '@react-native-community/netinfo';
-import { getEemployee_info } from '../../query/Employee_query';
-import { selectUser } from '../../query/Employee_query';
-import { AuthContext } from '../../components/context';
+import {languages} from '../../common';
+import {Button} from 'react-native-paper';
+import {useNetInfo, NetInfo} from '@react-native-community/netinfo';
+import {getEemployee_info} from '../../query/Employee_query';
+import {selectUser} from '../../query/Employee_query';
+import {AuthContext} from '../../components/context';
 import validate from './Validate';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { reset, change } from 'redux-form';
-import { sha256 } from 'react-native-sha256';
-import { encode } from 'base-64';
+import {reset, change} from 'redux-form';
+import {sha256} from 'react-native-sha256';
+import {encode} from 'base-64';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { getCustomer_info } from '../../query/Customer_query';
-import { getNRC_info } from '../../query/NRCinfo_query';
-import { getIndividual_loan } from '../../query/AllLoan_query';
-import { getSurvey_Item } from '../../query/SurveyItem_query';
-import { getCodeInfo } from '../../query/CodeInfo_quey';
-import { getLoanMax } from '../../query/LoanMax_query';
-import { get_Village } from '../../query/Village_query';
-import { get_Township } from '../../query/Township_query';
-import { get_Ward } from '../../query/Ward_query';
+import {getCustomer_info} from '../../query/Customer_query';
+import {getNRC_info} from '../../query/NRCinfo_query';
+import {getIndividual_loan} from '../../query/AllLoan_query';
+import {getSurvey_Item} from '../../query/SurveyItem_query';
+import {getCodeInfo} from '../../query/CodeInfo_quey';
+import {getLoanMax} from '../../query/LoanMax_query';
+import {get_Village} from '../../query/Village_query';
+import {get_Township} from '../../query/Township_query';
+import {get_Ward} from '../../query/Ward_query';
 function LoginScreen(props) {
   const dispatch = useDispatch();
   const [id, setID] = useState('');
@@ -43,29 +43,16 @@ function LoginScreen(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const netInfo = useNetInfo();
-  const { navigation, handleSubmit } = props;
-  const { saveUserID, userID } = useContext(AuthContext);
+  const {navigation, handleSubmit} = props;
+  const {saveUserID, userID} = useContext(AuthContext);
   const [modalVisible, setModalVisible] = React.useState(false);
   const hideModal = () => setModalVisible(false);
 
-  useEffect(() => {
-    // async function fetchData() {
-    //   const userid = await AsyncStorage.getItem('user_id');
-    //   const data = await AsyncStorage.getItem('login_info');
-    //   if (data == 'true') {
-    //     // dispatch(initialize('LoginForm', { user_id: 'MMUUu', }));
-    //     // dispatch(change('LoginForm', 'user_id', 'myDefaultUsername'));
-    //   } else {
-    //     // dispatch(initialize('LoginForm', { user_id: '', }));
-    //     // dispatch(change('LoginForm', 'user_id', ''));
-    //   }
-    // }
-    // fetchData();
-  }, []);
+  useEffect(() => {}, []);
 
   const handleLngChange = () => {
-    alert('hello')
-  }
+    alert('hello');
+  };
 
   const saveLoginInfo = async login_info => {
     try {
@@ -98,46 +85,119 @@ function LoginScreen(props) {
       console.log('Error:', error);
     }
   };
+
   const btnSync = async () => {
-    if (!netInfo.isConnected) {
-      alert('Internet Connection is needed');
-    } else {
-      setIsLoading(true);
+    // if (!netInfo.isConnected) {
+    //   alert('Connection Error! Check the connection info');
+    // } else {
+    setIsLoading(true);
 
-      const timeoutDuration = 10000; // Adjust the timeout duration as needed (in milliseconds)
+    const timeoutDuration = 60000; // Adjust the timeout duration as needed (in milliseconds)
 
-      const timeoutPromise = new Promise((resolve, reject) => {
+    function timeoutPromise() {
+      return new Promise((resolve, reject) => {
         setTimeout(() => {
           reject('Sync process timed out');
         }, timeoutDuration);
       });
-
-      Promise.race([timeoutPromise, netInfo.waitForConnection])
-        .then(() => {
-          return Promise.all([
-            getEemployee_info(), //
-            getCustomer_info(),
-            getNRC_info(),
-            getLoanMax(), //
-            getSurvey_Item(), //
-            getCodeInfo(), //
-            get_Village(),//
-            get_Township(), //
-            get_Ward() //
-          ]);
-        })
-        .then(results => {
-          console.log('Sync success', results);
-          setIsLoading(false);
-          alert('Sync success');
-        })
-        .catch(error => {
-          setIsLoading(false);
-          console.log('Sync failed:', error);
-          alert('Sync failed');
-        });
     }
+
+    const networkCheckPromise = new Promise(async (resolve, reject) => {
+      try {
+        if (netInfo.isConnected) {
+          resolve('Network is available');
+        } else {
+          reject('Network is not available');
+        }
+      } catch (error) {
+        reject('Network check failed');
+      }
+    });
+
+    Promise.race([timeoutPromise(), networkCheckPromise])
+      .then(() => {
+        return Promise.all([
+          getEemployee_info(),
+          getCustomer_info(),
+          getNRC_info(),
+          getLoanMax(),
+          getSurvey_Item(),
+          getCodeInfo(),
+          get_Village(),
+          get_Township(),
+          get_Ward(),
+        ]);
+      })
+      .then(results => {
+        console.log('Sync success', results);
+        setIsLoading(false);
+        alert('Sync success');
+      })
+      .catch(error => {
+        console.log('error', error);
+        setIsLoading(false);
+        if (error === 'Sync process timed out') {
+          alert('Sync process timed out. Please try again.');
+        } else if (error === 'Network is not available') {
+          alert('Connection Error! Check the connection info');
+        } else if (error === 'Network check failed') {
+          alert('Network check failed');
+        }
+        else if (error.message) {
+          alert('Query Fail!');
+        } else {
+          alert('Only Possible download in network');
+        }
+      });
+    // }
   };
+
+  // const btnSync = async () => {
+  //   if (!netInfo.isConnected) {
+  //     alert('Connection Error!Check the connection info');
+  //   } else {
+  //     setIsLoading(true);
+
+  //     const timeoutDuration = 1000; // Adjust the timeout duration as needed (in milliseconds)
+
+  //     const timeoutPromise = new Promise((resolve, reject) => {
+  //       setTimeout(() => {
+  //         reject('Sync process timed out');
+  //       }, timeoutDuration);
+  //     });
+
+  //     Promise.race([timeoutPromise, netInfo.waitForConnection])
+  //       .then(() => {
+  //         return Promise.all([
+  //           getEemployee_info(), //
+  //           getCustomer_info(),
+  //           getNRC_info(),
+  //           getLoanMax(), //
+  //           getSurvey_Item(), //
+  //           getCodeInfo(), //
+  //           get_Village(),//
+  //           get_Township(), //
+  //           get_Ward() //
+  //         ]);
+  //       })
+  //       .then(results => {
+  //         console.log('Sync success', results);
+  //         setIsLoading(false);
+  //         alert('Sync success');
+  //       })
+  //       .catch(error => {
+  //         console.log('error', error);
+  //         setIsLoading(false);
+  //         if (error === 'Sync process timed out') {
+  //           alert('Sync process timed out. Please try again.');
+  //         } else {
+  //           alert('Only Possible download in network');
+  //         }
+  //         // console.log('Sync failed:', error);
+  //         // alert('Only Possible download in network');
+  //       });
+  //   }
+  // };
 
   // const btnSync = async () => {
   //   if (!netInfo.isConnected) {
@@ -175,7 +235,6 @@ function LoginScreen(props) {
   //                               // }
   //                               // })
 
-
   //                             }
   //                           });
   //                         }
@@ -208,7 +267,7 @@ function LoginScreen(props) {
         <SettingScreen visible={modalVisible} hideModal={hideModal} />
       ) : (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{ backgroundColor: '#232D57', flex: 1 }}>
+          <View style={{backgroundColor: '#232D57', flex: 1}}>
             <View
               style={{
                 flexDirection: 'row',
@@ -221,7 +280,7 @@ function LoginScreen(props) {
                   name="download"
                   size={35}
                   color="#fff"
-                  style={{ marginLeft: 20 }}
+                  style={{marginLeft: 20}}
                 />
               </TouchableOpacity>
 
@@ -230,26 +289,26 @@ function LoginScreen(props) {
                   name="settings"
                   size={35}
                   color="#fff"
-                  style={{ marginLeft: 20 }}
+                  style={{marginLeft: 20}}
                 />
               </TouchableOpacity>
             </View>
-            <View style={{ alignItems: 'center', marginTop: 20 }}>
+            <View style={{alignItems: 'center', marginTop: 20}}>
               <Image
                 source={require('../../../assets/images/logo3.png')}
-                style={{ width: 130, height: 130 }}
+                style={{width: 130, height: 130}}
               />
               <View
-                style={{ flexDirection: 'row', marginTop: 10, marginBottom: 20 }}>
-                <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20 }}>
+                style={{flexDirection: 'row', marginTop: 10, marginBottom: 20}}>
+                <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 20}}>
                   BC NeO{' '}
                 </Text>
-                <Text style={{ color: '#fff', fontSize: 20 }}>Sales System</Text>
+                <Text style={{color: '#fff', fontSize: 20}}>Sales System</Text>
               </View>
 
               <Image
                 source={require('../../../assets/images/default-user.png')}
-                style={{ width: 50, height: 50, marginTop: 10 }}
+                style={{width: 50, height: 50, marginTop: 10}}
               />
             </View>
             <View
@@ -296,12 +355,12 @@ function LoginScreen(props) {
                   title={'Select Language'}
                 />
 
-                <View style={{ marginTop: 20 }}>
+                <View style={{marginTop: 20}}>
                   <Button
                     mode="contained"
                     onPress={handleSubmit(onSubmit)}
                     buttonColor={'#6870C3'}
-                    style={{ borderRadius: 0 }}>
+                    style={{borderRadius: 0}}>
                     Login
                   </Button>
                 </View>
@@ -323,7 +382,7 @@ function LoginScreen(props) {
               </View>
             </View>
 
-            <Text style={{ color: '#fff', textAlign: 'center', marginTop: 25 }}>
+            <Text style={{color: '#fff', textAlign: 'center', marginTop: 25}}>
               v 0.1.19
             </Text>
 
@@ -340,7 +399,7 @@ function LoginScreen(props) {
         </TouchableWithoutFeedback>
       )}
 
-      <View style={{ position: 'absolute', top: '50%', right: 0, left: 0 }}>
+      <View style={{position: 'absolute', top: '50%', right: 0, left: 0}}>
         {isLoading ? (
           <Spinner visible={isLoading} textContent={'Please Wait'} />
         ) : (

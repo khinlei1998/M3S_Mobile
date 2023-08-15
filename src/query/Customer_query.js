@@ -197,7 +197,6 @@ export function getCustomer_info() {
             }
           })
           .catch(error => {
-            alert(error);
             reject(error);
           })
       });

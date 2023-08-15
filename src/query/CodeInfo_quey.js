@@ -50,9 +50,7 @@ export function getCodeInfo() {
                       },
                       error => {
                         // If insert query fails, rollback the transaction and reject the promise
-                        tx.executeSql('ROLLBACK', [], () => {
                           reject(error);
-                        });
                       },
                     );
                   });
@@ -61,7 +59,6 @@ export function getCodeInfo() {
             }
           })
           .catch(error => {
-            alert(error);
             reject(error);
           });
       });
