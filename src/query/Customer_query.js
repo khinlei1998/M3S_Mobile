@@ -152,14 +152,14 @@ export function getCustomer_info() {
                         null, //err_msg
                         null, //postal_code
                         null, //total_net
-                        null,//city_code
+                        item.cityCode,//city_code
+                        null,
+                        item.townshipCode,
+                        null,
+                        item.villageCode,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
+                        item.wardCode,
                         null, //address type
                         '2', //business_period_status
                         '2', //curr businee date status

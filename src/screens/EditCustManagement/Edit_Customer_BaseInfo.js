@@ -1,6 +1,6 @@
-import {View, Text, TouchableOpacity, FlatList} from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {RadioButton,List} from 'react-native-paper';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { RadioButton, List } from 'react-native-paper';
 import {
   Field,
   reduxForm,
@@ -10,8 +10,8 @@ import {
 } from 'redux-form';
 import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
-import {connect} from 'react-redux';
-import {Picker} from '@react-native-picker/picker';
+import { connect } from 'react-redux';
+import { Picker } from '@react-native-picker/picker';
 import {
   owner_shipratio,
   gender,
@@ -20,16 +20,17 @@ import {
   condition_house,
   village_status,
   nrc_type,
+  owner_ship_business
 } from '../../common';
 import DividerLine from '../../components/DividerLine';
 import DatePicker from '../../components/DatePicker';
 // import {style} from '../../style/Customer_Base_style';
-import {setCusFormInitialValues} from '../../redux/CustomerReducer';
-import {fetchAllCustomerNum} from '../../query/Customer_query';
-import {Modal, Provider, Portal, Button} from 'react-native-paper';
+import { setCusFormInitialValues } from '../../redux/CustomerReducer';
+import { fetchAllCustomerNum } from '../../query/Customer_query';
+import { Modal, Provider, Portal, Button } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
-import {city_code, start_living_date_status} from '../../common';
-import {useDispatch} from 'react-redux';
+import { city_code, start_living_date_status } from '../../common';
+import { useDispatch } from 'react-redux';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import { style } from '../../style/Customer_Mang_style';
 function Edit_Customer_BaseInfo(props) {
@@ -62,10 +63,10 @@ function Edit_Customer_BaseInfo(props) {
   };
 
   // const numbers = Array.from({length: 60}, (_, i) => i + 1);
-  const numbers = Array.from({length: 60}, (_, i) => (i + 1).toString());
+  const numbers = Array.from({ length: 60 }, (_, i) => (i + 1).toString());
 
   const arrayWithObjects = numbers.map((num, index) => {
-    return {id: num, label: num, value: num};
+    return { id: num, label: num, value: num };
   });
   const handleNRCChange = (value, input) => {
     console.log('value chane', value);
@@ -114,6 +115,7 @@ function Edit_Customer_BaseInfo(props) {
                 cus_width
                 input_mode
                 editable={update_status == true ? false : true}
+                require
               />
             ) : (
               <Field
@@ -367,6 +369,7 @@ function Edit_Customer_BaseInfo(props) {
               inputmax={20}
               keyboardType={'numeric'}
               editable={update_status == true ? false : true}
+              require
             />
           </View>
 
@@ -423,8 +426,19 @@ function Edit_Customer_BaseInfo(props) {
               }}
               enabled={update_status == true ? false : true}
             />
-            <Field
+            {/* <Field
               data={owner_shipratio}
+              name={'business_own_type'}
+              title={'Ownership of Business'}
+              component={DropDownPicker}
+              pickerStyle={{
+                width: 300,
+              }}
+              enabled={update_status == true ? false : true}
+            /> */}
+
+            <Field
+              data={owner_ship_business}
               name={'business_own_type'}
               title={'Ownership of Business'}
               component={DropDownPicker}
@@ -445,7 +459,7 @@ function Edit_Customer_BaseInfo(props) {
 
             <Field
               data={maritail_status}
-              name={'marital_status'}
+              name={'maritalStatus'}
               title={'Maritial Status'}
               component={DropDownPicker}
               pickerStyle={{
@@ -471,7 +485,7 @@ export default reduxForm({
   form: 'Customer_ManagementForm',
   enableReinitialize: true,
 })(
-  connect(mapStateToProps, {setCusFormInitialValues, fetchAllCustomerNum})(
+  connect(mapStateToProps, { setCusFormInitialValues, fetchAllCustomerNum })(
     Edit_Customer_BaseInfo,
   ),
 );

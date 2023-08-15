@@ -11,7 +11,7 @@ export function get_Ward() {
         axios
           // .get(`https://${newIP}/skylark-m3s/api/employees.m3s`)
           .get(`https://${ip}:${port}/skylark-m3s/api/wards.m3s`)
-          .then(({data}) => {
+          .then(({ data }) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -80,3 +80,24 @@ export async function filterWard(selectedColumn, searchTerm, ts_code) {
     });
   });
 }
+export const fetchWardName = async (ward_code) => {
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM Ward WHERE ward_code = ? ',
+        [ward_code],
+        (tx, results) => {
+          if (results.rows.length > 0) {
+            resolve(results.rows.raw());
+          } else {
+            reject('ward_code not found');
+          }
+        },
+        (tx, error) => {
+          reject(error);
+        },
+      );
+    });
+  });
+};
+

@@ -43,6 +43,7 @@ export default function Create_Operation(props) {
           mode="contained"
           buttonColor={'#21316C'}
           style={style.btnStyle}>
+            OK
         </Button>
       </>
     </View>

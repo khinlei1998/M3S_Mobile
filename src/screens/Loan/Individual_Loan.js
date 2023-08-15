@@ -1853,6 +1853,7 @@ function Individual_Loan(props) {
                     pickerStyle={{
                       width: 300,
                     }}
+                    require
                   />
                 </View>
                 <View style={style.sub_list_container}>

@@ -81,3 +81,24 @@ export async function filterTownship(selectedColumn, searchTerm, city_code) {
   });
 }
 
+export const fetchTownshipName = async (township_code) => {
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM Township WHERE ts_code = ? ',
+        [township_code],
+        (tx, results) => {
+          if (results.rows.length > 0) {
+            resolve(results.rows.raw());
+          } else {
+            reject('Ts code not found');
+          }
+        },
+        (tx, error) => {
+          reject(error);
+        },
+      );
+    });
+  });
+};
+

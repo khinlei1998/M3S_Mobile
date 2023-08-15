@@ -12,15 +12,17 @@ const validate = (values) => {
     if (!values.resident_rgst_id) {
         errors.resident_rgst_id = "Borrower NRC is required.";
     }
-    // if (!values.tel_no) {
-    //     errors.tel_no = "Tel Number is required.";
-    // }
+
     if (!values.product_type) {
         errors.product_type = "Product Type is required.";
     }
     if (!values.loanterm_cnt) {
         errors.loanterm_cnt = "Loan Term CNT is required.";
     }
+    if (!values.interest_rates) {
+        errors.interest_rates = "Interest Rate is required.";
+    }
+
 
 
 

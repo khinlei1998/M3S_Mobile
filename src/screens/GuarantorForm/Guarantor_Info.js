@@ -1,10 +1,10 @@
-import {View, Text} from 'react-native';
-import React, {useState} from 'react';
-import {List} from 'react-native-paper';
-import {style} from '../../style/Guarantor_style';
+import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { List } from 'react-native-paper';
+import { style } from '../../style/Guarantor_style';
 import TextInputFile from '../../components/TextInputFile';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import { reduxForm, Field, change, reset } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
 import DropDownPicker from '../../components/DropDownPicker';
 import DatePicker from '../../components/DatePicker';
 import {
@@ -12,9 +12,10 @@ import {
   address_type,
   maritail_status,
   condition_house,
+  owner_ship_business
 } from '../../common';
 export default function Guarantor_Info(props) {
-  const {showGuarantorSearch}=props
+  const { showGuarantorSearch } = props
   const [guarantor_expand, setGuarantorInfoExpand] = useState(true);
   const handleGuarantorToggle = () => {
     setGuarantorInfoExpand(!guarantor_expand);
@@ -166,12 +167,22 @@ export default function Guarantor_Info(props) {
               }}
             />
 
-            <Field
+            {/* <Field
               name={'business_own_type'}
               title={'OwnerShip of business'}
               component={TextInputFile}
               cus_width
               input_mode
+            /> */}
+
+            <Field
+              data={owner_ship_business}
+              name={'businessOwnType'}
+              title={'Ownership of Business'}
+              component={DropDownPicker}
+              pickerStyle={{
+                width: 300,
+              }}
             />
           </View>
 

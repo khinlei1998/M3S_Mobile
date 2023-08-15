@@ -58,7 +58,7 @@ export function get_Village() {
 }
 
 export async function filterVillage(selectedColumn, searchTerm, ts_code) {
-  console.log('ts_code',ts_code);
+  console.log('ts_code', ts_code);
   let sql;
   if (selectedColumn && searchTerm) {
     sql = `SELECT * FROM Village  WHERE ${selectedColumn} LIKE '%${searchTerm}%' AND ts_code = '${ts_code}'`;
@@ -81,3 +81,24 @@ export async function filterVillage(selectedColumn, searchTerm, ts_code) {
     });
   });
 }
+
+export const fetchVillageName = async (village_code) => {
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM Village WHERE village_code = ? ',
+        [village_code],
+        (tx, results) => {
+          if (results.rows.length > 0) {
+            resolve(results.rows.raw());
+          } else {
+            reject('village_code not found');
+          }
+        },
+        (tx, error) => {
+          reject(error);
+        },
+      );
+    });
+  });
+};

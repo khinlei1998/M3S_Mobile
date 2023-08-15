@@ -268,7 +268,7 @@ function Customer_Base_Info(props) {
           ) : (
             <View style={style.sub_list_container}>
               <Field
-                name={'Wardcode'}
+                name={'ward_code'}
                 title={'Ward Code '}
                 component={TextInputFile}
                 input_mode
@@ -278,7 +278,7 @@ function Customer_Base_Info(props) {
                 handleTextInputFocus={showWardSearch}
               />
               <Field
-                name={'WardName'}
+                name={'ward_name'}
                 title={'Ward Name '}
                 component={TextInputFile}
                 input_mode
@@ -351,6 +351,7 @@ function Customer_Base_Info(props) {
               input_mode
               inputmax={20}
               keyboardType={'numeric'}
+              require
             />
           </View>
 

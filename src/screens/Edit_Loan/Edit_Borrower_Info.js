@@ -11,6 +11,7 @@ import {
   gender,
   address_type,
   village_status,
+  owner_ship_business
 } from '../../common';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
@@ -113,6 +114,7 @@ function Borrower_Info(props) {
               input_mode
               keyboardType={'numeric'}
               editable={update_status == true ? false : true}
+              require
             />
           </View>
 
@@ -350,13 +352,16 @@ function Borrower_Info(props) {
               }}
             />
 
-            <Field
+          
+             <Field
+              data={owner_ship_business}
               name={'business_own_type'}
               title={'OwnerShip of business'}
-              component={TextInputFile}
-              cus_width
-              input_mode
-              editable={update_status == true ? false : true}
+              enabled={update_status == true ? false : true}
+              component={DropDownPicker}
+              pickerStyle={{
+                width: 300,
+              }}
             />
           </View>
         </View>

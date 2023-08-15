@@ -1,6 +1,6 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {BASE_URL} from '../common';
+import { BASE_URL } from '../common';
 
 export function getCodeInfo() {
   return new Promise(async (resolve, reject) => {
@@ -20,7 +20,7 @@ export function getCodeInfo() {
         axios
           // .get(`https://${newIP}/skylark-m3s/api/employees.m3s`)
           .get(`https://${ip}:${port}/skylark-m3s/api/codes.m3s`)
-          .then(({data}) => {
+          .then(({ data }) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -90,6 +90,27 @@ export const getCityData = async () => {
     });
   });
 };
+export const fetchCityName = async (city_code) => {
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM Code WHERE code_value = ? ',
+        [city_code],
+        (tx, results) => {
+          console.log('ctuomer result', results);
+          if (results.rows.length > 0) {
+            resolve(results.rows.raw());
+          } else {
+            reject('Invalid email or password');
+          }
+        },
+        (tx, error) => {
+          reject(error);
+        },
+      );
+    });
+  });
+};
 
 export async function filterCity(selectedColumn, searchTerm) {
   let sql;
@@ -137,3 +158,23 @@ export async function filterLocation(selectedColumn, searchTerm) {
     });
   });
 }
+export const fetchLocationName = async (location_code) => {
+  return new Promise((resolve, reject) => {
+    global.db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM Code WHERE code_value = ? ',
+        [location_code],
+        (tx, results) => {
+          if (results.rows.length > 0) {
+            resolve(results.rows.raw());
+          } else {
+            reject('LOCATION code error');
+          }
+        },
+        (tx, error) => {
+          reject(error);
+        },
+      );
+    });
+  });
+};

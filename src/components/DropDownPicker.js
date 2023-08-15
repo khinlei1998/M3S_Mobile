@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
-import {Picker} from '@react-native-picker/picker';
-import {languages} from '../common';
-import {StyleSheet, View, Text} from 'react-native';
+import React, { useState } from 'react';
+import { Picker } from '@react-native-picker/picker';
+import { languages } from '../common';
+import { StyleSheet, View, Text } from 'react-native';
 
 export default function DropDownPicker(props) {
   const {
-    input: {onChange, value},
+    input: { onChange, value },
     meta,
     data,
     title,
@@ -16,12 +16,13 @@ export default function DropDownPicker(props) {
     showDropChange,
     enabled,
     prefix,
+    require,
     ...pickerProps
   } = props;
 
-  const Rendererror = ({touched, error}) => {
+  const Rendererror = ({ touched, error }) => {
     if (touched && error) {
-      return <Text style={{color: 'red'}}>{error}</Text>;
+      return <Text style={{ color: 'red' }}>{error}</Text>;
     }
   };
 
@@ -48,7 +49,7 @@ export default function DropDownPicker(props) {
           },
         ]}
         mode="dropdown">
-        <Picker.Item label={title} value="" style={{color: '#636Dc6'}} />
+        <Picker.Item label={title} value="" style={{ color: '#636Dc6' }} />
         {num_data.length > 0 &&
           num_data.map(val => (
             // <Picker.Item key={val} label={val.toString()} value={val} />
@@ -57,11 +58,11 @@ export default function DropDownPicker(props) {
       </Picker>
     </View>
   ) : (
-    <View style={{flexDirection: 'column'}}>
+    <View style={{ flexDirection: 'column' }}>
       <View
         style={{
           borderColor: 'black',
-          backgroundColor: enabled?'#FAFAFA':'#FFF',
+          backgroundColor: enabled ? '#FAFAFA' : '#FFF',
           borderWidth: 0.5,
           marginTop: 10,
           width: pickerStyle.width,
@@ -82,7 +83,8 @@ export default function DropDownPicker(props) {
             },
           ]}
           mode="dropdown">
-          <Picker.Item label={title} value="" style={{color: '#636Dc6'}} />
+
+          <Picker.Item label={title} value="" style={{ color: '#636Dc6' }} />
           {data.length > 0 &&
             data.map(val => (
               <Picker.Item label={val.label} value={val.value} key={val.id} />
