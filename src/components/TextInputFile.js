@@ -28,7 +28,7 @@ export default function TextInputFile(props) {
     showRightIcon,
     nrc_cusstyle,
     meta: { touched, error },
-    input: { onChange, ...restInput },
+    input: { onChange, value,...restInput },
     ...restProps
   } = props;
   const inputRef = useRef(null);
@@ -47,6 +47,7 @@ export default function TextInputFile(props) {
     }
   };
   const handleTextChange = text => {
+    console.log('text',text);
     // setWordCount(text.length);
 
     onChange(text);
@@ -69,11 +70,13 @@ export default function TextInputFile(props) {
   //     });
   //   }
   // }, [restInput.value]);
-  console.log('eye-off-outline', passwordIcon);
+  console.log('restInput',restInput);
+  console.log('restProps',restProps);
   return (
     <View>
       <TextInput
-        ref={inputRef}
+        defaultValue={value}
+        // ref={inputRef}
         // {...restInput}
         {...restInput}
         {...restProps}

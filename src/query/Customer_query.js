@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Alert } from 'react-native';
 import moment from 'moment';
+import { connection_name } from '../common';
 export async function getAllCustomer() {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
@@ -51,7 +52,7 @@ export function getCustomer_info() {
     global.db.transaction(tx => {
       tx.executeSql('DELETE FROM Customer', [], (tx, results) => {
         axios
-          .get(`https://${ip}:${port}/skylark-m3s/api/customers.m3s`)
+          .get(`${connection_name}://${ip}:${port}/skylark-m3s/api/customers.m3s`)
           .then(({ data }) => {
             if (data.length > 0) {
               let insertedRows = 0;
@@ -759,7 +760,7 @@ export async function UploadCustomerData(customer_data) {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: `https://${ip}:${port}/skylark-m3s/api/customers.m3s`,
+        url: `${connection_name}://${ip}:${port}/skylark-m3s/api/customers.m3s`,
         data: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json', // Set the content type as JSON

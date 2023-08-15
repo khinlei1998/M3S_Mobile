@@ -1,6 +1,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { connection_name } from '../common';
 export function getSurvey_Item() {
   return new Promise(async (resolve, reject) => {
     let ip = await AsyncStorage.getItem('ip');
@@ -10,7 +11,7 @@ export function getSurvey_Item() {
       tx.executeSql('DELETE FROM survey_item', [], (tx, results) => {
         axios
           // .get(`https://${newIP}/skylark-m3s/api/employees.m3s`)
-          .get(`https://${ip}:${port}/skylark-m3s/api/surveyItems.m3s`)
+          .get(`${connection_name}://${ip}:${port}/skylark-m3s/api/surveyItems.m3s`)
           .then(({data}) => {
             if (data.length > 0) {
               let insertedRows = 0;

@@ -64,7 +64,7 @@ function LoginScreen(props) {
   }, []);
 
   const handleLngChange = () => {
-    alert('kk')
+    alert('hello')
   }
 
   const saveLoginInfo = async login_info => {
@@ -115,15 +115,15 @@ function LoginScreen(props) {
       Promise.race([timeoutPromise, netInfo.waitForConnection])
         .then(() => {
           return Promise.all([
-            // getEemployee_info(),
-            // getCustomer_info(),
+            getEemployee_info(), //
+            getCustomer_info(),
             getNRC_info(),
-            getLoanMax(),//2
-            getSurvey_Item(), //1
-            // getCodeInfo(),
-            // get_Village(),
-            get_Township(), //3
-            get_Ward()//4
+            getLoanMax(), //
+            getSurvey_Item(), //
+            getCodeInfo(), //
+            get_Village(),//
+            get_Township(), //
+            get_Ward() //
           ]);
         })
         .then(results => {
@@ -134,11 +134,10 @@ function LoginScreen(props) {
         .catch(error => {
           setIsLoading(false);
           console.log('Sync failed:', error);
-          alert('Sync failed: ' + error);
+          alert('Sync failed');
         });
     }
   };
-
 
   // const btnSync = async () => {
   //   if (!netInfo.isConnected) {

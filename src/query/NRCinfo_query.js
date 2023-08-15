@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {BASE_URL} from '../common';
-
+import { BASE_URL } from '../common';
+import { connection_name } from '../common';
 export const getNRC_info = () => {
   return new Promise(async (resolve, reject) => {
     let ip = await AsyncStorage.getItem('ip');
@@ -14,13 +14,13 @@ export const getNRC_info = () => {
         (tx, results) => {
           axios
             // .get(`https://${ip}`, {})
-            .get(`https://${ip}:${port}/skylark-m3s/api/nrcCodeInfo.m3s`)
-            .then(({data}) => {
+            .get(`${connection_name}://${ip}:${port}/skylark-m3s/api/nrcCodeInfo.m3s`)
+            .then(({ data }) => {
               if (data.length > 0) {
                 global.db.transaction(tx => {
                   data.forEach(item => {
                     tx.executeSql(
-                      'INSERT INTO Nrc_prefix (serial_no,create_datetime,create_user_id,update_datetime,update_user_id,status_code,state_code,state_name,township_name,nrc_prefix_code,err_msg,ll) VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+                      'INSERT INTO Nrc_prefix (serial_no,create_datetime,create_user_id,update_datetime,update_user_id,status_code,state_code,state_name,township_name,nrc_prefix_code,err_msg) VALUES (?,?,?,?,?,?,?,?,?,?,?)',
                       [
                         item.serialNo,
                         null,
@@ -39,10 +39,10 @@ export const getNRC_info = () => {
                         resolve('success');
                       },
                       error => {
-                        console.log('query ',error)
+                        console.log('query ', error)
                         // If insert query fails, rollback the transaction and reject the promise
                         // tx.executeSql('ROLLBACK', [], () => {
-                          reject(error);
+                        reject(error);
                         // });
                       },
                     );

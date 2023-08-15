@@ -7,6 +7,7 @@ import {
   microfinance_data,
   area_evaluation_result,
   relation_data,
+  connection_name
 } from '../common';
 export async function getAllLoan() {
   return new Promise((resolve, reject) => {
@@ -87,7 +88,7 @@ export async function getAllLoanType() {
 //     global.db.transaction(tx => {
 //       tx.executeSql('DELETE FROM Individual_application', [], (tx, results) => {
 //         axios
-//           .get(`https://${ip}:${port}/skylark-m3s/api/individualLoans.m3s`)
+//           .get(`${connection_name}://${ip}:${port}/skylark-m3s/api/individualLoans.m3s`)
 //           .then(({data}) => {
 //             if (data.length > 0) {
 //               let insertedRows = 0;
@@ -609,8 +610,6 @@ async function uploadImage(filePath, description) {
   let port = await AsyncStorage.getItem('port');
   try {
     const fileExists = await RNFS.exists(filePath);
-    console.log('fileexist', filePath, fileExists);
-
     if (fileExists) {
       let imageForm = new FormData();
       imageForm.append('description', description || 'anything');
@@ -623,7 +622,7 @@ async function uploadImage(filePath, description) {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: `https://${ip}:${port}/skylark-m3s/file/upload.m3s`,
+        url: `${connection_name}://${ip}:${port}/skylark-m3s/file/upload.m3s`,
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -1394,8 +1393,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           data.product_type == 30 ||
           data.product_type == 40 ||
           data.product_type == 50
-            ? `https://${ip}:${port}/skylark-m3s/api/groupLoan.m3s`
-            : `https://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
+            ? `${connection_name}://${ip}:${port}/skylark-m3s/api/groupLoan.m3s`
+            : `${connection_name}://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
         data: formData,
         headers: {
           'Content-Type': 'multipart/form-data',

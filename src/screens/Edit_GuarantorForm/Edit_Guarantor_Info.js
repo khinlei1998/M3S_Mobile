@@ -184,18 +184,7 @@ function Edit_Guarantor_Info(props) {
               }}
               enabled={guarantor_update_status == true ? false : true}
             />
-
-            {/* <Field
-              name={'business_own_type'}
-              title={'OwnerShip of business'}
-              component={TextInputFile}
-              cus_width
-              input_mode
-              editable={guarantor_update_status == true ? false : true}
-            /> */}
           </View>
-
-
         </View>
       </List.Accordion>
     </>

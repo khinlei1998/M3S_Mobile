@@ -1,6 +1,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { connection_name } from '../common';
 export function get_Township() {
   return new Promise(async (resolve, reject) => {
     let ip = await AsyncStorage.getItem('ip');
@@ -9,7 +10,7 @@ export function get_Township() {
     global.db.transaction(tx => {
       tx.executeSql('DELETE FROM Township', [], (tx, results) => {
         axios
-          .get(`https://${ip}:${port}/skylark-m3s/api/townships.m3s`)
+          .get(`${connection_name}://${ip}:${port}/skylark-m3s/api/townships.m3s`)
           .then(({ data }) => {
             if (data.length > 0) {
               let insertedRows = 0;

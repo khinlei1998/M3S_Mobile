@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../common';
-
+import { connection_name } from '../common';
 export function getLoanMax() {
     return new Promise(async (resolve, reject) => {
         let ip = await AsyncStorage.getItem('ip');
@@ -19,7 +19,7 @@ export function getLoanMax() {
                 console.log('Delete success');
                 axios
                     // .get(`https://${newIP}/skylark-m3s/api/employees.m3s`)
-                    .get(`https://${ip}:${port}/skylark-m3s/api/maxInfo.m3s`)
+                    .get(`${connection_name}://${ip}:${port}/skylark-m3s/api/maxInfo.m3s`)
                     .then(({ data }) => {
                         if (data.length > 0) {
                             let insertedRows = 0;
