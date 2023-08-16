@@ -157,8 +157,7 @@ function Edit_Emp_Info(props) {
   const hideCityModal = () => setCityCodeModalVisible(false);
   const hideWardModal = () => setWardCodeModalVisible(false);
   const filtered_cus_data = props.route.params;
-  console.log('edit customer data', filtered_cus_data);
-
+  console.log('filtered_cus_data',filtered_cus_data);
   const onChangeEmpText = textvalues => {
     setEmpText(textvalues);
   };
@@ -937,6 +936,8 @@ function Edit_Emp_Info(props) {
   };
   const btnCancel = () => {
     setNRC_Visible(!nrc_visible);
+    setNRC('1') //if not choose new nrc
+
   };
   const handleLocationItemValueChange = itemValue => {
     setLocationSelectedItemValue(itemValue);
@@ -955,8 +956,6 @@ function Edit_Emp_Info(props) {
       } else {
         let data = Object.assign(values, emp_filter_data, {
           createUserId: empname,
-          // resident_rgst_id:
-          //   values.nrc_type == '1' ? values.nrc_no : values.resident_rgst_id,
           nrc_state_code: values.nrc_type == '2' ? prefix : '',
         });
         console.log('data', data);

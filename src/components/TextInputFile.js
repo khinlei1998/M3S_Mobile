@@ -1,13 +1,12 @@
-import { View, Text, } from 'react-native';
-import React, { useState, useRef, } from 'react';
-import { TextInput, DefaultTheme } from 'react-native-paper';
+import {View, Text} from 'react-native';
+import React, {useState, useRef, useEffect} from 'react';
+import {DefaultTheme, TextInput} from 'react-native-paper';
 
 export default function TextInputFile(props) {
   const [passwordIcon, setPasswordIcon] = useState('eye');
   const [isPassword, setIsPassword] = useState(true);
   const [wordCount, setWordCount] = React.useState(0);
   const [totalSum, setTotalSum] = useState(0);
-
   const {
     require,
     focusTextInput,
@@ -27,14 +26,12 @@ export default function TextInputFile(props) {
     editable,
     showRightIcon,
     nrc_cusstyle,
-    meta: { touched, error },
-    input: { onChange, value,...restInput },
-    ...restProps
+    meta: {touched, error},
+    input,
+    ...rest
   } = props;
-  const inputRef = useRef(null);
-
-  const [values, setValues] = useState([]);
   const [total, setTotal] = useState(0);
+  const [inputValue, setInputValue] = useState(input.value); // Initialize with the input's value
 
   const togglePasswordIcon = () => {
     console.log('kk', passwordIcon);
@@ -46,44 +43,39 @@ export default function TextInputFile(props) {
       setIsPassword(true);
     }
   };
-  const handleTextChange = text => {
-    console.log('text',text);
-    // setWordCount(text.length);
+  // const handleTextChange = text => {
+  //   // setWordCount(text.length);
 
-    onChange(text);
+  //   input.onChange(text);
 
-    let sum = 0;
+  //   let sum = 0;
 
-    for (let i = 0; i < text.length; i++) {
-      const digit = parseInt(text[i]);
-      if (!isNaN(digit)) {
-        sum += digit;
-      }
-    }
-    setTotalSum(sum);
-  };
-  // useEffect(() => {
-  //   // Set the cursor position after each text change
-  //   if (inputRef.current) {
-  //     inputRef.current.setNativeProps({
-  //       selection: {start: restInput.value.length, end: restInput.value.length},
-  //     });
+  //   for (let i = 0; i < text.length; i++) {
+  //     const digit = parseInt(text[i]);
+  //     if (!isNaN(digit)) {
+  //       sum += digit;
+  //     }
   //   }
-  // }, [restInput.value]);
-  // console.log('restInput',restInput);
-  // console.log('restProps',restProps);
+  //   setTotalSum(sum);
+  // };
+  const handleTextChange = () => {};
+  useEffect(() => {
+    setInputValue(input.value); // Update the local state when the Redux Form value changes
+  }, [input.value]);
+
+  const handleInputChangeCustom = text => {
+    setInputValue(text); // Update the local state
+    input.onChange(text); // Update the Redux Form field value
+    // handleTextChange(text); // Custom text change handler
+  };
   return (
     <View>
       <TextInput
-        defaultValue={value}
-        // ref={inputRef}
-        // {...restInput}
-        {...restInput}
-        {...restProps}
-        // value={value}
-        //  defaultValue={value}
+        {...rest}
         editable={editable ? false : true}
         maxLength={inputmax}
+        // value={input.value}
+        value={inputValue}
         theme={{
           colors: {
             ...DefaultTheme.colors,
@@ -94,11 +86,12 @@ export default function TextInputFile(props) {
         onFocus={focusTextInput && handleTextInputFocus}
         mode={input_mode ? 'flat' : ''}
         label={
-          <Text style={{ color: '#636Dc6' }}>
-            {title} {require && <Text style={{ color: 'red' }}>*</Text>}
+          <Text style={{color: '#636Dc6'}}>
+            {title} {require && <Text style={{color: 'red'}}>*</Text>}
           </Text>
         }
-        onChangeText={text => handleTextChange(text)}
+        onChangeText={handleInputChangeCustom} // Use the new function name
+        onBlur={input.onBlur}
         style={{
           backgroundColor: editable ? '#f8f8f8' : '#fff',
           marginTop: 10,
@@ -114,14 +107,21 @@ export default function TextInputFile(props) {
           icon == 'eye' ? (
             <TextInput.Icon icon={passwordIcon} onPress={togglePasswordIcon} />
           ) : icon == 'magnify' ? (
-            <TextInput.Icon icon={icon} onPress={handleTextInputFocus} iconColor="#636Dc6" />
+            <TextInput.Icon
+              icon={icon}
+              onPress={handleTextInputFocus}
+              iconColor="#636Dc6"
+            />
           ) : icon == 'calendar' ? (
-            <TextInput.Icon icon={icon} onPress={handleTextInputFocus} iconColor="#636Dc6" />
-
+            <TextInput.Icon
+              icon={icon}
+              onPress={handleTextInputFocus}
+              iconColor="#636Dc6"
+            />
           ) : null
         }
       />
-      {touched && error && <Text style={{ color: 'red' }}>{error}</Text>}
+      {touched && error && <Text style={{color: 'red'}}>{error}</Text>}
     </View>
   );
 }

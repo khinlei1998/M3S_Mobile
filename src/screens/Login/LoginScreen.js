@@ -17,29 +17,18 @@ import DropDownPicker from '../../components/DropDownPicker';
 import SettingScreen from '../Setting/SettingScreen';
 import {languages} from '../../common';
 import {Button} from 'react-native-paper';
-import {useNetInfo, NetInfo} from '@react-native-community/netinfo';
+import {useNetInfo,} from '@react-native-community/netinfo';
 import {getEemployee_info} from '../../query/Employee_query';
 import {selectUser} from '../../query/Employee_query';
 import {AuthContext} from '../../components/context';
 import validate from './Validate';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {reset, change} from 'redux-form';
 import {sha256} from 'react-native-sha256';
 import {encode} from 'base-64';
 import Spinner from 'react-native-loading-spinner-overlay';
-import {getCustomer_info} from '../../query/Customer_query';
-import {getNRC_info} from '../../query/NRCinfo_query';
-import {getIndividual_loan} from '../../query/AllLoan_query';
-import {getSurvey_Item} from '../../query/SurveyItem_query';
-import {getCodeInfo} from '../../query/CodeInfo_quey';
-import {getLoanMax} from '../../query/LoanMax_query';
-import {get_Village} from '../../query/Village_query';
-import {get_Township} from '../../query/Township_query';
-import {get_Ward} from '../../query/Ward_query';
 function LoginScreen(props) {
   const dispatch = useDispatch();
   const [id, setID] = useState('');
-  const [selectedItemValue, setSelectedItemValue] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const netInfo = useNetInfo();
@@ -48,10 +37,8 @@ function LoginScreen(props) {
   const [modalVisible, setModalVisible] = React.useState(false);
   const hideModal = () => setModalVisible(false);
 
-  useEffect(() => {}, []);
-
   const handleLngChange = () => {
-    alert('hello');
+    alert('Under Developing');
   };
 
   const saveLoginInfo = async login_info => {
@@ -116,25 +103,13 @@ function LoginScreen(props) {
 
     Promise.race([timeoutPromise(), networkCheckPromise])
       .then(() => {
-        return Promise.all([
-          getEemployee_info(),
-          getCustomer_info(),
-          getNRC_info(),
-          getLoanMax(),
-          getSurvey_Item(),
-          getCodeInfo(),
-          get_Village(),
-          get_Township(),
-          get_Ward(),
-        ]);
+        return getEemployee_info(); // Execute the first request
       })
       .then(results => {
-        console.log('Sync success', results);
         setIsLoading(false);
         alert('Sync success');
       })
       .catch(error => {
-        console.log('error', error);
         setIsLoading(false);
         if (error === 'Sync process timed out') {
           alert('Sync process timed out. Please try again.');
@@ -142,9 +117,6 @@ function LoginScreen(props) {
           alert('Connection Error! Check the connection info');
         } else if (error === 'Network check failed') {
           alert('Network check failed');
-        }
-        else if (error.message) {
-          alert('Query Fail!');
         } else {
           alert('Only Possible download in network');
         }
@@ -323,7 +295,7 @@ function LoginScreen(props) {
                   borderColor: '#4C577F', // Color of the border
                   borderRadius: 10,
                   width: 400,
-                  height: 400,
+                  height: 340,
                   padding: 20,
                 }}>
                 <Field

@@ -226,10 +226,9 @@ export default function Passport(props) {
             color: 'black',
             padding: 5,
           }}
-          icon="chevron-back"
           mode="contained"
-          onPress={() => handleDelete()}>
-          Go Back
+          onPress={() => navigation.goBack()}>
+          Submit
         </Button>
         {/* </Card.Content>
         </Card> */}

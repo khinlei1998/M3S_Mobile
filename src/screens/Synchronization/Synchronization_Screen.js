@@ -1,29 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
-import { Divider, Button, Provider, Modal, Portal } from 'react-native-paper';
-import { getAllLoan } from '../../query/AllLoan_query';
+import React, {useEffect, useState} from 'react';
+import {View, Text, TouchableOpacity, FlatList} from 'react-native';
+import {Divider, Button, Provider, Modal, Portal} from 'react-native-paper';
+import {getAllLoan} from '../../query/AllLoan_query';
 import Tab from '../../components/Tab';
 import Sync_Upload_Screen from './Sync_Upload_Screen';
 import CheckBoxFile from '../../components/CheckBoxFile';
 import Sync_Download_Screen from './Sync_Download_Screen';
 import Sync_Setting_Screen from './Sync_Setting_Screen';
-import { fetchAllCustomerNum } from '../../query/Customer_query';
-import { UploadCustomerData } from '../../query/Customer_query';
-import { getAllLoan_By_application_no } from '../../query/AllLoan_query';
-import { fetchDataForCheckedData } from '../../query/AllLoan_query';
+import {fetchAllCustomerNum} from '../../query/Customer_query';
+import {UploadCustomerData} from '../../query/Customer_query';
+import {getAllLoan_By_application_no} from '../../query/AllLoan_query';
+import {fetchDataForCheckedData} from '../../query/AllLoan_query';
 import Icon from 'react-native-vector-icons/Feather';
-import { get_loged_branch_code } from '../../query/Employee_query';
+import {get_loged_branch_code} from '../../query/Employee_query';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { getAllLoanType } from '../../query/AllLoan_query';
-import { getSurveyResult } from '../../query/SurveyItem_query';
-import { UploadSurveyData } from '../../query/SurveyItem_query';
+import {getAllLoanType} from '../../query/AllLoan_query';
+import {getSurveyResult} from '../../query/SurveyItem_query';
+import {UploadSurveyData} from '../../query/SurveyItem_query';
 export default function Synchronization_Screen(props) {
-  const {navigation}=props
+  const {navigation} = props;
   const [activeTab, setActiveTab] = React.useState(0);
   const [loan_data, setAllLoan] = React.useState([]);
   const [branch_code, setBranchCode] = React.useState('');
@@ -35,14 +30,14 @@ export default function Synchronization_Screen(props) {
   const [cus_error_modal_visible, setCusErrorModalVisible] = useState(false);
   const [cus_fail_data, setCusFailedData] = useState([]);
   const [isLoading, setLoading] = useState(false);
-  const [all_survey, setAllSurvey] = useState([])
+  const [all_survey, setAllSurvey] = useState([]);
 
   const btnUploadCustomer = async () => {
     setLoading(true);
     customer_data.forEach(obj => {
       obj.tablet_sync_sts = '01';
       obj.customer_no = '';
-      obj.open_branch_code=branch_code
+      obj.open_branch_code = branch_code;
     });
     try {
       const uploadCustomerResult = await UploadCustomerData(customer_data);
@@ -59,7 +54,10 @@ export default function Synchronization_Screen(props) {
         setLoading(false);
 
         alert('All update success');
-      } else if (uploadCustomerResult.length > 0 || uploadSurveyResult.length > 0) {
+      } else if (
+        uploadCustomerResult.length > 0 ||
+        uploadSurveyResult.length > 0
+      ) {
         console.log('reach');
         const mergedArray = [...uploadCustomerResult, ...uploadSurveyResult];
 
@@ -71,12 +69,12 @@ export default function Synchronization_Screen(props) {
       } else {
         await loadData();
         setLoading(false);
-        alert('Axios Error ');
+        alert('Only Possible download in network');
       }
       // updateTableSyncStatus('13')
     } catch (error) {
       setLoading(false);
-      console.error('API call failed. Value not changed.');
+      alert('Only Possible download in network');
     }
   };
 
@@ -84,9 +82,12 @@ export default function Synchronization_Screen(props) {
   const CushideModal = () => setCusErrorModalVisible(false);
 
   const btnLoanUpload = async checkedItems => {
-
     const filteredArray = loan_data.filter(obj1 =>
-      checkedItems.some(obj2 => obj2.application_no?obj2.application_no === obj1.application_no:obj2.group_aplc_no === obj1.group_aplc_no),
+      checkedItems.some(obj2 =>
+        obj2.application_no
+          ? obj2.application_no === obj1.application_no
+          : obj2.group_aplc_no === obj1.group_aplc_no,
+      ),
     );
 
     try {
@@ -114,7 +115,7 @@ export default function Synchronization_Screen(props) {
         alert('Please Select at least one');
       }
     } catch (error) {
-      console.error('API call failed. Value not changed.');
+      alert('Only Possible download in network');
     }
   };
 
@@ -136,7 +137,6 @@ export default function Synchronization_Screen(props) {
     } else {
       seBtnDisabled(false);
       setBtnCustomerDisabled(true);
-
     }
 
     setAllCusstomer(filteredCustomerData);
@@ -155,7 +155,7 @@ export default function Synchronization_Screen(props) {
     loadData();
   }, []);
 
-  const error_log = ({ item, index }) => {
+  const error_log = ({item, index}) => {
     return (
       <View
         style={{
@@ -182,7 +182,7 @@ export default function Synchronization_Screen(props) {
     );
   };
 
-  const cus_error_log = ({ item, index }) => {
+  const cus_error_log = ({item, index}) => {
     return (
       <View
         style={{
@@ -210,20 +210,20 @@ export default function Synchronization_Screen(props) {
   };
   return (
     <>
-      <Text style={{ fontWeight: 'bold', fontSize: 20, padding: 15 }}>
+      <Text style={{fontWeight: 'bold', fontSize: 20, padding: 15}}>
         Synchronization
       </Text>
 
-      <Text style={{ fontSize: 15, padding: 5, marginLeft: 10 }}>
+      <Text style={{fontSize: 15, padding: 5, marginLeft: 10}}>
         Synchronization is the coordination of events to operate a system in
         union
       </Text>
-      <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10 }}>
+      <View style={{flexDirection: 'row', marginLeft: 10, marginRight: 10}}>
         <Tab
           label="Upload"
           isActive={activeTab === 0}
           onPress={() => handleTabPress(0)}>
-          <View style={{ backgroundColor: '#fff' }}>
+          <View style={{backgroundColor: '#fff'}}>
             <Text>Upload Applications</Text>
           </View>
         </Tab>
@@ -239,7 +239,7 @@ export default function Synchronization_Screen(props) {
         />
       </View>
 
-      <View style={{ flex: 1, backgroundColor: '#fff' }}>
+      <View style={{flex: 1, backgroundColor: '#fff'}}>
         {activeTab === 0 && (
           <Sync_Upload_Screen
             btnUploadCustomer={btnUploadCustomer}
@@ -268,7 +268,7 @@ export default function Synchronization_Screen(props) {
           height: '70%',
           alignSelf: 'center',
         }}>
-        <View style={{ flex: 1 }}>
+        <View style={{flex: 1}}>
           <View
             style={{
               backgroundColor: '#e01b22',
@@ -351,7 +351,7 @@ export default function Synchronization_Screen(props) {
           </TouchableOpacity>
         </View>
 
-        <View style={{ padding: 5, backgroundColor: '#e01b22' }}>
+        <View style={{padding: 5, backgroundColor: '#e01b22'}}>
           <View
             style={{
               backgroundColor: '#e6ebe7',
@@ -366,7 +366,7 @@ export default function Synchronization_Screen(props) {
         </View>
       </Modal>
 
-      <View style={{ position: 'absolute', top: '50%', right: 0, left: 0 }}>
+      <View style={{position: 'absolute', top: '50%', right: 0, left: 0}}>
         {isLoading ? (
           <Spinner visible={isLoading} textContent={'Please Wait'} />
         ) : (

@@ -518,14 +518,6 @@ const Borrower_modal = props => {
               </View>
 
               <View style={{width: '40%'}}>
-                {/* <Field
-                  name={'searchtext'}
-                  component={TextInputFile}
-                  input_mode
-                  inputmax={20}
-                  icon={'magnify'}
-                  handleTextInputFocus={handleSubmit(btnCusSearch)}
-                /> */}
                 <TextInput
                   style={{
                     backgroundColor: '#fff',
@@ -775,14 +767,6 @@ const CoBorrower_modal = props => {
               </View>
 
               <View style={{width: '50%'}}>
-                {/* <Field
-                  name={'searchtext'}
-                  component={TextInputFile}
-                  input_mode
-                  inputmax={20}
-                  icon={'magnify'}
-                  handleTextInputFocus={handleSubmit(btnCusSearch)}
-                /> */}
                 <TextInput
                   style={{
                     backgroundColor: '#fff',
@@ -1083,8 +1067,6 @@ function Edit_Individual_Loan(props) {
   const [co_borrower_filePath, setCoBorrowerFilePath] = useState('');
   const [exceptional_data, setExceptionalData] = useState([]);
   const [guarantor_data, setGuarantorData] = useState([]);
-  const [selectedTownshipItemValue, setTownshipSelectedItemValue] =
-    useState('township_code');
   const [selectedWardItemValue, setWardSelectedItemValue] =
     useState('ward_code');
   const [selectedVillageItemValue, setVillageSelectedItemValue] =
@@ -1154,7 +1136,6 @@ function Edit_Individual_Loan(props) {
     update_status,
     setUpdateStatus,
   } = props;
-  console.log('retrive_loan_data', retrive_loan_data);
   useEffect(() => {
     const loan_data = Object.assign({}, retrive_loan_data, {
       loan_cycle: retrive_loan_data.loan_cycle
@@ -1343,7 +1324,6 @@ function Edit_Individual_Loan(props) {
         return null;
       }
     } catch (error) {
-      console.log('Error saving signature:', error);
       return null;
     }
   };
@@ -1353,7 +1333,6 @@ function Edit_Individual_Loan(props) {
       await deleteLoan_ByID(values).then(response => {
         if (response == 'success') {
           alert('Delete Success');
-          // setUpdateStatus(false);
           props.navigation.navigate('Home');
         }
       });
@@ -1387,12 +1366,7 @@ function Edit_Individual_Loan(props) {
             ? coBorrowerImagePath
             : values.co_borrower_sign,
           product_type: retrive_loan_data.product_type,
-          employee_num: values.employee_num ? values.employee_num : 0,
-          // loanterm_cnt: values.loanterm_cnt ? values.loanterm_cnt : 0,
           land_scale: values.land_scale ? values.land_scale : 0,
-          // family_num:values.family_num?values.family_num:0,
-          // hghschl_num:values.hghschl_num?values.hghschl_num:0,
-          // university_num:values.university_num?values.university_num:0
         });
         await updateLoanData(loan_data).then(result => {
           if (result == 'success') {

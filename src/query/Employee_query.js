@@ -1,7 +1,9 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { connection_name } from '../common';
+import {connection_name} from '../common';
+
 export function getEemployee_info() {
+  console.log('call emp');
   return new Promise(async (resolve, reject) => {
     let ip = await AsyncStorage.getItem('ip');
     let port = await AsyncStorage.getItem('port');
@@ -9,8 +11,11 @@ export function getEemployee_info() {
     global.db.transaction(tx => {
       tx.executeSql('DELETE FROM Employee', [], (tx, results) => {
         axios
-          .get(`${connection_name}://${ip}:${port}/skylark-m3s/api/employees.m3s`)
-          .then(({ data }) => {
+          .get(
+            `${connection_name}://${ip}:${port}/skylark-m3s/api/employees.m3s`,
+          )
+          .then(({data}) => {
+            console.log('emp data',data.length);
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -47,18 +52,19 @@ export function getEemployee_info() {
                         null,
                       ],
                       (tx, results) => {
-
                         insertedRows += results.rowsAffected;
                         if (insertedRows === data.length) {
                           resolve('success');
-                          console.log('All Employee records inserted successfully');
+                          console.log(
+                            'All Employee records inserted successfully',
+                          );
                         }
                       },
                       error => {
                         console.log('query error', error);
                         // If insert query fails, rollback the transaction and reject the promise
                         // tx.executeSql('ROLLBACK', [], () => {
-                          reject(error);
+                        reject(error);
                         // });
                       },
                     );
@@ -68,6 +74,7 @@ export function getEemployee_info() {
             }
           })
           .catch(error => {
+            console.log('axios err',error);
             // alert(error);
             reject(error);
           });
@@ -135,7 +142,6 @@ export const get_loged_branch_code = async () => {
     });
   });
 };
-
 
 export async function filterEmp(selectedColumn, searchTerm) {
   let sql;

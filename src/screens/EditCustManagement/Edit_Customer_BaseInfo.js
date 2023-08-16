@@ -1,38 +1,31 @@
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { RadioButton, List } from 'react-native-paper';
+import {View, Text,} from 'react-native';
+import React, {useState, } from 'react';
+import { List} from 'react-native-paper';
 import {
   Field,
   reduxForm,
-  setInitialValues,
-  initialize,
   change,
 } from 'redux-form';
 import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
-import { connect } from 'react-redux';
-import { Picker } from '@react-native-picker/picker';
+import {connect} from 'react-redux';
 import {
-  owner_shipratio,
   gender,
   maritail_status,
   address_type,
   condition_house,
   village_status,
   nrc_type,
-  owner_ship_business
+  owner_ship_business,
 } from '../../common';
 import DividerLine from '../../components/DividerLine';
 import DatePicker from '../../components/DatePicker';
-// import {style} from '../../style/Customer_Base_style';
-import { setCusFormInitialValues } from '../../redux/CustomerReducer';
-import { fetchAllCustomerNum } from '../../query/Customer_query';
-import { Modal, Provider, Portal, Button } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/Feather';
-import { city_code, start_living_date_status } from '../../common';
-import { useDispatch } from 'react-redux';
+import {setCusFormInitialValues} from '../../redux/CustomerReducer';
+import {fetchAllCustomerNum} from '../../query/Customer_query';
+import { start_living_date_status} from '../../common';
+import {useDispatch} from 'react-redux';
 import RadioButtonFile from '../../components/RadioButtonFile';
-import { style } from '../../style/Customer_Mang_style';
+import {style} from '../../style/Customer_Mang_style';
 function Edit_Customer_BaseInfo(props) {
   const {
     show_village,
@@ -40,7 +33,6 @@ function Edit_Customer_BaseInfo(props) {
     handleStartLivingStatus,
     showNrcFun,
     show_nrc,
-    handleSubmit,
     showVillageSearch,
     showCitySearch,
     showTownshipSearch,
@@ -48,28 +40,16 @@ function Edit_Customer_BaseInfo(props) {
     update_status,
     handleRadioButtonChange,
     showLocationSearch,
-    nrc_statecode,
   } = props;
   const dispatch = useDispatch();
 
   const [open_cusinfo, setCusInfo] = useState(true);
-  // const [show_village, setVillage] = useState('village');
-  const [modal_city_visible, setCityCodeModalVisible] = useState(false);
-  const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
-  const [all_emp, setAllEmp] = useState([]);
-
-  const CusInfoFun = () => {
-    setCusInfo(!open_cusinfo);
-  };
-
-  // const numbers = Array.from({length: 60}, (_, i) => i + 1);
-  const numbers = Array.from({ length: 60 }, (_, i) => (i + 1).toString());
+  const numbers = Array.from({length: 60}, (_, i) => (i + 1).toString());
 
   const arrayWithObjects = numbers.map((num, index) => {
-    return { id: num, label: num, value: num };
+    return {id: num, label: num, value: num};
   });
   const handleNRCChange = (value, input) => {
-    console.log('value chane', value);
     input.onChange(value.id);
     showNrcFun(value.id);
     if (value.id == '1') {
@@ -98,7 +78,6 @@ function Edit_Customer_BaseInfo(props) {
               data={nrc_type}
               name={'nrc_type'}
               component={RadioButtonFile}
-              // ShowRadioBtnChange={(value, input) => showNrcFun(value, input)}
               ShowRadioBtnChange={(value, input) =>
                 handleNRCChange(value, input)
               }
@@ -264,7 +243,6 @@ function Edit_Customer_BaseInfo(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
-                // icon={'magnify'}
                 icon={update_status == true && 'magnify'}
                 editable
                 handleTextInputFocus={showVillageSearch}
@@ -286,7 +264,6 @@ function Edit_Customer_BaseInfo(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
-                // icon={'magnify'}
                 icon={update_status == true && 'magnify'}
                 editable
                 handleTextInputFocus={showWardSearch}
@@ -309,7 +286,6 @@ function Edit_Customer_BaseInfo(props) {
               component={TextInputFile}
               input_mode
               inputmax={100}
-              // icon={'magnify'}
               icon={update_status == true && 'magnify'}
               editable
               handleTextInputFocus={showLocationSearch}
@@ -426,17 +402,6 @@ function Edit_Customer_BaseInfo(props) {
               }}
               enabled={update_status == true ? false : true}
             />
-            {/* <Field
-              data={owner_shipratio}
-              name={'business_own_type'}
-              title={'Ownership of Business'}
-              component={DropDownPicker}
-              pickerStyle={{
-                width: 300,
-              }}
-              enabled={update_status == true ? false : true}
-            /> */}
-
             <Field
               data={owner_ship_business}
               name={'business_own_type'}
@@ -485,7 +450,7 @@ export default reduxForm({
   form: 'Customer_ManagementForm',
   enableReinitialize: true,
 })(
-  connect(mapStateToProps, { setCusFormInitialValues, fetchAllCustomerNum })(
+  connect(mapStateToProps, {setCusFormInitialValues, fetchAllCustomerNum})(
     Edit_Customer_BaseInfo,
   ),
 );

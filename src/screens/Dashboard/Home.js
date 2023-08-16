@@ -11,8 +11,6 @@ export default function Home(props) {
   const [emp_name, setEmpName] = useState();
   const [loan_data, setAllLoan] = useState([]);
 
-
-
   const loadData = async () => {
     await fetchEmpName()
       .then(data => setEmpName(data[0].employee_name))
@@ -125,6 +123,7 @@ export default function Home(props) {
           }}>
           <Text
             style={{
+              marginRight: 10,
               fontSize: 18,
               color: '#fff',
               padding: 5,

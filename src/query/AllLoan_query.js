@@ -7,7 +7,7 @@ import {
   microfinance_data,
   area_evaluation_result,
   relation_data,
-  connection_name
+  connection_name,
 } from '../common';
 export async function getAllLoan() {
   return new Promise((resolve, reject) => {
@@ -433,7 +433,7 @@ export const storeLoanData = async loan_data => {
             loan_data.address_type,
             loan_data.sv_pr_type,
             loan_data.village_status,
-            loan_data.salary_amount
+            loan_data.salary_amount,
             // loan_data.borrower_map,
             //146
           ],
@@ -1883,9 +1883,9 @@ export const updateLoanData = async loan_data => {
             loan_data.branch_code, //branch code //40
             loan_data.salary_rating_code, //salary rating code
             loan_data.addr,
-            loan_data.family_num,
-            loan_data.hghschl_num, //hghschl_num,
-            loan_data.university_num, //university_num,
+            loan_data.family_num == '' ? 0 : loan_data.family_num,
+            loan_data.hghschl_num == '' ? 0 : loan_data.hghschl_num, //hghschl_num,
+            loan_data.university_num == '' ? 0 : loan_data.university_num, //university_num,
             loan_data.students_cnt, //students_cnt,
             loan_data.curr_resident_perd,
             loan_data.house_ocpn_type,
@@ -1903,12 +1903,12 @@ export const updateLoanData = async loan_data => {
             loan_data.workplace_name,
             loan_data.workplace_type,
             loan_data.workplace_period, //60
-            loan_data.employee_num,
+            loan_data.employee_num == '' ? 0 : loan_data.employee_num,
             // loan_data.busutlbilexpns,
             loan_data.workplace_addr,
             loan_data.curr_workplace_perd,
             loan_data.business_sttn_flg,
-            loan_data.land_scale,
+            loan_data.land_scale == '' ? 0 : loan_data.land_scale,
             loan_data.land_own_type,
             //Monthly Income
             loan_data.tot_sale_income == '' ? 0 : loan_data.tot_sale_income,

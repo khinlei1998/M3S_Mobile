@@ -9,7 +9,7 @@ import SingleCheckBox from '../../components/SingleCheckBox';
 import {connect, useDispatch} from 'react-redux';
 import {Field, reduxForm, change} from 'redux-form';
 import {style} from '../../style/Customer_Mang_style';
-import { List } from 'react-native-paper';
+import {List} from 'react-native-paper';
 
 function Edit_property_Info(props) {
   const {update_status} = props;

@@ -8,9 +8,9 @@ import {
   ToastAndroid,
   ActivityIndicator,
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { Field, reduxForm, change, reset, formValueSelector } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {Field, reduxForm, change, reset, formValueSelector} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
 import {
   RadioButton,
   Button,
@@ -24,37 +24,37 @@ import DividerLine from '../../components/DividerLine';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
-import { fetchNRCinfo } from '../../query/NRCinfo_query';
+import {fetchNRCinfo} from '../../query/NRCinfo_query';
 import Customer_Base_Info from './Customer_Base_Info';
 import Property_Info from './Property_Info';
-import { salary_grade } from '../../common';
+import {salary_grade} from '../../common';
 import Monthly_Income from './Monthly_Income';
 import Busines_Info from './Busines_Info';
-import { style } from '../../style/Customer_Mang_style';
+import {style} from '../../style/Customer_Mang_style';
 import ShowNRC_Modal from './ShowNRC_Modal';
 import validate from './Validate';
 import moment from 'moment';
-import { setCusFormInitialValues } from '../../redux/CustomerReducer';
-import { emp_filter_item, village_code } from '../../common';
-import { Picker } from '@react-native-picker/picker';
-import { filterEmp, fetchEmpName } from '../../query/Employee_query';
-import { addEmpFilter } from '../../redux/EmployeeReducer';
+import {setCusFormInitialValues} from '../../redux/CustomerReducer';
+import {emp_filter_item, village_code} from '../../common';
+import {Picker} from '@react-native-picker/picker';
+import {filterEmp, fetchEmpName} from '../../query/Employee_query';
+import {addEmpFilter} from '../../redux/EmployeeReducer';
 import {
   storeCustomerData,
   fetchAllCustomerNum,
 } from '../../query/Customer_query';
-import { resetMonthlyIncome } from '../../redux/MonthlyReducer';
+import {resetMonthlyIncome} from '../../redux/MonthlyReducer';
 import DatePicker from '../../components/DatePicker';
 import Create_Operation from '../../components/Create_Operation';
-import { filterTownship } from '../../query/Township_query';
+import {filterTownship} from '../../query/Township_query';
 import City_Modal from '../../components/City_Modal';
 import Township_Modal from '../../components/Township_Modal';
 import Village_Modal from '../../components/Village_Modal';
-import { filterVillage } from '../../query/Village_query';
+import {filterVillage} from '../../query/Village_query';
 import Ward_Model from '../../components/Ward_Model';
-import { filterWard } from '../../query/Ward_query';
+import {filterWard} from '../../query/Ward_query';
 import Location_Modal from '../../components/Location_Modal';
-import { filterLocation, filterCity } from '../../query/CodeInfo_quey';
+import {filterLocation, filterCity} from '../../query/CodeInfo_quey';
 function Customer_Management(props) {
   const dispatch = useDispatch();
   const {
@@ -133,11 +133,8 @@ function Customer_Management(props) {
     let data = Object.assign(values, emp_filter_data, {
       createUserId: empname,
       nrc_state_code: values.nrc_type == '2' ? prefix : '',
-      // resident_rgst_id:
-      //   values.nrc_type == '1' ? values.nrcNo : values.resident_rgst_id,
       start_living_date_status: show_businessdate,
     });
-    console.log('customer data', data);
     await storeCustomerData(data).then(result => {
       if (result == 'success') {
         setbtnloading(!btn_loading);
@@ -147,7 +144,6 @@ function Customer_Management(props) {
 
         ToastAndroid.show(`Create Successfully!`, ToastAndroid.SHORT);
         props.navigation.navigate('Home');
-        // props.navigation.navigate('Customer Search');
       } else {
         setbtnloading(!btn_loading);
       }
@@ -166,7 +162,7 @@ function Customer_Management(props) {
     set_cityText(inputText);
   };
 
-  const city_item = ({ item, index }) => {
+  const city_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -211,7 +207,7 @@ function Customer_Management(props) {
       </View>
     );
   };
-  const village_item = ({ item, index }) => {
+  const village_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -258,7 +254,7 @@ function Customer_Management(props) {
       </View>
     );
   };
-  const ward_item = ({ item, index }) => {
+  const ward_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -304,7 +300,7 @@ function Customer_Management(props) {
     );
   };
 
-  const township_item = ({ item, index }) => {
+  const township_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -350,7 +346,7 @@ function Customer_Management(props) {
     );
   };
 
-  const location_item = ({ item, index }) => {
+  const location_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -380,8 +376,6 @@ function Customer_Management(props) {
           }}>
           {item.code_short_desc}
         </Text>
-
-
 
         <View>
           <RadioButton
@@ -416,9 +410,9 @@ function Customer_Management(props) {
         'Customer_ManagementForm',
         'resident_rgst_id',
         prefix &&
-        nrc_prefix_code &&
-        nrcNo &&
-        state_code + nrc_prefix_code + nrcNo,
+          nrc_prefix_code &&
+          nrcNo &&
+          state_code + nrc_prefix_code + nrcNo,
       ),
     );
   };
@@ -525,7 +519,7 @@ function Customer_Management(props) {
     );
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -748,7 +742,7 @@ function Customer_Management(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{ flex: 1, backgroundColor: '#fff' }}>
+          <View style={{flex: 1, backgroundColor: '#fff'}}>
             <Text style={style.title_style}>
               Customer Information Management
             </Text>
@@ -789,7 +783,7 @@ function Customer_Management(props) {
                     icon={'calendar'}
                   />
 
-                  <View style={{ marginRight: 10 }}>
+                  <View style={{marginRight: 10}}>
                     <Field
                       name={'positionTitleNm'}
                       title={'Current Position'}
@@ -807,7 +801,7 @@ function Customer_Management(props) {
                     input_mode
                     editable
                   />
-                  <View style={{ marginRight: 10 }}>
+                  <View style={{marginRight: 10}}>
                     <Field
                       data={salary_grade}
                       name={'salaryRatingCode'}
@@ -859,7 +853,7 @@ function Customer_Management(props) {
             onDismiss={hideModal}
             contentContainerStyle={containerStyle}>
             <View
-              style={{ backgroundColor: '#232D57', padding: 25 }}
+              style={{backgroundColor: '#232D57', padding: 25}}
               onStartShouldSetResponder={() => hideModal()}>
               <Icon
                 name="x-circle"
@@ -874,21 +868,21 @@ function Customer_Management(props) {
                 }}
               />
             </View>
-            <View style={{ padding: 10, height: 550 }}>
+            <View style={{padding: 10, height: 550}}>
               <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-around',
                 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ marginRight: 10, fontWeight: 'bold' }}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={{marginRight: 10, fontWeight: 'bold'}}>
                     Search Item:
                   </Text>
 
                   <Picker
                     selectedValue={selectedItemValue}
                     onValueChange={handleItemValueChange}
-                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
+                    style={{width: 200, backgroundColor: 'white', marginTop: 7}}
                     mode="dropdown">
                     {emp_filter_item.length > 0 &&
                       emp_filter_item.map(val => (
@@ -901,7 +895,7 @@ function Customer_Management(props) {
                   </Picker>
                 </View>
 
-                <View style={{ width: '50%' }}>
+                <View style={{width: '50%'}}>
                   <TextInput
                     style={{
                       backgroundColor: '#fff',
@@ -976,7 +970,7 @@ function Customer_Management(props) {
                   />
 
                   <View
-                    style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                    style={{flexDirection: 'row', justifyContent: 'center'}}>
                     <Button
                       onPress={() => hideModal()}
                       mode="contained"
