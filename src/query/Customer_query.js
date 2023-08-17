@@ -573,7 +573,7 @@ function updateDateBySubtractingYears(dateProperty, yearsToSubtract) {
     const currentYear = new Date().getFullYear();
     const subtractedYear = currentYear - yearsToSubtract;
 
-    return `01-01-${subtractedYear}`;
+    return `${subtractedYear}-01-01`;
   } else {
     console.log(`Invalid input for ${dateProperty}`);
     return '';

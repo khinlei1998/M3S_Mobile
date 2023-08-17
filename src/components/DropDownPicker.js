@@ -29,7 +29,7 @@ export default function DropDownPicker(props) {
   return num_data ? (
     <View
       style={{
-        borderColor: 'black',
+        borderColor: '#d6d6d6',
         backgroundColor: '#FFF',
         borderWidth: 0.5,
         marginTop: 10,
@@ -61,9 +61,9 @@ export default function DropDownPicker(props) {
     <View style={{ flexDirection: 'column' }}>
       <View
         style={{
-          borderColor: 'black',
+          borderColor: '#d6d6d6',
           backgroundColor: enabled ? '#FAFAFA' : '#FFF',
-          borderWidth: 0.5,
+          borderWidth: 0.8,
           marginTop: 10,
           width: pickerStyle.width,
           borderRadius: 2,

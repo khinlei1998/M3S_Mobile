@@ -1,7 +1,24 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {connection_name} from '../common';
+import { connection_name } from '../common';
+import { log } from 'console';
 
+// const options = {
+//   onDownloadProgress: function (
+//     progressEvent
+//   ) {
+//     console.log(progressEvent, 'progressEvent');
+//     (progressEvent.loaded /progressEvent.total)*100
+//   }
+// }
+
+const options = {
+  onDownloadProgress: function (progressEvent) {
+    //count here 
+    console.log('progressEvent', progressEvent);
+
+  },
+};
 export function getEemployee_info() {
   console.log('call emp');
   return new Promise(async (resolve, reject) => {
@@ -12,10 +29,9 @@ export function getEemployee_info() {
       tx.executeSql('DELETE FROM Employee', [], (tx, results) => {
         axios
           .get(
-            `${connection_name}://${ip}:${port}/skylark-m3s/api/employees.m3s`,
+            `${connection_name}://${ip}:${port}/skylark-m3s/api/employees.m3s`, options
           )
-          .then(({data}) => {
-            console.log('emp data',data.length);
+          .then(({ data }) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -74,7 +90,7 @@ export function getEemployee_info() {
             }
           })
           .catch(error => {
-            console.log('axios err',error);
+            console.log('axios err', error);
             // alert(error);
             reject(error);
           });

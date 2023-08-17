@@ -34,7 +34,6 @@ export default function TextInputFile(props) {
   const [inputValue, setInputValue] = useState(input.value); // Initialize with the input's value
 
   const togglePasswordIcon = () => {
-    console.log('kk', passwordIcon);
     if (passwordIcon == 'eye') {
       setPasswordIcon('eye-off-outline');
       setIsPassword(false);
@@ -79,7 +78,6 @@ export default function TextInputFile(props) {
         theme={{
           colors: {
             ...DefaultTheme.colors,
-            placeholder: 'red',
             primary: '#878787',
           },
         }}
@@ -96,8 +94,8 @@ export default function TextInputFile(props) {
           backgroundColor: editable ? '#f8f8f8' : '#fff',
           marginTop: 10,
           width: input_cusstyle ? '100%' : 301,
-          borderColor: '#303030',
-          borderWidth: 0.5,
+          borderColor: '#d6d6d6',
+          borderWidth: 0.8,
         }}
         keyboardType={keyboardType ? keyboardType : 'default'}
         underlineColor="#FFF"

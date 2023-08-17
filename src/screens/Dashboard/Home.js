@@ -97,7 +97,7 @@ export default function Home(props) {
                 textAlign: 'right',
                 color: 'red',
               }}>
-              {loan_data.length}
+              {loan_data.length}{' '}
               <Text style={{color: '#c7c7c7', fontSize: 15}}>PCS</Text>
             </Text>
           </View>
@@ -153,13 +153,14 @@ export default function Home(props) {
           flexDirection: 'row',
           justifyContent: 'space-between',
           marginTop: 20,
+          padding:10
         }}>
         <Text
           style={{
             marginLeft: 10,
-            color: '#8B92AD',
+            color: '#21316C',
             fontWeight: 'bold',
-            fontSize: 17,
+            fontSize: 19,
           }}>
           Today New Application
         </Text>
@@ -170,7 +171,7 @@ export default function Home(props) {
             fontSize: 17,
             color: 'red',
           }}>
-          {loan_data.length}
+          {loan_data.length}{' '}
           <Text style={{color: '#c7c7c7', fontSize: 17}}>Pcs</Text>
         </Text>
       </View>

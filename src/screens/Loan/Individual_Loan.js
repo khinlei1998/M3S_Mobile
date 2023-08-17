@@ -22,6 +22,7 @@ import {
   Modal,
   Provider,
   Portal,
+  TextInput
 } from 'react-native-paper';
 import { reduxForm, Field, change, reset } from 'redux-form';
 import { connect, useDispatch } from 'react-redux';
@@ -45,7 +46,6 @@ import Borrower_Sign from './Borrower_Sign';
 import SignatureCapture from 'react-native-signature-capture';
 import { storeLoanData } from '../../query/AllLoan_query';
 import validate from './Validate';
-import { TextInput } from 'react-native-paper';
 import { resetMonthlyIncome } from '../../redux/MonthlyReducer';
 import {
   cus_filter_item,
@@ -103,7 +103,7 @@ const Borrower_modal = props => {
   };
 
   const btnSelectEmployee = item => {
-    console.log('item',item);
+    console.log('item', item);
     addCustomerInfo(item); //to calculate income
     setSelectedValue(item.id);
     //Borrower info
@@ -1739,7 +1739,7 @@ function Individual_Loan(props) {
               <Button
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={style.btnStyle}>
                 OK
               </Button>

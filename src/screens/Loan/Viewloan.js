@@ -35,6 +35,7 @@ function Viewloan(props) {
             borderBottomWidth: 1,
             borderBottomColor: '#ccc',
             padding: 10,
+           
           }}>
           <Text
             style={{
@@ -93,7 +94,7 @@ function Viewloan(props) {
           backgroundColor: '#D7D8DC',
           borderRadius: 10,
           padding: 5,
-          margin: 10,
+          margin: 15,
         }}>
         <Text
           style={{

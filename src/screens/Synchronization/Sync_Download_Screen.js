@@ -1,38 +1,21 @@
-import {View, Text, TouchableOpacity, FlatList} from 'react-native';
-import React, {useState} from 'react';
-import Icon from 'react-native-vector-icons/Feather';
+import { View, Text, FlatList, } from 'react-native';
+import React, { useState } from 'react';
 import DividerLine from '../../components/DividerLine';
-import {Button, Checkbox} from 'react-native-paper';
-import {useNetInfo, NetInfo} from '@react-native-community/netinfo';
-import {getEemployee_info} from '../../query/Employee_query';
-import {getCustomer_info} from '../../query/Customer_query';
-import {getNRC_info} from '../../query/NRCinfo_query';
-import {getIndividual_loan} from '../../query/AllLoan_query';
-import {getSurvey_Item} from '../../query/SurveyItem_query';
-import {getLoanMax} from '../../query/LoanMax_query';
-import Spinner from 'react-native-loading-spinner-overlay';
-import {getCodeInfo} from '../../query/CodeInfo_quey';
+import { Button, Checkbox, } from 'react-native-paper';
+import { useNetInfo, } from '@react-native-community/netinfo';
+import { getEemployee_info } from '../../query/Employee_query';
+import { getCustomer_info } from '../../query/Customer_query';
+import { getNRC_info } from '../../query/NRCinfo_query';
+import { getSurvey_Item } from '../../query/SurveyItem_query';
+import { getLoanMax } from '../../query/LoanMax_query';
+import { getCodeInfo } from '../../query/CodeInfo_quey';
 import moment from 'moment';
-import {get_Village} from '../../query/Village_query';
-import {get_Township} from '../../query/Township_query';
-import {get_Ward} from '../../query/Ward_query';
-import {
-  BallIndicator,
-  BarIndicator,
-  DotIndicator,
-  MaterialIndicator,
-  PacmanIndicator,
-  PulseIndicator,
-  SkypeIndicator,
-  UIActivityIndicator,
-  WaveIndicator,
-} from 'react-native-indicators';
-export default function Sync_Download_Screen() {
-  const [selectAll, setSelectAll] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [checkedItems, setCheckedItems] = useState([]);
+import { get_Village } from '../../query/Village_query';
+import { get_Township } from '../../query/Township_query';
+import { get_Ward } from '../../query/Ward_query';
 
-  const netInfo = useNetInfo();
+export default function Sync_Download_Screen(props) {
+  const { selectAll, setShowModal, setSelectAll, setCheckedItems, checkedItems, handleDownload } = props
 
   const download_data = [
     {
@@ -121,7 +104,7 @@ export default function Sync_Download_Screen() {
       setCheckedItems([...checkedItems, item]);
     }
   };
-  const item = ({item, index}) => {
+  const item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -288,47 +271,13 @@ export default function Sync_Download_Screen() {
   //     alert('Choose one');
   //   }
   // };
-  const handleDownload = async () => {
-    if (!netInfo.isConnected) {
-      alert('Internet Connection is needed');
-      return;
-    }
 
-    if (checkedItems.length === 0) {
-      alert('Choose at least one item');
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      for (const item of checkedItems) {
-        await executeRequest(item);
-      }
-      setIsLoading(false);
-      setSelectAll(false);
-      setCheckedItems([]);
-      alert('Sync success');
-    } catch (error) {
-      console.log('error', error);
-      setIsLoading(false);
-      alert('Only Possible download in network');
-    }
-  };
-
-  const executeRequest = async item => {
-    try {
-      await item.api();
-    } catch (error) {
-      throw error; // If a request fails, propagate the error up the chain
-    }
-  };
 
   return (
-    <>
-      <View style={{marginTop: 20, marginLeft: 10, marginRight: 10, flex: 1}}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={{fontWeight: 'bold', fontSize: 18, marginLeft: 10}}>
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+      <View style={{ marginTop: 20, marginLeft: 10, marginRight: 10, flex: 1 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 18, marginLeft: 10 }}>
             Download Information
           </Text>
         </View>
@@ -397,21 +346,12 @@ export default function Sync_Download_Screen() {
           }}>
           <Button
             mode="outlined"
-            style={{width: 200, borderRadius: 0}}
+            style={{ width: 200, borderRadius: 0 }}
             onPress={() => handleDownload()}>
             <Text>Download</Text>
           </Button>
         </View>
       </View>
-
-      <View style={{position: 'absolute', top: '50%', right: 0, left: 0}}>
-        {isLoading ? (
-          // <Spinner visible={isLoading} textContent={'Please Wait'} />
-          <SkypeIndicator color="#636Dc6" size={60} />
-        ) : (
-          <Text></Text>
-        )}
-      </View>
-    </>
+    </View>
   );
 }

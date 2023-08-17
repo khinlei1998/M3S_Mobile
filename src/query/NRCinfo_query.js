@@ -16,6 +16,7 @@ export const getNRC_info = () => {
             // .get(`https://${ip}`, {})
             .get(`${connection_name}://${ip}:${port}/skylark-m3s/api/nrcCodeInfo.m3s`)
             .then(({ data }) => {
+              console.log('nrc_info',data);
               if (data.length > 0) {
                 global.db.transaction(tx => {
                   data.forEach(item => {

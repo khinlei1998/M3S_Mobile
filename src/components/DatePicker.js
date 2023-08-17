@@ -1,25 +1,16 @@
 import {
-  SafeAreaView,
   View,
   Text,
-  Button,
-  StyleSheet,
-  TouchableOpacity,
 } from 'react-native';
 import React, {useCallback, useState} from 'react';
 import {TextInput} from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import Icon from 'react-native-vector-icons/Feather';
 import moment from 'moment';
 export default function DatePicker(props) {
   const {
-    editable,
     label,
-    onAgeChange,
     icon,
     meta: {touched, error},
-    // input: {value, onChange, ...restInput},
-    // ...rest
     onWorkingDateChange,
     input,
     require,
@@ -28,7 +19,6 @@ export default function DatePicker(props) {
   const [date, setDate] = useState('');
 
   function showcalendar() {
-    // alert('oo')
     setShowDate(true);
   }
 
@@ -50,29 +40,25 @@ export default function DatePicker(props) {
   };
   return (
     <>
-      {/* <View style={{flexDirection: 'row', height: 66}}> */}
       <View style={{flexDirection: 'column', height: 66}}>
         <TextInput
           {...input}
-          // label={label}
           label={
             <Text style={{color: '#636Dc6'}}>
               {label} {require && <Text style={{color: 'red'}}>*</Text>}
             </Text>
           }
-          mode={'outlined'}
+          underlineColorAndroid={'rgba(0,0,0,0)'}
+          underlineColor='transparent'
           value={date ? moment(date).format('YYYY-MM-DD') : input.value}
-          // editable={editable ? false : true}
           editable={false}
           style={{
-            // backgroundColor: '#FFF',
+            borderColor: '#d6d6d6',
+            borderWidth: 0.8,
             backgroundColor: '#FAFAFA',
             marginTop: 10,
             width: 300,
-            // marginRight: 10,
           }}
-          // onFocus={() => showcalendar()}
-          activeUnderlineColor="red"
           right={
             <TextInput.Icon
               icon={icon}
