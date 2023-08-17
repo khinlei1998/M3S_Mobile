@@ -243,9 +243,9 @@ export default function Synchronization_Screen(props) {
     try {
       const totalItems = checkedItems.length;
       setFetchedCount(0); // Reset fetched count
-      const interval = setInterval(() => {
-        setFetchedCount(prevCount => prevCount + 1);
-      }, 300);
+      // const interval = setInterval(() => {
+      //   setFetchedCount(prevCount => prevCount + 1);
+      // }, 300);
       for (let i = 0; i < totalItems; i++) {
         const item = checkedItems[i];
         setFetchName(item.name)
@@ -256,7 +256,7 @@ export default function Synchronization_Screen(props) {
 
 
       }
-      clearInterval(interval); // Stop the interval
+      // clearInterval(interval); // Stop the interval
 
       // Fetching completed, set progress to 100%
       // Animated.timing(progress, {

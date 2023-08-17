@@ -884,6 +884,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           }
         }
       } else {
+        console.log('indi data',data);
         applicationNo = data.application_no;
         const individual_loan_data = {
           id: data.id,
@@ -1017,8 +1018,10 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           prop_machines_yn: data.prop_machines_yn,
           prop_motorcycle_yn: data.prop_motorcycle_yn,
           property_kind: data.property_kind,
+          tax_expns:data.tax_expns
         };
         loanDataArray.push(individual_loan_data);
+        console.log('individual_loan_data',individual_loan_data);
 
         // Image upload Indi loan map
         const indi_loan_borrower_map = `/storage/emulated/0/Pictures/RNSketchCanvas/${data.application_no}MP01.jpg`;
@@ -1386,24 +1389,24 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
       }
       //image upload for individual loan
 
-      let config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        url:
-          data.product_type == 30 ||
-          data.product_type == 40 ||
-          data.product_type == 50
-            ? `${connection_name}://${ip}:${port}/skylark-m3s/api/groupLoan.m3s`
-            : `${connection_name}://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
-        data: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'cache-control': 'no-cache',
-          // processData: false,
-          // contentType: false,
-        },
-      };
-      const response = await axios.request(config);
+      // let config = {
+      //   method: 'post',
+      //   maxBodyLength: Infinity,
+      //   url:
+      //     data.product_type == 30 ||
+      //     data.product_type == 40 ||
+      //     data.product_type == 50
+      //       ? `${connection_name}://${ip}:${port}/skylark-m3s/api/groupLoan.m3s`
+      //       : `${connection_name}://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
+      //   data: formData,
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data',
+      //     'cache-control': 'no-cache',
+      //     // processData: false,
+      //     // contentType: false,
+      //   },
+      // };
+      // const response = await axios.request(config);
       console.log('response', response);
       //Update Gropup table staus
       if (data.group_aplc_no) {

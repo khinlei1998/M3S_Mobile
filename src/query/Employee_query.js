@@ -16,6 +16,9 @@ const options = {
   onDownloadProgress: function (progressEvent) {
     //count here 
     console.log('progressEvent', progressEvent);
+    // if (fetchCount < 100) {
+    //   setFetchCount(prevCount => prevCount + 1);
+    // }
 
   },
 };
