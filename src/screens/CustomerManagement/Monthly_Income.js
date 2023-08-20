@@ -43,7 +43,6 @@ function Monthly_Income(props) {
       // Update the corresponding value in the values array
       const newValues = [...values];
       newValues[index] = number;
-      console.log('newValues', newValues);
 
       setValues(newValues);
       const filteredValues = newValues.filter(

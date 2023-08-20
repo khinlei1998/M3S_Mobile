@@ -2,7 +2,8 @@ import axios from 'axios';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {connection_name} from '../common';
-export function getSurvey_Item() {
+
+export function getSurvey_Item(tokensource) {
   return new Promise(async (resolve, reject) => {
     let ip = await AsyncStorage.getItem('ip');
     let port = await AsyncStorage.getItem('port');
@@ -10,11 +11,14 @@ export function getSurvey_Item() {
     global.db.transaction(tx => {
       tx.executeSql('DELETE FROM survey_item', [], (tx, results) => {
         axios
-          // .get(`https://${newIP}/skylark-m3s/api/employees.m3s`)
           .get(
             `${connection_name}://${ip}:${port}/skylark-m3s/api/surveyItems.m3s`,
+            {
+              cancelToken: tokensource.token,
+            },
           )
           .then(({data}) => {
+            console.log('survey data', data.length);
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -51,8 +55,16 @@ export function getSurvey_Item() {
               });
             }
           })
+          // .catch(error => {
+          //   reject(error);
+          // });
           .catch(error => {
-            reject(error);
+            if (axios.isCancel(error)) {
+              reject('Request canceled by user');
+            } else {
+              // alert(error);
+              reject(error);
+            }
           });
       });
     });

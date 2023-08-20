@@ -6,9 +6,10 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { Field, reduxForm, change, reset, formValueSelector } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {Field, reduxForm, change, reset, formValueSelector} from 'redux-form';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {connect, useDispatch} from 'react-redux';
 import {
   RadioButton,
   Button,
@@ -22,24 +23,24 @@ import DividerLine from '../../components/DividerLine';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
-import { fetchNRCinfo } from '../../query/NRCinfo_query';
-import { salary_grade } from '../../common';
-import { style } from '../../style/Customer_Mang_style';
-import { setCusFormInitialValues } from '../../redux/CustomerReducer';
-import { emp_filter_item, village_code } from '../../common';
-import { Picker } from '@react-native-picker/picker';
-import { filterEmp } from '../../query/Employee_query';
-import { addEmpFilter } from '../../redux/EmployeeReducer';
-import { operations } from '../../common';
-import { setUpdateStatus } from '../../redux/CustomerReducer';
+import {fetchNRCinfo} from '../../query/NRCinfo_query';
+import {salary_grade} from '../../common';
+import {style} from '../../style/Customer_Mang_style';
+import {setCusFormInitialValues} from '../../redux/CustomerReducer';
+import {emp_filter_item, village_code} from '../../common';
+import {Picker} from '@react-native-picker/picker';
+import {filterEmp} from '../../query/Employee_query';
+import {addEmpFilter} from '../../redux/EmployeeReducer';
+import {operations} from '../../common';
+import {setUpdateStatus} from '../../redux/CustomerReducer';
 import Edit_Customer_BaseInfo from './Edit_Customer_BaseInfo';
 import Edit_property_Info from './Edit_Property_Info';
 import Edit_Business_Info from './Edit_Business_Info';
 import Edit_Monthly_Income from './Edit_Monthly_Income';
-import { deleteCustomer_ByID } from '../../query/Customer_query';
+import {deleteCustomer_ByID} from '../../query/Customer_query';
 import Edit_NRC_Modal from './Edit_NRC_Modal';
 import City_Modal from '../../components/City_Modal';
-import { filterCity } from '../../query/CodeInfo_quey';
+import {filterCity} from '../../query/CodeInfo_quey';
 import {
   totalIncome,
   totalFamilyIncome,
@@ -48,23 +49,23 @@ import {
   totalFamilyExpense,
   updateTotalSum,
 } from '../../redux/MonthlyReducer';
-import { updateCustomerData } from '../../query/Customer_query';
-import { checkDataExists } from '../../query/Customer_query';
+import {updateCustomerData} from '../../query/Customer_query';
+import {checkDataExists} from '../../query/Customer_query';
 import DatePicker from '../../components/DatePicker';
 import Village_Modal from '../../components/Village_Modal';
 import Township_Modal from '../../components/Township_Modal';
 import Ward_Model from '../../components/Ward_Model';
 import validate from './validate';
 import Location_Modal from '../../components/Location_Modal';
-import { filterTownship } from '../../query/Township_query';
-import { filterLocation } from '../../query/CodeInfo_quey';
-import { filterWard } from '../../query/Ward_query';
-import { filterVillage } from '../../query/Village_query';
-import { fetchCityName } from '../../query/CodeInfo_quey';
-import { fetchTownshipName } from '../../query/Township_query';
-import { fetchVillageName } from '../../query/Village_query';
-import { fetchWardName } from '../../query/Ward_query';
-import { fetchLocationName } from '../../query/CodeInfo_quey';
+import {filterTownship} from '../../query/Township_query';
+import {filterLocation} from '../../query/CodeInfo_quey';
+import {filterWard} from '../../query/Ward_query';
+import {filterVillage} from '../../query/Village_query';
+import {fetchCityName} from '../../query/CodeInfo_quey';
+import {fetchTownshipName} from '../../query/Township_query';
+import {fetchVillageName} from '../../query/Village_query';
+import {fetchWardName} from '../../query/Ward_query';
+import {fetchLocationName} from '../../query/CodeInfo_quey';
 function Edit_Emp_Info(props) {
   const dispatch = useDispatch();
   const {
@@ -157,7 +158,7 @@ function Edit_Emp_Info(props) {
   const hideCityModal = () => setCityCodeModalVisible(false);
   const hideWardModal = () => setWardCodeModalVisible(false);
   const filtered_cus_data = props.route.params;
-  console.log('filtered_cus_data',filtered_cus_data);
+  console.log('filtered_cus_data', filtered_cus_data);
   const onChangeEmpText = textvalues => {
     setEmpText(textvalues);
   };
@@ -299,14 +300,17 @@ function Edit_Emp_Info(props) {
     if (retrive_cusdata.nrc_type == 2) {
       setNRC('2');
     }
-
   }, []);
 
-  useEffect(() => {
-    if (update_status == true) {
-      setOperation('3');
-    }
-  }, [update_status]);
+  // useEffect(async () => {
+  //   const user_id = await AsyncStorage.getItem('user_id');
+
+  //   if (update_status == true && filtered_cus_data.create_user_id !== user_id) {
+  //     setOperation('2');
+  //   } else if (update_status == true) {
+  //     setOperation('3');
+  //   }
+  // }, [update_status]);
 
   useEffect(() => {
     totalIncome(
@@ -354,7 +358,7 @@ function Edit_Emp_Info(props) {
     dispatch(change('Customer_ManagementForm', 'ward_name', ''));
   };
 
-  const city_item = ({ item, index }) => {
+  const city_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -399,7 +403,7 @@ function Edit_Emp_Info(props) {
       </View>
     );
   };
-  const ward_item = ({ item, index }) => {
+  const ward_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -445,7 +449,7 @@ function Edit_Emp_Info(props) {
     );
   };
 
-  const township_item = ({ item, index }) => {
+  const township_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -490,7 +494,7 @@ function Edit_Emp_Info(props) {
       </View>
     );
   };
-  const location_item = ({ item, index }) => {
+  const location_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -551,9 +555,9 @@ function Edit_Emp_Info(props) {
         'Customer_ManagementForm',
         'resident_rgst_id',
         prefix &&
-        nrc_prefix_code &&
-        nrcNo &&
-        state_code + nrc_prefix_code + nrcNo,
+          nrc_prefix_code &&
+          nrcNo &&
+          state_code + nrc_prefix_code + nrcNo,
       ),
     );
   };
@@ -572,10 +576,14 @@ function Edit_Emp_Info(props) {
         .then(result => {
           {
             if (result.length > 0) {
-              dispatch(change('Customer_ManagementForm', 'city_name', result[0].code_short_desc));
-
+              dispatch(
+                change(
+                  'Customer_ManagementForm',
+                  'city_name',
+                  result[0].code_short_desc,
+                ),
+              );
             }
-
           }
         })
         .catch(error => console.log(error));
@@ -585,10 +593,10 @@ function Edit_Emp_Info(props) {
         .then(result => {
           {
             if (result.length > 0) {
-              dispatch(change('Customer_ManagementForm', 'ts_name', result[0].ts_name));
-
+              dispatch(
+                change('Customer_ManagementForm', 'ts_name', result[0].ts_name),
+              );
             }
-
           }
         })
         .catch(error => console.log(error));
@@ -598,10 +606,14 @@ function Edit_Emp_Info(props) {
         .then(result => {
           {
             if (result.length > 0) {
-              dispatch(change('Customer_ManagementForm', 'village_name', result[0].village_name));
-
+              dispatch(
+                change(
+                  'Customer_ManagementForm',
+                  'village_name',
+                  result[0].village_name,
+                ),
+              );
             }
-
           }
         })
         .catch(error => console.log(error));
@@ -611,7 +623,13 @@ function Edit_Emp_Info(props) {
         .then(result => {
           {
             if (result.length > 0) {
-              dispatch(change('Customer_ManagementForm', 'ward_name', result[0].ward_name));
+              dispatch(
+                change(
+                  'Customer_ManagementForm',
+                  'ward_name',
+                  result[0].ward_name,
+                ),
+              );
             }
           }
         })
@@ -622,7 +640,13 @@ function Edit_Emp_Info(props) {
         .then(result => {
           {
             if (result.length > 0) {
-              dispatch(change('Customer_ManagementForm', 'location_name', result[0].location_name));
+              dispatch(
+                change(
+                  'Customer_ManagementForm',
+                  'location_name',
+                  result[0].location_name,
+                ),
+              );
             }
           }
         })
@@ -632,6 +656,10 @@ function Edit_Emp_Info(props) {
 
   useEffect(() => {
     loadData();
+    return () => {
+      setOperation('2');
+      setUpdateStatus(false);
+    };
   }, []);
 
   const handleStartLivingStatus = (value, input) => {
@@ -659,7 +687,7 @@ function Edit_Emp_Info(props) {
     );
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -842,7 +870,7 @@ function Edit_Emp_Info(props) {
     setSelectedTownshipItemValue(itemValue);
   };
 
-  const village_item = ({ item, index }) => {
+  const village_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -891,12 +919,19 @@ function Edit_Emp_Info(props) {
   };
   const filtered_operations = operations.filter(item => item.value != 1);
 
-  const btnChangeOperation = newValue => {
-    setOperation(newValue);
-    if (newValue == 2 || newValue == 4) {
-      setUpdateStatus(false);
+  const btnChangeOperation = async (newValue, cus_data) => {
+    console.log('cus_data.create_user_id', cus_data.create_user_id);
+    const user_id = await AsyncStorage.getItem('user_id');
+
+    if (cus_data.create_user_id !== user_id) {
+      alert('not permit');
     } else {
-      setUpdateStatus(true);
+      setOperation(newValue);
+      if (newValue == 2 || newValue == 4) {
+        setUpdateStatus(false);
+      } else {
+        setUpdateStatus(true);
+      }
     }
   };
 
@@ -936,8 +971,7 @@ function Edit_Emp_Info(props) {
   };
   const btnCancel = () => {
     setNRC_Visible(!nrc_visible);
-    setNRC('1') //if not choose new nrc
-
+    setNRC('1'); //if not choose new nrc
   };
   const handleLocationItemValueChange = itemValue => {
     setLocationSelectedItemValue(itemValue);
@@ -1029,11 +1063,13 @@ function Edit_Emp_Info(props) {
       change('Customer_ManagementForm', 'location_name', item.code_short_desc),
     );
   };
+  console.log('filtered_cus_data', filtered_cus_data);
+
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{ flex: 1, backgroundColor: '#fff' }}>
+          <View style={{flex: 1, backgroundColor: '#fff'}}>
             <Text style={style.title_style}>
               Customer Information Management
             </Text>
@@ -1047,7 +1083,9 @@ function Edit_Emp_Info(props) {
                 {operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
-                    onValueChange={newValue => btnChangeOperation(newValue)}
+                    onValueChange={newValue =>
+                      btnChangeOperation(newValue, filtered_cus_data)
+                    }
                     value={show_operation}>
                     <View
                       key={option.value}
@@ -1065,7 +1103,7 @@ function Edit_Emp_Info(props) {
                         }
                         label={option.label}
                         value={option.value}
-                        labelStyle={{ marginLeft: 5 }}
+                        labelStyle={{marginLeft: 5}}
                       />
                     </View>
                   </RadioButton.Group>
@@ -1076,8 +1114,8 @@ function Edit_Emp_Info(props) {
                   update_status == true && show_operation == '3'
                     ? false
                     : update_status == false && show_operation == '4'
-                      ? false
-                      : true
+                    ? false
+                    : true
                 }
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
@@ -1118,7 +1156,7 @@ function Edit_Emp_Info(props) {
                     icon={update_status == true && 'calendar'}
                     editable={update_status == true ? false : true}
                   />
-                  <View style={{ marginRight: 10 }}>
+                  <View style={{marginRight: 10}}>
                     <Field
                       name={'position_title_nm'}
                       title={'Current Position'}
@@ -1137,7 +1175,7 @@ function Edit_Emp_Info(props) {
                     input_mode
                     editable
                   />
-                  <View style={{ marginRight: 10 }}>
+                  <View style={{marginRight: 10}}>
                     <Field
                       enabled={update_status == true ? false : true}
                       data={salary_grade}
@@ -1197,7 +1235,7 @@ function Edit_Emp_Info(props) {
             onDismiss={hideModal}
             contentContainerStyle={containerStyle}>
             <View
-              style={{ backgroundColor: '#232D57', padding: 25 }}
+              style={{backgroundColor: '#232D57', padding: 25}}
               onStartShouldSetResponder={() => hideModal()}>
               <Icon
                 name="x-circle"
@@ -1212,19 +1250,19 @@ function Edit_Emp_Info(props) {
                 }}
               />
             </View>
-            <View style={{ padding: 10, height: 550 }}>
+            <View style={{padding: 10, height: 550}}>
               <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-around',
                 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={{marginRight: 10}}>Search Item:</Text>
 
                   <Picker
                     selectedValue={selectedItemValue}
                     onValueChange={handleItemValueChange}
-                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
+                    style={{width: 200, backgroundColor: 'white', marginTop: 7}}
                     mode="dropdown">
                     {emp_filter_item.length > 0 &&
                       emp_filter_item.map(val => (
@@ -1237,7 +1275,7 @@ function Edit_Emp_Info(props) {
                   </Picker>
                 </View>
 
-                <View style={{ width: '50%' }}>
+                <View style={{width: '50%'}}>
                   <TextInput
                     style={{
                       backgroundColor: '#fff',
@@ -1308,7 +1346,7 @@ function Edit_Emp_Info(props) {
                 keyExtractor={(item, index) => index.toString()}
               />
 
-              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                 <Button
                   onPress={() => hideModal()}
                   mode="contained"

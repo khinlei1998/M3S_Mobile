@@ -44,7 +44,7 @@ export async function filterCustomer(selectedColumn, searchTerm) {
   });
 }
 
-export function getCustomer_info() {
+export function getCustomer_info(tokensource) {
   return new Promise(async (resolve, reject) => {
     let ip = await AsyncStorage.getItem('ip');
     let port = await AsyncStorage.getItem('port');
@@ -54,7 +54,9 @@ export function getCustomer_info() {
         axios
           .get(
             `${connection_name}://${ip}:${port}/skylark-m3s/api/customers.m3s`,
-
+            {
+              cancelToken: tokensource.token,
+            },
           )
           .then(({data}) => {
             if (data.length > 0) {
@@ -200,8 +202,11 @@ export function getCustomer_info() {
             }
           })
           .catch(error => {
-            alert(error);
-            reject(error);
+            if (axios.isCancel(error)) {
+              reject('Request canceled by user');
+            } else {
+              reject(error);
+            }
           });
       });
     });

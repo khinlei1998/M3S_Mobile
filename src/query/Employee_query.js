@@ -1,28 +1,9 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { connection_name } from '../common';
-import { log } from 'console';
+import {connection_name} from '../common';
+import {createCancelTokenSource} from '../components/CancelUtils';
 
-// const options = {
-//   onDownloadProgress: function (
-//     progressEvent
-//   ) {
-//     console.log(progressEvent, 'progressEvent');
-//     (progressEvent.loaded /progressEvent.total)*100
-//   }
-// }
-
-const options = {
-  onDownloadProgress: function (progressEvent) {
-    //count here 
-    console.log('progressEvent', progressEvent);
-    // if (fetchCount < 100) {
-    //   setFetchCount(prevCount => prevCount + 1);
-    // }
-
-  },
-};
-export function getEemployee_info() {
+export function getEemployee_info(tokensource) {
   console.log('call emp');
   return new Promise(async (resolve, reject) => {
     let ip = await AsyncStorage.getItem('ip');
@@ -32,9 +13,13 @@ export function getEemployee_info() {
       tx.executeSql('DELETE FROM Employee', [], (tx, results) => {
         axios
           .get(
-            `${connection_name}://${ip}:${port}/skylark-m3s/api/employees.m3s`, options
+            `${connection_name}://${ip}:${port}/skylark-m3s/api/employees.m3s`,
+            {
+              cancelToken: tokensource.token,
+            },
           )
-          .then(({ data }) => {
+          .then(({data}) => {
+            console.log('customer data',data);
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -93,9 +78,11 @@ export function getEemployee_info() {
             }
           })
           .catch(error => {
-            console.log('axios err', error);
-            // alert(error);
-            reject(error);
+            if (axios.isCancel(error)) {
+              reject('Request canceled by user');
+            } else {
+              reject(error);
+            }
           });
       });
     });

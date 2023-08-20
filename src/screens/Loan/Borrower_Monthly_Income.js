@@ -94,8 +94,6 @@ function Borrower_Monthly_Income(props) {
       // Update the corresponding value in the values array
       const newValues = [...values];
       newValues[index] = number;
-      console.log('newValues', newValues);
-
       setValues(newValues);
       const filteredValues = newValues.filter(
         value => typeof value === 'number',
@@ -106,7 +104,6 @@ function Borrower_Monthly_Income(props) {
         (accumulator, currentValue) => accumulator + currentValue,
         0,
       );
-      console.log('sum', sum);
       totalExpense(sum);
 
       dispatch(

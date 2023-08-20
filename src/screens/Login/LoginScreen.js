@@ -16,8 +16,8 @@ import {connect, useDispatch} from 'react-redux';
 import DropDownPicker from '../../components/DropDownPicker';
 import SettingScreen from '../Setting/SettingScreen';
 import {languages} from '../../common';
-import {Button} from 'react-native-paper';
-import {useNetInfo,} from '@react-native-community/netinfo';
+import {Button, Modal, ActivityIndicator} from 'react-native-paper';
+import {useNetInfo} from '@react-native-community/netinfo';
 import {getEemployee_info} from '../../query/Employee_query';
 import {selectUser} from '../../query/Employee_query';
 import {AuthContext} from '../../components/context';
@@ -26,19 +26,30 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {sha256} from 'react-native-sha256';
 import {encode} from 'base-64';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { useTranslation } from 'react-i18next';
+
+import {
+  createCancelTokenSource,
+  cancelRequest,
+} from '../../components/CancelUtils';
+let token;
 function LoginScreen(props) {
+  const { t, i18n } = useTranslation();
+
   const dispatch = useDispatch();
   const [id, setID] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const netInfo = useNetInfo();
   const {navigation, handleSubmit} = props;
+  const [show_modal, setShowModal] = useState(false);
   const {saveUserID, userID} = useContext(AuthContext);
   const [modalVisible, setModalVisible] = React.useState(false);
   const hideModal = () => setModalVisible(false);
 
-  const handleLngChange = () => {
-    alert('Under Developing');
+  const handleLngChange = value => {
+    // alert('Under Developing',value);
+    // i18n.changeLanguage('br')
   };
 
   const saveLoginInfo = async login_info => {
@@ -73,165 +84,90 @@ function LoginScreen(props) {
     }
   };
 
-  const btnSync = async () => {
-    // if (!netInfo.isConnected) {
-    //   alert('Connection Error! Check the connection info');
-    // } else {
-    setIsLoading(true);
-
-    const timeoutDuration = 60000; // Adjust the timeout duration as needed (in milliseconds)
-
-    function timeoutPromise() {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          reject('Sync process timed out');
-        }, timeoutDuration);
-      });
-    }
-
-    const networkCheckPromise = new Promise(async (resolve, reject) => {
-      try {
-        if (netInfo.isConnected) {
-          resolve('Network is available');
-        } else {
-          reject('Network is not available');
-        }
-      } catch (error) {
-        reject('Network check failed');
-      }
-    });
-
-    Promise.race([timeoutPromise(), networkCheckPromise])
-      .then(() => {
-        return getEemployee_info(); // Execute the first request
-      })
-      .then(results => {
-        setIsLoading(false);
-        alert('Sync success');
-      })
-      .catch(error => {
-        setIsLoading(false);
-        if (error === 'Sync process timed out') {
-          alert('Sync process timed out. Please try again.');
-        } else if (error === 'Network is not available') {
-          alert('Connection Error! Check the connection info');
-        } else if (error === 'Network check failed') {
-          alert('Network check failed');
-        } else {
-          alert('Only Possible download in network');
-        }
-      });
-    // }
-  };
-
   // const btnSync = async () => {
-  //   if (!netInfo.isConnected) {
-  //     alert('Connection Error!Check the connection info');
-  //   } else {
-  //     setIsLoading(true);
+  //   // if (!netInfo.isConnected) {
+  //   //   alert('Connection Error! Check the connection info');
+  //   // } else {
+  //   setIsLoading(true);
 
-  //     const timeoutDuration = 1000; // Adjust the timeout duration as needed (in milliseconds)
+  //   const timeoutDuration = 60000; // Adjust the timeout duration as needed (in milliseconds)
 
-  //     const timeoutPromise = new Promise((resolve, reject) => {
+  //   function timeoutPromise() {
+  //     return new Promise((resolve, reject) => {
   //       setTimeout(() => {
   //         reject('Sync process timed out');
   //       }, timeoutDuration);
   //     });
-
-  //     Promise.race([timeoutPromise, netInfo.waitForConnection])
-  //       .then(() => {
-  //         return Promise.all([
-  //           getEemployee_info(), //
-  //           getCustomer_info(),
-  //           getNRC_info(),
-  //           getLoanMax(), //
-  //           getSurvey_Item(), //
-  //           getCodeInfo(), //
-  //           get_Village(),//
-  //           get_Township(), //
-  //           get_Ward() //
-  //         ]);
-  //       })
-  //       .then(results => {
-  //         console.log('Sync success', results);
-  //         setIsLoading(false);
-  //         alert('Sync success');
-  //       })
-  //       .catch(error => {
-  //         console.log('error', error);
-  //         setIsLoading(false);
-  //         if (error === 'Sync process timed out') {
-  //           alert('Sync process timed out. Please try again.');
-  //         } else {
-  //           alert('Only Possible download in network');
-  //         }
-  //         // console.log('Sync failed:', error);
-  //         // alert('Only Possible download in network');
-  //       });
   //   }
+
+  //   const networkCheckPromise = new Promise(async (resolve, reject) => {
+  //     try {
+  //       if (netInfo.isConnected) {
+  //         resolve('Network is available');
+  //       } else {
+  //         reject('Network is not available');
+  //       }
+  //     } catch (error) {
+  //       reject('Network check failed');
+  //     }
+  //   });
+
+  //   Promise.race([timeoutPromise(), networkCheckPromise])
+  //     .then(() => {
+  //       return getEemployee_info(); // Execute the first request
+  //     })
+  //     .then(results => {
+  //       setIsLoading(false);
+  //       alert('Sync success');
+  //     })
+  //     .catch(error => {
+  //       setIsLoading(false);
+  //       if (error === 'Sync process timed out') {
+  //         alert('Sync process timed out. Please try again.');
+  //       } else if (error === 'Network is not available') {
+  //         alert('Connection Error! Check the connection info');
+  //       } else if (error === 'Network check failed') {
+  //         alert('Network check failed');
+  //       } else {
+  //         alert('Only Possible download in network');
+  //       }
+  //     });
+  //   // }
   // };
 
-  // const btnSync = async () => {
-  //   if (!netInfo.isConnected) {
-  //     alert('Internet Connection is need');
-  //   } else {
-  //     setIsLoading(true);
-  //     getEemployee_info()
-  //       .then(result => {
-  //         if (result == 'success') {
-  //           getCustomer_info().then(result => {
-  //             console.log('result', result);
-  //             if (result == 'success') {
-  //               getNRC_info().then(result => {
-  //                 if (result == 'success') {
-  //                   getLoanMax().then(result => {
-  //                     if (result == 'success') {
-  //                       getSurvey_Item().then(result => {
-  //                         if (result == 'success') {
-  //                           getCodeInfo().then(result => {
-  //                             if (result == 'success') {
-  //                               // get_Village().then(result => {
-  //                               //   if (result == 'success') {
-  //                               get_Township().then(result => {
-  //                                 if (result == 'success') {
-  //                                   get_Ward().then(result => {
-  //                                     if (result == 'success') {
-  //                                       setIsLoading(false);
-  //                                       alert('Sync success');
-  //                                     }
-
-  //                                   })
-  //                                 }
-
-  //                               })
-  //                               // }
-  //                               // })
-
-  //                             }
-  //                           });
-  //                         }
-  //                       });
-  //                     }
-  //                   });
-  //                   //   }
-  //                   // });
-  //                 }
-  //               });
-  //             } else {
-  //               setIsLoading(false);
-  //               console.log(
-  //                 'Customer error reach'
-  //               );
-  //             }
-  //           });
-  //         }
-  //       })
-  //       .catch(error => {
-  //         setIsLoading(false);
-  //         console.log('doSomething failed with error:', error);
-  //       });
-  //   }
-  // };
+  const btnSync = async () => {
+    if (!netInfo.isConnected) {
+      alert('Internet Connection is need');
+    } else {
+      setShowModal(true);
+      token = await createCancelTokenSource(); // C
+      getEemployee_info(token)
+        .then(result => {
+          if (result == 'success') {
+            setShowModal(false);
+            alert('Sync suucess');
+          }
+        })
+        .catch(error => {
+          console.log('sync error', error);
+          if (error === 'Request canceled by user') {
+            setShowModal(false);
+            alert('Request canceled by user');
+          } else {
+            setShowModal(false);
+            alert('Only Possible download in network');
+          }
+        });
+    }
+  };
+  const containerStyle = {
+    backgroundColor: '#fff',
+    width: '60%',
+    alignSelf: 'center',
+  };
+  const hidePgModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <>
@@ -336,21 +272,6 @@ function LoginScreen(props) {
                     Login
                   </Button>
                 </View>
-
-                {/* <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginTop: 10,
-                  }}>
-                  <Field
-                    component={CheckBoxFile}
-                    name={'save_login_info'}
-                    testcheck={() => btncheck()}
-                  />
-                   <Text style={{ color: '#fff' }}>Save login Information</Text>
-                </View> */}
               </View>
             </View>
 
@@ -371,13 +292,52 @@ function LoginScreen(props) {
         </TouchableWithoutFeedback>
       )}
 
-      <View style={{position: 'absolute', top: '50%', right: 0, left: 0}}>
+      {/* <View style={{position: 'absolute', top: '50%', right: 0, left: 0}}>
         {isLoading ? (
           <Spinner visible={isLoading} textContent={'Please Wait'} />
         ) : (
           <Text></Text>
         )}
-      </View>
+      </View> */}
+
+      {/* Pg bar */}
+      <Modal
+        visible={show_modal}
+        // onDismiss={hidePgModal}
+        contentContainerStyle={containerStyle}>
+        <View style={{padding: 10, height: 150}}>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'column', //column direction
+              justifyContent: 'center',
+              alignItems: 'center',
+
+              padding: 8,
+            }}>
+            {/* <Animated.Text>{fetchedCount}</Animated.Text> */}
+            <View style={{flexDirection: 'row'}}>
+              <ActivityIndicator size="15" color="#636Dc6" />
+              <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 10}}>
+                Employee Information is downloading..
+              </Text>
+            </View>
+            <Button
+              mode="outlined"
+              onPress={() => {
+                hidePgModal(), cancelRequest(token);
+              }}
+              style={{
+                borderRadius: 0,
+                padding: 5,
+                width: '40%',
+                top: 10,
+              }}>
+              Cancel
+            </Button>
+          </View>
+        </View>
+      </Modal>
     </>
   );
 }

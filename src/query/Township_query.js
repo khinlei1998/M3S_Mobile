@@ -1,8 +1,8 @@
 import axios from 'axios';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { connection_name } from '../common';
-export function get_Township() {
+import {connection_name} from '../common';
+export function get_Township(tokensource) {
   return new Promise(async (resolve, reject) => {
     let ip = await AsyncStorage.getItem('ip');
     let port = await AsyncStorage.getItem('port');
@@ -10,8 +10,13 @@ export function get_Township() {
     global.db.transaction(tx => {
       tx.executeSql('DELETE FROM Township', [], (tx, results) => {
         axios
-          .get(`${connection_name}://${ip}:${port}/skylark-m3s/api/townships.m3s`)
-          .then(({ data }) => {
+          .get(
+            `${connection_name}://${ip}:${port}/skylark-m3s/api/townships.m3s`,
+            {
+              cancelToken: tokensource.token,
+            },
+          )
+          .then(({data}) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -49,7 +54,11 @@ export function get_Township() {
             }
           })
           .catch(error => {
-            reject(error);
+            if (axios.isCancel(error)) {
+              reject('Request canceled by user');
+            } else {
+              reject(error);
+            }
           });
       });
     });
@@ -61,8 +70,7 @@ export async function filterTownship(selectedColumn, searchTerm, city_code) {
   if (selectedColumn && searchTerm) {
     sql = `SELECT * FROM Township  WHERE ${selectedColumn} LIKE '%${searchTerm}%' AND city_code = '${city_code}'`;
   } else {
-    sql = `SELECT * FROM Township WHERE city_code = '${city_code}'`
-
+    sql = `SELECT * FROM Township WHERE city_code = '${city_code}'`;
   }
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
@@ -81,7 +89,7 @@ export async function filterTownship(selectedColumn, searchTerm, city_code) {
   });
 }
 
-export const fetchTownshipName = async (township_code) => {
+export const fetchTownshipName = async township_code => {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
       tx.executeSql(
@@ -101,4 +109,3 @@ export const fetchTownshipName = async (township_code) => {
     });
   });
 };
-

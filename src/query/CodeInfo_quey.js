@@ -1,8 +1,9 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BASE_URL } from '../common';
-import { connection_name } from '../common';
-export function getCodeInfo() {
+import {BASE_URL} from '../common';
+import {connection_name} from '../common';
+
+export function getCodeInfo(tokensource) {
   return new Promise(async (resolve, reject) => {
     let ip = await AsyncStorage.getItem('ip');
     let port = await AsyncStorage.getItem('port');
@@ -16,11 +17,12 @@ export function getCodeInfo() {
 
     global.db.transaction(tx => {
       tx.executeSql('DELETE FROM Code', [], (tx, results) => {
-        console.log('Delete success');
         axios
           // .get(`https://${newIP}/skylark-m3s/api/employees.m3s`)
-          .get(`${connection_name}://${ip}:${port}/skylark-m3s/api/codes.m3s`)
-          .then(({ data }) => {
+          .get(`${connection_name}://${ip}:${port}/skylark-m3s/api/codes.m3s`, {
+            cancelToken: tokensource.token,
+          })
+          .then(({data}) => {
             if (data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -50,7 +52,7 @@ export function getCodeInfo() {
                       },
                       error => {
                         // If insert query fails, rollback the transaction and reject the promise
-                          reject(error);
+                        reject(error);
                       },
                     );
                   });
@@ -59,7 +61,11 @@ export function getCodeInfo() {
             }
           })
           .catch(error => {
-            reject(error);
+            if (axios.isCancel(error)) {
+              reject('Request canceled by user');
+            } else {
+              reject(error);
+            }
           });
       });
     });
@@ -87,7 +93,7 @@ export const getCityData = async () => {
     });
   });
 };
-export const fetchCityName = async (city_code) => {
+export const fetchCityName = async city_code => {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
       tx.executeSql(
@@ -155,7 +161,7 @@ export async function filterLocation(selectedColumn, searchTerm) {
     });
   });
 }
-export const fetchLocationName = async (location_code) => {
+export const fetchLocationName = async location_code => {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
       tx.executeSql(

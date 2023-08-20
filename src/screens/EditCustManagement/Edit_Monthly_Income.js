@@ -76,7 +76,6 @@ function Edit_Monthly_Income(props) {
       // Update the corresponding value in the values array
       const newValues = [...values];
       newValues[index] = number;
-      console.log('newValues', newValues);
       setValues(newValues);
       const filteredValues = newValues.filter(
         value => typeof value === 'number',
@@ -100,7 +99,6 @@ function Edit_Monthly_Income(props) {
     } else {
       const newValues = [...values];
       newValues[index] = 0;
-      console.log('newValues', newValues);
       setValues(newValues);
       const filteredValues = newValues.filter(
         value => typeof value === 'number',

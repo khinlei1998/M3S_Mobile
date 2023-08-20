@@ -884,7 +884,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           }
         }
       } else {
-        console.log('indi data',data);
+        console.log('indi data', data);
         applicationNo = data.application_no;
         const individual_loan_data = {
           id: data.id,
@@ -1018,10 +1018,14 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           prop_machines_yn: data.prop_machines_yn,
           prop_motorcycle_yn: data.prop_motorcycle_yn,
           property_kind: data.property_kind,
-          tax_expns:data.tax_expns
+          tax_expns: data.tax_expns,
+          goods_loss_expns: data.goods_loss_expns,
+          tel_expns: data.tel_expns,
+          fmly_trnsrt_expns: data.fmly_trnsrt_expns,
+          fmly_tax_expns: data.fmly_tax_expns,
         };
         loanDataArray.push(individual_loan_data);
-        console.log('individual_loan_data',individual_loan_data);
+        console.log('individual_loan_data', individual_loan_data);
 
         // Image upload Indi loan map
         const indi_loan_borrower_map = `/storage/emulated/0/Pictures/RNSketchCanvas/${data.application_no}MP01.jpg`;

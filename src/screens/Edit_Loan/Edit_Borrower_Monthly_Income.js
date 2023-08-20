@@ -89,8 +89,6 @@ function Borrower_Monthly_Income(props) {
       // Update the corresponding value in the values array
       const newValues = [...values];
       newValues[index] = number;
-      console.log('newValues', newValues);
-
       setValues(newValues);
       const filteredValues = newValues.filter(
         value => typeof value === 'number',
@@ -114,7 +112,6 @@ function Borrower_Monthly_Income(props) {
     } else {
       const newValues = [...values];
       newValues[index] = 0;
-      console.log('newValues', newValues);
       setValues(newValues);
       const filteredValues = newValues.filter(
         value => typeof value === 'number',
@@ -154,7 +151,6 @@ function Borrower_Monthly_Income(props) {
       console.log('familyvalues', familyvalues);
       const newValues = [...familyvalues];
       newValues[index] = number;
-      console.log('newValues', newValues);
       setFamilyValues(newValues);
       // Calculate the sum of the values array
       const filteredfmlyValues = newValues.filter(

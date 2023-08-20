@@ -38,8 +38,6 @@ function Edit_Area_Evaluation(props) {
       // Update the selected values array
       const newValues = [...values];
       newValues[index] = number;
-      console.log('newValues>>.', newValues);
-
       setValues(newValues);
       const filteredValues = newValues.filter(
         value => typeof value === 'number',
