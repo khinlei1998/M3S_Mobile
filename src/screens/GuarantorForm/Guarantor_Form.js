@@ -41,6 +41,8 @@ import validate from './Validate';
 import { getAllLoan_By_application_no } from '../../query/AllLoan_query';
 import moment from 'moment';
 import { cus_filter_item } from '../../common';
+import { useTranslation } from 'react-i18next';
+
 const Borrower_Sign_Modal = props => {
   const {
     show_canvas,
@@ -380,6 +382,7 @@ const Guarantor_modal = props => {
   );
 };
 function Guarantor_Form(props) {
+  const { t, i18n } = useTranslation();
   const navigation = useNavigation();
   const { handleSubmit } = props;
   const retrive_loan_data = props.route.params.retrive_loan_data;
@@ -526,7 +529,7 @@ function Guarantor_Form(props) {
                 color: '#273050',
                 fontWeight: 'bold',
               }}>
-              Guarantor Form
+              {t("Guarantor Form")}
             </Text>
             <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>
               (Attach To Application)

@@ -1,16 +1,17 @@
-import {View, Text, Image, FlatList} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { View, Text, Image, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import Viewloan from '../Loan/Viewloan';
-import {fetchEmpName} from '../../query/Employee_query';
-import {getAllLoanType} from '../../query/AllLoan_query';
+import { fetchEmpName } from '../../query/Employee_query';
+import { getAllLoanType } from '../../query/AllLoan_query';
 import { useIsFocused } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 export default function Home(props) {
-  const {navigation} = props;
+  const { navigation } = props;
   const isFocused = useIsFocused();
   const [emp_name, setEmpName] = useState();
   const [loan_data, setAllLoan] = useState([]);
-
+  const { t, i18n } = useTranslation();
   const loadData = async () => {
     await fetchEmpName()
       .then(data => setEmpName(data[0].employee_name))
@@ -22,7 +23,7 @@ export default function Home(props) {
   };
 
   const totalAmount = loan_data.reduce(
-    (accumulator, currentValue) => currentValue.application_amt ?accumulator + currentValue.application_amt:accumulator + 0,
+    (accumulator, currentValue) => currentValue.application_amt ? accumulator + currentValue.application_amt : accumulator + 0,
     0,
   );
   const formattedPrice = totalAmount
@@ -35,7 +36,7 @@ export default function Home(props) {
     }
   }, [isFocused]);
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <View
         style={{
           backgroundColor: '#232D57',
@@ -52,11 +53,11 @@ export default function Home(props) {
           }}>
           <Image
             source={require('../../../assets/images/default-user.png')}
-            style={{width: 30, height: 30}}
+            style={{ width: 30, height: 30 }}
           />
-          <View style={{marginLeft: 20}}>
-            <Text style={{color: '#c7c7c7'}}>Team leader</Text>
-            <Text style={{color: '#fff'}}>{emp_name}</Text>
+          <View style={{ marginLeft: 20 }}>
+            <Text style={{ color: '#c7c7c7' }}>{t("Team leader")}</Text>
+            <Text style={{ color: '#fff' }}>{emp_name}</Text>
           </View>
         </View>
 
@@ -98,7 +99,7 @@ export default function Home(props) {
                 color: 'red',
               }}>
               {loan_data.length}{' '}
-              <Text style={{color: '#c7c7c7', fontSize: 15}}>PCS</Text>
+              <Text style={{ color: '#c7c7c7', fontSize: 15 }}>PCS</Text>
             </Text>
           </View>
         </View>
@@ -142,7 +143,7 @@ export default function Home(props) {
                 color: '#73DEF7',
               }}>
               {formattedPrice}{' '}
-              <Text style={{color: '#c7c7c7', fontSize: 15}}>MMK</Text>
+              <Text style={{ color: '#c7c7c7', fontSize: 15 }}>MMK</Text>
             </Text>
           </View>
         </View>
@@ -153,7 +154,7 @@ export default function Home(props) {
           flexDirection: 'row',
           justifyContent: 'space-between',
           marginTop: 20,
-          padding:10
+          padding: 10
         }}>
         <Text
           style={{
@@ -172,7 +173,7 @@ export default function Home(props) {
             color: 'red',
           }}>
           {loan_data.length}{' '}
-          <Text style={{color: '#c7c7c7', fontSize: 17}}>Pcs</Text>
+          <Text style={{ color: '#c7c7c7', fontSize: 17 }}>Pcs</Text>
         </Text>
       </View>
 

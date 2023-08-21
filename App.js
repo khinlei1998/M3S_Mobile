@@ -93,7 +93,7 @@ export default function App() {
     const saveIp = async user_id => {
       try {
         // await AsyncStorage.setItem('ip', 'd390-103-116-57-157.ngrok-free.app');
-        await AsyncStorage.setItem('ip', ' 192.168.177.170');
+        await AsyncStorage.setItem('ip', 'ad0a-103-231-92-100.ngrok-free.app');
         await AsyncStorage.setItem('port', '80');
       } catch (e) {
         console.log('error ::', e);

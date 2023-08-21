@@ -22,6 +22,12 @@ const validate = (values) => {
     if (!values.interest_rates) {
         errors.interest_rates = "Interest Rate is required.";
     }
+    if (!values.city_code) {
+        errors.city_code = 'City Code is required.';
+    }
+    if (!values.ts_code) {
+        errors.ts_code = 'Township Code is required.';
+    }
 
 
 

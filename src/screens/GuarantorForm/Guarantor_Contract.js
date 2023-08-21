@@ -4,7 +4,10 @@ import { List } from 'react-native-paper';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
 import { style } from '../../style/Guarantor_style';
+import { useTranslation } from 'react-i18next';
 export default function Guarantor_Contract(props) {
+  const { t, i18n } = useTranslation();
+
   const { retrive_loan_data, guarantor_name } = props;
   const [guarantor_Contract_expanded, setGuarantorContractExpand] =
     useState(true);
@@ -27,7 +30,7 @@ export default function Guarantor_Contract(props) {
               justifyContent: 'space-between',
             }}>
             <Text style={{ fontWeight: 'bold' }}>
-              I am <Text style={{ color: '#A1B5DC' }}>{guarantor_name} ,</Text>Guarantee for{' '}
+              {t("I am")} <Text style={{ color: '#A1B5DC' }}>{guarantor_name} ,</Text>{t("Guarantee for")}{' '}
               <Text style={{ color: '#A1B5DC' }}>
                 {retrive_loan_data.borrower_name} {'\n'}
               </Text>

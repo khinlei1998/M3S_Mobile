@@ -1,19 +1,18 @@
-import {View, Text, FlatList, TouchableOpacity, LogBox} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {connect} from 'react-redux';
-import {Field, reduxForm, reset, change} from 'redux-form';
-import {addInquiryLoanData} from '../../redux/LoanReducer';
-import {loan_application_type} from '../../common';
+import { View, Text, FlatList, TouchableOpacity, LogBox } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Field, reduxForm, reset, change } from 'redux-form';
+import { addInquiryLoanData } from '../../redux/LoanReducer';
+import { loan_application_type } from '../../common';
 
 function Viewloan(props) {
-  const {loan_data, navigation, addInquiryLoanData} = props;
+  const { loan_data, navigation, addInquiryLoanData } = props;
   const btn_inquiry_loan = item => {
     if (item.product_type == 20) {
       navigation.navigate('Edit_Individual_Staff_loan_Info', item);
       addInquiryLoanData(item);
     } else if (item.product_type == 10) {
       addInquiryLoanData(item);
-
       navigation.navigate('Edit_Individual_Loan', item);
     } else if (item.product_type == 30) {
       navigation.navigate('Edit Group Loan', item);
@@ -23,7 +22,7 @@ function Viewloan(props) {
       navigation.navigate('Edit_Reloan', item);
     }
   };
-  const item = ({item, index}) => {
+  const item = ({ item, index }) => {
     const foundItem = loan_application_type.filter(
       data => data.value == item.product_type,
     );
@@ -34,8 +33,9 @@ function Viewloan(props) {
             flexDirection: 'row',
             borderBottomWidth: 1,
             borderBottomColor: '#ccc',
-            padding: 10,
-           
+            padding: 5,
+            margin: 15,
+
           }}>
           <Text
             style={{

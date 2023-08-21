@@ -228,7 +228,7 @@ export default function Passport(props) {
           }}
           mode="contained"
           onPress={() => navigation.goBack()}>
-          Submit
+          Go Back
         </Button>
         {/* </Card.Content>
         </Card> */}

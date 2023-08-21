@@ -7,24 +7,24 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import React, {useContext, useState, useEffect} from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
 import CheckBoxFile from '../../components/CheckBoxFile';
-import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
 import DropDownPicker from '../../components/DropDownPicker';
 import SettingScreen from '../Setting/SettingScreen';
-import {languages} from '../../common';
-import {Button, Modal, ActivityIndicator} from 'react-native-paper';
-import {useNetInfo} from '@react-native-community/netinfo';
-import {getEemployee_info} from '../../query/Employee_query';
-import {selectUser} from '../../query/Employee_query';
-import {AuthContext} from '../../components/context';
+import { languages } from '../../common';
+import { Button, Modal, ActivityIndicator } from 'react-native-paper';
+import { useNetInfo } from '@react-native-community/netinfo';
+import { getEemployee_info } from '../../query/Employee_query';
+import { selectUser } from '../../query/Employee_query';
+import { AuthContext } from '../../components/context';
 import validate from './Validate';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {sha256} from 'react-native-sha256';
-import {encode} from 'base-64';
+import { sha256 } from 'react-native-sha256';
+import { encode } from 'base-64';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { useTranslation } from 'react-i18next';
 
@@ -32,6 +32,7 @@ import {
   createCancelTokenSource,
   cancelRequest,
 } from '../../components/CancelUtils';
+import i18next from '../../../services/i18next'
 let token;
 function LoginScreen(props) {
   const { t, i18n } = useTranslation();
@@ -41,15 +42,14 @@ function LoginScreen(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const netInfo = useNetInfo();
-  const {navigation, handleSubmit} = props;
+  const { navigation, handleSubmit } = props;
   const [show_modal, setShowModal] = useState(false);
-  const {saveUserID, userID} = useContext(AuthContext);
+  const { saveUserID, userID } = useContext(AuthContext);
   const [modalVisible, setModalVisible] = React.useState(false);
   const hideModal = () => setModalVisible(false);
 
   const handleLngChange = value => {
-    // alert('Under Developing',value);
-    // i18n.changeLanguage('br')
+    i18next.changeLanguage(value);
   };
 
   const saveLoginInfo = async login_info => {
@@ -175,7 +175,7 @@ function LoginScreen(props) {
         <SettingScreen visible={modalVisible} hideModal={hideModal} />
       ) : (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{backgroundColor: '#232D57', flex: 1}}>
+          <View style={{ backgroundColor: '#232D57', flex: 1 }}>
             <View
               style={{
                 flexDirection: 'row',
@@ -188,7 +188,7 @@ function LoginScreen(props) {
                   name="download"
                   size={35}
                   color="#fff"
-                  style={{marginLeft: 20}}
+                  style={{ marginLeft: 20 }}
                 />
               </TouchableOpacity>
 
@@ -197,26 +197,26 @@ function LoginScreen(props) {
                   name="settings"
                   size={35}
                   color="#fff"
-                  style={{marginLeft: 20}}
+                  style={{ marginLeft: 20 }}
                 />
               </TouchableOpacity>
             </View>
-            <View style={{alignItems: 'center', marginTop: 20}}>
+            <View style={{ alignItems: 'center', marginTop: 20 }}>
               <Image
                 source={require('../../../assets/images/logo3.png')}
-                style={{width: 130, height: 130}}
+                style={{ width: 130, height: 130 }}
               />
               <View
-                style={{flexDirection: 'row', marginTop: 10, marginBottom: 20}}>
-                <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 20}}>
+                style={{ flexDirection: 'row', marginTop: 10, marginBottom: 20 }}>
+                <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20 }}>
                   BC NeO{' '}
                 </Text>
-                <Text style={{color: '#fff', fontSize: 20}}>Sales System</Text>
+                <Text style={{ color: '#fff', fontSize: 20 }}>Sales System</Text>
               </View>
 
               <Image
                 source={require('../../../assets/images/default-user.png')}
-                style={{width: 50, height: 50, marginTop: 10}}
+                style={{ width: 50, height: 50, marginTop: 10 }}
               />
             </View>
             <View
@@ -244,12 +244,12 @@ function LoginScreen(props) {
 
                 <Field
                   name={'password'}
-                  title={'Password'}
-                  component={TextInputFile}
-                  password
-                  input_cusstyle
-                  icon={'eye'}
-                  showRightIcon
+                  title={t('Password')}
+                component={TextInputFile}
+                password
+                input_cusstyle
+                icon={'eye'}
+                showRightIcon
                 />
 
                 <Field
@@ -263,19 +263,19 @@ function LoginScreen(props) {
                   title={'Select Language'}
                 />
 
-                <View style={{marginTop: 20}}>
+                <View style={{ marginTop: 20 }}>
                   <Button
                     mode="contained"
                     onPress={handleSubmit(onSubmit)}
                     buttonColor={'#6870C3'}
-                    style={{borderRadius: 0}}>
+                    style={{ borderRadius: 0 }}>
                     Login
                   </Button>
                 </View>
               </View>
             </View>
 
-            <Text style={{color: '#fff', textAlign: 'center', marginTop: 25}}>
+            <Text style={{ color: '#fff', textAlign: 'center', marginTop: 25 }}>
               v 0.1.19
             </Text>
 
@@ -305,7 +305,7 @@ function LoginScreen(props) {
         visible={show_modal}
         // onDismiss={hidePgModal}
         contentContainerStyle={containerStyle}>
-        <View style={{padding: 10, height: 150}}>
+        <View style={{ padding: 10, height: 150 }}>
           <View
             style={{
               flex: 1,
@@ -316,9 +316,9 @@ function LoginScreen(props) {
               padding: 8,
             }}>
             {/* <Animated.Text>{fetchedCount}</Animated.Text> */}
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <ActivityIndicator size="15" color="#636Dc6" />
-              <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 10}}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 10 }}>
                 Employee Information is downloading..
               </Text>
             </View>

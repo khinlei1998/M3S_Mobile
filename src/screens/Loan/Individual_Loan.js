@@ -103,7 +103,6 @@ const Borrower_modal = props => {
   };
 
   const btnSelectEmployee = item => {
-    console.log('item', item);
     addCustomerInfo(item); //to calculate income
     setSelectedValue(item.id);
     //Borrower info
@@ -1064,12 +1063,9 @@ function Individual_Loan(props) {
   const saveSignatureToInternalStorage = async (image_encode, index) => {
     const user_id = await AsyncStorage.getItem('user_id');
     try {
-      // Request write storage permission
-      // const granted = await requestWriteStoragePermission();
       const granted = await AsyncStorage.getItem('writeStoragePermission');
 
       if (granted) {
-        // Generate a unique filename for the image
         const filename = `10${user_id}${moment().format('YYYYMMDD')}${all_loandata.length + 1
           }SG${index}.jpg`;
         const directory = '/storage/emulated/0/Pictures/Signature/';
@@ -1307,7 +1303,6 @@ function Individual_Loan(props) {
       });
   };
   const btnLocationSearch = async () => {
-    console.log('selectedLocationItemValue', selectedLocationItemValue);
     await filterLocation(selectedLocationItemValue, location_text)
       .then(data => {
         if (data.length > 0) {

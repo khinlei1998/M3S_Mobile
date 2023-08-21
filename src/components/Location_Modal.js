@@ -117,7 +117,7 @@ export default function Location_Modal(props) {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Employee No
+                Location Code
               </Text>
               <Text
                 style={{
@@ -126,17 +126,9 @@ export default function Location_Modal(props) {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Employee Name
+                Location Name
               </Text>
-              <Text
-                style={{
-                  flex: 1,
-
-                  padding: 10,
-                  fontWeight: 'bold',
-                }}>
-                Positon Name
-              </Text>
+             
             </View>
             {loading ? ( // Show ActivityIndicator while loading is true
               <ActivityIndicator size="large" color="#636Dc6" />
