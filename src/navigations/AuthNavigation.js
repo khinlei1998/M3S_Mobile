@@ -47,17 +47,32 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
+      <Stack.Screen
+        name="Synchronization"
+        component={Synchronization_Screen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{ headerShown: false }}
+      />
+
+
+
+      <Stack.Screen
+        name="Edit_Emp_Info"
+        component={Edit_Emp_Info}
+        options={{ headerShown: false }}
+      />
+
 
       <Stack.Screen
         name="Login"
         component={LoginScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="Synchronization"
-        component={Synchronization_Screen}
-        options={{ headerShown: false }}
-      />
+
 
       <Stack.Screen
         name="Individual_loan"
@@ -87,17 +102,8 @@ export default function AuthNavigation(props) {
         options={{ headerShown: false }}
       />
 
-      <Stack.Screen
-        name="Home"
-        component={Home}
-        options={{ headerShown: false }}
-      />
 
-      <Stack.Screen
-        name="Edit_Emp_Info"
-        component={Edit_Emp_Info}
-        options={{ headerShown: false }}
-      />
+
 
       <Stack.Screen
         name="Indi_Staff_loan"

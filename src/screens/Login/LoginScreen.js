@@ -46,9 +46,11 @@ function LoginScreen(props) {
   const [show_modal, setShowModal] = useState(false);
   const { saveUserID, userID } = useContext(AuthContext);
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [prefix, setPrefix] = useState('')
   const hideModal = () => setModalVisible(false);
 
   const handleLngChange = value => {
+    setPrefix(value); //show selected value
     i18next.changeLanguage(value);
   };
 
@@ -261,6 +263,7 @@ function LoginScreen(props) {
                   }}
                   showDropChange={handleLngChange}
                   title={'Select Language'}
+                  prefix={prefix}
                 />
 
                 <View style={{ marginTop: 20 }}>

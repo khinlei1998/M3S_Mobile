@@ -452,6 +452,17 @@ async function uploadImage(filePath, description) {
     throw new Error('Image upload failed');
   }
 }
+function updateDateBySubtractingYears(dateProperty, yearsToSubtract) {
+  if (!isNaN(yearsToSubtract)) {
+    const currentYear = new Date().getFullYear();
+    const subtractedYear = currentYear - yearsToSubtract;
+
+    return `${subtractedYear}-01-01`;
+  } else {
+    console.log(`Invalid input for ${dateProperty}`);
+    return '';
+  }
+}
 
 export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
   const failedData = [];
@@ -459,7 +470,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
   let ip = await AsyncStorage.getItem('ip');
   let port = await AsyncStorage.getItem('port');
   let user_id = await AsyncStorage.getItem('user_id');
-
+  const date = moment().format();
   try {
     for (const data of checkedItems) {
       const formData = new FormData();
@@ -494,10 +505,10 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           residentRgstId: data.resident_rgst_id,
           fatherName: data.father_name,
           addr: data.addr,
-          tabletSyncSts: '00',
+          tabletSyncSts: data.tablet_sync_sts,
           syncSts: '00',
           customerNo: data.customer_no,
-          transactionDate: '2023-06-28', //today date
+          transactionDate: date, //today date
           errMsg: '',
         };
         group_data.push(groupApplication);
@@ -578,7 +589,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               fmlyTotNetIncome: loan_data.fmly_tot_net_income,
               totNetIncome: loan_data.fmly_tot_net_income,
               remark: loan_data.remark,
-              tabletSyncSts: '00',
+              tabletSyncSts: loan_data.tablet_sync_sts,
               syncSts: '00',
               pastLoanAmount: loan_data.past_loan_amount,
               pastLoanRating: loan_data.past_loan_rating,
@@ -588,7 +599,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               sysOrganizationCode: '1000',
               organizationCode: '1000',
               restFlag: 'Y',
-              transactionDate: '2023-05-07', //today date
+              transactionDate: date, //today date
               serialNo: '',
               //not include to server
               birth_date: loan_data.birth_date,
@@ -612,8 +623,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               co_occupation: loan_data.co_occupation,
               contract_no: loan_data.contract_no,
               create_datetime: loan_data.create_datetime,
-              curr_resident_date: loan_data.curr_resident_date,
-              curr_workplace_date: loan_data.curr_workplace_date,
+              curr_resident_date: updateDateBySubtractingYears('curr_resident_date', parseInt(loan_data.curr_resident_date)),
+              curr_workplace_date: updateDateBySubtractingYears('curr_workplace_date', parseInt(loan_data.curr_workplace_date)),
               curr_workplace_perd: loan_data.curr_workplace_perd,
               decision_no: loan_data.decision_no,
               delete_datetime: loan_data.delete_datetime,
@@ -693,7 +704,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           }
         }
       } else {
-        console.log('indi data', data);
         applicationNo = data.application_no;
         const individual_loan_data = {
           id: data.id,
@@ -757,7 +767,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           fmlyTotNetIncome: data.fmly_tot_net_income,
           totNetIncome: data.fmly_tot_net_income,
           remark: data.remark,
-          tabletSyncSts: '00',
+          tabletSyncSts: data.tablet_sync_sts,
           syncSts: '00',
           pastLoanAmount: data.past_loan_amount,
           pastLoanRating: data.past_loan_rating,
@@ -767,7 +777,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           sysOrganizationCode: '1000',
           organizationCode: '1000',
           restFlag: 'Y',
-          transactionDate: '2023-05-07',
+          transactionDate: date,
           serialNo: '',
           //not include to server
           birth_date: data.birth_date,
@@ -791,8 +801,9 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           co_occupation: data.co_occupation,
           contract_no: data.contract_no,
           create_datetime: data.create_datetime,
-          curr_resident_date: data.curr_resident_date,
-          curr_workplace_date: data.curr_workplace_date,
+          curr_resident_date: updateDateBySubtractingYears('curr_resident_date', parseInt(data.curr_resident_date)),
+
+          curr_workplace_date: updateDateBySubtractingYears('curr_resident_date', parseInt(data.curr_workplace_date)),
           curr_workplace_perd: data.curr_workplace_perd,
           decision_no: data.decision_no,
           delete_datetime: data.delete_datetime,
@@ -834,6 +845,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           fmly_tax_expns: data.fmly_tax_expns,
           svPrType: data.sv_pr_type
         };
+        console.log('individual_loan_data', individual_loan_data);
         loanDataArray.push(individual_loan_data);
         // Image upload Indi loan map
         const indi_loan_borrower_map = `/storage/emulated/0/Pictures/RNSketchCanvas/${data.application_no}MP01.jpg`;
@@ -905,7 +917,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 workplaceAddr: item.workplace_addr,
                 landScale: item.land_scale,
                 landOwnType: item.land_own_type,
-                tabletSyncSts: '00',
+                tabletSyncSts: item.tablet_sync_sts,
                 syncSts: '00',
               };
             });
@@ -992,7 +1004,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 trnsrtStsFlag: trnsrt_sts_flag,
                 trnsrtStsRemark: item.trnsrt_sts_remark,
                 chnlDeviceType: '00110',
-                tabletSyncSts: '00',
+                tabletSyncSts: item.tablet_sync_sts,
                 syncSts: '00',
                 areaSecurityFlag: area_security_flag,
                 areaSecurityRemark: item.area_security_remark,
@@ -1056,7 +1068,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                     : 'N',
                 exceptionReason: item.exception_reason,
                 recommendNm: item.recommend_nm,
-                tabletSyncSts: '00',
+                tabletSyncSts:item.tablet_sync_sts,
                 syncSts: '00',
               };
             });
@@ -1090,7 +1102,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 brotherSisterYn: item.brother_sister_yn == 1 ? 'Y' : 'N',
                 husbandWifeYn: item.husband_wife_yn == 1 ? 'Y' : 'N',
                 sonDaughterYn: item.son_daughter_yn == 1 ? 'Y' : 'N',
-                tabletSyncSts: '00',
+                tabletSyncSts: item.tablet_sync_sts,
                 syncSts: '00',
                 relationName: relation_name,
               };
@@ -1726,7 +1738,7 @@ export const updateLoanData = async loan_data => {
             loan_data.land_own_type,
             //Monthly Income
             loan_data.tot_sale_income == '' ? 0 : loan_data.tot_sale_income,
-            loan_data.tot_sale_expense, //auto cal
+            loan_data.tot_sale_expense == '' ? 0 : cus_data.tot_sale_expense, //auto cal
             loan_data.rawmaterial_expans == ''
               ? 0
               : loan_data.rawmaterial_expans,
@@ -1741,9 +1753,9 @@ export const updateLoanData = async loan_data => {
             loan_data.goods_loss_expns == '' ? 0 : loan_data.goods_loss_expns,
             loan_data.othr_expns_1 == '' ? 0 : loan_data.othr_expns_1,
             loan_data.othr_expns_2 == '' ? 0 : loan_data.othr_expns_2, //80
-            loan_data.totBusNetIncomeitem, //auto cal
+            loan_data.totBusNetIncomeitem ? loan_data.totBusNetIncomeitem : 0, //totBusNetIncomeitem //auto cal , //auto cal
             loan_data.fmly_tot_income == '' ? 0 : loan_data.fmly_tot_income,
-            loan_data.fmly_tot_expense, //auto cal
+            loan_data.fmly_tot_expense == '' ? 0 : loan_data.fmly_tot_expense, //auto cal
             loan_data.food_expns == '' ? 0 : loan_data.food_expns,
             loan_data.house_mngt_expns == '' ? 0 : loan_data.house_mngt_expns,
             loan_data.utlbil_expns == '' ? 0 : loan_data.utlbil_expns,

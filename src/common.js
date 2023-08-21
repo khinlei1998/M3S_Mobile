@@ -6,7 +6,7 @@ export const languages = [
   },
   {
     id: 2,
-    label: 'Myanamr',
+    label: 'Myanmar',
     value: 'br',
   },
 ];
