@@ -466,6 +466,7 @@ function updateDateBySubtractingYears(dateProperty, yearsToSubtract) {
 
 export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
   const failedData = [];
+  let applicationNo;
   let successCount = 0;
   let ip = await AsyncStorage.getItem('ip');
   let port = await AsyncStorage.getItem('port');
@@ -623,8 +624,14 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               co_occupation: loan_data.co_occupation,
               contract_no: loan_data.contract_no,
               create_datetime: loan_data.create_datetime,
-              curr_resident_date: updateDateBySubtractingYears('curr_resident_date', parseInt(loan_data.curr_resident_date)),
-              curr_workplace_date: updateDateBySubtractingYears('curr_workplace_date', parseInt(loan_data.curr_workplace_date)),
+              curr_resident_date: updateDateBySubtractingYears(
+                'curr_resident_date',
+                parseInt(loan_data.curr_resident_date),
+              ),
+              curr_workplace_date: updateDateBySubtractingYears(
+                'curr_workplace_date',
+                parseInt(loan_data.curr_workplace_date),
+              ),
               curr_workplace_perd: loan_data.curr_workplace_perd,
               decision_no: loan_data.decision_no,
               delete_datetime: loan_data.delete_datetime,
@@ -660,7 +667,10 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               prop_motorcycle_yn: loan_data.prop_motorcycle_yn,
               property_kind: loan_data.property_kind,
               address_type: loan_data.address_type,
-              svPrType: data.sv_pr_type
+              svPrType: data.sv_pr_type,
+              township_code: data.ts_code,
+              village_code: data.village_code,
+              ward_code: data.ward_code,
             };
             loanDataArray.push(gp_individual_loan_data); // Store individual loan data in the array
             // applicationNo = loan_data.application_no;
@@ -801,9 +811,15 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           co_occupation: data.co_occupation,
           contract_no: data.contract_no,
           create_datetime: data.create_datetime,
-          curr_resident_date: updateDateBySubtractingYears('curr_resident_date', parseInt(data.curr_resident_date)),
+          curr_resident_date: updateDateBySubtractingYears(
+            'curr_resident_date',
+            parseInt(data.curr_resident_date),
+          ),
 
-          curr_workplace_date: updateDateBySubtractingYears('curr_resident_date', parseInt(data.curr_workplace_date)),
+          curr_workplace_date: updateDateBySubtractingYears(
+            'curr_resident_date',
+            parseInt(data.curr_workplace_date),
+          ),
           curr_workplace_perd: data.curr_workplace_perd,
           decision_no: data.decision_no,
           delete_datetime: data.delete_datetime,
@@ -843,7 +859,10 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           tel_expns: data.tel_expns,
           fmly_trnsrt_expns: data.fmly_trnsrt_expns,
           fmly_tax_expns: data.fmly_tax_expns,
-          svPrType: data.sv_pr_type
+          svPrType: data.sv_pr_type,
+          township_code: data.ts_code,
+          village_code: data.village_code,
+          ward_code: data.ward_code,
         };
         console.log('individual_loan_data', individual_loan_data);
         loanDataArray.push(individual_loan_data);
@@ -1068,7 +1087,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                     : 'N',
                 exceptionReason: item.exception_reason,
                 recommendNm: item.recommend_nm,
-                tabletSyncSts:item.tablet_sync_sts,
+                tabletSyncSts: item.tablet_sync_sts,
                 syncSts: '00',
               };
             });
@@ -1139,7 +1158,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               return;
             }
 
-            //memeber sign
+            //relation memeber sign
 
             for (let index = 5; index <= 14; index++) {
               const formattedIndex = index.toString().padStart(2, '0'); // Format the index with leading zeros
@@ -1165,10 +1184,47 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
 
           //UPLOAD Evidence
 
-          for (let index = 1; index <= 11; index++) {
-            const formattedIndex = index.toString().padStart(2, '0'); // Format the index with leading zeros
+          const data = [
+            {id: 1, value: '01F'},
+            {id: 2, value: '01B'},
+            {id: 3, value: '02F'},
+            {id: 4, value: '02B'},
+            {id: 5, value: '03F'},
+            {id: 6, value: '03B'},
+            {id: 7, value: '04F'},
+            {id: 8, value: '04B'},
+            {id: 9, value: '05F'},
+            {id: 10, value: '05B'},
+            {id: 11, value: '06F'},
+            {id: 12, value: '06B'},
+            {id: 13, value: '07F'},
+            {id: 14, value: '07B'},
+            {id: 15, value: '08F'},
+            {id: 16, value: '08B'},
+            {id: 17, value: '09F'},
+            {id: 18, value: '09B'},
+            {id: 19, value: '10F'},
+            {id: 20, value: '10B'},
+            {id: 21, value: '11F'},
+            {id: 22, value: '11B'},
 
-            const evidence_img = `/storage/emulated/0/Pictures/Camera/${loan_data.applicationNo}AT${formattedIndex}F.jpg`;
+            // Add more data as needed
+          ];
+
+          // for (let index = 1; index <= 22; index++) {
+          //   const formattedIndex = index.toString().padStart(2, '0'); // Format the index with leading zeros
+
+          //   const evidence_img = `/storage/emulated/0/Pictures/Camera/${loan_data.applicationNo}AT${formattedIndex}F.jpg`;
+          //   try {
+          //     await uploadImage(evidence_img, 'evidence_img');
+          //   } catch (error) {
+          //     console.log(`Error uploading evidence_img ${index}:`, error);
+          //     failedData.push(`Error uploading evidence_img ${index}`);
+          //     break; // Stop further execution if image upload fails for any of the indices
+          //   }
+          // }
+          for (let i = 0; i < data; i++) {
+            const evidence_img = `/storage/emulated/0/Pictures/Camera/${loan_data.applicationNo}AT${data[i].value}.jpg`;
             try {
               await uploadImage(evidence_img, 'evidence_img');
             } catch (error) {
@@ -1217,8 +1273,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         maxBodyLength: Infinity,
         url:
           data.product_type == 30 ||
-            data.product_type == 40 ||
-            data.product_type == 50
+          data.product_type == 40 ||
+          data.product_type == 50
             ? `${connection_name}://${ip}:${port}/skylark-m3s/api/groupLoan.m3s`
             : `${connection_name}://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
         data: formData,
@@ -1738,7 +1794,7 @@ export const updateLoanData = async loan_data => {
             loan_data.land_own_type,
             //Monthly Income
             loan_data.tot_sale_income == '' ? 0 : loan_data.tot_sale_income,
-            loan_data.tot_sale_expense == '' ? 0 : cus_data.tot_sale_expense, //auto cal
+            loan_data.tot_sale_expense == '' ? 0 : loan_data.tot_sale_expense, //auto cal
             loan_data.rawmaterial_expans == ''
               ? 0
               : loan_data.rawmaterial_expans,
@@ -1765,7 +1821,7 @@ export const updateLoanData = async loan_data => {
             loan_data.fmly_tax_expns == '' ? 0 : loan_data.fmly_tax_expns,
             loan_data.finance_expns == '' ? 0 : loan_data.finance_expns,
             loan_data.fmly_otr_expns == '' ? 0 : loan_data.fmly_otr_expns,
-            loan_data.fmlyTotNetIncome == '' ? 0 : loan_data.fmlyTotNetIncome,
+            loan_data.fmlyTotNetIncome ? loan_data.fmlyTotNetIncome : 0,
             loan_data.totalnet, //auto cal
             loan_data.otr_mfi_loan_cnt, //otr_mfi_loan_cnt
             loan_data.otr_mfi_nm, //otr_mfi_nm

@@ -23,17 +23,28 @@ export default function Evidence(props) {
   const [capturedFiles, setCapturedFiles] = useState([]);
 
   const data = [
-    {id: 1, name: 'NRC Card', value: '01'},
-    {id: 2, name: 'Guarantor NRC Card', value: '02'},
-    {id: 3, name: 'Co-borrower NRC Card', value: '03'},
-    {id: 4, name: 'Family', value: '04'},
-    {id: 5, name: 'House Ownership', value: '05'},
-    {id: 6, name: 'Recommendation', value: '06'},
-    {id: 7, name: 'Business License', value: '07'},
-    {id: 8, name: 'Land OwnerShip', value: '08'},
-    {id: 9, name: 'Tax Payment', value: '09'},
-    {id: 10, name: 'Insurance', value: '10'},
-    {id: 11, name: 'Etc', value: '11'},
+    {id: 1, name: 'NRC Card (Front)', value: '01F'},
+    {id: 2, name: 'NRC Card (Back)', value: '01B'},
+    {id: 3, name: 'Guarantor NRC Card (Front)', value: '02F'},
+    {id: 4, name: 'Guarantor NRC Card (Back)', value: '02B'},
+    {id: 5, name: 'Co-borrower NRC Card (Front)', value: '03F'},
+    {id: 6, name: 'Co-borrower NRC Card (Back)', value: '03B'},
+    {id: 7, name: 'Family (Front)', value: '04F'},
+    {id: 8, name: 'Family (Back)', value: '04B'},
+    {id: 9, name: 'House Ownership (Front)', value: '05F'},
+    {id: 10, name: 'House Ownership (Back)', value: '05B'},
+    {id: 11, name: 'Recommendation (Front)', value: '06F'},
+    {id: 12, name: 'Recommendation (Back)', value: '06B'},
+    {id: 13, name: 'Business License (Front)', value: '07F'},
+    {id: 14, name: 'Business License (Back)', value: '07B'},
+    {id: 15, name: 'Land OwnerShip (Front)', value: '08F'},
+    {id: 16, name: 'Land OwnerShip (Back)', value: '08B'},
+    {id: 17, name: 'Tax Payment (Front)', value: '09F'},
+    {id: 18, name: 'Tax Payment (Back)', value: '09B'},
+    {id: 19, name: 'Insurance (Front)', value: '10F'},
+    {id: 20, name: 'Insurance (Back)', value: '10B'},
+    {id: 21, name: 'Etc (Front)', value: '11F'},
+    {id: 22, name: 'Etc (Back)', value: '11B'},
 
     // Add more data as needed
   ];
@@ -41,14 +52,14 @@ export default function Evidence(props) {
   const retrive_loan_data = props.route.params.retrive_loan_data;
 
   const handleView = async value => {
-    let filePath = `/storage/emulated/0/Pictures/Camera/${retrive_loan_data.application_no}AT${value}F.jpg`;
+    let filePath = `/storage/emulated/0/Pictures/Camera/${retrive_loan_data.application_no}AT${value}.jpg`;
 
     const fileExists = await RNFS.exists(filePath);
     if (fileExists) {
       const queryParam = `?timestamp=${Date.now()}`;
 
       setImageUri(
-        `file:///storage/emulated/0/Pictures/Camera/${retrive_loan_data.application_no}AT${value}F.jpg${queryParam}`,
+        `file:///storage/emulated/0/Pictures/Camera/${retrive_loan_data.application_no}AT${value}.jpg${queryParam}`,
       );
     } else {
       setImageUri('');
@@ -62,10 +73,11 @@ export default function Evidence(props) {
     const checkFileExists = async () => {
       try {
         for (const item of data) {
-          const fileName = `${retrive_loan_data.application_no}AT${item.value}F.jpg`;
+          const fileName = `${retrive_loan_data.application_no}AT${item.value}.jpg`;
           const directory = `/storage/emulated/0/Pictures/Camera/`;
           const filePath = directory + fileName;
           const fileExists = await RNFS.exists(filePath);
+          console.log('fileExists',fileExists);
           if (fileExists) {
             setCapturedFiles(prevFiles => [...prevFiles, item.value]);
           }
@@ -94,7 +106,7 @@ export default function Evidence(props) {
     const imageUri = response.assets[0].uri;
 
     try {
-      const fileName = `${retrive_loan_data.application_no}AT${type}F.jpg`;
+      const fileName = `${retrive_loan_data.application_no}AT${type}.jpg`;
       const directory = `/storage/emulated/0/Pictures/Camera/`;
       const filePath = directory + fileName;
       await RNFS.mkdir(directory);
@@ -127,7 +139,7 @@ export default function Evidence(props) {
     const imageUri = response.assets[0].uri;
 
     try {
-      const fileName = `${retrive_loan_data.application_no}AT${type}F.jpg`;
+      const fileName = `${retrive_loan_data.application_no}AT${type}.jpg`;
       const directory = '/storage/emulated/0/Pictures/Camera/';
       const filePath = directory + fileName;
 
@@ -153,7 +165,7 @@ export default function Evidence(props) {
 
   const handleDelete = async type => {
     try {
-      const filePath = `/storage/emulated/0/Pictures/Camera/${retrive_loan_data.application_no}AT${type}F.jpg`;
+      const filePath = `/storage/emulated/0/Pictures/Camera/${retrive_loan_data.application_no}AT${type}.jpg`;
       const fileExists = await RNFS.exists(filePath);
       if (fileExists) {
         await RNFS.unlink(filePath);
@@ -222,7 +234,7 @@ export default function Evidence(props) {
                           source={{
                             uri: `file:///storage/emulated/0/Pictures/Camera/${
                               retrive_loan_data.application_no
-                            }AT${item.value}F.jpg?timestamp=${Date.now()}`,
+                            }AT${item.value}.jpg?timestamp=${Date.now()}`,
                           }}
                           style={{width: 50, height: 50, marginRight: 10}}
                         />

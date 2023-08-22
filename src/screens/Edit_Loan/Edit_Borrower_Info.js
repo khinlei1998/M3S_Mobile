@@ -43,10 +43,6 @@ function Borrower_Info(props) {
     if (value.id == '2') {
       dispatch(change('Individual_Loan_Form', 'village_code', ''));
     }
-    // Dispatch action to clear the field value
-    // dispatch(
-    //   change('myForm', 'fieldName', radioValue === 'clear' ? '' : radioValue),
-    // );
   };
 
   return (
@@ -352,7 +348,7 @@ function Borrower_Info(props) {
               }}
             />
 
-          
+
              <Field
               data={owner_ship_business}
               name={'business_own_type'}

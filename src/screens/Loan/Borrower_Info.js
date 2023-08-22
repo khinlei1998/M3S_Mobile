@@ -1,9 +1,9 @@
-import { View } from 'react-native';
-import React, { useState } from 'react';
-import { List } from 'react-native-paper';
-import { reduxForm, Field, change } from 'redux-form';
-import { connect } from 'react-redux';
-import { style } from '../../style/Individual_Loan_style';
+import {View} from 'react-native';
+import React, {useState} from 'react';
+import {List} from 'react-native-paper';
+import {reduxForm, Field, change} from 'redux-form';
+import {connect} from 'react-redux';
+import {style} from '../../style/Individual_Loan_style';
 import {
   borrower_type,
   condition_house,
@@ -11,13 +11,13 @@ import {
   gender,
   address_type,
   village_status,
-  owner_ship_business
+  owner_ship_business,
 } from '../../common';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
 import DatePicker from '../../components/DatePicker';
 import RadioButtonFile from '../../components/RadioButtonFile';
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 function Borrower_Info(props) {
   const {
     showLocationSearch,
@@ -104,7 +104,6 @@ function Borrower_Info(props) {
               component={TextInputFile}
               cus_width
               input_mode
-
               require
             />
           </View>
@@ -245,7 +244,7 @@ function Borrower_Info(props) {
                 component={TextInputFile}
                 input_mode
                 inputmax={100}
-              // editable
+                editable
               />
             </View>
           ) : (
@@ -351,14 +350,6 @@ function Borrower_Info(props) {
                 width: 300,
               }}
             />
-
-            {/* <Field
-              name={'business_own_type'}
-              title={'OwnerShip of business'}
-              component={TextInputFile}
-              cus_width
-              input_mode
-            /> */}
             <Field
               data={owner_ship_business}
               name={'business_own_type'}

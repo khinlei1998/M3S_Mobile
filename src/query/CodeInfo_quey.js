@@ -128,7 +128,6 @@ export async function filterCity(selectedColumn, searchTerm) {
         sql,
         [],
         (tx, results) => {
-          console.log('city', results.rows.raw());
           resolve(results.rows.raw());
         },
         (tx, error) => {
@@ -151,7 +150,6 @@ export async function filterLocation(selectedColumn, searchTerm) {
         sql,
         [],
         (tx, results) => {
-          console.log('city', results.rows.raw());
           resolve(results.rows.raw());
         },
         (tx, error) => {

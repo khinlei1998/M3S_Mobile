@@ -64,7 +64,6 @@ export function get_Village(tokensource) {
 }
 
 export async function filterVillage(selectedColumn, searchTerm, ts_code) {
-  console.log('ts_code', ts_code);
   let sql;
   if (selectedColumn && searchTerm) {
     sql = `SELECT * FROM Village  WHERE ${selectedColumn} LIKE '%${searchTerm}%' AND ts_code = '${ts_code}'`;

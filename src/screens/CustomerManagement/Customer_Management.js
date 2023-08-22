@@ -459,9 +459,6 @@ function Customer_Management(props) {
         item.position_title_nm,
       ),
     );
-    dispatch(
-      change('Customer_ManagementForm', 'employeeName', item.employee_name),
-    );
   };
 
   const btnSelectCity = item => {

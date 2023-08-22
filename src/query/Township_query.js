@@ -78,7 +78,6 @@ export async function filterTownship(selectedColumn, searchTerm, city_code) {
         sql,
         [],
         (tx, results) => {
-          console.log('tsp', results.rows.raw());
           resolve(results.rows.raw());
         },
         (tx, error) => {
