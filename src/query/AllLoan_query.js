@@ -458,13 +458,11 @@ export async function getAllLoan_By_application_no(application_no) {
 
 async function uploadImage(filePath, description) {
   let ip = await AsyncStorage.getItem('ip');
-  console.log('ip', ip);
   let port = await AsyncStorage.getItem('port');
-  console.log('port', port);
-
+console.log('description',description);
   try {
     const fileExists = await RNFS.exists(filePath);
-    console.log('fileExists',fileExists);
+    console.log('fileExists', fileExists);
     if (fileExists) {
       let imageForm = new FormData();
       imageForm.append('description', description || 'anything');
@@ -481,7 +479,7 @@ async function uploadImage(filePath, description) {
         // maxBodyLength: Infinity,
 
         // url: `${connection_name}://${ip}:${port}/skylark-m3s/file/upload.m3s`,
-        url: `http://5260-103-231-92-146.ngrok-free.app:80/skylark-m3s/file/upload.m3s`,
+        url: `https://5260-103-231-92-146.ngrok-free.app/skylark-m3s/file/upload.m3s`,
         headers: {
           'Content-Type': 'multipart/form-data',
           'cache-control': 'no-cache',
@@ -932,26 +930,26 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
 
         //sign for indi loan
 
-        // const indi_borrower_sign = `/storage/emulated/0/Pictures/Signature/${data.application_no}SG01.jpg`;
-        // try {
-        //   await uploadImage(indi_borrower_sign, 'Indi  borrower sign');
-        // } catch (error) {
-        //   console.log('Error uploading indi borrower sign:', error);
-        //   failedData.push('Error uploading indi borrower sign'); // Push the error message to the failedData array
+        const indi_borrower_sign = `/storage/emulated/0/Pictures/Signature/${data.application_no}SG01.jpg`;
+        try {
+          await uploadImage(indi_borrower_sign, 'Indi  borrower sign');
+        } catch (error) {
+          console.log('Error uploading indi borrower sign:', error);
+          failedData.push('Error uploading indi borrower sign'); // Push the error message to the failedData array
 
-        //   return;
-        // }
+          return;
+        }
         //coborrower sign for indi loan
 
-        // const indi_coborrower_sign = `/storage/emulated/0/Pictures/Signature/${data.application_no}SG02.jpg`;
-        // try {
-        //   await uploadImage(indi_coborrower_sign, 'Indi  coborrower sign');
-        // } catch (error) {
-        //   console.log('Error uploading indi coborrower sign:', error);
-        //   failedData.push('Error uploading indi coborrower sign'); // Push the error message to the failedData array
+        const indi_coborrower_sign = `/storage/emulated/0/Pictures/Signature/${data.application_no}SG02.jpg`;
+        try {
+          await uploadImage(indi_coborrower_sign, 'Indi  coborrower sign');
+        } catch (error) {
+          console.log('Error uploading indi coborrower sign:', error);
+          failedData.push('Error uploading indi coborrower sign'); // Push the error message to the failedData array
 
-        //   return;
-        // }
+          return;
+        }
       }
       if (loanDataArray.length > 0) {
         for (const loan_data of loanDataArray) {
@@ -979,7 +977,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 telNo: item.tel_no,
                 addr: item.addr,
                 borrowerRltn: item.borrower_rltn,
-                relationPeriod: item.relation_period,
+                relationDate: item.relation_period,
                 houseOcpnType: item.house_ocpn_type,
                 businessOwnType: item.business_own_type,
                 workplaceName: item.workplace_name,
@@ -1183,56 +1181,56 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
 
             //Borrower sign relation
 
-            // const relation_borrower_sign = `/storage/emulated/0/Pictures/Signature/${loan_data.applicationNo}SG03.jpg`;
-            // try {
-            //   await uploadImage(
-            //     relation_borrower_sign,
-            //     'relation borrower sign',
-            //   );
-            // } catch (error) {
-            //   console.log('Error uploading relation_borrower_sign:', error);
-            //   failedData.push('Error uploading relation_borrower_sign'); // Push the error message to the failedData array
+            const relation_borrower_sign = `/storage/emulated/0/Pictures/Signature/${loan_data.applicationNo}SG03.jpg`;
+            try {
+              await uploadImage(
+                relation_borrower_sign,
+                'relation borrower sign',
+              );
+            } catch (error) {
+              console.log('Error uploading relation_borrower_sign:', error);
+              failedData.push('Error uploading relation_borrower_sign'); // Push the error message to the failedData array
 
-            //   return;
-            // }
+              return;
+            }
 
             //Co Borrower sign relation
 
-            // const relation_coborrower_sign = `/storage/emulated/0/Pictures/Signature/${loan_data.applicationNo}SG04.jpg`;
-            // try {
-            //   await uploadImage(
-            //     relation_coborrower_sign,
-            //     'relation  coborrower sign',
-            //   );
-            // } catch (error) {
-            //   console.log('Error uploading relation_coborrower_sign:', error);
-            //   failedData.push('Error uploading relation_coborrower_sign'); // Push the error message to the failedData array
+            const relation_coborrower_sign = `/storage/emulated/0/Pictures/Signature/${loan_data.applicationNo}SG04.jpg`;
+            try {
+              await uploadImage(
+                relation_coborrower_sign,
+                'relation  coborrower sign',
+              );
+            } catch (error) {
+              console.log('Error uploading relation_coborrower_sign:', error);
+              failedData.push('Error uploading relation_coborrower_sign'); // Push the error message to the failedData array
 
-            //   return;
-            // }
+              return;
+            }
 
             //relation memeber sign
 
-            // for (let index = 5; index <= 14; index++) {
-            //   const formattedIndex = index.toString().padStart(2, '0'); // Format the index with leading zeros
+            for (let index = 5; index <= 14; index++) {
+              const formattedIndex = index.toString().padStart(2, '0'); // Format the index with leading zeros
 
-            //   const relation_member_sign = `/storage/emulated/0/Pictures/Signature/${loan_data.applicationNo}SG${formattedIndex}.jpg`;
-            //   try {
-            //     await uploadImage(
-            //       relation_member_sign,
-            //       'relation relation_member_sign',
-            //     );
-            //   } catch (error) {
-            //     console.log(
-            //       `Error uploading relation_member_sign ${index}:`,
-            //       error,
-            //     );
-            //     failedData.push(
-            //       `Error uploading relation_member_sign ${index}`,
-            //     );
-            //     break; // Stop further execution if image upload fails for any of the indices
-            //   }
-            // }
+              const relation_member_sign = `/storage/emulated/0/Pictures/Signature/${loan_data.applicationNo}SG${formattedIndex}.jpg`;
+              try {
+                await uploadImage(
+                  relation_member_sign,
+                  'relation relation_member_sign',
+                );
+              } catch (error) {
+                console.log(
+                  `Error uploading relation_member_sign ${index}:`,
+                  error,
+                );
+                failedData.push(
+                  `Error uploading relation_member_sign ${index}`,
+                );
+                break; // Stop further execution if image upload fails for any of the indices
+              }
+            }
           }
 
           //UPLOAD Evidence
@@ -1276,27 +1274,27 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           //     break; // Stop further execution if image upload fails for any of the indices
           //   }
           // }
-          // for (let i = 0; i < data; i++) {
-          //   const evidence_img = `/storage/emulated/0/Pictures/Camera/${loan_data.applicationNo}AT${data[i].value}.jpg`;
-          //   try {
-          //     await uploadImage(evidence_img, 'evidence_img');
-          //   } catch (error) {
-          //     console.log(`Error uploading evidence_img ${index}:`, error);
-          //     failedData.push(`Error uploading evidence_img ${index}`);
-          //     break; // Stop further execution if image upload fails for any of the indices
-          //   }
-          // }
+          for (let i = 0; i < data.length; i++) {
+            const evidence_img = `/storage/emulated/0/Pictures/Camera/${loan_data.applicationNo}AT${data[i].value}.jpg`;
+            try {
+              await uploadImage(evidence_img, `evidence_img${data[i].value}`);
+            } catch (error) {
+              console.log(`Error uploading evidence_img ${index}:`, error);
+              failedData.push(`Error uploading evidence_img ${index}`);
+              break; // Stop further execution if image upload fails for any of the indices
+            }
+          }
 
           //UPLOAD Passport
 
-          // const passport_img = `/storage/emulated/0/Pictures/Camera/${loan_data.applicationNo}AT12F.jpg`;
-          // try {
-          //   await uploadImage(passport_img, 'passport_img');
-          // } catch (error) {
-          //   console.log(`Error uploading passport_img `, error);
-          //   failedData.push(`Error uploading passport_img`);
-          //   break; // Stop further execution if image upload fails for any of the indices
-          // }
+          const passport_img = `/storage/emulated/0/Pictures/Camera/${loan_data.applicationNo}AT12F.jpg`;
+          try {
+            await uploadImage(passport_img, 'passport_img');
+          } catch (error) {
+            console.log(`Error uploading passport_img `, error);
+            failedData.push(`Error uploading passport_img`);
+            break; // Stop further execution if image upload fails for any of the indices
+          }
         }
       }
 

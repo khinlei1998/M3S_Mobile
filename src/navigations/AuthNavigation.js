@@ -47,12 +47,6 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
-
-      <Stack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{ headerShown: false }}
-      />
       <Stack.Screen
         name="Synchronization"
         component={Synchronization_Screen}
@@ -64,6 +58,18 @@ export default function AuthNavigation(props) {
         component={Individual_Loan}
         options={{ headerShown: false }}
       />
+
+
+
+
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+
+
+
 
 
 

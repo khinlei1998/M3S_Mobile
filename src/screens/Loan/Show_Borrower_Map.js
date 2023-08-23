@@ -97,7 +97,7 @@ export default function Show_Borrower_Map(props) {
                   loan_data_count + 1
                 }MP01`,
                 transparent: false,
-                imageType: 'png',
+                imageType: 'jpg',
               };
             }}
             onSketchSaved={(success, path) => {
