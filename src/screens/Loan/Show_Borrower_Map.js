@@ -96,11 +96,12 @@ export default function Show_Borrower_Map(props) {
                 filename: `${p_type}${user_id}${moment().format('YYYYMMDD')}${
                   loan_data_count + 1
                 }MP01`,
-                transparent: true,
-                imageType: 'jpg',
+                transparent: false,
+                imageType: 'png',
               };
             }}
             onSketchSaved={(success, path) => {
+              console.log('path',path);
               alert(success ? 'Image saved!' : 'Failed to save image!', path);
               if (path) {
                 const queryParam = `?timestamp=${Date.now()}`;

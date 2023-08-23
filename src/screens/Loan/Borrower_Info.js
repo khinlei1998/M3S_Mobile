@@ -1,9 +1,9 @@
-import {View} from 'react-native';
-import React, {useState} from 'react';
-import {List} from 'react-native-paper';
-import {reduxForm, Field, change} from 'redux-form';
-import {connect} from 'react-redux';
-import {style} from '../../style/Individual_Loan_style';
+import { View } from 'react-native';
+import React, { useState } from 'react';
+import { List } from 'react-native-paper';
+import { reduxForm, Field, change } from 'redux-form';
+import { connect } from 'react-redux';
+import { style } from '../../style/Individual_Loan_style';
 import {
   borrower_type,
   condition_house,
@@ -17,7 +17,7 @@ import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
 import DatePicker from '../../components/DatePicker';
 import RadioButtonFile from '../../components/RadioButtonFile';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 function Borrower_Info(props) {
   const {
     showLocationSearch,

@@ -2073,7 +2073,7 @@ export default reduxForm({
     village_status: '1',
     cst_new_exist_flg: 'N',
   },
-  validate,
+  // validate,
 })(
   connect(mapStateToProps, {
     resetMonthlyIncome,

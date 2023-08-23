@@ -33,7 +33,7 @@ export const storeExceptionalApproval = async data => {
                         data.excpt_aprv_rsn_3,
                         data.exception_reason,
                         data.recommend_nm,
-                        data.tablet_sync_sts,
+                        '00',
                         data.sync_sts,
                         data.err_msg //27
 

@@ -6,13 +6,13 @@ import {
   CameraRoll,
   ToastAndroid,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import DividerLine from '../../components/DividerLine';
-import {Avatar, Button, Card, Text, Divider, Modal} from 'react-native-paper';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { Avatar, Button, Card, Text, Divider, Modal } from 'react-native-paper';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import RNFS from 'react-native-fs';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Evidence(props) {
   const navigation = useNavigation();
@@ -23,28 +23,28 @@ export default function Evidence(props) {
   const [capturedFiles, setCapturedFiles] = useState([]);
 
   const data = [
-    {id: 1, name: 'NRC Card (Front)', value: '01F'},
-    {id: 2, name: 'NRC Card (Back)', value: '01B'},
-    {id: 3, name: 'Guarantor NRC Card (Front)', value: '02F'},
-    {id: 4, name: 'Guarantor NRC Card (Back)', value: '02B'},
-    {id: 5, name: 'Co-borrower NRC Card (Front)', value: '03F'},
-    {id: 6, name: 'Co-borrower NRC Card (Back)', value: '03B'},
-    {id: 7, name: 'Family (Front)', value: '04F'},
-    {id: 8, name: 'Family (Back)', value: '04B'},
-    {id: 9, name: 'House Ownership (Front)', value: '05F'},
-    {id: 10, name: 'House Ownership (Back)', value: '05B'},
-    {id: 11, name: 'Recommendation (Front)', value: '06F'},
-    {id: 12, name: 'Recommendation (Back)', value: '06B'},
-    {id: 13, name: 'Business License (Front)', value: '07F'},
-    {id: 14, name: 'Business License (Back)', value: '07B'},
-    {id: 15, name: 'Land OwnerShip (Front)', value: '08F'},
-    {id: 16, name: 'Land OwnerShip (Back)', value: '08B'},
-    {id: 17, name: 'Tax Payment (Front)', value: '09F'},
-    {id: 18, name: 'Tax Payment (Back)', value: '09B'},
-    {id: 19, name: 'Insurance (Front)', value: '10F'},
-    {id: 20, name: 'Insurance (Back)', value: '10B'},
-    {id: 21, name: 'Etc (Front)', value: '11F'},
-    {id: 22, name: 'Etc (Back)', value: '11B'},
+    { id: 1, name: 'NRC Card (Front)', value: '01F' },
+    { id: 2, name: 'NRC Card (Back)', value: '01B' },
+    { id: 3, name: 'Guarantor NRC Card (Front)', value: '02F' },
+    { id: 4, name: 'Guarantor NRC Card (Back)', value: '02B' },
+    { id: 5, name: 'Co-borrower NRC Card (Front)', value: '03F' },
+    { id: 6, name: 'Co-borrower NRC Card (Back)', value: '03B' },
+    { id: 7, name: 'Family (Front)', value: '04F' },
+    { id: 8, name: 'Family (Back)', value: '04B' },
+    { id: 9, name: 'House Ownership (Front)', value: '05F' },
+    { id: 10, name: 'House Ownership (Back)', value: '05B' },
+    { id: 11, name: 'Recommendation (Front)', value: '06F' },
+    { id: 12, name: 'Recommendation (Back)', value: '06B' },
+    { id: 13, name: 'Business License (Front)', value: '07F' },
+    { id: 14, name: 'Business License (Back)', value: '07B' },
+    { id: 15, name: 'Land OwnerShip (Front)', value: '08F' },
+    { id: 16, name: 'Land OwnerShip (Back)', value: '08B' },
+    { id: 17, name: 'Tax Payment (Front)', value: '09F' },
+    { id: 18, name: 'Tax Payment (Back)', value: '09B' },
+    { id: 19, name: 'Insurance (Front)', value: '10F' },
+    { id: 20, name: 'Insurance (Back)', value: '10B' },
+    { id: 21, name: 'Etc (Front)', value: '11F' },
+    { id: 22, name: 'Etc (Back)', value: '11B' },
 
     // Add more data as needed
   ];
@@ -77,7 +77,7 @@ export default function Evidence(props) {
           const directory = `/storage/emulated/0/Pictures/Camera/`;
           const filePath = directory + fileName;
           const fileExists = await RNFS.exists(filePath);
-          console.log('fileExists',fileExists);
+          console.log('fileExists', fileExists);
           if (fileExists) {
             setCapturedFiles(prevFiles => [...prevFiles, item.value]);
           }
@@ -183,8 +183,8 @@ export default function Evidence(props) {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
-      <View style={{height: 900, marginTop: 50}}>
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+      <View style={{ height: 900, marginTop: 50 }}>
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
@@ -228,15 +228,14 @@ export default function Evidence(props) {
                       flex: 1,
                       flexDirection: 'row',
                     }}>
-                    <View style={{flexDirection: 'row'}}>
+                    <View style={{ flexDirection: 'row' }}>
                       {capturedFiles.includes(item.value) ? (
                         <Image
                           source={{
-                            uri: `file:///storage/emulated/0/Pictures/Camera/${
-                              retrive_loan_data.application_no
-                            }AT${item.value}.jpg?timestamp=${Date.now()}`,
+                            uri: `file:///storage/emulated/0/Pictures/Camera/${retrive_loan_data.application_no
+                              }AT${item.value}.jpg?timestamp=${Date.now()}`,
                           }}
-                          style={{width: 50, height: 50, marginRight: 10}}
+                          style={{ width: 50, height: 50, marginRight: 10 }}
                         />
                       ) : (
                         <TouchableOpacity>
@@ -268,7 +267,7 @@ export default function Evidence(props) {
                         {item.name}
                       </Text>
                     </View>
-                    <View style={{flexDirection: 'row'}}>
+                    <View style={{ flexDirection: 'row' }}>
                       <TouchableOpacity
                         onPress={() => handleView(item.value)}
                         style={{
@@ -382,11 +381,11 @@ export default function Evidence(props) {
             alignSelf: 'center',
             justifyContent: 'center',
           }}>
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             {image_uri ? (
               <Image
-                source={{uri: image_uri}}
-                style={{width: 350, height: 350}}
+                source={{ uri: image_uri }}
+                style={{ width: 350, height: 350 }}
               />
             ) : (
               <Icon name="camera-off" size={100} color="#b8a1c4" />

@@ -147,6 +147,7 @@ export default function Synchronization_Screen(props) {
         alert('Please Select at least one');
       }
     } catch (error) {
+      setLoading(false);
       alert('Only Possible download in network');
     }
   };
