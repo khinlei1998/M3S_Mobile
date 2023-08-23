@@ -58,10 +58,6 @@ export default function AuthNavigation(props) {
         component={Individual_Loan}
         options={{ headerShown: false }}
       />
-
-
-
-
       <Stack.Screen
         name="Login"
         component={LoginScreen}

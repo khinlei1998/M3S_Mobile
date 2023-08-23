@@ -479,7 +479,7 @@ console.log('description',description);
         // maxBodyLength: Infinity,
 
         // url: `${connection_name}://${ip}:${port}/skylark-m3s/file/upload.m3s`,
-        url: `https://5260-103-231-92-146.ngrok-free.app/skylark-m3s/file/upload.m3s`,
+        url: `http://5260-103-231-92-146.ngrok-free.app:80/skylark-m3s/file/upload.m3s`,
         headers: {
           'Content-Type': 'multipart/form-data',
           'cache-control': 'no-cache',
