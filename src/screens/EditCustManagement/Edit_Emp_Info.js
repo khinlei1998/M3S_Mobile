@@ -158,7 +158,6 @@ function Edit_Emp_Info(props) {
   const hideCityModal = () => setCityCodeModalVisible(false);
   const hideWardModal = () => setWardCodeModalVisible(false);
   const filtered_cus_data = props.route.params;
-  console.log('filtered_cus_data', filtered_cus_data);
   const onChangeEmpText = textvalues => {
     setEmpText(textvalues);
   };
@@ -1061,7 +1060,7 @@ function Edit_Emp_Info(props) {
     dispatch(
       change('Customer_ManagementForm', 'location_name', item.code_short_desc),
     );
-  }; 
+  };
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>

@@ -39,7 +39,11 @@ function Edit_Exceptional_Approvel_Form(props) {
         }
       });
     } else {
-      await updateExceptionalApproval(values).then(result => {
+      const exceptional_data = Object.assign({}, values, {
+        tablet_sync_sts:
+          values.tablet_sync_sts == '01' ? '02' : values.tablet_sync_sts,
+      });
+      await updateExceptionalApproval(exceptional_data).then(result => {
         if (result == 'success') {
           ToastAndroid.show(`Update Success`, ToastAndroid.SHORT);
           navigation.goBack();

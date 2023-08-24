@@ -2,7 +2,7 @@
   package="com.m3smobile">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -10,7 +10,6 @@
 
 
     <application
-    android:usesCleartextTraffic="true"
     android:requestLegacyExternalStorage="true"
     android:supportsRtl="true"
       android:name=".MainApplication"

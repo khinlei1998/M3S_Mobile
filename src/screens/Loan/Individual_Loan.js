@@ -103,7 +103,6 @@ const Borrower_modal = props => {
   };
 
   const btnSelectEmployee = item => {
-    console.log('item', item);
     setSelectedCityValue(item.city_code);
     setSelectedTspValue(item.ts_code);
     addCustomerInfo(item); //to calculate income
@@ -2073,7 +2072,7 @@ export default reduxForm({
     village_status: '1',
     cst_new_exist_flg: 'N',
   },
-  // validate,
+  validate,
 })(
   connect(mapStateToProps, {
     resetMonthlyIncome,

@@ -2,7 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import RNFS from 'react-native-fs';
 import moment from 'moment';
-import * as mime from 'react-native-mime-types';
 import {
   microfinance_data,
   area_evaluation_result,
@@ -417,78 +416,32 @@ export async function getAllLoan_By_application_no(application_no) {
   });
 }
 
-// async function uploadImage(filePath, description) {
-//   let ip = await AsyncStorage.getItem('ip');
-//   console.log('ip', ip);
-//   let port = await AsyncStorage.getItem('port');
-//   console.log('port', port);
-//   try {
-//     const fileExists = await RNFS.exists(filePath);
-//     if (fileExists) {
-//       let imageForm = new FormData();
-//       imageForm.append('description', description || 'anything');
-//       imageForm.append('file', {
-//         uri: `file://${filePath}`,
-//         type: 'image/png',
-//         name: `${filePath}`,
-//       });
-//       console.log('imageform', imageForm);
-//       let res = await fetch(
-//         'http://5260-103-231-92-146.ngrok-free.app:80/skylark-m3s/file/upload.m3s',
-//         {
-//           method: 'post',
-//           body: imageForm,
-//           headers: {
-//             'Content-Type': 'multipart/form-data; ',
-//           },
-//         }
-//       );
-//       let responseJson = await res.json();
-//       console.log(responseJson, 'responseJson');
-//     } else {
-//       console.log('Image does not exist:', filePath);
-//       return null;
-//     }
-//   } catch (error) {
-//     console.log('image error', error);
-//     throw new Error('Image upload failed');
-//   }
-
-// };
-
 async function uploadImage(filePath, description) {
   let ip = await AsyncStorage.getItem('ip');
   let port = await AsyncStorage.getItem('port');
-console.log('description',description);
   try {
     const fileExists = await RNFS.exists(filePath);
-    console.log('fileExists', fileExists);
     if (fileExists) {
       let imageForm = new FormData();
       imageForm.append('description', description || 'anything');
       imageForm.append('file', {
         uri: `file://${filePath}`,
-        type: 'image/png',
-        // type: mime.getType(filePath),
-        name: `test`,
+        type: 'image/jpg',
+        name: `${filePath}`,
       });
-      console.log('imageform', imageForm);
 
       let config = {
         method: 'post',
-        // maxBodyLength: Infinity,
-
-        // url: `${connection_name}://${ip}:${port}/skylark-m3s/file/upload.m3s`,
-        url: `http://5260-103-231-92-146.ngrok-free.app:80/skylark-m3s/file/upload.m3s`,
+        maxBodyLength: Infinity,
+        url: `${connection_name}://${ip}:${port}/skylark-m3s/file/upload.m3s`,
         headers: {
           'Content-Type': 'multipart/form-data',
-          'cache-control': 'no-cache',
         },
         data: imageForm,
       };
 
       const response = await axios.request(config);
-      console.log(response);
+      console.log('img response', response);
       return response.data; // Return the response if needed
     } else {
       console.log('Image does not exist:', filePath);
@@ -560,7 +513,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           errMsg: '',
         };
         group_data.push(groupApplication);
-
         // Image upload group data
         const gp_borrower_map = `/storage/emulated/0/Pictures/RNSketchCanvas/${data.group_aplc_no}MP01.jpg`;
         try {
@@ -719,6 +671,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               village_code: data.village_code,
               ward_code: data.ward_code,
             };
+            console.log('gp_individual_loan_data', gp_individual_loan_data);
             loanDataArray.push(gp_individual_loan_data); // Store individual loan data in the array
             // applicationNo = loan_data.application_no;
 
@@ -738,26 +691,26 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
 
             // //sign for indi loan
 
-            // const indi_borrower_sign = `/storage/emulated/0/Pictures/Signature/${loan_data.application_no}SG01.jpg`;
-            // try {
-            //   await uploadImage(indi_borrower_sign, 'Indi  borrower sign');
-            // } catch (error) {
-            //   console.log('Error uploading indi borrower sign:', error);
-            //   failedData.push('Error uploading indi borrower sign'); // Push the error message to the failedData array
+            const indi_borrower_sign = `/storage/emulated/0/Pictures/Signature/${loan_data.application_no}SG01.jpg`;
+            try {
+              await uploadImage(indi_borrower_sign, 'Indi  borrower sign');
+            } catch (error) {
+              console.log('Error uploading indi borrower sign:', error);
+              failedData.push('Error uploading indi borrower sign'); // Push the error message to the failedData array
 
-            //   return;
-            // }
+              return;
+            }
             // //coborrower sign for indi loan
 
-            // const indi_coborrower_sign = `/storage/emulated/0/Pictures/Signature/${loan_data.application_no}SG02.jpg`;
-            // try {
-            //   await uploadImage(indi_coborrower_sign, 'Indi  coborrower sign');
-            // } catch (error) {
-            //   console.log('Error uploading indi coborrower sign:', error);
-            //   failedData.push('Error uploading indi coborrower sign'); // Push the error message to the failedData array
+            const indi_coborrower_sign = `/storage/emulated/0/Pictures/Signature/${loan_data.application_no}SG02.jpg`;
+            try {
+              await uploadImage(indi_coborrower_sign, 'Indi  coborrower sign');
+            } catch (error) {
+              console.log('Error uploading indi coborrower sign:', error);
+              failedData.push('Error uploading indi coborrower sign'); // Push the error message to the failedData array
 
-            //   return;
-            // }
+              return;
+            }
           }
         }
       } else {
@@ -913,12 +866,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         };
         console.log('individual_loan_data', individual_loan_data);
         loanDataArray.push(individual_loan_data);
-
-
         // Image upload Indi loan map
-        const indi_loan_borrower_map = `/storage/emulated/0/Pictures/RNSketchCanvas/${data.application_no}MP01.png`;
-        console.log('indi_loan_borrower_map', indi_loan_borrower_map);
-
+        const indi_loan_borrower_map = `/storage/emulated/0/Pictures/RNSketchCanvas/${data.application_no}MP01.jpg`;
         try {
           await uploadImage(indi_loan_borrower_map, 'Indi loan borrower map');
         } catch (error) {
@@ -1236,28 +1185,28 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           //UPLOAD Evidence
 
           const data = [
-            { id: 1, value: '01F' },
-            { id: 2, value: '01B' },
-            { id: 3, value: '02F' },
-            { id: 4, value: '02B' },
-            { id: 5, value: '03F' },
-            { id: 6, value: '03B' },
-            { id: 7, value: '04F' },
-            { id: 8, value: '04B' },
-            { id: 9, value: '05F' },
-            { id: 10, value: '05B' },
-            { id: 11, value: '06F' },
-            { id: 12, value: '06B' },
-            { id: 13, value: '07F' },
-            { id: 14, value: '07B' },
-            { id: 15, value: '08F' },
-            { id: 16, value: '08B' },
-            { id: 17, value: '09F' },
-            { id: 18, value: '09B' },
-            { id: 19, value: '10F' },
-            { id: 20, value: '10B' },
-            { id: 21, value: '11F' },
-            { id: 22, value: '11B' },
+            {id: 1, value: '01F'},
+            {id: 2, value: '01B'},
+            {id: 3, value: '02F'},
+            {id: 4, value: '02B'},
+            {id: 5, value: '03F'},
+            {id: 6, value: '03B'},
+            {id: 7, value: '04F'},
+            {id: 8, value: '04B'},
+            {id: 9, value: '05F'},
+            {id: 10, value: '05B'},
+            {id: 11, value: '06F'},
+            {id: 12, value: '06B'},
+            {id: 13, value: '07F'},
+            {id: 14, value: '07B'},
+            {id: 15, value: '08F'},
+            {id: 16, value: '08B'},
+            {id: 17, value: '09F'},
+            {id: 18, value: '09B'},
+            {id: 19, value: '10F'},
+            {id: 20, value: '10B'},
+            {id: 21, value: '11F'},
+            {id: 22, value: '11B'},
 
             // Add more data as needed
           ];
@@ -1277,7 +1226,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           for (let i = 0; i < data.length; i++) {
             const evidence_img = `/storage/emulated/0/Pictures/Camera/${loan_data.applicationNo}AT${data[i].value}.jpg`;
             try {
-              await uploadImage(evidence_img, `evidence_img${data[i].value}`);
+              await uploadImage(evidence_img, 'evidence_img');
             } catch (error) {
               console.log(`Error uploading evidence_img ${index}:`, error);
               failedData.push(`Error uploading evidence_img ${index}`);
@@ -1297,7 +1246,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           }
         }
       }
-
       if (group_data.length > 0) {
         formData.append('groupApplication', JSON.stringify(group_data));
         formData.append('individualApplication', JSON.stringify(loanDataArray));
@@ -1324,8 +1272,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         maxBodyLength: Infinity,
         url:
           data.product_type == 30 ||
-            data.product_type == 40 ||
-            data.product_type == 50
+          data.product_type == 40 ||
+          data.product_type == 50
             ? `${connection_name}://${ip}:${port}/skylark-m3s/api/groupLoan.m3s`
             : `${connection_name}://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
         data: formData,
@@ -1380,11 +1328,15 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
             console.log('error', error);
             failedData.push(error);
           } else {
+            console.log(
+              'indi loan status',
+              response.data.individualApplication[i].applicationNo,
+            );
             successCount++;
             global.db.transaction(tx => {
               tx.executeSql(
                 'UPDATE Individual_application SET tablet_sync_sts=? WHERE application_no=?',
-                ['01', response.data.individualApplication[i].application_no],
+                ['01', response.data.individualApplication[i].applicationNo],
                 (txObj, resultSet) => {
                   console.log('Update status Individual_application');
                 },

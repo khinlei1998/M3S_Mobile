@@ -137,7 +137,7 @@ export async function fetchStateName(statecode) {
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
       tx.executeSql(
-        `SELECT * FROM Nrc_prefix WHERE state_code = ?  `,
+        `SELECT * FROM Nrc_prefix WHERE state_code = ? ORDER BY nrc_prefix_code ASC `,
         [statecode],
         (tx, results) => {
           resolve(results.rows.raw());

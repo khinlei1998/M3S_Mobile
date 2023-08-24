@@ -28,6 +28,7 @@ import {
   updateGroupData,
 } from '../../query/GropuLon_query';
 import validate from '../Group_Loan/Validate';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -177,13 +178,20 @@ function Edit_Group_Loan_Form(props) {
   const dispatch = useDispatch();
   const filtered_operations = operations.filter(item => item.value != 1);
   const inquiry_group_data = props.route.params;
-  console.log('inquiry_group_data', inquiry_group_data);
-  const btnChangeOperation = newValue => {
-    setOperation(newValue);
-    if (newValue == 2 || newValue == 4) {
-      setGroup_UpdateStatus(false);
+
+  const btnChangeOperation = async (newValue, group_data) => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    if (group_data.create_user_id !== user_id) {
+      alert(
+        'You are not allowed to delete other LO’s customer information.Please contact Admin for further support',
+      );
     } else {
-      setGroup_UpdateStatus(true);
+      setOperation(newValue);
+      if (newValue == 2 || newValue == 4) {
+        setGroup_UpdateStatus(false);
+      } else {
+        setGroup_UpdateStatus(true);
+      }
     }
   };
   const handleItemValueChange = itemValue => {
@@ -237,6 +245,8 @@ function Edit_Group_Loan_Form(props) {
     } else {
       let data = Object.assign(values, {
         product_type: '30',
+        tablet_sync_sts:
+          values.tablet_sync_sts == '01' ? '02' : values.tablet_sync_sts,
       });
       await updateGroupData(data).then(response => {
         if (response == 'success') {
@@ -264,7 +274,9 @@ function Edit_Group_Loan_Form(props) {
                 {operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
-                    onValueChange={newValue => btnChangeOperation(newValue)}
+                    onValueChange={newValue =>
+                      btnChangeOperation(newValue, inquiry_group_data)
+                    }
                     value={show_operation}>
                     <View key={option.value} style={style.operation_style}>
                       <RadioButton.Item

@@ -314,7 +314,7 @@ export const maritail_status = [
   },
   {
     id: 4,
-    label: 'Windower/Window',
+    label: 'Windower/Widow',
     value: '40',
   },
   {

@@ -284,6 +284,8 @@ function Edit_Reloan_Form(props) {
     } else {
       let data = Object.assign(values, {
         product_type: '50',
+        tablet_sync_sts:
+        values.tablet_sync_sts == '01' ? '02' : values.tablet_sync_sts,
       });
       await updateGroupData(data).then(response => {
         if (response == 'success') {

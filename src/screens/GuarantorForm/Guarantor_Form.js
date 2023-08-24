@@ -449,7 +449,7 @@ function Guarantor_Form(props) {
 
       if (!saveImageError) {
         const guarantor_form_data = Object.assign({}, values, {
-          guarantee_date: moment().format('YYYY/MM/DD'),
+          guarantee_date: moment().format('YYYY-MM-DD'),
 
         });
         await storeGuarantor(guarantor_form_data).then(result => {

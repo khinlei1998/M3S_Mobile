@@ -89,7 +89,9 @@ function Edit_Area_Evaluation_Form(props) {
     } else {
       const area_data = Object.assign({}, values, {
         total_sts_flag: updatetotal_sts_flag,
-        total_score:total_score
+        total_score:total_score,
+        tablet_sync_sts:
+        values.tablet_sync_sts == '01' ? '02' : values.tablet_sync_sts,
       });
       await updateAreaEvaluation(area_data).then(result => {
         if (result == 'success') {

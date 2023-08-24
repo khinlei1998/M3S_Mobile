@@ -494,7 +494,11 @@ function Edit_Guarantor_Form(props) {
         }
 
         if (!saveImageError) {
-          await updateGuarantor(values).then(result => {
+          const guarantor_data = Object.assign({}, values, {
+            tablet_sync_sts:
+              values.tablet_sync_sts == '01' ? '02' : values.tablet_sync_sts,
+          });
+          await updateGuarantor(guarantor_data).then(result => {
             if (result == 'success') {
               ToastAndroid.show('Update Successfully!', ToastAndroid.SHORT);
               navigation.goBack();
