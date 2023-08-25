@@ -7,25 +7,26 @@ import {
   FlatList,
   ToastAndroid,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import DividerLine from '../../components/DividerLine';
-import {operations} from '../../common';
+import { operations } from '../../common';
 import Icon from 'react-native-vector-icons/Feather';
-import {Picker} from '@react-native-picker/picker';
-import {TextInput} from 'react-native-paper';
-import {reduxForm, change} from 'redux-form';
-import {style} from '../../style/Cover_Loan_style';
-import {RadioButton, Button, Modal} from 'react-native-paper';
-import {connect, useDispatch} from 'react-redux';
-import {cus_filter_item} from '../../common';
-import {filterCustomer} from '../../query/Customer_query';
+import { Picker } from '@react-native-picker/picker';
+import { TextInput } from 'react-native-paper';
+import { reduxForm, change } from 'redux-form';
+import { style } from '../../style/Cover_Loan_style';
+import { RadioButton, Button, Modal } from 'react-native-paper';
+import { connect, useDispatch } from 'react-redux';
+import { cus_filter_item } from '../../common';
+import { filterCustomer } from '../../query/Customer_query';
 import Edit_Reloan_Info from './Edit_Reloan_Info';
 import Edit_Reloan_list from './Edit_Reloan_list';
-import {getLoan_By_GroupID} from '../../query/GropuLon_query';
-import {setReloan_UpdateStatus} from '../../redux/LoanReducer';
-import {deleteGroup_LoanID} from '../../query/GropuLon_query';
-import {updateGroupData} from '../../query/GropuLon_query';
+import { getLoan_By_GroupID } from '../../query/GropuLon_query';
+import { setReloan_UpdateStatus } from '../../redux/LoanReducer';
+import { deleteGroup_LoanID } from '../../query/GropuLon_query';
+import { updateGroupData } from '../../query/GropuLon_query';
 import validate from '../Group_Loan/Validate';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -57,7 +58,7 @@ const Borrower_modal = props => {
     dispatch(change('Cover_Form', 'customer_no', item.customer_no));
   };
 
-  const item = ({item, index}) => {
+  const item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -130,8 +131,8 @@ const Borrower_modal = props => {
             flexDirection: 'row',
             justifyContent: 'space-around',
           }}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{marginRight: 10}}>Search Item:</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
             <Picker
               selectedValue={selectedItemValue}
@@ -153,7 +154,7 @@ const Borrower_modal = props => {
             </Picker>
           </View>
 
-          <View style={{width: '40%'}}>
+          <View style={{ width: '40%' }}>
             <TextInput
               style={{
                 backgroundColor: '#fff',
@@ -224,7 +225,7 @@ const Borrower_modal = props => {
           keyExtractor={(item, index) => index.toString()}
         />
 
-        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <Button
             onPress={() => hideModal()}
             mode="contained"
@@ -259,19 +260,27 @@ function Edit_Reloan_Form(props) {
 
   const dispatch = useDispatch();
   const inquiry_reloan = props.route.params;
-  const btnChangeOperation = newValue => {
-    setOperation(newValue);
-    if (newValue == 2 || newValue == 4) {
-      setReloan_UpdateStatus(false);
+  const btnChangeOperation = async (newValue, inquiry_reloan) => {
+    const user_id = await AsyncStorage.getItem('user_id');
+
+    if (inquiry_reloan.create_user_id !== user_id) {
+      alert(
+        'You are not allowed to delete other LO’s customer information.Please contact Admin for further support',
+      );
     } else {
-      setReloan_UpdateStatus(true);
+      setOperation(newValue);
+      if (newValue == 2 || newValue == 4) {
+        setReloan_UpdateStatus(false);
+      } else {
+        setReloan_UpdateStatus(true);
+      }
     }
   };
-  useEffect(() => {
-    if (reloan_update_status == true) {
-      setOperation('3');
-    }
-  }, [reloan_update_status]);
+  // useEffect(() => {
+  //   if (reloan_update_status == true) {
+  //     setOperation('3');
+  //   }
+  // }, [reloan_update_status]);
 
   const onSubmit = async values => {
     if (show_operation == '4') {
@@ -285,7 +294,7 @@ function Edit_Reloan_Form(props) {
       let data = Object.assign(values, {
         product_type: '50',
         tablet_sync_sts:
-        values.tablet_sync_sts == '01' ? '02' : values.tablet_sync_sts,
+          values.tablet_sync_sts == '01' ? '02' : values.tablet_sync_sts,
       });
       await updateGroupData(data).then(response => {
         if (response == 'success') {
@@ -320,6 +329,11 @@ function Edit_Reloan_Form(props) {
   };
   useEffect(() => {
     loadData();
+
+    return () => {
+      setOperation('2');
+      setReloan_UpdateStatus(false);
+    };
   }, []);
   const filtered_operations = operations.filter(item => item.value != 1);
 
@@ -327,7 +341,7 @@ function Edit_Reloan_Form(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{flex: 1, backgroundColor: '#fff'}}>
+          <View style={{ flex: 1, backgroundColor: '#fff' }}>
             <Text
               style={{
                 textAlign: 'center',
@@ -353,7 +367,7 @@ function Edit_Reloan_Form(props) {
                 {operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
-                    onValueChange={newValue => btnChangeOperation(newValue)}
+                    onValueChange={newValue => btnChangeOperation(newValue, inquiry_reloan)}
                     value={show_operation}>
                     <View
                       key={option.value}
@@ -366,7 +380,7 @@ function Edit_Reloan_Form(props) {
                         label={option.label}
                         value={option.value}
                         color="#000"
-                        labelStyle={{marginLeft: 5}}
+                        labelStyle={{ marginLeft: 5 }}
                       />
                     </View>
                   </RadioButton.Group>
@@ -412,4 +426,4 @@ function mapStateToProps(state) {
 export default reduxForm({
   form: 'Edit_Reloan_Form',
   validate,
-})(connect(mapStateToProps, {setReloan_UpdateStatus})(Edit_Reloan_Form));
+})(connect(mapStateToProps, { setReloan_UpdateStatus })(Edit_Reloan_Form));

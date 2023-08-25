@@ -815,7 +815,7 @@ function Individual_Staff_loan_Info(props) {
     update_status,
     retrive_staff_loan_data,
   } = props;
-  console.log('retrive_staff_loan_data',retrive_staff_loan_data);
+  console.log('retrive_staff_loan_data', retrive_staff_loan_data);
   const dispatch = useDispatch();
   const [selectedItemValue, setSelectedItemValue] = useState('customer_nm');
   const [show_village, setVillage] = useState('1');
@@ -921,6 +921,8 @@ function Individual_Staff_loan_Info(props) {
 
     return () => {
       unsubscribe();
+      setOperation('2');
+      setStaffLoanUpdateStatus(false)
     };
   }, [navigation]);
 
@@ -1096,7 +1098,7 @@ function Individual_Staff_loan_Info(props) {
                         style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="check" size={20} color="#ede72d" />
                         <Text style={{ color: '#fff', marginLeft: 5 }}>
-                          RelationShip Form
+                          Relationship Form
                         </Text>
                       </View>
                     </View>
@@ -1111,7 +1113,7 @@ function Individual_Staff_loan_Info(props) {
                         style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="paperclip" size={20} color="#fff" />
                         <Text style={{ color: '#fff', marginLeft: 5 }}>
-                          RelationShip Form
+                          Relationship Form
                         </Text>
                       </View>
                       <Icon name="chevron-right" size={25} color="#fff" />
@@ -1515,20 +1517,26 @@ function Individual_Staff_loan_Info(props) {
     }
   };
   // const filtered_operations = operations.filter(item => item.value != 1);
-  const btnChangeOperation = newValue => {
-    setOperation(newValue);
-    //Inquiry
-    if (newValue == 2 || newValue == 4) {
-      setStaffLoanUpdateStatus(false);
+  const btnChangeOperation = async (newValue, retrive_staff_loan_data) => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    if (retrive_staff_loan_data.create_user_id !== user_id) {
+      alert(
+        'You are not allowed to delete other LO’s customer information.Please contact Admin for further support',
+      );
     } else {
-      setStaffLoanUpdateStatus(true);
+      setOperation(newValue);
+      if (newValue == 2 || newValue == 4) {
+        setStaffLoanUpdateStatus(false);
+      } else {
+        setStaffLoanUpdateStatus(true);
+      }
     }
   };
-  useEffect(() => {
-    if (update_status == true) {
-      setOperation('3');
-    }
-  }, [update_status]);
+  // useEffect(() => {
+  //   if (update_status == true) {
+  //     setOperation('3');
+  //   }
+  // }, [update_status]);
   const handleItemValueChange = itemValue => {
     setSelectedItemValue(itemValue);
   };
@@ -1972,7 +1980,7 @@ function Individual_Staff_loan_Info(props) {
                 {operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
-                    onValueChange={newValue => btnChangeOperation(newValue)}
+                    onValueChange={newValue => btnChangeOperation(newValue, retrive_staff_loan_data)}
                     value={show_operation}>
                     <View
                       key={option.value}
@@ -1981,7 +1989,7 @@ function Individual_Staff_loan_Info(props) {
                         alignItems: 'center',
                       }}>
                       <RadioButton.Item
-                       disabled={option.value == '1'}
+                        disabled={option.value == '1'}
                         label={option.label}
                         value={option.value}
                         color="#000"

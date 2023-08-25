@@ -151,7 +151,7 @@ export default function Sync_Download_Screen(props) {
             padding: 10,
             flex: 1,
           }}>
-          {moment().format('YYYY-MM-DD')}
+          {moment().format('lll')}
         </Text>
       </View>
     );

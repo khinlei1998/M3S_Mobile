@@ -23,14 +23,14 @@ export const storeAreaEvaluation = async data => {
     try {
       global.db.transaction(trans => {
         trans.executeSql(
-          `INSERT INTO Area_evaluation (serial_no,area_evaluation_no,status_code,create_datetime,create_user_id,update_datetime,update_user_id,delete_datetime,delete_user_id,area_evaluation_date,application_no,township_name,village_name,auth_name,contract_no,street_text,households_text,population_text,house_text,house_own_text,house_rent_text,property_text,property_docm_text,occupation,mf_num_flag,mfi_remark,pastdue_sts_flag,pastdue_sta_remark,trnsrt_sts_flag,trnsrt_sts_remark,chnl_device_type,area_security_flag,area_security_remark,cmnc_sts_flag,cmnc_sts_remark,economy_sts_flag,economy_sts_remark,income_sts_flag,income_sts_remark,households_sts_flag,households_sts_remark,local_auth_sprt_flag,local_auth_sprt_rmrk,total_sts_flag,total_sts_remark,total_remark,prepare_empl_nm,check_empl_nm,summary,tablet_sync_sts,sync_sts,err_msg,total_score
-) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+          `INSERT INTO Area_evaluation (serial_no,area_evaluation_no,status_code,create_datetime,create_user_id,update_datetime,update_user_id,delete_datetime,delete_user_id,area_evaluation_date,application_no,township_name,village_name,auth_name,contract_no,street_text,households_text,population_text,house_text,house_own_text,house_rent_text,property_text,property_docm_text,occupation,mf_num_flag,mfi_remark,pastdue_sts_flag,pastdue_sta_remark,trnsrt_sts_flag,trnsrt_sts_remark,chnl_device_type,area_security_flag,area_security_remark,cmnc_sts_flag,cmnc_sts_remark,economy_sts_flag,economy_sts_remark,income_sts_flag,income_sts_remark,households_sts_flag,households_sts_remark,local_auth_sprt_flag,local_auth_sprt_rmrk,total_sts_flag,total_sts_remark,total_remark,prepare_empl_nm,check_empl_nm,summary,tablet_sync_sts,sync_sts,err_msg,total_score,brwerRgstId,borrowerName,applicationAmt,applicationDate
+) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
           [
             null, //serialNo
             data.area_evaluation_no,
             '01', //status code
             null, //create_datetime
-            null, //create_user_id
+            user_id, //create_user_id
             null, //update date time
             null, //update user id
             null, //delete_datetime
@@ -79,6 +79,10 @@ export const storeAreaEvaluation = async data => {
             '00', //sync
             data.err_msg, //52
             data.total_score,
+            data.brwerRgstId,
+            data.borrowerName,
+            data.applicationAmt,
+            data.applicationDate
           ],
           (trans, results) => {
             resolve('success');
@@ -126,7 +130,7 @@ export const updateAreaEvaluation = async data => {
     try {
       global.db.transaction(trans => {
         trans.executeSql(
-          `UPDATE Area_evaluation SET serial_no=?,area_evaluation_no=?,status_code=?,create_datetime=?,create_user_id=?,update_datetime=?,update_user_id=?,delete_datetime=?,delete_user_id=?,area_evaluation_date=?,application_no=?,township_name=?,village_name=?,auth_name=?,contract_no=?,street_text=?,households_text=?,population_text=?,house_text=?,house_own_text=?,house_rent_text=?,property_text=?,property_docm_text=?,occupation=?,mf_num_flag=?,mfi_remark=?,pastdue_sts_flag=?,pastdue_sta_remark=?,trnsrt_sts_flag=?,trnsrt_sts_remark=?,chnl_device_type=?,area_security_flag=?,area_security_remark=?,cmnc_sts_flag=?,cmnc_sts_remark=?,economy_sts_flag=?,economy_sts_remark=?,income_sts_flag=?,income_sts_remark=?,households_sts_flag=?,households_sts_remark=?,local_auth_sprt_flag=?,local_auth_sprt_rmrk=?,total_sts_flag=?,total_sts_remark=?,total_remark=?,prepare_empl_nm=?,check_empl_nm=?,summary=?,tablet_sync_sts=?,sync_sts=?,err_msg=?,total_score=? WHERE area_evaluation_no = ?`,
+          `UPDATE Area_evaluation SET serial_no=?,area_evaluation_no=?,status_code=?,create_datetime=?,create_user_id=?,update_datetime=?,update_user_id=?,delete_datetime=?,delete_user_id=?,area_evaluation_date=?,application_no=?,township_name=?,village_name=?,auth_name=?,contract_no=?,street_text=?,households_text=?,population_text=?,house_text=?,house_own_text=?,house_rent_text=?,property_text=?,property_docm_text=?,occupation=?,mf_num_flag=?,mfi_remark=?,pastdue_sts_flag=?,pastdue_sta_remark=?,trnsrt_sts_flag=?,trnsrt_sts_remark=?,chnl_device_type=?,area_security_flag=?,area_security_remark=?,cmnc_sts_flag=?,cmnc_sts_remark=?,economy_sts_flag=?,economy_sts_remark=?,income_sts_flag=?,income_sts_remark=?,households_sts_flag=?,households_sts_remark=?,local_auth_sprt_flag=?,local_auth_sprt_rmrk=?,total_sts_flag=?,total_sts_remark=?,total_remark=?,prepare_empl_nm=?,check_empl_nm=?,summary=?,tablet_sync_sts=?,sync_sts=?,err_msg=?,total_score=?,brwerRgstId=?,borrowerName=?,applicationAmt=?,applicationDate=? WHERE area_evaluation_no = ?`,
           [
             data.serial_no, //serialNo
             data.area_evaluation_no,
@@ -181,6 +185,10 @@ export const updateAreaEvaluation = async data => {
             data.sync_sts, //sync
             data.err_msg, //52
             data.total_score,
+            data.brwerRgstId,
+            data.borrowerName,
+            data.applicationAmt,
+            data.applicationDate,
             data.area_evaluation_no,
           ],
           (trans, results) => {

@@ -1,7 +1,8 @@
-import {View, Text, TouchableOpacity, Image} from 'react-native';
-import React, {useState, useEffect, createRef} from 'react';
-import {style} from '../../style/Relation_style';
-import {List} from 'react-native-paper';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useEffect, createRef } from 'react';
+import { style } from '../../style/Relation_style';
+import { List } from 'react-native-paper';
+import moment from 'moment';
 export default function Relation_Contract(props) {
   const {
     coborrower_sign_path,
@@ -12,8 +13,11 @@ export default function Relation_Contract(props) {
     show_canvas,
     setCoBorrowerCanvas,
     show_co_borrower_canvas,
-    relation_name
+    relation_name,
+    borrower_name,
+    retrive_loan_data
   } = props;
+  console.log('retrive_loan_data', retrive_loan_data);
   const [relation_contract_expanded, setRelationContractExpanded] =
     useState(true);
   const handleRelationContractToggle = () => {
@@ -34,23 +38,26 @@ export default function Relation_Contract(props) {
               padding: 5,
               justifyContent: 'space-between',
             }}>
-            <Text style={{fontWeight: 'bold'}}>
-              My Name<Text style={{color: '#A1B5DC'}}>Yati , address,</Text>
-              <Text style={{color: '#A1B5DC'}}>no225{'\n'}</Text>
+            <Text style={{ fontWeight: 'bold' }}>
+              My Name<Text style={{ color: '#A1B5DC' }}>{retrive_loan_data.borrower_name} , address,</Text>
+              <Text style={{ color: '#A1B5DC' }}>{retrive_loan_data.addr}{'\n'}</Text>
             </Text>
-            <Text style={{fontWeight: 'bold'}}>
+            <Text style={{ fontWeight: 'bold' }}>
               holding egistration number
-              <Text style={{color: '#A1B5DC'}}>12/3{'\n'}</Text>
+              <Text style={{ color: '#A1B5DC' }}>{retrive_loan_data.resident_rgst_id
+              }{'\n'}</Text>
             </Text>
-            <Text style={{fontWeight: 'bold'}}>
+            <Text style={{ fontWeight: 'bold' }}>
               and the Co-borrower
-              <Text style={{color: '#A1B5DC'}}>hfdhf,{'\n'}</Text>
+              <Text style={{ color: '#A1B5DC' }}>{retrive_loan_data.co_brwer_name
+              },{'\n'}</Text>
             </Text>
-            <Text style={{fontWeight: 'bold'}}>
+            <Text style={{ fontWeight: 'bold' }}>
               Register Number
-              <Text style={{color: '#A1B5DC'}}>hfdhf,{'\n'}</Text>
+              <Text style={{ color: '#A1B5DC' }}>{retrive_loan_data.co_brwer_rgst_id
+              },{'\n'}</Text>
             </Text>
-            <Text style={{fontWeight: 'bold'}}>
+            <Text style={{ fontWeight: 'bold' }}>
               are promise to be directly related in the following form
             </Text>
           </View>
@@ -62,13 +69,25 @@ export default function Relation_Contract(props) {
               margin: 10,
             }}>
             <View>
-              <Text style={{fontWeight: 'bold', fontSize: 15}}>
-                Guarantor Name
-              </Text>
-              <Text> Date 17/05/2023</Text>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
+                  Borrower Name
+                </Text>
+                <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
+                  {retrive_loan_data.borrower_name}
+                </Text>
+              </View>
+              <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
+                  Date
+                </Text>
+                <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
+                  {moment().format('YYYY-MM-DD')}
+                </Text>
+              </View>
             </View>
             <View>
-              <Text style={{fontWeight: 'bold', fontSize: 15}}>Sign</Text>
+              <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Sign</Text>
 
               {show_borrower_sign == '' && (
                 <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
@@ -76,7 +95,7 @@ export default function Relation_Contract(props) {
                     source={{
                       uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
                     }}
-                    style={{width: 100, height: 50}}
+                    style={{ width: 100, height: 50 }}
                   />
                 </TouchableOpacity>
               )}
@@ -86,12 +105,14 @@ export default function Relation_Contract(props) {
                     source={{
                       uri: `data:image/png;base64,${show_borrower_sign}`,
                     }}
-                    style={{width: 100, height: 50}}
+                    style={{ width: 100, height: 50 }}
                   />
                 </TouchableOpacity>
               )}
             </View>
           </View>
+
+
           <View
             style={{
               flexDirection: 'row',
@@ -100,14 +121,25 @@ export default function Relation_Contract(props) {
               margin: 10,
             }}>
             <View>
-              <Text style={{fontWeight: 'bold', fontSize: 15}}>
-                Co Borrower Name
-              </Text>
-              <Text> Date 17/05/2023</Text>
-            </View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
+                  Co Borrower Name
+                </Text>
+                <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
+                  {retrive_loan_data.co_brwer_name
+                  }
+                </Text>
+              </View>
 
+              <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
+                  Date
+                </Text>
+                <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>{moment().format('YYYY-MM-DD')}</Text>
+              </View>
+            </View>
             <View>
-              <Text style={{fontWeight: 'bold', fontSize: 15}}>Sign</Text>
+              <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Sign</Text>
 
               {show_coborrower_sign == '' && (
                 <TouchableOpacity
@@ -116,7 +148,7 @@ export default function Relation_Contract(props) {
                     source={{
                       uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
                     }}
-                    style={{width: 100, height: 50}}
+                    style={{ width: 100, height: 50 }}
                   />
                 </TouchableOpacity>
               )}
@@ -127,22 +159,22 @@ export default function Relation_Contract(props) {
                     source={{
                       uri: `data:image/png;base64,${show_coborrower_sign}`,
                     }}
-                    style={{width: 100, height: 50}}
+                    style={{ width: 100, height: 50 }}
                   />
                 </TouchableOpacity>
               )}
             </View>
           </View>
-          <Text style={{fontWeight: 'bold', fontSize: 15}}>
+          <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
             The co-borrower is responsible for repaying the loan if it fails to
             do so.{'\n'}
           </Text>
-          <Text style={{fontWeight: 'bold', fontSize: 15}}>
+          <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
             The above-mentioned borrower and co-borrower are responsible for
             compliance with the terms and conditions of the contract by
             confirming that the above-mentioned{'\n'}{' '}
           </Text>
-          <Text style={{fontWeight: 'bold', fontSize: 15}}>
+          <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
             {relation_name} relationship is correct
           </Text>
         </View>

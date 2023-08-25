@@ -266,7 +266,7 @@ function Borrower_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'location_code'}
-              title={'Lolcation Code '}
+              title={'Location Code '}
               component={TextInputFile}
               input_mode
               inputmax={100}

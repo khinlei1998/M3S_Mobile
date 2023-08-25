@@ -13,7 +13,7 @@ export const storeExceptionalApproval = async data => {
                         data.excpt_aprv_rqst_no,
                         '01', //status code
                         null, //create_datetime
-                        null,//create_user_id
+                        user_id,//create_user_id
                         null, //deleteDatetime
                         null, //delet usr id
                         null, //updateDatetime

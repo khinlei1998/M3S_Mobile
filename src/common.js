@@ -314,7 +314,7 @@ export const maritail_status = [
   },
   {
     id: 4,
-    label: 'Windower/Widow',
+    label: 'Widower/Widow',
     value: '40',
   },
   {

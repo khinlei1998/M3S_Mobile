@@ -31,7 +31,7 @@ export const storeGuarantor = async data => {
             null, //org code
             '01', //status code
             date, //create_datetime
-            null, //create_user_id
+            user_id, //create_user_id
             null, //deleteDatetime
             null, //delet usr id
             null, //updateDatetime

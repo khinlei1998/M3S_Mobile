@@ -9,12 +9,12 @@ import {
   ToastAndroid,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState, useEffect, createRef} from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import DividerLine from '../../components/DividerLine';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import { reduxForm, Field, change, reset } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/Feather';
-import {storeAreaEvaluation} from '../../query/AreaEvaluation_query';
+import { storeAreaEvaluation } from '../../query/AreaEvaluation_query';
 import {
   Button,
   RadioButton,
@@ -24,21 +24,21 @@ import {
   Modal,
   TextInput,
 } from 'react-native-paper';
-import {operations} from '../../common';
-import {style} from '../../style/Area_Evaluation_style';
+import { operations } from '../../common';
+import { style } from '../../style/Area_Evaluation_style';
 import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
 import Area_Info from './Area_Info';
 import Area_Evaluation from './Area_Evaluation';
-import {area_evaluation_result} from '../../common';
+import { area_evaluation_result } from '../../common';
 import Area_Evaluation_Score from './Area_Evaluation_Score';
-import {getAllLoan_By_application_no} from '../../query/AllLoan_query';
-import {useNavigation} from '@react-navigation/native';
-import {setEvaluation_Score} from '../../redux/LoanReducer';
+import { getAllLoan_By_application_no } from '../../query/AllLoan_query';
+import { useNavigation } from '@react-navigation/native';
+import { setEvaluation_Score } from '../../redux/LoanReducer';
 function Area_Evaluation_Form(props) {
   const navigation = useNavigation();
 
-  const {handleSubmit, total_score, setEvaluation_Score} = props;
+  const { handleSubmit, total_score, setEvaluation_Score } = props;
   const [show_operation, setOperation] = useState('1');
   const [total_sts_flag, setTotal_sts_flag] = useState('');
 
@@ -50,10 +50,10 @@ function Area_Evaluation_Form(props) {
       indi_data => {
         let initialize_data = {
           application_no: retrive_loan_data.application_no,
-          application_date: indi_data[0].application_date,
-          borrower_nrc: indi_data[0].resident_rgst_id,
-          borrower_name: indi_data[0].borrower_name,
-          application_amt: indi_data[0].application_amt.toString()
+          applicationDate: indi_data[0].application_date,
+          brwerRgstId: indi_data[0].resident_rgst_id,
+          borrowerName: indi_data[0].borrower_name,
+          applicationAmt: indi_data[0].application_amt.toString()
             ? indi_data[0].application_amt.toString()
             : '',
           area_evaluation_no: retrive_loan_data.application_no.replace(
@@ -92,7 +92,7 @@ function Area_Evaluation_Form(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{flex: 1, backgroundColor: '#fff'}}>
+          <View style={{ flex: 1, backgroundColor: '#fff' }}>
             <Text
               style={{
                 textAlign: 'center',
@@ -103,7 +103,7 @@ function Area_Evaluation_Form(props) {
               }}>
               Area Evaluation Form
             </Text>
-            <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+            <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>
               (Attached To Application)
             </Text>
             <DividerLine />
@@ -134,7 +134,7 @@ function Area_Evaluation_Form(props) {
                         label={option.label}
                         value={option.value}
                         color="#000"
-                        labelStyle={{marginLeft: 5}}
+                        labelStyle={{ marginLeft: 5 }}
                       />
                     </View>
                   </RadioButton.Group>
@@ -163,7 +163,7 @@ function Area_Evaluation_Form(props) {
 
                 <View style={style.sub_list_container}>
                   <Field
-                    name={'resident_rgst_id'}
+                    name={'brwerRgstId'}
                     title={'Borrower NRC'}
                     component={TextInputFile}
                     cus_width
@@ -172,7 +172,7 @@ function Area_Evaluation_Form(props) {
                   />
 
                   <Field
-                    name={'borrower_name'}
+                    name={'borrowerName'}
                     title={'Borrower Name'}
                     component={TextInputFile}
                     cus_width
@@ -182,7 +182,7 @@ function Area_Evaluation_Form(props) {
                 </View>
                 <View style={style.sub_list_container}>
                   <Field
-                    name={'application_amt'}
+                    name={'applicationAmt'}
                     title={'Loan Apply Amount'}
                     component={TextInputFile}
                     cus_width
@@ -191,7 +191,7 @@ function Area_Evaluation_Form(props) {
                   />
 
                   <Field
-                    name={'application_date'}
+                    name={'applicationDate'}
                     component={DatePicker}
                     label={'Application Date'}
                     editable={true}
@@ -245,4 +245,4 @@ export default reduxForm({
   initialValues: {
     total_sts_remark: '2',
   },
-})(connect(mapStateToProps, {setEvaluation_Score})(Area_Evaluation_Form));
+})(connect(mapStateToProps, { setEvaluation_Score })(Area_Evaluation_Form));

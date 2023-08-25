@@ -340,7 +340,7 @@ import {connect} from 'react-redux';
           <View style={style.sub_list_container}>
             <Field
               name={'location_code'}
-              title={'Lolcation Code '}
+              title={'Location Code '}
               component={TextInputFile}
               input_mode
               inputmax={100}

@@ -4,12 +4,12 @@ import { List, Button } from 'react-native-paper';
 import { style } from '../../style/Cover_Loan_style';
 import { loan_application_type } from '../../common';
 import { addInquiryLoanData } from '../../redux/LoanReducer';
-import {connect, useDispatch} from 'react-redux';
-import {reduxForm, Field, change} from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
+import { reduxForm, Field, change } from 'redux-form';
 function Reloan_list(props) {
-  const { navigation, inquiry_reloan, all_loan,addInquiryLoanData } = props;
+  const { reloan_update_status, navigation, inquiry_reloan, all_loan, addInquiryLoanData } = props;
   const [Reloanlist_expand, setReloanListExpand] = useState(true);
-
+  console.log('reloan_update_status',reloan_update_status);
   const handleReloanListToggle = () => {
     setReloanListExpand(!Coverlist_expand);
   };
@@ -24,6 +24,7 @@ function Reloan_list(props) {
         title="List of loan application by Group Memebers">
         <View style={style.sub_container}>
           <Button
+            disabled={reloan_update_status == true ? false : true}
             onPress={() => {
               navigation.navigate('Individual_loan', {
                 inquiry_group_data: inquiry_reloan.group_aplc_no,
@@ -177,8 +178,9 @@ function Reloan_list(props) {
 }
 function mapStateToProps(state) {
   return {
+    reloan_update_status: state.loan.reloan_update_status,
   };
 }
 export default reduxForm({
   form: 'Edit_Reloan_Form',
-})(connect(mapStateToProps, {addInquiryLoanData})(Reloan_list));
+})(connect(mapStateToProps, { addInquiryLoanData })(Reloan_list));

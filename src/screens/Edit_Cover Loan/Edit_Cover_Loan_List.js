@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 import { List, Button } from 'react-native-paper';
 import { style } from '../../style/Cover_Loan_style';
 import { loan_application_type } from '../../common';
-import {reduxForm, Field, change, reset} from 'redux-form';
+import { reduxForm, Field, change, reset } from 'redux-form';
 import { addInquiryLoanData } from '../../redux/LoanReducer';
 import { connect, useDispatch } from 'react-redux';
 
- function Edit_Cover_Loan_list(props) {
+function Edit_Cover_Loan_list(props) {
   const [Coverlist_expand, setCoverListExpand] = useState(true);
-  const { inquiry_cover_loan, navigation, all_loan,addInquiryLoanData } = props;
+  const { inquiry_cover_loan, navigation, all_loan, addInquiryLoanData, cover_update_status } = props;
   console.log('inquiry_cover_loan', inquiry_cover_loan);
   const handleCoverListToggle = () => {
     setCoverListExpand(!Coverlist_expand);
@@ -26,6 +26,7 @@ import { connect, useDispatch } from 'react-redux';
         title="List of loan application by Group Memebers">
         <View style={style.sub_container}>
           <Button
+            disabled={cover_update_status == true ? false : true}
             onPress={() => {
               navigation.navigate('Individual_loan', {
                 inquiry_group_data: inquiry_cover_loan.group_aplc_no,
@@ -178,8 +179,9 @@ import { connect, useDispatch } from 'react-redux';
 }
 function mapStateToProps(state) {
   return {
+    cover_update_status: state.loan.cover_update_status,
   };
 }
 export default reduxForm({
   form: 'Edit_Cover_Form',
-})(connect(mapStateToProps, {addInquiryLoanData})(Edit_Cover_Loan_list));
+})(connect(mapStateToProps, { addInquiryLoanData })(Edit_Cover_Loan_list));

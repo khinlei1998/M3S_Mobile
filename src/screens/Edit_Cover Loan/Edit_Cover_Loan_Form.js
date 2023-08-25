@@ -7,27 +7,28 @@ import {
   FlatList,
   ToastAndroid,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import DividerLine from '../../components/DividerLine';
-import {operations} from '../../common';
+import { operations } from '../../common';
 import Icon from 'react-native-vector-icons/Feather';
-import {Picker} from '@react-native-picker/picker';
-import {TextInput} from 'react-native-paper';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {style} from '../../style/Cover_Loan_style';
-import {RadioButton, Button, Modal} from 'react-native-paper';
-import {connect, useDispatch} from 'react-redux';
+import { Picker } from '@react-native-picker/picker';
+import { TextInput } from 'react-native-paper';
+import { reduxForm, Field, change, reset } from 'redux-form';
+import { style } from '../../style/Cover_Loan_style';
+import { RadioButton, Button, Modal } from 'react-native-paper';
+import { connect, useDispatch } from 'react-redux';
 import Edit_Cover_Loan_Info from './Edit_Cover_Loan_Info';
 import Edit_Cover_Loan_list from './Edit_Cover_Loan_List';
-import {cus_filter_item} from '../../common';
-import {filterCustomer} from '../../query/Customer_query';
-import {setCover_UpdateStatus} from '../../redux/LoanReducer';
+import { cus_filter_item } from '../../common';
+import { filterCustomer } from '../../query/Customer_query';
+import { setCover_UpdateStatus } from '../../redux/LoanReducer';
 import {
   getLoan_By_GroupID,
   deleteGroup_LoanID,
   updateGroupData,
 } from '../../query/GropuLon_query';
 import validate from '../Group_Loan/Validate';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -59,7 +60,7 @@ const Borrower_modal = props => {
     dispatch(change('Cover_Form', 'customer_no', item.customer_no));
   };
 
-  const item = ({item, index}) => {
+  const item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -132,8 +133,8 @@ const Borrower_modal = props => {
             flexDirection: 'row',
             justifyContent: 'space-around',
           }}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{marginRight: 10}}>Search Item:</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
             <Picker
               selectedValue={selectedItemValue}
@@ -155,7 +156,7 @@ const Borrower_modal = props => {
             </Picker>
           </View>
 
-          <View style={{width: '50%'}}>
+          <View style={{ width: '50%' }}>
             <TextInput
               style={{
                 backgroundColor: '#fff',
@@ -226,7 +227,7 @@ const Borrower_modal = props => {
           keyExtractor={(item, index) => index.toString()}
         />
 
-        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <Button
             onPress={() => hideModal()}
             mode="contained"
@@ -246,7 +247,7 @@ const Borrower_modal = props => {
   );
 };
 function Edit_Cover_Loan_Form(props) {
-  const {handleSubmit, navigation, setCover_UpdateStatus, cover_update_status} =
+  const { handleSubmit, navigation, setCover_UpdateStatus, cover_update_status } =
     props;
   const inquiry_cover_loan = props.route.params;
 
@@ -280,12 +281,19 @@ function Edit_Cover_Loan_Form(props) {
       });
     }
   };
-  const btnChangeOperation = newValue => {
-    setOperation(newValue);
-    if (newValue == 2 || newValue == 4) {
-      setCover_UpdateStatus(false);
+  const btnChangeOperation = async (newValue, inquiry_cover_loan) => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    if (inquiry_cover_loan.create_user_id !== user_id) {
+      alert(
+        'You are not allowed to delete other LO’s customer information.Please contact Admin for further support',
+      );
     } else {
-      setCover_UpdateStatus(true);
+      setOperation(newValue);
+      if (newValue == 2 || newValue == 4) {
+        setCover_UpdateStatus(false);
+      } else {
+        setCover_UpdateStatus(true);
+      }
     }
   };
 
@@ -314,19 +322,24 @@ function Edit_Cover_Loan_Form(props) {
   };
   useEffect(() => {
     loadData();
+
+    return () => {
+      setOperation('2');
+      setCover_UpdateStatus(false);
+    };
   }, []);
-  useEffect(() => {
-    if (cover_update_status == true) {
-      setOperation('3');
-    }
-  }, [cover_update_status]);
+  // useEffect(() => {
+  //   if (cover_update_status == true) {
+  //     setOperation('3');
+  //   }
+  // }, [cover_update_status]);
   const filtered_operations = operations.filter(item => item.value != 1);
 
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{flex: 1, backgroundColor: '#fff'}}>
+          <View style={{ flex: 1, backgroundColor: '#fff' }}>
             <Text
               style={{
                 textAlign: 'center',
@@ -352,7 +365,7 @@ function Edit_Cover_Loan_Form(props) {
                 {operations.map((option, index) => (
                   <RadioButton.Group
                     key={index}
-                    onValueChange={newValue => btnChangeOperation(newValue)}
+                    onValueChange={newValue => btnChangeOperation(newValue, inquiry_cover_loan)}
                     value={show_operation}>
                     <View
                       key={option.value}
@@ -365,7 +378,7 @@ function Edit_Cover_Loan_Form(props) {
                         label={option.label}
                         value={option.value}
                         color="#000"
-                        labelStyle={{marginLeft: 5}}
+                        labelStyle={{ marginLeft: 5 }}
                       />
                     </View>
                   </RadioButton.Group>
@@ -376,8 +389,8 @@ function Edit_Cover_Loan_Form(props) {
                   cover_update_status == true && show_operation == '3'
                     ? false
                     : cover_update_status == false && show_operation == '4'
-                    ? false
-                    : true
+                      ? false
+                      : true
                 }
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
@@ -418,4 +431,4 @@ function mapStateToProps(state) {
 export default reduxForm({
   form: 'Edit_Cover_Form',
   validate,
-})(connect(mapStateToProps, {setCover_UpdateStatus})(Edit_Cover_Loan_Form));
+})(connect(mapStateToProps, { setCover_UpdateStatus })(Edit_Cover_Loan_Form));

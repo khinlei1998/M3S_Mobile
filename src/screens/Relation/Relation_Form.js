@@ -66,6 +66,7 @@ function Relation_Form(props) {
   const [coborrower_sign_path, setCoBorrowerSignPath] = useState('');
   const [show_coborrower_sign, setShowCoBorrowerSign] = useState('');
   const [relation_name, setRelationName] = useState('');
+  const [borrower_name, setBorrowerName] = useState('');
 
   const Borrower_Sign_Modal = props => {
     const {
@@ -506,7 +507,6 @@ function Relation_Form(props) {
   const _onSaveEvent = async result => {
     // Extract the signature image data from the result
     const {pathName, encoded} = result;
-    console.log('Path name:', pathName);
     switch (modalContent) {
       case 'btn1':
         setSignature1(encoded);
@@ -596,6 +596,7 @@ function Relation_Form(props) {
   const loadData = async () => {
     await getAllLoan_By_application_no(retrive_loan_data.application_no).then(
       indi_data => {
+        console.log('indi_data',indi_data);
         let initialize_data = {
           application_no: retrive_loan_data.application_no,
           application_date: indi_data[0].application_date,
@@ -651,7 +652,7 @@ function Relation_Form(props) {
                 color: '#273050',
                 fontWeight: 'bold',
               }}>
-              RelationShip Form
+              Relationship Form
             </Text>
             <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
               (Attached To Application)
@@ -747,7 +748,7 @@ function Relation_Form(props) {
                   />
 
                   <Field
-                    name={'borrower_nrc'}
+                    name={'addr'}
                     title={'Address'}
                     component={TextInputFile}
                     cus_width
@@ -760,6 +761,7 @@ function Relation_Form(props) {
             <Relation_CoBorrower />
             <Relation_Info setRelationName={setRelationName} />
             <Relation_Contract
+            borrower_name={borrower_name}
               relation_name={relation_name}
               setCanvas={setCanvas}
               show_canvas={show_canvas}
@@ -769,6 +771,7 @@ function Relation_Form(props) {
               show_coborrower_sign={show_coborrower_sign}
               coborrower_sign_path={coborrower_sign_path}
               setCoBorrowerCanvas={setCoBorrowerCanvas}
+              retrive_loan_data={retrive_loan_data}
             />
             <Relation_Member_Sign
               show_borrower_sign={show_borrower_sign}
