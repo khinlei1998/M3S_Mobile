@@ -185,7 +185,7 @@ function Edit_Area_Evaluation_Form(props) {
 
                 <View style={style.sub_list_container}>
                   <Field
-                    name={'resident_rgst_id'}
+                    name={'brwerRgstId'}
                     title={'Borrower NRC'}
                     component={TextInputFile}
                     cus_width
@@ -194,7 +194,7 @@ function Edit_Area_Evaluation_Form(props) {
                   />
 
                   <Field
-                    name={'borrower_name'}
+                    name={'borrowerName'}
                     title={'Borrower Name'}
                     component={TextInputFile}
                     cus_width
@@ -204,7 +204,7 @@ function Edit_Area_Evaluation_Form(props) {
                 </View>
                 <View style={style.sub_list_container}>
                   <Field
-                    name={'application_amt'}
+                    name={'applicationAmt'}
                     title={'Loan Apply Amount'}
                     component={TextInputFile}
                     cus_width
@@ -213,7 +213,7 @@ function Edit_Area_Evaluation_Form(props) {
                   />
 
                   <Field
-                    name={'application_date'}
+                    name={'applicationDate'}
                     component={DatePicker}
                     label={'Application Date'}
                     editable={true}

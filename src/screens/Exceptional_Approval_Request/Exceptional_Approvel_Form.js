@@ -173,7 +173,7 @@ function Exceptional_Approvel_Form(props) {
                 <View style={style.sub_list_container}>
                   <Field
                     name={'net_income'}
-                    title={'Totall Net Income'}
+                    title={'Total Net Income'}
                     component={TextInputFile}
                     cus_width
                     input_mode

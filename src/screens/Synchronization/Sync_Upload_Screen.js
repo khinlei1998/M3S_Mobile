@@ -278,7 +278,7 @@ import { addInquiryLoanData } from '../../redux/LoanReducer';
         </Button>
 
         <Button
-          // disabled={btn_disabled}
+          disabled={btn_disabled}
           style={{
             borderRadius: 0,
             width: 120,

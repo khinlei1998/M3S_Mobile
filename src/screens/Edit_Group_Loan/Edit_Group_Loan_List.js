@@ -1,15 +1,15 @@
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
-import {style} from '../../style/Group_Loan_style';
-import {List, Button} from 'react-native-paper';
-import {loan_application_type} from '../../common';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { style } from '../../style/Group_Loan_style';
+import { List, Button } from 'react-native-paper';
+import { loan_application_type } from '../../common';
 import { addInquiryLoanData } from '../../redux/LoanReducer';
-import {connect, useDispatch} from 'react-redux';
-import {reduxForm, Field, change} from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
+import { reduxForm, Field, change } from 'redux-form';
 
 function Edit_Group_Loan_List(props) {
   const [Grouplist_expand, setGroupListExpand] = useState(true);
-  const {inquiry_group_data, navigation, all_loan,addInquiryLoanData} = props;
+  const { inquiry_group_data, navigation, all_loan, addInquiryLoanData, group_update_status } = props;
 
   const handleGroupListToggle = () => {
     setGroupListExpand(!Grouplist_expand);
@@ -25,6 +25,7 @@ function Edit_Group_Loan_List(props) {
         title="List of loan application by Group Memebers">
         <View style={style.sub_container}>
           <Button
+            disabled={group_update_status  == true ? false : true}
             onPress={() => {
               navigation.navigate('Individual_loan', {
                 inquiry_group_data: inquiry_group_data.group_aplc_no,
@@ -179,8 +180,10 @@ function Edit_Group_Loan_List(props) {
 }
 function mapStateToProps(state) {
   return {
+    group_update_status: state.loan.group_update_status,
+
   };
 }
 export default reduxForm({
   form: 'Edit_Group_Form',
-})(connect(mapStateToProps, {addInquiryLoanData})(Edit_Group_Loan_List));
+})(connect(mapStateToProps, { addInquiryLoanData })(Edit_Group_Loan_List));

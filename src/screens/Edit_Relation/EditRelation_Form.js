@@ -7,14 +7,14 @@ import {
   TouchableHighlight,
   ToastAndroid,
 } from 'react-native';
-import React, {useState, useEffect, createRef} from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import DividerLine from '../../components/DividerLine';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import { reduxForm, Field, change, reset } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
 import RNFS from 'react-native-fs';
-import {Button, RadioButton, List, Modal} from 'react-native-paper';
-import {operations, emp_filter_item} from '../../common';
-import {style} from '../../style/Relation_style';
+import { Button, RadioButton, List, Modal } from 'react-native-paper';
+import { operations, emp_filter_item } from '../../common';
+import { style } from '../../style/Relation_style';
 import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
 import EditRelation_CoBorrower from './EditRelation_CoBorrower';
@@ -23,18 +23,18 @@ import EditRelation_Contract from './EditRelation_Contract';
 import EditRelation_Member_Sign from './EditRelation_Member_Sign';
 import Icon from 'react-native-vector-icons/Feather';
 import SignatureCapture from 'react-native-signature-capture';
-import {storeRelation} from '../../query/RelationShip_query';
-import {useRef} from 'react';
+import { storeRelation } from '../../query/RelationShip_query';
+import { useRef } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
-import {getAllLoan_By_application_no} from '../../query/AllLoan_query';
-import {setRelation_UpdateStatus} from '../../redux/LoanReducer';
-import {deleteRelation_ByID} from '../../query/RelationShip_query';
+import { useNavigation } from '@react-navigation/native';
+import { getAllLoan_By_application_no } from '../../query/AllLoan_query';
+import { setRelation_UpdateStatus } from '../../redux/LoanReducer';
+import { deleteRelation_ByID } from '../../query/RelationShip_query';
 // import validate from './Validate';
-import {UpdateRelation} from '../../query/RelationShip_query';
+import { UpdateRelation } from '../../query/RelationShip_query';
 function Edit_Relation_Form(props) {
   const navigation = useNavigation();
-  const {handleSubmit, setRelation_UpdateStatus, relation_update_status} =
+  const { handleSubmit, setRelation_UpdateStatus, relation_update_status } =
     props;
   const [show_operation, setOperation] = useState('2');
   const [relation_expanded, setRelationExpanded] = useState(true);
@@ -121,7 +121,7 @@ function Edit_Relation_Form(props) {
             maxStrokeWidth={10}
             viewMode={'portrait'}
           />
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <TouchableHighlight
               style={{
                 flex: 1,
@@ -135,7 +135,7 @@ function Edit_Relation_Form(props) {
               onPress={() => {
                 saveBorrowerSign();
               }}>
-              <Text style={{color: '#fff'}}>Save</Text>
+              <Text style={{ color: '#fff' }}>Save</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={{
@@ -150,7 +150,7 @@ function Edit_Relation_Form(props) {
               onPress={() => {
                 resetBorrowerSign();
               }}>
-              <Text style={{color: '#fff'}}>Reset</Text>
+              <Text style={{ color: '#fff' }}>Reset</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -216,7 +216,7 @@ function Edit_Relation_Form(props) {
             // backgroundColor="transparent"
             viewMode={'portrait'}
           />
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <TouchableHighlight
               style={{
                 flex: 1,
@@ -230,7 +230,7 @@ function Edit_Relation_Form(props) {
               onPress={() => {
                 co_borrower_saveSign();
               }}>
-              <Text style={{color: '#fff'}}>Save</Text>
+              <Text style={{ color: '#fff' }}>Save</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={{
@@ -245,7 +245,7 @@ function Edit_Relation_Form(props) {
               onPress={() => {
                 co_borrower_resetSign();
               }}>
-              <Text style={{color: '#fff'}}>Reset</Text>
+              <Text style={{ color: '#fff' }}>Reset</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -327,7 +327,6 @@ function Edit_Relation_Form(props) {
         console.log('Error deleting files:', error);
       }
     } else {
-      console.log('update values', values);
       const relation_data = Object.assign({}, values, {
         parent_yn: values.relation_name == 2 ? '1' : '',
         brother_sister_yn: values.relation_name == 3 ? '1' : '',
@@ -580,7 +579,7 @@ function Edit_Relation_Form(props) {
   };
   const _onSaveEvent = async result => {
     // Extract the signature image data from the result
-    const {pathName, encoded} = result;
+    const { pathName, encoded } = result;
     console.log('Path name:', pathName);
     switch (modalContent) {
       case 'btn1':
@@ -795,7 +794,7 @@ function Edit_Relation_Form(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{flex: 1, backgroundColor: '#fff'}}>
+          <View style={{ flex: 1, backgroundColor: '#fff' }}>
             <Text
               style={{
                 textAlign: 'center',
@@ -804,9 +803,9 @@ function Edit_Relation_Form(props) {
                 color: '#273050',
                 fontWeight: 'bold',
               }}>
-              RelationShip Form
+              Relationship Form
             </Text>
-            <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+            <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>
               (Attached To Application)
             </Text>
             <DividerLine />
@@ -837,7 +836,7 @@ function Edit_Relation_Form(props) {
                         label={option.label}
                         value={option.value}
                         color="#000"
-                        labelStyle={{marginLeft: 5}}
+                        labelStyle={{ marginLeft: 5 }}
                       />
                     </View>
                   </RadioButton.Group>
@@ -900,7 +899,7 @@ function Edit_Relation_Form(props) {
                   />
 
                   <Field
-                    name={'borrower_nrc'}
+                    name={'addr'}
                     title={'Address'}
                     component={TextInputFile}
                     cus_width
@@ -922,6 +921,7 @@ function Edit_Relation_Form(props) {
               coborrower_sign_path={coborrower_sign_path}
               setCoBorrowerCanvas={setCoBorrowerCanvas}
               relation_name={relation_name}
+              retrive_relation_data={retrive_relation_data}
             />
             <EditRelation_Member_Sign
               show_borrower_sign={show_borrower_sign}
@@ -959,8 +959,8 @@ function Edit_Relation_Form(props) {
                   relation_update_status == true && show_operation == '3'
                     ? false
                     : relation_update_status == false && show_operation == '4'
-                    ? false
-                    : true
+                      ? false
+                      : true
                 }
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
@@ -1021,7 +1021,7 @@ function Edit_Relation_Form(props) {
             maxStrokeWidth={10}
             viewMode={'portrait'}
           />
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <TouchableHighlight
               style={{
                 flex: 1,
@@ -1035,7 +1035,7 @@ function Edit_Relation_Form(props) {
               onPress={() => {
                 saveSign();
               }}>
-              <Text style={{color: '#fff'}}>Save</Text>
+              <Text style={{ color: '#fff' }}>Save</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={{
@@ -1050,7 +1050,7 @@ function Edit_Relation_Form(props) {
               onPress={() => {
                 resetSign();
               }}>
-              <Text style={{color: '#fff'}}>Reset</Text>
+              <Text style={{ color: '#fff' }}>Reset</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -1087,4 +1087,4 @@ function mapStateToProps(state) {
 export default reduxForm({
   form: 'Edit_Relation_Form',
   // validate,
-})(connect(mapStateToProps, {setRelation_UpdateStatus})(Edit_Relation_Form));
+})(connect(mapStateToProps, { setRelation_UpdateStatus })(Edit_Relation_Form));

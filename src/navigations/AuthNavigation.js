@@ -47,30 +47,32 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
-         {/* <Stack.Screen
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{headerShown: false}}
+      />
+      {/* <Stack.Screen
         name="Home"
         component={Home}
         options={{headerShown: false}}
-      />
-         <Stack.Screen
+      /> */}
+
+      {/* <Stack.Screen
         name="Synchronization"
         component={Synchronization_Screen}
-        options={{headerShown: false}}
-      />
+        options={{ headerShown: false }}
+      /> */}
+      {/*
+       */}
 
-
-         <Stack.Screen
+      {/* <Stack.Screen
         name="Group Loan"
         component={Group_Loan_Form}
         options={{headerShown: false}}
-      /> */}
+      />
 
-
-
-
-
-
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Customer_Management"
         component={Customer_Management}
         options={{headerShown: false}}
@@ -80,15 +82,9 @@ export default function AuthNavigation(props) {
         name="Individual_loan"
         component={Individual_Loan}
         options={{headerShown: false}}
-      /> */}
-
-      <Stack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{headerShown: false}}
       />
 
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Evidence"
         component={Evidence}
         options={{headerShown: false}}
@@ -152,9 +148,9 @@ export default function AuthNavigation(props) {
         name="Survey"
         component={Survey}
         options={{headerShown: false}}
-      /> */}
+      />
 
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Edit_Cover_Loan"
         component={Edit_Cover_Loan_Form}
         options={{headerShown: false}}
@@ -175,9 +171,9 @@ export default function AuthNavigation(props) {
         name="Borrower Map"
         component={Show_Borrower_Map}
         options={{headerShown: false}}
-      /> */}
+      />
 
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Area Evaluation"
         component={Area_Evaluation_Form}
         options={{headerShown: false}}
@@ -204,8 +200,8 @@ export default function AuthNavigation(props) {
         name="Relation Form"
         component={Relation_Form}
         options={{headerShown: false}}
-      /> */}
-      {/* <Stack.Screen
+      />
+      <Stack.Screen
         name="Edit Relation"
         component={EditRelation_Form}
         options={{headerShown: false}}

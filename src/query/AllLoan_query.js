@@ -864,7 +864,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           village_code: data.village_code,
           ward_code: data.ward_code,
         };
-        console.log('individual_loan_data', individual_loan_data);
         loanDataArray.push(individual_loan_data);
         // Image upload Indi loan map
         const indi_loan_borrower_map = `/storage/emulated/0/Pictures/RNSketchCanvas/${data.application_no}MP01.jpg`;
@@ -1043,8 +1042,13 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 prepareEmplNm: item.prepare_empl_nm,
                 checkEmplNm: item.check_empl_nm,
                 summary: item.summary,
+                brwerRgstId:item.brwerRgstId,
+                borrowerName:item.borrowerName,
+                applicationAmt:item.applicationAmt,
+                applicationDate:item.applicationDate
               };
             });
+            console.log('area_data',area_data);
             areaData.push(...area_data);
           }
 

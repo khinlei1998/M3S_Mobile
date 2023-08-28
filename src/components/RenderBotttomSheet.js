@@ -108,7 +108,7 @@ export const RenderBottomSheet = () =>
                   <View style={{alignItems: 'center', flexDirection: 'row'}}>
                     <Icon name="paperclip" size={20} color="#fff" />
                     <Text style={{color: '#fff', marginLeft: 5}}>
-                      RelationShip Form
+                      Relationship Form
                     </Text>
                   </View>
                   <Icon name="chevron-right" size={25} color="#fff" />
