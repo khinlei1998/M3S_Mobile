@@ -36,24 +36,22 @@ export default function Guarantor_Contract(props) {
               </Text>
             </Text>
             <Text style={{ fontWeight: 'bold' }}>
-              NRC No{' '}
+              {t("NRC No")}{' '}
               <Text style={{ color: '#A1B5DC' }}>
                 {retrive_loan_data.resident_rgst_id} {'\n'}
               </Text>
             </Text>
             <Text style={{ fontWeight: 'bold' }}>
-              who withdraw the individual loan amount
+              {t("who withdraw the individual loan amount")}
               <Text style={{ color: '#A1B5DC' }}>
                 {retrive_loan_data.application_amt} {'\n'}
               </Text>
             </Text>
             <Text style={{ fontWeight: 'bold' }}>
-              , from Shinhan Microfinance Co., ltd on
+              , {t("from Shinhan Microfinance Co., ltd on")}
             </Text>
             <Text style={{ fontWeight: 'bold' }}>
-              Anyhow, if the borrower lacked to pay loan principal and interest to Shinhan Microfinance Co.,
-              ltd, I guarantee to pay all loan principal and interest to Shinhan Microfinance Co., ltd on behalf of
-              borrower as per repayment schedule.
+              {t("Anyhow, if the borrower lacked to pay loan principal and interest to Shinhan Microfinance Co., ltd, I guarantee to pay all loan principal and interest to Shinhan Microfinance Co., ltd on behalf of borrower as per repayment schedule.")}
             </Text>
           </View>
         </View>

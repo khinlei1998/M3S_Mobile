@@ -9,7 +9,7 @@ import { reduxForm, Field, change } from 'redux-form';
 function Reloan_list(props) {
   const { reloan_update_status, navigation, inquiry_reloan, all_loan, addInquiryLoanData } = props;
   const [Reloanlist_expand, setReloanListExpand] = useState(true);
-  console.log('reloan_update_status',reloan_update_status);
+  console.log('reloan_update_status', reloan_update_status);
   const handleReloanListToggle = () => {
     setReloanListExpand(!Coverlist_expand);
   };

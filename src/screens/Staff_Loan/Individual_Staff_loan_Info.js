@@ -6,7 +6,6 @@ import {
   ScrollView,
   FlatList,
   TouchableHighlight,
-  Image,
   ToastAndroid,
 } from 'react-native';
 import React, { useState, useEffect, useRef, createRef } from 'react';
@@ -58,6 +57,8 @@ import Ward_Model from '../../components/Ward_Model';
 import { filterWard } from '../../query/Ward_query';
 import Location_Modal from '../../components/Location_Modal';
 import { filterLocation, filterCity } from '../../query/CodeInfo_quey';
+import { useTranslation } from 'react-i18next';
+
 const Borrower_Sign_Modal = props => {
   const {
     show_canvas,
@@ -259,6 +260,7 @@ const Cus_No_Search_modal = props => {
     setBorrowerName,
     setLoanLimitAmount
   } = props;
+  const { t } = useTranslation();
 
   const onChangeEmpText = inputText => {
     setEmpData(inputText);
@@ -520,15 +522,15 @@ const Cus_No_Search_modal = props => {
               <Button
                 onPress={() => hideModal()}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={{
                   borderRadius: 0,
-                  width: 100,
+                  width: 115,
                   marginTop: 10,
                   color: 'black',
                   marginLeft: 5,
                 }}>
-                OK
+                {t("OK")}
               </Button>
             </View>
           </View>
@@ -542,7 +544,7 @@ const CoBorrower_NRC_Search_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
   const [cus_data, setCusData] = React.useState('');
-
+  const { t } = useTranslation();
   const {
     CoBorrowerhideModal,
     co_borrower_modal_visible,
@@ -774,15 +776,15 @@ const CoBorrower_NRC_Search_modal = props => {
               <Button
                 onPress={() => CoBorrowerhideModal()}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C '}
                 style={{
                   borderRadius: 0,
-                  width: 100,
+                  width: 115,
                   marginTop: 10,
                   color: 'black',
                   marginLeft: 5,
                 }}>
-                OK
+                {t("OK")}
               </Button>
             </View>
           </View>
@@ -797,11 +799,10 @@ const onChangeLocationText = textvalues => {
 
 function Individual_Staff_loan_Info(props) {
   const dispatch = useDispatch();
-
+  const { t } = useTranslation();
   const [show_operation, setOperation] = useState('1');
   const [loanexpanded, setLoanExpanded] = React.useState(true);
   const [show_canvas, setCanvas] = useState(false);
-
   const [all_loandata, setAllLoanData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [all_cus, setAllCus] = useState([]);
@@ -856,7 +857,6 @@ function Individual_Staff_loan_Info(props) {
   const [working_month, setWorkingMonth] = useState();
   const [loan_limit_amount, setLoanLimitAmount] = useState(0);
   const { handleSubmit, navigation, entryDate, salary_amount } = props;
-  console.log('salary_amount'.salary_amount);
   const handleLoanToggle = () => {
     setLoanExpanded(!loanexpanded);
   };
@@ -1518,12 +1518,13 @@ function Individual_Staff_loan_Info(props) {
                   </RadioButton.Group>
                 ))}
               </View>
+
               <Button
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={style.btnStyle}>
-                OK
+                {t("OK")}
               </Button>
             </View>
             <DividerLine />

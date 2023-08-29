@@ -815,7 +815,6 @@ function Individual_Staff_loan_Info(props) {
     update_status,
     retrive_staff_loan_data,
   } = props;
-  console.log('retrive_staff_loan_data', retrive_staff_loan_data);
   const dispatch = useDispatch();
   const [selectedItemValue, setSelectedItemValue] = useState('customer_nm');
   const [show_village, setVillage] = useState('1');
@@ -889,6 +888,66 @@ function Individual_Staff_loan_Info(props) {
   const [borrower_name, setBorrowerName] = useState('');
   const [coborrower_name, setCoBorrowerName] = useState('');
   const [show_co_borrower_canvas, setCoBorrowerCanvas] = useState(false);
+  const [capturedFiles, setCapturedFiles] = useState([]);
+  const [passport_capturedFiles, setPassportCapturedFiles] = useState(false);
+
+
+  const data = [
+    { id: 1, name: 'NRC Card (Front)', value: '01F' },
+    { id: 2, name: 'NRC Card (Back)', value: '01B' },
+    { id: 3, name: 'Guarantor NRC Card (Front)', value: '02F' },
+    { id: 4, name: 'Guarantor NRC Card (Back)', value: '02B' },
+    { id: 5, name: 'Co-borrower NRC Card (Front)', value: '03F' },
+    { id: 6, name: 'Co-borrower NRC Card (Back)', value: '03B' },
+    { id: 7, name: 'Family (Front)', value: '04F' },
+    { id: 8, name: 'Family (Back)', value: '04B' },
+    { id: 9, name: 'House Ownership (Front)', value: '05F' },
+    { id: 10, name: 'House Ownership (Back)', value: '05B' },
+    { id: 11, name: 'Recommendation (Front)', value: '06F' },
+    { id: 12, name: 'Recommendation (Back)', value: '06B' },
+    { id: 13, name: 'Business License (Front)', value: '07F' },
+    { id: 14, name: 'Business License (Back)', value: '07B' },
+    { id: 15, name: 'Land OwnerShip (Front)', value: '08F' },
+    { id: 16, name: 'Land OwnerShip (Back)', value: '08B' },
+    { id: 17, name: 'Tax Payment (Front)', value: '09F' },
+    { id: 18, name: 'Tax Payment (Back)', value: '09B' },
+    { id: 19, name: 'Insurance (Front)', value: '10F' },
+    { id: 20, name: 'Insurance (Back)', value: '10B' },
+    { id: 21, name: 'Etc (Front)', value: '11F' },
+    { id: 22, name: 'Etc (Back)', value: '11B' },
+
+    // Add more data as needed
+  ];
+  const PassportcheckFileExists = async () => {
+    try {
+      const fileName = `${retrive_staff_loan_data.application_no}AT12F.jpg`;
+      const directory = `/storage/emulated/0/Pictures/Camera/`;
+      const filePath = directory + fileName;
+      const fileExists = await RNFS.exists(filePath);
+      if (fileExists) {
+        setPassportCapturedFiles(true);
+      }
+    } catch (error) {
+      console.log('Error checking file existence:', error);
+    }
+  };
+
+  const checkFileExists = async () => {
+    try {
+      for (const item of data) {
+        const fileName = `${retrive_staff_loan_data.application_no}AT${item.value}.jpg`;
+        const directory = `/storage/emulated/0/Pictures/Camera/`;
+        const filePath = directory + fileName;
+        const fileExists = await RNFS.exists(filePath);
+        if (fileExists) {
+          setCapturedFiles(prevFiles => [...prevFiles, item.value]);
+
+        }
+      }
+    } catch (error) {
+      console.log('Error checking file existence:', error);
+    }
+  };
 
   const loadData = async () => {
     await getAllLoan().then(loan_data => {
@@ -912,11 +971,17 @@ function Individual_Staff_loan_Info(props) {
         setEvaluationData(data);
       },
     );
+
+    await checkFileExists()
+    await PassportcheckFileExists()
+
   };
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       loadData();
+      setCapturedFiles([])
+      setPassportCapturedFiles(false)
     });
 
     return () => {
@@ -1129,29 +1194,47 @@ function Individual_Staff_loan_Info(props) {
                 <TouchableOpacity
                   onPress={() =>
                     props.navigation.navigate('Evidence', {
-                      retrive_loan_data: retrive_staff_loan_data,
+                      retrive_loan_data: retrive_staff_loan_data
                     })
                   }
                   style={{
                     width: 250,
                     height: 40,
-                    backgroundColor: '#242157',
+                    backgroundColor: capturedFiles.length > 0 ? '#3E3E84' : '#242157',
                     margin: 10,
                   }}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      margin: 5,
-                    }}>
-                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                      <Icon name="paperclip" size={20} color="#fff" />
-                      <Text style={{ color: '#fff', marginLeft: 5 }}>
-                        Evidence Document Form
-                      </Text>
+                  {capturedFiles.length > 0 ? (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        margin: 5,
+                      }}>
+                      <View
+                        style={{ alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name="check" size={20} color="#ede72d" />
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
+                          Evidence Document Form
+                        </Text>
+                      </View>
+                    </View>) :
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        margin: 5,
+                      }}>
+                      <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name="paperclip" size={20} color="#fff" />
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
+                          Evidence Document Form
+                        </Text>
+                      </View>
+                      <Icon name="chevron-right" size={25} color="#fff" />
                     </View>
-                    <Icon name="chevron-right" size={25} color="#fff" />
-                  </View>
+                  }
+
+
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -1212,7 +1295,7 @@ function Individual_Staff_loan_Info(props) {
                   style={{
                     width: 250,
                     height: 40,
-                    backgroundColor: '#242157',
+                    backgroundColor: passport_capturedFiles ? '#3E3E84' : '#242157',
                     margin: 10,
                   }}>
                   <View
@@ -1221,14 +1304,26 @@ function Individual_Staff_loan_Info(props) {
                       justifyContent: 'space-between',
                       margin: 5,
                     }}>
-                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                      <Icon name="paperclip" size={20} color="#fff" />
-                      <Text style={{ color: '#fff', marginLeft: 5 }}>
-                        Passport Photo
-                      </Text>
-                    </View>
-                    <Icon name="chevron-right" size={25} color="#fff" />
+                    {passport_capturedFiles ? (
+                      <View
+                        style={{ alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name="check" size={20} color="#ede72d" />
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
+                          Passport Photo
+                        </Text>
+                      </View>) : (
+                      <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name="paperclip" size={20} color="#fff" />
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
+                          Passport Photo
+                        </Text>
+                        <Icon name="chevron-right" size={25} color="#fff" />
+
+                      </View>
+                    )
+                    }
                   </View>
+
                 </TouchableOpacity>
               </View>
 

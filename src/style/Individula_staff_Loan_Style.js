@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const style = StyleSheet.create({
   title_style: {
@@ -14,9 +14,12 @@ export const style = StyleSheet.create({
   },
   btnStyle: {
     borderRadius: 0,
-    width: 100,
-    marginTop: 10,
+    width: 117,
+    marginTop: 11,
     color: 'black',
+    bottom:5
+    
+
   },
   list_container: {
     backgroundColor: '#fff',
@@ -52,7 +55,7 @@ export const style = StyleSheet.create({
     right: 10,
     top: 10,
   },
-  modal_body_container:{
+  modal_body_container: {
     padding: 10, height: 550
   }
 });

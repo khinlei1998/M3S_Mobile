@@ -35,7 +35,7 @@ import {
 import i18next from '../../../services/i18next'
 let token;
 function LoginScreen(props) {
-  const { t, i18n } = useTranslation();
+  const { t} = useTranslation();
 
   const dispatch = useDispatch();
   const [id, setID] = useState('');

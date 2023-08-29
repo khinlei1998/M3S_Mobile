@@ -1,46 +1,38 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   FlatList,
-  StyleSheet,
-  Animated,
 } from 'react-native';
-import axios from 'axios';
-
 import {
-  Divider,
   Button,
-  Provider,
   Modal,
-  Portal,
   ActivityIndicator,
 } from 'react-native-paper';
-import {getAllLoan} from '../../query/AllLoan_query';
 import Tab from '../../components/Tab';
 import Sync_Upload_Screen from './Sync_Upload_Screen';
-import CheckBoxFile from '../../components/CheckBoxFile';
 import Sync_Download_Screen from './Sync_Download_Screen';
 import Sync_Setting_Screen from './Sync_Setting_Screen';
-import {fetchAllCustomerNum} from '../../query/Customer_query';
-import {UploadCustomerData} from '../../query/Customer_query';
-import {getAllLoan_By_application_no} from '../../query/AllLoan_query';
-import {fetchDataForCheckedData} from '../../query/AllLoan_query';
+import { fetchAllCustomerNum } from '../../query/Customer_query';
+import { UploadCustomerData } from '../../query/Customer_query';
+import { fetchDataForCheckedData } from '../../query/AllLoan_query';
 import Icon from 'react-native-vector-icons/Feather';
-import {get_loged_branch_code} from '../../query/Employee_query';
+import { get_loged_branch_code } from '../../query/Employee_query';
 import Spinner from 'react-native-loading-spinner-overlay';
-import {getAllLoanType} from '../../query/AllLoan_query';
-import {getSurveyResult} from '../../query/SurveyItem_query';
-import {UploadSurveyData} from '../../query/SurveyItem_query';
-import {useNetInfo, NetInfo} from '@react-native-community/netinfo';
-import {cancelRequest} from '../../components/CancelUtils';
-import {createCancelTokenSource} from '../../components/CancelUtils';
-// import {cancelRequest} from '../../query/Employee_query';
+import { getAllLoanType } from '../../query/AllLoan_query';
+import { getSurveyResult } from '../../query/SurveyItem_query';
+import { UploadSurveyData } from '../../query/SurveyItem_query';
+import { useNetInfo, } from '@react-native-community/netinfo';
+import { cancelRequest } from '../../components/CancelUtils';
+import { createCancelTokenSource } from '../../components/CancelUtils';
+import { useTranslation } from 'react-i18next';
+
 let token;
 
 export default function Synchronization_Screen(props) {
-  const {navigation} = props;
+  const { t } = useTranslation();
+  const { navigation } = props;
   const [activeTab, setActiveTab] = React.useState(0);
   const [loan_data, setAllLoan] = React.useState([]);
   const [branch_code, setBranchCode] = React.useState('');
@@ -57,11 +49,6 @@ export default function Synchronization_Screen(props) {
   const [checkedItems, setCheckedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [fetchName, setFetchName] = useState('');
-  const [progress] = useState(new Animated.Value(0)); // Initialize animated value
-  const [fetchedCount, setFetchedCount] = useState(0);
-  const [controller, setController] = useState(new AbortController());
-  const [cancelToken, setCancelToken] = useState([]);
-
   const netInfo = useNetInfo();
 
   const btnUploadCustomer = async () => {
@@ -73,10 +60,7 @@ export default function Synchronization_Screen(props) {
     });
     try {
       const uploadCustomerResult = await UploadCustomerData(customer_data);
-      console.log('uploadCustomerResult', uploadCustomerResult);
-
       const uploadSurveyResult = await UploadSurveyData(all_survey);
-      console.log('uploadSurveyResult', uploadSurveyResult);
 
       if (
         uploadCustomerResult === 'success' &&
@@ -90,7 +74,6 @@ export default function Synchronization_Screen(props) {
         uploadCustomerResult.length > 0 ||
         uploadSurveyResult.length > 0
       ) {
-        console.log('reach');
         const mergedArray = [...uploadCustomerResult, ...uploadSurveyResult];
 
         setLoading(false);
@@ -191,7 +174,7 @@ export default function Synchronization_Screen(props) {
     setShowModal(false);
   };
 
-  const error_log = ({item, index}) => {
+  const error_log = ({ item, index }) => {
     return (
       <View
         style={{
@@ -218,7 +201,7 @@ export default function Synchronization_Screen(props) {
     );
   };
 
-  const cus_error_log = ({item, index}) => {
+  const cus_error_log = ({ item, index }) => {
     return (
       <View
         style={{
@@ -263,7 +246,6 @@ export default function Synchronization_Screen(props) {
     }
     try {
       const totalItems = checkedItems.length;
-      setFetchedCount(0); // Reset fetched count
       for (let i = 0; i < totalItems; i++) {
         const item = checkedItems[i];
         setFetchName(item.name);
@@ -272,10 +254,8 @@ export default function Synchronization_Screen(props) {
 
         await executeRequest(item);
       }
-
       setSelectAll(false);
       setShowModal(false);
-
       setCheckedItems([]);
       alert('Sync success');
     } catch (error) {
@@ -294,8 +274,7 @@ export default function Synchronization_Screen(props) {
 
   const executeRequest = async item => {
     try {
-      const test = await item.api(token);
-      console.log('test', test);
+      await item.api(token);
     } catch (error) {
       throw error; // If a request fails, propagate the error up the chain
     }
@@ -303,20 +282,20 @@ export default function Synchronization_Screen(props) {
 
   return (
     <>
-      <Text style={{fontWeight: 'bold', fontSize: 20, padding: 15}}>
+      <Text style={{ fontWeight: 'bold', fontSize: 20, padding: 15 }}>
         Synchronization
       </Text>
 
-      <Text style={{fontSize: 15, padding: 5, marginLeft: 10}}>
+      <Text style={{ fontSize: 15, padding: 5, marginLeft: 10 }}>
         Synchronization is the coordination of events to operate a system in
         union
       </Text>
-      <View style={{flexDirection: 'row', marginLeft: 10, marginRight: 10}}>
+      <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10 }}>
         <Tab
           label="Upload"
           isActive={activeTab === 0}
           onPress={() => handleTabPress(0)}>
-          <View style={{backgroundColor: '#fff'}}>
+          <View style={{ backgroundColor: '#fff' }}>
             <Text>Upload Applications</Text>
           </View>
         </Tab>
@@ -332,7 +311,7 @@ export default function Synchronization_Screen(props) {
         />
       </View>
 
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
+      <View style={{ flex: 1, backgroundColor: '#fff' }}>
         {activeTab === 0 && (
           <Sync_Upload_Screen
             btnUploadCustomer={btnUploadCustomer}
@@ -370,7 +349,7 @@ export default function Synchronization_Screen(props) {
           height: '70%',
           alignSelf: 'center',
         }}>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <View
             style={{
               backgroundColor: '#e01b22',
@@ -414,7 +393,7 @@ export default function Synchronization_Screen(props) {
               borderRadius: 0,
               padding: 5,
             }}>
-            OK
+            {t("OK")}
           </Button>
         </View>
       </Modal>
@@ -453,7 +432,7 @@ export default function Synchronization_Screen(props) {
           </TouchableOpacity>
         </View>
 
-        <View style={{padding: 5, backgroundColor: '#e01b22'}}>
+        <View style={{ padding: 5, backgroundColor: '#e01b22' }}>
           <View
             style={{
               backgroundColor: '#e6ebe7',
@@ -473,7 +452,7 @@ export default function Synchronization_Screen(props) {
         visible={show_modal}
         // onDismiss={hidePgModal}
         contentContainerStyle={containerStyle}>
-        <View style={{padding: 10, height: 150}}>
+        <View style={{ padding: 10, height: 150 }}>
           <View
             style={{
               flex: 1,
@@ -484,9 +463,9 @@ export default function Synchronization_Screen(props) {
               padding: 8,
             }}>
             {/* <Animated.Text>{fetchedCount}</Animated.Text> */}
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <ActivityIndicator size="15" color="#636Dc6" />
-              <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 10}}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 10 }}>
                 {fetchName} is downloading..
               </Text>
             </View>
@@ -531,7 +510,7 @@ export default function Synchronization_Screen(props) {
         </View>
       </Modal>
 
-      <View style={{position: 'absolute', top: '50%', right: 0, left: 0}}>
+      <View style={{ position: 'absolute', top: '50%', right: 0, left: 0 }}>
         {isLoading ? (
           <Spinner visible={isLoading} textContent={'Please Wait'} />
         ) : (
