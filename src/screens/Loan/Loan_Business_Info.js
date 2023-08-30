@@ -5,7 +5,6 @@ import TextInputFile from '../../components/TextInputFile';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import {
   business_type,
-  address_type,
   owner_shipratio,
   business_situation,
 } from '../../common';
