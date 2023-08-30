@@ -1,11 +1,7 @@
-import {View, Text,} from 'react-native';
-import React, {useState, } from 'react';
-import { List} from 'react-native-paper';
-import {
-  Field,
-  reduxForm,
-  change,
-} from 'redux-form';
+import {View, Text} from 'react-native';
+import React, {useState} from 'react';
+import {List} from 'react-native-paper';
+import {Field, reduxForm, change} from 'redux-form';
 import DropDownPicker from '../../components/DropDownPicker';
 import TextInputFile from '../../components/TextInputFile';
 import {connect} from 'react-redux';
@@ -22,10 +18,12 @@ import DividerLine from '../../components/DividerLine';
 import DatePicker from '../../components/DatePicker';
 import {setCusFormInitialValues} from '../../redux/CustomerReducer';
 import {fetchAllCustomerNum} from '../../query/Customer_query';
-import { start_living_date_status} from '../../common';
+import {start_living_date_status} from '../../common';
 import {useDispatch} from 'react-redux';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import {style} from '../../style/Customer_Mang_style';
+import { useTranslation } from 'react-i18next';
+
 function Edit_Customer_BaseInfo(props) {
   const {
     show_village,
@@ -42,7 +40,7 @@ function Edit_Customer_BaseInfo(props) {
     showLocationSearch,
   } = props;
   const dispatch = useDispatch();
-
+  const { t } = useTranslation()
   const [open_cusinfo, setCusInfo] = useState(true);
   const numbers = Array.from({length: 60}, (_, i) => (i + 1).toString());
 
@@ -89,7 +87,7 @@ function Edit_Customer_BaseInfo(props) {
             {show_nrc == '1' ? (
               <Field
                 name={'resident_rgst_id'}
-                title={'NRC'}
+                title={t('NRC')}
                 component={TextInputFile}
                 cus_width
                 input_mode
@@ -99,7 +97,7 @@ function Edit_Customer_BaseInfo(props) {
             ) : (
               <Field
                 name={'resident_rgst_id'}
-                title={'NRC'}
+                title={t('NRC')}
                 component={TextInputFile}
                 cus_width
                 input_mode
@@ -128,7 +126,7 @@ function Edit_Customer_BaseInfo(props) {
 
             <Field
               name={'saving_acct_num'}
-              title={'Saving Code'}
+              title={t('Saving Code')}
               component={TextInputFile}
               cus_width
               input_mode
@@ -152,7 +150,7 @@ function Edit_Customer_BaseInfo(props) {
             <Field
               name={'birth_date'}
               component={DatePicker}
-              label={'date of birth'}
+              label={t('Date of birth')}
               editable={update_status == true ? false : true}
               icon={update_status == true && 'calendar'}
               update_status
@@ -282,7 +280,7 @@ function Edit_Customer_BaseInfo(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'location_code'}
-              title={'Location Code '}
+              title={t('Location Code')}
               component={TextInputFile}
               input_mode
               inputmax={100}
@@ -373,7 +371,7 @@ function Edit_Customer_BaseInfo(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'hghschl_num'}
-              title={'Number of High school Students '}
+              title={t('Number of High school Students')}
               component={TextInputFile}
               input_mode
               inputmax={100}
@@ -395,7 +393,7 @@ function Edit_Customer_BaseInfo(props) {
             <Field
               data={condition_house}
               name={'house_ocpn_type'}
-              title={'Condition of House'}
+              title={t('Condition of House')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,
@@ -405,7 +403,7 @@ function Edit_Customer_BaseInfo(props) {
             <Field
               data={owner_ship_business}
               name={'business_own_type'}
-              title={'Ownership of Business'}
+              title={t('Ownership of Business')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,
@@ -417,7 +415,7 @@ function Edit_Customer_BaseInfo(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'occupation'}
-              title={'Occupation'}
+              title={t('Occupation')}
               component={TextInputFile}
               editable={update_status == true ? false : true}
             />
@@ -425,7 +423,7 @@ function Edit_Customer_BaseInfo(props) {
             <Field
               data={maritail_status}
               name={'maritalStatus'}
-              title={'Maritial Status'}
+              title={t('Marital Status')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,

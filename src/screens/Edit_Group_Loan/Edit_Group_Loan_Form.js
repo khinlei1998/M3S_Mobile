@@ -29,7 +29,11 @@ import {
 } from '../../query/GropuLon_query';
 import validate from '../Group_Loan/Validate';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTranslation } from 'react-i18next';
+
 const Borrower_modal = props => {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
   const [emp_data, setEmpData] = React.useState('');
@@ -155,9 +159,9 @@ const Borrower_modal = props => {
           <Button
             onPress={() => hideModal()}
             mode="contained"
-            buttonColor={'#6870C3'}
+            buttonColor={'#21316C'}
             style={style.btn_style}>
-            OK
+            {t("OK")}
           </Button>
         </View>
       </View>
@@ -166,6 +170,8 @@ const Borrower_modal = props => {
 };
 
 function Edit_Group_Loan_Form(props) {
+  const { t } = useTranslation();
+
   const { handleSubmit, navigation, setGroup_UpdateStatus, group_update_status } =
     props;
   const [show_operation, setOperation] = useState('2');
@@ -176,7 +182,6 @@ function Edit_Group_Loan_Form(props) {
   const [all_loan, setAllLoanData] = useState([]);
 
   const dispatch = useDispatch();
-  const filtered_operations = operations.filter(item => item.value != 1);
   const inquiry_group_data = props.route.params;
 
   const btnChangeOperation = async (newValue, group_data) => {
@@ -230,7 +235,7 @@ function Edit_Group_Loan_Form(props) {
 
   useEffect(() => {
     loadData();
-    
+
     return () => {
 
       setOperation('2');
@@ -245,8 +250,6 @@ function Edit_Group_Loan_Form(props) {
         if (response == 'success') {
           ToastAndroid.show(`Delete Success`, ToastAndroid.SHORT);
           navigation.goBack();
-          // setUpdateStatus(false);
-          // props.navigation.navigate('Home');
         }
       });
     } else {
@@ -259,8 +262,6 @@ function Edit_Group_Loan_Form(props) {
         if (response == 'success') {
           ToastAndroid.show(`Update Success!`, ToastAndroid.SHORT);
           navigation.goBack();
-          // setUpdateStatus(false);
-          // props.navigation.navigate('Home');
         }
       });
     }
@@ -307,9 +308,9 @@ function Edit_Group_Loan_Form(props) {
                 }
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={style.btnStyle}>
-                OK
+                {t("OK")}
               </Button>
             </View>
             <DividerLine />

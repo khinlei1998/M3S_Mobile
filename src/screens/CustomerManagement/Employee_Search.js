@@ -18,15 +18,16 @@ import { filterEmp } from '../../query/Employee_query';
 import ViewEmployee from './ViewEmployee';
 import { TestAction } from '../../redux/EmployeeReducer';
 import { connect,  } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 function Employee_Search(props) {
+  const { t } = useTranslation();
   const containerStyle = {
     backgroundColor: '#e8e8e8',
     width: '85%',
     alignSelf: 'center',
   };
   const { visible, hideModal, handleSubmit, dispatch } = props;
-  const [searchTerm, setSearchTerm] = useState('');
   const [all_emp, setAllEmp] = useState([]);
 
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
@@ -114,15 +115,16 @@ function Employee_Search(props) {
               <Button
                 onPress={() => hideModal()}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={{
                   borderRadius: 0,
-                  width: 100,
+                  width: 117,
                   marginTop: 10,
                   color: 'black',
                   marginLeft: 5,
+                  height:44
                 }}>
-                OK
+                {t("OK")}
               </Button>
             </View>
           </View>

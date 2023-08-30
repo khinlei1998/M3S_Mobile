@@ -14,7 +14,10 @@ import {
   condition_house,
   owner_ship_business
 } from '../../common';
+import { useTranslation } from 'react-i18next';
+
 function Edit_Guarantor_Info(props) {
+  const { t } = useTranslation()
   const { showGuarantorSearch, guarantor_update_status } = props;
   const [guarantor_expand, setGuarantorInfoExpand] = useState(true);
   const handleGuarantorToggle = () => {
@@ -53,7 +56,7 @@ function Edit_Guarantor_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'resident_rgst_id'}
-              title={'NRC'}
+              title={t('NRC')}
               icon={guarantor_update_status == true && 'magnify'}
               component={TextInputFile}
               cus_width
@@ -88,7 +91,7 @@ function Edit_Guarantor_Info(props) {
             <Field
               name={'birth_date'}
               component={DatePicker}
-              label={'date of birth'}
+              label={t('Date of birth')}
               icon={guarantor_update_status == true && 'calendar'}
               editable={guarantor_update_status == true ? false : true}
             />
@@ -98,7 +101,7 @@ function Edit_Guarantor_Info(props) {
             <Field
               data={maritail_status}
               name={'marital_status'}
-              title={'Maritial Status'}
+              title={t('Marital Status')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,
@@ -149,7 +152,7 @@ function Edit_Guarantor_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'borrower_rltn'}
-              title={'Relationship with borrower'}
+              title={t('Relationship with borrower')}
               component={TextInputFile}
               cus_width
               input_mode
@@ -166,7 +169,7 @@ function Edit_Guarantor_Info(props) {
             <Field
               data={condition_house}
               name={'house_ocpn_type'}
-              title={'Condition of house'}
+              title={t('Condition of house')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,
@@ -177,7 +180,7 @@ function Edit_Guarantor_Info(props) {
             <Field
               data={owner_ship_business}
               name={'business_own_type'}
-              title={'OwnerShip of business'}
+              title={t('OwnerShip of business')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,

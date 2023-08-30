@@ -4,25 +4,17 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
-  FlatList,
-  TouchableHighlight,
   ToastAndroid,
-  TouchableOpacity,
 } from 'react-native';
 import React, {useState, useEffect, createRef} from 'react';
 import DividerLine from '../../components/DividerLine';
 import {reduxForm, Field, change, reset} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/Feather';
-import {storeAreaEvaluation} from '../../query/AreaEvaluation_query';
 import {
   Button,
   RadioButton,
   List,
-  Provider,
-  Portal,
-  Modal,
-  TextInput,
 } from 'react-native-paper';
 import {operations} from '../../common';
 import {style} from '../../style/Area_Evaluation_style';
@@ -38,10 +30,11 @@ import {setAREA_UpdateStatus} from '../../redux/LoanReducer';
 import {deleteAreaEvaluation_ByID} from '../../query/AreaEvaluation_query';
 import {setEvaluation_Score} from '../../redux/LoanReducer';
 import { updateAreaEvaluation } from '../../query/AreaEvaluation_query';
+import { useTranslation } from 'react-i18next';
+
 function Edit_Area_Evaluation_Form(props) {
   const navigation = useNavigation();
-  const filtered_operations = operations.filter(item => item.value != 1);
-
+  const { t } = useTranslation();
   const {
     handleSubmit,
     area_update_status,
@@ -54,10 +47,6 @@ function Edit_Area_Evaluation_Form(props) {
   const [updatetotal_sts_flag, setTotal_sts_flag] = useState('');
 
   const retrive_area_evaluation = props.route.params.evaluation_data[0];
-  console.log(
-    'retrive_area_evaluation',
-    retrive_area_evaluation,
-  );
   const loadData = async () => {
     props.initialize(retrive_area_evaluation);
     setEvaluation_Score(retrive_area_evaluation.total_score);
@@ -195,7 +184,7 @@ function Edit_Area_Evaluation_Form(props) {
 
                   <Field
                     name={'borrowerName'}
-                    title={'Borrower Name'}
+                    title={t('Borrower Name')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -205,7 +194,7 @@ function Edit_Area_Evaluation_Form(props) {
                 <View style={style.sub_list_container}>
                   <Field
                     name={'applicationAmt'}
-                    title={'Loan Apply Amount'}
+                    title={t('Loan Apply Amount')}
                     component={TextInputFile}
                     cus_width
                     input_mode

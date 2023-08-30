@@ -4,10 +4,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
-  FlatList,
-  TouchableHighlight,
   ToastAndroid,
-  TouchableOpacity,
 } from 'react-native';
 import React, { useState, useEffect, createRef } from 'react';
 import DividerLine from '../../components/DividerLine';
@@ -19,10 +16,6 @@ import {
   Button,
   RadioButton,
   List,
-  Provider,
-  Portal,
-  Modal,
-  TextInput,
 } from 'react-native-paper';
 import { operations } from '../../common';
 import { style } from '../../style/Area_Evaluation_style';
@@ -30,14 +23,15 @@ import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
 import Area_Info from './Area_Info';
 import Area_Evaluation from './Area_Evaluation';
-import { area_evaluation_result } from '../../common';
 import Area_Evaluation_Score from './Area_Evaluation_Score';
 import { getAllLoan_By_application_no } from '../../query/AllLoan_query';
 import { useNavigation } from '@react-navigation/native';
 import { setEvaluation_Score } from '../../redux/LoanReducer';
+import { useTranslation } from 'react-i18next';
+
 function Area_Evaluation_Form(props) {
   const navigation = useNavigation();
-
+  const { t } = useTranslation();
   const { handleSubmit, total_score, setEvaluation_Score } = props;
   const [show_operation, setOperation] = useState('1');
   const [total_sts_flag, setTotal_sts_flag] = useState('');
@@ -173,7 +167,7 @@ function Area_Evaluation_Form(props) {
 
                   <Field
                     name={'borrowerName'}
-                    title={'Borrower Name'}
+                    title={t('Borrower Name')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -183,7 +177,7 @@ function Area_Evaluation_Form(props) {
                 <View style={style.sub_list_container}>
                   <Field
                     name={'applicationAmt'}
-                    title={'Loan Apply Amount'}
+                    title={t('Loan Apply Amount')}
                     component={TextInputFile}
                     cus_width
                     input_mode

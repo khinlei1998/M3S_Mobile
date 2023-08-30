@@ -4,12 +4,11 @@ import { List, Button } from 'react-native-paper';
 import { style } from '../../style/Cover_Loan_style';
 import { loan_application_type } from '../../common';
 import { addInquiryLoanData } from '../../redux/LoanReducer';
-import { connect, useDispatch } from 'react-redux';
-import { reduxForm, Field, change } from 'redux-form';
+import { connect,  } from 'react-redux';
+import { reduxForm, } from 'redux-form';
 function Reloan_list(props) {
   const { reloan_update_status, navigation, inquiry_reloan, all_loan, addInquiryLoanData } = props;
   const [Reloanlist_expand, setReloanListExpand] = useState(true);
-  console.log('reloan_update_status',reloan_update_status);
   const handleReloanListToggle = () => {
     setReloanListExpand(!Coverlist_expand);
   };
@@ -33,7 +32,7 @@ function Reloan_list(props) {
             }}
 
             mode="contained"
-            buttonColor={'#6870C3'}
+            buttonColor={'#21316C'}
             style={{
               width: 300,
               borderRadius: 0,

@@ -17,12 +17,13 @@ import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
 import Exceptional_Approval_Info from './Edit_Exceptional_Approval_Info';
 import validate from './Validate';
-import { storeExceptionalApproval } from '../../query/Exceptional_Approval_query';
 import { useNavigation } from '@react-navigation/native';
 import { setExcept_UPDATEStatus } from '../../redux/LoanReducer';
 import { deleteExceptional_approval_ByID } from '../../query/Exceptional_Approval_query';
 import { updateExceptionalApproval } from '../../query/Exceptional_Approval_query';
+import { useTranslation } from 'react-i18next';
 function Edit_Exceptional_Approvel_Form(props) {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const { handleSubmit, exceptional_update_status, setExcept_UPDATEStatus } = props;
   const retrive_exceptional_data = props.route.params.exceptional_data[0]
@@ -124,15 +125,6 @@ function Edit_Exceptional_Approvel_Form(props) {
                   </RadioButton.Group>
                 ))}
               </View>
-              {/* {exceptional_update_status == true && (
-                <Button
-                  onPress={handleSubmit(onSubmit)}
-                  mode="contained"
-                  buttonColor={'#6870C3'}
-                  style={style.btnStyle}>
-                  OK
-                </Button>
-              )} */}
             </View>
             <DividerLine />
             <List.Accordion
@@ -172,7 +164,7 @@ function Edit_Exceptional_Approvel_Form(props) {
 
                   <Field
                     name={'borrower_name'}
-                    title={'Borrower Name'}
+                    title={t('Borrower Name')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -184,7 +176,7 @@ function Edit_Exceptional_Approvel_Form(props) {
                 <View style={style.sub_list_container}>
                   <Field
                     name={'application_amt'}
-                    title={'Loan Apply Amount'}
+                    title={t('Loan Apply Amount')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -195,7 +187,7 @@ function Edit_Exceptional_Approvel_Form(props) {
                   <Field
                     name={'birth_date'}
                     component={DatePicker}
-                    label={'Date Of Birth'}
+                    label={t('Date Of Birth')}
                     editable={true}
                   />
                 </View>
@@ -237,7 +229,7 @@ function Edit_Exceptional_Approvel_Form(props) {
 
                   <Field
                     name={'occupation'}
-                    title={'Main Occuaptions'}
+                    title={t('Occuaption')}
                     component={TextInputFile}
                     cus_width
                     input_mode

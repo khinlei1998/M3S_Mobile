@@ -6,7 +6,10 @@ import TextInputFile from '../../components/TextInputFile';
 import { style } from '../../style/Individula_staff_Loan_Style';
 import { reduxForm, Field, change, reset } from 'redux-form';
 import { connect, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+
  function Edit_Invidual_Staff_CoBorrower_Info(props) {
+  const { t } = useTranslation()
     const [co_borrower_expanded, setCoBorrowerExpanded] = useState(true);
     const { showCoBorrowerSearch,update_status } = props
 
@@ -33,7 +36,7 @@ import { connect, useDispatch } from 'react-redux';
           <View style={style.sub_list_container}>
             <Field
               name={'co_brwer_rgst_id'}
-              title={'NRC'}
+              title={t('NRC')}
               icon={update_status == true &&'magnify'}
               component={TextInputFile}
               cus_width
@@ -47,7 +50,7 @@ import { connect, useDispatch } from 'react-redux';
 
             <Field
               name={'co_brwer_name'}
-              title={'Co Borrower Name'}
+              title={t('Co Borrower Name')}
               component={TextInputFile}
               cus_width
               input_mode
@@ -82,7 +85,7 @@ import { connect, useDispatch } from 'react-redux';
           <View style={style.sub_list_container}>
             <Field
               name={'co_occupation'}
-              title={'Occupation'}
+              title={t('Occupation')}
               component={TextInputFile}
               cus_width
               input_mode

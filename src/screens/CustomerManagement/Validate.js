@@ -26,6 +26,10 @@ const validate = values => {
   if (!values.ts_code) {
     errors.ts_code = 'Township Code is required.';
   }
+  if (!values.CustomerNo) {
+    errors.CustomerNo = 'Customer Number is required.';
+  }
+  
 
   return errors;
 };

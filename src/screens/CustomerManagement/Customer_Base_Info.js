@@ -28,6 +28,8 @@ import {
 import { useDispatch } from 'react-redux';
 import { style } from '../../style/Customer_Mang_style';
 import { List } from 'react-native-paper';
+import { useTranslation } from 'react-i18next';
+
 function Customer_Base_Info(props) {
   const {
     show_businessdate,
@@ -40,13 +42,11 @@ function Customer_Base_Info(props) {
     showWardSearch,
     showLocationSearch,
   } = props;
+  const { t } = useTranslation()
   const dispatch = useDispatch();
 
   const [open_cusinfo, setCusInfo] = useState(true);
   const [show_village, setVillage] = useState('1');
-  const [modal_city_visible, setCityCodeModalVisible] = useState(false);
-  const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
-  // const numbers = Array.from({length: 60}, (_, i) => i + 1);
   const numbers = Array.from({ length: 60 }, (_, i) => (i + 1).toString());
 
   const arrayWithObjects = numbers.map((num, index) => {
@@ -104,7 +104,7 @@ function Customer_Base_Info(props) {
             {show_nrc == '1' ? (
               <Field
                 name={'resident_rgst_id'} //
-                title={'NRC'}
+                title={t('NRC')}
                 inputmax={6}
                 component={TextInputFile}
                 cus_width
@@ -113,7 +113,7 @@ function Customer_Base_Info(props) {
             ) : (
               <Field
                 name={'resident_rgst_id'}
-                title={'NRC'}
+                title={t('NRC')}
                 component={TextInputFile}
                 cus_width
                 input_mode
@@ -145,7 +145,7 @@ function Customer_Base_Info(props) {
 
             <Field
               name={'savingAcctNum'}
-              title={'Saving Code'}
+              title={t('Saving Code')}
               component={TextInputFile}
               cus_width
               input_mode
@@ -166,7 +166,7 @@ function Customer_Base_Info(props) {
             <Field
               name={'birthDate'}
               component={DatePicker}
-              label={'date of birth'}
+              label={t('Date of birth')}
               icon={'calendar'}
             />
           </View>
@@ -240,7 +240,7 @@ function Customer_Base_Info(props) {
                 handleRadioButtonChange(value, input)
               }
               get_value={'1'}
-             
+
             />
           </View>
 
@@ -290,7 +290,7 @@ function Customer_Base_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'location_code'}
-              title={'Location Code '}
+              title={t('Location Code')}
               component={TextInputFile}
               input_mode
               inputmax={100}
@@ -346,7 +346,7 @@ function Customer_Base_Info(props) {
             )}
             <Field
               name={'telNo'}
-              title={'Phone Number'}
+              title={t('Phone Number')}
               component={TextInputFile}
               input_mode
               inputmax={20}
@@ -366,7 +366,7 @@ function Customer_Base_Info(props) {
             />
             <Field
               name={'familyNum'}
-              title={'Number of family Number '}
+              title={t('Number of family Number')}
               component={TextInputFile}
               input_mode
               inputmax={100}
@@ -377,7 +377,7 @@ function Customer_Base_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'hghschlNum'}
-              title={'Number of High school Students '}
+              title={t('Number of High school Students')}
               component={TextInputFile}
               input_mode
               inputmax={100}
@@ -397,7 +397,7 @@ function Customer_Base_Info(props) {
             <Field
               data={condition_house}
               name={'houseOcpnType'}
-              title={'Condition of House'}
+              title={t('Condition of House')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,
@@ -406,7 +406,7 @@ function Customer_Base_Info(props) {
             <Field
               data={owner_ship_business}
               name={'businessOwnType'}
-              title={'Ownership of Business'}
+              title={t('Ownership of Business')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,
@@ -417,14 +417,14 @@ function Customer_Base_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'occupation'}
-              title={'Occupation'}
+              title={t('Occupation')}
               component={TextInputFile}
             />
 
             <Field
               data={maritail_status}
               name={'maritalStatus'}
-              title={'Maritial Status'}
+              title={t('Marital Status')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,

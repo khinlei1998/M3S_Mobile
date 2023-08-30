@@ -4,6 +4,8 @@ import { Provider, Portal, Modal, TextInput, Button } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import { Picker } from '@react-native-picker/picker';
 import { location_code } from '../common';
+import { useTranslation } from 'react-i18next';
+
 export default function Location_Modal(props) {
   const {
     location_item,
@@ -12,7 +14,6 @@ export default function Location_Modal(props) {
     modal_location_visible,
     hideLocationModal,
     selectedLocationItemValue,
-    handleLocationItemValueChange,
     onChangeLocationText,
     all_location,
     setLocationSelectedItemValue,
@@ -23,6 +24,7 @@ export default function Location_Modal(props) {
     width: '85%',
     alignSelf: 'center',
   };
+  const { t } = useTranslation();
   return (
     <Provider>
       <Portal>
@@ -117,7 +119,7 @@ export default function Location_Modal(props) {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Location Code
+                {t("Location Code")}
               </Text>
               <Text
                 style={{
@@ -128,7 +130,7 @@ export default function Location_Modal(props) {
                 }}>
                 Location Name
               </Text>
-             
+
             </View>
             {loading ? ( // Show ActivityIndicator while loading is true
               <ActivityIndicator size="large" color="#636Dc6" />
@@ -145,15 +147,16 @@ export default function Location_Modal(props) {
                   <Button
                     onPress={() => hideLocationModal()}
                     mode="contained"
-                    buttonColor={'#6870C3'}
+                    buttonColor={'#21316C'}
                     style={{
                       borderRadius: 0,
-                      width: 100,
+                      width: 117,
                       marginTop: 10,
                       color: 'black',
                       marginLeft: 5,
+                      height:44
                     }}>
-                    OK
+                    {t("OK")}
                   </Button>
                 </View>
               </>

@@ -67,6 +67,8 @@ import { filterVillage } from '../../query/Village_query';
 import { filterWard } from '../../query/Ward_query';
 import { filterLocation } from '../../query/CodeInfo_quey';
 import Village_Modal from '../../components/Village_Modal';
+import { useTranslation } from 'react-i18next';
+
 const Borrower_Sign_Modal = props => {
   const {
     show_canvas,
@@ -259,7 +261,7 @@ const Emp_No_Search_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
   const [emp_data, setEmpData] = React.useState('');
-
+  const { t } = useTranslation();
   const {
     all_cus,
     modalVisible,
@@ -411,7 +413,6 @@ const Emp_No_Search_modal = props => {
           />
         </View>
 
-        {/* <Field component={RadioButton}/> */}
       </View>
     );
   };
@@ -525,7 +526,7 @@ const Emp_No_Search_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Phone Number
+                {t("Phone Number")}
               </Text>
             </View>
 
@@ -539,15 +540,16 @@ const Emp_No_Search_modal = props => {
               <Button
                 onPress={() => hideModal()}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={{
                   borderRadius: 0,
-                  width: 100,
+                  width: 117,
                   marginTop: 10,
                   color: 'black',
                   marginLeft: 5,
+                  height:44
                 }}>
-                OK
+                {t("OK")}
               </Button>
             </View>
           </View>
@@ -561,7 +563,7 @@ const CoBorrower_NRC_Search_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
   const [cus_data, setCusData] = React.useState('');
-
+  const { t } = useTranslation();
   const {
     CoBorrowerhideModal,
     co_borrower_modal_visible,
@@ -775,7 +777,7 @@ const CoBorrower_NRC_Search_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Phone Number
+                {t("Phone Number")}
               </Text>
             </View>
 
@@ -789,15 +791,16 @@ const CoBorrower_NRC_Search_modal = props => {
               <Button
                 onPress={() => CoBorrowerhideModal()}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={{
                   borderRadius: 0,
-                  width: 100,
+                  width: 117,
                   marginTop: 10,
                   color: 'black',
                   marginLeft: 5,
+                  height:44
                 }}>
-                OK
+                {t("OK")}
               </Button>
             </View>
           </View>
@@ -815,7 +818,7 @@ function Individual_Staff_loan_Info(props) {
     update_status,
     retrive_staff_loan_data,
   } = props;
-  console.log('retrive_staff_loan_data', retrive_staff_loan_data);
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [selectedItemValue, setSelectedItemValue] = useState('customer_nm');
   const [show_village, setVillage] = useState('1');
@@ -889,6 +892,66 @@ function Individual_Staff_loan_Info(props) {
   const [borrower_name, setBorrowerName] = useState('');
   const [coborrower_name, setCoBorrowerName] = useState('');
   const [show_co_borrower_canvas, setCoBorrowerCanvas] = useState(false);
+  const [capturedFiles, setCapturedFiles] = useState([]);
+  const [passport_capturedFiles, setPassportCapturedFiles] = useState(false);
+
+
+  const data = [
+    { id: 1, name: 'NRC Card (Front)', value: '01F' },
+    { id: 2, name: 'NRC Card (Back)', value: '01B' },
+    { id: 3, name: 'Guarantor NRC Card (Front)', value: '02F' },
+    { id: 4, name: 'Guarantor NRC Card (Back)', value: '02B' },
+    { id: 5, name: 'Co-borrower NRC Card (Front)', value: '03F' },
+    { id: 6, name: 'Co-borrower NRC Card (Back)', value: '03B' },
+    { id: 7, name: 'Family (Front)', value: '04F' },
+    { id: 8, name: 'Family (Back)', value: '04B' },
+    { id: 9, name: 'House Ownership (Front)', value: '05F' },
+    { id: 10, name: 'House Ownership (Back)', value: '05B' },
+    { id: 11, name: 'Recommendation (Front)', value: '06F' },
+    { id: 12, name: 'Recommendation (Back)', value: '06B' },
+    { id: 13, name: 'Business License (Front)', value: '07F' },
+    { id: 14, name: 'Business License (Back)', value: '07B' },
+    { id: 15, name: 'Land OwnerShip (Front)', value: '08F' },
+    { id: 16, name: 'Land OwnerShip (Back)', value: '08B' },
+    { id: 17, name: 'Tax Payment (Front)', value: '09F' },
+    { id: 18, name: 'Tax Payment (Back)', value: '09B' },
+    { id: 19, name: 'Insurance (Front)', value: '10F' },
+    { id: 20, name: 'Insurance (Back)', value: '10B' },
+    { id: 21, name: 'Etc (Front)', value: '11F' },
+    { id: 22, name: 'Etc (Back)', value: '11B' },
+
+    // Add more data as needed
+  ];
+  const PassportcheckFileExists = async () => {
+    try {
+      const fileName = `${retrive_staff_loan_data.application_no}AT12F.jpg`;
+      const directory = `/storage/emulated/0/Pictures/Camera/`;
+      const filePath = directory + fileName;
+      const fileExists = await RNFS.exists(filePath);
+      if (fileExists) {
+        setPassportCapturedFiles(true);
+      }
+    } catch (error) {
+      console.log('Error checking file existence:', error);
+    }
+  };
+
+  const checkFileExists = async () => {
+    try {
+      for (const item of data) {
+        const fileName = `${retrive_staff_loan_data.application_no}AT${item.value}.jpg`;
+        const directory = `/storage/emulated/0/Pictures/Camera/`;
+        const filePath = directory + fileName;
+        const fileExists = await RNFS.exists(filePath);
+        if (fileExists) {
+          setCapturedFiles(prevFiles => [...prevFiles, item.value]);
+
+        }
+      }
+    } catch (error) {
+      console.log('Error checking file existence:', error);
+    }
+  };
 
   const loadData = async () => {
     await getAllLoan().then(loan_data => {
@@ -912,11 +975,17 @@ function Individual_Staff_loan_Info(props) {
         setEvaluationData(data);
       },
     );
+
+    await checkFileExists()
+    await PassportcheckFileExists()
+
   };
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       loadData();
+      setCapturedFiles([])
+      setPassportCapturedFiles(false)
     });
 
     return () => {
@@ -926,7 +995,7 @@ function Individual_Staff_loan_Info(props) {
     };
   }, [navigation]);
 
-  const RenderBottomSheet = () =>
+  const RenderBottomSheet = ({handleSubmit}) =>
     useMemo(() => {
       return (
         <BottomSheet isOpen={false} wrapperStyle={{ backgroundColor: '#3E3E84' }}>
@@ -1020,11 +1089,6 @@ function Individual_Staff_loan_Info(props) {
                           ToastAndroid.SHORT,
                         )
                   }
-                  // onPress={() =>
-                  //   props.navigation.navigate('Area Evaluation', {
-                  //     retrive_staff_loan_data,
-                  //   })
-                  // }
                   style={{
                     width: 250,
                     height: 40,
@@ -1129,29 +1193,47 @@ function Individual_Staff_loan_Info(props) {
                 <TouchableOpacity
                   onPress={() =>
                     props.navigation.navigate('Evidence', {
-                      retrive_loan_data: retrive_staff_loan_data,
+                      retrive_loan_data: retrive_staff_loan_data
                     })
                   }
                   style={{
                     width: 250,
                     height: 40,
-                    backgroundColor: '#242157',
+                    backgroundColor: capturedFiles.length > 0 ? '#3E3E84' : '#242157',
                     margin: 10,
                   }}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      margin: 5,
-                    }}>
-                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                      <Icon name="paperclip" size={20} color="#fff" />
-                      <Text style={{ color: '#fff', marginLeft: 5 }}>
-                        Evidence Document Form
-                      </Text>
+                  {capturedFiles.length > 0 ? (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        margin: 5,
+                      }}>
+                      <View
+                        style={{ alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name="check" size={20} color="#ede72d" />
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
+                          Evidence Document Form
+                        </Text>
+                      </View>
+                    </View>) :
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        margin: 5,
+                      }}>
+                      <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name="paperclip" size={20} color="#fff" />
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
+                          Evidence Document Form
+                        </Text>
+                      </View>
+                      <Icon name="chevron-right" size={25} color="#fff" />
                     </View>
-                    <Icon name="chevron-right" size={25} color="#fff" />
-                  </View>
+                  }
+
+
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -1212,7 +1294,7 @@ function Individual_Staff_loan_Info(props) {
                   style={{
                     width: 250,
                     height: 40,
-                    backgroundColor: '#242157',
+                    backgroundColor: passport_capturedFiles ? '#3E3E84' : '#242157',
                     margin: 10,
                   }}>
                   <View
@@ -1221,14 +1303,26 @@ function Individual_Staff_loan_Info(props) {
                       justifyContent: 'space-between',
                       margin: 5,
                     }}>
-                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                      <Icon name="paperclip" size={20} color="#fff" />
-                      <Text style={{ color: '#fff', marginLeft: 5 }}>
-                        Passport Photo
-                      </Text>
-                    </View>
-                    <Icon name="chevron-right" size={25} color="#fff" />
+                    {passport_capturedFiles ? (
+                      <View
+                        style={{ alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name="check" size={20} color="#ede72d" />
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
+                          Passport Photo
+                        </Text>
+                      </View>) : (
+                      <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name="paperclip" size={20} color="#fff" />
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
+                          Passport Photo
+                        </Text>
+                        <Icon name="chevron-right" size={25} color="#fff" />
+
+                      </View>
+                    )
+                    }
                   </View>
+
                 </TouchableOpacity>
               </View>
 
@@ -1239,7 +1333,7 @@ function Individual_Staff_loan_Info(props) {
                   justifyContent: 'center',
                 }}>
                 <Button
-                  onPress={() => alert('Hello')}
+                  onPress={handleSubmit}
                   mode="contained"
                   buttonColor={'#0480B7'}
                   style={{
@@ -1249,13 +1343,13 @@ function Individual_Staff_loan_Info(props) {
                     borderRadius: 10,
                     justifyContent: 'center',
                   }}>
-                  Save
+                  {t("Save")}
                 </Button>
 
                 <Button
                   disabled={true}
                   mode="contained"
-                  buttonColor={'#6870C3'}
+                  buttonColor={'#21316C'}
                   style={{
                     borderRadius: 0,
                     width: 130,
@@ -1264,7 +1358,7 @@ function Individual_Staff_loan_Info(props) {
                     justifyContent: 'center',
                     marginTop: 5,
                   }}>
-                  Cancel
+                  {t("Cancel")}
                 </Button>
               </View>
             </View>
@@ -2009,9 +2103,9 @@ function Individual_Staff_loan_Info(props) {
                 }
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={style.btnStyle}>
-                OK
+                {t("OK")}
               </Button>
             </View>
             <DividerLine />
@@ -2068,7 +2162,7 @@ function Individual_Staff_loan_Info(props) {
                 <View style={style.sub_list_container}>
                   <Field
                     name={'loan_cycle'}
-                    title={'Loan Cycle'}
+                    title={t('Loan Cycle')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -2078,7 +2172,7 @@ function Individual_Staff_loan_Info(props) {
 
                   <Field
                     name={'loanterm_cnt'}
-                    title={'Loan Term'}
+                    title={t('Loan Term')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -2090,7 +2184,7 @@ function Individual_Staff_loan_Info(props) {
                 <View style={style.sub_list_container}>
                   <Field
                     name={'application_amt'}
-                    title={'Loan Apply Amount'}
+                    title={t('Loan Apply Amount')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -2101,7 +2195,7 @@ function Individual_Staff_loan_Info(props) {
 
                   <Field
                     name={'loan_code'}
-                    title={'Loan Code'}
+                    title={t('Loan Code')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -2164,7 +2258,7 @@ function Individual_Staff_loan_Info(props) {
         </TouchableWithoutFeedback>
       </ScrollView>
 
-      <RenderBottomSheet />
+      <RenderBottomSheet  handleSubmit={handleSubmit(onSubmit)}/>
 
       <Emp_No_Search_modal
         hideModal={hideModal}

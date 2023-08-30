@@ -17,6 +17,8 @@ import DatePicker from '../../components/DatePicker';
 import DropDownPicker from '../../components/DropDownPicker';
 import {Button} from 'react-native-paper';
 import {connect} from 'react-redux';
+import { useTranslation } from 'react-i18next';
+
  function Edit_Individual_staff_Emp_loan(props) {
   const {
     showCustomerSearch,
@@ -38,7 +40,7 @@ import {connect} from 'react-redux';
     setVillage
   } = props;
   const [borrower_expanded, setBorrowerExpanded] = React.useState(true);
-
+  const { t } = useTranslation()
   const handleBorrowerToggle = () => {
     setBorrowerExpanded(!borrower_expanded);
   };
@@ -82,7 +84,7 @@ import {connect} from 'react-redux';
 
             <Field
               name={'borrower_name'}
-              title={'Borrower Name'}
+              title={t('Borrower Name')}
               component={TextInputFile}
               cus_width
               input_mode
@@ -142,7 +144,7 @@ import {connect} from 'react-redux';
           <View style={style.sub_list_container}>
             <Field
               name={'resident_rgst_id'}
-              title={'NRC'}
+              title={t('NRC')}
               component={TextInputFile}
               cus_width
               input_mode
@@ -167,7 +169,7 @@ import {connect} from 'react-redux';
           <View style={style.sub_list_container}>
             <Field
               name={'saving_acct_num'}
-              title={'Saving Code'}
+              title={t('Saving Code')}
               component={TextInputFile}
               cus_width
               input_mode
@@ -202,7 +204,7 @@ import {connect} from 'react-redux';
             <Field
               name={'birth_date'}
               component={DatePicker}
-              label={'date of birth'}
+              label={t('Date of birth')}
               icon={update_status == true &&'calendar'}
               editable={update_status == true ? false : true}
             />
@@ -212,7 +214,7 @@ import {connect} from 'react-redux';
             <Field
               data={maritail_status}
               name={'marital_status'}
-              title={'Maritial Status'}
+              title={t('Marital Status')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,
@@ -340,7 +342,7 @@ import {connect} from 'react-redux';
           <View style={style.sub_list_container}>
             <Field
               name={'location_code'}
-              title={'Location Code '}
+              title={t('Location Code')}
               component={TextInputFile}
               input_mode
               inputmax={100}
@@ -419,63 +421,7 @@ import {connect} from 'react-redux';
             </Text>
           </View>
 
-          {/* <View style={style.sub_list_container}>
-            <Field
-              name={'curr_resident_date'}
-              component={DatePicker}
-              label={'Living Time in current address'}
-              icon={'calendar'}
-            />
 
-            <Field
-              name={'family_num'}
-              title={'Number of family'}
-              component={TextInputFile}
-              cus_width
-              input_mode
-              keyboardType={'numeric'}
-            />
-          </View> */}
-
-          {/* <View style={style.sub_list_container}>
-            <Field
-              name={'hghschl_num'}
-              title={'Number of High school Students'}
-              component={TextInputFile}
-              cus_width
-              input_mode
-              keyboardType={'numeric'}
-            />
-
-            <Field
-              name={'university_num'}
-              title={'Number of University Student'}
-              component={TextInputFile}
-              cus_width
-              input_mode
-              keyboardType={'numeric'}
-            />
-          </View> */}
-
-          {/* <View style={style.sub_list_container}>
-            <Field
-              data={condition_house}
-              name={'house_ocpn_type'}
-              title={'Condition of house'}
-              component={DropDownPicker}
-              pickerStyle={{
-                width: 300,
-              }}
-            />
-
-            <Field
-              name={'business_own_type'}
-              title={'OwnerShip of business'}
-              component={TextInputFile}
-              cus_width
-              input_mode
-            />
-          </View> */}
         </View>
       </List.Accordion>
     </>

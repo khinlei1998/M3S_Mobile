@@ -69,10 +69,12 @@ import {filterTownship} from '../../query/Township_query';
 import {filterVillage} from '../../query/Village_query';
 import Location_Modal from '../../components/Location_Modal';
 import {filterWard} from '../../query/Ward_query';
+import { useTranslation } from 'react-i18next';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
   const [emp_data, setEmpData] = React.useState('');
+  const { t } = useTranslation();
 
   const {
     all_cus,
@@ -558,7 +560,7 @@ const Borrower_modal = props => {
               padding: 10,
               fontWeight: 'bold',
             }}>
-            Phone Number
+            {t("Phone Number")}
           </Text>
         </View>
 
@@ -572,15 +574,16 @@ const Borrower_modal = props => {
           <Button
             onPress={() => hideModal()}
             mode="contained"
-            buttonColor={'#6870C3'}
+            buttonColor={'#21316C'}
             style={{
               borderRadius: 0,
-              width: 100,
+              width: 117,
               marginTop: 10,
               color: 'black',
               marginLeft: 5,
+              height:44
             }}>
-            OK
+            {t("OK")}
           </Button>
         </View>
       </View>
@@ -592,6 +595,7 @@ const CoBorrower_modal = props => {
   const dispatch = useDispatch();
   const [co_borrowerselectedValue, setCoborrowerSelectedValue] = useState(null);
   const [co_borrower_data, setCoBorrowerText] = useState('');
+  const { t } = useTranslation();
 
   const {
     all_co_borrower,
@@ -792,7 +796,7 @@ const CoBorrower_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Phone Number
+                {t("Phone Number")}
               </Text>
             </View>
 
@@ -806,15 +810,16 @@ const CoBorrower_modal = props => {
               <Button
                 onPress={() => hideCoBorrowerModal()}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={{
                   borderRadius: 0,
-                  width: 100,
+                  width: 117,
                   marginTop: 10,
                   color: 'black',
                   marginLeft: 5,
+                  height:44
                 }}>
-                OK
+                {t("OK")}
               </Button>
             </View>
           </View>
@@ -1010,6 +1015,8 @@ const Co_Borrower_Sign_Modal = props => {
 
 function Individual_Loan(props) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
   const [show_operation, setOperation] = useState('1');
   const [modalVisible, setModalVisible] = useState(false);
   const [co_borrower_modalVisible, setCoBorrowerModalVisible] = useState(false);
@@ -1732,7 +1739,7 @@ function Individual_Loan(props) {
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={{flex: 1, backgroundColor: '#fff'}}>
-            <Text style={style.title_style}>Individual Loan Application</Text>
+            <Text style={style.title_style}>{t("Individual Loan Application")}</Text>
             <DividerLine />
 
             <View style={style.continer}>
@@ -1767,7 +1774,7 @@ function Individual_Loan(props) {
                 mode="contained"
                 buttonColor={'#21316C'}
                 style={style.btnStyle}>
-                OK
+                {t("OK")}
               </Button>
             </View>
             <DividerLine />
@@ -1777,7 +1784,7 @@ function Individual_Loan(props) {
               onPress={handleLoanToggle}
               style={style.list_container}
               titleStyle={style.list_title}
-              title="Loan Info">
+              title={t("Loan Info")}>
               <View style={style.sub_container}>
                 <View style={style.sub_list_container}>
                   <Field
@@ -1803,7 +1810,7 @@ function Individual_Loan(props) {
                   <Field
                     data={loan_type}
                     name={'loan_type'}
-                    title={'Type of Loan'}
+                    title={t('Type of Loan')}
                     component={DropDownPicker}
                     pickerStyle={{
                       width: 300,
@@ -1822,7 +1829,7 @@ function Individual_Loan(props) {
                 <View style={style.sub_list_container}>
                   <Field
                     name={'loan_cycle'}
-                    title={'Loan Cycle'}
+                    title={t('Loan Cycle')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -1833,7 +1840,7 @@ function Individual_Loan(props) {
 
                   <Field
                     name={'loanterm_cnt'}
-                    title={'Loan Term'}
+                    title={t('Loan Term')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -1845,7 +1852,7 @@ function Individual_Loan(props) {
                 <View style={style.sub_list_container}>
                   <Field
                     name={'application_amt'}
-                    title={'Loan Apply Amount'}
+                    title={t('Loan Apply Amount')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -1855,7 +1862,7 @@ function Individual_Loan(props) {
 
                   <Field
                     name={'loan_code'}
-                    title={'Loan Code'}
+                    title={t('Loan Code')}
                     component={TextInputFile}
                     cus_width
                     input_mode

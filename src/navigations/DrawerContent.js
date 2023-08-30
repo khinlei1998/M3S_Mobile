@@ -5,13 +5,14 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { Divider } from 'react-native-paper';
 import { AuthContext } from '../components/context';
+import { useTranslation } from 'react-i18next';
 
 export default function DrawerContent(props) {
   const navigation = useNavigation();
   const { removeUserID } = useContext(AuthContext);
-
+  const { t } = useTranslation();
   const handleDrawerItemPress = (screenName, title) => {
-    navigation.navigate(screenName);
+    navigation.navigate(t(screenName));
   };
   return (
     <View style={{ flex: 1 }}>
@@ -26,75 +27,73 @@ export default function DrawerContent(props) {
               marginTop: 20,
             }}
           />
-          {/* <DrawerItemList {...props} /> */}
-
           <DrawerItem
             labelStyle={{ color: '#fff' }}
             icon={() => <Icon name="user" size={20} color="#fff" />} // Set the icon to an Ionicons icon
-            label="Home"
+            label={t("Home")}
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
             onPress={() => handleDrawerItemPress('Home')}
           />
 
           <DrawerItem
             labelStyle={{ color: '#c7c7c7', marginLeft: 50 }}
-            label="Customer Search"
+            label={t("Customer Search")}
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
             onPress={() => handleDrawerItemPress('Customer Search')}
           />
 
           <DrawerItem
             labelStyle={{ color: '#c7c7c7', marginLeft: 50 }}
-            label="Customer Management"
+            label={t("Customer Management")}
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
             onPress={() => props.navigation.navigate('Customer Management')}
           />
 
           <DrawerItem
             labelStyle={{ color: '#c7c7c7', marginLeft: 50 }}
-            label="Survey"
+            label={t("Survey")}
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
             onPress={() => handleDrawerItemPress('Survey')}
           />
 
           <DrawerItem
             labelStyle={{ color: '#c7c7c7', }}
-            label="New Loan Application"
+            label={t("New Loan Application")}
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
             icon={() => <Icon name="dollar-sign" size={20} color="#fff" />}
           />
 
           <DrawerItem
             labelStyle={{ color: '#c7c7c7', marginLeft: 50 }}
-            label="Individual Loan Application "
+            label={t("Individual Loan Application")}
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
             onPress={() => props.navigation.navigate('Individual_loan')}
           />
 
           <DrawerItem
             labelStyle={{ color: '#c7c7c7', marginLeft: 50 }}
-            label="Individual Staff Loan Application "
+            label={t("Individual Staff Loan Application")}
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
             onPress={() => props.navigation.navigate('Indi_Staff_loan')}
           />
 
           <DrawerItem
             labelStyle={{ color: '#c7c7c7', marginLeft: 50 }}
-            label="Group Loan Application "
+            label={t("Group Loan Application")}
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
             onPress={() => props.navigation.navigate('Group Loan')}
           />
 
           <DrawerItem
             labelStyle={{ color: '#c7c7c7', marginLeft: 50 }}
-            label="Cover Loan Application "
+            label={t("Cover Loan Application")}
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
             onPress={() => props.navigation.navigate('Cover Loan')}
           />
 
           <DrawerItem
             labelStyle={{ color: '#c7c7c7', marginLeft: 50 }}
-            label="Reloan Application "
+            label={t("Reloan Application")}
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
             onPress={() => props.navigation.navigate('ReLoan')}
           />
@@ -103,7 +102,7 @@ export default function DrawerContent(props) {
           <DrawerItem
             labelStyle={{ color: '#fff' }}
             icon={() => <Icon name="refresh-cw" size={20} color="#fff" />} // Set the icon to an Ionicons icon
-            label="Synchronization "
+            label={t("Synchronization")}
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
             onPress={() => props.navigation.navigate('Synchronization')}
           />
@@ -111,7 +110,7 @@ export default function DrawerContent(props) {
           <DrawerItem
             labelStyle={{ color: '#fff' }}
             icon={() => <Icon name="log-out" size={20} color="#fff" />} // Set the icon to an Ionicons icon
-            label="Logout "
+            label={t("Logout")}
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
             onPress={() => removeUserID()}
           />

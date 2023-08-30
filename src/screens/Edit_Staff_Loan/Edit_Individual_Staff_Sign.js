@@ -49,7 +49,7 @@ function Edit_Individual_Staff_Sign(props) {
           <View>
             <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Sign</Text>
             {borrower_sign_path == null && (
-            
+
                 <TouchableOpacity
                   onPress={() =>
                     update_status == true && setCanvas(!show_canvas)
@@ -96,7 +96,7 @@ function Edit_Individual_Staff_Sign(props) {
           <View>
             <View style={{ flexDirection: 'row' }}>
               <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-                Co Borrower Name
+                {t("Co Borrower Name")}
               </Text>
               <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
                 {coborrower_name}

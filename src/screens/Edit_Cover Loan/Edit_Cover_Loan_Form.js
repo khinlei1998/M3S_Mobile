@@ -28,12 +28,13 @@ import {
   updateGroupData,
 } from '../../query/GropuLon_query';
 import validate from '../Group_Loan/Validate';
+import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
   const [emp_data, setEmpData] = React.useState('');
-
+  const { t } = useTranslation();
   const {
     all_cus,
     modalVisible,
@@ -217,7 +218,7 @@ const Borrower_modal = props => {
               padding: 10,
               fontWeight: 'bold',
             }}>
-            Phone Number
+            {t("Phone Number")}
           </Text>
         </View>
 
@@ -231,15 +232,16 @@ const Borrower_modal = props => {
           <Button
             onPress={() => hideModal()}
             mode="contained"
-            buttonColor={'#6870C3'}
+            buttonColor={'#21316C'}
             style={{
               borderRadius: 0,
-              width: 100,
+              width: 117,
               marginTop: 10,
               color: 'black',
               marginLeft: 5,
+              height:44
             }}>
-            OK
+            {t("OK")}
           </Button>
         </View>
       </View>
@@ -247,6 +249,7 @@ const Borrower_modal = props => {
   );
 };
 function Edit_Cover_Loan_Form(props) {
+  const { t } = useTranslation();
   const { handleSubmit, navigation, setCover_UpdateStatus, cover_update_status } =
     props;
   const inquiry_cover_loan = props.route.params;
@@ -394,9 +397,9 @@ function Edit_Cover_Loan_Form(props) {
                 }
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={style.btnStyle}>
-                OK
+                {t("OK")}
               </Button>
             </View>
             <DividerLine />

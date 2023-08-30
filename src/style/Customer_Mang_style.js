@@ -20,9 +20,11 @@ export const style = StyleSheet.create({
   },
   btnStyle: {
     borderRadius: 0,
-    width: 100,
+    width: 117,
     marginTop: 10,
     color: 'black',
+    height:44,
+    bottom:5,
   },
   title_emp_style: {
     flexDirection: 'row',

@@ -6,8 +6,10 @@ import DatePicker from '../../components/DatePicker';
 import {reduxForm, Field, change, reset} from 'redux-form';
 import TextInputFile from '../../components/TextInputFile';
 import {connect} from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 function Edit_Group_Loan_Info(props) {
+  const { t } = useTranslation();
   const [Group_expand, setGroupInfoExpand] = useState(true);
   const {showCustomerSearch, group_update_status} = props;
   const handleGroupToggle = () => {
@@ -64,7 +66,7 @@ function Edit_Group_Loan_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'resident_rgst_id'}
-              title={'NRC'}
+              title={t('NRC')}
               icon={'magnify'}
               component={TextInputFile}
               cus_width

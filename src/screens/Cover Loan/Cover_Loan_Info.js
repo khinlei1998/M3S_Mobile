@@ -63,7 +63,7 @@ export default function Cover_Loan_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'resident_rgst_id'}
-              title={'NRC'}
+              title={t('NRC')}
               icon={'magnify'}
               component={TextInputFile}
               cus_width
@@ -76,7 +76,7 @@ export default function Cover_Loan_Info(props) {
 
             <Field
               name={'leader_name'}
-              title={'Borrower Name'}
+              title={t('Borrower Name')}
               component={TextInputFile}
               cus_width
               input_mode

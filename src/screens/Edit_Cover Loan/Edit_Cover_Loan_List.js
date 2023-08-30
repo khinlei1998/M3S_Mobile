@@ -34,7 +34,7 @@ function Edit_Cover_Loan_list(props) {
               });
             }}
             mode="contained"
-            buttonColor={'#6870C3'}
+            buttonColor={'#21316C'}
             style={{
               width: 300,
               borderRadius: 0,

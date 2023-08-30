@@ -18,6 +18,8 @@ import DropDownPicker from '../../components/DropDownPicker';
 import DatePicker from '../../components/DatePicker';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+
 function Borrower_Info(props) {
   const {
     showLocationSearch,
@@ -31,7 +33,7 @@ function Borrower_Info(props) {
   const [borrower_expanded, setBorrowerExpanded] = React.useState(true);
   const [show_village, setVillage] = useState('1');
   const dispatch = useDispatch();
-
+  const { t } = useTranslation();
   const handleBorrowerToggle = () => {
     setBorrowerExpanded(!borrower_expanded);
   };
@@ -87,7 +89,7 @@ function Borrower_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'resident_rgst_id'}
-              title={'NRC'}
+              title={t('NRC')}
               icon={'magnify'}
               component={TextInputFile}
               cus_width
@@ -100,7 +102,7 @@ function Borrower_Info(props) {
 
             <Field
               name={'borrower_name'}
-              title={'Borrower Name'}
+              title={t('Borrower Name')}
               component={TextInputFile}
               cus_width
               input_mode
@@ -111,7 +113,7 @@ function Borrower_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'saving_acct_num'}
-              title={'Saving Code'}
+              title={t('Saving Code')}
               component={TextInputFile}
               cus_width
               input_mode
@@ -151,7 +153,7 @@ function Borrower_Info(props) {
             <Field
               data={maritail_status}
               name={'marital_status'}
-              title={'Maritial Status'}
+              title={t('Marital Status')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,
@@ -275,7 +277,7 @@ function Borrower_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'location_code'}
-              title={'Location Code '}
+              title={t('Location Code ')}
               component={TextInputFile}
               input_mode
               inputmax={100}
@@ -306,13 +308,13 @@ function Borrower_Info(props) {
             <Field
               name={'curr_resident_date'}
               component={DatePicker}
-              label={'Living Time in current address'}
+              label={t('Living Time in current address')}
               icon={'calendar'}
             />
 
             <Field
               name={'family_num'}
-              title={'Number of family'}
+              title={t('Number of family Number')}
               component={TextInputFile}
               cus_width
               input_mode
@@ -323,7 +325,7 @@ function Borrower_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'hghschl_num'}
-              title={'Number of High school Students'}
+              title={t('Number of High school Students')}
               component={TextInputFile}
               cus_width
               input_mode
@@ -344,7 +346,7 @@ function Borrower_Info(props) {
             <Field
               data={condition_house}
               name={'house_ocpn_type'}
-              title={'Condition of house'}
+              title={t('Condition of house')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,
@@ -353,7 +355,7 @@ function Borrower_Info(props) {
             <Field
               data={owner_ship_business}
               name={'business_own_type'}
-              title={'Ownership of Business'}
+              title={t('Ownership of Business')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,

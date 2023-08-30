@@ -7,9 +7,12 @@ import TextInputFile from '../../components/TextInputFile';
 import {connect} from 'react-redux';
 import {style} from '../../style/Cover_Loan_style';
 import {setCover_UpdateStatus} from '../../redux/LoanReducer';
+import { useTranslation } from 'react-i18next';
+
 function Edit_Cover_Loan_Info(props) {
   const [Cover_expand, setCoverInfoExpand] = useState(true);
-  const {showCustomerSearch, setCover_UpdateStatus, cover_update_status} =
+  const { t } = useTranslation();
+  const {showCustomerSearch, cover_update_status} =
     props;
   const handleCoverToggle = () => {
     setCoverInfoExpand(!Cover_expand);
@@ -65,7 +68,7 @@ function Edit_Cover_Loan_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'resident_rgst_id'}
-              title={'NRC'}
+              title={t('NRC')}
               icon={'magnify'}
               component={TextInputFile}
               cus_width
@@ -78,7 +81,7 @@ function Edit_Cover_Loan_Info(props) {
 
             <Field
               name={'leader_name'}
-              title={'Borrower Name'}
+              title={t('Borrower Name')}
               component={TextInputFile}
               cus_width
               input_mode

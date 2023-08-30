@@ -11,10 +11,12 @@ import {Picker} from '@react-native-picker/picker';
 import TextInputFile from '../../components/TextInputFile';
 import {filterCustomer} from '../../query/Customer_query';
 import RadioButton from 'react-native-paper';
+import { useTranslation } from 'react-i18next';
+
 function Borrower_Modal(props) {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
-
+  const { t } = useTranslation();
   const {
     all_cus,
     modalVisible,
@@ -25,7 +27,6 @@ function Borrower_Modal(props) {
     handleSubmit,
   } = props;
   const btnCusSearch = async values => {
-    console.log('selectedItemValue',selectedItemValue);
     await filterCustomer(selectedItemValue, values.searchtext)
       .then(data => (data.length > 0 ? setAllCus(data) : alert('No data')))
       .catch(error => console.log('error', error));
@@ -45,35 +46,6 @@ function Borrower_Modal(props) {
           borderBottomColor: '#ccc',
           padding: 10,
         }}>
-        {/* <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {index + 1}
-        </Text>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.customer_nm}
-        </Text>
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.resident_rgst_id}
-        </Text>
-
-        <Text
-          style={{
-            padding: 10,
-            flex: 1,
-          }}>
-          {item.tel_no == null ? 'No Data' : item.tel_no}
-        </Text> */}
 
         <View>
           <RadioButton
@@ -82,13 +54,9 @@ function Borrower_Modal(props) {
             onPress={() => btnSelectEmployee(item)}
           />
         </View>
-
-        {/* <Field component={RadioButton}/> */}
       </View>
     );
   };
-  console.log('all_cs', all_cus);
-
   return (
     <Provider>
       <Portal>
@@ -190,7 +158,7 @@ function Borrower_Modal(props) {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Phone Number
+                {t("Phone Number")}
               </Text>
             </View>
             {all_cus &&
@@ -205,15 +173,16 @@ function Borrower_Modal(props) {
               <Button
                 onPress={() => hideModal()}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={{
                   borderRadius: 0,
-                  width: 100,
+                  width: 117,
                   marginTop: 10,
                   color: 'black',
                   marginLeft: 5,
+                  height:44
                 }}>
-                OK
+                {t("OK")}
               </Button>
             </View>
           </View>

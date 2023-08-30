@@ -31,282 +31,13 @@ import Reloan_Form from '../screens/Relaon/Reloan_Form';
 import Edit_Reloan_Form from '../screens/Edit_Relaon/Edit_Reloan_Form';
 import Survey from '../screens/Survey/Survey';
 import Passport from '../screens/Passport/Passport';
-const StackNavigationData = [
-  {
-    name: 'Home',
-    component: Home,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Synchronization',
-    component: Synchronization_Screen,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'ReLoan',
-    component: Reloan_Form,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Passport',
-    component: Passport,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Edit_Exceptional_Approvel_Form',
-    title: 'Exceptional Approval ',
-    component: Edit_Exceptional_Approvel_Form,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Survey',
-    component: Survey,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Edit_Reloan',
-    title: 'Reloan',
-    component: Edit_Reloan_Form,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Cover Loan',
-    component: Cover_Loan_Form,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Edit Group Loan',
-    title: 'Group Loan',
-    component: Edit_Group_Loan_Form,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Edit_Cover_Loan',
-    title: 'Cover Loan',
-    component: Edit_Cover_Loan_Form,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Group Loan',
-    component: Group_Loan_Form,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
+import {useTranslation} from 'react-i18next';
 
-  {
-    name: 'Customer Management',
-    component: Customer_Management,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Customer Search',
-    component: CustomerSearch,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Edit_Emp_Info',
-    component: Edit_Emp_Info,
-    title: 'Customer Management',
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Individual_loan',
-    title: 'Individual Loan Application',
-    component: Individual_Loan,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-
-  {
-    name: 'Edit_Individual_Loan',
-    component: Edit_Individual_Loan,
-    title: 'Individual Loan Application',
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Indi_Staff_loan',
-    component: Individual_Staff_loan_Info,
-    title: 'Individual Staff Loan Application',
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Exceptional_Approvel_Form',
-    component: Exceptional_Approvel_Form,
-    title: 'Exceptional Approval',
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Borrower Map',
-    component: Show_Borrower_Map,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Edit Borrower Map',
-    title: 'Borrower Map',
-    component: Edit_Show_Borrower_Map,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Edit_Individual_Staff_loan_Info',
-    component: Edit_Individual_Staff_loan_Info,
-    title: 'Individual Staff Loan Application',
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Edit Guarantor',
-    component: Edit_Guarantor_Form,
-    title: 'Guarantor',
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Area Evaluation',
-    component: Area_Evaluation_Form,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Edit Area Evaluation',
-    title: 'Area Evaluation',
-    component: Edit_Area_Evaluation_Form,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Edit Relation',
-    title: 'Relation',
-    component: EditRelation_Form,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Guarantor',
-    component: Guarantor_Form,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Relation Form',
-    component: Relation_Form,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-
-  {
-    name: 'Evidence',
-    component: Evidence,
-    // headerLeft: headerLeftComponent,
-    headerTitleStyle: {
-      color: '#FFF',
-      fontSize: 18,
-    },
-  },
-];
 const Stack = createNativeStackNavigator();
 
 export default function NavigatorView(props) {
   const navigation = useNavigation();
-
+  const {t} = useTranslation();
   const headerLeftComponentMenu = () => {
     return (
       <Icon
@@ -318,6 +49,264 @@ export default function NavigatorView(props) {
       // <></>
     );
   };
+  const StackNavigationData = [
+    {
+      name: 'Home',
+      component: Home,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Synchronization',
+      component: Synchronization_Screen,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'ReLoan',
+      component: Reloan_Form,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Passport',
+      component: Passport,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Edit_Exceptional_Approvel_Form',
+      title: 'Exceptional Approval ',
+      component: Edit_Exceptional_Approvel_Form,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Survey',
+      component: Survey,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Edit_Reloan',
+      title: 'Reloan',
+      component: Edit_Reloan_Form,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Cover Loan',
+      component: Cover_Loan_Form,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Edit Group Loan',
+      title: 'Group Loan',
+      component: Edit_Group_Loan_Form,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Edit_Cover_Loan',
+      title: 'Cover Loan',
+      component: Edit_Cover_Loan_Form,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Group Loan',
+      component: Group_Loan_Form,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+
+    {
+      name: 'Customer Management',
+      component: Customer_Management,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: t('Customer Search'),
+      component: CustomerSearch,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Edit_Emp_Info',
+      component: Edit_Emp_Info,
+      title: 'Customer Management',
+      // headerLeft: headerLeftComponent,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Individual_loan',
+      title: 'Individual Loan Application',
+      component: Individual_Loan,
+      // headerLeft: headerLeftComponent,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+
+    {
+      name: 'Edit_Individual_Loan',
+      component: Edit_Individual_Loan,
+      title: 'Individual Loan Application',
+      // headerLeft: headerLeftComponent,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Indi_Staff_loan',
+      component: Individual_Staff_loan_Info,
+      title: 'Individual Staff Loan Application',
+      // headerLeft: headerLeftComponent,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Exceptional_Approvel_Form',
+      component: Exceptional_Approvel_Form,
+      title: 'Exceptional Approval',
+      // headerLeft: headerLeftComponent,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Borrower Map',
+      component: Show_Borrower_Map,
+      // headerLeft: headerLeftComponent,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Edit Borrower Map',
+      title: 'Borrower Map',
+      component: Edit_Show_Borrower_Map,
+      // headerLeft: headerLeftComponent,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Edit_Individual_Staff_loan_Info',
+      component: Edit_Individual_Staff_loan_Info,
+      title: 'Individual Staff Loan Application',
+      // headerLeft: headerLeftComponent,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Edit Guarantor',
+      component: Edit_Guarantor_Form,
+      title: 'Guarantor',
+      // headerLeft: headerLeftComponent,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Area Evaluation',
+      component: Area_Evaluation_Form,
+      // headerLeft: headerLeftComponent,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Edit Area Evaluation',
+      title: 'Area Evaluation',
+      component: Edit_Area_Evaluation_Form,
+      // headerLeft: headerLeftComponent,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Edit Relation',
+      title: 'Relation',
+      component: EditRelation_Form,
+      // headerLeft: headerLeftComponent,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Guarantor',
+      component: Guarantor_Form,
+      // headerLeft: headerLeftComponent,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+    {
+      name: 'Relation Form',
+      component: Relation_Form,
+      // headerLeft: headerLeftComponent,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+
+    {
+      name: 'Evidence',
+      component: Evidence,
+      // headerLeft: headerLeftComponent,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
+  ];
   const renderRightIcon = () => {
     // Customize this function to render the right icon as you wish
     return (
@@ -335,7 +324,7 @@ export default function NavigatorView(props) {
           component={item.component}
           options={{
             headerTitleAlign: 'center',
-            title: item.title,
+            title:item.title,
             headerTitle: item.title, // Use headerTitle instead of title
 
             headerLeft: item.headerLeft || headerLeftComponentMenu,

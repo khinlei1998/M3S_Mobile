@@ -5,7 +5,10 @@ import { setInquiryStatus } from '../../redux/CustomerReducer';
 import { getInquiryCusData } from '../../redux/CustomerReducer';
 import {connect} from 'react-redux';
 import {Field, reduxForm, reset, change} from 'redux-form';
+import { useTranslation } from 'react-i18next';
+
  function ViewCustomer(props) {
+  const { t } = useTranslation();
   const {customer_data, navigation,getInquiryCusData,setLoading,loading} = props;
 
   const btn_inquiry=(item)=>{
@@ -120,7 +123,7 @@ import {Field, reduxForm, reset, change} from 'redux-form';
             padding: 10,
             fontWeight: 'bold',
           }}>
-          Phone Number
+          {t("Phone Number")}
         </Text>
 
 

@@ -28,7 +28,7 @@ import {useRef} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {getAllLoan_By_application_no} from '../../query/AllLoan_query';
-// import validate from './Validate';
+import { useTranslation } from 'react-i18next';
 
 function Relation_Form(props) {
   const navigation = useNavigation();
@@ -67,7 +67,7 @@ function Relation_Form(props) {
   const [show_coborrower_sign, setShowCoBorrowerSign] = useState('');
   const [relation_name, setRelationName] = useState('');
   const [borrower_name, setBorrowerName] = useState('');
-
+  const { t } = useTranslation();
   const Borrower_Sign_Modal = props => {
     const {
       _onSaveBorrowerEvent,
@@ -730,7 +730,7 @@ function Relation_Form(props) {
 
                   <Field
                     name={'borrower_name'}
-                    title={'Borrower Name'}
+                    title={t('Borrower Name')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -740,7 +740,7 @@ function Relation_Form(props) {
                 <View style={style.sub_list_container}>
                   <Field
                     name={'application_amt'}
-                    title={'Loan Apply Amount'}
+                    title={t('Loan Apply Amount')}
                     component={TextInputFile}
                     cus_width
                     input_mode

@@ -6,11 +6,12 @@ import TextInputFile from '../../components/TextInputFile';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
 import DatePicker from '../../components/DatePicker';
-import CustomTextInput from '../../components/CustomTextInput';
+import { useTranslation } from 'react-i18next';
+
 function Co_Borrower_Info(props) {
     const [co_borrower_expanded, setCoBorrowerExpanded] = useState(true);
     const { showCoBorrowerSearch } = props
-
+    const { t } = useTranslation()
     const handleCoBorrowerToggle = () => {
         setCoBorrowerExpanded(!co_borrower_expanded);
     };
@@ -35,7 +36,7 @@ function Co_Borrower_Info(props) {
                     <View style={style.sub_list_container}>
                         <Field
                             name={'co_brwer_rgst_id'}
-                            title={'NRC'}
+                            title={t('NRC')}
                             icon={'magnify'}
                             component={TextInputFile}
                             cus_width
@@ -48,7 +49,7 @@ function Co_Borrower_Info(props) {
 
                         <Field
                             name={'co_brwer_name'}
-                            title={'Co Borrower Name'}
+                            title={t('Co Borrower Name')}
                             component={TextInputFile}
                             cus_width
                             input_mode
@@ -60,7 +61,7 @@ function Co_Borrower_Info(props) {
                         <Field
                             name={'co_brwer_birth_dt'}
                             component={DatePicker}
-                            label={'Date Of Birth'}
+                            label={t('Date Of Birth')}
                             icon={'calendar'}
                         />
 
@@ -78,7 +79,7 @@ function Co_Borrower_Info(props) {
                     <View style={style.sub_list_container}>
                         <Field
                             name={'co_occupation'}
-                            title={'Occupation'}
+                            title={t('Occupation')}
                             component={TextInputFile}
                             cus_width
                             input_mode

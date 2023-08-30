@@ -77,9 +77,9 @@ export default function Evidence(props) {
           const directory = `/storage/emulated/0/Pictures/Camera/`;
           const filePath = directory + fileName;
           const fileExists = await RNFS.exists(filePath);
-          console.log('fileExists', fileExists);
           if (fileExists) {
             setCapturedFiles(prevFiles => [...prevFiles, item.value]);
+            // props.route.params.setFileExist(true)
           }
         }
       } catch (error) {

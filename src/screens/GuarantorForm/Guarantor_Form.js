@@ -141,6 +141,7 @@ const Guarantor_modal = props => {
   const dispatch = useDispatch();
   const [guarantor_selectedvalue, setGuarantorSelectedValue] = useState(null);
   const [guarantor_text, setGuarantorText] = useState('');
+  const { t } = useTranslation();
 
   const {
     handleItemValueChange,
@@ -350,7 +351,7 @@ const Guarantor_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Phone Number
+                {t("Phone Number")}
               </Text>
             </View>
 
@@ -364,15 +365,16 @@ const Guarantor_modal = props => {
               <Button
                 onPress={() => hideGuarantorModal()}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={{
                   borderRadius: 0,
-                  width: 100,
+                  width: 117,
                   marginTop: 10,
                   color: 'black',
                   marginLeft: 5,
+                  height:44
                 }}>
-                OK
+                {t("OK")}
               </Button>
             </View>
           </View>
@@ -601,7 +603,7 @@ function Guarantor_Form(props) {
 
                   <Field
                     name={'borrower_name'}
-                    title={'Borrower Name'}
+                    title={t('Borrower Name')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -611,7 +613,7 @@ function Guarantor_Form(props) {
                 <View style={style.sub_list_container}>
                   <Field
                     name={'application_amt'}
-                    title={'Loan Apply Amount'}
+                    title={t('Loan Apply Amount')}
                     component={TextInputFile}
                     cus_width
                     input_mode

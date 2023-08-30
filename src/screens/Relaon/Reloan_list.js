@@ -24,7 +24,7 @@ export default function Reloan_list() {
               ToastAndroid.SHORT,
             )}
             mode="contained"
-            buttonColor={'#6870C3'}
+            buttonColor={'#21316C'}
             style={{
               width: 300,
               borderRadius: 0,

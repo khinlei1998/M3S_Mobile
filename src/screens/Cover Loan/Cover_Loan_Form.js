@@ -18,7 +18,6 @@ import { style } from '../../style/Cover_Loan_style';
 import {
   RadioButton,
   Button,
-
   Modal,
 } from 'react-native-paper';
 import { connect, useDispatch } from 'react-redux';
@@ -30,11 +29,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { filterCustomer } from '../../query/Customer_query';
 import { storeGroupData } from '../../query/GropuLon_query';
 import validate from '../Group_Loan/Validate';
+import { useTranslation } from 'react-i18next';
+
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
   const [emp_data, setEmpData] = React.useState('');
-
+  const { t } = useTranslation();
   const {
     all_cus,
     modalVisible,
@@ -218,7 +219,7 @@ const Borrower_modal = props => {
               padding: 10,
               fontWeight: 'bold',
             }}>
-            Phone Number
+            {t("Phone Number")}
           </Text>
         </View>
 
@@ -240,7 +241,7 @@ const Borrower_modal = props => {
               color: 'black',
               marginLeft: 5,
             }}>
-            OK
+            {t("OK")}
           </Button>
         </View>
       </View>
@@ -249,8 +250,8 @@ const Borrower_modal = props => {
 };
 function Cover_Loan_Form(props) {
 
-  const { handleSubmit, navigation } = props;
-
+  const { handleSubmit,  } = props;
+  const { t } = useTranslation();
   const [show_operation, setOperation] = useState('1');
   const [modalVisible, setModalVisible] = useState(false);
   const [all_cus, setAllCus] = useState([]);
@@ -350,7 +351,7 @@ function Cover_Loan_Form(props) {
                 mode="contained"
                 buttonColor={'#6870C3'}
                 style={style.btnStyle}>
-                OK
+                {t("OK")}
               </Button>
             </View>
             <DividerLine />

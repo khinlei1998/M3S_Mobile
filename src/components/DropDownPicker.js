@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Picker } from '@react-native-picker/picker';
 import { languages } from '../common';
 import { StyleSheet, View, Text } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 export default function DropDownPicker(props) {
   const {
@@ -10,7 +11,6 @@ export default function DropDownPicker(props) {
     data,
     title,
     selectedValue,
-    // onValueChange,
     num_data,
     pickerStyle,
     showDropChange,
@@ -19,6 +19,7 @@ export default function DropDownPicker(props) {
     require,
     ...pickerProps
   } = props;
+  const { t } = useTranslation();
 
   const Rendererror = ({ touched, error }) => {
     if (touched && error) {
@@ -41,7 +42,6 @@ export default function DropDownPicker(props) {
         enabled={enabled ? false : true}
         selectedValue={value}
         onValueChange={onChange}
-        // style={[pickerStyle, styles.picker]}
         style={[
           pickerStyle,
           enabled && {
@@ -52,7 +52,6 @@ export default function DropDownPicker(props) {
         <Picker.Item label={title} value="" style={{ color: '#636Dc6' }} />
         {num_data.length > 0 &&
           num_data.map(val => (
-            // <Picker.Item key={val} label={val.toString()} value={val} />
             <Picker.Item key={val.id} label={val.label} value={val.value} />
           ))}
       </Picker>
@@ -87,7 +86,7 @@ export default function DropDownPicker(props) {
           <Picker.Item label={title} value="" style={{ color: '#636Dc6' }} />
           {data.length > 0 &&
             data.map(val => (
-              <Picker.Item label={val.label} value={val.value} key={val.id} />
+              <Picker.Item label={t(val.label)} value={val.value} key={val.id} />
             ))}
         </Picker>
       </View>

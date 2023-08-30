@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import React, { useState } from 'react';
 import { List } from 'react-native-paper';
-import { reduxForm, Field, change } from 'redux-form';
+import {  Field, change } from 'redux-form';
 import { style } from '../../style/Individula_staff_Loan_Style';
 import {
   borrower_type,
@@ -16,12 +16,12 @@ import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
 import DropDownPicker from '../../components/DropDownPicker';
 import { Button } from 'react-native-paper';
-import { connect } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { nrc_type } from '../../common';
+import { useTranslation } from 'react-i18next';
+
 export default function Individual_staff_Emp_loan(props) {
   const dispatch = useDispatch();
-
+  const { t } = useTranslation();
   const {
     showCustomerSearch,
     showLocationSearch,
@@ -30,12 +30,9 @@ export default function Individual_staff_Emp_loan(props) {
     showCitySearch,
     showTownshipSearch,
     handleCalculate,
-    app_amount,
-    setWorkingMonth,
     loan_limit_amount,
     setLoanLimitAmount,
     working_month,
-    workingDateRef
   } = props;
   const [borrower_expanded, setBorrowerExpanded] = React.useState(true);
   const [show_village, setVillage] = useState('1');
@@ -49,10 +46,6 @@ export default function Individual_staff_Emp_loan(props) {
     if (value.id == '2') {
       dispatch(change('Individual_Staff_Loan_Form', 'village_code', ''));
     }
-    // Dispatch action to clear the field value
-    // dispatch(
-    //   change('myForm', 'fieldName', radioValue === 'clear' ? '' : radioValue),
-    // );
   };
   const handleBrChange = (value) => {
     input.onChange(value.id);
@@ -70,7 +63,7 @@ export default function Individual_staff_Emp_loan(props) {
           <Field
             data={borrower_type}
             name={'cst_new_exist_flg'}
-            component={RadioButtonFile}         
+            component={RadioButtonFile}
             get_value={'N'}
           />
           <View style={style.sub_list_container}>
@@ -89,7 +82,7 @@ export default function Individual_staff_Emp_loan(props) {
 
             <Field
               name={'borrower_name'}
-              title={'Borrower Name'}
+              title={t('Borrower Name')}
               component={TextInputFile}
               cus_width
               input_mode
@@ -141,7 +134,7 @@ export default function Individual_staff_Emp_loan(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'resident_rgst_id'}
-              title={'NRC'}
+              title={t('NRC')}
               component={TextInputFile}
               cus_width
               input_mode
@@ -162,7 +155,7 @@ export default function Individual_staff_Emp_loan(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'saving_acct_num'}
-              title={'Saving Code'}
+              title={t('Saving Code')}
               component={TextInputFile}
               cus_width
               input_mode
@@ -192,7 +185,7 @@ export default function Individual_staff_Emp_loan(props) {
             <Field
               name={'birth_date'}
               component={DatePicker}
-              label={'date of birth'}
+              label={t('Date of birth')}
               icon={'calendar'}
             />
           </View>
@@ -201,7 +194,7 @@ export default function Individual_staff_Emp_loan(props) {
             <Field
               data={maritail_status}
               name={'marital_status'}
-              title={'Maritial Status'}
+              title={t('Marital Status')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,
@@ -325,7 +318,7 @@ export default function Individual_staff_Emp_loan(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'location_code'}
-              title={'Location Code '}
+              title={t('Location Code ')}
               component={TextInputFile}
               input_mode
               inputmax={100}

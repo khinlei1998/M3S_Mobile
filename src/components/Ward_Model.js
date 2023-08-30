@@ -4,7 +4,10 @@ import { Provider, Portal, Modal, TextInput, Button } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/Feather';
 import { Picker } from '@react-native-picker/picker';
 import { ward_code } from '../common';
+import { useTranslation } from 'react-i18next';
+
 export default function Ward_Model(props) {
+    const { t } = useTranslation();
     const containerStyle = {
         backgroundColor: '#e8e8e8',
         width: '85%',
@@ -133,15 +136,16 @@ export default function Ward_Model(props) {
                                     <Button
                                         onPress={() => hideWardModal()}
                                         mode="contained"
-                                        buttonColor={'#6870C3'}
+                                        buttonColor={'#21316C'}
                                         style={{
                                             borderRadius: 0,
-                                            width: 100,
+                                            width: 117,
                                             marginTop: 10,
                                             color: 'black',
                                             marginLeft: 5,
+                                            height:44
                                         }}>
-                                        OK
+                                        {t("OK")}
                                     </Button>
                                 </View>
                             </>

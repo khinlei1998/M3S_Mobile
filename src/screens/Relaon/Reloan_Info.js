@@ -12,6 +12,7 @@ export default function Reloan_Info(props) {
   const handleReloanToggle = () => {
     setReloanInfoExpand(!Reloan_expand);
   };
+  const { t } = useTranslation();
   return (
     <>
       <List.Accordion
@@ -63,7 +64,7 @@ export default function Reloan_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'resident_rgst_id'}
-              title={'NRC'}
+              title={t('NRC')}
               icon={'magnify'}
               component={TextInputFile}
               cus_width

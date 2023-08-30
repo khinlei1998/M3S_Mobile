@@ -6,6 +6,7 @@ import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
 import { connect } from 'react-redux';
 import { fetchStateName } from '../../query/NRCinfo_query';
 import TextInputFile from '../../components/TextInputFile';
+import { useTranslation } from 'react-i18next';
 function ShowNRC_Modal(props) {
   const {
     hideNRCModal,
@@ -15,6 +16,7 @@ function ShowNRC_Modal(props) {
     btnCancel,
     prefix,
   } = props;
+  const { t } = useTranslation();
   const [state_name, setStateName] = useState('');
   const [nrc_prefix, setNRCPrefix] = useState([]);
 
@@ -103,19 +105,19 @@ function ShowNRC_Modal(props) {
             }}>
             <Button
               mode="contained"
-              contentStyle={{ width: 100, padding: 3 }}
+              contentStyle={{ width: 117, height:44 }}
               onPress={hideNRCModal}
-              buttonColor={'#6870C3'}
+              buttonColor={'#21316C'}
               style={{ borderRadius: 0, margin: 10 }}>
-              OK
+              {t("OK")}
             </Button>
             <Button
               mode="contained"
-              contentStyle={{ width: 100, padding: 4 }}
+              contentStyle={{ width: 117, height:44 }}
               onPress={btnCancel}
-              buttonColor={'#6870C3'}
+              buttonColor={'#21316C'}
               style={{ borderRadius: 0, margin: 10 }}>
-              Cancel
+              {t("Cancel")}
             </Button>
           </View>
         </Modal>

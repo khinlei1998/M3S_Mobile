@@ -13,7 +13,7 @@ import { reduxForm, Field, change, reset } from 'redux-form';
 import { connect, useDispatch } from 'react-redux';
 import RNFS from 'react-native-fs';
 import { Button, RadioButton, List, Modal } from 'react-native-paper';
-import { operations, emp_filter_item } from '../../common';
+import { operations,  } from '../../common';
 import { style } from '../../style/Relation_style';
 import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
@@ -23,15 +23,14 @@ import EditRelation_Contract from './EditRelation_Contract';
 import EditRelation_Member_Sign from './EditRelation_Member_Sign';
 import Icon from 'react-native-vector-icons/Feather';
 import SignatureCapture from 'react-native-signature-capture';
-import { storeRelation } from '../../query/RelationShip_query';
-import { useRef } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { getAllLoan_By_application_no } from '../../query/AllLoan_query';
 import { setRelation_UpdateStatus } from '../../redux/LoanReducer';
 import { deleteRelation_ByID } from '../../query/RelationShip_query';
 // import validate from './Validate';
 import { UpdateRelation } from '../../query/RelationShip_query';
+import { useTranslation } from 'react-i18next';
+
 function Edit_Relation_Form(props) {
   const navigation = useNavigation();
   const { handleSubmit, setRelation_UpdateStatus, relation_update_status } =
@@ -69,7 +68,7 @@ function Edit_Relation_Form(props) {
   const [coborrower_sign_path, setCoBorrowerSignPath] = useState('');
   const [show_coborrower_sign, setShowCoBorrowerSign] = useState('');
   const [relation_name, setRelationName] = useState('');
-
+  const { t } = useTranslation();
   const Borrower_Sign_Modal = props => {
     const {
       _onSaveBorrowerEvent,
@@ -881,7 +880,7 @@ function Edit_Relation_Form(props) {
 
                   <Field
                     name={'borrower_name'}
-                    title={'Borrower Name'}
+                    title={t('Borrower Name')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -891,7 +890,7 @@ function Edit_Relation_Form(props) {
                 <View style={style.sub_list_container}>
                   <Field
                     name={'application_amt'}
-                    title={'Loan Apply Amount'}
+                    title={t('Loan Apply Amount')}
                     component={TextInputFile}
                     cus_width
                     input_mode

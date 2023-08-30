@@ -18,8 +18,10 @@ import DropDownPicker from '../../components/DropDownPicker';
 import DatePicker from '../../components/DatePicker';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import {useDispatch} from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 function Borrower_Info(props) {
+  const { t } = useTranslation()
   const {
     show_village,
     setVillage,
@@ -72,7 +74,7 @@ function Borrower_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'resident_rgst_id'}
-              title={'NRC'}
+              title={t('NRC')}
               icon={update_status == true && 'magnify'}
               component={TextInputFile}
               cus_width
@@ -84,7 +86,7 @@ function Borrower_Info(props) {
 
             <Field
               name={'borrower_name'}
-              title={'Borrower Name'}
+              title={t('Borrower Name')}
               component={TextInputFile}
               cus_width
               input_mode
@@ -95,7 +97,7 @@ function Borrower_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'saving_acct_num'}
-              title={'Saving Code'}
+              title={t('Saving Code')}
               component={TextInputFile}
               cus_width
               input_mode
@@ -129,7 +131,7 @@ function Borrower_Info(props) {
             <Field
               name={'birth_date'}
               component={DatePicker}
-              label={'date of birth'}
+              label={t('Date of birth')}
               icon={'calendar'}
               editable={update_status == true ? false : true}
             />
@@ -139,7 +141,7 @@ function Borrower_Info(props) {
             <Field
               data={maritail_status}
               name={'marital_status'}
-              title={'Maritial Status'}
+              title={t('Marital Status')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,
@@ -266,7 +268,7 @@ function Borrower_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'location_code'}
-              title={'Location Code '}
+              title={t('Location Code')}
               component={TextInputFile}
               input_mode
               inputmax={100}
@@ -298,14 +300,14 @@ function Borrower_Info(props) {
             <Field
               name={'curr_resident_date'}
               component={DatePicker}
-              label={'Living Time in current address'}
+              label={t('Living Time in current address')}
               icon={update_status == true && 'calendar'}
               editable={update_status == true ? false : true}
             />
 
             <Field
               name={'family_num'}
-              title={'Number of family'}
+              title={t('Number of family Number')}
               component={TextInputFile}
               cus_width
               input_mode
@@ -317,7 +319,7 @@ function Borrower_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'hghschl_num'}
-              title={'Number of High school Students'}
+              title={t('Number of High school Students')}
               component={TextInputFile}
               cus_width
               input_mode
@@ -340,7 +342,7 @@ function Borrower_Info(props) {
             <Field
               data={condition_house}
               name={'house_ocpn_type'}
-              title={'Condition of house'}
+              title={t('Condition of house')}
               enabled={update_status == true ? false : true}
               component={DropDownPicker}
               pickerStyle={{
@@ -352,7 +354,7 @@ function Borrower_Info(props) {
              <Field
               data={owner_ship_business}
               name={'business_own_type'}
-              title={'OwnerShip of business'}
+              title={t('OwnerShip of business')}
               enabled={update_status == true ? false : true}
               component={DropDownPicker}
               pickerStyle={{

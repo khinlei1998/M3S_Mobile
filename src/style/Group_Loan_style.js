@@ -15,9 +15,11 @@ export const style = StyleSheet.create({
   },
   btnStyle: {
     borderRadius: 0,
-    width: 100,
+    width: 117,
     marginTop: 10,
     color: 'black',
+    bottom:5,
+    height:44
   },
   list_container: {
     backgroundColor: '#fff',
@@ -99,9 +101,10 @@ export const style = StyleSheet.create({
   },
   btn_style:{
     borderRadius: 0,
-    width: 100,
+    width: 117,
     marginTop: 10,
     color: 'black',
     marginLeft: 5,
+    height:44
   }
 });

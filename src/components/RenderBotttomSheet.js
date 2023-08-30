@@ -228,7 +228,7 @@ export const RenderBottomSheet = () =>
               <Button
               disabled
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={{
                   borderRadius: 0,
                   width: 130,

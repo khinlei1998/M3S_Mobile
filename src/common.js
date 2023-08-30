@@ -268,7 +268,7 @@ export const loan_type = [
   },
   {
     id: 2,
-    label: 'Agriculture/ Animal Hisbandry',
+    label: 'Agriculture / Animal Husbandry',
     value: '20',
   },
   {

@@ -30,7 +30,7 @@ import { reduxForm, Field, change, reset } from 'redux-form';
 import { connect, useDispatch } from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
-import { loan_type, emp_filter_item } from '../../common';
+import { loan_type, } from '../../common';
 import DatePicker from '../../components/DatePicker';
 import { Picker } from '@react-native-picker/picker';
 import { getAllLoan } from '../../query/AllLoan_query';
@@ -80,11 +80,13 @@ import Ward_Model from '../../components/Ward_Model';
 import { filterWard } from '../../query/Ward_query';
 import { filterVillage } from '../../query/Village_query';
 import { filterLocation } from '../../query/CodeInfo_quey';
+import { useTranslation } from 'react-i18next';
+
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
   const [emp_data, setEmpData] = React.useState('');
-
+  const { t } = useTranslation();
   const {
     all_cus,
     modalVisible,
@@ -578,7 +580,7 @@ const Borrower_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Phone Number
+                {t("Phone Number")}
               </Text>
             </View>
 
@@ -592,15 +594,16 @@ const Borrower_modal = props => {
               <Button
                 onPress={() => hideModal()}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={{
                   borderRadius: 0,
-                  width: 100,
+                  width: 117,
                   marginTop: 10,
                   color: 'black',
                   marginLeft: 5,
+                  height:44
                 }}>
-                OK
+                {t("OK")}
               </Button>
             </View>
           </View>
@@ -614,7 +617,7 @@ const CoBorrower_modal = props => {
   const dispatch = useDispatch();
   const [co_borrowerselectedValue, setCoborrowerSelectedValue] = useState(null);
   const [co_borrower_data, setCoBorrowerText] = useState('');
-
+  const { t } = useTranslation();
   const {
     all_co_borrower,
     co_borrower_modalVisible,
@@ -827,7 +830,7 @@ const CoBorrower_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Phone Number
+                {t("Phone Number")}
               </Text>
             </View>
 
@@ -841,15 +844,16 @@ const CoBorrower_modal = props => {
               <Button
                 onPress={() => hideCoBorrowerModal()}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={{
                   borderRadius: 0,
-                  width: 100,
+                  width: 117,
                   marginTop: 10,
                   color: 'black',
                   marginLeft: 5,
+                  height:44
                 }}>
-                OK
+                {t("OK")}
               </Button>
             </View>
           </View>
@@ -1048,6 +1052,7 @@ const Co_Borrower_Sign_Modal = props => {
 };
 
 function Edit_Individual_Loan(props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [show_operation, setOperation] = useState('2');
   const [modalVisible, setModalVisible] = useState(false);
@@ -1067,17 +1072,11 @@ function Edit_Individual_Loan(props) {
   const [co_borrower_filePath, setCoBorrowerFilePath] = useState('');
   const [exceptional_data, setExceptionalData] = useState([]);
   const [guarantor_data, setGuarantorData] = useState([]);
-  const [selectedWardItemValue, setWardSelectedItemValue] =
-    useState('ward_code');
-  const [selectedVillageItemValue, setVillageSelectedItemValue] =
-    useState('village_code');
-
   const [borrower_sign_path, setBorrowerSignPath] = useState('');
   const [borrower_map, setBorrowerMap] = useState('');
   const [show_borrower_sign, setShowBorrowerSign] = useState('');
   const [coborrower_sign_path, setCoBorrowerSignPath] = useState('');
   const [show_coborrower_sign, setShowCoBorrowerSign] = useState('');
-  const [renderCount, setRenderCount] = useState(0);
   const [relation_data, setRelationData] = useState([]);
   const [evaluation_data, setEvaluationData] = useState([]);
   const [show_village, setVillage] = useState('1');
@@ -1122,6 +1121,8 @@ function Edit_Individual_Loan(props) {
   const [borrower_name, setBorrowerName] = useState('');
   const [coborrower_name, setCoBorrowerName] = useState('');
   const [all_loandata, setAllLoanData] = useState([]);
+  const [capturedFiles, setCapturedFiles] = useState([]);
+  const [passport_capturedFiles, setPassportCapturedFiles] = useState(false);
   const {
     retrive_loan_data,
     handleSubmit,
@@ -1405,7 +1406,6 @@ function Edit_Individual_Loan(props) {
     setLoanExpanded(!loanexpanded);
   };
   const loadData = async () => {
-    setRenderCount(prevCount => prevCount + 1);
     const user_id = await AsyncStorage.getItem('user_id');
 
     await getAllLoan().then(loan_data => {
@@ -1435,6 +1435,8 @@ function Edit_Individual_Loan(props) {
     await getEvaluationData(retrive_loan_data.application_no).then(data => {
       setEvaluationData(data);
     });
+    await checkFileExists()
+    await PassportcheckFileExists()
 
     const fileExists = await RNFS.exists(
       `/storage/emulated/0/Pictures/RNSketchCanvas/${retrive_loan_data.application_no}MP01.jpg`,
@@ -1455,9 +1457,67 @@ function Edit_Individual_Loan(props) {
   const hideCoBorrowerSignModal = () => {
     setCoBorrowerCanvas(!show_co_borrower_canvas);
   };
+  const data = [
+    { id: 1, name: 'NRC Card (Front)', value: '01F' },
+    { id: 2, name: 'NRC Card (Back)', value: '01B' },
+    { id: 3, name: 'Guarantor NRC Card (Front)', value: '02F' },
+    { id: 4, name: 'Guarantor NRC Card (Back)', value: '02B' },
+    { id: 5, name: 'Co-borrower NRC Card (Front)', value: '03F' },
+    { id: 6, name: 'Co-borrower NRC Card (Back)', value: '03B' },
+    { id: 7, name: 'Family (Front)', value: '04F' },
+    { id: 8, name: 'Family (Back)', value: '04B' },
+    { id: 9, name: 'House Ownership (Front)', value: '05F' },
+    { id: 10, name: 'House Ownership (Back)', value: '05B' },
+    { id: 11, name: 'Recommendation (Front)', value: '06F' },
+    { id: 12, name: 'Recommendation (Back)', value: '06B' },
+    { id: 13, name: 'Business License (Front)', value: '07F' },
+    { id: 14, name: 'Business License (Back)', value: '07B' },
+    { id: 15, name: 'Land OwnerShip (Front)', value: '08F' },
+    { id: 16, name: 'Land OwnerShip (Back)', value: '08B' },
+    { id: 17, name: 'Tax Payment (Front)', value: '09F' },
+    { id: 18, name: 'Tax Payment (Back)', value: '09B' },
+    { id: 19, name: 'Insurance (Front)', value: '10F' },
+    { id: 20, name: 'Insurance (Back)', value: '10B' },
+    { id: 21, name: 'Etc (Front)', value: '11F' },
+    { id: 22, name: 'Etc (Back)', value: '11B' },
+
+    // Add more data as needed
+  ];
+  const PassportcheckFileExists = async () => {
+    try {
+      const fileName = `${retrive_loan_data.application_no}AT12F.jpg`;
+      const directory = `/storage/emulated/0/Pictures/Camera/`;
+      const filePath = directory + fileName;
+      const fileExists = await RNFS.exists(filePath);
+      if (fileExists) {
+        setPassportCapturedFiles(true);
+      }
+    } catch (error) {
+      console.log('Error checking file existence:', error);
+    }
+  };
+
+  const checkFileExists = async () => {
+    try {
+      for (const item of data) {
+        const fileName = `${retrive_loan_data.application_no}AT${item.value}.jpg`;
+        const directory = `/storage/emulated/0/Pictures/Camera/`;
+        const filePath = directory + fileName;
+        const fileExists = await RNFS.exists(filePath);
+        if (fileExists) {
+          setCapturedFiles(prevFiles => [...prevFiles, item.value]);
+
+        }
+      }
+    } catch (error) {
+      console.log('Error checking file existence:', error);
+    }
+  };
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       loadData();
+      setCapturedFiles([])
+      setPassportCapturedFiles(false)
     });
 
     return () => {
@@ -1466,12 +1526,6 @@ function Edit_Individual_Loan(props) {
       setUpdateStatus(false);
     };
   }, [navigation]);
-
-  // useEffect(() => {
-  //   if (update_status == true) {
-  //     setOperation('3');
-  //   }
-  // }, [update_status]);
 
   const handleCalculate = () => {
     loan_max_data.map(value => {
@@ -1511,10 +1565,10 @@ function Edit_Individual_Loan(props) {
     });
   };
   const saveSign = async () => {
-    const pathName = await sign.current.saveImage();
+   await sign.current.saveImage();
   };
   const co_borrower_saveSign = async () => {
-    const pathName = await co_borrower_sign.current.saveImage();
+   await co_borrower_sign.current.saveImage();
   };
 
   const resetSign = () => {
@@ -1553,14 +1607,6 @@ function Edit_Individual_Loan(props) {
   const handleCityItemValueChange = itemValue => {
     setSelectedCityItemValue(itemValue);
   };
-
-  const handleVllageItemValueChange = itemValue => {
-    setVillageSelectedItemValue(itemValue);
-  };
-  const handleWardItemValueChange = itemValue => {
-    setWardSelectedItemValue(itemValue);
-  };
-
   const handleLocationItemValueChange = itemValue => {
     setLocationSelectedItemValue(itemValue);
   };
@@ -1580,7 +1626,6 @@ function Edit_Individual_Loan(props) {
   const showLocationSearch = () => {
     setLocationModalVisible(true);
   };
-  const filtered_operations = operations.filter(item => item.value != 1);
   const btnChangeOperation = async (newValue, loan_data) => {
     const user_id = await AsyncStorage.getItem('user_id');
 
@@ -2007,11 +2052,6 @@ function Edit_Individual_Loan(props) {
                           ToastAndroid.SHORT,
                         )
                   }
-                  // onPress={() =>
-                  //   props.navigation.navigate('Area Evaluation', {
-                  //     retrive_loan_data,
-                  //   })
-                  // }
                   style={{
                     width: 250,
                     height: 40,
@@ -2122,23 +2162,39 @@ function Edit_Individual_Loan(props) {
                   style={{
                     width: 250,
                     height: 40,
-                    backgroundColor: '#242157',
+                    backgroundColor: capturedFiles.length > 0 ? '#3E3E84' : '#242157',
                     margin: 10,
                   }}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      margin: 5,
-                    }}>
-                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                      <Icon name="paperclip" size={20} color="#fff" />
-                      <Text style={{ color: '#fff', marginLeft: 5 }}>
-                        Evidence Document Form
-                      </Text>
+                  {capturedFiles.length > 0 ? (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        margin: 5,
+                      }}>
+                      <View
+                        style={{ alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name="check" size={20} color="#ede72d" />
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
+                          Evidence Document Form
+                        </Text>
+                      </View>
+                    </View>) :
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        margin: 5,
+                      }}>
+                      <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name="paperclip" size={20} color="#fff" />
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
+                          Evidence Document Form
+                        </Text>
+                      </View>
+                      <Icon name="chevron-right" size={25} color="#fff" />
                     </View>
-                    <Icon name="chevron-right" size={25} color="#fff" />
-                  </View>
+                  }
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -2199,7 +2255,7 @@ function Edit_Individual_Loan(props) {
                   style={{
                     width: 250,
                     height: 40,
-                    backgroundColor: '#242157',
+                    backgroundColor: passport_capturedFiles ? '#3E3E84' : '#242157',
                     margin: 10,
                   }}>
                   <View
@@ -2208,13 +2264,24 @@ function Edit_Individual_Loan(props) {
                       justifyContent: 'space-between',
                       margin: 5,
                     }}>
-                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                      <Icon name="paperclip" size={20} color="#fff" />
-                      <Text style={{ color: '#fff', marginLeft: 5 }}>
-                        Passport Photo
-                      </Text>
-                    </View>
-                    <Icon name="chevron-right" size={25} color="#fff" />
+                    {passport_capturedFiles ? (
+                      <View
+                        style={{ alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name="check" size={20} color="#ede72d" />
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
+                          Passport Photo
+                        </Text>
+                      </View>) : (
+                      <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name="paperclip" size={20} color="#fff" />
+                        <Text style={{ color: '#fff', marginLeft: 5 }}>
+                          Passport Photo
+                        </Text>
+                        <Icon name="chevron-right" size={25} color="#fff" />
+
+                      </View>
+                    )
+                    }
                   </View>
                 </TouchableOpacity>
               </View>
@@ -2236,7 +2303,7 @@ function Edit_Individual_Loan(props) {
                     borderRadius: 10,
                     justifyContent: 'center',
                   }}>
-                  Save
+                  {t("Save")}
                 </Button>
 
                 <Button
@@ -2251,7 +2318,7 @@ function Edit_Individual_Loan(props) {
                     justifyContent: 'center',
                     marginTop: 5,
                   }}>
-                  Cancel
+                  {t("Cancel")}
                 </Button>
               </View>
             </View>
@@ -2391,9 +2458,9 @@ function Edit_Individual_Loan(props) {
                 }
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={style.btnStyle}>
-                OK
+                {t("OK")}
               </Button>
             </View>
             <DividerLine />
@@ -2449,7 +2516,7 @@ function Edit_Individual_Loan(props) {
                 <View style={style.sub_list_container}>
                   <Field
                     name={'loan_cycle'}
-                    title={'Loan Cycle'}
+                    title={t('Loan Cycle')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -2460,7 +2527,7 @@ function Edit_Individual_Loan(props) {
 
                   <Field
                     name={'loanterm_cnt'}
-                    title={'Loan Term'}
+                    title={t('Loan Term')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -2472,7 +2539,7 @@ function Edit_Individual_Loan(props) {
                 <View style={style.sub_list_container}>
                   <Field
                     name={'application_amt'}
-                    title={'Loan Apply Amount'}
+                    title={t('Loan Apply Amount')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -2482,7 +2549,7 @@ function Edit_Individual_Loan(props) {
 
                   <Field
                     name={'loan_code'}
-                    title={'Loan Code'}
+                    title={t('Loan Code')}
                     component={TextInputFile}
                     cus_width
                     input_mode

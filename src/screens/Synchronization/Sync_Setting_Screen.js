@@ -4,7 +4,10 @@ import TextInputFile from '../../components/TextInputFile'
 import { Field, reduxForm, change } from 'redux-form';
 import { Button } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTranslation } from 'react-i18next';
+
 function Sync_Setting_Screen(props) {
+  const { t } = useTranslation();
   const [showDefault, setShowDefault] = useState(false);
   const [ip, setIP] = useState();
   const [port, setPort] = useState();
@@ -95,26 +98,26 @@ function Sync_Setting_Screen(props) {
         <Button
           onPress={ handleSubmit(onSubmit)}
           mode="contained"
-          buttonColor={'#6870C3'}
+          buttonColor={'#21316C'}
           style={{
             borderRadius: 0,
-            width: 120,
+            width: 136,
             marginTop: 10,
             color: 'black',
             marginLeft: 5,
-            padding: 5,
+            height:44
           }}>
-          Save
+          {t("Save")}
         </Button>
 
         <Button
           style={{
             borderRadius: 0,
-            width: 120,
+            width: 136,
             marginTop: 10,
             color: 'black',
             marginLeft: 5,
-            padding: 5,
+            height:44
           }}
           mode="outlined"
           onPress={() => btndefault()}>

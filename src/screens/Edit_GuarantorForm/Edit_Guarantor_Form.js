@@ -14,7 +14,6 @@ import {operations, emp_filter_item} from '../../common';
 import {reduxForm, Field, change, reset} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
 import RNFS from 'react-native-fs';
-import {storeGuarantor} from '../../query/Guarantor_query';
 import {
   Button,
   RadioButton,
@@ -42,6 +41,8 @@ import {deleteGuarantor_ByID} from '../../query/Guarantor_query';
 import {updateGuarantor} from '../../query/Guarantor_query';
 import validate from './Validate';
 import {cus_filter_item} from '../../common';
+import { useTranslation } from 'react-i18next';
+
 const Borrower_Sign_Modal = props => {
   const {
     show_canvas,
@@ -138,6 +139,7 @@ const Guarantor_modal = props => {
   const dispatch = useDispatch();
   const [guarantor_selectedvalue, setGuarantorSelectedValue] = useState(null);
   const [guarantor_text, setGuarantorText] = useState('');
+  const { t } = useTranslation();
 
   const {
     handleItemValueChange,
@@ -358,7 +360,7 @@ const Guarantor_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Phone Number
+                {t("Phone Number")}
               </Text>
             </View>
 
@@ -372,15 +374,16 @@ const Guarantor_modal = props => {
               <Button
                 onPress={() => hideGuarantorModal()}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={{
                   borderRadius: 0,
-                  width: 100,
+                  width: 117,
                   marginTop: 10,
                   color: 'black',
                   marginLeft: 5,
+                  height: 44,
                 }}>
-                OK
+                {t('OK')}
               </Button>
             </View>
           </View>
@@ -700,7 +703,7 @@ function Edit_Guarantor_Form(props) {
 
                   <Field
                     name={'borrower_name'}
-                    title={'Borrower Name'}
+                    title={t('Borrower Name')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -710,7 +713,7 @@ function Edit_Guarantor_Form(props) {
                 <View style={style.sub_list_container}>
                   <Field
                     name={'application_amt'}
-                    title={'Loan Apply Amount'}
+                    title={t('Loan Apply Amount')}
                     component={TextInputFile}
                     cus_width
                     input_mode

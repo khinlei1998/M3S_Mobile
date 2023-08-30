@@ -55,6 +55,7 @@ import Ward_Model from '../../components/Ward_Model';
 import {filterWard} from '../../query/Ward_query';
 import Location_Modal from '../../components/Location_Modal';
 import {filterLocation, filterCity} from '../../query/CodeInfo_quey';
+import { useTranslation } from 'react-i18next';
 function Customer_Management(props) {
   const dispatch = useDispatch();
   const {
@@ -64,6 +65,7 @@ function Customer_Management(props) {
     nrcNo,
     nrc_prefix_code,
   } = props;
+  const { t } = useTranslation();
   const [all_emp, setAllEmp] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
@@ -971,15 +973,16 @@ function Customer_Management(props) {
                     <Button
                       onPress={() => hideModal()}
                       mode="contained"
-                      buttonColor={'#6870C3'}
+                      buttonColor={'#21316C'}
                       style={{
                         borderRadius: 0,
-                        width: 100,
+                        width: 117,
                         marginTop: 10,
                         color: 'black',
                         marginLeft: 5,
+                        height:44
                       }}>
-                      OK
+                      {t("OK")}
                     </Button>
                   </View>
                 </>

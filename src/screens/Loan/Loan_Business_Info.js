@@ -14,6 +14,8 @@ import DropDownPicker from '../../components/DropDownPicker';
 import {style} from '../../style/Individual_Loan_style';
 import {reduxForm, Field} from 'redux-form';
 import {connect} from 'react-redux';
+import { useTranslation } from 'react-i18next';
+
 function Loan_Business_Info(props) {
   const [loan_business_expanded, setLoan_BusinessInfo_expanded] =
     useState(true);
@@ -21,6 +23,7 @@ function Loan_Business_Info(props) {
   const handleLoanBusinessToggle = () => {
     setLoan_BusinessInfo_expanded(!loan_business_expanded);
   };
+  const { t } = useTranslation()
   return (
     <>
       <List.Accordion
@@ -28,7 +31,7 @@ function Loan_Business_Info(props) {
         onPress={handleLoanBusinessToggle}
         style={style.list_container}
         titleStyle={style.list_title}
-        title="Business Info">
+        title={t("Business Info")}>
         <View style={style.sub_container}>
           <View style={style.sub_list_container}>
             <Field
@@ -66,8 +69,8 @@ function Loan_Business_Info(props) {
             />
           </View>
 
-       
-           
+
+
             <Field
               name={'workplace_addr'}
               title={'Address'}

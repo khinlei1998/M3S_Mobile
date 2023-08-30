@@ -1,21 +1,21 @@
-import {View, ToastAndroid} from 'react-native';
+import {View,} from 'react-native';
 import {
   Modal,
   Portal,
   Text,
   Button,
   Provider,
-  Divider,
-  TextInput,
 } from 'react-native-paper';
 import TextInputFile from '../../components/TextInputFile';
 import React, {useState, useEffect} from 'react';
 import {Field, reduxForm, change} from 'redux-form';
 import Icon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CustomTextInput from '../../components/CustomTextInput';
+import { useTranslation } from 'react-i18next';
+
 import validate from './validate';
 function SettingScreen(props) {
+  const { t } = useTranslation();
   const [showDefault, setShowDefault] = useState(false);
   const [ip, setIP] = useState();
 
@@ -138,14 +138,15 @@ function SettingScreen(props) {
                   marginTop: 20,
                 }}>
                 <Button
-                  style={{borderRadius: 0}}
+                 buttonColor={'#21316C'}
+                  style={{borderRadius: 0,width: 136, height:44}}
                   mode="contained"
                   onPress={handleSubmit(onSubmit)}>
-                  Save
+                  {t("Save")}
                 </Button>
 
                 <Button
-                  style={{marginLeft: 10, borderRadius: 0}}
+                  style={{marginLeft: 10, borderRadius: 0,width: 136, height:44}}
                   mode="outlined"
                   onPress={() => btndefault()}>
                   Default

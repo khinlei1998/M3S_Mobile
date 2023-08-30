@@ -3,6 +3,8 @@ import React, { useState, useEffect, createRef } from 'react';
 import { style } from '../../style/Relation_style';
 import { List } from 'react-native-paper';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
+
 export default function Relation_Contract(props) {
   const {
     coborrower_sign_path,
@@ -17,12 +19,13 @@ export default function Relation_Contract(props) {
     borrower_name,
     retrive_loan_data
   } = props;
-  console.log('retrive_loan_data', retrive_loan_data);
   const [relation_contract_expanded, setRelationContractExpanded] =
     useState(true);
   const handleRelationContractToggle = () => {
     setRelationContractExpanded(!relation_contract_expanded);
   };
+  const { t } = useTranslation();
+
   return (
     <>
       <List.Accordion
@@ -39,26 +42,26 @@ export default function Relation_Contract(props) {
               justifyContent: 'space-between',
             }}>
             <Text style={{ fontWeight: 'bold' }}>
-              My Name<Text style={{ color: '#A1B5DC' }}>{retrive_loan_data.borrower_name} , address,</Text>
+              {t("My Name")}<Text style={{ color: '#A1B5DC' }}>{retrive_loan_data.borrower_name} , address,</Text>
               <Text style={{ color: '#A1B5DC' }}>{retrive_loan_data.addr}{'\n'}</Text>
             </Text>
             <Text style={{ fontWeight: 'bold' }}>
-              holding egistration number
+              {t("holding registration number")}
               <Text style={{ color: '#A1B5DC' }}>{retrive_loan_data.resident_rgst_id
               }{'\n'}</Text>
             </Text>
             <Text style={{ fontWeight: 'bold' }}>
-              and the Co-borrower
+              {t("and the Co-borrower")}
               <Text style={{ color: '#A1B5DC' }}>{retrive_loan_data.co_brwer_name
               },{'\n'}</Text>
             </Text>
             <Text style={{ fontWeight: 'bold' }}>
-              Register Number
+              {t("Register Number")}
               <Text style={{ color: '#A1B5DC' }}>{retrive_loan_data.co_brwer_rgst_id
               },{'\n'}</Text>
             </Text>
             <Text style={{ fontWeight: 'bold' }}>
-              are promise to be directly related in the following form
+              {t("are promise to be directly related in the following form")}
             </Text>
           </View>
           <View
@@ -123,7 +126,7 @@ export default function Relation_Contract(props) {
             <View>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-                  Co Borrower Name
+                  {t("Co Borrower Name")}
                 </Text>
                 <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
                   {retrive_loan_data.co_brwer_name
@@ -166,16 +169,13 @@ export default function Relation_Contract(props) {
             </View>
           </View>
           <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-            The co-borrower is responsible for repaying the loan if it fails to
-            do so.{'\n'}
+            {t("The co-borrower is responsible for repaying the loan if it fails to do so.")}{'\n'}
           </Text>
           <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-            The above-mentioned borrower and co-borrower are responsible for
-            compliance with the terms and conditions of the contract by
-            confirming that the above-mentioned{'\n'}{' '}
+            {t("The above-mentioned borrower and co-borrower are responsible for compliance with the terms and conditions of the contract by confirming that the above-mentioned")}{'\n'}{' '}
           </Text>
           <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-            {relation_name} relationship is correct
+            {relation_name}{t("relationship is correct.")}
           </Text>
         </View>
       </List.Accordion>

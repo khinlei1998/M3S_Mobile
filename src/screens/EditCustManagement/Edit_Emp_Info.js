@@ -66,8 +66,11 @@ import { fetchTownshipName } from '../../query/Township_query';
 import { fetchVillageName } from '../../query/Village_query';
 import { fetchWardName } from '../../query/Ward_query';
 import { fetchLocationName } from '../../query/CodeInfo_quey';
+import { useTranslation } from 'react-i18next';
+
 function Edit_Emp_Info(props) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const {
     handleSubmit,
     setUpdateStatus,
@@ -300,16 +303,6 @@ function Edit_Emp_Info(props) {
       setNRC('2');
     }
   }, []);
-
-  // useEffect(async () => {
-  //   const user_id = await AsyncStorage.getItem('user_id');
-
-  //   if (update_status == true && filtered_cus_data.create_user_id !== user_id) {
-  //     setOperation('2');
-  //   } else if (update_status == true) {
-  //     setOperation('3');
-  //   }
-  // }, [update_status]);
 
   useEffect(() => {
     totalIncome(
@@ -1117,7 +1110,7 @@ function Edit_Emp_Info(props) {
                 mode="contained"
                 buttonColor={'#21316C'}
                 style={style.btnStyle}>
-                OK
+                {t("OK")}
               </Button>
             </View>
             <DividerLine border_width />
@@ -1346,15 +1339,16 @@ function Edit_Emp_Info(props) {
                 <Button
                   onPress={() => hideModal()}
                   mode="contained"
-                  buttonColor={'#6870C3'}
+                  buttonColor={'#21316C'}
                   style={{
                     borderRadius: 0,
-                    width: 100,
+                    width: 117,
                     marginTop: 10,
                     color: 'black',
                     marginLeft: 5,
+                    height:44
                   }}>
-                  OK
+                  {t("OK")}
                 </Button>
               </View>
             </View>

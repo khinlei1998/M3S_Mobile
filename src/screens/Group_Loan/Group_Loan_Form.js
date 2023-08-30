@@ -35,10 +35,13 @@ import Group_Loan_List from './Group_Loan_List';
 import { getAllGroupLoan } from '../../query/GropuLon_query';
 import { storeGroupData } from '../../query/GropuLon_query';
 import { setBorrowerMap_Path } from '../../redux/LoanReducer';
+import { useTranslation } from 'react-i18next';
+
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
   const [emp_data, setEmpData] = React.useState('');
+  const { t } = useTranslation();
 
   const {
     all_cus,
@@ -223,7 +226,7 @@ const Borrower_modal = props => {
               padding: 10,
               fontWeight: 'bold',
             }}>
-            Phone Number
+            {t("Phone Number")}
           </Text>
         </View>
 
@@ -237,15 +240,16 @@ const Borrower_modal = props => {
           <Button
             onPress={() => hideModal()}
             mode="contained"
-            buttonColor={'#6870C3'}
+            buttonColor={'#21316C'}
             style={{
               borderRadius: 0,
-              width: 100,
+              width: 117,
               marginTop: 10,
               color: 'black',
               marginLeft: 5,
+              height:44
             }}>
-            OK
+            {t("OK")}
           </Button>
         </View>
       </View>
@@ -253,6 +257,7 @@ const Borrower_modal = props => {
   );
 };
 function Group_Loan_Form(props) {
+  const { t } = useTranslation();
   const { handleSubmit, navigation, setBorrowerMap_Path } = props;
   const [show_operation, setOperation] = useState('1');
   const [modalVisible, setModalVisible] = useState(false);
@@ -351,9 +356,9 @@ function Group_Loan_Form(props) {
               <Button
                 onPress={handleSubmit(onSubmit)}
                 mode="contained"
-                buttonColor={'#6870C3'}
+                buttonColor={'#21316C'}
                 style={style.btnStyle}>
-                OK
+                {t("OK")}
               </Button>
             </View>
             <DividerLine />

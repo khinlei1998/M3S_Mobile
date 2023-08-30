@@ -47,15 +47,21 @@ export default function AuthNavigation(props) {
           fontSize: 20,
         },
       }}>
-      <Stack.Screen
+       <Stack.Screen
         name="Login"
         component={LoginScreen}
         options={{headerShown: false}}
       />
       {/* <Stack.Screen
+        name="Indi_Staff_loan"
+        component={Individual_Staff_loan_Info}
+        options={{ headerShown: false }}
+      /> */}
+
+      {/* <Stack.Screen
         name="Home"
         component={Home}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       /> */}
 
       {/* <Stack.Screen
@@ -71,8 +77,13 @@ export default function AuthNavigation(props) {
         component={Group_Loan_Form}
         options={{headerShown: false}}
       />
+ */}
 
-      <Stack.Screen
+
+
+
+
+      {/* <Stack.Screen
         name="Customer_Management"
         component={Customer_Management}
         options={{headerShown: false}}
@@ -87,7 +98,7 @@ export default function AuthNavigation(props) {
       <Stack.Screen
         name="Evidence"
         component={Evidence}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
@@ -114,11 +125,7 @@ export default function AuthNavigation(props) {
         options={{headerShown: false}}
       />
 
-      <Stack.Screen
-        name="Indi_Staff_loan"
-        component={Individual_Staff_loan_Info}
-        options={{headerShown: false}}
-      />
+
 
       <Stack.Screen
         name="Edit_Individual_Loan"
@@ -215,7 +222,7 @@ export default function AuthNavigation(props) {
       <Stack.Screen
         name="Edit_Exceptional_Approvel_Form"
         component={Edit_Exceptional_Approvel_Form}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       /> */}
 
       <Stack.Screen

@@ -22,9 +22,12 @@ import {useNavigation} from '@react-navigation/native';
 import {setExcept_ApprovalStatus} from '../../redux/LoanReducer';
 import {getAllLoan_By_application_no} from '../../query/AllLoan_query';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
+
 function Exceptional_Approvel_Form(props) {
   const navigation = useNavigation();
-  const {handleSubmit, setExcept_ApprovalStatus, onSuccess} = props;
+  const { t } = useTranslation();
+  const {handleSubmit,} = props;
   const [show_operation, setOperation] = useState('1');
   const [loanexpanded, setLoanExpanded] = React.useState(true);
   const retrive_loan_data = props.route.params.retrive_loan_data;
@@ -142,7 +145,7 @@ function Exceptional_Approvel_Form(props) {
 
                   <Field
                     name={'borrower_name'}
-                    title={'Borrower Name'}
+                    title={t('Borrower Name')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -154,7 +157,7 @@ function Exceptional_Approvel_Form(props) {
                 <View style={style.sub_list_container}>
                   <Field
                     name={'application_amt'}
-                    title={'Loan Apply Amount'}
+                    title={t('Loan Apply Amount')}
                     component={TextInputFile}
                     cus_width
                     input_mode
