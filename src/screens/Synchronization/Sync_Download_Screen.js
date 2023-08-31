@@ -13,9 +13,11 @@ import moment from 'moment';
 import { get_Village } from '../../query/Village_query';
 import { get_Township } from '../../query/Township_query';
 import { get_Ward } from '../../query/Ward_query';
+import {useTranslation} from 'react-i18next';
 
 export default function Sync_Download_Screen(props) {
   const { selectAll, setShowModal, setSelectAll, setCheckedItems, checkedItems, handleDownload } = props
+  const {t} = useTranslation();
 
   const download_data = [
     {
@@ -171,108 +173,6 @@ export default function Sync_Download_Screen(props) {
       setCheckedItems([]);
     }
   };
-  // const handleDownload = () => {
-  //   if (checkedItems.length > 0) {
-  //     if (selectAll) {
-  //       if (!netInfo.isConnected) {
-  //         alert('Internet Connection is need');
-  //       } else {
-  //         setIsLoading(true);
-  //         getEemployee_info()
-  //           .then(result => {
-  //             if (result == 'success') {
-  //               getCustomer_info()
-  //                 .then(result => {
-  //                   if (result == 'success') {
-  //                     getNRC_info()
-  //                       .then(result => {
-  //                         if (result == 'success') {
-  //                           getSurvey_Item()
-  //                             .then(result => {
-  //                               if (result == 'success') {
-  //                                 getLoanMax()
-  //                                   .then(result => {
-  //                                     if (result == 'success') {
-  //                                       getCodeInfo()
-  //                                         .then(result => {
-  //                                           if (result == 'success') {
-  //                                             setIsLoading(false);
-  //                                             setSelectAll(false);
-  //                                             setCheckedItems([]);
-  //                                             alert('Sync success');
-  //                                           }
-  //                                         })
-  //                                         .catch(error => {
-  //                                           setIsLoading(false);
-  //                                           alert(
-  //                                             'Only Possible download in network',
-  //                                           );
-  //                                           console.log('Emp error:', error);
-  //                                         });
-  //                                     }
-  //                                   })
-  //                                   .catch(error => {
-  //                                     setIsLoading(false);
-  //                                     alert(
-  //                                       'Only Possible download in network',
-  //                                     );
-  //                                     console.log('Emp error:', error);
-  //                                   });
-  //                               }
-  //                             })
-  //                             .catch(error => {
-  //                               setIsLoading(false);
-  //                               alert('Only Possible download in network');
-  //                               console.log('Emp error:', error);
-  //                             });
-  //                         }
-  //                       })
-  //                       .catch(error => {
-  //                         setIsLoading(false);
-  //                         alert('Only Possible download in network');
-  //                         console.log('Emp error:', error);
-  //                       });
-  //                   }
-  //                 })
-  //                 .catch(error => {
-  //                   setIsLoading(false);
-  //                   alert('Only Possible download in network');
-  //                   console.log('Emp error:', error);
-  //                 });
-  //             }
-  //           })
-  //           .catch(error => {
-  //             setIsLoading(false);
-  //             alert('Only Possible download in network');
-  //             console.log('Emp error:', error);
-  //           });
-  //       }
-  //     } else {
-  //       setIsLoading(true);
-  //       checkedItems.forEach(item => {
-  //         // if (item.checked) {
-  //         item
-  //           .api()
-  //           .then(result => {
-  //             if (result == 'success') {
-  //               setIsLoading(false);
-  //               setSelectAll(false);
-  //               setCheckedItems([]);
-  //               alert('Sync success');
-  //             }
-  //           })
-  //           .catch(error => {
-  //             setIsLoading(false);
-  //             alert('Only Possible download in network');
-  //           });
-  //       });
-  //     }
-  //   } else {
-  //     alert('Choose one');
-  //   }
-  // };
-
-
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <View style={{ marginTop: 20, marginLeft: 10, marginRight: 10, flex: 1 }}>
@@ -309,7 +209,7 @@ export default function Sync_Download_Screen(props) {
               padding: 10,
               fontWeight: 'bold',
             }}>
-            Name
+            {t('Name')}
           </Text>
           <Text
             style={{

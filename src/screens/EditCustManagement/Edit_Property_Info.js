@@ -1,23 +1,18 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View,} from 'react-native';
 import React, {useState} from 'react';
-import {property_type} from '../../common';
-import CheckBoxFile from '../../components/CheckBoxFile';
 import TextInputFile from '../../components/TextInputFile';
 import DividerLine from '../../components/DividerLine';
-// import {style} from '../../style/Property_Info_style';
 import SingleCheckBox from '../../components/SingleCheckBox';
-import {connect, useDispatch} from 'react-redux';
-import {Field, reduxForm, change} from 'redux-form';
+import {connect, } from 'react-redux';
+import {Field, reduxForm, } from 'redux-form';
 import {style} from '../../style/Customer_Mang_style';
 import {List} from 'react-native-paper';
+import {useTranslation} from 'react-i18next';
 
 function Edit_property_Info(props) {
   const {update_status} = props;
   const [show_propertyinfo, setOpenPropertyInfo] = useState(true);
-
-  const PropertyInfoFun = () => {
-    setOpenPropertyInfo(!show_propertyinfo);
-  };
+  const {t} = useTranslation();
 
   return (
     <>
@@ -26,7 +21,7 @@ function Edit_property_Info(props) {
         onPress={setOpenPropertyInfo}
         style={style.list_container}
         titleStyle={style.list_title}
-        title="Property Information">
+        title={t("Property Information")}>
         <View style={style.collasible_container}>
           <View
             style={{
@@ -38,23 +33,16 @@ function Edit_property_Info(props) {
             <View style={{padding: 5, flexDirection: 'row'}}>
               <View>
                 <Field
-                  label={'House'}
+                  label={t('House')}
                   name={'prop_house_yn'}
                   component={SingleCheckBox}
-                  // checkedValue="Y"
-                  // uncheckedValue="N"
                   disabled={update_status == true ? false : true}
-                  // format={value => !!value}
-                  // parse={value => (value ? true : false)}
                 />
                 <Field
-                  label={'Motorcycle'}
+                  label={t('Motorcycle')}
                   name={'prop_motorcycle_yn'}
                   component={SingleCheckBox}
-                  // defaultValue={false}
                   disabled={update_status == true ? false : true}
-                  // checkedValue="Y"
-                  // uncheckedValue="N"
                 />
               </View>
 
@@ -64,12 +52,10 @@ function Edit_property_Info(props) {
                   name={'prop_apartment_yn'}
                   component={SingleCheckBox}
                   initialValue={false}
-                  // checkedValue="Y"
-                  // uncheckedValue="N"
                   disabled={update_status == true ? false : true}
                 />
                 <Field
-                  label={'Machines'}
+                  label={t('Machines')}
                   name={'prop_machines_yn'}
                   component={SingleCheckBox}
                   initialValue={false}
@@ -81,7 +67,7 @@ function Edit_property_Info(props) {
 
               <View>
                 <Field
-                  label={'Car'}
+                  label={t('Car')}
                   name={'prop_car_yn'}
                   component={SingleCheckBox}
                   initialValue={false}
@@ -90,7 +76,7 @@ function Edit_property_Info(props) {
                   disabled={update_status == true ? false : true}
                 />
                 <Field
-                  label={'Farmland'}
+                  label={t('Farmland')}
                   name={'prop_farmland_yn'}
                   component={SingleCheckBox}
                   initialValue={false}
@@ -103,7 +89,7 @@ function Edit_property_Info(props) {
 
             <Field
               name={'tot_prop_estmtd_val'}
-              title={'Estimated Value'}
+              title={t('Estimated Value')}
               component={TextInputFile}
               input_mode
               keyboardType={'numeric'}
@@ -114,14 +100,14 @@ function Edit_property_Info(props) {
           <View style={style.input_container_style}>
             <Field
               name={'ohtr_own_property'}
-              title={'Other Property'}
+              title={t('Other Property')}
               component={TextInputFile}
               input_mode
               disabled={update_status == true ? false : true}
             />
             <Field
               name={'otr_prop_estmtd_val'}
-              title={'Estimated Value'}
+              title={t('Estimated Value')}
               component={TextInputFile}
               input_mode
               keyboardType={'numeric'}

@@ -5,11 +5,14 @@ import {style} from '../../style/Individual_Loan_style';
 import {reduxForm, Field, change, reset} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useTranslation} from 'react-i18next';
+
 function Borrower_Current_Map(props) {
   const {navigation, all_loandata, map} = props;
   const [borrower_map_expanded, setBorrowerMapExpanded] = useState(true);
   const [map_show, setMapShow] = useState(false);
   // const [map, setShowMap] = useState('')
+  const {t} = useTranslation();
 
   const p_type = 10;
   const handleBorrowerMapToggle = () => {
@@ -25,7 +28,7 @@ function Borrower_Current_Map(props) {
       onPress={handleBorrowerMapToggle}
       style={style.list_container}
       titleStyle={style.list_title}
-      title="Borrower current Home Map">
+      title={t("Borrower current Home Map")}>
       <View
         style={{
           width: '90%',

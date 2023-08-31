@@ -4,8 +4,9 @@ import {List} from 'react-native-paper';
 import DatePicker from '../../components/DatePicker';
 import {reduxForm, Field, change, reset} from 'redux-form';
 import TextInputFile from '../../components/TextInputFile';
-import {connect} from 'react-redux';
 import {style} from '../../style/Cover_Loan_style';
+import {useTranslation} from 'react-i18next';
+
 export default function Reloan_Info(props) {
   const [Reloan_expand, setReloanInfoExpand] = useState(true);
   const {showCustomerSearch} = props;
@@ -53,7 +54,7 @@ export default function Reloan_Info(props) {
 
             <Field
               name={'customer_no'}
-              title={'Customer No'}
+              title={t('Customer No')}
               component={TextInputFile}
               cus_width
               input_mode

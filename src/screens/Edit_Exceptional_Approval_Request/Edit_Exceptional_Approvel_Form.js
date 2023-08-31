@@ -96,7 +96,7 @@ function Edit_Exceptional_Approvel_Form(props) {
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={{ flex: 1, backgroundColor: '#fff' }}>
-            <Text style={style.title_style}>Exceptional Approval Request Form</Text>
+            <Text style={style.title_style}>{t("Exceptional Approval Request Form")}</Text>
             <DividerLine />
             <View style={style.continer}>
               <View
@@ -195,7 +195,7 @@ function Edit_Exceptional_Approvel_Form(props) {
                 <View style={style.sub_list_container}>
                   <Field
                     name={'net_income'}
-                    title={'Total Net Income'}
+                    title={t('Total Net Income')}
                     component={TextInputFile}
                     cus_width
                     input_mode
@@ -218,7 +218,7 @@ function Edit_Exceptional_Approvel_Form(props) {
                 <View style={style.sub_list_container}>
                   <Field
                     name={'group_member_num'}
-                    title={'Group Members'}
+                    title={t('Group Members')}
                     component={TextInputFile}
                     cus_width
                     input_mode

@@ -27,7 +27,7 @@ function Exceptional_Approval_Info(props) {
         onPress={handleExceptonalApprovalToggle}
         style={style.list_container}
         titleStyle={style.list_title}
-        title="Business Info">
+        title={t("Business Info")}>
         <View style={style.sub_container}>
           <View style={style.sub_list_container}>
             <Field
@@ -115,7 +115,7 @@ function Exceptional_Approval_Info(props) {
         <View style={style.sub_container}>
           <Field
             name={'exception_reason'}
-            title={'Exceptional Reason '}
+            title={t('Exceptional Reason')}
             component={TextInputFile}
             input_mode
             inputmax={100}

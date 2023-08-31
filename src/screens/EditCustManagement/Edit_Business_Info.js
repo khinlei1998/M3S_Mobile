@@ -1,10 +1,10 @@
-import {View, Text, TouchableOpacity, Button} from 'react-native';
+import {View, Text, } from 'react-native';
 import React, {useState} from 'react';
-import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
+import {Field, reduxForm,} from 'redux-form';
 import TextInputFile from '../../components/TextInputFile';
 import {business_type} from '../../common';
 import DropDownPicker from '../../components/DropDownPicker';
-import {RadioButton, TextInput,List} from 'react-native-paper';
+import {List} from 'react-native-paper';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import DatePicker from '../../components/DatePicker';
 import DividerLine from '../../components/DividerLine';
@@ -13,9 +13,10 @@ import {
   owner_shipratio,
   start_living_date_status,
 } from '../../common';
-// import {style} from '../../style/Business_Info_style';
 import {connect} from 'react-redux';
 import {style} from '../../style/Customer_Mang_style';
+import { useTranslation } from 'react-i18next';
+
 function Edit_Business_Info(props) {
   const {
     update_status,
@@ -25,11 +26,7 @@ function Edit_Business_Info(props) {
     show_business_date,
   } = props;
   const [open_business_info, setBusinessInfo] = useState(true);
-
-  const MonthlyIncomeFun = () => {
-    setBusinessInfo(!open_business_info);
-  };
-  // const numbers = Array.from({length: 60}, (_, i) => i + 1);
+  const { t } = useTranslation();
   const numbers = Array.from({length: 60}, (_, i) => (i + 1).toString());
 
   const arrayWithObjects = numbers.map((num, index) => {
@@ -48,7 +45,7 @@ function Edit_Business_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'workplace_name'}
-              title={'Business Name '}
+              title={t('Business Name')}
               component={TextInputFile}
               input_mode
               inputmax={100}
@@ -57,7 +54,7 @@ function Edit_Business_Info(props) {
             <Field
               data={business_type}
               name={'workplace_type'}
-              title={'Type of business'}
+              title={('Type of business')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,
@@ -71,7 +68,7 @@ function Edit_Business_Info(props) {
               marginTop: 10,
             }}>
             <Text style={{marginLeft: 10, fontSize: 15, fontWeight: 'bold'}}>
-              Business Period
+              {t("Business Period")}
             </Text>
 
             <View>
@@ -170,7 +167,7 @@ function Edit_Business_Info(props) {
                 <View>
                   <Text
                     style={{fontSize: 15, fontWeight: 'bold', marginLeft: 10}}>
-                    Business Situation
+                    {t('Business Situation')}
                   </Text>
                   <Field
                     data={business_situation}
@@ -184,7 +181,7 @@ function Edit_Business_Info(props) {
               <View style={style.input_container_style}>
                 <Field
                   name={'land_scale'}
-                  title={'Agriculture Land'}
+                  title={t('Agriculture Land')}
                   component={TextInputFile}
                   keyboardType={'numeric'}
                   input_mode
@@ -196,7 +193,7 @@ function Edit_Business_Info(props) {
                 <Field
                   data={owner_shipratio}
                   name={'land_own_type'}
-                  title={'OwnerShip Ratio'}
+                  title={t('OwnerShip Ratio')}
                   component={DropDownPicker}
                   pickerStyle={{
                     width: 280,

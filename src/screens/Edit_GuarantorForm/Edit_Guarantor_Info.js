@@ -68,7 +68,7 @@ function Edit_Guarantor_Info(props) {
 
             <Field
               name={'guarantor_nm'}
-              title={'Guarantor Name'}
+              title={t('Guarantor Name')}
               component={TextInputFile}
               cus_width
               input_mode

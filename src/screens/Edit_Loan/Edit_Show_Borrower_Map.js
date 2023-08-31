@@ -16,20 +16,13 @@ import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 
 export default function Edit_Show_Borrower_Map(props) {
-  console.log('props', props);
-  // const {has_borrower_map} = props;
-  // const has_borrower_map = props.route.params.has_borrower_map;
   const application_no = props.route.params.application_no;
-  console.log('application_no',application_no);
-
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const [paths, setPaths] = useState('');
   const [imagetest, setImage] = useState('');
   const [imageQuery, setImageQuery] = useState('');
-
-  // const loan_data_count = props.route.params.all_loandata.length;
   const sketchRef = useRef(null);
   const handleSave = async () => {
     if (sketchRef.current) {

@@ -6,9 +6,11 @@ import DividerLine from '../../components/DividerLine';
 import {style} from '../../style/Customer_Mang_style';
 import SingleCheckBox from '../../components/SingleCheckBox';
 import {List} from 'react-native-paper';
+import {useTranslation} from 'react-i18next';
+
 export default function Property_Info() {
   const [show_propertyinfo, setOpenPropertyInfo] = useState(true);
-
+  const {t} = useTranslation();
   const PropertyInfoFun = () => {
     setOpenPropertyInfo(!show_propertyinfo);
   };
@@ -20,7 +22,7 @@ export default function Property_Info() {
         onPress={PropertyInfoFun}
         style={style.list_container}
         titleStyle={style.list_title}
-        title="Property Information">
+        title={t("Property Information")}>
         <View style={style.collasible_container}>
           <View
             style={{
@@ -32,16 +34,14 @@ export default function Property_Info() {
             <View style={{padding: 5, flexDirection: 'row'}}>
               <View>
                 <Field
-                  label={'House'}
+                  label={t('House')}
                   name={'propHouseYn'}
                   component={SingleCheckBox}
                   checkedValue="Y"
                   uncheckedValue="N"
-                  // format={value => !!value}
-                  // parse={value => (value ? true : false)}
                 />
                 <Field
-                  label={'Motorcycle'}
+                  label={t('Motorcycle')}
                   name={'propMotorcycleYn'}
                   component={SingleCheckBox}
                   defaultValue={false}
@@ -51,7 +51,7 @@ export default function Property_Info() {
               </View>
               <View>
                 <Field
-                  label={'Apartment'}
+                  label={t('Apartment')}
                   name={'propApartmentYn'}
                   component={SingleCheckBox}
                   initialValue={false}
@@ -59,7 +59,7 @@ export default function Property_Info() {
                   uncheckedValue="N"
                 />
                 <Field
-                  label={'Machines'}
+                  label={t('Machines')}
                   name={'propMachinesYn'}
                   component={SingleCheckBox}
                   initialValue={false}
@@ -69,7 +69,7 @@ export default function Property_Info() {
               </View>
               <View>
                 <Field
-                  label={'Car'}
+                  label={t('Car')}
                   name={'propCarYn'}
                   component={SingleCheckBox}
                   initialValue={false}
@@ -77,7 +77,7 @@ export default function Property_Info() {
                   uncheckedValue="N"
                 />
                 <Field
-                  label={'Farmland'}
+                  label={t('Farmland')}
                   name={'propFarmlandYn'}
                   component={SingleCheckBox}
                   initialValue={false}
@@ -88,7 +88,7 @@ export default function Property_Info() {
             </View>
             <Field
               name={'totPropEstmtdVal'}
-              title={'Estimated Value'}
+              title={t('Estimated Value')}
               component={TextInputFile}
               input_mode
               keyboardType={'numeric'}
@@ -98,14 +98,14 @@ export default function Property_Info() {
           <View style={style.input_container_style}>
             <Field
               name={'ohtrOwnProperty'}
-              title={'Other Property'}
+              title={t('Other Property')}
               component={TextInputFile}
               input_mode
             />
             <Field
             
               name={'otrPropEstmtdVal'}
-              title={'Estimated Value'}
+              title={t('Estimated Value')}
               component={TextInputFile}
               input_mode
               keyboardType={'numeric'}

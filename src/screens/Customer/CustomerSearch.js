@@ -5,11 +5,13 @@ import ViewCustomer from './ViewCustomer';
 import { TextInput, Button } from 'react-native-paper';
 import { filterCustomer } from '../../query/Customer_query';
 import { Picker } from '@react-native-picker/picker';
+import {useTranslation} from 'react-i18next';
 
 export default function CustomerSearch(props) {
   const { navigation } = props;
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
+  const {t} = useTranslation();
 
   const [all_customer, setAllCustomer] = useState([]);
   const [selectedItemValue, setSelectedItemValue] = useState('customer_nm');
@@ -42,7 +44,7 @@ export default function CustomerSearch(props) {
       <View style={{ flex: 1 }}>
         <Text
           style={{ fontSize: 20, color: '#273050', marginTop: 10, padding: 10 }}>
-          Customer Information Management
+          {t('Customer Information Management')}
         </Text>
 
         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>

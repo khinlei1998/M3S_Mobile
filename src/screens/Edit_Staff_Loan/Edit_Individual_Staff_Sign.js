@@ -3,6 +3,8 @@ import React from 'react';
 import { reduxForm, Field, change, reset } from 'redux-form';
 import { connect, useDispatch } from 'react-redux';
 import moment from 'moment';
+import {useTranslation} from 'react-i18next';
+
 function Edit_Individual_Staff_Sign(props) {
   const {
     coborrower_sign_path,
@@ -17,6 +19,8 @@ function Edit_Individual_Staff_Sign(props) {
     borrower_name,
     coborrower_name
   } = props;
+  const {t} = useTranslation();
+
   const queryParam = `?timestamp=${Date.now()}`;
   return (
     <>
@@ -105,7 +109,7 @@ function Edit_Individual_Staff_Sign(props) {
 
             <View style={{ flexDirection: 'row' }}>
               <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-                Date
+                {t('Date')}
               </Text>
               <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
                 <Text> {moment().format('YYYY-MM-DD')}</Text>

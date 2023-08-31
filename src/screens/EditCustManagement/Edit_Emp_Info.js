@@ -161,6 +161,7 @@ function Edit_Emp_Info(props) {
   const hideCityModal = () => setCityCodeModalVisible(false);
   const hideWardModal = () => setWardCodeModalVisible(false);
   const filtered_cus_data = props.route.params;
+  console.log('filtered_cus_data', filtered_cus_data);
   const onChangeEmpText = textvalues => {
     setEmpText(textvalues);
   };
@@ -566,6 +567,7 @@ function Edit_Emp_Info(props) {
     if (filtered_cus_data.city_code) {
       await fetchCityName(filtered_cus_data.city_code)
         .then(result => {
+          console.log('cus result', result);
           {
             if (result.length > 0) {
               dispatch(
@@ -630,13 +632,14 @@ function Edit_Emp_Info(props) {
     if (filtered_cus_data.location_code) {
       await fetchLocationName(filtered_cus_data.location_code)
         .then(result => {
+          console.log('location result', result);
           {
             if (result.length > 0) {
               dispatch(
                 change(
                   'Customer_ManagementForm',
                   'location_name',
-                  result[0].location_name,
+                  result[0].code_short_desc,
                 ),
               );
             }
@@ -909,8 +912,6 @@ function Edit_Emp_Info(props) {
       </View>
     );
   };
-  const filtered_operations = operations.filter(item => item.value != 1);
-
   const btnChangeOperation = async (newValue, cus_data) => {
     const user_id = await AsyncStorage.getItem('user_id');
 
@@ -1060,7 +1061,7 @@ function Edit_Emp_Info(props) {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={{ flex: 1, backgroundColor: '#fff' }}>
             <Text style={style.title_style}>
-              Customer Information Management
+              {t('Customer Information Management')}
             </Text>
             <DividerLine border_width />
 
@@ -1121,12 +1122,12 @@ function Edit_Emp_Info(props) {
               onPress={setEmpInfo}
               style={style.list_container}
               titleStyle={style.list_title}
-              title="Employee Information">
+              title={t("Employee Information")}>
               <View style={style.sub_container}>
                 <View style={style.sub_list_container}>
                   <Field
                     name={'employee_no'}
-                    title={'Employee No'}
+                    title={t('Employee No')}
                     component={TextInputFile}
                     cus_width
                     icon={update_status == true && 'magnify'}
@@ -1141,14 +1142,14 @@ function Edit_Emp_Info(props) {
                   <Field
                     name={'entryDate'}
                     component={DatePicker}
-                    label={'Start Working Date at SHM'}
+                    label={t('Start Working Date at SHM')}
                     icon={update_status == true && 'calendar'}
                     editable={update_status == true ? false : true}
                   />
                   <View style={{ marginRight: 10 }}>
                     <Field
                       name={'position_title_nm'}
-                      title={'Current Position'}
+                      title={t('Current Position')}
                       component={TextInputFile}
                       editable
                     />
@@ -1307,7 +1308,7 @@ function Edit_Emp_Info(props) {
                     padding: 10,
                     fontWeight: 'bold',
                   }}>
-                  Employee No
+                  {t('Employee No')}
                 </Text>
                 <Text
                   style={{
@@ -1346,7 +1347,7 @@ function Edit_Emp_Info(props) {
                     marginTop: 10,
                     color: 'black',
                     marginLeft: 5,
-                    height:44
+                    height: 44
                   }}>
                   {t("OK")}
                 </Button>

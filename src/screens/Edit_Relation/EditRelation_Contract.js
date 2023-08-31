@@ -82,7 +82,7 @@ function Edit_Relation_Contract(props) {
 
               <View style={{ flexDirection: 'row', marginTop: 10 }}>
                 <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-                  Date
+                  {t('Date')}
                 </Text>
                   <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>{moment().format('YYYY-MM-DD')}</Text>
 
@@ -152,7 +152,7 @@ function Edit_Relation_Contract(props) {
               </View>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-                  Date
+                  {t('Date')}
                 </Text>
                 <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>{moment().format('YYYY-MM-DD')}</Text>
               </View>

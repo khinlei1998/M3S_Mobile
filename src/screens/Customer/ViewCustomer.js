@@ -1,10 +1,8 @@
 import {View, Text, FlatList, TouchableOpacity,ActivityIndicator} from 'react-native';
 import React from 'react';
-import {Button} from 'react-native-paper';
-import { setInquiryStatus } from '../../redux/CustomerReducer';
 import { getInquiryCusData } from '../../redux/CustomerReducer';
 import {connect} from 'react-redux';
-import {Field, reduxForm, reset, change} from 'redux-form';
+import {reduxForm,} from 'redux-form';
 import { useTranslation } from 'react-i18next';
 
  function ViewCustomer(props) {
@@ -95,7 +93,7 @@ import { useTranslation } from 'react-i18next';
             padding: 10,
             fontWeight: 'bold',
           }}>
-          Customer No
+          {t('Customer No')}
         </Text>
         <Text
           style={{
@@ -104,7 +102,7 @@ import { useTranslation } from 'react-i18next';
             padding: 10,
             fontWeight: 'bold',
           }}>
-          Customer Name
+          {t('Customer Name')}
         </Text>
         <Text
           style={{
@@ -113,7 +111,7 @@ import { useTranslation } from 'react-i18next';
             padding: 10,
             fontWeight: 'bold',
           }}>
-          NRC
+          {t('NRC')}
         </Text>
 
         <Text

@@ -122,8 +122,6 @@ const Borrower_Sign_Modal = props => {
           showTitleLabel={false}
           minStrokeWidth={10}
           maxStrokeWidth={10}
-          // saveImageFileInExtStorage
-          // backgroundColor="transparent"
           viewMode={'portrait'}
         />
         <View style={{ flexDirection: 'row' }}>
@@ -217,7 +215,6 @@ const Co_Borrower_Sign_Modal = props => {
           saveImageFileInExtStorage
           minStrokeWidth={10}
           maxStrokeWidth={10}
-          // backgroundColor="transparent"
           viewMode={'portrait'}
         />
         <View style={{ flexDirection: 'row' }}>
@@ -507,7 +504,7 @@ const Emp_No_Search_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Employee No
+                {t('Employee No')}
               </Text>
               <Text
                 style={{
@@ -1052,7 +1049,7 @@ function Individual_Staff_loan_Info(props) {
                         style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="check" size={20} color="#ede72d" />
                         <Text style={{ color: '#fff', marginLeft: 5 }}>
-                          Guarantor Form
+                          {t('Guarantor Form')}
                         </Text>
                       </View>
                     </View>
@@ -1067,7 +1064,7 @@ function Individual_Staff_loan_Info(props) {
                         style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="paperclip" size={20} color="#fff" />
                         <Text style={{ color: '#fff', marginLeft: 5 }}>
-                          Guarantor Form
+                          {t('Guarantor Form')}
                         </Text>
                       </View>
                       <Icon name="chevron-right" size={25} color="#fff" />
@@ -1107,7 +1104,7 @@ function Individual_Staff_loan_Info(props) {
                         style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="check" size={20} color="#ede72d" />
                         <Text style={{ color: '#fff', marginLeft: 5 }}>
-                          Area Evaluation Form
+                          {t("Area Evaluation Form")}
                         </Text>
                       </View>
                     </View>
@@ -1122,7 +1119,7 @@ function Individual_Staff_loan_Info(props) {
                         style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="paperclip" size={20} color="#fff" />
                         <Text style={{ color: '#fff', marginLeft: 5 }}>
-                          Area Evaluation Form
+                          {t("Area Evaluation Form")}
                         </Text>
                       </View>
                       <Icon name="chevron-right" size={25} color="#fff" />
@@ -1213,7 +1210,7 @@ function Individual_Staff_loan_Info(props) {
                         style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="check" size={20} color="#ede72d" />
                         <Text style={{ color: '#fff', marginLeft: 5 }}>
-                          Evidence Document Form
+                          {t('Evidence Document Form')}
                         </Text>
                       </View>
                     </View>) :
@@ -1226,7 +1223,7 @@ function Individual_Staff_loan_Info(props) {
                       <View style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="paperclip" size={20} color="#fff" />
                         <Text style={{ color: '#fff', marginLeft: 5 }}>
-                          Evidence Document Form
+                          {t('Evidence Document Form')}
                         </Text>
                       </View>
                       <Icon name="chevron-right" size={25} color="#fff" />

@@ -8,11 +8,14 @@ import {reduxForm, Field, change, reset} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
 import {microfinance_data, area_evaluation_result} from '../../common';
 import {setEvaluation_Score} from '../../redux/LoanReducer';
+import {useTranslation} from 'react-i18next';
+
 function Edit_Area_Evaluation(props) {
   const {setEvaluation_Score, area_update_status, retrive_area_evaluation,setTotal_sts_flag} =
     props;
   const [area_evaluation_form_expanded, setAreaEvaluationFormExpanded] =
     useState(true);
+    const {t} = useTranslation();
   const [values, setValues] = useState([
     parseInt(retrive_area_evaluation.mf_num_flag?retrive_area_evaluation.mf_num_flag:0),
     parseInt(retrive_area_evaluation.pastdue_sts_flag?retrive_area_evaluation.pastdue_sts_flag:0),
@@ -90,7 +93,7 @@ function Edit_Area_Evaluation(props) {
           </View>
           <Field
             name={'mfi_remark'}
-            title={'Remark'}
+            title={t('Remark')}
             component={TextInputFile}
             input_mode
             input_cusstyle
@@ -120,7 +123,7 @@ function Edit_Area_Evaluation(props) {
 
           <Field
             name={'pastdue_sta_remark'}
-            title={'Remark'}
+            title={t('Remark')}
             component={TextInputFile}
             input_mode
             input_cusstyle
@@ -135,7 +138,7 @@ function Edit_Area_Evaluation(props) {
                 padding: 15,
                 maxWidth: '25%',
               }}>
-              Transportation
+              {t('Transportation')}
             </Text>
             <Field
               data={area_evaluation_result}
@@ -150,7 +153,7 @@ function Edit_Area_Evaluation(props) {
 
           <Field
             name={'trnsrt_sts_remark'}
-            title={'Remark'}
+            title={t('Remark')}
             component={TextInputFile}
             input_mode
             input_cusstyle
@@ -180,7 +183,7 @@ function Edit_Area_Evaluation(props) {
 
           <Field
             name={'area_security_remark'}
-            title={'Remark'}
+            title={t('Remark')}
             component={TextInputFile}
             input_mode
             input_cusstyle
@@ -209,7 +212,7 @@ function Edit_Area_Evaluation(props) {
 
           <Field
             name={'cmnc_sts_remark'}
-            title={'Remark'}
+            title={t('Remark')}
             component={TextInputFile}
             input_mode
             input_cusstyle
@@ -238,7 +241,7 @@ function Edit_Area_Evaluation(props) {
 
           <Field
             name={'economy_sts_remark'}
-            title={'Remark'}
+            title={t('Remark')}
             component={TextInputFile}
             input_mode
             input_cusstyle
@@ -267,7 +270,7 @@ function Edit_Area_Evaluation(props) {
 
           <Field
             name={'income_sts_remark'}
-            title={'Remark'}
+            title={t('Remark')}
             component={TextInputFile}
             input_mode
             input_cusstyle
@@ -296,7 +299,7 @@ function Edit_Area_Evaluation(props) {
 
           <Field
             name={'households_sts_remark'}
-            title={'Remark'}
+            title={t('Remark')}
             component={TextInputFile}
             input_mode
             input_cusstyle

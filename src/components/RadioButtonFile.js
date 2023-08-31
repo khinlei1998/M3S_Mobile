@@ -1,9 +1,11 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 import { RadioButton } from 'react-native-paper';
+import {useTranslation} from 'react-i18next';
 
 export default function RadioButtonFile(props) {
   const { customstyle, get_value, disabled, data, input, ShowRadioBtnChange } = props;
+  const {t} = useTranslation();
   return (
     <View
       style={{
@@ -24,7 +26,7 @@ export default function RadioButtonFile(props) {
               <RadioButton.Item
               color="#636Dc6"
               uncheckedColor="#636Dc6"
-                label={val.name}
+                label={t(val.name)}
                 key={val.id}
 
                 value={val.id}

@@ -14,6 +14,7 @@ import {
   updateTotalSum,
 } from '../../redux/MonthlyReducer';
 import {List} from 'react-native-paper';
+import {useTranslation} from 'react-i18next';
 import {style} from '../../style/Customer_Mang_style';
 function Edit_Monthly_Income(props) {
   const {
@@ -35,6 +36,7 @@ function Edit_Monthly_Income(props) {
     update_status,
     total_net,
   } = props;
+  const {t} = useTranslation();
   const [values, setValues] = useState([
     inquiry_cusdata.rawmaterial_expans,
     inquiry_cusdata.wrkp_rent_expns,
@@ -246,7 +248,7 @@ function Edit_Monthly_Income(props) {
           <View style={{flexDirection: 'row', alignSelf: 'center'}}>
             <View>
               <Text style={{fontWeight: 'bold', padding: 5, marginTop: 10}}>
-                Business Income/Expense
+                {t("Business Income/Expense")}
               </Text>
 
               <View
@@ -259,7 +261,7 @@ function Edit_Monthly_Income(props) {
                 }}>
                 <Field
                   name={'tot_sale_income'}
-                  title={'Total Sale Income (+)'}
+                  title={t('Total Sale Income (+)')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -271,7 +273,7 @@ function Edit_Monthly_Income(props) {
 
                 <Field
                   name={'tot_sale_expense'}
-                  title={'Total Sale Expense (-)'}
+                  title={t('Total Sale Expense (-)')}
                   component={TextInputFile}
                   input_mode
                   inputmax={28}
@@ -281,7 +283,7 @@ function Edit_Monthly_Income(props) {
 
                 <Field
                   name={'rawmaterial_expans'}
-                  title={'Raw Material Expense'}
+                  title={t('Raw Material Expense')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -293,7 +295,7 @@ function Edit_Monthly_Income(props) {
 
                 <Field
                   name={'wrkp_rent_expns'}
-                  title={'Business Building Renting'}
+                  title={t('Business Building Renting')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -305,7 +307,7 @@ function Edit_Monthly_Income(props) {
 
                 <Field
                   name={'employee_expns'}
-                  title={'Employee Expense'}
+                  title={t('Employee Expense')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -317,7 +319,7 @@ function Edit_Monthly_Income(props) {
 
                 <Field
                   name={'trnsrt_expns'}
-                  title={'Transportation'}
+                  title={t('Transportation')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -363,7 +365,7 @@ function Edit_Monthly_Income(props) {
 
                 <Field
                   name={'goods_loss_expns'}
-                  title={'Loss of Goods'}
+                  title={t('Loss of Goods')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -374,7 +376,7 @@ function Edit_Monthly_Income(props) {
                 />
                 <Field
                   name={'othr_expns_1'}
-                  title={'Other Expense'}
+                  title={t('Other Expense')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -386,7 +388,7 @@ function Edit_Monthly_Income(props) {
 
                 <Field
                   name={'othr_expns_2'}
-                  title={'Other Expense'}
+                  title={t('Other Expense')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -404,7 +406,7 @@ function Edit_Monthly_Income(props) {
                     padding: 20,
                     marginTop: 10,
                   }}>
-                  <Text style={{color: '#fff'}}>Total Net Income</Text>
+                  <Text style={{color: '#fff'}}>{t('Total Net Income')}</Text>
                   <Text style={{color: '#F9A970'}}>{total_net_business}</Text>
                 </View>
               </View>
@@ -413,7 +415,7 @@ function Edit_Monthly_Income(props) {
 
             <View style={{marginLeft: 15}}>
               <Text style={{fontWeight: 'bold', padding: 5, marginTop: 10}}>
-                Family Income/Expense
+                {t("Family Income/Expense")}
               </Text>
               <View
                 style={{
@@ -425,7 +427,7 @@ function Edit_Monthly_Income(props) {
                 }}>
                 <Field
                   name={'fmly_tot_income'}
-                  title={'Total Family Income (+)'}
+                  title={t('Total Family Income (+)')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -437,7 +439,7 @@ function Edit_Monthly_Income(props) {
 
                 <Field
                   name={'fmly_tot_expense'}
-                  title={'Total Family Expense (-)'}
+                  title={t('Total Family Expense (-)')}
                   component={TextInputFile}
                   inputmax={28}
                   keyboardType={'numeric'}
@@ -446,7 +448,7 @@ function Edit_Monthly_Income(props) {
 
                 <Field
                   name={'food_expns'}
-                  title={'Cost For Food'}
+                  title={t('Cost For Food')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -458,7 +460,7 @@ function Edit_Monthly_Income(props) {
 
                 <Field
                   name={'house_mngt_expns'}
-                  title={'House Maintenance'}
+                  title={t('House Maintenance')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -470,7 +472,7 @@ function Edit_Monthly_Income(props) {
 
                 <Field
                   name={'utlbil_expns'}
-                  title={'Electric, Water, Ph bill'}
+                  title={t('Electric, Water, Ph bill')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -482,7 +484,7 @@ function Edit_Monthly_Income(props) {
 
                 <Field
                   name={'edct_expns'}
-                  title={'Education Expense'}
+                  title={t('Education Expense')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -505,7 +507,7 @@ function Edit_Monthly_Income(props) {
 
                 <Field
                   name={'fmly_trnsrt_expns'}
-                  title={'Transportation'}
+                  title={t('Transportation')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -540,7 +542,7 @@ function Edit_Monthly_Income(props) {
 
                 <Field
                   name={'fmly_otr_expns'}
-                  title={'Other Expense'}
+                  title={t('Other Expense')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -558,7 +560,7 @@ function Edit_Monthly_Income(props) {
                     padding: 20,
                     marginTop: 77,
                   }}>
-                  <Text style={{color: '#fff'}}>Total Net Income</Text>
+                  <Text style={{color: '#fff'}}>{t('Total Net Income')}</Text>
                   <Text style={{color: '#F9A970'}}>{total_net_family}</Text>
                 </View>
               </View>
@@ -567,7 +569,7 @@ function Edit_Monthly_Income(props) {
           <View style={{marginLeft: 15, marginRight: 15}}>
             <Field
               name={'remark'}
-              title={'Remark'}
+              title={t('Remark')}
               component={TextInputFile}
               input_mode
               input_cusstyle
@@ -587,7 +589,7 @@ function Edit_Monthly_Income(props) {
               <View
                 style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Text style={{fontWeight: 'bold', fontSize: 20}}>
-                  Total Net Icome=
+                {t('Total Net Icome=')}
                 </Text>
                 <Text style={{color: '#F9A970', fontSize: 15}}>
                   {total_net}
@@ -595,8 +597,7 @@ function Edit_Monthly_Income(props) {
               </View>
 
               <Text>
-                (Total Net Icome= Total Business Net Income+Total Fammily Net
-                Income)
+              {t('(Total Net Icome= Total Business Net Income+Total Fammily Net Income+Other Income)')}
               </Text>
             </View>
           </View>

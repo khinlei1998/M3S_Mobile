@@ -4,6 +4,8 @@ import {List} from 'react-native-paper';
 import {style} from '../../style/Individual_Loan_style';
 import {reduxForm, Field, change, reset} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
+import {useTranslation} from 'react-i18next';
+
 function Borrower_Current_Map(props) {
   const {navigation, map, borrower_map, has_borrower_map, update_status,retrive_loan_data} =
     props;
@@ -12,14 +14,14 @@ function Borrower_Current_Map(props) {
     setBorrowerMapExpanded(!borrower_map_expanded);
   };
   const queryParam = `?timestamp=${Date.now()}`;
-
+  const {t} = useTranslation();
   return (
     <List.Accordion
       expanded={borrower_map_expanded}
       onPress={handleBorrowerMapToggle}
       style={style.list_container}
       titleStyle={style.list_title}
-      title="Borrower current Home Map">
+      title={t("Borrower current Home Map")}>
       <View style={style.sub_container}>
         <TouchableOpacity
           onPress={() =>

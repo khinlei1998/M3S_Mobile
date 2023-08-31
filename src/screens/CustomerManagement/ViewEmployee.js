@@ -9,38 +9,22 @@ import {connect} from 'react-redux';
 import {reduxForm} from 'redux-form';
 import {TestAction} from '../../redux/EmployeeReducer';
 import {change} from 'redux-form';
+import {useTranslation} from 'react-i18next';
 
 function ViewEmployee(props) {
   const [checked, setChecked] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
   const [filter_emp, setFilterEmp] = useState();
   const dispatch = useDispatch();
+  const {t} = useTranslation();
 
   const {TestAction, emp_data, addEmpFilter, hideModal} = props;
 
   const btnSelectEmployee = item => {
     setSelectedValue(item.employee_no);
-    // dispatch(change('Customer_ManagementForm', 'employeeNo',  item.employee_no));
-
-    // let emp_data = {
-    //   branchCode: item.branch_code,
-    //   employeeNo: item.employee_no,
-    //   entryDate: item.entry_date,
-    //   positionTitleNm: item.position_title_nm,
-    // };
-    // addEmpFilter(emp_data);
   };
 
-  const btntest = item => {
-    alert('jj');
-    const emp_data = {
-      test: 'we',
-    };
-    // setSelectedValue(item.employee_no)
-
-    TestAction(emp_data);
-  };
-
+ 
   const item = ({item, index}) => {
     return (
       <View
@@ -89,8 +73,6 @@ function ViewEmployee(props) {
             onPress={() => btnSelectEmployee(item)}
           />
         </View>
-
-        {/* <Field component={RadioButton}/> */}
       </View>
     );
   };
@@ -119,7 +101,7 @@ function ViewEmployee(props) {
             padding: 10,
             fontWeight: 'bold',
           }}>
-          Employee No
+          {t('Employee No')}
         </Text>
         <Text
           style={{

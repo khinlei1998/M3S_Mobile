@@ -86,57 +86,7 @@ function LoginScreen(props) {
     }
   };
 
-  // const btnSync = async () => {
-  //   // if (!netInfo.isConnected) {
-  //   //   alert('Connection Error! Check the connection info');
-  //   // } else {
-  //   setIsLoading(true);
-
-  //   const timeoutDuration = 60000; // Adjust the timeout duration as needed (in milliseconds)
-
-  //   function timeoutPromise() {
-  //     return new Promise((resolve, reject) => {
-  //       setTimeout(() => {
-  //         reject('Sync process timed out');
-  //       }, timeoutDuration);
-  //     });
-  //   }
-
-  //   const networkCheckPromise = new Promise(async (resolve, reject) => {
-  //     try {
-  //       if (netInfo.isConnected) {
-  //         resolve('Network is available');
-  //       } else {
-  //         reject('Network is not available');
-  //       }
-  //     } catch (error) {
-  //       reject('Network check failed');
-  //     }
-  //   });
-
-  //   Promise.race([timeoutPromise(), networkCheckPromise])
-  //     .then(() => {
-  //       return getEemployee_info(); // Execute the first request
-  //     })
-  //     .then(results => {
-  //       setIsLoading(false);
-  //       alert('Sync success');
-  //     })
-  //     .catch(error => {
-  //       setIsLoading(false);
-  //       if (error === 'Sync process timed out') {
-  //         alert('Sync process timed out. Please try again.');
-  //       } else if (error === 'Network is not available') {
-  //         alert('Connection Error! Check the connection info');
-  //       } else if (error === 'Network check failed') {
-  //         alert('Network check failed');
-  //       } else {
-  //         alert('Only Possible download in network');
-  //       }
-  //     });
-  //   // }
-  // };
-
+  
   const btnSync = async () => {
     if (!netInfo.isConnected) {
       alert('Internet Connection is need');

@@ -206,7 +206,7 @@ const Borrower_modal = props => {
     dispatch(
       change('Individual_Loan_Form', 'workplace_date', item.workplace_date),
     );
-    dispatch(change('Individual_Loan_Form', 'employee_num', item.employee_num));
+    dispatch(change('Individual_Loan_Form', 'employee_num', item.employee_num?item.employee_num.toString():''));
 
     dispatch(
       change('Individual_Loan_Form', 'workplace_addr', item.workplace_addr),
@@ -542,7 +542,7 @@ const Borrower_modal = props => {
               padding: 10,
               fontWeight: 'bold',
             }}>
-            Name
+            {t('Name')}
           </Text>
           <Text
             style={{
@@ -551,7 +551,7 @@ const Borrower_modal = props => {
               padding: 10,
               fontWeight: 'bold',
             }}>
-            NRC
+            {t('NRC')}
           </Text>
           <Text
             style={{
@@ -778,7 +778,7 @@ const CoBorrower_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Name
+                {t('Name')}
               </Text>
               <Text
                 style={{
@@ -787,7 +787,7 @@ const CoBorrower_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                NRC
+                {t('NRC')}
               </Text>
               <Text
                 style={{

@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import React from 'react';
+import {useTranslation} from 'react-i18next';
 
 export default function Guarantor_Sign(props) {
   const {
@@ -10,6 +11,8 @@ export default function Guarantor_Sign(props) {
     guarantor_name,
     guarantee_date
   } = props;
+  const {t} = useTranslation();
+
   return (
     <>
       <View style={{ flex: 1, padding: 5, margin: 20 }}>
@@ -23,7 +26,7 @@ export default function Guarantor_Sign(props) {
           <View>
             <View style={{ flexDirection: 'row' }}>
               <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-                Guarantor Name
+                {t('Guarantor Name')}
               </Text>
               <Text style={{ color: '#A1B5DC', fontSize: 18,marginLeft:10 }}>
                 {guarantor_name}
@@ -33,7 +36,7 @@ export default function Guarantor_Sign(props) {
             </View>
             <View style={{ flexDirection: 'row' }}>
               <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-                Date
+                {t('Date')}
               </Text>
               <Text style={{ color: '#A1B5DC', fontSize: 15,marginLeft:10 }}>
                 {guarantee_date}

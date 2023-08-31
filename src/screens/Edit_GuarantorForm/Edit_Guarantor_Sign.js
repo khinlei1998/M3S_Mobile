@@ -3,6 +3,8 @@ import React from 'react';
 import {reduxForm, Field, change} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
 import moment from 'moment';
+import {useTranslation} from 'react-i18next';
+
 function Edit_Guarantor_Sign(props) {
   const {
     show_borrower_sign,
@@ -14,7 +16,7 @@ function Edit_Guarantor_Sign(props) {
     retrive_guarantor_data
   } = props;
   const queryParam = `?timestamp=${Date.now()}`;
-
+  const {t} = useTranslation();
   const btnShowBorrowerSign = () => {
     setCanvas(!show_canvas);
   };
@@ -31,7 +33,7 @@ function Edit_Guarantor_Sign(props) {
           <View>
             <View style={{flexDirection: 'row'}}>
               <Text style={{fontWeight: 'bold', fontSize: 15}}>
-                Guarantor Name
+                {t('Guarantor Name')}
               </Text>
               <Text
                 style={{

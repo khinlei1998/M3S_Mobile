@@ -8,6 +8,8 @@ import {style} from '../../style/Guarantor_style';
 import DropDownPicker from '../../components/DropDownPicker';
 import {business_type, address_type, owner_shipratio} from '../../common';
 import DatePicker from '../../components/DatePicker';
+import { useTranslation } from 'react-i18next';
+
 function Edit_Guarantor_Business_Info(props) {
   const {guarantor_update_status} = props;
   const [guarantor_business_expand, setGuarantorBusinessExpand] =
@@ -15,6 +17,8 @@ function Edit_Guarantor_Business_Info(props) {
   const handleGuarantorBusinessToggle = () => {
     setGuarantorBusinessExpand(!guarantor_business_expand);
   };
+  const { t } = useTranslation();
+
   return (
     <>
       <List.Accordion
@@ -22,12 +26,12 @@ function Edit_Guarantor_Business_Info(props) {
         onPress={handleGuarantorBusinessToggle}
         style={style.list_container}
         titleStyle={style.list_title}
-        title="Business Info">
+        title={t("Business Info")}>
         <View style={style.sub_container}>
           <View style={style.sub_list_container}>
             <Field
               name={'workplace_name'}
-              title={'Business Name '}
+              title={t('Business Name')}
               component={TextInputFile}
               input_mode
               inputmax={100}
@@ -36,7 +40,7 @@ function Edit_Guarantor_Business_Info(props) {
             <Field
               data={business_type}
               name={'workplace_type'}
-              title={'Type of business'}
+              title={t('Type of business')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,
@@ -54,7 +58,7 @@ function Edit_Guarantor_Business_Info(props) {
             />
             <Field
               name={'employee_num'}
-              title={'Number of workers'}
+              title={t('Number of workers')}
               component={TextInputFile}
               input_mode
               keyboardType={'numeric'}
@@ -92,7 +96,7 @@ function Edit_Guarantor_Business_Info(props) {
             <Field
               name={'curr_workplace_date'}
               component={DatePicker}
-              label={'Current Business Start Date'}
+              label={t('Current Business Start Date')}
               icon={ guarantor_update_status == true && 'calendar'}
             />
 
@@ -111,7 +115,7 @@ function Edit_Guarantor_Business_Info(props) {
             <Field
               data={owner_shipratio}
               name={'land_own_type'}
-              title={'Ownership Ratio'}
+              title={t('Ownership Ratio')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,
@@ -121,7 +125,7 @@ function Edit_Guarantor_Business_Info(props) {
             />
 
             <Field
-              name={'curr_workplace_perd'}
+              name={'guarantee_date'}
               component={DatePicker}
               label={'Guarantee Date'}
               icon={guarantor_update_status == true &&'calendar'}

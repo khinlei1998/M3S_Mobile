@@ -95,7 +95,7 @@ function Area_Evaluation_Form(props) {
                 color: '#273050',
                 fontWeight: 'bold',
               }}>
-              Area Evaluation Form
+              {t('Area Evaluation Form')}
             </Text>
             <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>
               (Attached To Application)

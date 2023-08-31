@@ -161,6 +161,7 @@ const Guarantor_modal = props => {
   };
 
   const btnSelectGuarantor = item => {
+    console.log('item', item);
     setGuarantorSelectedValue(item.id);
     dispatch(change('Guarantor_Form', 'guarantor_no', item.customer_no));
     dispatch(change('Guarantor_Form', 'guarantor_nm', item.customer_nm));
@@ -180,6 +181,36 @@ const Guarantor_modal = props => {
     dispatch(change('Guarantor_Form', 'house_ocpn_type', item.house_ocpn_type));
     dispatch(
       change('Guarantor_Form', 'business_own_type', item.business_own_type),
+    );
+    dispatch(
+      change('Guarantor_Form', 'workplace_name', item.workplace_name),
+    );
+    dispatch(
+      change('Guarantor_Form', 'workplace_type', item.workplace_type),
+    );
+    dispatch(
+      change('Guarantor_Form', 'workplace_date', item.workplace_date),
+    );
+    dispatch(
+      change('Guarantor_Form', 'employee_num', item.employee_num ? item.employee_num.toString() : ""),
+    );
+    dispatch(
+      change('Guarantor_Form', 'co_borrower_address_type', item.co_borrower_address_type),
+    );
+    dispatch(
+      change('Guarantor_Form', 'workplace_addr', item.workplace_addr),
+    );
+    dispatch(
+      change('Guarantor_Form', 'curr_workplace_date', item.curr_workplace_date),
+    );
+    dispatch(
+      change('Guarantor_Form', 'land_scale', item.land_scale),
+    );
+    dispatch(
+      change('Guarantor_Form', 'land_own_type', item.land_own_type),
+    );
+    dispatch(
+      change('Guarantor_Form', 'curr_workplace_perd', item.curr_workplace_perd),
     );
     // show guarnator name
 
@@ -333,7 +364,7 @@ const Guarantor_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Name
+                {t('Name')}
               </Text>
               <Text
                 style={{
@@ -342,7 +373,7 @@ const Guarantor_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                NRC
+                {t("NRC")}
               </Text>
               <Text
                 style={{
@@ -372,7 +403,7 @@ const Guarantor_modal = props => {
                   marginTop: 10,
                   color: 'black',
                   marginLeft: 5,
-                  height:44
+                  height: 44
                 }}>
                 {t("OK")}
               </Button>

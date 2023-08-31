@@ -5,6 +5,8 @@ import DatePicker from '../../components/DatePicker';
 import {reduxForm, Field, change, reset} from 'redux-form';
 import TextInputFile from '../../components/TextInputFile';
 import {connect} from 'react-redux';
+import {useTranslation} from 'react-i18next';
+
 import {style} from '../../style/Cover_Loan_style';
 export default function Cover_Loan_Info(props) {
   const [Cover_expand, setCoverInfoExpand] = useState(true);
@@ -12,6 +14,7 @@ export default function Cover_Loan_Info(props) {
   const handleCoverToggle = () => {
     setCoverInfoExpand(!Cover_expand);
   };
+  const {t} = useTranslation();
   return (
     <>
       <List.Accordion
@@ -52,7 +55,7 @@ export default function Cover_Loan_Info(props) {
 
             <Field
               name={'customer_no'}
-              title={'Customer No'}
+              title={t('Customer No')}
               component={TextInputFile}
               cus_width
               input_mode

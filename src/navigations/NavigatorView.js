@@ -51,7 +51,7 @@ export default function NavigatorView(props) {
   };
   const StackNavigationData = [
     {
-      name: 'Home',
+      name:t('Home'),
       component: Home,
       headerTitleStyle: {
         color: '#FFF',
@@ -59,7 +59,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Synchronization',
+      name: t('Synchronization'),
       component: Synchronization_Screen,
       headerTitleStyle: {
         color: '#FFF',
@@ -67,7 +67,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'ReLoan',
+      name:  t('ReLoan'),
       component: Reloan_Form,
       headerTitleStyle: {
         color: '#FFF',
@@ -75,7 +75,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Passport',
+      name:  t('Passport'),
       component: Passport,
       headerTitleStyle: {
         color: '#FFF',
@@ -83,7 +83,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Edit_Exceptional_Approvel_Form',
+      name:  t('Edit_Exceptional_Approvel_Form'),
       title: 'Exceptional Approval ',
       component: Edit_Exceptional_Approvel_Form,
       headerTitleStyle: {
@@ -92,7 +92,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Survey',
+      name:  t('Survey'),
       component: Survey,
       headerTitleStyle: {
         color: '#FFF',
@@ -100,7 +100,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Edit_Reloan',
+      name:  t('Edit_Reloan'),
       title: 'Reloan',
       component: Edit_Reloan_Form,
       headerTitleStyle: {
@@ -109,7 +109,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Cover Loan',
+      name:  t('Cover Loan'),
       component: Cover_Loan_Form,
       headerTitleStyle: {
         color: '#FFF',
@@ -117,7 +117,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Edit Group Loan',
+      name:  t('Edit Group Loan'),
       title: 'Group Loan',
       component: Edit_Group_Loan_Form,
       headerTitleStyle: {
@@ -126,7 +126,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Edit_Cover_Loan',
+      name:  t('Edit_Cover_Loan'),
       title: 'Cover Loan',
       component: Edit_Cover_Loan_Form,
       headerTitleStyle: {
@@ -135,7 +135,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Group Loan',
+      name:  t('Group Loan'),
       component: Group_Loan_Form,
       headerTitleStyle: {
         color: '#FFF',
@@ -144,7 +144,7 @@ export default function NavigatorView(props) {
     },
 
     {
-      name: 'Customer Management',
+      name:t('Customer Management'),
       component: Customer_Management,
       headerTitleStyle: {
         color: '#FFF',
@@ -160,7 +160,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Edit_Emp_Info',
+      name:  t('Edit_Emp_Info'),
       component: Edit_Emp_Info,
       title: 'Customer Management',
       // headerLeft: headerLeftComponent,
@@ -170,7 +170,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Individual_loan',
+      name:  t('Individual_loan'),
       title: 'Individual Loan Application',
       component: Individual_Loan,
       // headerLeft: headerLeftComponent,
@@ -181,7 +181,7 @@ export default function NavigatorView(props) {
     },
 
     {
-      name: 'Edit_Individual_Loan',
+      name:  t('Edit_Individual_Loan'),
       component: Edit_Individual_Loan,
       title: 'Individual Loan Application',
       // headerLeft: headerLeftComponent,
@@ -191,7 +191,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Indi_Staff_loan',
+      name:  t('Indi_Staff_loan'),
       component: Individual_Staff_loan_Info,
       title: 'Individual Staff Loan Application',
       // headerLeft: headerLeftComponent,
@@ -201,7 +201,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Exceptional_Approvel_Form',
+      name:  t('Exceptional_Approvel_Form'),
       component: Exceptional_Approvel_Form,
       title: 'Exceptional Approval',
       // headerLeft: headerLeftComponent,
@@ -211,7 +211,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Borrower Map',
+      name:  t('Borrower Map'),
       component: Show_Borrower_Map,
       // headerLeft: headerLeftComponent,
       headerTitleStyle: {
@@ -220,7 +220,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Edit Borrower Map',
+      name:  t('Edit Borrower Map'),
       title: 'Borrower Map',
       component: Edit_Show_Borrower_Map,
       // headerLeft: headerLeftComponent,
@@ -230,7 +230,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Edit_Individual_Staff_loan_Info',
+      name:  t('Edit_Individual_Staff_loan_Info'),
       component: Edit_Individual_Staff_loan_Info,
       title: 'Individual Staff Loan Application',
       // headerLeft: headerLeftComponent,
@@ -240,7 +240,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Edit Guarantor',
+      name:  t('Edit Guarantor'),
       component: Edit_Guarantor_Form,
       title: 'Guarantor',
       // headerLeft: headerLeftComponent,
@@ -250,7 +250,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Area Evaluation',
+      name:  t('Area Evaluation'),
       component: Area_Evaluation_Form,
       // headerLeft: headerLeftComponent,
       headerTitleStyle: {
@@ -259,7 +259,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Edit Area Evaluation',
+      name:  t('Edit Area Evaluation'),
       title: 'Area Evaluation',
       component: Edit_Area_Evaluation_Form,
       // headerLeft: headerLeftComponent,
@@ -269,7 +269,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Edit Relation',
+      name:  t('Edit Relation'),
       title: 'Relation',
       component: EditRelation_Form,
       // headerLeft: headerLeftComponent,
@@ -279,7 +279,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Guarantor',
+      name:  t('Guarantor'),
       component: Guarantor_Form,
       // headerLeft: headerLeftComponent,
       headerTitleStyle: {
@@ -288,7 +288,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: 'Relation Form',
+      name:  t('Relation Form'),
       component: Relation_Form,
       // headerLeft: headerLeftComponent,
       headerTitleStyle: {
@@ -298,7 +298,7 @@ export default function NavigatorView(props) {
     },
 
     {
-      name: 'Evidence',
+      name:  t('Evidence'),
       component: Evidence,
       // headerLeft: headerLeftComponent,
       headerTitleStyle: {

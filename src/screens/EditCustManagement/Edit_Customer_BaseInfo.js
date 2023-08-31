@@ -67,7 +67,7 @@ function Edit_Customer_BaseInfo(props) {
         onPress={setCusInfo}
         style={style.list_container}
         titleStyle={style.list_title}
-        title=" Customer Base Information">
+        title={t("Customer Base Information")}>
         <View style={style.sub_container}>
           <Text style={style.radio_title_style}>NRC Type</Text>
 
@@ -106,7 +106,7 @@ function Edit_Customer_BaseInfo(props) {
             )}
             <Field
               name={'customer_no'}
-              title={'Customer No'}
+              title={t('Customer No')}
               component={TextInputFile}
               input_mode
               inputmax={100}
@@ -117,7 +117,7 @@ function Edit_Customer_BaseInfo(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'customer_nm'}
-              title={'Customer Name'}
+              title={t('Customer Name')}
               component={TextInputFile}
               input_mode
               inputmax={100}
@@ -299,7 +299,7 @@ function Edit_Customer_BaseInfo(props) {
           </View>
 
           <Text style={style.radio_title_style}>
-            Start Living Date Current Address
+            {t('Start Living Date Current Address')}
           </Text>
 
           <View>

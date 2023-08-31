@@ -477,7 +477,7 @@ const Cus_No_Search_modal = props => {
               <Text
                 style={{
                   padding: 10,
-                  flex: 1,
+                  flex: 0.5,
                   fontWeight: 'bold',
                 }}>
                 #
@@ -488,7 +488,7 @@ const Cus_No_Search_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Employee No
+                {t('Employee No')}
               </Text>
               <Text
                 style={{
@@ -497,7 +497,7 @@ const Cus_No_Search_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Employee Name
+              {t('Employee Name')}
               </Text>
 
               <Text
@@ -742,7 +742,7 @@ const CoBorrower_NRC_Search_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Name
+                {t('Name')}
               </Text>
               <Text
                 style={{
@@ -1533,7 +1533,7 @@ function Individual_Staff_loan_Info(props) {
               onPress={handleLoanToggle}
               style={style.list_container}
               titleStyle={style.list_title}
-              title="Loan Info">
+              title={t("Loan Info")}>
               <View style={style.sub_container}>
                 <View style={style.sub_list_container}>
                   <Field

@@ -14,11 +14,13 @@ import DropDownPicker from '../../components/DropDownPicker';
 import { style } from '../../style/Individual_Loan_style';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+
 function Loan_Business_Info(props) {
   const { update_status } = props
   const [loan_business_expanded, setLoan_BusinessInfo_expanded] =
     useState(true);
-
+    const { t } = useTranslation();
   const handleLoanBusinessToggle = () => {
     setLoan_BusinessInfo_expanded(!loan_business_expanded);
   };
@@ -30,12 +32,12 @@ function Loan_Business_Info(props) {
         onPress={handleLoanBusinessToggle}
         style={style.list_container}
         titleStyle={style.list_title}
-        title="Business Info">
+        title={t("Business Info")}>
         <View style={style.sub_container}>
           <View style={style.sub_list_container}>
             <Field
               name={'workplace_name'}
-              title={'Business Name '}
+              title={t('Business Name')}
               component={TextInputFile}
               input_mode
               inputmax={100}
@@ -44,7 +46,7 @@ function Loan_Business_Info(props) {
             <Field
               data={business_type}
               name={'workplace_type'}
-              title={'Type of business'}
+              title={t('Type of business')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,
@@ -63,7 +65,7 @@ function Loan_Business_Info(props) {
             />
             <Field
               name={'employee_num'}
-              title={'Number of workers'}
+              title={t('Number of workers')}
               component={TextInputFile}
               input_mode
               keyboardType={'numeric'}
@@ -86,7 +88,7 @@ function Loan_Business_Info(props) {
             <Field
               name={'curr_workplace_date'}
               component={DatePicker}
-              label={'Working Time in current business'}
+              label={t('Working Time in current business')}
               icon={update_status == true && 'calendar'}
               editable={update_status == true ? false : true}
             />
@@ -98,7 +100,7 @@ function Loan_Business_Info(props) {
                 justifyContent: 'flex-start',
               }}>
               <Text style={{ fontSize: 15, fontWeight: 'bold', marginLeft: 20 }}>
-                Business Situation
+                {t('Business Situation')}
               </Text>
               <View >
                 <Field
@@ -115,7 +117,7 @@ function Loan_Business_Info(props) {
             <Field
               data={owner_shipratio}
               name={'land_own_type'}
-              title={'OwnerShip ratio'}
+              title={t('OwnerShip ratio')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,

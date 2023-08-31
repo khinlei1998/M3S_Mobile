@@ -198,7 +198,7 @@ const Borrower_modal = props => {
               padding: 10,
               fontWeight: 'bold',
             }}>
-            Name
+            {t('Name')}
           </Text>
           <Text
             style={{

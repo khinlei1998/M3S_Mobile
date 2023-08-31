@@ -70,7 +70,7 @@ function Area_Evaluation_Score(props) {
           </View>
           <Field
             name={'total_sts_remark'}
-            title={'Remark'}
+            title={t('Remark')}
             component={TextInputFile}
             input_mode
             input_cusstyle

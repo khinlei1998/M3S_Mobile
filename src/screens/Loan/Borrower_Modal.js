@@ -140,7 +140,7 @@ function Borrower_Modal(props) {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Name
+                {t('Name')}
               </Text>
               <Text
                 style={{

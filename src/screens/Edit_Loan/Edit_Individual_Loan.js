@@ -562,7 +562,7 @@ const Borrower_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Name
+                {t('Name')}
               </Text>
               <Text
                 style={{
@@ -812,7 +812,7 @@ const CoBorrower_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Name
+                {t('Name')}
               </Text>
               <Text
                 style={{
@@ -2015,7 +2015,7 @@ function Edit_Individual_Loan(props) {
                         style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="check" size={20} color="#ede72d" />
                         <Text style={{ color: '#fff', marginLeft: 5 }}>
-                          Guarantor Form
+                          {t('Guarantor Form')}
                         </Text>
                       </View>
                     </View>
@@ -2030,7 +2030,7 @@ function Edit_Individual_Loan(props) {
                         style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="paperclip" size={20} color="#fff" />
                         <Text style={{ color: '#fff', marginLeft: 5 }}>
-                          Guarantor Form
+                          {t('Guarantor Form')}
                         </Text>
                       </View>
                       <Icon name="chevron-right" size={25} color="#fff" />
@@ -2070,7 +2070,7 @@ function Edit_Individual_Loan(props) {
                         style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="check" size={20} color="#ede72d" />
                         <Text style={{ color: '#fff', marginLeft: 5 }}>
-                          Area Evaluation Form
+                         {t('Area Evaluation Form')}
                         </Text>
                       </View>
                     </View>
@@ -2085,7 +2085,7 @@ function Edit_Individual_Loan(props) {
                         style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="paperclip" size={20} color="#fff" />
                         <Text style={{ color: '#fff', marginLeft: 5 }}>
-                          Area Evaluation Form
+                          {t('Area Evaluation Form')}
                         </Text>
                       </View>
                       <Icon name="chevron-right" size={25} color="#fff" />
@@ -2176,7 +2176,7 @@ function Edit_Individual_Loan(props) {
                         style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="check" size={20} color="#ede72d" />
                         <Text style={{ color: '#fff', marginLeft: 5 }}>
-                          Evidence Document Form
+                          {t('Evidence Document Form')}
                         </Text>
                       </View>
                     </View>) :
@@ -2189,7 +2189,7 @@ function Edit_Individual_Loan(props) {
                       <View style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="paperclip" size={20} color="#fff" />
                         <Text style={{ color: '#fff', marginLeft: 5 }}>
-                          Evidence Document Form
+                          {t('Evidence Document Form')}
                         </Text>
                       </View>
                       <Icon name="chevron-right" size={25} color="#fff" />

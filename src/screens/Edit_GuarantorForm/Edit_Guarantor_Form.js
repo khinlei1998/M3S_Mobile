@@ -54,6 +54,9 @@ const Borrower_Sign_Modal = props => {
     resetSign,
     sign,
   } = props;
+
+  const { t } = useTranslation();
+
   return (
     <Modal
       visible={show_canvas}
@@ -189,6 +192,36 @@ const Guarantor_modal = props => {
         'business_own_type',
         item.business_own_type,
       ),
+    );
+    dispatch(
+      change('Edit_Guarantor_Form', 'workplace_name', item.workplace_name),
+    );
+    dispatch(
+      change('Edit_Guarantor_Form', 'workplace_type', item.workplace_type),
+    );
+    dispatch(
+      change('Edit_Guarantor_Form', 'workplace_date', item.workplace_date),
+    );
+    dispatch(
+      change('Edit_Guarantor_Form', 'employee_num', item.employee_num ? item.employee_num.toString() : ""),
+    );
+    dispatch(
+      change('Edit_Guarantor_Form', 'co_borrower_address_type', item.co_borrower_address_type),
+    );
+    dispatch(
+      change('Edit_Guarantor_Form', 'workplace_addr', item.workplace_addr),
+    );
+    dispatch(
+      change('Edit_Guarantor_Form', 'curr_workplace_date', item.curr_workplace_date),
+    );
+    dispatch(
+      change('Edit_Guarantor_Form', 'land_scale', item.land_scale),
+    );
+    dispatch(
+      change('Edit_Guarantor_Form', 'land_own_type', item.land_own_type),
+    );
+    dispatch(
+      change('Edit_Guarantor_Form', 'curr_workplace_perd', item.curr_workplace_perd),
     );
     // show guarnator name
 
@@ -342,7 +375,7 @@ const Guarantor_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Name
+                {t('Name')}
               </Text>
               <Text
                 style={{
@@ -394,6 +427,8 @@ const Guarantor_modal = props => {
 };
 function Edit_Guarantor_Form(props) {
   const navigation = useNavigation();
+  const { t } = useTranslation();
+
   const {handleSubmit, guarantor_update_status, setGuarantor_UpdateStatus} =
     props;
   const retrive_guarantor_data = props.route.params.guarantor_data[0];
@@ -631,7 +666,7 @@ function Edit_Guarantor_Form(props) {
                 color: '#273050',
                 fontWeight: 'bold',
               }}>
-              Guarantor Form
+              {t('Guarantor Form')}
             </Text>
             <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
               (Attach To Application)

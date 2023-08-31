@@ -35,7 +35,7 @@ function Loan_Business_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'workplace_name'}
-              title={'Business Name '}
+              title={t('Business Name')}
               component={TextInputFile}
               input_mode
               inputmax={100}
@@ -43,7 +43,7 @@ function Loan_Business_Info(props) {
             <Field
               data={business_type}
               name={'workplace_type'}
-              title={'Type of business'}
+              title={('Type of business')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,
@@ -60,7 +60,7 @@ function Loan_Business_Info(props) {
             />
             <Field
               name={'employee_num'}
-              title={'Number of workers'}
+              title={t('Number of workers')}
               component={TextInputFile}
               input_mode
               keyboardType={'numeric'}
@@ -83,7 +83,7 @@ function Loan_Business_Info(props) {
             <Field
               name={'curr_workplace_date'}
               component={DatePicker}
-              label={'Working Time in current business'}
+              label={t('Working Time in current business')}
               icon={'calendar'}
             />
             <View
@@ -94,7 +94,7 @@ function Loan_Business_Info(props) {
                 justifyContent:'flex-start',
               }}>
               <Text style={{fontSize: 15, fontWeight: 'bold', marginLeft: 20}}>
-                Business Situation
+                {t('Business Situation')}
               </Text>
               <View >
                 <Field
@@ -110,7 +110,7 @@ function Loan_Business_Info(props) {
             <Field
               data={owner_shipratio}
               name={'land_own_type'}
-              title={'OwnerShip ratio'}
+              title={t('OwnerShip ratio')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,

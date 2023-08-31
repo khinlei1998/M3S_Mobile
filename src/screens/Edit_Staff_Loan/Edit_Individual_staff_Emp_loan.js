@@ -71,7 +71,7 @@ import { useTranslation } from 'react-i18next';
           <View style={style.sub_list_container}>
             <Field
               name={'employee_no'}
-              title={'Employee No'}
+              title={t('Employee No')}
               icon={update_status == true &&'magnify'}
               handleTextInputFocus={showCustomerSearch}
               component={TextInputFile}
@@ -97,7 +97,7 @@ import { useTranslation } from 'react-i18next';
             <Field
               name={'entry_date'}
               component={DatePicker}
-              label={'Start Working Date at SHM'}
+              label={t('Start Working Date at SHM')}
               icon={update_status == true &&'calendar'}
               editable={update_status == true ? false : true}
               // ref={workingDateRef}
@@ -112,7 +112,7 @@ import { useTranslation } from 'react-i18next';
 
             <Field
               name={'position_title_nm'}
-              title={'Current Position'}
+              title={t('Current Position')}
               component={TextInputFile}
               editable={update_status == true ? false : true}
 
@@ -156,7 +156,7 @@ import { useTranslation } from 'react-i18next';
 
             <Field
               name={'customer_no'}
-              title={'Customer No'}
+              title={t('Customer No')}
               component={TextInputFile}
               cus_width
               input_mode

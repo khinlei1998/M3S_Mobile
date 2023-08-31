@@ -27,7 +27,7 @@ function Co_Borrower_Info(props) {
                 <View style={style.sub_container}>
                     <Field
                         name={'co_customer_no'}
-                        title={'Customer No'}
+                        title={t('Customer No')}
                         component={TextInputFile}
                         input_cusstyle
                         input_mode

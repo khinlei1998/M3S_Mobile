@@ -1,6 +1,8 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import moment from 'moment';
+import {useTranslation} from 'react-i18next';
+
 export default function Borrower_Sign(props) {
   const {
     coborrower_sign_path,
@@ -14,6 +16,7 @@ export default function Borrower_Sign(props) {
     borrower_name,
     coborrower_name
   } = props;
+  const {t} = useTranslation();
   return (
     <>
       <View style={{ flex: 1, padding: 5, margin: 20 }}>
@@ -27,7 +30,7 @@ export default function Borrower_Sign(props) {
           <View>
             <View style={{ flexDirection: 'row' }}>
               <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-                Borrower Name
+                {t('Borrower Name')}
               </Text>
               <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
                 {borrower_name}
@@ -35,7 +38,7 @@ export default function Borrower_Sign(props) {
             </View>
             <View style={{ flexDirection: 'row' }}>
               <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-                Date
+                {t('Date')}
               </Text>
               <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
                 <Text> {moment().format('YYYY-MM-DD')}</Text>
@@ -85,7 +88,7 @@ export default function Borrower_Sign(props) {
 
             <View style={{ flexDirection: 'row' }}>
               <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-                Date
+                {t('Date')}
               </Text>
               <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
                 <Text> {moment().format('YYYY-MM-DD')}</Text>

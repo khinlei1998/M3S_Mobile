@@ -57,7 +57,7 @@ export default function Individual_staff_Emp_loan(props) {
         onPress={handleBorrowerToggle}
         style={style.list_container}
         titleStyle={style.list_title}
-        title="Employee Information">
+        title={t("Employee Information")}>
 
         <View style={style.sub_container}>
           <Field
@@ -69,7 +69,7 @@ export default function Individual_staff_Emp_loan(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'employee_no'}
-              title={'Employee No'}
+              title={t('Employee No')}
               icon={'magnify'}
               handleTextInputFocus={showCustomerSearch}
               component={TextInputFile}
@@ -95,7 +95,7 @@ export default function Individual_staff_Emp_loan(props) {
             <Field
               name={'entry_date'}
               component={DatePicker}
-              label={'Start Working Date at SHM'}
+              label={t('Start Working Date at SHM')}
               icon={'calendar'}
               onWorkingDateChange={(month) => {
                 setLoanLimitAmount(0)
@@ -105,7 +105,7 @@ export default function Individual_staff_Emp_loan(props) {
 
             <Field
               name={'position_title_nm'}
-              title={'Current Position'}
+              title={t('Current Position')}
               component={TextInputFile}
 
             />
@@ -144,7 +144,7 @@ export default function Individual_staff_Emp_loan(props) {
 
             <Field
               name={'customer_no'}
-              title={'Customer No'}
+              title={t('Customer No')}
               component={TextInputFile}
               cus_width
               input_mode

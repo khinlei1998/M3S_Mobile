@@ -3,6 +3,8 @@ import React from 'react';
 import { reduxForm, } from 'redux-form';
 import { connect} from 'react-redux';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
+
 function Borrower_Sign(props) {
   const {
     update_status,
@@ -18,7 +20,7 @@ function Borrower_Sign(props) {
     coborrower_name,
     retrive_loan_data
   } = props;
-
+  const { t } = useTranslation();
   const queryParam = `?timestamp=${Date.now()}`;
 
   return (
@@ -42,7 +44,7 @@ function Borrower_Sign(props) {
             </View>
             <View style={{ flexDirection: 'row' }}>
               <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-                Date
+                {('Date')}
               </Text>
               <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
                 <Text>{moment(retrive_loan_data.create_datetime).format('YYYY-MM-DD')}</Text>
@@ -115,7 +117,7 @@ function Borrower_Sign(props) {
             </View>
             <View style={{ flexDirection: 'row' }}>
               <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-                Date
+                {t('Date')}
               </Text>
               <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
               <Text>{moment(retrive_loan_data.create_datetime).format('YYYY-MM-DD')}</Text>

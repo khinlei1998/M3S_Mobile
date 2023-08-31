@@ -15,15 +15,17 @@ import {
 import {connect} from 'react-redux';
 import {style} from '../../style/Customer_Mang_style';
 import {List} from 'react-native-paper';
+import {useTranslation} from 'react-i18next';
+
 function Busines_Info() {
   const [open_business_info, setBusinessInfo] = useState(true);
   const [show_businessdate, setBusiness] = useState('1');
   const [show_business_date, setBusinessStartDate] = useState('estimated');
+  const {t} = useTranslation();
 
   const MonthlyIncomeFun = () => {
     setBusinessInfo(!open_business_info);
   };
-  // const numbers = Array.from({length: 60}, (_, i) => i + 1);
   const numbers = Array.from({length: 60}, (_, i) => (i + 1).toString());
 
   const arrayWithObjects = numbers.map((num, index) => {
@@ -52,7 +54,7 @@ function Busines_Info() {
           <View style={style.sub_list_container}>
             <Field
               name={'workplaceName'}
-              title={'Business Name '}
+              title={t('Business Name')}
               component={TextInputFile}
               input_mode
               inputmax={100}
@@ -60,7 +62,7 @@ function Busines_Info() {
             <Field
               data={business_type}
               name={'wokplaceType'}
-              title={'Type of business'}
+              title={t('Type of business')}
               component={DropDownPicker}
               pickerStyle={{
                 width: 300,
@@ -74,7 +76,7 @@ function Busines_Info() {
               marginTop: 10,
             }}>
             <Text style={{marginLeft: 10, fontSize: 15, fontWeight: 'bold'}}>
-              Business Period
+              {t("Business Period")}
             </Text>
             <View>
               <Field
@@ -168,7 +170,7 @@ function Busines_Info() {
                 <View>
                   <Text
                     style={{fontSize: 15, fontWeight: 'bold', marginLeft: 10}}>
-                    Business Situation
+                    {t('Business Situation')}
                   </Text>
                   <Field
                     data={business_situation}
@@ -181,7 +183,7 @@ function Busines_Info() {
               <View style={style.input_container_style}>
                 <Field
                   name={'landScale'}
-                  title={'Agriculture Land'}
+                  title={t('Agriculture Land')}
                   component={TextInputFile}
                   keyboardType={'numeric'}
                   input_mode
@@ -192,7 +194,7 @@ function Busines_Info() {
                 <Field
                   data={owner_shipratio}
                   name={'landOwnType'}
-                  title={'OwnerShip Ratio'}
+                  title={t('OwnerShip Ratio')}
                   component={DropDownPicker}
                   pickerStyle={{
                     width: 280,

@@ -5,9 +5,11 @@ import {reduxForm, Field, change, reset} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {style} from '../../style/Group_Loan_style';
+import {useTranslation} from 'react-i18next';
+
 function Group_Borrower_Map(props) {
   const {navigation, all_loandata, map, p_type} = props;
-
+  const {t} = useTranslation();
   const [borrower_map_expanded, setBorrowerMapExpanded] = useState(true);
   const handleBorrowerMapToggle = () => {
     setBorrowerMapExpanded(!borrower_map_expanded);
@@ -22,7 +24,7 @@ function Group_Borrower_Map(props) {
       onPress={handleBorrowerMapToggle}
       style={style.list_container}
       titleStyle={style.list_title}
-      title="Borrower current Home Map">
+      title={t("Borrower current Home Map")}>
       <View
         style={{
           width: '90%',

@@ -99,13 +99,13 @@
     "Business Period":	"လုပ်ငန်းလုပ်သက်",
     "Number of workers":	"အလုပ်သမားဦးရေ",
     "Working time in current business":	"လက်ရှိလုပ်ငန်းလိပ်စာတွင်ကြာချိန်",
-    "Agriculture – Lands":	"စိုက်ပျိုးရေး – စိုက်ပျိုးမြေဧက",
+    "Agriculture Land":	"စိုက်ပျိုးရေး – စိုက်ပျိုးမြေဧက",
     "Ownership ratio"	:"ပိုင်ဆိုင်မှုအချိုး",
     "100% Own"	:"၁၀၀% အပိုင်",
     "Other":	"အခြား",
-
-    "Business Income / Expense":	"စီးပွားရေးလုပ်ငန်း ဝင်ငွေ / ထွက်ငွေ",
-    "Family Income / Expense":	"မိသားစု ဝင်ငွေ / ထွက်ငွေ",
+    "Borrower's Monthly Income/Expense Statement":"ချေးငွေလျောက်ထားသူ၏ လစဉ် ဝင်ငွေ/ထွက်ငွေ ရှင်းတမ်း",
+    "Business Income/Expense":	"စီးပွားရေးလုပ်ငန်း ဝင်ငွေ / ထွက်ငွေ",
+    "Family Income/Expense":	"မိသားစု ဝင်ငွေ / ထွက်ငွေ",
     "Total Sale Income (+)":"ကုန်ပစ္စည်းရောင်းရငွေ စုစုပေါင်း (+)",
     "Total Family Income (+)":"တခြား မိသားစုဝင်ငွေ စုစုပေါင်း (+)",
     "Total Sale Expense (-)":	"ကုန်ကျစရိတ်စုစုပေါင်း (-)",
@@ -124,8 +124,8 @@
     "Other debt/ Saving":	"တခြားအကြွေး / စုငွေ",
     "Total Net Income"	:"အသားတင်ဝင်ငွေ",
     "Remark":	"မှတ်ချက်",
-    "Total Net Income =" 	:"စုစုပေါင်းအသားတင်ဝင်ငွေ =" ,
-    "(Total Net Income = Total Business Net Income + Total Family Net Income)":	"စုစုပေါင်းအသားတင်ဝင်ငွေ = စုစုပေါင်းလုပ်ငန်းအသားတင်ဝင်ငွေ + စုစုပေါင်းမိသားစုအသားတင်ဝင်ငွေ)",
+    "Total Net Icome=":"စုစုပေါင်းအသားတင်ဝင်ငွေ =" ,
+    "(Total Net Icome= Total Business Net Income+Total Fammily Net Income+Other Income)":	"စုစုပေါင်းအသားတင်ဝင်ငွေ = စုစုပေါင်းလုပ်ငန်းအသားတင်ဝင်ငွေ + စုစုပေါင်းမိသားစုအသားတင်ဝင်ငွေ)",
     "Borrower current home Map":	"ချေးငွေထုတ်ယူသူ၏ လက်ရှိနေထိုင်သည့်နေအိမ်ပြမြေပုံ",
     "Date":"နေ့စွဲ",
     "Signature":"လက်မှတ်",
@@ -175,5 +175,6 @@
     "Group Members":	"အဖွဲ့ဝင်ဦးရေ",
     "Age"	:"အသက်",
     "Exceptional Reason":	"ချွင်းချက်အကြောင်းအရာများ",
-    "Over 60 years old":	"အသက်(၆၀) အထက်"
+    "Over 60 years old":	"အသက်(၆၀) အထက်",
+    "Employee Name":"အလုပ်သမားနာမည်"
 }

@@ -56,7 +56,7 @@ function Group_Loan_Info(props) {
 
             <Field
               name={'customer_no'}
-              title={'Customer No'}
+              title={t('Customer No')}
               component={TextInputFile}
               cus_width
               input_mode

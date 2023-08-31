@@ -15,10 +15,12 @@ import {
   totalNetFamily,
   totalNetIncome,
 } from '../../redux/MonthlyReducer';
+import {useTranslation} from 'react-i18next';
+
 import {totalLoanAmt} from '../../redux/MonthlyReducer';
 function Borrower_Monthly_Income(props) {
   const dispatch = useDispatch();
-
+  const {t} = useTranslation();
   const {
     handleCalculate,
     app_amount,
@@ -224,12 +226,12 @@ function Borrower_Monthly_Income(props) {
           backgroundColor: '#fff',
         }}
         titleStyle={style.list_title}
-        title="Borrower's Monthly Income/Expense Statement">
+        title={t("Borrower's Monthly Income/Expense Statement")}>
         <View style={style.sub_container}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View>
               <Text style={{fontWeight: 'bold', padding: 5, marginTop: 10}}>
-                Business Income/Expense
+                {t("Business Income/Expense")}
               </Text>
               <View
                 style={{
@@ -241,7 +243,7 @@ function Borrower_Monthly_Income(props) {
                 }}>
                 <Field
                   name={'totSaleIncome'}
-                  title={'Total Sale Income (+)'}
+                  title={t('Total Sale Income (+)')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -252,7 +254,7 @@ function Borrower_Monthly_Income(props) {
 
                 <Field
                   name={'totSaleExpense'}
-                  title={'Total Sale Expense (-)'}
+                  title={t('Total Sale Expense (-)')}
                   component={TextInputFile}
                   input_mode
                   inputmax={28}
@@ -261,7 +263,7 @@ function Borrower_Monthly_Income(props) {
                 />
                 <Field
                   name={'rawmaterialExpans'}
-                  title={'Raw Material Expense'}
+                  title={t('Raw Material Expense')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -272,7 +274,7 @@ function Borrower_Monthly_Income(props) {
 
                 <Field
                   name={'wrkpRentExpns'}
-                  title={'Business Building Renting'}
+                  title={t('Business Building Renting')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -283,7 +285,7 @@ function Borrower_Monthly_Income(props) {
 
                 <Field
                   name={'employeeExpns'}
-                  title={'Employee Expense'}
+                  title={t('Employee Expense')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -294,7 +296,7 @@ function Borrower_Monthly_Income(props) {
 
                 <Field
                   name={'trnsrtExpns'}
-                  title={'Transportation'}
+                  title={t('Transportation')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -338,7 +340,7 @@ function Borrower_Monthly_Income(props) {
 
                 <Field
                   name={'goodsLossExpns'}
-                  title={'Loss of Goods'}
+                  title={t('Loss of Goods')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -349,7 +351,7 @@ function Borrower_Monthly_Income(props) {
 
                 <Field
                   name={'othrExpns1'}
-                  title={'Other Expense'}
+                  title={t('Other Expense')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -360,7 +362,7 @@ function Borrower_Monthly_Income(props) {
 
                 <Field
                   name={'othrExpns2'}
-                  title={'Other Expense'}
+                  title={t('Other Expense')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -378,7 +380,7 @@ function Borrower_Monthly_Income(props) {
                     padding: 20,
                     marginTop: 10,
                   }}>
-                  <Text style={{color: '#fff'}}>Total Net Income</Text>
+                  <Text style={{color: '#fff'}}>{t('Total Net Income')}</Text>
                   <Text style={{color: '#F9A970'}}>
                     {' '}
                     {total_business_net_total}
@@ -389,7 +391,7 @@ function Borrower_Monthly_Income(props) {
             {/* Family Inccome */}
             <View style={{marginLeft: 15}}>
               <Text style={{fontWeight: 'bold', padding: 5, marginTop: 10}}>
-                Family Income/Expense
+                {t("Family Income/Expense")}
               </Text>
               <View
                 style={{
@@ -401,7 +403,7 @@ function Borrower_Monthly_Income(props) {
                 }}>
                 <Field
                   name={'fmlyTotIncome'}
-                  title={'Total Family Income (+)'}
+                  title={t('Total Family Income (+)')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -412,7 +414,7 @@ function Borrower_Monthly_Income(props) {
 
                 <Field
                   name={'fmlyTotExpense'}
-                  title={'Total Family Expense (-)'}
+                  title={t('Total Family Expense (-)')}
                   component={TextInputFile}
                   inputmax={28}
                   keyboardType={'numeric'}
@@ -421,7 +423,7 @@ function Borrower_Monthly_Income(props) {
 
                 <Field
                   name={'foodExpns'}
-                  title={'Cost For Food'}
+                  title={t('Cost For Food')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -432,7 +434,7 @@ function Borrower_Monthly_Income(props) {
 
                 <Field
                   name={'houseMngtExpns'}
-                  title={'House Maintenance'}
+                  title={t('House Maintenance')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -443,7 +445,7 @@ function Borrower_Monthly_Income(props) {
 
                 <Field
                   name={'utlbilExpns'}
-                  title={'Electric, Water, Ph bill'}
+                  title={t('Electric, Water, Ph bill')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -454,7 +456,7 @@ function Borrower_Monthly_Income(props) {
 
                 <Field
                   name={'edctExpns'}
-                  title={'Education Expense'}
+                  title={t('Education Expense')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -475,7 +477,7 @@ function Borrower_Monthly_Income(props) {
 
                 <Field
                   name={'fmlyTrnsrtExpns'}
-                  title={'Transportation'}
+                  title={t('Transportation')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -507,7 +509,7 @@ function Borrower_Monthly_Income(props) {
 
                 <Field
                   name={'fmlyOtrExpns'}
-                  title={'Other Expense'}
+                  title={t('Other Expense')}
                   component={TextInputFile}
                   cus_width
                   input_mode
@@ -525,7 +527,7 @@ function Borrower_Monthly_Income(props) {
                     padding: 20,
                     marginTop: 77,
                   }}>
-                  <Text style={{color: '#fff'}}>Total Net Income</Text>
+                  <Text style={{color: '#fff'}}>{t('Total Net Income')}</Text>
                   <Text style={{color: '#F9A970'}}>{total_fmly_net}</Text>
                 </View>
               </View>
@@ -533,7 +535,7 @@ function Borrower_Monthly_Income(props) {
           </View>
           <Field
             name={'remark'}
-            title={'Remark'}
+            title={t('Remark')}
             component={TextInputFile}
             input_mode
             input_cusstyle

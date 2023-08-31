@@ -743,7 +743,7 @@ function Customer_Management(props) {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={{flex: 1, backgroundColor: '#fff'}}>
             <Text style={style.title_style}>
-              Customer Information Management
+              {t('Customer Information Management')}
             </Text>
             <DividerLine border_width />
             <Create_Operation
@@ -759,12 +759,12 @@ function Customer_Management(props) {
               onPress={handleEmpToggle}
               style={style.list_container}
               titleStyle={style.list_title}
-              title=" Employee Information">
+              title={t("Employee Information")}>
               <View style={style.sub_container}>
                 <View style={style.sub_list_container}>
                   <Field
                     name={'employeeNo'}
-                    title={'Employee No'}
+                    title={t('Employee No')}
                     component={TextInputFile}
                     cus_width
                     icon={'magnify'}
@@ -778,14 +778,14 @@ function Customer_Management(props) {
                   <Field
                     name={'entryDate'}
                     component={DatePicker}
-                    label={'Start Working Date at SHM'}
+                    label={t('Start Working Date at SHM')}
                     icon={'calendar'}
                   />
 
                   <View style={{marginRight: 10}}>
                     <Field
                       name={'positionTitleNm'}
-                      title={'Current Position'}
+                      title={t('Current Position')}
                       component={TextInputFile}
                       editable
                     />
@@ -937,7 +937,7 @@ function Customer_Management(props) {
                     padding: 10,
                     fontWeight: 'bold',
                   }}>
-                  Employee No
+                  {t('Employee No')}
                 </Text>
                 <Text
                   style={{
@@ -946,7 +946,7 @@ function Customer_Management(props) {
                     padding: 10,
                     fontWeight: 'bold',
                   }}>
-                  Employee Name
+                  {t('Employee Name')}
                 </Text>
                 <Text
                   style={{
@@ -955,7 +955,7 @@ function Customer_Management(props) {
                     padding: 10,
                     fontWeight: 'bold',
                   }}>
-                  Positon Name
+                  {t('Positon Name')}
                 </Text>
               </View>
               {loading ? ( // Show ActivityIndicator while loading is true

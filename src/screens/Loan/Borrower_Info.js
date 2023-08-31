@@ -67,7 +67,7 @@ function Borrower_Info(props) {
           <View style={style.sub_list_container}>
             <Field
               name={'customer_no'}
-              title={'Customer No'}
+              title={t('Customer No')}
               component={TextInputFile}
               cus_width
               input_mode

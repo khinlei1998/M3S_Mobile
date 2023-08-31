@@ -524,7 +524,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         }
 
         const indiLoanData = await fetchIndiloanData(data.group_aplc_no);
-        console.log('indiLoanData group', indiLoanData);
         if (indiLoanData.length > 0) {
           for (const loan_data of indiLoanData) {
             const gp_individual_loan_data = {
