@@ -229,7 +229,7 @@ function LoginScreen(props) {
             </View>
 
             <Text style={{color: '#fff', textAlign: 'center', marginTop: 25}}>
-              v 0.1.19
+              v 0.2.10
             </Text>
 
             <Image
