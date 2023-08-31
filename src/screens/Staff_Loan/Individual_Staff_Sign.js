@@ -30,7 +30,7 @@ export default function Individual_Staff_Sign(props) {
 
             <View style={{ flexDirection: 'row' }}>
               <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-                Borrower Name
+                {t('Borrower Name')}
               </Text>
               <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
                 {borrower_name}

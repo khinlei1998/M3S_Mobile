@@ -751,7 +751,7 @@ const CoBorrower_NRC_Search_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                NRC
+                {t("NRC")}
               </Text>
 
               <Text
