@@ -169,12 +169,12 @@
     "Employee No"	:"အလုပ်သမားအမှတ်",
     "Employee Type":	"ဝန်ထမ်းအမျိုးအစား",
     "Saving Certificate"	:"ငွေစုမှတ်တမ်း",
-    "Evidence Document":	"သက်သေသာဓက",
+    "Evidence Document Form":	"သက်သေသာဓက",
     "Area Evaluation Form"	:"နယ်မြေအကဲဖြတ်ခြင်း",
     "Exceptional Approval Request Form"	:"ချွင်းချက်ထောက်ခံချက်များ",
-    "Group Members":	"အဖွဲ့ဝင်ဦးရေ",
-    "Age"	:"အသက်",
-    "Exceptional Reason":	"ချွင်းချက်အကြောင်းအရာများ",
+    "Group Members":"အဖွဲ့ဝင်ဦးရေ",
+    "Age":"အသက်",
+    "Exceptional Reason":"ချွင်းချက်အကြောင်းအရာများ",
     "Over 60 years old":	"အသက်(၆၀) အထက်",
     "Employee Name":"အလုပ်သမားနာမည်"
 }
