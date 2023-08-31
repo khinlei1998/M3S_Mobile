@@ -161,7 +161,6 @@ function Edit_Emp_Info(props) {
   const hideCityModal = () => setCityCodeModalVisible(false);
   const hideWardModal = () => setWardCodeModalVisible(false);
   const filtered_cus_data = props.route.params;
-  console.log('filtered_cus_data', filtered_cus_data);
   const onChangeEmpText = textvalues => {
     setEmpText(textvalues);
   };
@@ -567,7 +566,6 @@ function Edit_Emp_Info(props) {
     if (filtered_cus_data.city_code) {
       await fetchCityName(filtered_cus_data.city_code)
         .then(result => {
-          console.log('cus result', result);
           {
             if (result.length > 0) {
               dispatch(
@@ -632,7 +630,6 @@ function Edit_Emp_Info(props) {
     if (filtered_cus_data.location_code) {
       await fetchLocationName(filtered_cus_data.location_code)
         .then(result => {
-          console.log('location result', result);
           {
             if (result.length > 0) {
               dispatch(
