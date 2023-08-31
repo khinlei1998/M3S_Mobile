@@ -2,7 +2,7 @@ import {View, Text} from 'react-native';
 import React, {useState} from 'react';
 import {style} from '../../style/Area_Evaluation_style';
 import {area_evaluation_score_result} from '../../common';
-import {reduxForm, Field, change, reset} from 'redux-form';
+import {reduxForm, Field,} from 'redux-form';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import {connect, useDispatch} from 'react-redux';
 import {List} from 'react-native-paper';

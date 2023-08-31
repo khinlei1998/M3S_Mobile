@@ -56,8 +56,6 @@ function Edit_Customer_BaseInfo(props) {
       dispatch(change('Customer_ManagementForm', 'nrc_no', ''));
       dispatch(change('Customer_ManagementForm', 'resident_rgst_id', ''));
     } else {
-      // dispatch(change('Customer_ManagementForm', 'nrc_no', ''));
-      // dispatch(change('Customer_ManagementForm', 'resident_rgst_id', ''));
     }
   };
   return (

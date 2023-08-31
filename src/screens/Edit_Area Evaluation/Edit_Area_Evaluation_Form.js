@@ -22,9 +22,7 @@ import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
 import Edit_Area_Info from './Edit_Area_Info';
 import Edit_Area_Evaluation from './Edit_Area_Evaluation';
-import {area_evaluation_result} from '../../common';
 import Edit_Area_Evaluation_Score from './Edit_Area_Evaluation_Score';
-import {getAllLoan_By_application_no} from '../../query/AllLoan_query';
 import {useNavigation} from '@react-navigation/native';
 import {setAREA_UpdateStatus} from '../../redux/LoanReducer';
 import {deleteAreaEvaluation_ByID} from '../../query/AreaEvaluation_query';
@@ -68,7 +66,6 @@ function Edit_Area_Evaluation_Form(props) {
     if (show_operation == '4') {
       await deleteAreaEvaluation_ByID(values.area_evaluation_no).then(
         response => {
-          console.log('response', response);
           if (response === 'success') {
             alert('Delete Success');
             navigation.goBack();

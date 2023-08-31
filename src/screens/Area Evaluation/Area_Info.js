@@ -1,10 +1,8 @@
 import {
   View,
 } from 'react-native';
-import React, {useState, useEffect, createRef} from 'react';
-import DividerLine from '../../components/DividerLine';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import React, {useState} from 'react';
+import {Field,} from 'redux-form';
 import {
   List,
 } from 'react-native-paper';

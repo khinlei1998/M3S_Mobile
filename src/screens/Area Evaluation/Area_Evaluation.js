@@ -21,10 +21,7 @@ function Area_Evaluation(props) {
   };
   const handleRadioButtonChange = (value, input, index) => {
     input.onChange(value.id);
-    // const number = parseFloat(value.result);
     const number = parseFloat(value.id);
-
-
     // Update the selected values array
     const newValues = [...values];
     newValues[index] = number;

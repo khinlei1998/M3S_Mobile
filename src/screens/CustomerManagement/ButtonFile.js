@@ -18,9 +18,7 @@ function ButtonFile(props) {
         const emp_data={
             branchName:'we',
             branchCode:'pp'
-        }
-        // setSelectedValue(item.employee_no)
-       
+        }       
         TestAction(emp_data);
       };
   return (

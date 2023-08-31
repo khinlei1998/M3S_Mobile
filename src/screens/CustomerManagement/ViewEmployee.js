@@ -2,7 +2,6 @@ import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {RadioButton, Button} from 'react-native-paper';
 import {useDispatch} from 'react-redux';
-// import RadioButton from '../../components/RadioButtonFile';
 import {Field} from 'redux-form';
 import {addEmpFilter} from '../../redux/EmployeeReducer';
 import {connect} from 'react-redux';

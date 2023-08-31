@@ -6,10 +6,10 @@ import {
   Keyboard,
   ToastAndroid,
 } from 'react-native';
-import React, { useState, useEffect, createRef } from 'react';
+import React, { useState, useEffect, } from 'react';
 import DividerLine from '../../components/DividerLine';
-import { reduxForm, Field, change, reset } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import { reduxForm, Field,} from 'redux-form';
+import { connect,  } from 'react-redux';
 import Icon from 'react-native-vector-icons/Feather';
 import { storeAreaEvaluation } from '../../query/AreaEvaluation_query';
 import {
@@ -58,7 +58,6 @@ function Area_Evaluation_Form(props) {
         props.initialize(initialize_data);
       },
     );
-    // setGuaranteeDate(moment().format('YYYY/MM/DD'))
   };
   useEffect(() => {
     loadData();
@@ -72,7 +71,6 @@ function Area_Evaluation_Form(props) {
       total_sts_flag: total_sts_flag,
       total_score: total_score,
     });
-    console.log('area_data', area_data);
     await storeAreaEvaluation(area_data).then(result => {
       if (result == 'success') {
         ToastAndroid.show(`Insert Success`, ToastAndroid.SHORT);
