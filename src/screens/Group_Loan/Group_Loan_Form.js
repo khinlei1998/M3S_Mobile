@@ -14,15 +14,11 @@ import Group_Loan_Info from './Group_Loan_Info';
 import { connect, useDispatch } from 'react-redux';
 import { filterCustomer } from '../../query/Customer_query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getAllLoan} from '../../query/AllLoan_query';
 import validate from './Validate';
 import {
   RadioButton,
   Button,
-  List,
   Modal,
-  Provider,
-  Portal,
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import {Picker} from '@react-native-picker/picker';
@@ -217,7 +213,7 @@ const Borrower_modal = props => {
               padding: 10,
               fontWeight: 'bold',
             }}>
-            NRC
+            {t('NRC')}
           </Text>
           <Text
             style={{
