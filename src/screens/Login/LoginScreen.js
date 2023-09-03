@@ -10,7 +10,7 @@ import {
 import React, {useContext, useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
-import {Field, reduxForm, change} from 'redux-form';
+import {Field, reduxForm, change, reset} from 'redux-form';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import DropDownPicker from '../../components/DropDownPicker';
 import SettingScreen from '../Setting/SettingScreen';
@@ -44,7 +44,7 @@ function LoginScreen(props) {
   const netInfo = useNetInfo();
   const {navigation, handleSubmit, saveLogin, ischecked} = props;
   const [show_modal, setShowModal] = useState(false);
-  const {saveUserID, userID} = useContext(AuthContext);
+  // const {saveUserID, userID} = useContext(AuthContext);
   const [modalVisible, setModalVisible] = React.useState(false);
   const [prefix, setPrefix] = useState('');
   const [btn_check, setbtnCheck] = useState(false);
@@ -73,14 +73,23 @@ function LoginScreen(props) {
 
       // console.log('encodedString', encodedString);
       const user = await selectUser(values.user_id, encodedString);
+      if (user) {
+        props.navigation.navigate('Home');
+        await AsyncStorage.setItem('user_id', user.employee_no);
+        const user_id = await AsyncStorage.getItem('user_id');
+        ToastAndroid.show(`Welocome,[${user_id}]!`, ToastAndroid.SHORT);
+        if (!ischecked) {
+          dispatch(reset('LoginForm'));
+        }
+      }
+
       // const user = await selectUser('M00172', encodedString);
 
-      await saveUserID(user.user_id);
       // values.save_login_info &&
-        // saveLoginInfo(JSON.stringify(values.save_login_info));
+      // saveLoginInfo(JSON.stringify(values.save_login_info));
       // // reset('LoginForm');
-      const user_id = await AsyncStorage.getItem('user_id');
-      ToastAndroid.show(`Welocome,[${user_id}]!`, ToastAndroid.SHORT);
+      // const user_id = await AsyncStorage.getItem('user_id');
+      // ToastAndroid.show(`Welocome,[${user_id}]!`, ToastAndroid.SHORT);
     } catch (error) {
       alert(error);
       // Login failed
@@ -123,26 +132,21 @@ function LoginScreen(props) {
   };
 
   const btncheck = () => {
-    // setbtnCheck(!btn_check);
     saveLogin(!ischecked);
-    // setbtnCheck(!btn_check);
   };
 
-  // const loadData = async () => {
-  //   alert('hello');
-  //   if (ischecked) {
-  //     const user_id = await AsyncStorage.getItem('user_id');
-  //     console.log('user_id', user_id);
-  //     dispatch(change('LoginForm', 'user_id', user_id));
-  //   } else {
-  //     const user_id = await AsyncStorage.getItem('user_id');
-  //     console.log('initial user_id', user_id);
-  //   }
-  // };
+  const loadData = async () => {
+    if (ischecked) {
+      const user_id = await AsyncStorage.getItem('user_id');
+      dispatch(change('LoginForm', 'user_id', user_id));
+    } else {
+      await AsyncStorage.removeItem('user_id');
+    }
+  };
 
-  // useEffect(() => {
-  //   loadData();
-  // }, [ischecked]);
+  useEffect(() => {
+    loadData();
+  }, [ischecked]);
 
   return (
     <>
@@ -249,7 +253,7 @@ function LoginScreen(props) {
                   </Button>
                 </View>
 
-                {/* <View
+                <View
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -259,9 +263,11 @@ function LoginScreen(props) {
                   <Checkbox
                     status={ischecked ? 'checked' : 'unchecked'}
                     onPress={() => btncheck()}
+                    color="#fff" // Customize the checked color here
+                    uncheckedColor="#fff" // Customize the unchecked color here
                   />
                   <Text style={{color: '#fff'}}>Save login Information</Text>
-                // </View> */}
+                </View>
               </View>
             </View>
 

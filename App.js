@@ -10,6 +10,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './src/screens/SplashScreen';
 import store from './src/redux/store';
 import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
+import LoginScreen from './src/screens/Login/LoginScreen';
+import SettingScreen from './src/screens/Setting/SettingScreen';
 import {
   StyleSheet,
   View,
@@ -19,12 +21,13 @@ import {
   PermissionsAndroid,
 } from 'react-native';
 import RNFS from 'react-native-fs';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 export default function App() {
   const [show_splash, showSplash] = useState(true);
   const [userID, setUserID] = React.useState(null);
   const [paths, setPaths] = useState([]);
-
+  const Stack = createNativeStackNavigator();
   const sketchRef = useRef();
 
   const saveUserID = async user_id => {
@@ -109,7 +112,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
+      {/* <NavigationContainer>
         {show_splash ? (
           <SplashScreen />
         ) : userID == null ? (
@@ -121,17 +124,38 @@ export default function App() {
             <RootNavigation />
           </AuthContext.Provider>
         )}
-      </NavigationContainer>
+      </NavigationContainer> */}
 
-      {/* <NavigationContainer>
+      <NavigationContainer>
         {show_splash ? (
           <SplashScreen />
         ) : (
-          <AuthContext.Provider value={{saveUserID, userID}}>
-            <RootNavigation />
-          </AuthContext.Provider>
+          <Stack.Navigator initialRouteName="Login">
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Setting"
+              component={SettingScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Splash"
+              component={SplashScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Home"
+              component={RootNavigation}
+              options={{
+                headerShown: false,
+              }}
+            />
+          </Stack.Navigator>
         )}
-      </NavigationContainer> */}
+      </NavigationContainer>
     </Provider>
   );
 }

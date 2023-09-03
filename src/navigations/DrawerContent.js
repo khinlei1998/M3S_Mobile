@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function DrawerContent(props) {
   const navigation = useNavigation();
-  const { removeUserID } = useContext(AuthContext);
+  // const { removeUserID } = useContext(AuthContext);
   const { t } = useTranslation();
   const handleDrawerItemPress = (screenName, title) => {
     navigation.navigate(t(screenName));
