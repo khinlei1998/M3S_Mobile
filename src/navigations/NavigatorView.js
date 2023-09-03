@@ -32,7 +32,7 @@ import Edit_Reloan_Form from '../screens/Edit_Relaon/Edit_Reloan_Form';
 import Survey from '../screens/Survey/Survey';
 import Passport from '../screens/Passport/Passport';
 import {useTranslation} from 'react-i18next';
-
+import LoginScreen from '../screens/Login/LoginScreen';
 const Stack = createNativeStackNavigator();
 
 export default function NavigatorView(props) {
@@ -50,14 +50,29 @@ export default function NavigatorView(props) {
     );
   };
   const StackNavigationData = [
+    // {
+    //   name: t('Login'),
+    //   component: LoginScreen,
+    //   headerShown: false,
+    //   // headerLeft: headerLeftComponent,
+    //   // headerTitleStyle: {
+    //   //   color: '#FFF',
+    //   //   fontSize: 18,
+    //   // },
+    //   options: {
+    //     headerShown: false, // Hide the header
+    //     drawerLabel: () => null, // Hide the drawer label
+    //   },
+    // },
     {
-      name:t('Home'),
+      name: t('Home'),
       component: Home,
       headerTitleStyle: {
         color: '#FFF',
         fontSize: 18,
       },
     },
+
     {
       name: t('Synchronization'),
       component: Synchronization_Screen,
@@ -67,7 +82,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('ReLoan'),
+      name: t('ReLoan'),
       component: Reloan_Form,
       headerTitleStyle: {
         color: '#FFF',
@@ -75,7 +90,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Passport'),
+      name: t('Passport'),
       component: Passport,
       headerTitleStyle: {
         color: '#FFF',
@@ -83,7 +98,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Edit_Exceptional_Approvel_Form'),
+      name: t('Edit_Exceptional_Approvel_Form'),
       title: 'Exceptional Approval ',
       component: Edit_Exceptional_Approvel_Form,
       headerTitleStyle: {
@@ -92,7 +107,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Survey'),
+      name: t('Survey'),
       component: Survey,
       headerTitleStyle: {
         color: '#FFF',
@@ -100,7 +115,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Edit_Reloan'),
+      name: t('Edit_Reloan'),
       title: 'Reloan',
       component: Edit_Reloan_Form,
       headerTitleStyle: {
@@ -109,7 +124,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Cover Loan'),
+      name: t('Cover Loan'),
       component: Cover_Loan_Form,
       headerTitleStyle: {
         color: '#FFF',
@@ -117,7 +132,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Edit Group Loan'),
+      name: t('Edit Group Loan'),
       title: 'Group Loan',
       component: Edit_Group_Loan_Form,
       headerTitleStyle: {
@@ -126,7 +141,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Edit_Cover_Loan'),
+      name: t('Edit_Cover_Loan'),
       title: 'Cover Loan',
       component: Edit_Cover_Loan_Form,
       headerTitleStyle: {
@@ -135,7 +150,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Group Loan'),
+      name: t('Group Loan'),
       component: Group_Loan_Form,
       headerTitleStyle: {
         color: '#FFF',
@@ -144,7 +159,7 @@ export default function NavigatorView(props) {
     },
 
     {
-      name:t('Customer Management'),
+      name: t('Customer Management'),
       component: Customer_Management,
       headerTitleStyle: {
         color: '#FFF',
@@ -160,7 +175,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Edit_Emp_Info'),
+      name: t('Edit_Emp_Info'),
       component: Edit_Emp_Info,
       title: 'Customer Management',
       // headerLeft: headerLeftComponent,
@@ -170,7 +185,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Individual_loan'),
+      name: t('Individual_loan'),
       title: 'Individual Loan Application',
       component: Individual_Loan,
       // headerLeft: headerLeftComponent,
@@ -181,7 +196,7 @@ export default function NavigatorView(props) {
     },
 
     {
-      name:  t('Edit_Individual_Loan'),
+      name: t('Edit_Individual_Loan'),
       component: Edit_Individual_Loan,
       title: 'Individual Loan Application',
       // headerLeft: headerLeftComponent,
@@ -191,7 +206,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Indi_Staff_loan'),
+      name: t('Indi_Staff_loan'),
       component: Individual_Staff_loan_Info,
       title: 'Individual Staff Loan Application',
       // headerLeft: headerLeftComponent,
@@ -201,7 +216,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Exceptional_Approvel_Form'),
+      name: t('Exceptional_Approvel_Form'),
       component: Exceptional_Approvel_Form,
       title: 'Exceptional Approval',
       // headerLeft: headerLeftComponent,
@@ -211,7 +226,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Borrower Map'),
+      name: t('Borrower Map'),
       component: Show_Borrower_Map,
       // headerLeft: headerLeftComponent,
       headerTitleStyle: {
@@ -220,7 +235,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Edit Borrower Map'),
+      name: t('Edit Borrower Map'),
       title: 'Borrower Map',
       component: Edit_Show_Borrower_Map,
       // headerLeft: headerLeftComponent,
@@ -230,7 +245,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Edit_Individual_Staff_loan_Info'),
+      name: t('Edit_Individual_Staff_loan_Info'),
       component: Edit_Individual_Staff_loan_Info,
       title: 'Individual Staff Loan Application',
       // headerLeft: headerLeftComponent,
@@ -240,7 +255,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Edit Guarantor'),
+      name: t('Edit Guarantor'),
       component: Edit_Guarantor_Form,
       title: 'Guarantor',
       // headerLeft: headerLeftComponent,
@@ -250,7 +265,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Area Evaluation'),
+      name: t('Area Evaluation'),
       component: Area_Evaluation_Form,
       // headerLeft: headerLeftComponent,
       headerTitleStyle: {
@@ -259,7 +274,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Edit Area Evaluation'),
+      name: t('Edit Area Evaluation'),
       title: 'Area Evaluation',
       component: Edit_Area_Evaluation_Form,
       // headerLeft: headerLeftComponent,
@@ -269,7 +284,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Edit Relation'),
+      name: t('Edit Relation'),
       title: 'Relation',
       component: EditRelation_Form,
       // headerLeft: headerLeftComponent,
@@ -279,7 +294,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Guarantor'),
+      name: t('Guarantor'),
       component: Guarantor_Form,
       // headerLeft: headerLeftComponent,
       headerTitleStyle: {
@@ -288,7 +303,7 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name:  t('Relation Form'),
+      name: t('Relation Form'),
       component: Relation_Form,
       // headerLeft: headerLeftComponent,
       headerTitleStyle: {
@@ -298,7 +313,7 @@ export default function NavigatorView(props) {
     },
 
     {
-      name:  t('Evidence'),
+      name: t('Evidence'),
       component: Evidence,
       // headerLeft: headerLeftComponent,
       headerTitleStyle: {
@@ -306,6 +321,7 @@ export default function NavigatorView(props) {
         fontSize: 18,
       },
     },
+    //login
   ];
   const renderRightIcon = () => {
     // Customize this function to render the right icon as you wish
@@ -323,8 +339,10 @@ export default function NavigatorView(props) {
           name={item.name}
           component={item.component}
           options={{
+            // drawerLabel: () => item.name == 'Login' && null,
+            // headerShown: item.name == 'Login' ? false : true,
             headerTitleAlign: 'center',
-            title:item.title,
+            title: item.title,
             headerTitle: item.title, // Use headerTitle instead of title
 
             headerLeft: item.headerLeft || headerLeftComponentMenu,

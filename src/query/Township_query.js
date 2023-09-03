@@ -16,12 +16,12 @@ export function get_Township(tokensource) {
               cancelToken: tokensource.token,
             },
           )
-          .then(({data}) => {
-            if (data.length > 0) {
+          .then((response) => {
+            if (response.data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
-                for (let i = 0; i < data.length; i += batchSize) {
-                  const records = data.slice(i, i + batchSize);
+                for (let i = 0; i < response.data.length; i += batchSize) {
+                  const records = response.data.slice(i, i + batchSize);
                   records.forEach(item => {
                     tx.executeSql(
                       'INSERT INTO Township (ts_code,ts_name,city_code,city_name) VALUES (?,?,?,?)',
@@ -34,7 +34,8 @@ export function get_Township(tokensource) {
                       (tx, results) => {
                         insertedRows += results.rowsAffected;
                         if (insertedRows === data.length) {
-                          resolve('success');
+                          // resolve('success');
+                          resolve({response:'success',sizeInBytes})
                           console.log(
                             'All Township records inserted successfully',
                           );

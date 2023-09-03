@@ -16,12 +16,12 @@ export function get_Ward(tokensource) {
             cancelToken: tokensource.token,
           })
 
-          .then(({data}) => {
-            if (data.length > 0) {
+          .then((response) => {
+            if (response.data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
-                for (let i = 0; i < data.length; i += batchSize) {
-                  const records = data.slice(i, i + batchSize);
+                for (let i = 0; i < response.data.length; i += batchSize) {
+                  const records = response.data.slice(i, i + batchSize);
                   records.forEach(item => {
                     tx.executeSql(
                       'INSERT INTO Ward (ward_code,ward_name,ts_code,ts_name) VALUES (?,?,?,?)',
@@ -32,10 +32,10 @@ export function get_Ward(tokensource) {
                         item.townshipName,
                       ],
                       (tx, results) => {
-                        console.log('ward resulr');
                         insertedRows += results.rowsAffected;
                         if (insertedRows === data.length) {
-                          resolve('success');
+                          // resolve('success');
+                          resolve({response:'success',sizeInBytes})
                           console.log('All Ward records inserted successfully');
                         }
                       },

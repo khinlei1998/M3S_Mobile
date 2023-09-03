@@ -4,7 +4,6 @@ import {connection_name} from '../common';
 import {createCancelTokenSource} from '../components/CancelUtils';
 
 export function getEemployee_info(tokensource) {
-  console.log('call emp');
   return new Promise(async (resolve, reject) => {
     let ip = await AsyncStorage.getItem('ip');
     let port = await AsyncStorage.getItem('port');
@@ -18,13 +17,13 @@ export function getEemployee_info(tokensource) {
               cancelToken: tokensource.token,
             },
           )
-          .then(({data}) => {
-            console.log('customer data',data);
-            if (data.length > 0) {
+          .then(response => {
+            const sizeInBytes = response.headers['content-length'] || '0';
+            if (response.data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
-                for (let i = 0; i < data.length; i += batchSize) {
-                  const records = data.slice(i, i + batchSize);
+                for (let i = 0; i < response.data.length; i += batchSize) {
+                  const records = response.data.slice(i, i + batchSize);
                   records.forEach(item => {
                     tx.executeSql(
                       'INSERT INTO Employee (serial_no,employee_no,employee_name,employee_local_name,user_id,password,user_kind,resident_rgst_id,entry_date,tel_no,cell_phone_no,employee_type_code,branch_code,branch_name,local_branch_name,department_code,department_name,department_local_name,team_code,team_name,team_local_name,position_title_code,position_title_nm,position_title_lcl_nm,err_msg) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
@@ -58,7 +57,8 @@ export function getEemployee_info(tokensource) {
                       (tx, results) => {
                         insertedRows += results.rowsAffected;
                         if (insertedRows === data.length) {
-                          resolve('success');
+                          // resolve('success');
+                          resolve({response:'success',sizeInBytes})
                           console.log(
                             'All Employee records inserted successfully',
                           );

@@ -1173,7 +1173,6 @@ function Individual_Loan(props) {
           product_type: p_type ? p_type : 10,
           // borrower_map: map,
         });
-        console.log('loan_data', loan_data);
         await storeLoanData(loan_data).then(result => {
           if (result == 'success') {
             dispatch(reset('Individual_Loan_Form'));

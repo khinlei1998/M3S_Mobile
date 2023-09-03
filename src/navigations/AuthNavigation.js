@@ -113,9 +113,9 @@ export default function AuthNavigation(props) {
         options={{ headerShown: false }}
       />
 
-     
 
-    
+
+
       <Stack.Screen
         name="Test"
         component={Test}

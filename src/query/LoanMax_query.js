@@ -2,6 +2,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../common';
 import {connection_name} from '../common';
+
 export function getLoanMax(tokensource) {
   return new Promise(async (resolve, reject) => {
     let ip = await AsyncStorage.getItem('ip');
@@ -9,7 +10,6 @@ export function getLoanMax(tokensource) {
     const batchSize = 100;
     global.db.transaction(tx => {
       tx.executeSql('DELETE FROM Application_limit', [], (tx, results) => {
-        console.log('Delete success');
         axios
           .get(
             `${connection_name}://${ip}:${port}/skylark-m3s/api/maxInfo.m3s`,
@@ -17,12 +17,13 @@ export function getLoanMax(tokensource) {
               cancelToken: tokensource.token,
             },
           )
-          .then(({data}) => {
-            if (data.length > 0) {
+          .then((response) => {
+            const sizeInBytes = response.headers['content-length'] || '0';
+            if (response.data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
-                for (let i = 0; i < data.length; i += batchSize) {
-                  const records = data.slice(i, i + batchSize);
+                for (let i = 0; i < response.data.length; i += batchSize) {
+                  const records = response.data.slice(i, i + batchSize);
                   records.forEach(item => {
                     tx.executeSql(
                       'INSERT INTO Application_limit (serial_no,organization_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,status_code,product_type,loan_type,loan_cycle,calculate_type,start_month_num,end_month_num,loan_limit_amount,loan_limit_rate,err_msg) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
@@ -49,7 +50,8 @@ export function getLoanMax(tokensource) {
                       (tx, results) => {
                         insertedRows += results.rowsAffected;
                         if (insertedRows === data.length) {
-                          resolve('success');
+                          // resolve('success');
+                          resolve({response:'success',sizeInBytes})
                           console.log(
                             'All loan max records inserted successfully',
                           );

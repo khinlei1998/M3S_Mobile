@@ -17,13 +17,13 @@ export function getSurvey_Item(tokensource) {
               cancelToken: tokensource.token,
             },
           )
-          .then(({data}) => {
-            console.log('survey data', data.length);
-            if (data.length > 0) {
+          .then((response) => {
+            const sizeInBytes = response.headers['content-length'] || '0';
+            if (response.data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
-                for (let i = 0; i < data.length; i += batchSize) {
-                  const records = data.slice(i, i + batchSize);
+                for (let i = 0; i < response.data.length; i += batchSize) {
+                  const records = response.data.slice(i, i + batchSize);
                   records.forEach(item => {
                     tx.executeSql(
                       'INSERT INTO survey_item (serial_no,survey_group_no,survey_item_no,survey_item_content,survey_item_content_eng,err_msg) VALUES (?,?,?,?,?,?)',
@@ -38,7 +38,9 @@ export function getSurvey_Item(tokensource) {
                       (tx, results) => {
                         insertedRows += results.rowsAffected;
                         if (insertedRows === data.length) {
-                          resolve('success');
+                          // resolve('success');
+                          resolve({response:'success',sizeInBytes})
+
                           console.log(
                             'All Survey records inserted successfully',
                           );

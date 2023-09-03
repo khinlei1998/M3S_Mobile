@@ -1,21 +1,16 @@
 import React from 'react';
-import {
-  createDrawerNavigator,
-} from '@react-navigation/drawer';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import NavigatorView from './NavigatorView';
 import DrawerContent from './DrawerContent';
+import LoginScreen from '../screens/Login/LoginScreen';
 const Drawer = createDrawerNavigator();
 
 export default function RootNavigation(props) {
   return (
-
-
     <Drawer.Navigator
-
       drawerPosition="right"
-      drawerHideStatusBarOnOpen='true'
+      drawerHideStatusBarOnOpen="true"
       drawerStyle={{
-
         backgroundColor: '#273050',
         activeTintColor: 'white',
         inactiveTintColor: 'white',
@@ -25,7 +20,7 @@ export default function RootNavigation(props) {
           backgroundColor: '#273050',
           activeTintColor: 'white',
           inactiveTintColor: 'white',
-          width:350
+          width: 350,
         },
         headerTintColor: '#fff',
         headerShown: false,
@@ -38,8 +33,7 @@ export default function RootNavigation(props) {
         },
         headerTitleAlign: 'center',
       }}
-      drawerContent={(props) => <DrawerContent {...props} />}>
-
+      drawerContent={props => <DrawerContent {...props} />}>
       <Drawer.Screen name="Homes" component={NavigatorView} />
     </Drawer.Navigator>
   );

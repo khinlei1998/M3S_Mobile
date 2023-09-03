@@ -82,8 +82,7 @@ export default function App() {
       location: 'Library',
       readOnly: false,
     },
-    success => {
-    },
+    success => {},
     error => {
       console.log('Error', error);
     },
@@ -92,7 +91,7 @@ export default function App() {
   useEffect(() => {
     const saveIp = async user_id => {
       try {
-        await AsyncStorage.setItem('ip', 'c579-103-231-92-81.ngrok-free.app');
+        await AsyncStorage.setItem('ip', 'd79b-103-116-58-130.ngrok-free.app');
         await AsyncStorage.setItem('port', '80');
       } catch (e) {
         console.log('error ::', e);
@@ -123,6 +122,16 @@ export default function App() {
           </AuthContext.Provider>
         )}
       </NavigationContainer>
+
+      {/* <NavigationContainer>
+        {show_splash ? (
+          <SplashScreen />
+        ) : (
+          <AuthContext.Provider value={{saveUserID, userID}}>
+            <RootNavigation />
+          </AuthContext.Provider>
+        )}
+      </NavigationContainer> */}
     </Provider>
   );
 }

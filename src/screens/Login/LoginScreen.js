@@ -10,9 +10,8 @@ import {
 import React, {useContext, useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
-import CheckBoxFile from '../../components/CheckBoxFile';
-import {Field, reduxForm, setInitialValues, initialize} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import {Field, reduxForm, change} from 'redux-form';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import DropDownPicker from '../../components/DropDownPicker';
 import SettingScreen from '../Setting/SettingScreen';
 import {languages} from '../../common';
@@ -25,14 +24,15 @@ import validate from './Validate';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {sha256} from 'react-native-sha256';
 import {encode} from 'base-64';
-import Spinner from 'react-native-loading-spinner-overlay';
 import {useTranslation} from 'react-i18next';
-
+import SingleCheckBox from '../../components/SingleCheckBox';
 import {
   createCancelTokenSource,
   cancelRequest,
 } from '../../components/CancelUtils';
 import i18next from '../../../services/i18next';
+import {saveLogin} from '../../redux/EmployeeReducer';
+import {Checkbox} from 'react-native-paper';
 let token;
 function LoginScreen(props) {
   const {t} = useTranslation();
@@ -42,13 +42,15 @@ function LoginScreen(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const netInfo = useNetInfo();
-  const {navigation, handleSubmit} = props;
+  const {navigation, handleSubmit, saveLogin, ischecked} = props;
   const [show_modal, setShowModal] = useState(false);
   const {saveUserID, userID} = useContext(AuthContext);
   const [modalVisible, setModalVisible] = React.useState(false);
   const [prefix, setPrefix] = useState('');
+  const [btn_check, setbtnCheck] = useState(false);
   const hideModal = () => setModalVisible(false);
-
+  //   const isChecked = useSelector((state) => state.checkbox.isChecked);
+  // console.log('isChecked',isChecked);
   const handleLngChange = value => {
     setPrefix(value); //show selected value
     i18next.changeLanguage(value);
@@ -75,7 +77,7 @@ function LoginScreen(props) {
 
       await saveUserID(user.user_id);
       // values.save_login_info &&
-      //   saveLoginInfo(JSON.stringify(values.save_login_info));
+        // saveLoginInfo(JSON.stringify(values.save_login_info));
       // // reset('LoginForm');
       const user_id = await AsyncStorage.getItem('user_id');
       ToastAndroid.show(`Welocome,[${user_id}]!`, ToastAndroid.SHORT);
@@ -86,7 +88,6 @@ function LoginScreen(props) {
     }
   };
 
-  
   const btnSync = async () => {
     if (!netInfo.isConnected) {
       alert('Internet Connection is need');
@@ -120,6 +121,28 @@ function LoginScreen(props) {
   const hidePgModal = () => {
     setShowModal(false);
   };
+
+  const btncheck = () => {
+    // setbtnCheck(!btn_check);
+    saveLogin(!ischecked);
+    // setbtnCheck(!btn_check);
+  };
+
+  // const loadData = async () => {
+  //   alert('hello');
+  //   if (ischecked) {
+  //     const user_id = await AsyncStorage.getItem('user_id');
+  //     console.log('user_id', user_id);
+  //     dispatch(change('LoginForm', 'user_id', user_id));
+  //   } else {
+  //     const user_id = await AsyncStorage.getItem('user_id');
+  //     console.log('initial user_id', user_id);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   loadData();
+  // }, [ischecked]);
 
   return (
     <>
@@ -225,6 +248,20 @@ function LoginScreen(props) {
                     Login
                   </Button>
                 </View>
+
+                {/* <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: 10,
+                  }}>
+                  <Checkbox
+                    status={ischecked ? 'checked' : 'unchecked'}
+                    onPress={() => btncheck()}
+                  />
+                  <Text style={{color: '#fff'}}>Save login Information</Text>
+                // </View> */}
               </View>
             </View>
 
@@ -282,8 +319,12 @@ function LoginScreen(props) {
     </>
   );
 }
-
+function mapStateToProps(state) {
+  return {
+    ischecked: state.employees.save_login,
+  };
+}
 export default reduxForm({
   form: 'LoginForm',
   validate,
-})(connect(null)(LoginScreen));
+})(connect(mapStateToProps, {saveLogin})(LoginScreen));

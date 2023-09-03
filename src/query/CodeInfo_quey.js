@@ -21,12 +21,13 @@ export function getCodeInfo(tokensource) {
           .get(`${connection_name}://${ip}:${port}/skylark-m3s/api/codes.m3s`, {
             cancelToken: tokensource.token,
           })
-          .then(({data}) => {
-            if (data.length > 0) {
+          .then((response) => {
+            const sizeInBytes = response.headers['content-length'] || '0';
+            if (response.data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
-                for (let i = 0; i < data.length; i += batchSize) {
-                  const records = data.slice(i, i + batchSize);
+                for (let i = 0; i < response.data.length; i += batchSize) {
+                  const records = response.data.slice(i, i + batchSize);
                   records.forEach(item => {
                     tx.executeSql(
                       'INSERT INTO Code (serial_no,category_id,category_desc,language_code,code_value,code_short_desc,code_desc,sort_seq) VALUES (?,?,?,?,?,?,?,?)',
@@ -42,8 +43,9 @@ export function getCodeInfo(tokensource) {
                       ],
                       (tx, results) => {
                         insertedRows += results.rowsAffected;
-                        if (insertedRows === data.length) {
-                          resolve('success');
+                        if (insertedRows === response.data.length) {
+                          // resolve('success');
+                          resolve({response:'success',sizeInBytes})
                           console.log(
                             'All code info records inserted successfully',
                           );

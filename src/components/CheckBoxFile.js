@@ -2,7 +2,6 @@ import { View, Text } from 'react-native'
 import React, { useState, useLayoutEffect } from 'react'
 import { Checkbox } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
-
 export default function CheckBoxFile(props) {
     const { old_value, data, testcheck, input } = props
     const [checked, setChecked] = useState([]);

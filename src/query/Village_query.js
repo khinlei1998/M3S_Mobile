@@ -1,7 +1,6 @@
 import axios from 'axios';
-import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { connection_name } from '../common';
+import {connection_name} from '../common';
 export function get_Village(tokensource) {
   return new Promise(async (resolve, reject) => {
     let ip = await AsyncStorage.getItem('ip');
@@ -16,14 +15,13 @@ export function get_Village(tokensource) {
               cancelToken: tokensource.token,
             },
           )
-          .then(({ data }) => {
-            if (data.length > 0) {
+          .then((response) => {
+            if (response.data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
-                for (let i = 0; i < data.length; i += batchSize) {
-                  const records = data.slice(i, i + batchSize);
+                for (let i = 0; i < response.data.length; i += batchSize) {
+                  const records = response.data.slice(i, i + batchSize);
                   records.forEach(item => {
-                    console.log('item', item);
                     tx.executeSql(
                       'INSERT INTO Village (village_code,village_name,ts_code,ts_name) VALUES (?,?,?,?)',
                       [
@@ -35,7 +33,8 @@ export function get_Village(tokensource) {
                       (tx, results) => {
                         insertedRows += results.rowsAffected;
                         if (insertedRows === data.length) {
-                          resolve('success');
+                          // resolve('success');
+                          resolve({response:'success',sizeInBytes})
                           console.log(
                             'All Village records inserted successfully',
                           );

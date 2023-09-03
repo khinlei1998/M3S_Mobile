@@ -112,7 +112,8 @@ export default function DrawerContent(props) {
             icon={() => <Icon name="log-out" size={20} color="#fff" />} // Set the icon to an Ionicons icon
             label={t("Logout")}
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
-            onPress={() => removeUserID()}
+            // onPress={() => removeUserID()}
+            onPress={() => props.navigation.navigate('Login')}
           />
         </SafeAreaView>
       </DrawerContentScrollView>

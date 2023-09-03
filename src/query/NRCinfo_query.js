@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {BASE_URL} from '../common';
 import {connection_name} from '../common';
+
 export const getNRC_info = tokensource => {
   return new Promise(async (resolve, reject) => {
     let ip = await AsyncStorage.getItem('ip');
@@ -16,10 +16,12 @@ export const getNRC_info = tokensource => {
               cancelToken: tokensource.token,
             },
           )
-          .then(({data}) => {
-            if (data.length > 0) {
+          .then((response) => {
+            const sizeInBytes = response.headers['content-length'] || '0';
+
+            if (response.data.length > 0) {
               global.db.transaction(tx => {
-                data.forEach(item => {
+                response.data.forEach(item => {
                   tx.executeSql(
                     'INSERT INTO Nrc_prefix (serial_no,create_datetime,create_user_id,update_datetime,update_user_id,status_code,state_code,state_name,township_name,nrc_prefix_code,err_msg) VALUES (?,?,?,?,?,?,?,?,?,?,?)',
                     [
@@ -37,7 +39,8 @@ export const getNRC_info = tokensource => {
                     ],
                     (tx, results) => {
                       // If insert query succeeds, resolve the promise
-                      resolve('success');
+                      // resolve('success');
+                      resolve({response:'success',sizeInBytes})
                     },
                     error => {
                       console.log('query ', error);
@@ -50,6 +53,7 @@ export const getNRC_info = tokensource => {
                 });
               });
             }
+
           })
           .catch(error => {
             if (axios.isCancel(error)) {
