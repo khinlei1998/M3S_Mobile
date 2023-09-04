@@ -167,7 +167,7 @@ export default function Sync_Download_Screen(props) {
   const handleSelectAllToggle = () => {
     const updatedSelectAll = !selectAll;
     setSelectAll(updatedSelectAll);
-    const updatedData = che.map(item => ({
+    const updatedData = download_data.map(item => ({
       ...item,
       checked: updatedSelectAll,
     }));

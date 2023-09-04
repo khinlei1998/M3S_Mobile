@@ -22,7 +22,7 @@ import {
   Portal,
   TextInput,
 } from 'react-native-paper';
-import {reduxForm, Field, change, formValueSelector, reset} from 'redux-form';
+import {reduxForm, Field, change, reset} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';

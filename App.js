@@ -1,10 +1,10 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import React, { useState, useEffect, useRef } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 import RootNavigation from './src/navigations/RootNavigation';
 import AuthNavigation from './src/navigations/AuthNavigation';
 // import {store} from './src/redux/store';
-import {Provider} from 'react-redux';
-import {AuthContext} from './src/components/context';
+import { Provider } from 'react-redux';
+import { AuthContext } from './src/components/context';
 import SQLite from 'react-native-sqlite-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './src/screens/SplashScreen';
@@ -17,8 +17,8 @@ import {
   PermissionsAndroid,
 } from 'react-native';
 import RNFS from 'react-native-fs';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Customer_Management from './src/screens/CustomerManagement/Customer_Management';
 export default function App() {
   const [show_splash, showSplash] = useState(true);
   const [userID, setUserID] = React.useState(null);
@@ -81,7 +81,7 @@ export default function App() {
       location: 'Library',
       readOnly: false,
     },
-    success => {},
+    success => { },
     error => {
       console.log('Error', error);
     },
@@ -126,21 +126,27 @@ export default function App() {
         {show_splash ? (
           <SplashScreen />
         ) : (
-          <Stack.Navigator initialRouteName="Login">
+          <Stack.Navigator >
+            {/* <Stack.Navigator initialRouteName="Login"> */}
+            {/* <Stack.Screen
+              name="Customer_Management"
+              component={Customer_Management}
+              options={{ headerShown: false }}
+            /> */}
             <Stack.Screen
               name="Login"
               component={LoginScreen}
-              options={{headerShown: false}}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="Setting"
               component={SettingScreen}
-              options={{headerShown: false}}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="Splash"
               component={SplashScreen}
-              options={{headerShown: false}}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="Home"

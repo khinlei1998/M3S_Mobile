@@ -1,10 +1,10 @@
-import {View, ActivityIndicator} from 'react-native';
+import {View, } from 'react-native';
 import React, {useState} from 'react';
 import {style} from '../style/Customer_Mang_style';
 import {operations} from '../common';
 import {RadioButton, Button} from 'react-native-paper';
 export default function Create_Operation(props) {
-  const {handleSubmit, btn_loading} = props;
+  const {handleSubmit,} = props;
   const [show_operation, setOperation] = useState('1');
 
   return (

@@ -1,35 +1,31 @@
-import { View, Text, ActivityIndicator, FlatList } from 'react-native'
+import { View, Text, FlatList, ActivityIndicator } from 'react-native'
 import React from 'react'
-import { Provider, Portal, Modal, TextInput, Button } from 'react-native-paper'
+import { Modal, Provider, Portal, TextInput, Button } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/Feather';
 import { Picker } from '@react-native-picker/picker';
-import { city_code } from '../common';
+import { emp_filter_item } from '../common';
 import { useTranslation } from 'react-i18next';
 
-
-export default function City_Modal(props) {
-
-    const { t } = useTranslation();
+export default function Employee_Modal(props) {
+    const { all_emp, loading, btnCusSearch, modalVisible, hideModal, selectedItemValue, handleItemValueChange,
+        emp_text, onChangeEmpText,item } = props
     const containerStyle = {
         backgroundColor: '#e8e8e8',
         width: '85%',
         alignSelf: 'center',
     };
-
-    const { selectedCityItemValue, btnCitySearch, all_city, modal_city_visible,
-        hideCityModal, handleCityItemValueChange, city_text, onChangeCityText, loading, city_items } = props
-
+    const { t } = useTranslation();
     return (
         <Provider>
             <Portal>
                 <Modal
                     dismissable={false}
-                    visible={modal_city_visible}
-                    onDismiss={hideCityModal}
+                    visible={modalVisible}
+                    onDismiss={hideModal}
                     contentContainerStyle={containerStyle}>
                     <View
                         style={{ backgroundColor: '#232D57', padding: 25 }}
-                        onStartShouldSetResponder={() => hideCityModal()}>
+                        onStartShouldSetResponder={() => hideModal()}>
                         <Icon
                             name="x-circle"
                             size={25}
@@ -55,12 +51,12 @@ export default function City_Modal(props) {
                                 </Text>
 
                                 <Picker
-                                    selectedValue={selectedCityItemValue}
-                                    onValueChange={handleCityItemValueChange}
+                                    selectedValue={selectedItemValue}
+                                    onValueChange={handleItemValueChange}
                                     style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
                                     mode="dropdown">
-                                    {city_code.length > 0 &&
-                                        city_code.map(val => (
+                                    {emp_filter_item.length > 0 &&
+                                        emp_filter_item.map(val => (
                                             <Picker.Item
                                                 label={val.label}
                                                 value={val.value}
@@ -79,12 +75,12 @@ export default function City_Modal(props) {
                                         borderColor: '#303030',
                                         borderWidth: 0.5,
                                     }}
-                                    value={city_text}
-                                    onChangeText={onChangeCityText}
+                                    value={emp_text}
+                                    onChangeText={onChangeEmpText}
                                     right={
                                         <TextInput.Icon
                                             icon={'magnify'}
-                                            onPress={() => btnCitySearch()}
+                                            onPress={() => btnCusSearch()}
                                         />
                                     }
                                 />
@@ -101,7 +97,7 @@ export default function City_Modal(props) {
                             <Text
                                 style={{
                                     padding: 10,
-                                    flex: 0.5,
+                                    flex: 1,
                                     fontWeight: 'bold',
                                 }}>
                                 #
@@ -113,7 +109,7 @@ export default function City_Modal(props) {
                                     padding: 10,
                                     fontWeight: 'bold',
                                 }}>
-                                City Code
+                                {t('Employee No')}
                             </Text>
                             <Text
                                 style={{
@@ -122,24 +118,32 @@ export default function City_Modal(props) {
                                     padding: 10,
                                     fontWeight: 'bold',
                                 }}>
-                                City Name
+                                {t('Employee Name')}
                             </Text>
+                            <Text
+                                style={{
+                                    flex: 1,
 
+                                    padding: 10,
+                                    fontWeight: 'bold',
+                                }}>
+                                {t('Positon Name')}
+                            </Text>
                         </View>
                         {loading ? ( // Show ActivityIndicator while loading is true
                             <ActivityIndicator size="large" color="#636Dc6" />
                         ) : (
                             <>
                                 <FlatList
-                                    data={all_city}
-                                    renderItem={city_items}
+                                    data={all_emp}
+                                    renderItem={item}
                                     keyExtractor={(item, index) => index.toString()}
                                 />
 
-
-                                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                <View
+                                    style={{ flexDirection: 'row', justifyContent: 'center' }}>
                                     <Button
-                                        onPress={() => hideCityModal()}
+                                        onPress={() => hideModal()}
                                         mode="contained"
                                         buttonColor={'#21316C'}
                                         style={{
@@ -148,7 +152,7 @@ export default function City_Modal(props) {
                                             marginTop: 10,
                                             color: 'black',
                                             marginLeft: 5,
-                                            height:44
+                                            height: 44
                                         }}>
                                         {t("OK")}
                                     </Button>

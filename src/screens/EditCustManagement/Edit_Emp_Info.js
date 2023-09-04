@@ -4,7 +4,6 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   ScrollView,
-  FlatList,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Field, reduxForm, change, reset, formValueSelector } from 'redux-form';
@@ -12,23 +11,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { connect, useDispatch } from 'react-redux';
 import {
   RadioButton,
-  Button,
-  Modal,
-  Provider,
-  Portal,
   List,
-  TextInput,
 } from 'react-native-paper';
 import DividerLine from '../../components/DividerLine';
-import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
 import { fetchNRCinfo } from '../../query/NRCinfo_query';
 import { salary_grade } from '../../common';
 import { style } from '../../style/Customer_Mang_style';
 import { setCusFormInitialValues } from '../../redux/CustomerReducer';
-import { emp_filter_item, village_code } from '../../common';
-import { Picker } from '@react-native-picker/picker';
 import { filterEmp } from '../../query/Employee_query';
 import { addEmpFilter } from '../../redux/EmployeeReducer';
 import { operations } from '../../common';
@@ -67,7 +58,8 @@ import { fetchVillageName } from '../../query/Village_query';
 import { fetchWardName } from '../../query/Ward_query';
 import { fetchLocationName } from '../../query/CodeInfo_quey';
 import { useTranslation } from 'react-i18next';
-
+import Employee_Modal from '../../components/Employee_Modal';
+import Update_Operation from '../../components/Update_Operation';
 function Edit_Emp_Info(props) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -331,6 +323,15 @@ function Edit_Emp_Info(props) {
     setSelectedCityValue(filtered_cus_data.city_code);
     setSelectedTspValue(filtered_cus_data.ts_code);
   }, []);
+
+  useEffect(() => {
+    loadData();
+    return () => {
+      setOperation('2');
+      setUpdateStatus(false);
+    };
+  }, []);
+
 
   const btnSelectCity = item => {
     setSelectedCityValue(item.code_value);
@@ -646,13 +647,6 @@ function Edit_Emp_Info(props) {
     }
   };
 
-  useEffect(() => {
-    loadData();
-    return () => {
-      setOperation('2');
-      setUpdateStatus(false);
-    };
-  }, []);
 
   const handleStartLivingStatus = (value, input) => {
     setBusiness(value.id);
@@ -731,12 +725,6 @@ function Edit_Emp_Info(props) {
         {/* <Field component={RadioButton}/> */}
       </View>
     );
-  };
-
-  const containerStyle = {
-    backgroundColor: '#e8e8e8',
-    width: '85%',
-    alignSelf: 'center',
   };
 
   const ShowCityModal = () => {
@@ -910,6 +898,7 @@ function Edit_Emp_Info(props) {
     );
   };
   const btnChangeOperation = async (newValue, cus_data) => {
+    console.log('edit customer', cus_data);
     const user_id = await AsyncStorage.getItem('user_id');
 
     if (cus_data.create_user_id !== user_id) {
@@ -981,7 +970,6 @@ function Edit_Emp_Info(props) {
           createUserId: empname,
           nrc_state_code: values.nrc_type == '2' ? prefix : '',
         });
-        console.log('data', data);
         if (filtered_cus_data.resident_rgst_id != data.resident_rgst_id) {
           //if not same old nrc and new nrc
           const check_nrc = await checkDataExists(data.resident_rgst_id);
@@ -992,9 +980,7 @@ function Edit_Emp_Info(props) {
               if (result == 'success') {
                 alert('Customer updated successfully.');
                 setUpdateStatus(false);
-
                 dispatch(reset('Customer_ManagementForm'));
-                // props.navigation.navigate('Customer Search');
                 props.navigation.navigate('Home');
               }
             });
@@ -1002,7 +988,7 @@ function Edit_Emp_Info(props) {
         } else {
           await updateCustomerData(data).then(result => {
             if (result == 'success') {
-              alert('Update Success');
+              alert('Customer updated successfully.');
               setUpdateStatus(false);
 
               dispatch(reset('Customer_ManagementForm'));
@@ -1061,56 +1047,10 @@ function Edit_Emp_Info(props) {
               {t('Customer Information Management')}
             </Text>
             <DividerLine border_width />
+            <Update_Operation btnChangeOperation={btnChangeOperation}
+              show_operation={show_operation} filtered_cus_data={filtered_cus_data}
+              update_status={update_status} handleSubmit={handleSubmit(onSubmit)} />
 
-            <View style={style.continer}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                }}>
-                {operations.map((option, index) => (
-                  <RadioButton.Group
-                    key={index}
-                    onValueChange={newValue =>
-                      btnChangeOperation(newValue, filtered_cus_data)
-                    }
-                    value={show_operation}>
-                    <View
-                      key={option.value}
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                      }}>
-                      <RadioButton.Item
-                        uncheckedColor="#636Dc6"
-                        color="#636Dc6"
-                        disabled={
-                          option.value == '1' ||
-                          (filtered_cus_data.tablet_sync_sts === '01' &&
-                            option.value == 3)
-                        }
-                        label={option.label}
-                        value={option.value}
-                        labelStyle={{ marginLeft: 5 }}
-                      />
-                    </View>
-                  </RadioButton.Group>
-                ))}
-              </View>
-              <Button
-                disabled={
-                  update_status == true && show_operation == '3'
-                    ? false
-                    : update_status == false && show_operation == '4'
-                      ? false
-                      : true
-                }
-                onPress={handleSubmit(onSubmit)}
-                mode="contained"
-                buttonColor={'#21316C'}
-                style={style.btnStyle}>
-                {t("OK")}
-              </Button>
-            </View>
             <DividerLine border_width />
             {/* EMployee Information */}
 
@@ -1214,145 +1154,12 @@ function Edit_Emp_Info(props) {
         prefix={prefix}
         btnCancel={btnCancel}
       />
-      <Provider>
-        <Portal>
-          <Modal
-            dismissable={false}
-            visible={modalVisible}
-            onDismiss={hideModal}
-            contentContainerStyle={containerStyle}>
-            <View
-              style={{ backgroundColor: '#232D57', padding: 25 }}
-              onStartShouldSetResponder={() => hideModal()}>
-              <Icon
-                name="x-circle"
-                size={25}
-                color="#fff"
-                style={{
-                  marginLeft: 20,
-                  position: 'absolute',
-                  top: 0,
-                  right: 10,
-                  top: 10,
-                }}
-              />
-            </View>
-            <View style={{ padding: 10, height: 550 }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
-                  <Picker
-                    selectedValue={selectedItemValue}
-                    onValueChange={handleItemValueChange}
-                    style={{ width: 200, backgroundColor: 'white', marginTop: 7 }}
-                    mode="dropdown">
-                    {emp_filter_item.length > 0 &&
-                      emp_filter_item.map(val => (
-                        <Picker.Item
-                          label={val.label}
-                          value={val.value}
-                          key={val.id}
-                        />
-                      ))}
-                  </Picker>
-                </View>
-
-                <View style={{ width: '50%' }}>
-                  <TextInput
-                    style={{
-                      backgroundColor: '#fff',
-                      marginTop: 10,
-                      width: 301,
-                      borderColor: '#303030',
-                      borderWidth: 0.5,
-                    }}
-                    value={emp_text}
-                    onChangeText={onChangeEmpText}
-                    right={
-                      <TextInput.Icon
-                        icon={'magnify'}
-                        onPress={() => btnCusSearch()}
-                      />
-                    }
-                  />
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  backgroundColor: '#fff',
-                  borderRadius: 5,
-                  padding: 5,
-                  margin: 20,
-                }}>
-                <Text
-                  style={{
-                    padding: 10,
-                    flex: 1,
-                    fontWeight: 'bold',
-                  }}>
-                  #
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-
-                    padding: 10,
-                    fontWeight: 'bold',
-                  }}>
-                  {t('Employee No')}
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-
-                    padding: 10,
-                    fontWeight: 'bold',
-                  }}>
-                  Employee Name
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-
-                    padding: 10,
-                    fontWeight: 'bold',
-                  }}>
-                  Positon Name
-                </Text>
-              </View>
-
-              <FlatList
-                data={all_emp}
-                renderItem={item}
-                keyExtractor={(item, index) => index.toString()}
-              />
-
-              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                <Button
-                  onPress={() => hideModal()}
-                  mode="contained"
-                  buttonColor={'#21316C'}
-                  style={{
-                    borderRadius: 0,
-                    width: 117,
-                    marginTop: 10,
-                    color: 'black',
-                    marginLeft: 5,
-                    height: 44
-                  }}>
-                  {t("OK")}
-                </Button>
-              </View>
-            </View>
-          </Modal>
-        </Portal>
-      </Provider>
+      <Employee_Modal all_emp={all_emp} loading={loading}
+        btnCusSearch={btnCusSearch} modalVisible={modalVisible}
+        hideModal={hideModal} selectedItemValue={selectedItemValue}
+        handleItemValueChange={handleItemValueChange}
+        emp_text={emp_text} onChangeEmpText={onChangeEmpText} item={item} />
 
       <City_Modal
         modal_city_visible={modal_city_visible}

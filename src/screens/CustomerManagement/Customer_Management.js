@@ -4,58 +4,49 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   ScrollView,
-  FlatList,
   ToastAndroid,
-  ActivityIndicator,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {Field, reduxForm, change, reset, formValueSelector} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { Field, reduxForm, change, reset, formValueSelector } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
 import {
   RadioButton,
-  Button,
-  Modal,
-  Provider,
-  Portal,
-  TextInput,
   List,
 } from 'react-native-paper';
 import DividerLine from '../../components/DividerLine';
-import Icon from 'react-native-vector-icons/Feather';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
-import {fetchNRCinfo} from '../../query/NRCinfo_query';
+import { fetchNRCinfo } from '../../query/NRCinfo_query';
 import Customer_Base_Info from './Customer_Base_Info';
 import Property_Info from './Property_Info';
-import {salary_grade} from '../../common';
+import { salary_grade } from '../../common';
 import Monthly_Income from './Monthly_Income';
 import Busines_Info from './Busines_Info';
-import {style} from '../../style/Customer_Mang_style';
+import { style } from '../../style/Customer_Mang_style';
 import ShowNRC_Modal from './ShowNRC_Modal';
 import validate from './Validate';
 import moment from 'moment';
-import {setCusFormInitialValues} from '../../redux/CustomerReducer';
-import {emp_filter_item, village_code} from '../../common';
-import {Picker} from '@react-native-picker/picker';
-import {filterEmp, fetchEmpName} from '../../query/Employee_query';
-import {addEmpFilter} from '../../redux/EmployeeReducer';
+import { setCusFormInitialValues } from '../../redux/CustomerReducer';
+import { filterEmp, fetchEmpName } from '../../query/Employee_query';
+import { addEmpFilter } from '../../redux/EmployeeReducer';
 import {
   storeCustomerData,
   fetchAllCustomerNum,
 } from '../../query/Customer_query';
-import {resetMonthlyIncome} from '../../redux/MonthlyReducer';
+import { resetMonthlyIncome } from '../../redux/MonthlyReducer';
 import DatePicker from '../../components/DatePicker';
 import Create_Operation from '../../components/Create_Operation';
-import {filterTownship} from '../../query/Township_query';
+import { filterTownship } from '../../query/Township_query';
 import City_Modal from '../../components/City_Modal';
 import Township_Modal from '../../components/Township_Modal';
 import Village_Modal from '../../components/Village_Modal';
-import {filterVillage} from '../../query/Village_query';
+import { filterVillage } from '../../query/Village_query';
 import Ward_Model from '../../components/Ward_Model';
-import {filterWard} from '../../query/Ward_query';
+import { filterWard } from '../../query/Ward_query';
 import Location_Modal from '../../components/Location_Modal';
-import {filterLocation, filterCity} from '../../query/CodeInfo_quey';
+import { filterLocation, filterCity } from '../../query/CodeInfo_quey';
 import { useTranslation } from 'react-i18next';
+import Employee_Modal from '../../components/Employee_Modal';
 function Customer_Management(props) {
   const dispatch = useDispatch();
   const {
@@ -164,7 +155,7 @@ function Customer_Management(props) {
     set_cityText(inputText);
   };
 
-  const city_item = ({item, index}) => {
+  const city_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -209,7 +200,7 @@ function Customer_Management(props) {
       </View>
     );
   };
-  const village_item = ({item, index}) => {
+  const village_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -256,7 +247,7 @@ function Customer_Management(props) {
       </View>
     );
   };
-  const ward_item = ({item, index}) => {
+  const ward_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -302,7 +293,7 @@ function Customer_Management(props) {
     );
   };
 
-  const township_item = ({item, index}) => {
+  const township_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -348,7 +339,7 @@ function Customer_Management(props) {
     );
   };
 
-  const location_item = ({item, index}) => {
+  const location_item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -412,9 +403,9 @@ function Customer_Management(props) {
         'Customer_ManagementForm',
         'resident_rgst_id',
         prefix &&
-          nrc_prefix_code &&
-          nrcNo &&
-          state_code + nrc_prefix_code + nrcNo,
+        nrc_prefix_code &&
+        nrcNo &&
+        state_code + nrc_prefix_code + nrcNo,
       ),
     );
   };
@@ -518,7 +509,7 @@ function Customer_Management(props) {
     );
   };
 
-  const item = ({item, index}) => {
+  const item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -741,7 +732,7 @@ function Customer_Management(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{flex: 1, backgroundColor: '#fff'}}>
+          <View style={{ flex: 1, backgroundColor: '#fff' }}>
             <Text style={style.title_style}>
               {t('Customer Information Management')}
             </Text>
@@ -782,7 +773,7 @@ function Customer_Management(props) {
                     icon={'calendar'}
                   />
 
-                  <View style={{marginRight: 10}}>
+                  <View style={{ marginRight: 10 }}>
                     <Field
                       name={'positionTitleNm'}
                       title={t('Current Position')}
@@ -800,7 +791,7 @@ function Customer_Management(props) {
                     input_mode
                     editable
                   />
-                  <View style={{marginRight: 10}}>
+                  <View style={{ marginRight: 10 }}>
                     <Field
                       data={salary_grade}
                       name={'salaryRatingCode'}
@@ -844,153 +835,12 @@ function Customer_Management(props) {
         prefix={prefix}
         btnCancel={btnCancel}
       />
-      <Provider>
-        <Portal>
-          <Modal
-            dismissable={false}
-            visible={modalVisible}
-            onDismiss={hideModal}
-            contentContainerStyle={containerStyle}>
-            <View
-              style={{backgroundColor: '#232D57', padding: 25}}
-              onStartShouldSetResponder={() => hideModal()}>
-              <Icon
-                name="x-circle"
-                size={25}
-                color="#fff"
-                style={{
-                  marginLeft: 20,
-                  position: 'absolute',
-                  top: 0,
-                  right: 10,
-                  top: 10,
-                }}
-              />
-            </View>
-            <View style={{padding: 10, height: 550}}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{marginRight: 10, fontWeight: 'bold'}}>
-                    Search Item:
-                  </Text>
+      <Employee_Modal all_emp={all_emp} loading={loading}
+        btnCusSearch={btnCusSearch} modalVisible={modalVisible}
+        hideModal={hideModal} selectedItemValue={selectedItemValue}
+        handleItemValueChange={handleItemValueChange}
+        emp_text={emp_text} onChangeEmpText={onChangeEmpText} item={item} />
 
-                  <Picker
-                    selectedValue={selectedItemValue}
-                    onValueChange={handleItemValueChange}
-                    style={{width: 200, backgroundColor: 'white', marginTop: 7}}
-                    mode="dropdown">
-                    {emp_filter_item.length > 0 &&
-                      emp_filter_item.map(val => (
-                        <Picker.Item
-                          label={val.label}
-                          value={val.value}
-                          key={val.id}
-                        />
-                      ))}
-                  </Picker>
-                </View>
-
-                <View style={{width: '50%'}}>
-                  <TextInput
-                    style={{
-                      backgroundColor: '#fff',
-                      marginTop: 10,
-                      width: 301,
-                      borderColor: '#303030',
-                      borderWidth: 0.5,
-                    }}
-                    value={emp_text}
-                    onChangeText={onChangeEmpText}
-                    right={
-                      <TextInput.Icon
-                        icon={'magnify'}
-                        onPress={() => btnCusSearch()}
-                      />
-                    }
-                  />
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  backgroundColor: '#fff',
-                  borderRadius: 5,
-                  padding: 5,
-                  margin: 20,
-                }}>
-                <Text
-                  style={{
-                    padding: 10,
-                    flex: 1,
-                    fontWeight: 'bold',
-                  }}>
-                  #
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-
-                    padding: 10,
-                    fontWeight: 'bold',
-                  }}>
-                  {t('Employee No')}
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-
-                    padding: 10,
-                    fontWeight: 'bold',
-                  }}>
-                  {t('Employee Name')}
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-
-                    padding: 10,
-                    fontWeight: 'bold',
-                  }}>
-                  {t('Positon Name')}
-                </Text>
-              </View>
-              {loading ? ( // Show ActivityIndicator while loading is true
-                <ActivityIndicator size="large" color="#636Dc6" />
-              ) : (
-                <>
-                  <FlatList
-                    data={all_emp}
-                    renderItem={item}
-                    keyExtractor={(item, index) => index.toString()}
-                  />
-
-                  <View
-                    style={{flexDirection: 'row', justifyContent: 'center'}}>
-                    <Button
-                      onPress={() => hideModal()}
-                      mode="contained"
-                      buttonColor={'#21316C'}
-                      style={{
-                        borderRadius: 0,
-                        width: 117,
-                        marginTop: 10,
-                        color: 'black',
-                        marginLeft: 5,
-                        height:44
-                      }}>
-                      {t("OK")}
-                    </Button>
-                  </View>
-                </>
-              )}
-            </View>
-          </Modal>
-        </Portal>
-      </Provider>
 
       {/* City Modal */}
       <City_Modal
