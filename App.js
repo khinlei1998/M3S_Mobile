@@ -90,7 +90,7 @@ export default function App() {
   useEffect(() => {
     const saveIp = async user_id => {
       try {
-        await AsyncStorage.setItem('ip', '224f-103-231-92-37.ngrok-free.app');
+        await AsyncStorage.setItem('ip', '192.168.177.107');
         await AsyncStorage.setItem('port', '80');
       } catch (e) {
         console.log('error ::', e);
