@@ -1,8 +1,8 @@
-import { View, Text, TouchableWithoutFeedback, Keyboard, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, Keyboard, } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { cus_filter_item } from '../../common';
 import ViewCustomer from './ViewCustomer';
-import { TextInput, Button } from 'react-native-paper';
+import { TextInput, } from 'react-native-paper';
 import { filterCustomer } from '../../query/Customer_query';
 import { Picker } from '@react-native-picker/picker';
 import {useTranslation} from 'react-i18next';

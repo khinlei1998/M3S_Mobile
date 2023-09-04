@@ -755,7 +755,7 @@ const CoBorrower_NRC_Search_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                Name
+                {t("Name")}
               </Text>
               <Text
                 style={{
@@ -764,7 +764,7 @@ const CoBorrower_NRC_Search_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                NRC
+                {t("NRC")}
               </Text>
 
               <Text
@@ -1463,7 +1463,7 @@ function Individual_Staff_loan_Info(props) {
     if (show_operation == '4') {
       await deleteStaffLoan_ByID(values).then(response => {
         if (response == 'success') {
-          ToastAndroid.show('Delete Success', ToastAndroid.SHORT);
+          ToastAndroid.show('Individual Staff Loan Application deleted successfully.', ToastAndroid.SHORT);
           props.navigation.navigate('Home');
         }
       });
@@ -1499,7 +1499,7 @@ function Individual_Staff_loan_Info(props) {
           if (result == 'success') {
             dispatch(reset('Edit_Individual_Staff_Loan_Form'));
 
-            ToastAndroid.show(`Update Successfully!`, ToastAndroid.SHORT);
+            ToastAndroid.show(`Individual Staff Loan Application updated successfully.`, ToastAndroid.SHORT);
             props.navigation.navigate('Home');
           }
         });

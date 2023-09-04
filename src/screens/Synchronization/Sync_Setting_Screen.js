@@ -35,7 +35,6 @@ function Sync_Setting_Screen(props) {
   };
 
   useEffect(() => {
-
     const getData = async () => {
       try {
         const ip = await AsyncStorage.getItem('ip');
@@ -85,9 +84,7 @@ function Sync_Setting_Screen(props) {
         </View>
       </View>
       <Text style={{ alignSelf: 'flex-end', marginRight: 40, marginTop: 10 }}>Last Sync Date : 2022</Text>
-
-
-      <View
+     <View
         style={{
           flexDirection: 'row',
           justifyContent: 'center',

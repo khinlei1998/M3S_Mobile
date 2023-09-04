@@ -33,10 +33,7 @@ function Edit_Area_Evaluation(props) {
   };
   const handleRadioButtonChange = (value, input, index) => {
     input.onChange(value.id);
-    // const number = parseFloat(value.result);
     const number = parseFloat(value.id);
-
-    console.log('number',number);
     if (!isNaN(number)) {
       // Update the selected values array
       const newValues = [...values];

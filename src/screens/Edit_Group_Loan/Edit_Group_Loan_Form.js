@@ -248,7 +248,7 @@ function Edit_Group_Loan_Form(props) {
     if (show_operation == '4') {
       await deleteGroup_LoanID(values).then(response => {
         if (response == 'success') {
-          ToastAndroid.show(`Delete Success`, ToastAndroid.SHORT);
+          ToastAndroid.show(`Group Loan Application deleted successfully.`, ToastAndroid.SHORT);
           navigation.goBack();
         }
       });
@@ -260,7 +260,7 @@ function Edit_Group_Loan_Form(props) {
       });
       await updateGroupData(data).then(response => {
         if (response == 'success') {
-          ToastAndroid.show(`Update Success!`, ToastAndroid.SHORT);
+          ToastAndroid.show(`Group Loan Application updated successfully.`, ToastAndroid.SHORT);
           navigation.goBack();
         }
       });

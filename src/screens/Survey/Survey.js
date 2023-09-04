@@ -35,14 +35,11 @@ export default function Survey(props) {
     loadData();
   }, []);
   const onSubmit = async () => {
-    console.log('survey_rsult_count', survey_rsult_count);
     let survey_rsult = selectedItems.map((v, index) => ({
       ...v, branch_code: branch_code, survey_result_no: `SV${user_id}${moment().format(
         'YYYYMMDD',
       )}${survey_rsult_count + index}`
     }))
-    console.log('survey_rsult',survey_rsult);
-    // console.log('survey_rsult',survey_rsult);
     await storeSurveyResult(survey_rsult).then(result => {
       if (result == 'success') {
 

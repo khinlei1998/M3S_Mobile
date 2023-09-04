@@ -17,6 +17,7 @@ export function get_Ward(tokensource) {
           })
 
           .then((response) => {
+            const sizeInBytes = response.headers['content-length'] || '0';
             if (response.data.length > 0) {
               let insertedRows = 0;
               global.db.transaction(tx => {
@@ -33,7 +34,7 @@ export function get_Ward(tokensource) {
                       ],
                       (tx, results) => {
                         insertedRows += results.rowsAffected;
-                        if (insertedRows === data.length) {
+                        if (insertedRows === response.data.length) {
                           // resolve('success');
                           resolve({response:'success',sizeInBytes})
                           console.log('All Ward records inserted successfully');

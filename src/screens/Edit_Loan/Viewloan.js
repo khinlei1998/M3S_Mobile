@@ -1,8 +1,10 @@
 import { View, Text, FlatList } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useTranslation } from 'react-i18next';
+
 export default function Viewloan(props) {
     const {loan_data}=props
-
+    const { t } = useTranslation();
     const item = ({ item }) => {
         return (
             <View style={{
@@ -61,33 +63,33 @@ export default function Viewloan(props) {
 
                     padding: 10,
                     fontWeight: 'bold',
-                }}>Loan Type</Text>
+                }}>{t("Loan Type")}</Text>
                 <Text style={{
                     flex: 1,
 
                     padding: 10,
                     fontWeight: 'bold',
-                }}>Application No</Text>
+                }}>{t("Application No")}</Text>
                 <Text style={{
                     flex: 1,
 
                     padding: 10,
                     fontWeight: 'bold',
-                }}>Borrower Name</Text>
-
-                <Text style={{
-                    flex: 1,
-
-                    padding: 10,
-                    fontWeight: 'bold',
-                }}>Application amount</Text>
+                }}>{t("Borrower Name")}</Text>
 
                 <Text style={{
                     flex: 1,
 
                     padding: 10,
                     fontWeight: 'bold',
-                }}>Sync</Text>
+                }}>{t("Application amount")}</Text>
+
+                <Text style={{
+                    flex: 1,
+
+                    padding: 10,
+                    fontWeight: 'bold',
+                }}>{t("Sync")}</Text>
             </View>
 
             <FlatList data={loan_data} renderItem={item}

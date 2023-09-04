@@ -9,10 +9,10 @@ import {
 import React, { useState, useEffect } from 'react';
 import { style } from '../../style/Exceptional_Approvla_style';
 import { operations } from '../../common';
-import { Button, RadioButton, List } from 'react-native-paper';
+import {RadioButton, List } from 'react-native-paper';
 import DividerLine from '../../components/DividerLine';
-import { reduxForm, Field, change, reset } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import { reduxForm, Field,} from 'redux-form';
+import { connect, } from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
 import Exceptional_Approval_Info from './Edit_Exceptional_Approval_Info';
@@ -33,10 +33,8 @@ function Edit_Exceptional_Approvel_Form(props) {
     if (show_operation == '4') {
       await deleteExceptional_approval_ByID(values.excpt_aprv_rqst_no).then(response => {
         if (response == 'success') {
-          alert('Delete Success');
+          alert('Exceptional Approval Request Form deleted successfully.');
           navigation.goBack();
-          // setUpdateStatus(false);
-          // props.navigation.navigate('Home');
         }
       });
     } else {
@@ -46,9 +44,8 @@ function Edit_Exceptional_Approvel_Form(props) {
       });
       await updateExceptionalApproval(exceptional_data).then(result => {
         if (result == 'success') {
-          ToastAndroid.show(`Update Success`, ToastAndroid.SHORT);
+          ToastAndroid.show(`Exceptional Approval Request Form updated successfully.`, ToastAndroid.SHORT);
           navigation.goBack();
-          // navigation.goBack('exceptionl_success');
         }
       })
     }
@@ -247,7 +244,6 @@ function Edit_Exceptional_Approvel_Form(props) {
 }
 
 function mapStateToProps(state) {
-  console.log('exceptional_update_status', state.loan.exceptional_update_status);
   return {
     exceptional_update_status: state.loan.exceptional_update_status
   };

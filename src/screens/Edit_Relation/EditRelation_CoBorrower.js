@@ -1,6 +1,6 @@
-import {View, Text} from 'react-native';
-import React, {useState, useEffect, createRef} from 'react';
-import {reduxForm, Field, change, reset} from 'redux-form';
+import {View, } from 'react-native';
+import React, {useState,} from 'react';
+import {Field,} from 'redux-form';
 import { style } from '../../style/Relation_style';
 import TextInputFile from '../../components/TextInputFile';
 import {

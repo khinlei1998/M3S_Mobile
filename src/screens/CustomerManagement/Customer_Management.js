@@ -144,7 +144,7 @@ function Customer_Management(props) {
         dispatch(reset('Customer_ManagementForm'));
         resetMonthlyIncome();
 
-        ToastAndroid.show(`Create Successfully!`, ToastAndroid.SHORT);
+        ToastAndroid.show(`Customer added successfully`, ToastAndroid.SHORT);
         props.navigation.navigate('Home');
       } else {
         setbtnloading(!btn_loading);

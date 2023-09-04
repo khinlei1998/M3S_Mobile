@@ -1,7 +1,6 @@
 import {View, Text} from 'react-native';
 import React, {useState} from 'react';
 import {List} from 'react-native-paper';
-import {reduxForm, Field} from 'redux-form';
 import {style} from '../../style/Guarantor_style';
 export default function Edit_Guarantor_Contract(props) {
   const {retrive_guarantor_data,guarantor_name} = props;

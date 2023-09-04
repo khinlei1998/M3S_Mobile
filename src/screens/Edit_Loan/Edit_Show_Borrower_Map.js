@@ -2,15 +2,9 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
-  TouchableOpacity,
-  Image,
 } from 'react-native';
 import React, {useRef, useState} from 'react';
 import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
-import RNFS from 'react-native-fs';
-import moment from 'moment';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setBorrowerMap_Path} from '../../redux/LoanReducer';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
@@ -21,30 +15,9 @@ export default function Edit_Show_Borrower_Map(props) {
   const navigation = useNavigation();
 
   const [paths, setPaths] = useState('');
-  const [imagetest, setImage] = useState('');
   const [imageQuery, setImageQuery] = useState('');
   const sketchRef = useRef(null);
-  const handleSave = async () => {
-    if (sketchRef.current) {
-      try {
-        const result = await sketchRef.current.getBase64(
-          'jpg',
-          false,
-          true,
-          false,
-          true,
-          (err, result) => {
-            console.log('result', result);
-          },
-        );
-        console.log('Save successful:', result);
-      } catch (error) {
-        console.error('Save failed:', error);
-      }
-    }
-  };
-  const user_id = AsyncStorage.getItem('user_id');
-
+  
   return (
     <>
       <View style={styles.container}>
@@ -119,7 +92,6 @@ export default function Edit_Show_Borrower_Map(props) {
               };
             }}
             onSketchSaved={(success, path) => {
-              console.log('success', success);
               alert(success ? 'Image saved!' : 'Failed to save image!', path);
               if (path) {
                 const queryParam = `?timestamp=${Date.now()}`;

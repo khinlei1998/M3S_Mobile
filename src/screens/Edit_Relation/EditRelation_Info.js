@@ -1,11 +1,10 @@
 import { View, Text } from 'react-native';
-import React, { useState, useEffect, createRef } from 'react';
-import { reduxForm, Field, change, reset } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import React, { useState, } from 'react';
+import { reduxForm, Field,} from 'redux-form';
+import { connect,  } from 'react-redux';
 import { style } from '../../style/Relation_style';
 import TextInputFile from '../../components/TextInputFile';
 import { List } from 'react-native-paper';
-import SingleCheckBox from '../../components/SingleCheckBox';
 import { relation_data } from '../../common';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import DatePicker from '../../components/DatePicker';

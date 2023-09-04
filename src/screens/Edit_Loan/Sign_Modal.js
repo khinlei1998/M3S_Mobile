@@ -2,7 +2,6 @@ import {View, Text} from 'react-native';
 import React from 'react';
 import { Modal } from 'react-native-paper';
 export default function Sign_Modal(props) {
-    const {}=props
   return (
     <>
       <Modal
@@ -47,7 +46,6 @@ export default function Sign_Modal(props) {
             saveImageFileInExtStorage
             minStrokeWidth={10}
             maxStrokeWidth={10}
-            // backgroundColor="transparent"
             viewMode={'portrait'}
           />
           <View style={{flexDirection: 'row'}}>

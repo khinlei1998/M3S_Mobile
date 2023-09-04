@@ -35,7 +35,7 @@ function Exceptional_Approvel_Form(props) {
   const onSubmit = async values => {
     await storeExceptionalApproval(values).then(result => {
       if (result == 'success') {
-        ToastAndroid.show(`Insert Success`, ToastAndroid.SHORT);
+        ToastAndroid.show(`Exceptional Approval Request Form added successfully.`, ToastAndroid.SHORT);
         navigation.goBack('exceptionl_success');
       }
     });

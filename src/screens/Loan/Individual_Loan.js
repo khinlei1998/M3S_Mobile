@@ -1180,7 +1180,7 @@ function Individual_Loan(props) {
 
             resetMonthlyIncome();
 
-            ToastAndroid.show('Create Successfully!', ToastAndroid.SHORT);
+            ToastAndroid.show('Individual Loan Application added successfully.', ToastAndroid.SHORT);
             // props.navigation.navigate('Home');
             props.navigation.navigate('Home');
           }

@@ -1,23 +1,18 @@
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import {View, Text, FlatList,} from 'react-native';
 import React, {useState} from 'react';
-import {RadioButton, Button} from 'react-native-paper';
+import {RadioButton, } from 'react-native-paper';
 import {useDispatch} from 'react-redux';
-import {Field} from 'redux-form';
 import {addEmpFilter} from '../../redux/EmployeeReducer';
 import {connect} from 'react-redux';
 import {reduxForm} from 'redux-form';
 import {TestAction} from '../../redux/EmployeeReducer';
-import {change} from 'redux-form';
 import {useTranslation} from 'react-i18next';
 
 function ViewEmployee(props) {
-  const [checked, setChecked] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
-  const [filter_emp, setFilterEmp] = useState();
-  const dispatch = useDispatch();
   const {t} = useTranslation();
 
-  const {TestAction, emp_data, addEmpFilter, hideModal} = props;
+  const {emp_data,} = props;
 
   const btnSelectEmployee = item => {
     setSelectedValue(item.employee_no);

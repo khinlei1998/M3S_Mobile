@@ -207,7 +207,7 @@ const Borrower_modal = props => {
               padding: 10,
               fontWeight: 'bold',
             }}>
-            NRC
+            {t("NRC")}
           </Text>
           <Text
             style={{
@@ -250,7 +250,6 @@ function Edit_Reloan_Form(props) {
     handleSubmit,
     navigation,
     setReloan_UpdateStatus,
-    reloan_update_status,
   } = props;
   const { t } = useTranslation();
 
@@ -282,7 +281,7 @@ function Edit_Reloan_Form(props) {
     if (show_operation == '4') {
       await deleteGroup_LoanID(values).then(response => {
         if (response == 'success') {
-          ToastAndroid.show(`Delete Success`, ToastAndroid.SHORT);
+          ToastAndroid.show(`Reloan Application deleted successfully.`, ToastAndroid.SHORT);
           navigation.goBack();
         }
       });
@@ -294,7 +293,7 @@ function Edit_Reloan_Form(props) {
       });
       await updateGroupData(data).then(response => {
         if (response == 'success') {
-          ToastAndroid.show(`Update Success`, ToastAndroid.SHORT);
+          ToastAndroid.show(`Reloan Application updated successfully.`, ToastAndroid.SHORT);
           navigation.goBack();
         }
       });

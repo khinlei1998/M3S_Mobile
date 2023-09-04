@@ -1,16 +1,15 @@
-import {View, Text, FlatList} from 'react-native';
-import React, {useState} from 'react';
-import {Provider, Modal, Portal, Button} from 'react-native-paper';
-import {useDispatch} from 'react-redux';
-import {reduxForm, Field, change} from 'redux-form';
-import {style} from '../../style/Individual_Loan_style';
-import {emp_filter_item} from '../../common';
-import {connect} from 'react-redux';
+import { View, Text, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import { Provider, Modal, Portal, Button } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
+import { reduxForm, Field, change } from 'redux-form';
+import { style } from '../../style/Individual_Loan_style';
+import { emp_filter_item } from '../../common';
+import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Feather';
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 import TextInputFile from '../../components/TextInputFile';
-import {filterCustomer} from '../../query/Customer_query';
-import RadioButton from 'react-native-paper';
+import { filterCustomer } from '../../query/Customer_query';
 import { useTranslation } from 'react-i18next';
 
 function Borrower_Modal(props) {
@@ -38,7 +37,7 @@ function Borrower_Modal(props) {
     dispatch(change('Individual_Loan_Form', 'borrower_name', item.customer_nm));
     dispatch(change('Individual_Loan_Form', 'nrc_no', item.resident_rgst_id));
   };
-  const item = ({item, index}) => {
+  const item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -77,8 +76,8 @@ function Borrower_Modal(props) {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{marginRight: 10}}>Search Item:</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
                 <Picker
                   selectedValue={selectedItemValue}
@@ -100,7 +99,7 @@ function Borrower_Modal(props) {
                 </Picker>
               </View>
 
-              <View style={{width: '50%'}}>
+              <View style={{ width: '50%' }}>
                 <Field
                   name={'searchtext'}
                   component={TextInputFile}
@@ -143,7 +142,7 @@ function Borrower_Modal(props) {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-                NRC
+                {t("NRC")}
               </Text>
               <Text
                 style={{
@@ -156,14 +155,14 @@ function Borrower_Modal(props) {
               </Text>
             </View>
             {all_cus &&
-            <FlatList
-              data={all_cus}
-              renderItem={item}
-              keyExtractor={(item, index) => index.toString()}
-            />
-}
+              <FlatList
+                data={all_cus}
+                renderItem={item}
+                keyExtractor={(item, index) => index.toString()}
+              />
+            }
 
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
               <Button
                 onPress={() => hideModal()}
                 mode="contained"
@@ -174,7 +173,7 @@ function Borrower_Modal(props) {
                   marginTop: 10,
                   color: 'black',
                   marginLeft: 5,
-                  height:44
+                  height: 44
                 }}>
                 {t("OK")}
               </Button>

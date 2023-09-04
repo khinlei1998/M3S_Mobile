@@ -14,10 +14,6 @@ import LoginScreen from './src/screens/Login/LoginScreen';
 import SettingScreen from './src/screens/Setting/SettingScreen';
 import {
   StyleSheet,
-  View,
-  Text,
-  Image,
-  Button,
   PermissionsAndroid,
 } from 'react-native';
 import RNFS from 'react-native-fs';
@@ -94,7 +90,7 @@ export default function App() {
   useEffect(() => {
     const saveIp = async user_id => {
       try {
-        await AsyncStorage.setItem('ip', 'd79b-103-116-58-130.ngrok-free.app');
+        await AsyncStorage.setItem('ip', '224f-103-231-92-37.ngrok-free.app');
         await AsyncStorage.setItem('port', '80');
       } catch (e) {
         console.log('error ::', e);

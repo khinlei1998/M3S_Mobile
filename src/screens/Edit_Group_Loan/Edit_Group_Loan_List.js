@@ -1,11 +1,11 @@
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { style } from '../../style/Group_Loan_style';
 import { List, Button } from 'react-native-paper';
 import { loan_application_type } from '../../common';
 import { addInquiryLoanData } from '../../redux/LoanReducer';
-import { connect, useDispatch } from 'react-redux';
-import { reduxForm, Field, change } from 'redux-form';
+import { connect,  } from 'react-redux';
+import { reduxForm,} from 'redux-form';
 
 function Edit_Group_Loan_List(props) {
   const [Grouplist_expand, setGroupListExpand] = useState(true);

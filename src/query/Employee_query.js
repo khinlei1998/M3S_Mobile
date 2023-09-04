@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {connection_name} from '../common';
-import {createCancelTokenSource} from '../components/CancelUtils';
+import { connection_name } from '../common';
+import { createCancelTokenSource } from '../components/CancelUtils';
 
 export function getEemployee_info(tokensource) {
   return new Promise(async (resolve, reject) => {
@@ -56,9 +56,9 @@ export function getEemployee_info(tokensource) {
                       ],
                       (tx, results) => {
                         insertedRows += results.rowsAffected;
-                        if (insertedRows === data.length) {
+                        if (insertedRows === response.data.length) {
                           // resolve('success');
-                          resolve({response:'success',sizeInBytes})
+                          resolve({ response: 'success', sizeInBytes })
                           console.log(
                             'All Employee records inserted successfully',
                           );

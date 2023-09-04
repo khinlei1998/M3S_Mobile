@@ -1,11 +1,11 @@
-import {View, Text} from 'react-native';
+import {View,} from 'react-native';
 import React, { useState } from 'react'
 import { List } from 'react-native-paper'
 import DatePicker from '../../components/DatePicker';
 import TextInputFile from '../../components/TextInputFile';
 import { style } from '../../style/Individula_staff_Loan_Style';
-import { reduxForm, Field, change, reset } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import { reduxForm, Field,} from 'redux-form';
+import { connect,  } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
  function Edit_Invidual_Staff_CoBorrower_Info(props) {

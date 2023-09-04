@@ -4,7 +4,7 @@ import {style} from '../../style/Area_Evaluation_style';
 import {area_evaluation_score_result} from '../../common';
 import {reduxForm, Field,} from 'redux-form';
 import RadioButtonFile from '../../components/RadioButtonFile';
-import {connect, useDispatch} from 'react-redux';
+import {connect} from 'react-redux';
 import {List} from 'react-native-paper';
 import TextInputFile from '../../components/TextInputFile';
 function Area_Evaluation_Score(props) {

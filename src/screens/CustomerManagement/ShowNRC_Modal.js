@@ -1,8 +1,8 @@
-import { View, Text } from 'react-native';
+import { View,  } from 'react-native';
 import React, { useState } from 'react';
 import { Provider, Portal, Modal, Button } from 'react-native-paper';
 import DropDownPicker from '../../components/DropDownPicker';
-import { Field, reduxForm, setInitialValues, initialize } from 'redux-form';
+import { Field, reduxForm, } from 'redux-form';
 import { connect } from 'react-redux';
 import { fetchStateName } from '../../query/NRCinfo_query';
 import TextInputFile from '../../components/TextInputFile';

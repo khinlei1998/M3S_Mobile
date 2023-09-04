@@ -3,14 +3,13 @@ import React, { useState } from 'react';
 import { List, Button } from 'react-native-paper';
 import { style } from '../../style/Exceptional_Approvla_style';
 import DatePicker from '../../components/DatePicker';
-import { reduxForm, Field, change, reset } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import { reduxForm, Field,} from 'redux-form';
+import { connect, } from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import { questions } from '../../common';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import DividerLine from '../../components/DividerLine';
 import Icon from 'react-native-vector-icons/Feather';
-import validate from './Validate';
 function Exceptional_Approval_Info(props) {
   const { handleSubmit, onSubmit ,exceptional_update_status} = props;
 

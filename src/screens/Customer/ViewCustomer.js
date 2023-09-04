@@ -127,7 +127,7 @@ import { useTranslation } from 'react-i18next';
 
       </View>
 
-       {loading ? ( // Show ActivityIndicator while loading is true
+       {loading ? ( 
         <ActivityIndicator size="large" color="#636Dc6" />
       ) : ( // Show FlatList once loading is false and data is available
         <FlatList

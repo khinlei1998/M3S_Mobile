@@ -29,8 +29,6 @@ function ButtonFile(props) {
       >
         <Text>Option 1</Text>
       </TouchableOpacity>
-      {/* <Button title="Submit" onPress={handleSubmit(onSubmit)} /> */}
-      {/* <Button title="Edit" onPress={() => btnedit()} /> */}
     </View>
   );
 }

@@ -625,7 +625,6 @@ const CoBorrower_modal = props => {
     selectedItemValue,
     handleItemValueChange,
     setAllCoBorrower,
-    handleSubmit,
     setCoBorrowerName,
   } = props;
   const btnCusSearch = async () => {
@@ -916,8 +915,6 @@ const Borrower_Sign_Modal = props => {
           showTitleLabel={false}
           minStrokeWidth={10}
           maxStrokeWidth={10}
-          // saveImageFileInExtStorage
-          // backgroundColor="transparent"
           viewMode={'portrait'}
         />
         <View style={{ flexDirection: 'row' }}>
@@ -1011,7 +1008,6 @@ const Co_Borrower_Sign_Modal = props => {
           saveImageFileInExtStorage
           minStrokeWidth={10}
           maxStrokeWidth={10}
-          // backgroundColor="transparent"
           viewMode={'portrait'}
         />
         <View style={{ flexDirection: 'row' }}>
@@ -1332,7 +1328,7 @@ function Edit_Individual_Loan(props) {
     if (show_operation == '4') {
       await deleteLoan_ByID(values).then(response => {
         if (response == 'success') {
-          alert('Delete Success');
+          alert('Individual Staff Loan Application deleted successfully.');
           props.navigation.navigate('Home');
         }
       });
@@ -1373,9 +1369,7 @@ function Edit_Individual_Loan(props) {
         await updateLoanData(loan_data).then(result => {
           if (result == 'success') {
             dispatch(reset('Edit_Individual_Loan_Form'));
-            // resetMonthlyIncome();
-
-            ToastAndroid.show(`Update Successfully!`, ToastAndroid.SHORT);
+            ToastAndroid.show(`Individual Staff Loan Application updated successfully.`, ToastAndroid.SHORT);
             props.navigation.navigate('Home');
           }
         });

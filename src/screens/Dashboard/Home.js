@@ -1,4 +1,4 @@
-import { View, Text, Image, FlatList } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Viewloan from '../Loan/Viewloan';
 import { fetchEmpName } from '../../query/Employee_query';
@@ -11,7 +11,7 @@ export default function Home(props) {
   const isFocused = useIsFocused();
   const [emp_name, setEmpName] = useState();
   const [loan_data, setAllLoan] = useState([]);
-  const { t, i18n } = useTranslation();
+  const { t, } = useTranslation();
   const loadData = async () => {
     await fetchEmpName()
       .then(data => setEmpName(data[0].employee_name))
@@ -28,7 +28,7 @@ export default function Home(props) {
   );
   const formattedPrice = totalAmount
     .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Output: "1,000"
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ','); 
 
   useEffect(() => {
     if (isFocused) {

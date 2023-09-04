@@ -1,9 +1,9 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native';
-import React, { useState, useEffect, createRef } from 'react';
+import React, { useState,  createRef } from 'react';
 import { style } from '../../style/Relation_style';
 import { List } from 'react-native-paper';
-import { reduxForm, Field, change, reset } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import { reduxForm,} from 'redux-form';
+import { connect,} from 'react-redux';
 import moment from 'moment';
 function Edit_Relation_Contract(props) {
   const {
@@ -15,14 +15,11 @@ function Edit_Relation_Contract(props) {
     show_canvas,
     setCoBorrowerCanvas,
     show_co_borrower_canvas,
-    btnShowBorrowerSign,
     relation_update_status,
     relation_name,
     retrive_relation_data
   } = props;
-  console.log('retrive_relation_data', retrive_relation_data);
   const queryParam = `?timestamp=${Date.now()}`;
-
   const [relation_contract_expanded, setRelationContractExpanded] =
     useState(true);
   const handleRelationContractToggle = () => {

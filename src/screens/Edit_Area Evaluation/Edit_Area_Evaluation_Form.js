@@ -6,10 +6,10 @@ import {
   Keyboard,
   ToastAndroid,
 } from 'react-native';
-import React, {useState, useEffect, createRef} from 'react';
+import React, {useState, useEffect,} from 'react';
 import DividerLine from '../../components/DividerLine';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import {reduxForm, Field,} from 'redux-form';
+import {connect,} from 'react-redux';
 import Icon from 'react-native-vector-icons/Feather';
 import {
   Button,
@@ -67,7 +67,7 @@ function Edit_Area_Evaluation_Form(props) {
       await deleteAreaEvaluation_ByID(values.area_evaluation_no).then(
         response => {
           if (response === 'success') {
-            alert('Delete Success');
+            alert('Area Evaluation Form deleted successfully.');
             navigation.goBack();
           }
         },
@@ -81,7 +81,7 @@ function Edit_Area_Evaluation_Form(props) {
       });
       await updateAreaEvaluation(area_data).then(result => {
         if (result == 'success') {
-          ToastAndroid.show(`Update Success`, ToastAndroid.SHORT);
+          ToastAndroid.show(`Area Evaluation Form updated successfully.`, ToastAndroid.SHORT);
           navigation.goBack();
         }
       });

@@ -73,7 +73,7 @@ function Area_Evaluation_Form(props) {
     });
     await storeAreaEvaluation(area_data).then(result => {
       if (result == 'success') {
-        ToastAndroid.show(`Insert Success`, ToastAndroid.SHORT);
+        ToastAndroid.show(`Area Evaluation Form added successfully.`, ToastAndroid.SHORT);
         setEvaluation_Score(0);
         navigation.goBack();
       }

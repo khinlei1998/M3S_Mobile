@@ -4,8 +4,11 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, reset, change } from 'redux-form';
 import { addInquiryLoanData } from '../../redux/LoanReducer';
 import { loan_application_type } from '../../common';
+import { useTranslation } from 'react-i18next';
 
 function Viewloan(props) {
+  const { t } = useTranslation();
+
   const { loan_data, navigation, addInquiryLoanData } = props;
   const btn_inquiry_loan = item => {
     if (item.product_type == 20) {
@@ -129,7 +132,7 @@ function Viewloan(props) {
             padding: 10,
             fontWeight: 'bold',
           }}>
-          Borrower Name
+          {t("Borrower Name")}
         </Text>
 
         <Text

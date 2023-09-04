@@ -10,8 +10,8 @@ import {
 } from 'react-native';
 import React, {useState, useEffect, createRef} from 'react';
 import DividerLine from '../../components/DividerLine';
-import {operations, emp_filter_item} from '../../common';
-import {reduxForm, Field, change, reset} from 'redux-form';
+import {operations,} from '../../common';
+import {reduxForm, Field, change, } from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
 import RNFS from 'react-native-fs';
 import {
@@ -224,7 +224,6 @@ const Guarantor_modal = props => {
       change('Edit_Guarantor_Form', 'curr_workplace_perd', item.curr_workplace_perd),
     );
     // show guarnator name
-
     setGuarantorName(item.customer_nm);
   };
 
@@ -490,15 +489,10 @@ function Edit_Guarantor_Form(props) {
         });
 
         await Promise.all(deleteFilePromises);
-
-        console.log('All files deleted');
-
         await deleteGuarantor_ByID(values.guarantee_no).then(response => {
           if (response == 'success') {
-            alert('Delete Success');
+            alert('Guarantor Form deleted successfully.');
             navigation.goBack();
-            // setUpdateStatus(false);
-            // props.navigation.navigate('Home');
           }
         });
       } catch (error) {
@@ -510,8 +504,6 @@ function Edit_Guarantor_Form(props) {
         // Save the images
         let borrowerImagePath;
         let saveImageError = false;
-        console.log('borrower_sign_path', borrower_sign_path);
-        console.log('show_borrower_sign', show_borrower_sign);
         if (show_borrower_sign) {
           borrowerImagePath = await saveSignatureToInternalStorage(
             show_borrower_sign,
@@ -538,7 +530,7 @@ function Edit_Guarantor_Form(props) {
           });
           await updateGuarantor(guarantor_data).then(result => {
             if (result == 'success') {
-              ToastAndroid.show('Update Successfully!', ToastAndroid.SHORT);
+              ToastAndroid.show('Guarantor Form updated successfully.', ToastAndroid.SHORT);
               navigation.goBack();
             }
           });
@@ -547,38 +539,6 @@ function Edit_Guarantor_Form(props) {
         console.log('Error:', error);
       }
     }
-    // try {
-    //   // Save the images
-    //   let borrowerImagePath;
-    //   let saveImageError = false;
-
-    //   if (borrower_sign_path) {
-    //     borrowerImagePath = await saveSignatureToInternalStorage(
-    //       show_borrower_sign,
-    //       '01',
-    //     );
-    //     if (!borrowerImagePath) {
-    //       saveImageError = true;
-    //       ToastAndroid.show(
-    //         'Error! Borrower Sign cannot save',
-    //         ToastAndroid.SHORT,
-    //       );
-    //     } else {
-    //       console.log('Borrower image saved successfully:', borrowerImagePath);
-    //     }
-    //   }
-
-    //   if (!saveImageError) {
-    //     await storeGuarantor(values).then(result => {
-    //       if (result == 'success') {
-    //         ToastAndroid.show('Create Successfully!', ToastAndroid.SHORT);
-    //         navigation.goBack();
-    //       }
-    //     });
-    //   }
-    // } catch (error) {
-    //   console.log('Error:', error);
-    // }
   };
   const handleBorrowerToggle = () => {
     setBorrowerInfoExpanded(!borroer_info_exxpanded);

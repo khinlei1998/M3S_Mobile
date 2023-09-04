@@ -18,7 +18,6 @@ import {useTranslation} from 'react-i18next';
 export default function Sync_Download_Screen(props) {
   const {
     selectAll,
-    setShowModal,
     setSelectAll,
     setCheckedItems,
     checkedItems,
@@ -122,7 +121,6 @@ export default function Sync_Download_Screen(props) {
           borderBottomWidth: 1,
           borderBottomColor: '#ccc',
           padding: 10,
-          // margin:10
         }}>
         <Checkbox
           key={item.id}
@@ -137,16 +135,13 @@ export default function Sync_Download_Screen(props) {
           style={{
             padding: 10,
             flex: 1,
-            // backgroundColor:"yellow"
           }}>
-          {/* # */}
           {item.id}
         </Text>
         <Text
           style={{
             padding: 10,
             flex: 1,
-            // backgroundColor:"green"
           }}>
           {item.name}
         </Text>
@@ -154,9 +149,7 @@ export default function Sync_Download_Screen(props) {
           style={{
             padding: 10,
             flex: 1,
-            // backgroundColor:"red"
           }}>
-          {/* Size */}
           {item.size}
         </Text>
 
@@ -164,11 +157,8 @@ export default function Sync_Download_Screen(props) {
           style={{
             padding: 10,
             flex: 1,
-            // backgroundColor:"pink",
-            // marginRight:7,
           }}>
           {item.last_sync_data}
-          {/* Last Sync date */}
         </Text>
       </View>
     );
@@ -181,7 +171,6 @@ export default function Sync_Download_Screen(props) {
       ...item,
       checked: updatedSelectAll,
     }));
-    // setData(updatedData);
     if (updatedSelectAll) {
       setCheckedItems(updatedData);
     } else {
@@ -190,7 +179,6 @@ export default function Sync_Download_Screen(props) {
   };
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-      {/* <View style={{ marginTop: 20,flex: 1 }}> */}
       <View
         style={{
           flexDirection: 'row',
@@ -220,14 +208,12 @@ export default function Sync_Download_Screen(props) {
             padding: 10,
             flex: 1,
             fontWeight: 'bold',
-            // backgroundColor: 'yellow',
           }}>
           #
         </Text>
         <Text
           style={{
             flex: 1,
-            // backgroundColor: 'green',
             padding: 10,
             fontWeight: 'bold',
           }}>
@@ -236,7 +222,6 @@ export default function Sync_Download_Screen(props) {
         <Text
           style={{
             flex: 1,
-            // backgroundColor: 'red',
             padding: 10,
             fontWeight: 'bold',
           }}>
@@ -245,7 +230,6 @@ export default function Sync_Download_Screen(props) {
         <Text
           style={{
             flex: 1,
-            // backgroundColor:'pink',
             padding: 10,
             fontWeight: 'bold',
           }}>
@@ -274,8 +258,6 @@ export default function Sync_Download_Screen(props) {
           <Text>Download</Text>
         </Button>
       </View>
-
-      {/* </View> */}
     </View>
   );
 }

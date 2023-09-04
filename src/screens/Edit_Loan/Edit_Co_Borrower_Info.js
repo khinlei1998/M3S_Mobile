@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, } from 'react-native'
 import React, { useState } from 'react'
 import { List } from 'react-native-paper'
 import { style } from '../../style/Individual_Loan_style';

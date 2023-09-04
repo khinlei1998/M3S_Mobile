@@ -1,8 +1,8 @@
-import {View, Text} from 'react-native';
-import React, {useState, useEffect, createRef} from 'react';
+import {View,} from 'react-native';
+import React, {useState,} from 'react';
 import {List} from 'react-native-paper';
 import DatePicker from '../../components/DatePicker';
-import {reduxForm, Field, change, reset} from 'redux-form';
+import {reduxForm, Field,} from 'redux-form';
 import TextInputFile from '../../components/TextInputFile';
 import {connect} from 'react-redux';
 import {style} from '../../style/Cover_Loan_style';

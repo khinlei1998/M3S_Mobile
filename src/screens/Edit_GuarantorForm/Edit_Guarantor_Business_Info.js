@@ -1,8 +1,8 @@
-import {View, Text} from 'react-native';
+import {View, } from 'react-native';
 import React, {useState} from 'react';
 import {List} from 'react-native-paper';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import {reduxForm, Field, } from 'redux-form';
+import {connect, } from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import {style} from '../../style/Guarantor_style';
 import DropDownPicker from '../../components/DropDownPicker';

@@ -49,7 +49,7 @@ export function getLoanMax(tokensource) {
                       ],
                       (tx, results) => {
                         insertedRows += results.rowsAffected;
-                        if (insertedRows === data.length) {
+                        if (insertedRows === response.data.length) {
                           // resolve('success');
                           resolve({response:'success',sizeInBytes})
                           console.log(

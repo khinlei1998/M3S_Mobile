@@ -1,12 +1,12 @@
-import { View, Text } from 'react-native';
+import { View, } from 'react-native';
 import React, { useState } from 'react';
 import { List } from 'react-native-paper';
 import { style } from '../../style/Guarantor_style';
 import TextInputFile from '../../components/TextInputFile';
-import { connect, useDispatch } from 'react-redux';
+import { connect, } from 'react-redux';
 import DropDownPicker from '../../components/DropDownPicker';
 import DatePicker from '../../components/DatePicker';
-import { reduxForm, Field, change, reset } from 'redux-form';
+import { reduxForm, Field, } from 'redux-form';
 import {
   gender,
   address_type,

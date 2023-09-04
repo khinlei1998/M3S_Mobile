@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   FlatList,
+  ToastAndroid
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import DividerLine from '../../components/DividerLine';
@@ -296,6 +297,7 @@ function Group_Loan_Form(props) {
     await storeGroupData(data).then(result => {
       if (result == 'success') {
         dispatch(setBorrowerMap_Path(''));
+        ToastAndroid.show('Group Loan Application added successfully.', ToastAndroid.SHORT);
         props.navigation.navigate('Home');
       }
     });

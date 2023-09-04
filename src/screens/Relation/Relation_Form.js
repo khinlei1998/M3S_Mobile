@@ -290,7 +290,6 @@ function Relation_Form(props) {
       son_daughter_yn: values.relation_name == 5 ? '1' : '',
       husband_wife_yn: values.relation_name == 4 ? '1' : '',
     });
-    console.log('add_relation_data', add_relation_data);
 
     try {
       // Save the images
@@ -490,7 +489,7 @@ function Relation_Form(props) {
       if (!saveImageError) {
         await storeRelation(add_relation_data).then(result => {
           if (result == 'success') {
-            ToastAndroid.show('Create Successfully!', ToastAndroid.SHORT);
+            ToastAndroid.show('Relationship Form added successfully.', ToastAndroid.SHORT);
             navigation.goBack();
           }
         });

@@ -1,26 +1,11 @@
 import {
   View,
-  Text,
-  ScrollView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  FlatList,
-  TouchableHighlight,
-  ToastAndroid,
-  TouchableOpacity,
 } from 'react-native';
-import React, {useState, useEffect, createRef} from 'react';
-import DividerLine from '../../components/DividerLine';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import React, {useState,} from 'react';
+import {reduxForm, Field,} from 'redux-form';
+import {connect} from 'react-redux';
 import {
-  Button,
-  RadioButton,
   List,
-  Provider,
-  Portal,
-  Modal,
-  TextInput,
 } from 'react-native-paper';
 import {style} from '../../style/Area_Evaluation_style';
 import TextInputFile from '../../components/TextInputFile';

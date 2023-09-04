@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {connection_name} from '../common';
+import { connection_name } from '../common';
 
 export const getNRC_info = tokensource => {
   return new Promise(async (resolve, reject) => {
@@ -20,6 +20,7 @@ export const getNRC_info = tokensource => {
             const sizeInBytes = response.headers['content-length'] || '0';
 
             if (response.data.length > 0) {
+              let insertedRows = 0;
               global.db.transaction(tx => {
                 response.data.forEach(item => {
                   tx.executeSql(
@@ -38,9 +39,12 @@ export const getNRC_info = tokensource => {
                       null,
                     ],
                     (tx, results) => {
-                      // If insert query succeeds, resolve the promise
-                      // resolve('success');
-                      resolve({response:'success',sizeInBytes})
+                      insertedRows += results.rowsAffected;
+                      if (insertedRows === response.data.length) {
+                        // If insert query succeeds, resolve the promise
+                        // resolve('success');
+                        resolve({ response: 'success', sizeInBytes })
+                      }
                     },
                     error => {
                       console.log('query ', error);

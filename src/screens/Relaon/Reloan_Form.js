@@ -263,7 +263,7 @@ const Borrower_modal = props => {
     await storeGroupData(data).then(result => {
       if (result == 'success') {
         ToastAndroid.show(
-          `Create Success!`,
+          `Reloan Application added successfully.`,
           ToastAndroid.SHORT,
         )
         props.navigation.navigate('Home');

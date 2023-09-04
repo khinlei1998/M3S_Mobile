@@ -1,8 +1,8 @@
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, TouchableOpacity, Image} from 'react-native';
 import React, {useState} from 'react';
 import {List} from 'react-native-paper';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import {reduxForm,} from 'redux-form';
+import {connect,} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {style} from '../../style/Group_Loan_style';
 import {useTranslation} from 'react-i18next';
@@ -14,10 +14,7 @@ function Edit_Group_Borrower_Map(props) {
   const handleBorrowerMapToggle = () => {
     setBorrowerMapExpanded(!borrower_map_expanded);
   };
-  const btnshowMap = async () => {
-    const user_id = await AsyncStorage.getItem('user_id');
-    navigation.navigate('Borrower Map', {all_loandata, user_id, p_type});
-  };
+  
   return (
     <List.Accordion
       expanded={borrower_map_expanded}
@@ -43,7 +40,6 @@ function Edit_Group_Borrower_Map(props) {
             <Image
               source={{
                 uri: `file://${map}`,
-                // uri: `file:///storage/emulated/0/Pictures/RNSketchCanvas/10M00172TB202306292SG01.jpg`,
               }}
               style={{height: 400}}
               resizeMode="contain"

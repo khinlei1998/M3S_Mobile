@@ -28,7 +28,7 @@ export default function DrawerContent(props) {
             }}
           />
           <DrawerItem
-            labelStyle={{ color: '#fff',fontSize:16 }}
+            labelStyle={{ color: '#fff',fontSize:20 }}
             icon={() => <Icon name="user" size={20} color="#fff" />} // Set the icon to an Ionicons icon
             label={t("Home")}
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
@@ -57,7 +57,7 @@ export default function DrawerContent(props) {
           />
 
           <DrawerItem
-            labelStyle={{ color: '#c7c7c7',fontSize:16 }}
+            labelStyle={{ color: '#c7c7c7',fontSize:20 }}
             label={t("New Loan Application")}
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
             icon={() => <Icon name="dollar-sign" size={20} color="#fff" />}
@@ -100,7 +100,7 @@ export default function DrawerContent(props) {
 
 
           <DrawerItem
-            labelStyle={{ color: '#fff',fontSize:16 }}
+            labelStyle={{ color: '#fff',fontSize:20 }}
             icon={() => <Icon name="refresh-cw" size={20} color="#fff" />} // Set the icon to an Ionicons icon
             label={t("Synchronization")}
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
@@ -108,7 +108,7 @@ export default function DrawerContent(props) {
           />
 
           <DrawerItem
-            labelStyle={{ color: '#fff',fontSize:16 }}
+            labelStyle={{ color: '#fff',fontSize:20 }}
             icon={() => <Icon name="log-out" size={20} color="#fff" />} // Set the icon to an Ionicons icon
             label={t("Logout")}
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent

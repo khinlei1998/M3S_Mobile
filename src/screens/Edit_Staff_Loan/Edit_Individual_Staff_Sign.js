@@ -1,7 +1,7 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { reduxForm, Field, change, reset } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import { reduxForm, } from 'redux-form';
+import { connect, } from 'react-redux';
 import moment from 'moment';
 import {useTranslation} from 'react-i18next';
 
@@ -35,7 +35,7 @@ function Edit_Individual_Staff_Sign(props) {
           <View>
             <View style={{ flexDirection: 'row' }}>
               <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-                Borrower Name
+                {t("Borrower Name")}
               </Text>
               <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
                 {borrower_name}
@@ -65,7 +65,6 @@ function Edit_Individual_Staff_Sign(props) {
                 </TouchableOpacity>
             )}
             {borrower_sign_path ? (
-              // <Text>kk</Text>
               <TouchableOpacity
                 onPress={() =>
                   update_status == true && setCanvas(!show_canvas)

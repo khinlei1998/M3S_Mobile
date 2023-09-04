@@ -1,9 +1,9 @@
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import React, {useState, useEffect, createRef} from 'react';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import {reduxForm,} from 'redux-form';
+import {connect, } from 'react-redux';
 import {style} from '../../style/Relation_style';
-import {List, Modal} from 'react-native-paper';
+import {List, } from 'react-native-paper';
  function Edit_Relation_Member_Sign(props) {
   const {relation_update_status}=props
   const [relation_sign_expanded, setRelationSignExpanded] = useState(true);
@@ -13,8 +13,6 @@ import {List, Modal} from 'react-native-paper';
   };
 
   const {
-    setCanvas,
-    show_canvas,
     signature2,
     signature1,
     signature3,
@@ -35,10 +33,8 @@ import {List, Modal} from 'react-native-paper';
     signature8_path,
     signature9_path,
     signature10_path,
-    btnShowBorrowerSign,
     handleButtonClick
   } = props;
-  console.log('relation_update_status',relation_update_status);
   const queryParam = `?timestamp=${Date.now()}`;
 
   return (

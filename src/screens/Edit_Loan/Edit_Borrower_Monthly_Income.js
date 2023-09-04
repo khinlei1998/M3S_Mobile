@@ -5,7 +5,6 @@ import {style} from '../../style/Individual_Loan_style';
 import TextInputFile from '../../components/TextInputFile';
 import {reduxForm, Field, change} from 'redux-form';
 import {connect, useDispatch} from 'react-redux';
-import {getAllLoanMax} from '../../query/LoanMax_query';
 import {
   totalIncome,
   totalExpense,
@@ -23,7 +22,6 @@ function Borrower_Monthly_Income(props) {
   const {t} = useTranslation();
   const {
     handleCalculate,
-    app_amount,
     totalIncome,
     total_income,
     total_expense,
@@ -38,7 +36,6 @@ function Borrower_Monthly_Income(props) {
     total_net_family,
     total_business_net_total,
     totalNetIncome,
-    totalLoanAmt,
     retrive_loan_data,
     loan_limit_amount,
     update_status
@@ -101,7 +98,6 @@ function Borrower_Monthly_Income(props) {
         (accumulator, currentValue) => accumulator + currentValue,
         0,
       );
-      console.log('sum', sum);
       totalExpense(sum);
 
       dispatch(
@@ -123,7 +119,6 @@ function Borrower_Monthly_Income(props) {
         (accumulator, currentValue) => accumulator + currentValue,
         0,
       );
-      console.log('sum', sum);
       totalExpense(sum);
       dispatch(
         change(
@@ -150,7 +145,6 @@ function Borrower_Monthly_Income(props) {
     // Check if the input is a valid number
     if (!isNaN(number)) {
       // Update the corresponding value in the values array
-      console.log('familyvalues', familyvalues);
       const newValues = [...familyvalues];
       newValues[index] = number;
       setFamilyValues(newValues);
@@ -186,7 +180,6 @@ function Borrower_Monthly_Income(props) {
         (accumulator, currentValue) => accumulator + currentValue,
         0,
       );
-      console.log('sum', sum);
       totalFamilyExpense(sum);
       dispatch(
         change(

@@ -6,6 +6,8 @@ import { loan_application_type } from '../../common';
 import { addInquiryLoanData } from '../../redux/LoanReducer';
 import { connect,  } from 'react-redux';
 import { reduxForm, } from 'redux-form';
+import { useTranslation } from 'react-i18next';
+
 function Reloan_list(props) {
   const { reloan_update_status, navigation, inquiry_reloan, all_loan, addInquiryLoanData } = props;
   const [Reloanlist_expand, setReloanListExpand] = useState(true);
@@ -13,6 +15,7 @@ function Reloan_list(props) {
     setReloanListExpand(!Coverlist_expand);
   };
   const p_type = 50;
+  const { t } = useTranslation();
   return (
     <>
       <List.Accordion
@@ -66,7 +69,7 @@ function Reloan_list(props) {
                 padding: 10,
                 fontWeight: 'bold',
               }}>
-              Loan Type
+             {t("Loan Type")}
             </Text>
             <Text
               style={{
@@ -75,7 +78,7 @@ function Reloan_list(props) {
                 padding: 10,
                 fontWeight: 'bold',
               }}>
-              Application No
+              {t("Application No")}
             </Text>
             <Text
               style={{
@@ -84,7 +87,7 @@ function Reloan_list(props) {
                 padding: 10,
                 fontWeight: 'bold',
               }}>
-              Borrower Name
+              {t("Borrower Name")}
             </Text>
 
             <Text
@@ -94,7 +97,7 @@ function Reloan_list(props) {
                 padding: 10,
                 fontWeight: 'bold',
               }}>
-              Application amount
+              {t("Application amount")}
             </Text>
 
             <Text

@@ -72,7 +72,6 @@ function Borrower_Sign(props) {
                 }>
                 <Image
                   source={{ uri: `file://${borrower_sign_path}${queryParam}` }}
-                  // source={{ uri: `data:image/png;base64,${show_borrower_sign}` }}
                   style={{ width: 100, height: 50 }}
                 />
               </TouchableOpacity>
@@ -80,7 +79,6 @@ function Borrower_Sign(props) {
               show_borrower_sign !== '' && (
                 <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
                   <Image
-                    // source={{uri: `file://${borrower_sign_path}`}}
                     source={{
                       uri: `data:image/png;base64,${show_borrower_sign}`,
                     }}
@@ -89,13 +87,6 @@ function Borrower_Sign(props) {
                 </TouchableOpacity>
               )
             )}
-            {/* <View style={{width: 300, height: 300,backgroundColor:'red'}}>
-            <SketchCanvas
-              style={{flex: 1}}
-              strokeColor="#000000"
-              strokeWidth={3}
-            />
-          </View> */}
           </View>
         </View>
 
@@ -154,7 +145,6 @@ function Borrower_Sign(props) {
               show_coborrower_sign !== '' && (
                 <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
                   <Image
-                    // source={{uri: `file://${borrower_sign_path}`}}
                     source={{
                       uri: `data:image/png;base64,${show_coborrower_sign}`,
                     }}

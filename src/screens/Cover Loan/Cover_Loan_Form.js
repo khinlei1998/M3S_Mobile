@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   FlatList,
+  ToastAndroid
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import DividerLine from '../../components/DividerLine';
@@ -12,7 +13,7 @@ import { operations } from '../../common';
 import Icon from 'react-native-vector-icons/Feather';
 import { Picker } from '@react-native-picker/picker';
 import { TextInput } from 'react-native-paper';
-import { reduxForm, Field, change, reset } from 'redux-form';
+import { reduxForm, change,  } from 'redux-form';
 import moment from 'moment';
 import { style } from '../../style/Cover_Loan_style';
 import {
@@ -256,7 +257,7 @@ function Cover_Loan_Form(props) {
   const [modalVisible, setModalVisible] = useState(false);
   const [all_cus, setAllCus] = useState([]);
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
-  const [all_loandata, setAllGroupLoanData] = useState([]);
+  const [ setAllGroupLoanData] = useState([]);
   const dispatch = useDispatch();
 
   const onSubmit = async values => {
@@ -266,6 +267,7 @@ function Cover_Loan_Form(props) {
     });
     await storeGroupData(data).then(result => {
       if (result == 'success') {
+        ToastAndroid.show(`Cover Loan Application added successfully.`, ToastAndroid.SHORT);
         props.navigation.navigate('Home');
       }
     });

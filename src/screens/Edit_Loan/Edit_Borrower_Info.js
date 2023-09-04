@@ -1,5 +1,5 @@
 import {View} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {List} from 'react-native-paper';
 import {reduxForm, Field, change} from 'redux-form';
 import {connect} from 'react-redux';

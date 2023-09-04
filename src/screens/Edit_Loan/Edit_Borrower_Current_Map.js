@@ -1,20 +1,20 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
-import {List} from 'react-native-paper';
-import {style} from '../../style/Individual_Loan_style';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
-import {useTranslation} from 'react-i18next';
+import { View, Image, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { List } from 'react-native-paper';
+import { style } from '../../style/Individual_Loan_style';
+import { reduxForm, } from 'redux-form';
+import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 function Borrower_Current_Map(props) {
-  const {navigation, map, borrower_map, has_borrower_map, update_status,retrive_loan_data} =
+  const { navigation, map, borrower_map, update_status, retrive_loan_data } =
     props;
   const [borrower_map_expanded, setBorrowerMapExpanded] = useState(true);
   const handleBorrowerMapToggle = () => {
     setBorrowerMapExpanded(!borrower_map_expanded);
   };
   const queryParam = `?timestamp=${Date.now()}`;
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <List.Accordion
       expanded={borrower_map_expanded}
@@ -26,7 +26,7 @@ function Borrower_Current_Map(props) {
         <TouchableOpacity
           onPress={() =>
             update_status == true
-              ? navigation.navigate('Edit Borrower Map', {application_no:retrive_loan_data.application_no})
+              ? navigation.navigate('Edit Borrower Map', { application_no: retrive_loan_data.application_no })
               : ''
           }>
           {map ? (
@@ -34,7 +34,7 @@ function Borrower_Current_Map(props) {
               source={{
                 uri: `file://${map}`,
               }}
-              style={{height: 400}}
+              style={{ height: 400 }}
               resizeMode="contain"
             />
           ) : borrower_map ? (
@@ -42,13 +42,13 @@ function Borrower_Current_Map(props) {
               source={{
                 uri: `file://${borrower_map}${queryParam}`,
               }}
-              style={{width: '100%', height: 400}}
+              style={{ width: '100%', height: 400 }}
               resizeMode="contain"
             />
           ) : (
             <Image
               source={require('../../../assets/images/default-sign.png')}
-              style={{width: '100%', height: 200}}
+              style={{ width: '100%', height: 200 }}
             />
           )}
         </TouchableOpacity>

@@ -971,7 +971,7 @@ function Edit_Emp_Info(props) {
       if (show_operation == '4') {
         await deleteCustomer_ByID(values.id).then(response => {
           if (response == 'success') {
-            alert('Delete Success');
+            alert('Customer deleted successfully.');
             setUpdateStatus(false);
             props.navigation.navigate('Home');
           }
@@ -990,7 +990,7 @@ function Edit_Emp_Info(props) {
           } else {
             await updateCustomerData(data).then(result => {
               if (result == 'success') {
-                alert('Update Success');
+                alert('Customer updated successfully.');
                 setUpdateStatus(false);
 
                 dispatch(reset('Customer_ManagementForm'));

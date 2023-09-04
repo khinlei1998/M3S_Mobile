@@ -487,7 +487,7 @@ function Guarantor_Form(props) {
         });
         await storeGuarantor(guarantor_form_data).then(result => {
           if (result == 'success') {
-            ToastAndroid.show('Create Successfully!', ToastAndroid.SHORT);
+            ToastAndroid.show('Guarantor Form added successfully.', ToastAndroid.SHORT);
             navigation.goBack();
           }
         });

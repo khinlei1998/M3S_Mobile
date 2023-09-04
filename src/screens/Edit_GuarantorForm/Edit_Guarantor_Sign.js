@@ -1,9 +1,9 @@
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import React from 'react';
-import {reduxForm, Field, change} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import { reduxForm, } from 'redux-form';
+import { connect, } from 'react-redux';
 import moment from 'moment';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 function Edit_Guarantor_Sign(props) {
   const {
@@ -16,13 +16,13 @@ function Edit_Guarantor_Sign(props) {
     retrive_guarantor_data
   } = props;
   const queryParam = `?timestamp=${Date.now()}`;
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const btnShowBorrowerSign = () => {
     setCanvas(!show_canvas);
   };
   return (
     <>
-      <View style={{flex: 1, padding: 5, margin: 20}}>
+      <View style={{ flex: 1, padding: 5, margin: 20 }}>
         <View
           style={{
             flexDirection: 'row',
@@ -31,8 +31,8 @@ function Edit_Guarantor_Sign(props) {
             margin: 10,
           }}>
           <View>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={{fontWeight: 'bold', fontSize: 15}}>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
                 {t('Guarantor Name')}
               </Text>
               <Text
@@ -49,15 +49,15 @@ function Edit_Guarantor_Sign(props) {
           </View>
 
           <View>
-            <Text style={{fontWeight: 'bold', fontSize: 15}}>Sign</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Sign</Text>
             {borrower_sign_path == '' && show_borrower_sign == '' ? (
               <TouchableOpacity
                 onPress={() =>
-                  guarantor_update_status ==true ?setCanvas(!show_canvas) :''
+                  guarantor_update_status == true ? setCanvas(!show_canvas) : ''
                 }>
                 <Image
                   source={require('../../../assets/images/default-sign.png')}
-                  style={{width: 100, height: 50}}
+                  style={{ width: 100, height: 50 }}
                 />
               </TouchableOpacity>
             ) : borrower_sign_path && show_borrower_sign == '' ? (
@@ -69,7 +69,7 @@ function Edit_Guarantor_Sign(props) {
                   source={{
                     uri: `file:///storage/emulated/0/Pictures/Signature/${borrower_sign_path}${queryParam}`,
                   }}
-                  style={{width: 100, height: 50}}
+                  style={{ width: 100, height: 50 }}
                 />
               </TouchableOpacity>
             ) : (
@@ -83,7 +83,7 @@ function Edit_Guarantor_Sign(props) {
                     source={{
                       uri: `data:image/png;base64,${show_borrower_sign}`,
                     }}
-                    style={{width: 100, height: 50}}
+                    style={{ width: 100, height: 50 }}
                   />
                 </TouchableOpacity>
               )

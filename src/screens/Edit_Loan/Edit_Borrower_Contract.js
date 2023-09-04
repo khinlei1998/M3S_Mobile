@@ -5,7 +5,7 @@ import { style } from '../../style/Individual_Loan_style';
 import { useTranslation } from 'react-i18next';
 
 export default function Borrower_Contract() {
-  const { t, i18n } = useTranslation();
+  const { t, } = useTranslation();
   const [borrower_contract_expanded, setBorrowerContractExpanded] =
     useState(true);
 

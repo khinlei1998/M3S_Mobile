@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 import React, { useState, useEffect, createRef } from 'react';
 import DividerLine from '../../components/DividerLine';
-import { reduxForm, Field, change, reset } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
+import { reduxForm, Field,} from 'redux-form';
+import { connect, } from 'react-redux';
 import RNFS from 'react-native-fs';
 import { Button, RadioButton, List, Modal } from 'react-native-paper';
 import { operations,  } from '../../common';
@@ -212,7 +212,6 @@ function Edit_Relation_Form(props) {
             saveImageFileInExtStorage
             minStrokeWidth={10}
             maxStrokeWidth={10}
-            // backgroundColor="transparent"
             viewMode={'portrait'}
           />
           <View style={{ flexDirection: 'row' }}>
@@ -313,11 +312,9 @@ function Edit_Relation_Form(props) {
 
         await Promise.all(deleteFilePromises);
 
-        console.log('All files deleted');
-
         await deleteRelation_ByID(values.relation_no).then(response => {
           if (response === 'success') {
-            alert('Delete Success');
+            alert('Relationship Form deleted successfully.');
             navigation.goBack();
           }
         });
@@ -339,7 +336,6 @@ function Edit_Relation_Form(props) {
         let borrowerImagePath;
         let coBorrowerImagePath;
         let saveImageError = false;
-        console.log('signature5', signature5);
         if (signature1) {
           SignatureImagePath = await saveSignatureToInternalStorage(
             signature1,
@@ -561,7 +557,7 @@ function Edit_Relation_Form(props) {
         if (!saveImageError) {
           await UpdateRelation(relation_data).then(result => {
             if (result == 'success') {
-              ToastAndroid.show('Update Successfully!', ToastAndroid.SHORT);
+              ToastAndroid.show('Relationship Form updated successfully.', ToastAndroid.SHORT);
               navigation.goBack();
             }
           });
@@ -579,8 +575,7 @@ function Edit_Relation_Form(props) {
   const _onSaveEvent = async result => {
     // Extract the signature image data from the result
     const { pathName, encoded } = result;
-    console.log('Path name:', pathName);
-    switch (modalContent) {
+     switch (modalContent) {
       case 'btn1':
         setSignature1(encoded);
         setSignature1Path(pathName);

@@ -1,16 +1,15 @@
-import { View, Text, TouchableOpacity, LogBox } from 'react-native';
+import { View, Text, TouchableOpacity, } from 'react-native';
 import React, { useState } from 'react';
 import { List, Button } from 'react-native-paper';
 import { style } from '../../style/Cover_Loan_style';
 import { loan_application_type } from '../../common';
-import { reduxForm, Field, change, reset } from 'redux-form';
+import { reduxForm, } from 'redux-form';
 import { addInquiryLoanData } from '../../redux/LoanReducer';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 
 function Edit_Cover_Loan_list(props) {
   const [Coverlist_expand, setCoverListExpand] = useState(true);
   const { inquiry_cover_loan, navigation, all_loan, addInquiryLoanData, cover_update_status } = props;
-  console.log('inquiry_cover_loan', inquiry_cover_loan);
   const handleCoverListToggle = () => {
     setCoverListExpand(!Coverlist_expand);
   };

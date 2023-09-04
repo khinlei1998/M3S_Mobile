@@ -497,7 +497,7 @@ const Cus_No_Search_modal = props => {
                   padding: 10,
                   fontWeight: 'bold',
                 }}>
-              {t('Employee Name')}
+                {t('Employee Name')}
               </Text>
 
               <Text
@@ -977,14 +977,11 @@ function Individual_Staff_loan_Info(props) {
           loan_limit_amt: loan_limit_amount,
           product_type: '20',
         });
-
-        console.log('staff_loan', staff_loan);
-
         await storeStaffLoanData(staff_loan).then(result => {
           if (result == 'success') {
             dispatch(reset('Individual_Staff_Loan_Form'));
 
-            ToastAndroid.show('Create Successfully!', ToastAndroid.SHORT);
+            ToastAndroid.show('Individual Staff Loan Application added successfully.', ToastAndroid.SHORT);
             props.navigation.navigate('Home');
           }
         });
