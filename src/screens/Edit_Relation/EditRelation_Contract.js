@@ -5,6 +5,8 @@ import { List } from 'react-native-paper';
 import { reduxForm,} from 'redux-form';
 import { connect,} from 'react-redux';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
+
 function Edit_Relation_Contract(props) {
   const {
     coborrower_sign_path,
@@ -19,6 +21,7 @@ function Edit_Relation_Contract(props) {
     relation_name,
     retrive_relation_data
   } = props;
+  const { t } = useTranslation();
   const queryParam = `?timestamp=${Date.now()}`;
   const [relation_contract_expanded, setRelationContractExpanded] =
     useState(true);
@@ -41,23 +44,23 @@ function Edit_Relation_Contract(props) {
               justifyContent: 'space-between',
             }}>
             <Text style={{ fontWeight: 'bold' }}>
-              My Name<Text style={{ color: '#A1B5DC' }}>{retrive_relation_data.borrower_name} , address,</Text>
+              {t("My Name")}<Text style={{ color: '#A1B5DC' }}>{retrive_relation_data.borrower_name} , {t("address")},</Text>
               <Text style={{ color: '#A1B5DC' }}>{retrive_relation_data.addr}{'\n'}</Text>
             </Text>
             <Text style={{ fontWeight: 'bold' }}>
-              holding egistration number
+              {t("holding registration number")}
               <Text style={{ color: '#A1B5DC' }}>{retrive_relation_data.resident_rgst_id}{'\n'}</Text>
             </Text>
             <Text style={{ fontWeight: 'bold' }}>
-              and the Co-borrower
+              {t("and the Co-borrower")}
               <Text style={{ color: '#A1B5DC' }}>{retrive_relation_data.co_brwer_name},{'\n'}</Text>
             </Text>
             <Text style={{ fontWeight: 'bold' }}>
-              Register Number
+              {t("registration number")}
               <Text style={{ color: '#A1B5DC' }}>{retrive_relation_data.co_brwer_rgst_id},{'\n'}</Text>
             </Text>
             <Text style={{ fontWeight: 'bold' }}>
-              are promise to be directly related in the following form
+              {t("are promise to be directly related in the following form")}
             </Text>
           </View>
           <View
@@ -70,7 +73,7 @@ function Edit_Relation_Contract(props) {
             <View>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-                  Borrower Name
+                  {t("Borrower Name")}
                 </Text>
                 <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
                   {retrive_relation_data.borrower_name}
@@ -201,16 +204,13 @@ function Edit_Relation_Contract(props) {
             </View>
           </View>
           <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-            The co-borrower is responsible for repaying the loan if it fails to
-            do so.{'\n'}
+            {t("The co-borrower is responsible for repaying the loan if it fails to do so.")}{'\n'}
           </Text>
           <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-            The above-mentioned borrower and co-borrower are responsible for
-            compliance with the terms and conditions of the contract by
-            confirming that the above-mentioned{'\n'}{' '}
+            {t("The above-mentioned borrower and co-borrower are responsible for compliance with the terms and conditions of the contract by confirming that the above-mentioned")}{'\n'}{' '}
           </Text>
           <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-            {relation_name} relationship is correct
+            {relation_name} {t("relationship is correct")}
           </Text>
         </View>
       </List.Accordion>

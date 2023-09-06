@@ -42,7 +42,7 @@ export default function Relation_Contract(props) {
               justifyContent: 'space-between',
             }}>
             <Text style={{ fontWeight: 'bold' }}>
-              {t("My Name")}<Text style={{ color: '#A1B5DC' }}>{retrive_loan_data.borrower_name} , address,</Text>
+              {t("My Name")}<Text style={{ color: '#A1B5DC' }}>{retrive_loan_data.borrower_name} , {t("address")},</Text>
               <Text style={{ color: '#A1B5DC' }}>{retrive_loan_data.addr}{'\n'}</Text>
             </Text>
             <Text style={{ fontWeight: 'bold' }}>
@@ -56,7 +56,7 @@ export default function Relation_Contract(props) {
               },{'\n'}</Text>
             </Text>
             <Text style={{ fontWeight: 'bold' }}>
-              {t("Register Number")}
+              {t("registration number")}
               <Text style={{ color: '#A1B5DC' }}>{retrive_loan_data.co_brwer_rgst_id
               },{'\n'}</Text>
             </Text>
@@ -74,7 +74,7 @@ export default function Relation_Contract(props) {
             <View>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-                  Borrower Name
+                  {t("Borrower Name")}
                 </Text>
                 <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
                   {retrive_loan_data.borrower_name}

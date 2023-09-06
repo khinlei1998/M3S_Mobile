@@ -1,17 +1,18 @@
-import { View, Text, TouchableWithoutFeedback, Keyboard, } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, Keyboard,TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { cus_filter_item } from '../../common';
 import ViewCustomer from './ViewCustomer';
 import { TextInput, } from 'react-native-paper';
 import { filterCustomer } from '../../query/Customer_query';
 import { Picker } from '@react-native-picker/picker';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
+import Icon from 'react-native-vector-icons/Feather';
 
 export default function CustomerSearch(props) {
   const { navigation } = props;
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const [all_customer, setAllCustomer] = useState([]);
   const [selectedItemValue, setSelectedItemValue] = useState('customer_nm');
@@ -83,6 +84,9 @@ export default function CustomerSearch(props) {
             />
           </View>
         </View>
+        <TouchableOpacity onPress={() => navigation.navigate(t('Home'))}>
+          <Icon name="home" size={30} color="#fff" />
+        </TouchableOpacity>
         <ViewCustomer customer_data={all_customer} navigation={navigation} setLoading={setLoading} loading={loading} />
 
       </View>

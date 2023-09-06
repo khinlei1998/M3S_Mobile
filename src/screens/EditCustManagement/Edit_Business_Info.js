@@ -162,6 +162,7 @@ function Edit_Business_Info(props) {
                     component={DatePicker}
                     label={'Select Business Start Date'}
                     editable={update_status == true ? false : true}
+                    icon={update_status == true && 'calendar'}
                   />
                 )}
                 <View>

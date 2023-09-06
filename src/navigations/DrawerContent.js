@@ -57,7 +57,7 @@ export default function DrawerContent(props) {
           />
 
           <DrawerItem
-            labelStyle={{ color: '#c7c7c7',fontSize:20 }}
+            labelStyle={{ color: '#fff',fontSize:20 }}
             label={t("New Loan Application")}
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
             icon={() => <Icon name="dollar-sign" size={20} color="#fff" />}

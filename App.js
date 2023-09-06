@@ -19,6 +19,9 @@ import {
 import RNFS from 'react-native-fs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Customer_Management from './src/screens/CustomerManagement/Customer_Management';
+import Synchronization_Screen from './src/screens/Synchronization/Synchronization_Screen'
+import CustomerSearch from './src/screens/Customer/CustomerSearch';
+import Edit_Emp_Info from './src/screens/EditCustManagement/Edit_Emp_Info';
 export default function App() {
   const [show_splash, showSplash] = useState(true);
   const [userID, setUserID] = React.useState(null);
@@ -90,7 +93,8 @@ export default function App() {
   useEffect(() => {
     const saveIp = async user_id => {
       try {
-        await AsyncStorage.setItem('ip', '192.168.177.107');
+        await AsyncStorage.setItem('ip', '99c9-2a09-bac5-492a-1028-00-19c-161.ngrok-free.app');
+        // await AsyncStorage.setItem('ip', '192.168.177.107');
         await AsyncStorage.setItem('port', '80');
       } catch (e) {
         console.log('error ::', e);
@@ -106,6 +110,14 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
+  const HomeDrawer = () => {
+    return (
+      <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Screen name="Home" component={HomeScreen} />
+      </Drawer.Navigator>
+    );
+  };
+  console.log('reach????????????????');
   return (
     <Provider store={store}>
       {/* <NavigationContainer>
@@ -126,13 +138,9 @@ export default function App() {
         {show_splash ? (
           <SplashScreen />
         ) : (
-           <Stack.Navigator initialRouteName="Login">
+          <Stack.Navigator initialRouteName="Login">
+
             {/* <Stack.Screen
-              name="Customer_Management"
-              component={Customer_Management}
-              options={{ headerShown: false }}
-            /> */}
-            <Stack.Screen
               name="Login"
               component={LoginScreen}
               options={{ headerShown: false }}
@@ -146,7 +154,8 @@ export default function App() {
               name="Splash"
               component={SplashScreen}
               options={{ headerShown: false }}
-            />
+            /> */}
+
             <Stack.Screen
               name="Home"
               component={RootNavigation}

@@ -601,7 +601,7 @@ const Borrower_modal = props => {
                   marginTop: 10,
                   color: 'black',
                   marginLeft: 5,
-                  height:44
+                  height: 44
                 }}>
                 {t("OK")}
               </Button>
@@ -850,7 +850,7 @@ const CoBorrower_modal = props => {
                   marginTop: 10,
                   color: 'black',
                   marginLeft: 5,
-                  height:44
+                  height: 44
                 }}>
                 {t("OK")}
               </Button>
@@ -1559,10 +1559,10 @@ function Edit_Individual_Loan(props) {
     });
   };
   const saveSign = async () => {
-   await sign.current.saveImage();
+    await sign.current.saveImage();
   };
   const co_borrower_saveSign = async () => {
-   await co_borrower_sign.current.saveImage();
+    await co_borrower_sign.current.saveImage();
   };
 
   const resetSign = () => {
@@ -2064,7 +2064,7 @@ function Edit_Individual_Loan(props) {
                         style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name="check" size={20} color="#ede72d" />
                         <Text style={{ color: '#fff', marginLeft: 5 }}>
-                         {t('Area Evaluation Form')}
+                          {t('Area Evaluation Form')}
                         </Text>
                       </View>
                     </View>

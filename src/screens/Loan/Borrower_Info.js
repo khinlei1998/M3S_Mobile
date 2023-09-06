@@ -270,6 +270,7 @@ function Borrower_Info(props) {
                 title={'Ward Name '}
                 component={TextInputFile}
                 input_mode
+                editable
                 inputmax={100}
               />
             </View>

@@ -1,11 +1,11 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from '../screens/Dashboard/Home';
 import Customer_Management from '../screens/CustomerManagement/Customer_Management';
 import CustomerSearch from '../screens/Customer/CustomerSearch';
 import Icon from 'react-native-vector-icons/Feather';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Edit_Emp_Info from '../screens/EditCustManagement/Edit_Emp_Info';
 import Synchronization_Screen from '../screens/Synchronization/Synchronization_Screen';
 import Individual_Loan from '../screens/Loan/Individual_Loan';
@@ -31,39 +31,26 @@ import Reloan_Form from '../screens/Relaon/Reloan_Form';
 import Edit_Reloan_Form from '../screens/Edit_Relaon/Edit_Reloan_Form';
 import Survey from '../screens/Survey/Survey';
 import Passport from '../screens/Passport/Passport';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import LoginScreen from '../screens/Login/LoginScreen';
 const Stack = createNativeStackNavigator();
 
 export default function NavigatorView(props) {
   const navigation = useNavigation();
-  const {t} = useTranslation();
-  const headerLeftComponentMenu = () => {
-    return (
-      <Icon
-        name="align-justify"
-        size={20}
-        color="#FFF"
-        onPress={() => navigation.openDrawer()}
-      />
-      // <></>
-    );
-  };
+  const { t } = useTranslation();
+  // const headerLeftComponentMenu = () => {
+  //   return (
+  //     <Icon
+  //       name="align-justify"
+  //       size={20}
+  //       color="#FFF"
+  //       onPress={() => navigation.openDrawer()}
+  //     />
+  //     // <></>
+  //   );
+  // };
   const StackNavigationData = [
-    // {
-    //   name: t('Login'),
-    //   component: LoginScreen,
-    //   headerShown: false,
-    //   // headerLeft: headerLeftComponent,
-    //   // headerTitleStyle: {
-    //   //   color: '#FFF',
-    //   //   fontSize: 18,
-    //   // },
-    //   options: {
-    //     headerShown: false, // Hide the header
-    //     drawerLabel: () => null, // Hide the drawer label
-    //   },
-    // },
+
     {
       name: t('Home'),
       component: Home,
@@ -72,7 +59,14 @@ export default function NavigatorView(props) {
         fontSize: 18,
       },
     },
-
+    {
+      name: t('Login'),
+      component: LoginScreen,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
     {
       name: t('Synchronization'),
       component: Synchronization_Screen,
@@ -324,9 +318,10 @@ export default function NavigatorView(props) {
     //login
   ];
   const renderRightIcon = () => {
+    console.log('prfops', props.navigation.navigate);
     // Customize this function to render the right icon as you wish
     return (
-      <TouchableOpacity onPress={() => props.navigation.navigate('Home')}>
+      <TouchableOpacity onPress={() => props.navigation.navigate(t('Home'))}>
         <Icon name="home" size={30} color="#fff" />
       </TouchableOpacity>
     );
@@ -345,12 +340,12 @@ export default function NavigatorView(props) {
             title: item.title,
             headerTitle: item.title, // Use headerTitle instead of title
 
-            headerLeft: item.headerLeft || headerLeftComponentMenu,
+            headerLeft: item.headerLeft,
             headerRight: renderRightIcon, // Add the custom icon to the right
 
             headerTintColor: '#FFF',
             headerTitleStyle: item.headerTitleStyle,
-            headerStyle: {backgroundColor: '#273050'},
+            headerStyle: { backgroundColor: '#273050' },
           }}
         />
       ))}

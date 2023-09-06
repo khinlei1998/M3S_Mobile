@@ -1,38 +1,38 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, FlatList} from 'react-native';
-import {Button, Modal, ActivityIndicator} from 'react-native-paper';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { Button, Modal, ActivityIndicator } from 'react-native-paper';
 import Tab from '../../components/Tab';
 import Sync_Upload_Screen from './Sync_Upload_Screen';
 import Sync_Download_Screen from './Sync_Download_Screen';
 import Sync_Setting_Screen from './Sync_Setting_Screen';
-import {fetchAllCustomerNum} from '../../query/Customer_query';
-import {UploadCustomerData} from '../../query/Customer_query';
-import {fetchDataForCheckedData} from '../../query/AllLoan_query';
+import { fetchAllCustomerNum } from '../../query/Customer_query';
+import { UploadCustomerData } from '../../query/Customer_query';
+import { fetchDataForCheckedData } from '../../query/AllLoan_query';
 import Icon from 'react-native-vector-icons/Feather';
-import {get_loged_branch_code} from '../../query/Employee_query';
+import { get_loged_branch_code } from '../../query/Employee_query';
 import Spinner from 'react-native-loading-spinner-overlay';
-import {getAllLoanType} from '../../query/AllLoan_query';
-import {getSurveyResult} from '../../query/SurveyItem_query';
-import {UploadSurveyData} from '../../query/SurveyItem_query';
-import {useNetInfo} from '@react-native-community/netinfo';
-import {cancelRequest} from '../../components/CancelUtils';
-import {createCancelTokenSource} from '../../components/CancelUtils';
-import {useTranslation} from 'react-i18next';
+import { getAllLoanType } from '../../query/AllLoan_query';
+import { getSurveyResult } from '../../query/SurveyItem_query';
+import { UploadSurveyData } from '../../query/SurveyItem_query';
+import { useNetInfo } from '@react-native-community/netinfo';
+import { cancelRequest } from '../../components/CancelUtils';
+import { createCancelTokenSource } from '../../components/CancelUtils';
+import { useTranslation } from 'react-i18next';
 import moment from 'moment';
-import {getEemployee_info} from '../../query/Employee_query';
-import {getCustomer_info} from '../../query/Customer_query';
-import {getNRC_info} from '../../query/NRCinfo_query';
-import {getSurvey_Item} from '../../query/SurveyItem_query';
-import {getLoanMax} from '../../query/LoanMax_query';
-import {getCodeInfo} from '../../query/CodeInfo_quey';
-import {get_Village} from '../../query/Village_query';
-import {get_Township} from '../../query/Township_query';
-import {get_Ward} from '../../query/Ward_query';
+import { getEemployee_info } from '../../query/Employee_query';
+import { getCustomer_info } from '../../query/Customer_query';
+import { getNRC_info } from '../../query/NRCinfo_query';
+import { getSurvey_Item } from '../../query/SurveyItem_query';
+import { getLoanMax } from '../../query/LoanMax_query';
+import { getCodeInfo } from '../../query/CodeInfo_quey';
+import { get_Village } from '../../query/Village_query';
+import { get_Township } from '../../query/Township_query';
+import { get_Ward } from '../../query/Ward_query';
 let token;
 
 export default function Synchronization_Screen(props) {
-  const {t} = useTranslation();
-  const {navigation} = props;
+  const { t } = useTranslation();
+  const { navigation } = props;
   const [activeTab, setActiveTab] = React.useState(0);
   const [loan_data, setAllLoan] = React.useState([]);
   const [branch_code, setBranchCode] = React.useState('');
@@ -55,7 +55,7 @@ export default function Synchronization_Screen(props) {
       id: 1,
       name: 'Employees',
       size: '0KB',
-      last_sync_data: moment().format('lll'),
+      last_sync_data: '-',
       checked: false,
       api: getEemployee_info,
     },
@@ -63,7 +63,7 @@ export default function Synchronization_Screen(props) {
       id: 2,
       name: 'Survey Items',
       size: '0KB',
-      last_sync_data: moment().format('lll'),
+      last_sync_data: '-',
       checked: false,
       api: getSurvey_Item,
     },
@@ -71,7 +71,7 @@ export default function Synchronization_Screen(props) {
       id: 3,
       name: 'Loan max limit',
       size: '0KB',
-      last_sync_data: moment().format('lll'),
+      last_sync_data: '-',
       checked: false,
       api: getLoanMax,
     },
@@ -79,7 +79,7 @@ export default function Synchronization_Screen(props) {
       id: 4,
       name: 'Codes',
       size: '0KB',
-      last_sync_data: moment().format('lll'),
+      last_sync_data: '-',
       checked: false,
       api: getCodeInfo,
     },
@@ -87,7 +87,7 @@ export default function Synchronization_Screen(props) {
       id: 5,
       name: 'Customer',
       size: '0KB',
-      last_sync_data: moment().format('lll'),
+      last_sync_data: '-',
       checked: false,
       api: getCustomer_info,
     },
@@ -95,7 +95,7 @@ export default function Synchronization_Screen(props) {
       id: 6,
       name: 'NRC Info',
       size: '0KB',
-      last_sync_data: moment().format('lll'),
+      last_sync_data: '-',
       checked: false,
       api: getNRC_info,
     },
@@ -103,7 +103,7 @@ export default function Synchronization_Screen(props) {
       id: 7,
       name: 'Village',
       size: '0KB',
-      last_sync_data: moment().format('lll'),
+      last_sync_data: '-',
       checked: false,
       api: get_Village,
     },
@@ -111,7 +111,7 @@ export default function Synchronization_Screen(props) {
       id: 8,
       name: 'Township',
       size: '0KB',
-      last_sync_data: moment().format('lll'),
+      last_sync_data: '-',
       checked: false,
       api: get_Township,
     },
@@ -119,7 +119,7 @@ export default function Synchronization_Screen(props) {
       id: 9,
       name: 'Ward',
       size: '0KB',
-      last_sync_data: moment().format('lll'),
+      last_sync_data: '-',
       checked: false,
       api: get_Ward,
     },
@@ -251,7 +251,7 @@ export default function Synchronization_Screen(props) {
     setShowModal(false);
   };
 
-  const error_log = ({item, index}) => {
+  const error_log = ({ item, index }) => {
     return (
       <View
         style={{
@@ -278,7 +278,7 @@ export default function Synchronization_Screen(props) {
     );
   };
 
-  const cus_error_log = ({item, index}) => {
+  const cus_error_log = ({ item, index }) => {
     return (
       <View
         style={{
@@ -332,9 +332,9 @@ export default function Synchronization_Screen(props) {
         setShowModal(true);
         token = await createCancelTokenSource(); // Create a new cancel token source
 
-        const {response, sizeInBytes} = await executeRequest(checkitem);
+        const { response, sizeInBytes } = await executeRequest(checkitem);
         // Calculate size in kilobytes for the current item
-        const sizeInKilobytes = bytesToKilobytes(sizeInBytes);
+        const sizeInKilobytes = bytesToKilobytes(sizeInBytes).toFixed(2);
         console.log('sizeInKilobytes', sizeInKilobytes);
         count++;
         // const updatedDownloadData = download_data.map(item => {
@@ -349,7 +349,7 @@ export default function Synchronization_Screen(props) {
         // });
         for (let i = 0; i < download_data.length; i++) {
           if (download_data[i].id == checkitem.id) {
-            download_data[i]['size'] = sizeInKilobytes+'KB';
+            download_data[i]['size'] = sizeInKilobytes + 'KB';
             download_data[i]['last_sync_data'] = moment().format('lll');
           }
         }
@@ -380,8 +380,8 @@ export default function Synchronization_Screen(props) {
 
   const executeRequest = async item => {
     try {
-      const {response, sizeInBytes} = await item.api(token);
-      return {response, sizeInBytes};
+      const { response, sizeInBytes } = await item.api(token);
+      return { response, sizeInBytes };
     } catch (error) {
       throw error; // If a request fails, propagate the error up the chain
     }
@@ -389,20 +389,20 @@ export default function Synchronization_Screen(props) {
 
   return (
     <>
-      <Text style={{fontWeight: 'bold', fontSize: 20, padding: 15}}>
+      <Text style={{ fontWeight: 'bold', fontSize: 20, padding: 15 }}>
         Synchronization
       </Text>
 
-      <Text style={{fontSize: 15, padding: 5, marginLeft: 10}}>
+      <Text style={{ fontSize: 15, padding: 5, marginLeft: 10 }}>
         Synchronization is the coordination of events to operate a system in
         union
       </Text>
-      <View style={{flexDirection: 'row', marginLeft: 10, marginRight: 10}}>
+      <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10 }}>
         <Tab
           label="Upload"
           isActive={activeTab === 0}
           onPress={() => handleTabPress(0)}>
-          <View style={{backgroundColor: '#fff'}}>
+          <View style={{ backgroundColor: '#fff' }}>
             <Text>Upload Applications</Text>
           </View>
         </Tab>
@@ -418,7 +418,7 @@ export default function Synchronization_Screen(props) {
         />
       </View>
 
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
+      <View style={{ flex: 1, backgroundColor: '#fff' }}>
         {activeTab === 0 && (
           <Sync_Upload_Screen
             btnUploadCustomer={btnUploadCustomer}
@@ -457,7 +457,7 @@ export default function Synchronization_Screen(props) {
           height: '70%',
           alignSelf: 'center',
         }}>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <View
             style={{
               backgroundColor: '#e01b22',
@@ -540,7 +540,7 @@ export default function Synchronization_Screen(props) {
           </TouchableOpacity>
         </View>
 
-        <View style={{padding: 5, backgroundColor: '#e01b22'}}>
+        <View style={{ padding: 5, backgroundColor: '#e01b22' }}>
           <View
             style={{
               backgroundColor: '#e6ebe7',
@@ -560,7 +560,7 @@ export default function Synchronization_Screen(props) {
         visible={show_modal}
         // onDismiss={hidePgModal}
         contentContainerStyle={containerStyle}>
-        <View style={{padding: 10, height: 150}}>
+        <View style={{ padding: 10, height: 150 }}>
           <View
             style={{
               flex: 1,
@@ -571,9 +571,9 @@ export default function Synchronization_Screen(props) {
               padding: 8,
             }}>
             {/* <Animated.Text>{fetchedCount}</Animated.Text> */}
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <ActivityIndicator size="15" color="#636Dc6" />
-              <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 10}}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 10 }}>
                 {fetchName} is downloading..
               </Text>
             </View>
@@ -594,7 +594,7 @@ export default function Synchronization_Screen(props) {
         </View>
       </Modal>
 
-      <View style={{position: 'absolute', top: '50%', right: 0, left: 0}}>
+      <View style={{ position: 'absolute', top: '50%', right: 0, left: 0 }}>
         {isLoading ? (
           <Spinner visible={isLoading} textContent={'Please Wait'} />
         ) : (
