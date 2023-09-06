@@ -110,14 +110,6 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  const HomeDrawer = () => {
-    return (
-      <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen name="Home" component={HomeScreen} />
-      </Drawer.Navigator>
-    );
-  };
-  console.log('reach????????????????');
   return (
     <Provider store={store}>
       {/* <NavigationContainer>
@@ -138,9 +130,11 @@ export default function App() {
         {show_splash ? (
           <SplashScreen />
         ) : (
-          <Stack.Navigator initialRouteName="Login">
+          <Stack.Navigator >
 
-            {/* <Stack.Screen
+            {/* <Stack.Navigator initialRouteName="Login"> */}
+           
+            <Stack.Screen
               name="Login"
               component={LoginScreen}
               options={{ headerShown: false }}
@@ -154,8 +148,7 @@ export default function App() {
               name="Splash"
               component={SplashScreen}
               options={{ headerShown: false }}
-            /> */}
-
+            />
             <Stack.Screen
               name="Home"
               component={RootNavigation}

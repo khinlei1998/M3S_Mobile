@@ -38,19 +38,18 @@ const Stack = createNativeStackNavigator();
 export default function NavigatorView(props) {
   const navigation = useNavigation();
   const { t } = useTranslation();
-  // const headerLeftComponentMenu = () => {
-  //   return (
-  //     <Icon
-  //       name="align-justify"
-  //       size={20}
-  //       color="#FFF"
-  //       onPress={() => navigation.openDrawer()}
-  //     />
-  //     // <></>
-  //   );
-  // };
+  const headerLeftComponentMenu = () => {
+    return (
+      <Icon
+        name="align-justify"
+        size={20}
+        color="#FFF"
+        onPress={() => navigation.openDrawer()}
+      />
+      // <></>
+    );
+  };
   const StackNavigationData = [
-
     {
       name: t('Home'),
       component: Home,
@@ -60,13 +59,14 @@ export default function NavigatorView(props) {
       },
     },
     {
-      name: t('Login'),
-      component: LoginScreen,
+      name: t('Home'),
+      component: Home,
       headerTitleStyle: {
         color: '#FFF',
         fontSize: 18,
       },
     },
+
     {
       name: t('Synchronization'),
       component: Synchronization_Screen,
@@ -340,7 +340,7 @@ export default function NavigatorView(props) {
             title: item.title,
             headerTitle: item.title, // Use headerTitle instead of title
 
-            headerLeft: item.headerLeft,
+            headerLeft: item.headerLeft || headerLeftComponentMenu,
             headerRight: renderRightIcon, // Add the custom icon to the right
 
             headerTintColor: '#FFF',

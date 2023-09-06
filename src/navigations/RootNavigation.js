@@ -4,7 +4,6 @@ import NavigatorView from './NavigatorView';
 import DrawerContent from './DrawerContent';
 import LoginScreen from '../screens/Login/LoginScreen';
 import Home from '../screens/Dashboard/Home';
-import Customer_Management from '../screens/CustomerManagement/Customer_Management';
 const Drawer = createDrawerNavigator();
 
 export default function RootNavigation(props) {
@@ -36,9 +35,8 @@ export default function RootNavigation(props) {
         headerTitleAlign: 'center',
       }}
       drawerContent={props => <DrawerContent {...props} />}>
-      <Drawer.Screen name="Login" component={LoginScreen} />
-      <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="Customer Management" component={Customer_Management} />
+         {/* <Drawer.Screen name="Home" component={Home}/> */}
+      <Drawer.Screen name="NavigatorView" component={NavigatorView} />
     </Drawer.Navigator>
   );
 }
