@@ -126,8 +126,7 @@ export default function App() {
         {show_splash ? (
           <SplashScreen />
         ) : (
-          <Stack.Navigator >
-            {/* <Stack.Navigator initialRouteName="Login"> */}
+           <Stack.Navigator initialRouteName="Login">
             {/* <Stack.Screen
               name="Customer_Management"
               component={Customer_Management}
