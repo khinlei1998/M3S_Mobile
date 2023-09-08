@@ -107,6 +107,7 @@ function Edit_Guarantor_Business_Info(props) {
               input_mode
               inputmax={100}
               editable={guarantor_update_status == true ? false : true}
+              keyboardType={'numeric'}
 
             />
           </View>

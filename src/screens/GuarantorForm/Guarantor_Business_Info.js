@@ -86,6 +86,8 @@ export default function Guarantor_Business_Info() {
               component={TextInputFile}
               input_mode
               inputmax={100}
+              keyboardType={'numeric'}
+
             />
           </View>
 

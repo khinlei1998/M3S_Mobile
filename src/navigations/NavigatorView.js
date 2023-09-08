@@ -50,7 +50,7 @@ export default function NavigatorView(props) {
     );
   };
   const StackNavigationData = [
-
+  
     {
       name: t('Home'),
       component: Home,
@@ -59,7 +59,6 @@ export default function NavigatorView(props) {
         fontSize: 18,
       },
     },
-
     {
       name: t('Synchronization'),
       component: Synchronization_Screen,
@@ -68,6 +67,8 @@ export default function NavigatorView(props) {
         fontSize: 18,
       },
     },
+
+  
     {
       name: t('ReLoan'),
       component: Reloan_Form,
@@ -313,7 +314,7 @@ export default function NavigatorView(props) {
   const renderRightIcon = () => {
     // Customize this function to render the right icon as you wish
     return (
-      <TouchableOpacity onPress={() => props.navigation.navigate(t('NavigatorView'))}>
+      <TouchableOpacity onPress={() => props.navigation.navigate(t('Home'))}>
         <Icon name="home" size={30} color="#fff" />
       </TouchableOpacity>
     );

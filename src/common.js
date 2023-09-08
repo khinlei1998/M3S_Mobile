@@ -715,7 +715,7 @@ export const sav_product_type = [
   },
 ];
 
-export const connection_name='http'
+export const connection_name='https'
 
 // export const BASE_URL='https://8582-103-231-92-61.ngrok-free.app/'
 export const BASE_URL = 'https://sample-rest.onrender.com/skylark-m3s/'; // static

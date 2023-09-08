@@ -1,10 +1,10 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import React, { useState, useEffect, useRef } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 import RootNavigation from './src/navigations/RootNavigation';
 import AuthNavigation from './src/navigations/AuthNavigation';
 // import {store} from './src/redux/store';
-import {Provider} from 'react-redux';
-import {AuthContext} from './src/components/context';
+import { Provider } from 'react-redux';
+import { AuthContext } from './src/components/context';
 import SQLite from 'react-native-sqlite-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './src/screens/SplashScreen';
@@ -12,13 +12,9 @@ import store from './src/redux/store';
 import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
 import LoginScreen from './src/screens/Login/LoginScreen';
 import SettingScreen from './src/screens/Setting/SettingScreen';
-import {StyleSheet, PermissionsAndroid} from 'react-native';
+import { StyleSheet, PermissionsAndroid } from 'react-native';
 import RNFS from 'react-native-fs';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Customer_Management from './src/screens/CustomerManagement/Customer_Management';
-import Synchronization_Screen from './src/screens/Synchronization/Synchronization_Screen';
-import CustomerSearch from './src/screens/Customer/CustomerSearch';
-import Edit_Emp_Info from './src/screens/EditCustManagement/Edit_Emp_Info';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 export default function App() {
   const [show_splash, showSplash] = useState(true);
   const [userID, setUserID] = React.useState(null);
@@ -83,7 +79,7 @@ export default function App() {
       location: 'Library',
       readOnly: false,
     },
-    success => {},
+    success => { },
     error => {
       console.log('Error', error);
     },
@@ -102,7 +98,7 @@ export default function App() {
       try {
         await AsyncStorage.setItem(
           'ip',
-          '99c9-2a09-bac5-492a-1028-00-19c-161.ngrok-free.app',
+          '5c2a-103-231-92-236.ngrok-free.app',
         );
         // await AsyncStorage.setItem('ip', '192.168.177.107');
         await AsyncStorage.setItem('port', '80');
@@ -140,11 +136,11 @@ export default function App() {
         {show_splash ? (
           <SplashScreen />
         ) : userID == null ? (
-          <AuthContext.Provider value={{saveUserID, userID}}>
+          <AuthContext.Provider value={{ saveUserID, userID }}>
             <AuthNavigation />
           </AuthContext.Provider>
         ) : (
-          <AuthContext.Provider value={{removeUserID}}>
+          <AuthContext.Provider value={{ removeUserID }}>
             <RootNavigation />
           </AuthContext.Provider>
         )}
