@@ -318,10 +318,9 @@ export default function NavigatorView(props) {
     //login
   ];
   const renderRightIcon = () => {
-    console.log('prfops', props.navigation.navigate);
     // Customize this function to render the right icon as you wish
     return (
-      <TouchableOpacity onPress={() => props.navigation.navigate(t('Home'))}>
+      <TouchableOpacity onPress={() => props.navigation.navigate(t('NavigatorView'))}>
         <Icon name="home" size={30} color="#fff" />
       </TouchableOpacity>
     );
@@ -342,7 +341,6 @@ export default function NavigatorView(props) {
 
             headerLeft: item.headerLeft || headerLeftComponentMenu,
             headerRight: renderRightIcon, // Add the custom icon to the right
-
             headerTintColor: '#FFF',
             headerTitleStyle: item.headerTitleStyle,
             headerStyle: { backgroundColor: '#273050' },
