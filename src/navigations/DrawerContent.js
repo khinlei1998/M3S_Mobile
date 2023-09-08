@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function DrawerContent(props) {
   const navigation = useNavigation();
-  // const { removeUserID } = useContext(AuthContext);
+  const { removeUserID } = useContext(AuthContext);
   const { t } = useTranslation();
   const handleDrawerItemPress = (screenName, title) => {
     navigation.navigate(t(screenName));
@@ -112,8 +112,8 @@ export default function DrawerContent(props) {
             icon={() => <Icon name="log-out" size={20} color="#fff" />} // Set the icon to an Ionicons icon
             label={t("Logout")}
             activeBackgroundColor="transparent" // Set the activeBackgroundColor to transparent
-            // onPress={() => removeUserID()}
-            onPress={() => props.navigation.navigate('Login')}
+            onPress={() => removeUserID()}
+            // onPress={() => props.navigation.navigate('Login')}
           />
         </SafeAreaView>
       </DrawerContentScrollView>

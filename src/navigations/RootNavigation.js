@@ -36,7 +36,7 @@ export default function RootNavigation(props) {
       }}
       drawerContent={props => <DrawerContent {...props} />}>
          {/* <Drawer.Screen name="Home" component={Home}/> */}
-      <Drawer.Screen name="NavigatorView" component={NavigatorView} />
+         <Drawer.Screen name="Homes" component={NavigatorView} />
     </Drawer.Navigator>
   );
 }

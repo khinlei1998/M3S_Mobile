@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, {useState, useEffect, useRef} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
 import RootNavigation from './src/navigations/RootNavigation';
 import AuthNavigation from './src/navigations/AuthNavigation';
 // import {store} from './src/redux/store';
-import { Provider } from 'react-redux';
-import { AuthContext } from './src/components/context';
+import {Provider} from 'react-redux';
+import {AuthContext} from './src/components/context';
 import SQLite from 'react-native-sqlite-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './src/screens/SplashScreen';
@@ -12,14 +12,11 @@ import store from './src/redux/store';
 import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
 import LoginScreen from './src/screens/Login/LoginScreen';
 import SettingScreen from './src/screens/Setting/SettingScreen';
-import {
-  StyleSheet,
-  PermissionsAndroid,
-} from 'react-native';
+import {StyleSheet, PermissionsAndroid} from 'react-native';
 import RNFS from 'react-native-fs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Customer_Management from './src/screens/CustomerManagement/Customer_Management';
-import Synchronization_Screen from './src/screens/Synchronization/Synchronization_Screen'
+import Synchronization_Screen from './src/screens/Synchronization/Synchronization_Screen';
 import CustomerSearch from './src/screens/Customer/CustomerSearch';
 import Edit_Emp_Info from './src/screens/EditCustManagement/Edit_Emp_Info';
 export default function App() {
@@ -70,12 +67,14 @@ export default function App() {
 
   const removeUserID = async () => {
     try {
+      // setUserID(null);
       await AsyncStorage.removeItem('user_id');
-      setUserID(await AsyncStorage.getItem('user_id'));
+      setUserID(null);
     } catch (e) {
       console.log('error ::', e);
     }
   };
+
 
   global.db = SQLite.openDatabase(
     {
@@ -84,16 +83,27 @@ export default function App() {
       location: 'Library',
       readOnly: false,
     },
-    success => { },
+    success => {},
     error => {
       console.log('Error', error);
     },
   );
 
+  // useEffect(async() => {
+  //   // Check if there's a stored user ID in local storage
+  //   const storedUserID = await AsyncStorage.getItem('user_id');
+  //   if (storedUserID && !userID) {
+  //     setUserID(storedUserID);
+  //   }
+  // }, [userID]);
+
   useEffect(() => {
     const saveIp = async user_id => {
       try {
-        await AsyncStorage.setItem('ip', '99c9-2a09-bac5-492a-1028-00-19c-161.ngrok-free.app');
+        await AsyncStorage.setItem(
+          'ip',
+          '99c9-2a09-bac5-492a-1028-00-19c-161.ngrok-free.app',
+        );
         // await AsyncStorage.setItem('ip', '192.168.177.107');
         await AsyncStorage.setItem('port', '80');
       } catch (e) {
@@ -110,9 +120,23 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    async function loadStoredUserID() {
+      try {
+        const storedUserID = await AsyncStorage.getItem('user_id');
+        if (storedUserID) {
+          setUserID(storedUserID);
+        }
+      } catch (e) {
+        console.log('Error loading user ID:', e);
+      }
+    }
+
+    loadStoredUserID();
+  }, []);
   return (
     <Provider store={store}>
-      {/* <NavigationContainer>
+      <NavigationContainer>
         {show_splash ? (
           <SplashScreen />
         ) : userID == null ? (
@@ -124,30 +148,27 @@ export default function App() {
             <RootNavigation />
           </AuthContext.Provider>
         )}
-      </NavigationContainer> */}
-
-      <NavigationContainer>
+      </NavigationContainer>
+      {/* <NavigationContainer>
         {show_splash ? (
           <SplashScreen />
         ) : (
-          <Stack.Navigator >
-
-            {/* <Stack.Navigator initialRouteName="Login"> */}
-           
+          <Stack.Navigator initialRouteName="Login">
+            {' '}
             <Stack.Screen
               name="Login"
               component={LoginScreen}
-              options={{ headerShown: false }}
+              options={{headerShown: false}}
             />
             <Stack.Screen
               name="Setting"
               component={SettingScreen}
-              options={{ headerShown: false }}
+              options={{headerShown: false}}
             />
             <Stack.Screen
               name="Splash"
               component={SplashScreen}
-              options={{ headerShown: false }}
+              options={{headerShown: false}}
             />
             <Stack.Screen
               name="Home"
@@ -158,7 +179,7 @@ export default function App() {
             />
           </Stack.Navigator>
         )}
-      </NavigationContainer>
+      </NavigationContainer> */}
     </Provider>
   );
 }

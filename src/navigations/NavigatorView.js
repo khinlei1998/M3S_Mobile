@@ -50,14 +50,7 @@ export default function NavigatorView(props) {
     );
   };
   const StackNavigationData = [
-    {
-      name: t('Home'),
-      component: Home,
-      headerTitleStyle: {
-        color: '#FFF',
-        fontSize: 18,
-      },
-    },
+
     {
       name: t('Home'),
       component: Home,
