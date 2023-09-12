@@ -50,7 +50,14 @@ export default function NavigatorView(props) {
     );
   };
   const StackNavigationData = [
-
+    {
+      name: t('Synchronization'),
+      component: Synchronization_Screen,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
     {
       name: t('Home'),
       component: Home,
@@ -60,14 +67,7 @@ export default function NavigatorView(props) {
       },
     },
 
-    {
-      name: t('Synchronization'),
-      component: Synchronization_Screen,
-      headerTitleStyle: {
-        color: '#FFF',
-        fontSize: 18,
-      },
-    },
+
     {
       name: t('ReLoan'),
       component: Reloan_Form,

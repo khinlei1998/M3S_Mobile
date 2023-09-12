@@ -75,7 +75,6 @@ export default function App() {
     }
   };
 
-
   global.db = SQLite.openDatabase(
     {
       name: 'M3SDB.db',
@@ -102,7 +101,7 @@ export default function App() {
       try {
         await AsyncStorage.setItem(
           'ip',
-          '99c9-2a09-bac5-492a-1028-00-19c-161.ngrok-free.app',
+          '68ba-103-116-56-246.ngrok-free.app',
         );
         // await AsyncStorage.setItem('ip', '192.168.177.107');
         await AsyncStorage.setItem('port', '80');
