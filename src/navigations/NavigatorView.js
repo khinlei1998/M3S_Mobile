@@ -50,7 +50,7 @@ export default function NavigatorView(props) {
     );
   };
   const StackNavigationData = [
-  
+
     {
       name: t('Home'),
       component: Home,
@@ -68,7 +68,6 @@ export default function NavigatorView(props) {
       },
     },
 
-  
     {
       name: t('ReLoan'),
       component: Reloan_Form,

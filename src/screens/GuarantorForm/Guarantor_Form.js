@@ -161,9 +161,11 @@ const Guarantor_modal = props => {
   };
 
   const btnSelectGuarantor = item => {
-    console.log('item', item);
     setGuarantorSelectedValue(item.id);
-    dispatch(change('Guarantor_Form', 'guarantor_no', item.customer_no));
+    item.tablet_sync_sts==0?
+    dispatch(change('Guarantor_Form', 'guarantor_no', ''))
+    :
+    dispatch(change('Guarantor_Form', 'guarantor_no', item.customer_no))
     dispatch(change('Guarantor_Form', 'guarantor_nm', item.customer_nm));
     dispatch(change('Guarantor_Form', 'gender', item.gender));
     dispatch(change('Guarantor_Form', 'birth_date', item.birth_date));

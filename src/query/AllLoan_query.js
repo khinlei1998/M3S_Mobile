@@ -430,6 +430,15 @@ async function uploadImage(filePath, description) {
         name: `${filePath}`,
       });
 
+      // let config = {
+      //   method: 'post',
+      //   url: `${connection_name}://${ip}:${port}/skylark-m3s/file/upload.m3s`,
+      //   body: imageForm,
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data; ',
+      //   }
+      // }
+
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
@@ -1041,13 +1050,13 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 prepareEmplNm: item.prepare_empl_nm,
                 checkEmplNm: item.check_empl_nm,
                 summary: item.summary,
-                brwerRgstId:item.brwerRgstId,
-                borrowerName:item.borrowerName,
-                applicationAmt:item.applicationAmt,
-                applicationDate:item.applicationDate
+                brwerRgstId: item.brwerRgstId,
+                borrowerName: item.borrowerName,
+                applicationAmt: item.applicationAmt,
+                applicationDate: item.applicationDate
               };
             });
-            console.log('area_data',area_data);
+            console.log('area_data', area_data);
             areaData.push(...area_data);
           }
 
@@ -1188,28 +1197,28 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           //UPLOAD Evidence
 
           const data = [
-            {id: 1, value: '01F'},
-            {id: 2, value: '01B'},
-            {id: 3, value: '02F'},
-            {id: 4, value: '02B'},
-            {id: 5, value: '03F'},
-            {id: 6, value: '03B'},
-            {id: 7, value: '04F'},
-            {id: 8, value: '04B'},
-            {id: 9, value: '05F'},
-            {id: 10, value: '05B'},
-            {id: 11, value: '06F'},
-            {id: 12, value: '06B'},
-            {id: 13, value: '07F'},
-            {id: 14, value: '07B'},
-            {id: 15, value: '08F'},
-            {id: 16, value: '08B'},
-            {id: 17, value: '09F'},
-            {id: 18, value: '09B'},
-            {id: 19, value: '10F'},
-            {id: 20, value: '10B'},
-            {id: 21, value: '11F'},
-            {id: 22, value: '11B'},
+            { id: 1, value: '01F' },
+            { id: 2, value: '01B' },
+            { id: 3, value: '02F' },
+            { id: 4, value: '02B' },
+            { id: 5, value: '03F' },
+            { id: 6, value: '03B' },
+            { id: 7, value: '04F' },
+            { id: 8, value: '04B' },
+            { id: 9, value: '05F' },
+            { id: 10, value: '05B' },
+            { id: 11, value: '06F' },
+            { id: 12, value: '06B' },
+            { id: 13, value: '07F' },
+            { id: 14, value: '07B' },
+            { id: 15, value: '08F' },
+            { id: 16, value: '08B' },
+            { id: 17, value: '09F' },
+            { id: 18, value: '09B' },
+            { id: 19, value: '10F' },
+            { id: 20, value: '10B' },
+            { id: 21, value: '11F' },
+            { id: 22, value: '11B' },
 
             // Add more data as needed
           ];
@@ -1275,8 +1284,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         maxBodyLength: Infinity,
         url:
           data.product_type == 30 ||
-          data.product_type == 40 ||
-          data.product_type == 50
+            data.product_type == 40 ||
+            data.product_type == 50
             ? `${connection_name}://${ip}:${port}/skylark-m3s/api/groupLoan.m3s`
             : `${connection_name}://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
         data: formData,
