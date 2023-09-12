@@ -451,11 +451,9 @@ function Guarantor_Form(props) {
         const fileExists = await RNFS.exists(filePath);
         return filePath;
       } else {
-        console.log('Write storage permission denied.');
         return null;
       }
     } catch (error) {
-      console.log('Error saving signature:', error);
       return null;
     }
   };
@@ -477,8 +475,6 @@ function Guarantor_Form(props) {
             'Error! Borrower Sign cannot save',
             ToastAndroid.SHORT,
           );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
         }
       }
 
@@ -519,7 +515,8 @@ function Guarantor_Form(props) {
         application_amt: indi_data[0].application_amt.toString()
           ? indi_data[0].application_amt.toString()
           : '',
-        guarantee_no: retrive_loan_data.application_no.replace(/.*?(M)/, 'GTM'),
+        // guarantee_no: retrive_loan_data.application_no.replace(/.*?(M)/, 'GTM'),
+        guarantee_no: retrive_loan_data.application_no.replace(/^(10|20)(.*)/, "GT$2")
       };
       props.initialize(initialize_data);
     })
@@ -542,7 +539,6 @@ function Guarantor_Form(props) {
   const sign = createRef();
 
   const _onDragEvent = () => {
-    console.log('dragged');
   };
   const resetSign = () => {
     sign.current.resetImage();

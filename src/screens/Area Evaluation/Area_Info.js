@@ -9,6 +9,8 @@ import {
 import {style} from '../../style/Area_Evaluation_style';
 import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
+import { useTranslation } from 'react-i18next';
+
 export default function Area_Info() {
   const [area_info_expanded, setAreaInfoExpanded] = useState(true);
   const handleAreaInfoToggle = () => {

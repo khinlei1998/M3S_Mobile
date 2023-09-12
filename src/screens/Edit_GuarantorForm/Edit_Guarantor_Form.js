@@ -470,11 +470,9 @@ function Edit_Guarantor_Form(props) {
         const fileExists = await RNFS.exists(filePath);
         return filePath;
       } else {
-        console.log('Write storage permission denied.');
         return null;
       }
     } catch (error) {
-      console.log('Error saving signature:', error);
       return null;
     }
   };
@@ -490,10 +488,7 @@ function Edit_Guarantor_Form(props) {
 
           if (fileExists) {
             await RNFS.unlink(filePath);
-            console.log('File deleted successfully:', filePath);
-          } else {
-            console.log('File does not exist:', filePath);
-          }
+          } 
         });
 
         await Promise.all(deleteFilePromises);
@@ -505,7 +500,6 @@ function Edit_Guarantor_Form(props) {
         });
       } catch (error) {
         alert('Error deleting files');
-        console.log('Error deleting files:', error);
       }
     } else {
       try {
@@ -523,12 +517,7 @@ function Edit_Guarantor_Form(props) {
               'Error! Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } else {
-            console.log(
-              'Borrower image saved successfully:',
-              borrowerImagePath,
-            );
-          }
+          } 
         }
 
         if (!saveImageError) {
@@ -598,7 +587,6 @@ function Edit_Guarantor_Form(props) {
   const sign = createRef();
 
   const _onDragEvent = () => {
-    console.log('dragged');
   };
   const resetSign = () => {
     sign.current.resetImage();

@@ -1316,7 +1316,6 @@ function Edit_Individual_Loan(props) {
         const fileExists = await RNFS.exists(filePath);
         return filePath;
       } else {
-        console.log('Write storage permission denied.');
         return null;
       }
     } catch (error) {
@@ -1328,7 +1327,7 @@ function Edit_Individual_Loan(props) {
     if (show_operation == '4') {
       await deleteLoan_ByID(values).then(response => {
         if (response == 'success') {
-          alert('Individual Staff Loan Application deleted successfully.');
+          alert('Individual Loan Application deleted successfully.');
           props.navigation.navigate('Home');
         }
       });
@@ -1347,10 +1346,6 @@ function Edit_Individual_Loan(props) {
           coBorrowerImagePath = await saveSignatureToInternalStorage(
             show_coborrower_sign,
             '02',
-          );
-          console.log(
-            'Co-Borrower image saved successfully:',
-            coBorrowerImagePath,
           );
         }
 
@@ -1573,7 +1568,6 @@ function Edit_Individual_Loan(props) {
   };
 
   const _onDragEvent = () => {
-    console.log('dragged');
   };
 
   const _onSaveEvent = async result => {

@@ -52,13 +52,10 @@ export function getLoanMax(tokensource) {
                         if (insertedRows === response.data.length) {
                           // resolve('success');
                           resolve({response:'success',sizeInBytes})
-                          console.log(
-                            'All loan max records inserted successfully',
-                          );
+                       
                         }
                       },
                       error => {
-                        console.log('query error', error);
                         // If insert query fails, rollback the transaction and reject the promise
                         tx.executeSql('ROLLBACK', [], () => {
                           reject(error);
@@ -73,7 +70,6 @@ export function getLoanMax(tokensource) {
           .catch(error => {
             if (axios.isCancel(error)) {
               reject('Request canceled by user');
-              console.log('axios request cancelled');
             } else {
               reject(error);
             }

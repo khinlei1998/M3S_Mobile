@@ -5,14 +5,16 @@ import { Field, reduxForm, change } from 'redux-form';
 import { Button } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
-
+import { addLastSyncDate } from '../../redux/SynchronizationReducer';
+import moment from 'moment';
+import { connect } from 'react-redux';
 function Sync_Setting_Screen(props) {
   const { t } = useTranslation();
   const [showDefault, setShowDefault] = useState(false);
   const [ip, setIP] = useState();
   const [port, setPort] = useState();
 
-  const { dispatch, handleSubmit } = props
+  const { dispatch, handleSubmit, addLastSyncDate,last_sync_date } = props
   const btndefault = () => {
     setShowDefault(true);
     dispatch(
@@ -29,6 +31,7 @@ function Sync_Setting_Screen(props) {
     try {
       await AsyncStorage.setItem('ip', values.ip);
       await AsyncStorage.setItem('port', values.port);
+      addLastSyncDate(moment().format('lll'))
       alert(`Connect to ${await AsyncStorage.getItem('ip')} `);
     } catch (e) {
     }
@@ -83,8 +86,8 @@ function Sync_Setting_Screen(props) {
           />
         </View>
       </View>
-      <Text style={{ alignSelf: 'flex-end', marginRight: 40, marginTop: 10 }}>Last Sync Date : 2022</Text>
-     <View
+      <Text style={{ alignSelf: 'flex-end', marginRight: 40, marginTop: 10 }}>Last Sync Date : {last_sync_date}</Text>
+      <View
         style={{
           flexDirection: 'row',
           justifyContent: 'center',
@@ -93,7 +96,7 @@ function Sync_Setting_Screen(props) {
           alignSelf: 'center',
         }}>
         <Button
-          onPress={ handleSubmit(onSubmit)}
+          onPress={handleSubmit(onSubmit)}
           mode="contained"
           buttonColor={'#21316C'}
           style={{
@@ -102,7 +105,7 @@ function Sync_Setting_Screen(props) {
             marginTop: 10,
             color: 'black',
             marginLeft: 5,
-            height:44
+            height: 44
           }}>
           {t("Save")}
         </Button>
@@ -114,7 +117,7 @@ function Sync_Setting_Screen(props) {
             marginTop: 10,
             color: 'black',
             marginLeft: 5,
-            height:44
+            height: 44
           }}
           mode="outlined"
           onPress={() => btndefault()}>
@@ -125,4 +128,15 @@ function Sync_Setting_Screen(props) {
   )
 }
 
-export default reduxForm({ form: 'Sync_Setting_ScreenForm' })(Sync_Setting_Screen);
+// export default reduxForm({ form: 'Sync_Setting_ScreenForm' })(Sync_Setting_Screen);
+
+function mapStateToProps(state) {
+  console.log('state',state.sync.last_sync_date);
+  return {
+    last_sync_date:state.sync.last_sync_date
+  };
+}
+
+export default reduxForm({
+  form: 'Sync_Setting_ScreenForm',
+})(connect(mapStateToProps, { addLastSyncDate })(Sync_Setting_Screen));

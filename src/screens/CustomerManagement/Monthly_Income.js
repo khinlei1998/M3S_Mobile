@@ -57,7 +57,6 @@ function Monthly_Income(props) {
         (accumulator, currentValue) => accumulator + currentValue,
         0,
       );
-      console.log('sum', sum);
       totalExpense(sum);
 
       dispatch(
@@ -161,8 +160,6 @@ function Monthly_Income(props) {
   };
   const calCulateSum = (total_expense, total_income) => {
     const sum = total_income - total_expense;
-    console.log('sum',sum);
-    // setBusinessNet(sum);
     dispatch(
       change('Customer_ManagementForm', 'totBusNetIncomeitem', `${sum}`),
     );

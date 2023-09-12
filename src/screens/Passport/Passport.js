@@ -73,7 +73,6 @@ export default function Passport(props) {
 
     if (response.error) {
       // Error occurred during image capture
-      console.log('Image capture error:', response.error);
       return;
     }
 
@@ -106,7 +105,6 @@ export default function Passport(props) {
 
     if (response.error) {
       // Error occurred during image capture
-      console.log('Image capture error:', response.error);
       return;
     }
 
@@ -153,7 +151,6 @@ export default function Passport(props) {
       }
     } catch (error) {
       ToastAndroid.show(`Image saving error:`, ToastAndroid.SHORT);
-      console.log('Image saving error:', error);
     }
   };
 

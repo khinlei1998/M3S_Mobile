@@ -59,13 +59,10 @@ export function getEemployee_info(tokensource) {
                         if (insertedRows === response.data.length) {
                           // resolve('success');
                           resolve({ response: 'success', sizeInBytes })
-                          console.log(
-                            'All Employee records inserted successfully',
-                          );
+                        
                         }
                       },
                       error => {
-                        console.log('query error', error);
                         // If insert query fails, rollback the transaction and reject the promise
                         // tx.executeSql('ROLLBACK', [], () => {
                         reject(error);

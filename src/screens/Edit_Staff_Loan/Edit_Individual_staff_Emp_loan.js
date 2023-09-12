@@ -104,9 +104,6 @@ import { useTranslation } from 'react-i18next';
               onWorkingDateChange={(month)=>{
                 setWorkingMonth(month)
                 setLoanLimitAmount(0)
-
-                console.log('finale moth',month);
-
               }}
             />
 

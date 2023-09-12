@@ -48,18 +48,16 @@ export const storeRelation = async data => {
             data.brother_sister_yn,
             data.husband_wife_yn,
             data.son_daughter_yn,
-            data.tablet_sync_sts,
+            '00',
             data.sync_sts,
             data.relation_name,
             data.err_msg
           ],
           (trans, results) => {
             resolve('success');
-            console.log('success', results);
           },
           error => {
             reject(error);
-            console.log('error', error);
           },
         );
       });
@@ -70,7 +68,6 @@ export const storeRelation = async data => {
 };
 
 export async function deleteRelation_ByID(relation_no) {
-  console.log('relationNo', relation_no);
   try {
     return new Promise((resolve, reject) => {
       global.db.transaction(tx => {
@@ -80,7 +77,6 @@ export async function deleteRelation_ByID(relation_no) {
           (txObj, resultSet) => {
             resolve('success');
             // Delete query successful
-            console.log('Delete successful');
           },
           (txObj, error) => {
             // Error occurred while executing the delete query
@@ -135,11 +131,9 @@ export const UpdateRelation = async data => {
           ],
           (trans, results) => {
             resolve('success');
-            console.log('success', results);
           },
           error => {
             reject(error);
-            console.log('error', error);
           },
         );
       });

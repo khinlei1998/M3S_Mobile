@@ -2,12 +2,13 @@ export const SET_INITIAL_VALUES = 'SET_INITIAL_VALUES';
 export const SET_UPDATE_STATUS = 'SET_UPDATE_STATUS';
 export const INQUIRY_CUS_DATA = 'INQUIRY_CUS_DATA';
 export const ADD_CUSTOMER_INFO = 'ADD_CUSTOMER_INFO';
-
+export const ADD_CUSTOMER_DATA = 'ADD_CUSTOMER_DATA';
 const customer = {
   cus_initialValues: {},
   update_status: 'false',
   inquiry_cusdata: {},
   customer_info: {},
+  customer_data: []
 };
 
 export const setCusFormInitialValues = props => {
@@ -36,18 +37,25 @@ export const addCustomerInfo = props => {
     payload: props,
   };
 };
+export const addCustomerData = props => {
+  return {
+    type: 'ADD_CUSTOMER_DATA',
+    payload: props,
+  };
+};
 
 export default function CustomerReducer(state = customer, action) {
   switch (action.type) {
     case SET_INITIAL_VALUES:
-      return {...state, cus_initialValues: action.payload};
+      return { ...state, cus_initialValues: action.payload };
     case SET_UPDATE_STATUS:
-      return {...state, update_status: action.payload};
+      return { ...state, update_status: action.payload };
     case INQUIRY_CUS_DATA:
-      return {...state, inquiry_cusdata: action.payload};
+      return { ...state, inquiry_cusdata: action.payload };
     case ADD_CUSTOMER_INFO:
-      return {...state, customer_info: action.payload};
-
+      return { ...state, customer_info: action.payload };
+    case ADD_CUSTOMER_DATA:
+      return { ...state, customer_data: action.payload };
     default:
       return state;
   }

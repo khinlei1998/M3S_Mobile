@@ -98,7 +98,6 @@ export default function Evidence(props) {
 
     if (response.error) {
       // Error occurred during image capture
-      console.log('Image capture error:', response.error);
       return;
     }
 
@@ -131,7 +130,6 @@ export default function Evidence(props) {
 
     if (response.error) {
       // Error occurred during image capture
-      console.log('Image capture error:', response.error);
       return;
     }
 
@@ -178,7 +176,6 @@ export default function Evidence(props) {
       }
     } catch (error) {
       ToastAndroid.show(`Image saving error:`, ToastAndroid.SHORT);
-      console.log('Image saving error:', error);
     }
   };
 
@@ -205,16 +202,17 @@ export default function Evidence(props) {
                   borderRadius: 0,
                 }}
                 key={item.id}
-                onPress={() =>
-                  launchCamera(
-                    {
-                      saveToPhotos: false, // Prevent automatic saving
-                      mediaType: 'photo',
-                      includeBase64: false,
-                    },
-                    response => handleImageUpload(response, item.value),
-                  )
-                }>
+              // onPress={() =>
+              //   launchCamera(
+              //     {
+              //       saveToPhotos: false, // Prevent automatic saving
+              //       mediaType: 'photo',
+              //       includeBase64: false,
+              //     },
+              //     response => handleImageUpload(response, item.value),
+              //   )
+              // }
+              >
                 <Card.Content
                   style={{
                     flexDirection: 'row',
@@ -239,7 +237,16 @@ export default function Evidence(props) {
                         />
                       ) : (
                         <TouchableOpacity>
-                          <Icon name="camera" size={50} color="#b8a1c4" />
+                          <Icon name="camera" size={50} color="#b8a1c4" onPress={() =>
+                            launchCamera(
+                              {
+                                saveToPhotos: false, // Prevent automatic saving
+                                mediaType: 'photo',
+                                includeBase64: false,
+                              },
+                              response => handleImageUpload(response, item.value),
+                            )
+                          } />
                         </TouchableOpacity>
                       )}
                       <TouchableOpacity
@@ -308,8 +315,8 @@ export default function Evidence(props) {
                           marginTop: 15,
                         }}>
                         <Icon
-                          name="trash"
-                          size={25}
+                          name="x-circle"
+                          size={27}
                           color={'#c24640'} // Change color based on captured files
                         />
                       </TouchableOpacity>

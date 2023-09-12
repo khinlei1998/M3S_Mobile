@@ -183,13 +183,10 @@ export function getCustomer_info(tokensource) {
                         if (insertedRows === response.data.length) {
                           // resolve('success');
                           resolve({response:'success',sizeInBytes})
-                          console.log(
-                            'All Customer records inserted successfully',
-                          );
+                         
                         }
                       },
                       error => {
-                        console.log('Customer error', error);
                         reject(error);
                         // If insert query fails, rollback the transaction and reject the promise
                         // tx.executeSql('ROLLBACK', [], () => {
@@ -370,16 +367,13 @@ export function storeCustomerData(cus_data) {
               ],
               (trans, results) => {
                 resolve('success');
-                console.log('success', results);
               },
               error => {
                 reject(error);
-                console.log('error', error);
               },
             );
           },
           error => {
-            console.log('transaction error', error);
             reject(error);
           },
           () => {
@@ -423,11 +417,9 @@ export async function filterCustomerByEmpno(selectedColumn, searchTerm) {
         sql,
         [],
         (tx, results) => {
-          console.log('total result', results);
           resolve(results.rows.raw());
         },
         (tx, error) => {
-          console.log('error', error);
           reject(error);
         },
       );
@@ -563,11 +555,9 @@ export function updateCustomerData(cus_data) {
         ],
         (trans, results) => {
           resolve('success');
-          console.log('success', results);
         },
         error => {
           reject(error);
-          console.log('error', error);
         },
       );
     });
@@ -581,7 +571,6 @@ function updateDateBySubtractingYears(dateProperty, yearsToSubtract) {
 
     return `${subtractedYear}-01-01`;
   } else {
-    console.log(`Invalid input for ${dateProperty}`);
     return '';
   }
 }
@@ -630,8 +619,6 @@ export async function UploadCustomerData(customer_data) {
       customer_data[i].township_code = customer_data[i].ts_code;
       delete customer_data[i].ts_code;
 
-      console.log('customer data', data);
-
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
@@ -656,11 +643,9 @@ export async function UploadCustomerData(customer_data) {
             'UPDATE Customer set tablet_sync_sts=? where id=?',
             ['01', response.data[0].id],
             (txObj, resultSet) => {
-              console.log('Update successful');
             },
             (txObj, error) => {
               reject(error);
-              console.error('Update error:', error);
             },
           );
         });
@@ -673,7 +658,6 @@ export async function UploadCustomerData(customer_data) {
       return 'success';
     }
   } catch (error) {
-    console.log('error', error);
     return error;
   }
 }
@@ -686,11 +670,9 @@ export const updateTableSyncStatus = id => {
         ['01', id],
         (txObj, resultSet) => {
           resolve('success');
-          console.log('Update successful');
         },
         (txObj, error) => {
           reject(error);
-          console.error('Update error:', error);
         },
       );
     });
@@ -705,11 +687,9 @@ export async function deleteCustomer_ByID(id) {
         (txObj, resultSet) => {
           resolve('success');
           // Delete query successful
-          console.log('Delete successful');
         },
         (txObj, error) => {
           // Error occurred while executing the delete query
-          console.error('Delete error:', error);
         },
       );
     });

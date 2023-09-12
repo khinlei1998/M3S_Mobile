@@ -10,9 +10,11 @@ import { questions } from '../../common';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import DividerLine from '../../components/DividerLine';
 import Icon from 'react-native-vector-icons/Feather';
+import { useTranslation } from 'react-i18next';
+
 function Exceptional_Approval_Info(props) {
   const { handleSubmit, onSubmit ,exceptional_update_status} = props;
-
+  const { t } = useTranslation();
   const [exceptional_approval_expanded, setExceptionalApproval] =
     useState(true);
   const handleExceptonalApprovalToggle = () => {

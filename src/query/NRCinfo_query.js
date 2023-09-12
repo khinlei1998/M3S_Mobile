@@ -47,7 +47,6 @@ export const getNRC_info = tokensource => {
                       }
                     },
                     error => {
-                      console.log('query ', error);
                       // If insert query fails, rollback the transaction and reject the promise
                       // tx.executeSql('ROLLBACK', [], () => {
                       reject(error);

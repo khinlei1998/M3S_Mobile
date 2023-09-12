@@ -23,7 +23,6 @@ export function get_Village(tokensource) {
                 for (let i = 0; i < response.data.length; i += batchSize) {
                   const records = response.data.slice(i, i + batchSize);
                   records.forEach(item => {
-                    console.log('item',item);
                     tx.executeSql(
                       'INSERT INTO Village (village_code,village_name,ts_code,ts_name) VALUES (?,?,?,?)',
                       [
@@ -37,13 +36,10 @@ export function get_Village(tokensource) {
                         if (insertedRows === response.data.length) {
                           // resolve('success');
                           resolve({response:'success',sizeInBytes})
-                          console.log(
-                            'All Village records inserted successfully',
-                          );
+                        ;
                         }
                       },
                       error => {
-                        console.log('query error', error);
                         // If insert query fails, rollback the transaction and reject the promise
                         reject(error);
                       },

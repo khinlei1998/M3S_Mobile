@@ -275,11 +275,9 @@ function Edit_Relation_Form(props) {
         const fileExists = await RNFS.exists(filePath);
         return filePath;
       } else {
-        console.log('Write storage permission denied.');
         return null;
       }
     } catch (error) {
-      console.log('Error saving signature:', error);
       return null;
     }
   };
@@ -304,10 +302,7 @@ function Edit_Relation_Form(props) {
 
           if (fileExists) {
             await RNFS.unlink(filePath);
-            console.log('File deleted successfully:', filePath);
-          } else {
-            console.log('File does not exist:', filePath);
-          }
+          } 
         });
 
         await Promise.all(deleteFilePromises);
@@ -320,7 +315,6 @@ function Edit_Relation_Form(props) {
         });
       } catch (error) {
         alert('Error deleting files');
-        console.log('Error deleting files:', error);
       }
     } else {
       const relation_data = Object.assign({}, values, {
@@ -347,12 +341,7 @@ function Edit_Relation_Form(props) {
               'Error! Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } else {
-            console.log(
-              'Borrower image saved successfully:',
-              borrowerImagePath,
-            );
-          }
+          } 
         }
         if (signature2) {
           SignatureImagePath = await saveSignatureToInternalStorage(
@@ -365,12 +354,7 @@ function Edit_Relation_Form(props) {
               'Error! Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } else {
-            console.log(
-              'Borrower image saved successfully:',
-              borrowerImagePath,
-            );
-          }
+          } 
         }
         if (signature3) {
           SignatureImagePath = await saveSignatureToInternalStorage(
@@ -383,12 +367,7 @@ function Edit_Relation_Form(props) {
               'Error! Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } else {
-            console.log(
-              'Borrower image saved successfully:',
-              borrowerImagePath,
-            );
-          }
+          } 
         }
         if (signature4) {
           SignatureImagePath = await saveSignatureToInternalStorage(
@@ -400,11 +379,6 @@ function Edit_Relation_Form(props) {
             ToastAndroid.show(
               'Error! Borrower Sign cannot save',
               ToastAndroid.SHORT,
-            );
-          } else {
-            console.log(
-              'Borrower image saved successfully:',
-              borrowerImagePath,
             );
           }
         }
@@ -419,11 +393,6 @@ function Edit_Relation_Form(props) {
               'Error! Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } else {
-            console.log(
-              'Borrower image saved successfully:',
-              borrowerImagePath,
-            );
           }
         }
         if (signature6) {
@@ -437,12 +406,7 @@ function Edit_Relation_Form(props) {
               'Error! Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } else {
-            console.log(
-              'Borrower image saved successfully:',
-              borrowerImagePath,
-            );
-          }
+          } 
         }
         if (signature7) {
           SignatureImagePath = await saveSignatureToInternalStorage(
@@ -455,12 +419,7 @@ function Edit_Relation_Form(props) {
               'Error! Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } else {
-            console.log(
-              'Borrower image saved successfully:',
-              borrowerImagePath,
-            );
-          }
+          } 
         }
         if (signature8) {
           SignatureImagePath = await saveSignatureToInternalStorage(
@@ -473,12 +432,7 @@ function Edit_Relation_Form(props) {
               'Error! Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } else {
-            console.log(
-              'Borrower image saved successfully:',
-              borrowerImagePath,
-            );
-          }
+          } 
         }
         if (signature9) {
           SignatureImagePath = await saveSignatureToInternalStorage(
@@ -491,12 +445,7 @@ function Edit_Relation_Form(props) {
               'Error! Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } else {
-            console.log(
-              'Borrower image saved successfully:',
-              borrowerImagePath,
-            );
-          }
+          } 
         }
         if (signature10) {
           SignatureImagePath = await saveSignatureToInternalStorage(
@@ -508,11 +457,6 @@ function Edit_Relation_Form(props) {
             ToastAndroid.show(
               'Error! Borrower Sign cannot save',
               ToastAndroid.SHORT,
-            );
-          } else {
-            console.log(
-              'Borrower image saved successfully:',
-              borrowerImagePath,
             );
           }
         }
@@ -527,12 +471,7 @@ function Edit_Relation_Form(props) {
               'Error! Co-Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } else {
-            console.log(
-              'Co-Borrower image saved successfully:',
-              coBorrowerImagePath,
-            );
-          }
+          } 
         }
 
         if (show_coborrower_sign) {
@@ -546,12 +485,7 @@ function Edit_Relation_Form(props) {
               'Error! Co-Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } else {
-            console.log(
-              'Co-Borrower image saved successfully:',
-              coBorrowerImagePath,
-            );
-          }
+          } 
         }
 
         if (!saveImageError) {
@@ -563,7 +497,6 @@ function Edit_Relation_Form(props) {
           });
         }
       } catch (error) {
-        console.log('Error:', error);
       }
     }
   };

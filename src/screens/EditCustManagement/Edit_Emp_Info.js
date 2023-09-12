@@ -898,7 +898,6 @@ function Edit_Emp_Info(props) {
     );
   };
   const btnChangeOperation = async (newValue, cus_data) => {
-    console.log('edit customer', cus_data);
     const user_id = await AsyncStorage.getItem('user_id');
 
     if (cus_data.create_user_id !== user_id) {

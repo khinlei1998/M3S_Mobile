@@ -46,9 +46,7 @@ export function getCodeInfo(tokensource) {
                         if (insertedRows === response.data.length) {
                           // resolve('success');
                           resolve({response:'success',sizeInBytes})
-                          console.log(
-                            'All code info records inserted successfully',
-                          );
+                         
                         }
                       },
                       error => {
@@ -95,7 +93,6 @@ export const getCityData = async () => {
   });
 };
 export const fetchCityName = async city_code => {
-  console.log('city_code',city_code);
   return new Promise((resolve, reject) => {
     global.db.transaction(tx => {
       tx.executeSql(

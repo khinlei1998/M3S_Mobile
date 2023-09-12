@@ -591,7 +591,7 @@ const Borrower_modal = props => {
   );
 };
 
-const CoBorrower_modal = props => {
+const CoBorrower_modal = props => {0
   const dispatch = useDispatch();
   const [co_borrowerselectedValue, setCoborrowerSelectedValue] = useState(null);
   const [co_borrower_data, setCoBorrowerText] = useState('');
@@ -1116,11 +1116,9 @@ function Individual_Loan(props) {
         const fileExists = await RNFS.exists(filePath);
         return filePath;
       } else {
-        console.log('Write storage permission denied.');
         return null;
       }
     } catch (error) {
-      console.log('Error saving signature:', error);
       return null;
     }
   };
@@ -1142,9 +1140,7 @@ function Individual_Loan(props) {
             'Error! Borrower Sign cannot save',
             ToastAndroid.SHORT,
           );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
+        } 
       }
 
       if (coborrower_sign_path) {
@@ -1158,12 +1154,7 @@ function Individual_Loan(props) {
             'Error! Co-Borrower Sign cannot save',
             ToastAndroid.SHORT,
           );
-        } else {
-          console.log(
-            'Co-Borrower image saved successfully:',
-            coBorrowerImagePath,
-          );
-        }
+        } 
       }
 
       if (!saveImageError) {
@@ -1171,7 +1162,6 @@ function Individual_Loan(props) {
           borrower_sign: borrowerImagePath,
           co_borrower_sign: coBorrowerImagePath,
           product_type: p_type ? p_type : 10,
-          // borrower_map: map,
         });
         await storeLoanData(loan_data).then(result => {
           if (result == 'success') {
@@ -1181,7 +1171,6 @@ function Individual_Loan(props) {
             resetMonthlyIncome();
 
             ToastAndroid.show('Individual Loan Application added successfully.', ToastAndroid.SHORT);
-            // props.navigation.navigate('Home');
             props.navigation.navigate('Home');
           }
         });

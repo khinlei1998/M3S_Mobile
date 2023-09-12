@@ -50,10 +50,11 @@ function Area_Evaluation_Form(props) {
           applicationAmt: indi_data[0].application_amt.toString()
             ? indi_data[0].application_amt.toString()
             : '',
-          area_evaluation_no: retrive_loan_data.application_no.replace(
-            /.*?(M)/,
-            'AEM',
-          ),
+          // area_evaluation_no: retrive_loan_data.application_no.replace(
+          //   /.*?(M)/,
+          //   'AEM',
+          // ),
+          area_evaluation_no: retrive_loan_data.application_no.replace(/^(10|20)(.*)/, "AE$2")
         };
         props.initialize(initialize_data);
       },

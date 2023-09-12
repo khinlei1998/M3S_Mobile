@@ -40,14 +40,9 @@ export function getSurvey_Item(tokensource) {
                         if (insertedRows === response.data.length) {
                           // resolve('success');
                           resolve({response:'success',sizeInBytes})
-
-                          console.log(
-                            'All Survey records inserted successfully',
-                          );
                         }
                       },
                       error => {
-                        console.log('query error', error);
                         // If insert query fails, rollback the transaction and reject the promise
                         reject(error);
                       },
@@ -57,9 +52,6 @@ export function getSurvey_Item(tokensource) {
               });
             }
           })
-          // .catch(error => {
-          //   reject(error);
-          // });
           .catch(error => {
             if (axios.isCancel(error)) {
               reject('Request canceled by user');
@@ -147,11 +139,9 @@ export const storeSurveyResult = async data => {
             ],
             (trans, results) => {
               resolve('success');
-              console.log('success', results);
             },
             error => {
               reject(error);
-              console.log('error', error);
             },
           );
         }
@@ -189,25 +179,20 @@ export async function UploadSurveyData(all_survey) {
         };
         failedData.push(error);
       } else {
-        // for (const data of all_survey) {
-        // console.log('data',data.survey_result_no);
         await new Promise((resolve, reject) => {
           global.db.transaction(tx => {
             tx.executeSql(
               `DELETE  FROM survey_result WHERE survey_result_no = ?  `,
               [all_survey[i].survey_result_no],
               (txObj, resultSet) => {
-                console.log('Delete from survey_result successful');
                 resolve();
               },
               (txObj, error) => {
-                console.error('Delete from survey_result error:', error);
                 reject(error);
               },
             );
           });
         });
-        // }
       }
     }
 
@@ -217,7 +202,6 @@ export async function UploadSurveyData(all_survey) {
       return 'success';
     }
   } catch (error) {
-    console.log('error', error);
     return error;
   }
 }

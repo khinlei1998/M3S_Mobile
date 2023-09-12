@@ -1450,11 +1450,9 @@ function Individual_Staff_loan_Info(props) {
         const fileExists = await RNFS.exists(filePath);
         return filePath;
       } else {
-        console.log('Write storage permission denied.');
         return null;
       }
     } catch (error) {
-      console.log('Error saving signature:', error);
       return null;
     }
   };
@@ -1570,7 +1568,6 @@ function Individual_Staff_loan_Info(props) {
   };
 
   const _onDragEvent = () => {
-    console.log('dragged');
   };
   const _onCoBorrowerSaveEvent = async result => {
     // setCoBorrowerSignPath(result.pathName);

@@ -86,11 +86,9 @@ export const storeAreaEvaluation = async data => {
           ],
           (trans, results) => {
             resolve('success');
-            console.log('success', results);
           },
           error => {
             reject(error);
-            console.log('error', error);
           },
         );
       });
@@ -109,11 +107,9 @@ export async function deleteAreaEvaluation_ByID(area_evaluation_no) {
           (txObj, resultSet) => {
             resolve('success');
             // Delete query successful
-            console.log('Delete successful');
           },
           (txObj, error) => {
             // Error occurred while executing the delete query
-            console.error('Delete error:', error);
             reject(error);
           },
         );
@@ -193,11 +189,9 @@ export const updateAreaEvaluation = async data => {
           ],
           (trans, results) => {
             resolve('success');
-            console.log('success', results);
           },
           error => {
             reject(error);
-            console.log('error', error);
           },
         );
       });

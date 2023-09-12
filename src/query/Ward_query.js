@@ -3,7 +3,6 @@ import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {connection_name} from '../common';
 export function get_Ward(tokensource) {
-  console.log('tokensource',tokensource);
   return new Promise(async (resolve, reject) => {
     let ip = await AsyncStorage.getItem('ip');
     let port = await AsyncStorage.getItem('port');
@@ -37,11 +36,9 @@ export function get_Ward(tokensource) {
                         if (insertedRows === response.data.length) {
                           // resolve('success');
                           resolve({response:'success',sizeInBytes})
-                          console.log('All Ward records inserted successfully');
                         }
                       },
                       error => {
-                        console.log('query error', error);
                         // If insert query fails, rollback the transaction and reject the promise
                         reject(error);
                       },
@@ -54,7 +51,6 @@ export function get_Ward(tokensource) {
           .catch(error => {
             if (axios.isCancel(error)) {
               reject('Request canceled by user');
-              console.log('axios request cancelled');
             } else {
               reject(error);
             }

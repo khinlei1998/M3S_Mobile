@@ -23,7 +23,7 @@ import DatePicker from '../../components/DatePicker';
         onPress={handleAreaInfoToggle}
         style={style.list_container}
         titleStyle={style.list_title}
-        title="Borrower Info00">
+        title="Borrower Info">
         <View style={style.sub_container}>
           <View style={style.sub_list_container}>
             <Field

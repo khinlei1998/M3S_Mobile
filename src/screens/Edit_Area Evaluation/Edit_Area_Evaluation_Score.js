@@ -5,6 +5,7 @@ import {area_evaluation_score_result} from '../../common';
 import {reduxForm, Field, } from 'redux-form';
 import RadioButtonFile from '../../components/RadioButtonFile';
 import {connect, } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import {List} from 'react-native-paper';
 import TextInputFile from '../../components/TextInputFile';
@@ -15,6 +16,7 @@ function Edit_Area_Evaluation_Score(props) {
   const handleAreaEvaluationScoreToggle = () => {
     setAreaEvaluationScoreExpanded(!area_evaluation_score_expanded);
   };
+  const { t } = useTranslation();
 
   return (
     <>

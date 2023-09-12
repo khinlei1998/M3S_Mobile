@@ -245,12 +245,10 @@ export const storeLoanData = async loan_data => {
             loan_data.sv_pr_type,
             loan_data.village_status,
             loan_data.salary_amount,
-            // loan_data.borrower_map,
             //146
           ],
           (trans, results) => {
             resolve('success');
-            console.log('success', results);
           },
           error => {
             reject(error);
@@ -276,14 +274,10 @@ export async function deleteLoan_ByID(data) {
         // await FileSystem.delete(borrowerImagePath);
         const exists = await RNFS.exists(borrowerImagePath);
         if (exists) {
-          console.log('exist');
           await RNFS.unlink(borrowerImagePath);
-          console.log('File deleted successfully');
         } else {
-          console.log('File does not exist');
         }
 
-        console.log('Borrower image deleted successfully:', borrowerImagePath);
       } catch (error) {
         console.error('Error deleting borrower image:', error);
         // Display an alert indicating the error
@@ -296,18 +290,12 @@ export async function deleteLoan_ByID(data) {
       try {
         const exists = await RNFS.exists(coBorrowerImagePath);
         if (exists) {
-          console.log('co borrower exist', exists);
           await RNFS.unlink(coBorrowerImagePath);
-          console.log('File deleted successfully');
         } else {
           console.log('File does not exist');
         }
-        console.log(
-          'Co-borrower image deleted successfully:',
-          coBorrowerImagePath,
-        );
+       
       } catch (error) {
-        console.error('Error deleting co-borrower image:', error);
         // Display an alert indicating the error
         alert('Error deleting co-borrower image');
       }
@@ -318,12 +306,10 @@ export async function deleteLoan_ByID(data) {
       const exists = await RNFS.exists(filePath);
       if (exists) {
         await RNFS.unlink(filePath);
-        console.log('File deleted successfully');
       } else {
         console.log('File does not exist');
       }
     } catch (error) {
-      console.error('Error deleting map image:', error);
       // Display an alert indicating the error
       alert('Error deleting map image');
     }
@@ -350,7 +336,6 @@ export async function deleteLoan_ByID(data) {
                           'DELETE FROM Guarantee WHERE application_no = ?',
                           [data.application_no],
                           (txObj, resultSet) => {
-                            console.log('Delete from Guarantee successful');
                             resolve('success');
                           },
                           (txObj, error) => {
@@ -408,7 +393,6 @@ export async function getAllLoan_By_application_no(application_no) {
           resolve(results.rows.raw());
         },
         (tx, error) => {
-          console.log('error', error);
           reject(error);
         },
       );
@@ -430,15 +414,6 @@ async function uploadImage(filePath, description) {
         name: `${filePath}`,
       });
 
-      // let config = {
-      //   method: 'post',
-      //   url: `${connection_name}://${ip}:${port}/skylark-m3s/file/upload.m3s`,
-      //   body: imageForm,
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data; ',
-      //   }
-      // }
-
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
@@ -450,14 +425,11 @@ async function uploadImage(filePath, description) {
       };
 
       const response = await axios.request(config);
-      console.log('img response', response);
       return response.data; // Return the response if needed
     } else {
-      console.log('Image does not exist:', filePath);
       return null;
     }
   } catch (error) {
-    console.log('image error', error);
     throw new Error('Image upload failed');
   }
 }
@@ -468,7 +440,6 @@ function updateDateBySubtractingYears(dateProperty, yearsToSubtract) {
 
     return `${subtractedYear}-01-01`;
   } else {
-    console.log(`Invalid input for ${dateProperty}`);
     return '';
   }
 }
@@ -528,7 +499,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           await uploadImage(gp_borrower_map, 'Group borrower map');
         } catch (error) {
           // Handle the error for gp_borrower_map upload, if needed
-          console.log('Error uploading gp_borrower_map:', error);
           return; // Stop further execution if gp_borrower_map upload fails
         }
 
@@ -679,7 +649,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               village_code: data.village_code,
               ward_code: data.ward_code,
             };
-            console.log('gp_individual_loan_data', gp_individual_loan_data);
             loanDataArray.push(gp_individual_loan_data); // Store individual loan data in the array
             // applicationNo = loan_data.application_no;
 
@@ -691,7 +660,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 'Indi loan borrower map',
               );
             } catch (error) {
-              console.log('Error uploading indi borrower map:', error);
               failedData.push('Error uploading indi borrower map');
 
               return; // Stop further execution if gp_borrower_map upload fails
@@ -703,7 +671,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
             try {
               await uploadImage(indi_borrower_sign, 'Indi  borrower sign');
             } catch (error) {
-              console.log('Error uploading indi borrower sign:', error);
               failedData.push('Error uploading indi borrower sign'); // Push the error message to the failedData array
 
               return;
@@ -878,7 +845,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         try {
           await uploadImage(indi_loan_borrower_map, 'Indi loan borrower map');
         } catch (error) {
-          console.log('Error uploading indi borrower map:', error);
           failedData.push('Error uploading indi borrower map');
 
           return; // Stop further execution if gp_borrower_map upload fails
@@ -890,7 +856,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         try {
           await uploadImage(indi_borrower_sign, 'Indi  borrower sign');
         } catch (error) {
-          console.log('Error uploading indi borrower sign:', error);
           failedData.push('Error uploading indi borrower sign'); // Push the error message to the failedData array
 
           return;
@@ -901,7 +866,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         try {
           await uploadImage(indi_coborrower_sign, 'Indi  coborrower sign');
         } catch (error) {
-          console.log('Error uploading indi coborrower sign:', error);
           failedData.push('Error uploading indi coborrower sign'); // Push the error message to the failedData array
 
           return;
@@ -1149,7 +1113,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 'relation borrower sign',
               );
             } catch (error) {
-              console.log('Error uploading relation_borrower_sign:', error);
               failedData.push('Error uploading relation_borrower_sign'); // Push the error message to the failedData array
 
               return;
@@ -1164,7 +1127,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 'relation  coborrower sign',
               );
             } catch (error) {
-              console.log('Error uploading relation_coborrower_sign:', error);
               failedData.push('Error uploading relation_coborrower_sign'); // Push the error message to the failedData array
 
               return;
@@ -1223,18 +1185,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
             // Add more data as needed
           ];
 
-          // for (let index = 1; index <= 22; index++) {
-          //   const formattedIndex = index.toString().padStart(2, '0'); // Format the index with leading zeros
-
-          //   const evidence_img = `/storage/emulated/0/Pictures/Camera/${loan_data.applicationNo}AT${formattedIndex}F.jpg`;
-          //   try {
-          //     await uploadImage(evidence_img, 'evidence_img');
-          //   } catch (error) {
-          //     console.log(`Error uploading evidence_img ${index}:`, error);
-          //     failedData.push(`Error uploading evidence_img ${index}`);
-          //     break; // Stop further execution if image upload fails for any of the indices
-          //   }
-          // }
           for (let i = 0; i < data.length; i++) {
             const evidence_img = `/storage/emulated/0/Pictures/Camera/${loan_data.applicationNo}AT${data[i].value}.jpg`;
             try {
@@ -1252,7 +1202,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           try {
             await uploadImage(passport_img, 'passport_img');
           } catch (error) {
-            console.log(`Error uploading passport_img `, error);
             failedData.push(`Error uploading passport_img`);
             break; // Stop further execution if image upload fails for any of the indices
           }
@@ -1297,7 +1246,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         },
       };
       const response = await axios.request(config);
-      console.log('response', response);
       //Update Gropup table staus
       if (data.group_aplc_no) {
         if (
@@ -1320,7 +1268,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               },
               (txObj, error) => {
                 reject(error);
-                console.error('Update error:', error);
               },
             );
           });
@@ -1337,13 +1284,9 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               form: 'Individual Application',
               message: response.data.individualApplication[i].errMsg,
             };
-            console.log('error', error);
             failedData.push(error);
           } else {
-            console.log(
-              'indi loan status',
-              response.data.individualApplication[i].applicationNo,
-            );
+          
             successCount++;
             global.db.transaction(tx => {
               tx.executeSql(
@@ -1353,7 +1296,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                   console.log('Update status Individual_application');
                 },
                 (txObj, error) => {
-                  console.error(error);
                   reject(error);
                 },
               );
@@ -1382,7 +1324,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               },
               (txObj, error) => {
                 reject(error);
-                console.error('Update error:', error);
               },
             );
           });
@@ -1407,7 +1348,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               },
               (txObj, error) => {
                 reject(error);
-                console.error('Update error:', error);
               },
             );
           });
@@ -1431,11 +1371,9 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               'UPDATE Exception_aprv set tablet_sync_sts=? where application_no=?',
               ['01', response.data.approvalRequests[0].application_no],
               (txObj, resultSet) => {
-                console.log('Update successful Exception_aprv');
               },
               (txObj, error) => {
                 reject(error);
-                console.error('Update error:', error);
               },
             );
           });
@@ -1459,11 +1397,9 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               'UPDATE Area_evaluation set tablet_sync_sts=? where application_no=?',
               ['01', response.data.areaEvaluation[0].application_no],
               (txObj, resultSet) => {
-                console.log('Update successful areaEvaluation');
               },
               (txObj, error) => {
                 reject(error);
-                console.error('Update error:', error);
               },
             );
           });
@@ -1486,11 +1422,9 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               'UPDATE Relation_info set tablet_sync_sts=? where application_no=?',
               ['01', response.data.relationInfo[0].application_no],
               (txObj, resultSet) => {
-                console.log('Update successful relationInfo');
               },
               (txObj, error) => {
                 reject(error);
-                console.error('Update error:', error);
               },
             );
           });
@@ -1624,9 +1558,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
       return 'success';
     }
   } catch (error) {
-    console.log('finale Axios error', error);
     return error;
-    // Alert.alert('out Error', 'Axios error occurred.');
   }
 };
 
@@ -1641,7 +1573,6 @@ const fetchGuaranteeData = async applicationNo => {
           resolve(results.rows.raw());
         },
         (tx, error) => {
-          console.log('error', error);
           reject(error);
         },
       );
@@ -1665,7 +1596,6 @@ const fetchIndiloanData = async group_aplc_no => {
           }
         },
         (tx, error) => {
-          console.log('error', error);
           reject(error);
         },
       );
@@ -1683,7 +1613,6 @@ const fetchAreaEvaluation = async applicationNo => {
           resolve(results.rows.raw());
         },
         (tx, error) => {
-          console.log('error', error);
           reject(error);
         },
       );
@@ -1702,7 +1631,6 @@ const fetchExceptionAprv = async applicationNo => {
           resolve(results.rows.raw());
         },
         (tx, error) => {
-          console.log('error', error);
           reject(error);
         },
       );
@@ -1720,7 +1648,6 @@ const fetchRelationInfo = async applicationNo => {
           resolve(results.rows.raw());
         },
         (tx, error) => {
-          console.log('error', error);
           reject(error);
         },
       );
@@ -1902,7 +1829,6 @@ export const updateLoanData = async loan_data => {
 
           (trans, results) => {
             resolve('success');
-            console.log('success', results);
           },
           error => {
             reject(error);

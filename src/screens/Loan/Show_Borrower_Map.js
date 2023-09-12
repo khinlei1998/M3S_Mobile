@@ -21,7 +21,6 @@ export default function Show_Borrower_Map(props) {
   const loan_data_count = props.route.params.all_loandata.length;
   const user_id = props.route.params.user_id;
   const p_type=props.route.params.p_type;
-  // console.log('p_type',p_type);
   const sketchRef = useRef(null);
   return (
     <>
@@ -101,7 +100,6 @@ export default function Show_Borrower_Map(props) {
               };
             }}
             onSketchSaved={(success, path) => {
-              console.log('path',path);
               alert(success ? 'Image saved!' : 'Failed to save image!', path);
               if (path) {
                 const queryParam = `?timestamp=${Date.now()}`;

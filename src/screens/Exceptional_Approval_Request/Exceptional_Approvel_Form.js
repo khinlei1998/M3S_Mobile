@@ -6,28 +6,28 @@ import {
   Keyboard,
   ToastAndroid,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {style} from '../../style/Exceptional_Approvla_style';
-import {operations} from '../../common';
-import {Button, RadioButton, List} from 'react-native-paper';
+import React, { useState, useEffect } from 'react';
+import { style } from '../../style/Exceptional_Approvla_style';
+import { operations } from '../../common';
+import { Button, RadioButton, List } from 'react-native-paper';
 import DividerLine from '../../components/DividerLine';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import { reduxForm, Field, change, reset } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
 import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
 import Exceptional_Approval_Info from './Exceptional_Approval_Info';
 import validate from './Validate';
-import {storeExceptionalApproval} from '../../query/Exceptional_Approval_query';
-import {useNavigation} from '@react-navigation/native';
-import {setExcept_ApprovalStatus} from '../../redux/LoanReducer';
-import {getAllLoan_By_application_no} from '../../query/AllLoan_query';
+import { storeExceptionalApproval } from '../../query/Exceptional_Approval_query';
+import { useNavigation } from '@react-navigation/native';
+import { setExcept_ApprovalStatus } from '../../redux/LoanReducer';
+import { getAllLoan_By_application_no } from '../../query/AllLoan_query';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 
 function Exceptional_Approvel_Form(props) {
   const navigation = useNavigation();
   const { t } = useTranslation();
-  const {handleSubmit,} = props;
+  const { handleSubmit, } = props;
   const [show_operation, setOperation] = useState('1');
   const [loanexpanded, setLoanExpanded] = React.useState(true);
   const retrive_loan_data = props.route.params.retrive_loan_data;
@@ -57,10 +57,12 @@ function Exceptional_Approvel_Form(props) {
           birth_date: indi_data[0].birth_date,
           tot_net_income: indi_data[0].tot_net_income,
           exception_rqst_date: moment().format('YYYY-MM-DD'),
-          excpt_aprv_rqst_no: retrive_loan_data.application_no.replace(
-            /^[^M]*M/,
-            'EAM',
-          ),
+          // excpt_aprv_rqst_no: retrive_loan_data.application_no.replace(
+          //   /^[^M]*M/,
+          //   'EAM',
+          // ),
+          excpt_aprv_rqst_no: retrive_loan_data.application_no.replace(/^(10|20)(.*)/, "EA$2")
+
         };
         props.initialize(initialize_data);
       },
@@ -74,7 +76,7 @@ function Exceptional_Approvel_Form(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{flex: 1, backgroundColor: '#fff'}}>
+          <View style={{ flex: 1, backgroundColor: '#fff' }}>
             <Text style={style.title_style}>
               {t("Exceptional Approval Request Form")}
             </Text>
@@ -100,7 +102,7 @@ function Exceptional_Approvel_Form(props) {
                         label={option.label}
                         value={option.value}
                         color="#000"
-                        labelStyle={{marginLeft: 5}}
+                        labelStyle={{ marginLeft: 5 }}
                       />
                     </View>
                   </RadioButton.Group>
@@ -232,7 +234,7 @@ export default reduxForm({
   form: 'Exceptional_Approvel_Form',
   validate,
 })(
-  connect(mapStateToProps, {setExcept_ApprovalStatus})(
+  connect(mapStateToProps, { setExcept_ApprovalStatus })(
     Exceptional_Approvel_Form,
   ),
 );

@@ -51,7 +51,6 @@ function LoginScreen(props) {
   const [prefix, setPrefix] = useState('');
   const hideModal = () => setModalVisible(false);
   //   const isChecked = useSelector((state) => state.checkbox.isChecked);
-  // console.log('isChecked',isChecked);
   const handleLngChange = value => {
     setPrefix(value); //show selected value
     i18next.changeLanguage(value);
@@ -68,7 +67,7 @@ function LoginScreen(props) {
   const onSubmit = async (values, dispatch) => {
     try {
       let hashedPassword = await sha256(values.password);
-      let changed_cap_password = hashedPassword.toUpperCase();
+      let changed_cap_password = hashedPassword.toUpperCase(); 
       let encodedString = encode(changed_cap_password);
       const user = await selectUser(values.user_id, encodedString);
       const user_length = Object.keys(user).length;
@@ -83,8 +82,7 @@ function LoginScreen(props) {
         ToastAndroid.show(`Welocome,[${user_id}]!`, ToastAndroid.SHORT);
 
         if (rememberMe) {
-          console.log('reach');
-          await AsyncStorage.setItem('savedlogin', user.employee_no);
+          await AsyncStorage.setItem('savedlogin', user.user_id);
           // dispatch(reset('LoginForm'));
         } else {
           await AsyncStorage.removeItem('savedlogin');
@@ -99,7 +97,6 @@ function LoginScreen(props) {
       // const user_id = await AsyncStorage.getItem('user_id');
       // ToastAndroid.show(`Welocome,[${user_id}]!`, ToastAndroid.SHORT);
     } catch (error) {
-      alert(error);
       console.log('Error:', error);
     }
   };

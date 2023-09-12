@@ -7,8 +7,12 @@ import RadioButtonFile from '../../components/RadioButtonFile';
 import {connect} from 'react-redux';
 import {List} from 'react-native-paper';
 import TextInputFile from '../../components/TextInputFile';
+import { useTranslation } from 'react-i18next';
+
 function Area_Evaluation_Score(props) {
   const {total_score,total_sts_flag} = props;
+  const { t } = useTranslation();
+
   const [area_evaluation_score_expanded, setAreaEvaluationScoreExpanded] =
     useState(true);
   const handleAreaEvaluationScoreToggle = () => {

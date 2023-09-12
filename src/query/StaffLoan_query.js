@@ -172,11 +172,9 @@ export const storeStaffLoanData = async loan_data => {
           ],
           (trans, results) => {
             resolve('success');
-            console.log('success', results);
           },
           error => {
             reject(error);
-            console.log('error', error);
           },
         );
       });
@@ -195,18 +193,15 @@ export async function deleteStaffLoan_ByID(data) {
           (txObj, resultSet) => {
             resolve('success');
             // Delete query successful
-            console.log('Delete successful');
           },
           (txObj, error) => {
             // Error occurred while executing the delete query
-            console.error('Delete error:', error);
             reject(error);
           },
         );
       });
     });
   } catch (error) {
-    console.error('Error deleting loan:', error);
     throw error;
   }
 }
@@ -377,7 +372,6 @@ repayment_history_yn=?,loan_officer_cmnt=?,tablet_sync_sts=?,sync_sts=?,old_appl
           ],
           (trans, results) => {
             resolve('success');
-            console.log('success', results);
           },
           error => {
             reject(error);

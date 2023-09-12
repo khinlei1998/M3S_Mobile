@@ -168,8 +168,6 @@ function Borrower_Monthly_Income(props) {
     } else {
       const newValues = [...familyvalues];
       newValues[index] = 0;
-      console.log('family newValues', newValues);
-
       setFamilyValues(newValues);
       // Calculate the sum of the values array
       const filteredfmlyValues = newValues.filter(

@@ -7,14 +7,14 @@ import {
   TouchableHighlight,
   ToastAndroid,
 } from 'react-native';
-import React, {useState, useEffect, createRef} from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import DividerLine from '../../components/DividerLine';
-import {reduxForm, Field, change, reset} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
+import { reduxForm, Field, change, reset } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
 import RNFS from 'react-native-fs';
-import {Button, RadioButton, List, Modal} from 'react-native-paper';
-import {operations, emp_filter_item} from '../../common';
-import {style} from '../../style/Relation_style';
+import { Button, RadioButton, List, Modal } from 'react-native-paper';
+import { operations, emp_filter_item } from '../../common';
+import { style } from '../../style/Relation_style';
 import TextInputFile from '../../components/TextInputFile';
 import DatePicker from '../../components/DatePicker';
 import Relation_CoBorrower from './Relation_CoBorrower';
@@ -23,16 +23,16 @@ import Relation_Contract from './Relation_Contract';
 import Relation_Member_Sign from './Relation_Member_Sign';
 import Icon from 'react-native-vector-icons/Feather';
 import SignatureCapture from 'react-native-signature-capture';
-import {storeRelation} from '../../query/RelationShip_query';
-import {useRef} from 'react';
+import { storeRelation } from '../../query/RelationShip_query';
+import { useRef } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
-import {getAllLoan_By_application_no} from '../../query/AllLoan_query';
+import { useNavigation } from '@react-navigation/native';
+import { getAllLoan_By_application_no } from '../../query/AllLoan_query';
 import { useTranslation } from 'react-i18next';
 
 function Relation_Form(props) {
   const navigation = useNavigation();
-  const {handleSubmit} = props;
+  const { handleSubmit } = props;
   const [show_operation, setOperation] = useState('1');
   const [relation_expanded, setRelationExpanded] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
@@ -119,7 +119,7 @@ function Relation_Form(props) {
             maxStrokeWidth={10}
             viewMode={'portrait'}
           />
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <TouchableHighlight
               style={{
                 flex: 1,
@@ -133,7 +133,7 @@ function Relation_Form(props) {
               onPress={() => {
                 saveBorrowerSign();
               }}>
-              <Text style={{color: '#fff'}}>Save</Text>
+              <Text style={{ color: '#fff' }}>Save</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={{
@@ -148,7 +148,7 @@ function Relation_Form(props) {
               onPress={() => {
                 resetBorrowerSign();
               }}>
-              <Text style={{color: '#fff'}}>Reset</Text>
+              <Text style={{ color: '#fff' }}>Reset</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -213,7 +213,7 @@ function Relation_Form(props) {
             // backgroundColor="transparent"
             viewMode={'portrait'}
           />
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <TouchableHighlight
               style={{
                 flex: 1,
@@ -227,7 +227,7 @@ function Relation_Form(props) {
               onPress={() => {
                 co_borrower_saveSign();
               }}>
-              <Text style={{color: '#fff'}}>Save</Text>
+              <Text style={{ color: '#fff' }}>Save</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={{
@@ -242,7 +242,7 @@ function Relation_Form(props) {
               onPress={() => {
                 co_borrower_resetSign();
               }}>
-              <Text style={{color: '#fff'}}>Reset</Text>
+              <Text style={{ color: '#fff' }}>Reset</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -274,11 +274,9 @@ function Relation_Form(props) {
         const fileExists = await RNFS.exists(filePath);
         return filePath;
       } else {
-        console.log('Write storage permission denied.');
         return null;
       }
     } catch (error) {
-      console.log('Error saving signature:', error);
       return null;
     }
   };
@@ -309,9 +307,7 @@ function Relation_Form(props) {
             'Error! Borrower Sign cannot save',
             ToastAndroid.SHORT,
           );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
+        } 
       }
       if (signature2_path) {
         SignatureImagePath = await saveSignatureToInternalStorage(
@@ -324,9 +320,7 @@ function Relation_Form(props) {
             'Error! Borrower Sign cannot save',
             ToastAndroid.SHORT,
           );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
+        } 
       }
       if (signature3_path) {
         SignatureImagePath = await saveSignatureToInternalStorage(
@@ -339,8 +333,6 @@ function Relation_Form(props) {
             'Error! Borrower Sign cannot save',
             ToastAndroid.SHORT,
           );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
         }
       }
       if (signature4_path) {
@@ -354,9 +346,7 @@ function Relation_Form(props) {
             'Error! Borrower Sign cannot save',
             ToastAndroid.SHORT,
           );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
+        } 
       }
       if (signature5_path) {
         SignatureImagePath = await saveSignatureToInternalStorage(
@@ -369,9 +359,7 @@ function Relation_Form(props) {
             'Error! Borrower Sign cannot save',
             ToastAndroid.SHORT,
           );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
+        } 
       }
       if (signature6_path) {
         SignatureImagePath = await saveSignatureToInternalStorage(
@@ -384,9 +372,7 @@ function Relation_Form(props) {
             'Error! Borrower Sign cannot save',
             ToastAndroid.SHORT,
           );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
+        } 
       }
       if (signature7_path) {
         SignatureImagePath = await saveSignatureToInternalStorage(
@@ -399,8 +385,6 @@ function Relation_Form(props) {
             'Error! Borrower Sign cannot save',
             ToastAndroid.SHORT,
           );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
         }
       }
       if (signature8_path) {
@@ -414,9 +398,7 @@ function Relation_Form(props) {
             'Error! Borrower Sign cannot save',
             ToastAndroid.SHORT,
           );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
+        } 
       }
       if (signature9_path) {
         SignatureImagePath = await saveSignatureToInternalStorage(
@@ -429,9 +411,7 @@ function Relation_Form(props) {
             'Error! Borrower Sign cannot save',
             ToastAndroid.SHORT,
           );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
+        } 
       }
       if (signature10_path) {
         SignatureImagePath = await saveSignatureToInternalStorage(
@@ -444,9 +424,7 @@ function Relation_Form(props) {
             'Error! Borrower Sign cannot save',
             ToastAndroid.SHORT,
           );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
+        } 
       }
       if (borrower_sign_path) {
         borrowerImagePath = await saveSignatureToInternalStorage(
@@ -459,12 +437,7 @@ function Relation_Form(props) {
             'Error! Co-Borrower Sign cannot save',
             ToastAndroid.SHORT,
           );
-        } else {
-          console.log(
-            'Co-Borrower image saved successfully:',
-            coBorrowerImagePath,
-          );
-        }
+        } 
       }
 
       if (coborrower_sign_path) {
@@ -478,12 +451,7 @@ function Relation_Form(props) {
             'Error! Co-Borrower Sign cannot save',
             ToastAndroid.SHORT,
           );
-        } else {
-          console.log(
-            'Co-Borrower image saved successfully:',
-            coBorrowerImagePath,
-          );
-        }
+        } 
       }
 
       if (!saveImageError) {
@@ -505,7 +473,7 @@ function Relation_Form(props) {
   };
   const _onSaveEvent = async result => {
     // Extract the signature image data from the result
-    const {pathName, encoded} = result;
+    const { pathName, encoded } = result;
     switch (modalContent) {
       case 'btn1':
         setSignature1(encoded);
@@ -606,10 +574,11 @@ function Relation_Form(props) {
           addr: indi_data[0].addr,
           co_brwer_rgst_id: indi_data[0].co_brwer_rgst_id,
           co_brwer_name: indi_data[0].co_brwer_name,
-          relation_no: retrive_loan_data.application_no.replace(
-            /.*?(M)/,
-            'RIM',
-          ),
+          // relation_no: retrive_loan_data.application_no.replace(
+          //   /.*?(M)/,
+          //   'RIM',
+          // ),
+          relation_no: retrive_loan_data.application_no.replace(/^(10|20)(.*)/, "RI$2")
         };
         props.initialize(initialize_data);
       },
@@ -641,7 +610,7 @@ function Relation_Form(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{flex: 1, backgroundColor: '#fff'}}>
+          <View style={{ flex: 1, backgroundColor: '#fff' }}>
             <Text
               style={{
                 textAlign: 'center',
@@ -652,7 +621,7 @@ function Relation_Form(props) {
               }}>
               Relationship Form
             </Text>
-            <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+            <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>
               (Attached To Application)
             </Text>
             <DividerLine />
@@ -683,7 +652,7 @@ function Relation_Form(props) {
                         label={option.label}
                         value={option.value}
                         color="#000"
-                        labelStyle={{marginLeft: 5}}
+                        labelStyle={{ marginLeft: 5 }}
                       />
                     </View>
                   </RadioButton.Group>
@@ -759,7 +728,7 @@ function Relation_Form(props) {
             <Relation_CoBorrower />
             <Relation_Info setRelationName={setRelationName} />
             <Relation_Contract
-            borrower_name={borrower_name}
+              borrower_name={borrower_name}
               relation_name={relation_name}
               setCanvas={setCanvas}
               show_canvas={show_canvas}
@@ -852,7 +821,7 @@ function Relation_Form(props) {
             maxStrokeWidth={10}
             viewMode={'portrait'}
           />
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <TouchableHighlight
               style={{
                 flex: 1,
@@ -866,7 +835,7 @@ function Relation_Form(props) {
               onPress={() => {
                 saveSign();
               }}>
-              <Text style={{color: '#fff'}}>Save</Text>
+              <Text style={{ color: '#fff' }}>Save</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={{
@@ -881,7 +850,7 @@ function Relation_Form(props) {
               onPress={() => {
                 resetSign();
               }}>
-              <Text style={{color: '#fff'}}>Reset</Text>
+              <Text style={{ color: '#fff' }}>Reset</Text>
             </TouchableHighlight>
           </View>
         </View>

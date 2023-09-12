@@ -19,20 +19,14 @@ import { cancelRequest } from '../../components/CancelUtils';
 import { createCancelTokenSource } from '../../components/CancelUtils';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
-import { getEemployee_info } from '../../query/Employee_query';
-import { getCustomer_info } from '../../query/Customer_query';
-import { getNRC_info } from '../../query/NRCinfo_query';
-import { getSurvey_Item } from '../../query/SurveyItem_query';
-import { getLoanMax } from '../../query/LoanMax_query';
-import { getCodeInfo } from '../../query/CodeInfo_quey';
-import { get_Village } from '../../query/Village_query';
-import { get_Township } from '../../query/Township_query';
-import { get_Ward } from '../../query/Ward_query';
+import { reduxForm, } from 'redux-form';
+import { connect } from 'react-redux';
+import { changeSyncTime } from '../../redux/SynchronizationReducer';
 let token;
 
-export default function Synchronization_Screen(props) {
+function Synchronization_Screen(props) {
   const { t } = useTranslation();
-  const { navigation } = props;
+  const { navigation, download_data, changeSyncTime } = props;
   const [activeTab, setActiveTab] = React.useState(0);
   const [loan_data, setAllLoan] = React.useState([]);
   const [branch_code, setBranchCode] = React.useState('');
@@ -49,83 +43,7 @@ export default function Synchronization_Screen(props) {
   const [checkedItems, setCheckedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [fetchName, setFetchName] = useState('');
-  const [test, setTest] = useState();
-  const [download_data, setDownloaddata] = useState([
-    {
-      id: 1,
-      name: 'Employees',
-      size: '0KB',
-      last_sync_data: '-',
-      checked: false,
-      api: getEemployee_info,
-    },
-    {
-      id: 2,
-      name: 'Survey Items',
-      size: '0KB',
-      last_sync_data: '-',
-      checked: false,
-      api: getSurvey_Item,
-    },
-    {
-      id: 3,
-      name: 'Loan max limit',
-      size: '0KB',
-      last_sync_data: '-',
-      checked: false,
-      api: getLoanMax,
-    },
-    {
-      id: 4,
-      name: 'Codes',
-      size: '0KB',
-      last_sync_data: '-',
-      checked: false,
-      api: getCodeInfo,
-    },
-    {
-      id: 5,
-      name: 'Customer',
-      size: '0KB',
-      last_sync_data: '-',
-      checked: false,
-      api: getCustomer_info,
-    },
-    {
-      id: 6,
-      name: 'NRC Info',
-      size: '0KB',
-      last_sync_data: '-',
-      checked: false,
-      api: getNRC_info,
-    },
-    {
-      id: 7,
-      name: 'Village',
-      size: '0KB',
-      last_sync_data: '-',
-      checked: false,
-      api: get_Village,
-    },
-    {
-      id: 8,
-      name: 'Township',
-      size: '0KB',
-      last_sync_data: '-',
-      checked: false,
-      api: get_Township,
-    },
-    {
-      id: 9,
-      name: 'Ward',
-      size: '0KB',
-      last_sync_data: '-',
-      checked: false,
-      api: get_Ward,
-    },
-  ]);
-
-
+ 
   const netInfo = useNetInfo();
 
   const btnUploadCustomer = async () => {
@@ -163,7 +81,6 @@ export default function Synchronization_Screen(props) {
         setLoading(false);
         alert('Only Possible download in network');
       }
-      // updateTableSyncStatus('13')
     } catch (error) {
       setLoading(false);
       alert('Only Possible download in network');
@@ -335,28 +252,16 @@ export default function Synchronization_Screen(props) {
         const { response, sizeInBytes } = await executeRequest(checkitem);
         // Calculate size in kilobytes for the current item
         const sizeInKilobytes = bytesToKilobytes(sizeInBytes).toFixed(2);
-        console.log('sizeInKilobytes', sizeInKilobytes);
         count++;
-        // const updatedDownloadData = download_data.map(item => {
-        //   if (checkitem.id === item.id) {
-        //     return {
-        //       ...item,
-        //       last_sync_data: moment().format('lll'),
-        //       size: sizeInKilobytes,
-        //     };
-        //   }
-        //   return item;
-        // });
         for (let i = 0; i < download_data.length; i++) {
           if (download_data[i].id == checkitem.id) {
             download_data[i]['size'] = sizeInKilobytes + 'KB';
             download_data[i]['last_sync_data'] = moment().format('lll');
           }
         }
-        // console.log('updatedDownloadData', updatedDownloadData);
       }
-      setDownloaddata(download_data)
-      console.log('download data', download_data);
+      changeSyncTime(download_data)
+      // setDownloaddata(download_data)
       function bytesToKilobytes(bytes) {
         return bytes / 1024;
       }
@@ -439,7 +344,6 @@ export default function Synchronization_Screen(props) {
             setSelectAll={setSelectAll}
             setShowModal={setShowModal}
             handleDownload={handleDownload}
-            download_data={download_data}
           />
         )}
         {activeTab === 2 && <Sync_Setting_Screen />}
@@ -558,7 +462,6 @@ export default function Synchronization_Screen(props) {
       {/* Pg bar */}
       <Modal
         visible={show_modal}
-        // onDismiss={hidePgModal}
         contentContainerStyle={containerStyle}>
         <View style={{ padding: 10, height: 150 }}>
           <View
@@ -570,7 +473,6 @@ export default function Synchronization_Screen(props) {
 
               padding: 8,
             }}>
-            {/* <Animated.Text>{fetchedCount}</Animated.Text> */}
             <View style={{ flexDirection: 'row' }}>
               <ActivityIndicator size="15" color="#636Dc6" />
               <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 10 }}>
@@ -604,3 +506,12 @@ export default function Synchronization_Screen(props) {
     </>
   );
 }
+function mapStateToProps(state) {
+  return {
+    download_data: state.sync.download_data
+  };
+}
+
+export default reduxForm({
+  form: 'Sync_Screen',
+})(connect(mapStateToProps, { changeSyncTime })(Synchronization_Screen));

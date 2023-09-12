@@ -88,7 +88,6 @@ function Edit_Monthly_Income(props) {
         (accumulator, currentValue) => accumulator + currentValue,
         0,
       );
-      console.log('sum', sum);
       totalExpense(sum);
 
       dispatch(
@@ -151,7 +150,6 @@ function Edit_Monthly_Income(props) {
       );
     } else {
       const newValues = [...familyvalues];
-      console.log('familyvalues', familyvalues);
       newValues[index] = 0;
 
       setFamilyValues(newValues);
@@ -164,7 +162,6 @@ function Edit_Monthly_Income(props) {
         (accumulator, currentValue) => accumulator + currentValue,
         0,
       );
-      console.log('sum', sum);
       totalFamilyExpense(sum);
       dispatch(
         change(

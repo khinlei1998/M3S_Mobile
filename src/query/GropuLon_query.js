@@ -103,8 +103,6 @@ export async function deleteGroup_LoanID(data) {
               (txObj, resultSet) => {
                 if (resultSet.rows.length > 0) {
                   deletedApplicationNo = resultSet.rows.item(0).application_no;
-                  console.log('deletedApplicationNo', deletedApplicationNo);
-
                   // Delete from Individual_application table
                   tx.executeSql(
                     'DELETE FROM Individual_application WHERE group_aplc_no = ?',
@@ -244,7 +242,6 @@ export const updateGroupData = async data => {
           },
           error => {
             reject(error);
-            console.log('error', error);
           },
         );
       });

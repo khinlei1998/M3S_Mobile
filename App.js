@@ -1,27 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect,  } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import RootNavigation from './src/navigations/RootNavigation';
 import AuthNavigation from './src/navigations/AuthNavigation';
-// import {store} from './src/redux/store';
 import { Provider } from 'react-redux';
 import { AuthContext } from './src/components/context';
 import SQLite from 'react-native-sqlite-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './src/screens/SplashScreen';
 import store from './src/redux/store';
-import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
-import LoginScreen from './src/screens/Login/LoginScreen';
-import SettingScreen from './src/screens/Setting/SettingScreen';
 import { StyleSheet, PermissionsAndroid } from 'react-native';
-import RNFS from 'react-native-fs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 export default function App() {
   const [show_splash, showSplash] = useState(true);
   const [userID, setUserID] = React.useState(null);
-  const [paths, setPaths] = useState([]);
-  const Stack = createNativeStackNavigator();
-  const sketchRef = useRef();
-
   const saveUserID = async user_id => {
     try {
       await AsyncStorage.setItem('user_id', user_id);
@@ -63,7 +53,6 @@ export default function App() {
 
   const removeUserID = async () => {
     try {
-      // setUserID(null);
       await AsyncStorage.removeItem('user_id');
       setUserID(null);
     } catch (e) {
@@ -83,14 +72,6 @@ export default function App() {
       console.log('Error', error);
     },
   );
-
-  // useEffect(async() => {
-  //   // Check if there's a stored user ID in local storage
-  //   const storedUserID = await AsyncStorage.getItem('user_id');
-  //   if (storedUserID && !userID) {
-  //     setUserID(storedUserID);
-  //   }
-  // }, [userID]);
 
   useEffect(() => {
     const saveIp = async user_id => {
@@ -144,37 +125,6 @@ export default function App() {
           </AuthContext.Provider>
         )}
       </NavigationContainer>
-      {/* <NavigationContainer>
-        {show_splash ? (
-          <SplashScreen />
-        ) : (
-          <Stack.Navigator initialRouteName="Login">
-            {' '}
-            <Stack.Screen
-              name="Login"
-              component={LoginScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Setting"
-              component={SettingScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Splash"
-              component={SplashScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Home"
-              component={RootNavigation}
-              options={{
-                headerShown: false,
-              }}
-            />
-          </Stack.Navigator>
-        )}
-      </NavigationContainer> */}
     </Provider>
   );
 }

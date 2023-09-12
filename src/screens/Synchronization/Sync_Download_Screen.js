@@ -1,21 +1,11 @@
-import {View, Text, FlatList} from 'react-native';
-import React, {useState} from 'react';
+import { View, Text, FlatList } from 'react-native';
+import React from 'react';
 import DividerLine from '../../components/DividerLine';
-import {Button, Checkbox} from 'react-native-paper';
-import {useNetInfo} from '@react-native-community/netinfo';
-import {getEemployee_info} from '../../query/Employee_query';
-import {getCustomer_info} from '../../query/Customer_query';
-import {getNRC_info} from '../../query/NRCinfo_query';
-import {getSurvey_Item} from '../../query/SurveyItem_query';
-import {getLoanMax} from '../../query/LoanMax_query';
-import {getCodeInfo} from '../../query/CodeInfo_quey';
-import moment from 'moment';
-import {get_Village} from '../../query/Village_query';
-import {get_Township} from '../../query/Township_query';
-import {get_Ward} from '../../query/Ward_query';
-import {useTranslation} from 'react-i18next';
-
-export default function Sync_Download_Screen(props) {
+import { Button, Checkbox } from 'react-native-paper';
+import { useTranslation } from 'react-i18next';
+import { reduxForm, } from 'redux-form';
+import { connect } from 'react-redux';
+function Sync_Download_Screen(props) {
   const {
     selectAll,
     setSelectAll,
@@ -24,82 +14,7 @@ export default function Sync_Download_Screen(props) {
     handleDownload,
     download_data
   } = props;
-  const {t} = useTranslation();
-
-  // const download_data = [
-  //   {
-  //     id: 1,
-  //     name: 'Employees',
-  //     size: '0KB',
-  //     last_sync_data: moment().format('lll'),
-  //     checked: false,
-  //     api: getEemployee_info,
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'Survey Items',
-  //     size: '0KB',
-  //     last_sync_data: moment().format('lll'),
-  //     checked: false,
-  //     api: getSurvey_Item,
-  //   },
-  //   {
-  //     id: 3,
-  //     name: 'Loan max limit',
-  //     size: '0KB',
-  //     last_sync_data: moment().format('lll'),
-  //     checked: false,
-  //     api: getLoanMax,
-  //   },
-  //   {
-  //     id: 4,
-  //     name: 'Codes',
-  //     size: '0KB',
-  //     last_sync_data: moment().format('lll'),
-  //     checked: false,
-  //     api: getCodeInfo,
-  //   },
-  //   {
-  //     id: 5,
-  //     name: 'Customer',
-  //     size: '0KB',
-  //     last_sync_data: moment().format('lll'),
-  //     checked: false,
-  //     api: getCustomer_info,
-  //   },
-  //   {
-  //     id: 6,
-  //     name: 'NRC Info',
-  //     size: '0KB',
-  //     last_sync_data: moment().format('lll'),
-  //     checked: false,
-  //     api: getNRC_info,
-  //   },
-  //   {
-  //     id: 7,
-  //     name: 'Village',
-  //     size: '0KB',
-  //     last_sync_data: moment().format('lll'),
-  //     checked: false,
-  //     api: get_Village,
-  //   },
-  //   {
-  //     id: 8,
-  //     name: 'Township',
-  //     size: '0KB',
-  //     last_sync_data: moment().format('lll'),
-  //     checked: false,
-  //     api: get_Township,
-  //   },
-  //   {
-  //     id: 9,
-  //     name: 'Ward',
-  //     size: '0KB',
-  //     last_sync_data: moment().format('lll'),
-  //     checked: false,
-  //     api: get_Ward,
-  //   },
-  // ];
+  const { t } = useTranslation();
 
   const isChecked = item => {
     return checkedItems.some(checkedItem => checkedItem.id === item.id);
@@ -113,7 +28,7 @@ export default function Sync_Download_Screen(props) {
       setCheckedItems([...checkedItems, item]);
     }
   };
-  const item = ({item}) => {
+  const item = ({ item }) => {
     return (
       <View
         style={{
@@ -178,7 +93,7 @@ export default function Sync_Download_Screen(props) {
     }
   };
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <View
         style={{
           flexDirection: 'row',
@@ -186,7 +101,7 @@ export default function Sync_Download_Screen(props) {
           marginTop: 20,
           padding: 5,
         }}>
-        <Text style={{fontWeight: 'bold', fontSize: 18, marginLeft: 10}}>
+        <Text style={{ fontWeight: 'bold', fontSize: 18, marginLeft: 10 }}>
           Download Information
         </Text>
       </View>
@@ -253,7 +168,7 @@ export default function Sync_Download_Screen(props) {
         }}>
         <Button
           mode="outlined"
-          style={{width: 200, borderRadius: 0}}
+          style={{ width: 200, borderRadius: 0 }}
           onPress={() => handleDownload()}>
           <Text>Download</Text>
         </Button>
@@ -261,3 +176,13 @@ export default function Sync_Download_Screen(props) {
     </View>
   );
 }
+function mapStateToProps(state) {
+  return {
+    download_data: state.sync.download_data
+  };
+}
+
+export default reduxForm({
+  form: 'Sync_Screen',
+})(connect(mapStateToProps, {})(Sync_Download_Screen));
+

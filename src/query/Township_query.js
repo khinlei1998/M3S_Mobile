@@ -37,13 +37,10 @@ export function get_Township(tokensource) {
                         if (insertedRows === response.data.length) {
                           // resolve('success');
                           resolve({response:'success',sizeInBytes})
-                          console.log(
-                            'All Township records inserted successfully',
-                          );
+                         
                         }
                       },
                       error => {
-                        console.log('query error', error);
                         // If insert query fails, rollback the transaction and reject the promise
                         tx.executeSql('ROLLBACK', [], () => {
                           reject(error);

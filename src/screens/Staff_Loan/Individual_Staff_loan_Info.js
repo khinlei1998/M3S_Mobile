@@ -915,11 +915,9 @@ function Individual_Staff_loan_Info(props) {
         const fileExists = await RNFS.exists(filePath);
         return filePath;
       } else {
-        console.log('Write storage permission denied.');
         return null;
       }
     } catch (error) {
-      console.log('Error saving signature:', error);
       return null;
     }
   };
@@ -941,9 +939,7 @@ function Individual_Staff_loan_Info(props) {
             'Error! Borrower Sign cannot save',
             ToastAndroid.SHORT,
           );
-        } else {
-          console.log('Borrower image saved successfully:', borrowerImagePath);
-        }
+        } 
       }
 
       if (coborrower_sign_path) {
@@ -957,19 +953,10 @@ function Individual_Staff_loan_Info(props) {
             'Error! Co-Borrower Sign cannot save',
             ToastAndroid.SHORT,
           );
-        } else {
-          console.log(
-            'Co-Borrower image saved successfully:',
-            coBorrowerImagePath,
-          );
-        }
+        } 
       }
-      const exists = await RNFS.exists(filePath);
-      if (exists) {
-        console.log('exist');
-      } else {
-        console.log('no exist');
-      }
+      await RNFS.exists(filePath);
+
       if (!saveImageError) {
         const staff_loan = Object.assign({}, values, {
           borrower_sign: borrowerImagePath,
@@ -1050,7 +1037,6 @@ function Individual_Staff_loan_Info(props) {
   };
 
   const _onDragEvent = () => {
-    console.log('dragged');
   };
   const _onCoBorrowerSaveEvent = async result => {
     setCoBorrowerSignPath(result.pathName);
@@ -1074,8 +1060,6 @@ function Individual_Staff_loan_Info(props) {
   const handleCalculate = () => {
     const today = moment();
     const working_month = today.diff(entryDate, 'months'); // Calculate month difference
-    console.log('working_month', working_month);
-    console.log('salary_amount', salary_amount);
     if (working_month >= 0 && working_month <= 5) {
       setLoanLimitAmount(0);
     } else if (working_month >= 6 && working_month <= 12) {
