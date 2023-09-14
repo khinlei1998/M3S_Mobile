@@ -230,6 +230,8 @@ function Borrower_Monthly_Income(props) {
         onPress={handleBorrowerIncomeToggle}
         style={{
           backgroundColor: '#fff',
+          marginLeft: 20,
+          marginRight: 20,
         }}
         titleStyle={style.list_title}
         title={t("Borrower's Monthly Income/Expense Statement")}>

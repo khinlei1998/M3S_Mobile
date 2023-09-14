@@ -1,11 +1,11 @@
-import {View, Text} from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {List, Button} from 'react-native-paper';
-import {style} from '../../style/Individual_Loan_style';
+import { View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { List, Button } from 'react-native-paper';
+import { style } from '../../style/Individual_Loan_style';
 import TextInputFile from '../../components/TextInputFile';
-import {reduxForm, Field, change} from 'redux-form';
-import {connect, useDispatch} from 'react-redux';
-import {getAllLoanMax} from '../../query/LoanMax_query';
+import { reduxForm, Field, change } from 'redux-form';
+import { connect, useDispatch } from 'react-redux';
+import { getAllLoanMax } from '../../query/LoanMax_query';
 import {
   totalIncome,
   totalExpense,
@@ -15,12 +15,12 @@ import {
   totalNetFamily,
   totalNetIncome,
 } from '../../redux/MonthlyReducer';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
-import {totalLoanAmt} from '../../redux/MonthlyReducer';
+import { totalLoanAmt } from '../../redux/MonthlyReducer';
 function Borrower_Monthly_Income(props) {
   const dispatch = useDispatch();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const {
     handleCalculate,
     app_amount,
@@ -224,13 +224,17 @@ function Borrower_Monthly_Income(props) {
         onPress={handleBorrowerIncomeToggle}
         style={{
           backgroundColor: '#fff',
+          marginLeft: 20,
+          marginRight: 20,
         }}
         titleStyle={style.list_title}
         title={t("Borrower's Monthly Income/Expense Statement")}>
+        {/* title={t("Business Info")}> */}
+
         <View style={style.sub_container}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <View>
-              <Text style={{fontWeight: 'bold', padding: 5, marginTop: 10}}>
+              <Text style={{ fontWeight: 'bold', padding: 5, marginTop: 10 }}>
                 {t("Business Income/Expense")}
               </Text>
               <View
@@ -380,8 +384,8 @@ function Borrower_Monthly_Income(props) {
                     padding: 20,
                     marginTop: 10,
                   }}>
-                  <Text style={{color: '#fff'}}>{t('Total Net Income')}</Text>
-                  <Text style={{color: '#F9A970'}}>
+                  <Text style={{ color: '#fff' }}>{t('Total Net Income')}</Text>
+                  <Text style={{ color: '#F9A970' }}>
                     {' '}
                     {total_business_net_total}
                   </Text>
@@ -389,8 +393,8 @@ function Borrower_Monthly_Income(props) {
               </View>
             </View>
             {/* Family Inccome */}
-            <View style={{marginLeft: 15}}>
-              <Text style={{fontWeight: 'bold', padding: 5, marginTop: 10}}>
+            <View style={{ marginLeft: 15 }}>
+              <Text style={{ fontWeight: 'bold', padding: 5, marginTop: 10 }}>
                 {t("Family Income/Expense")}
               </Text>
               <View
@@ -527,8 +531,8 @@ function Borrower_Monthly_Income(props) {
                     padding: 20,
                     marginTop: 77,
                   }}>
-                  <Text style={{color: '#fff'}}>{t('Total Net Income')}</Text>
-                  <Text style={{color: '#F9A970'}}>{total_fmly_net}</Text>
+                  <Text style={{ color: '#fff' }}>{t('Total Net Income')}</Text>
+                  <Text style={{ color: '#F9A970' }}>{total_fmly_net}</Text>
                 </View>
               </View>
             </View>
@@ -549,13 +553,13 @@ function Borrower_Monthly_Income(props) {
               // justifyContent: 'space-between',
               // flexDirection: 'row',
             }}>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <View
                 style={{
                   flexDirection: 'column',
                   justifyContent: 'space-between',
                 }}>
-                <Text style={{fontWeight: 'bold', fontSize: 20}}>
+                <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
                   Total Net Icome=
                 </Text>
                 <Text>
@@ -595,11 +599,11 @@ function Borrower_Monthly_Income(props) {
                   }}>
                   Calculation
                 </Button>
-                <Text style={{color: '#fff', marginLeft: 15}}>
+                <Text style={{ color: '#fff', marginLeft: 15 }}>
                   Loan Limit Amount
                 </Text>
               </View>
-              <Text style={{color: '#F9A970', fontSize: 15, marginRight: 5}}>
+              <Text style={{ color: '#F9A970', fontSize: 15, marginRight: 5 }}>
                 {app_amount}
               </Text>
             </View>

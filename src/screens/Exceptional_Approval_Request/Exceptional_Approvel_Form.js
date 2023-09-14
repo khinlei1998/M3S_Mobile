@@ -41,20 +41,20 @@ function Exceptional_Approvel_Form(props) {
     });
   };
   const handleLoanToggle = () => {
-    setLoanExpanded(!loanexpanded);
+    setLoanExpanded(!loanexpanded); 
   };
   const loadData = async () => {
     await getAllLoan_By_application_no(retrive_loan_data.application_no).then(
       indi_data => {
         let initialize_data = {
           application_no: retrive_loan_data.application_no,
-          application_date: indi_data[0].application_date,
-          resident_rgst_id: retrive_loan_data.resident_rgst_id,
+          applicationDate: indi_data[0].application_date,
+          brwerRgstId: retrive_loan_data.resident_rgst_id,
           borrower_name: indi_data[0].borrower_name,
           application_amt: indi_data[0].application_amt.toString()
             ? indi_data[0].application_amt.toString()
             : '',
-          birth_date: indi_data[0].birth_date,
+          birthDate: indi_data[0].birth_date,
           tot_net_income: indi_data[0].tot_net_income,
           exception_rqst_date: moment().format('YYYY-MM-DD'),
           // excpt_aprv_rqst_no: retrive_loan_data.application_no.replace(
@@ -127,7 +127,7 @@ function Exceptional_Approvel_Form(props) {
                     editable
                   />
                   <Field
-                    name={'application_date'}
+                    name={'applicationDate'}
                     component={DatePicker}
                     label={'Application Date'}
                     editable={true}
@@ -136,7 +136,7 @@ function Exceptional_Approvel_Form(props) {
 
                 <View style={style.sub_list_container}>
                   <Field
-                    name={'excptAprvRsn1'}
+                    name={'brwerRgstId'}
                     title={'Borrower NRC'}
                     component={TextInputFile}
                     cus_width

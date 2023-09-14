@@ -97,6 +97,7 @@ function LoginScreen(props) {
       // const user_id = await AsyncStorage.getItem('user_id');
       // ToastAndroid.show(`Welocome,[${user_id}]!`, ToastAndroid.SHORT);
     } catch (error) {
+      ToastAndroid.show(`Invalid UserName and Password`, ToastAndroid.SHORT);
       console.log('Error:', error);
     }
   };

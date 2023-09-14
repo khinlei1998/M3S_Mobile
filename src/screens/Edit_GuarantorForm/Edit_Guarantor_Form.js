@@ -712,7 +712,7 @@ function Edit_Guarantor_Form(props) {
                   />
 
                   <Field
-                    name={'guarantee_date'}
+                    name={'applicationDate'}
                     component={DatePicker}
                     label={'Application Date'}
                     editable={true}

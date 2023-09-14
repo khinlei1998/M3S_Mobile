@@ -6,8 +6,8 @@ export const storeExceptionalApproval = async data => {
         try {
             global.db.transaction(trans => {
                 trans.executeSql(
-                    `INSERT INTO Exception_aprv (serial_no,excpt_aprv_rqst_no,status_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,group_aplc_no,application_no,exception_rqst_date,borrower_name,application_amt,birth_date,borrower_age,group_member_num,occupation,net_income,excpt_aprv_rsn_1,excpt_aprv_rsn_2,excpt_aprv_rsn_3,exception_reason,recommend_nm,tablet_sync_sts,sync_sts,err_msg,excptAprvRsn1,birthDate
-) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+                    `INSERT INTO Exception_aprv (serial_no,excpt_aprv_rqst_no,status_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,group_aplc_no,application_no,exception_rqst_date,borrower_name,application_amt,birth_date,borrower_age,group_member_num,occupation,net_income,excpt_aprv_rsn_1,excpt_aprv_rsn_2,excpt_aprv_rsn_3,exception_reason,recommend_nm,tablet_sync_sts,sync_sts,err_msg,birthDate,brwerRgstId,applicationDate
+) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? )`,
                     [
                         null, //serialNo
                         data.excpt_aprv_rqst_no,
@@ -36,8 +36,9 @@ export const storeExceptionalApproval = async data => {
                         '00',
                         data.sync_sts,
                         data.err_msg, //27
-                        data.excptAprvRsn1,
-                        data.birthDate
+                        data.birthDate,
+                        data.brwerRgstId,
+                        data.applicationDate
 
                     ],
                     (trans, results) => {
@@ -119,7 +120,7 @@ export const updateExceptionalApproval = async data => {
         try {
             global.db.transaction(trans => {
                 trans.executeSql(
-                    `UPDATE  Exception_aprv SET serial_no=?,excpt_aprv_rqst_no=?,status_code=?,create_datetime=?,create_user_id=?,delete_datetime=?,delete_user_id=?,update_datetime=?,update_user_id=?,group_aplc_no=?,application_no=?,exception_rqst_date=?,borrower_name=?,application_amt=?,birth_date=?,borrower_age=?,group_member_num=?,occupation=?,net_income=?,excpt_aprv_rsn_1=?,excpt_aprv_rsn_2=?,excpt_aprv_rsn_3=?,exception_reason=?,recommend_nm=?,tablet_sync_sts=?,sync_sts=?,err_msg=?,excptAprvRsn1=?,birthDate=? WHERE excpt_aprv_rqst_no = ?`,
+                    `UPDATE  Exception_aprv SET serial_no=?,excpt_aprv_rqst_no=?,status_code=?,create_datetime=?,create_user_id=?,delete_datetime=?,delete_user_id=?,update_datetime=?,update_user_id=?,group_aplc_no=?,application_no=?,exception_rqst_date=?,borrower_name=?,application_amt=?,birth_date=?,borrower_age=?,group_member_num=?,occupation=?,net_income=?,excpt_aprv_rsn_1=?,excpt_aprv_rsn_2=?,excpt_aprv_rsn_3=?,exception_reason=?,recommend_nm=?,tablet_sync_sts=?,sync_sts=?,err_msg=?,birthDate=?,brwerRgstId=?,applicationDate=? WHERE excpt_aprv_rqst_no = ?`,
                     [
                         data.serial_no, //serialNo
                         data.excpt_aprv_rqst_no,
@@ -147,9 +148,10 @@ export const updateExceptionalApproval = async data => {
                         data.recommend_nm,
                         data.tablet_sync_sts,
                         data.sync_sts,
-                        data.err_msg ,//27
-                        data.excptAprvRsn1,
+                        data.err_msg,//27
                         data.birthDate,
+                        data.brwerRgstId,
+                        data.applicationDate,
                         data.excpt_aprv_rqst_no
 
                     ],

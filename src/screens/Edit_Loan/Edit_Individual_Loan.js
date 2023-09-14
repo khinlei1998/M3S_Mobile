@@ -1364,7 +1364,7 @@ function Edit_Individual_Loan(props) {
         await updateLoanData(loan_data).then(result => {
           if (result == 'success') {
             dispatch(reset('Edit_Individual_Loan_Form'));
-            ToastAndroid.show(`Individual Staff Loan Application updated successfully.`, ToastAndroid.SHORT);
+            ToastAndroid.show(`Individual Loan Application updated successfully.`, ToastAndroid.SHORT);
             props.navigation.navigate('Home');
           }
         });

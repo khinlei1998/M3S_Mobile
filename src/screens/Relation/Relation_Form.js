@@ -563,12 +563,13 @@ function Relation_Form(props) {
   const loadData = async () => {
     await getAllLoan_By_application_no(retrive_loan_data.application_no).then(
       indi_data => {
+        console.log('indi_data',indi_data);
         let initialize_data = {
           application_no: retrive_loan_data.application_no,
-          application_date: indi_data[0].application_date,
+          applicationDate: indi_data[0].application_date,
           resident_rgst_id: indi_data[0].resident_rgst_id,
           borrower_name: indi_data[0].borrower_name,
-          application_amt: indi_data[0].application_amt.toString()
+          applicationAmt: indi_data[0].application_amt.toString()
             ? indi_data[0].application_amt.toString()
             : '',
           addr: indi_data[0].addr,

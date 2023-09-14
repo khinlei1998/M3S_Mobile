@@ -507,12 +507,13 @@ function Guarantor_Form(props) {
 
   const loadData = async () => {
     await getAllLoan_By_application_no(retrive_loan_data.application_no).then(indi_data => {
+      console.log('indi_data',indi_data);
       let initialize_data = {
         application_no: retrive_loan_data.application_no,
         application_date: indi_data[0].application_date,
-        borrower_nrc: indi_data[0].resident_rgst_id,
-        borrower_name: indi_data[0].borrower_name,
-        application_amt: indi_data[0].application_amt.toString()
+        brwerRgstId: indi_data[0].resident_rgst_id,
+        borrowerName: indi_data[0].borrower_name,
+        applicationAmt: indi_data[0].application_amt.toString()
           ? indi_data[0].application_amt.toString()
           : '',
         // guarantee_no: retrive_loan_data.application_no.replace(/.*?(M)/, 'GTM'),
@@ -650,7 +651,7 @@ function Guarantor_Form(props) {
                   />
 
                   <Field
-                    name={'application_date'}
+                    name={'applicationDate'}
                     component={DatePicker}
                     label={'Application Date'}
                     editable={true}

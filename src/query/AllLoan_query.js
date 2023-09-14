@@ -916,7 +916,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 err_msg:item.err_msg,
                 brwerRgstId:item.brwerRgstId,
                 borrowerName:item.borrowerName,
-                applicationAmt:item.applicationAmt
+                applicationAmt:item.applicationAmt,
+                applicationDate:item.applicationDate
 
               };
             });
@@ -1029,7 +1030,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 applicationDate: item.applicationDate
               };
             });
-            console.log('area_data', area_data);
             areaData.push(...area_data);
           }
 
@@ -1074,8 +1074,9 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 recommendNm: item.recommend_nm,
                 tabletSyncSts: item.tablet_sync_sts,
                 syncSts: '00',
-                excptAprvRsn1:item.excptAprvRsn1,
-                birthDate:item.birthDate
+                birthDate:item.birthDate,
+                brwerRgstId:item.brwerRgstId,
+                applicationDate:item.applicationDate
               };
             });
             approval_requestData.push(...approval_request_data);

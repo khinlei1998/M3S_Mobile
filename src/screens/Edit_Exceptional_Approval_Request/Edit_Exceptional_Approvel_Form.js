@@ -88,6 +88,8 @@ function Edit_Exceptional_Approvel_Form(props) {
       setOperation('3');
     }
   }, [exceptional_update_status]);
+
+  console.log('retrive_exceptional_data',retrive_exceptional_data);
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
@@ -141,7 +143,7 @@ function Edit_Exceptional_Approvel_Form(props) {
                     editable
                   />
                   <Field
-                    name={'application_date'}
+                    name={'applicationDate'}
                     component={DatePicker}
                     label={'Application Date'}
                     editable={true}
@@ -150,7 +152,7 @@ function Edit_Exceptional_Approvel_Form(props) {
 
                 <View style={style.sub_list_container}>
                   <Field
-                    name={'resident_rgst_id'}
+                    name={'brwerRgstId'}
                     title={'Borrower NRC'}
                     component={TextInputFile}
                     cus_width
