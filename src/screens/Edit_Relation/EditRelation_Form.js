@@ -302,7 +302,7 @@ function Edit_Relation_Form(props) {
 
           if (fileExists) {
             await RNFS.unlink(filePath);
-          } 
+          }
         });
 
         await Promise.all(deleteFilePromises);
@@ -341,7 +341,7 @@ function Edit_Relation_Form(props) {
               'Error! Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } 
+          }
         }
         if (signature2) {
           SignatureImagePath = await saveSignatureToInternalStorage(
@@ -354,7 +354,7 @@ function Edit_Relation_Form(props) {
               'Error! Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } 
+          }
         }
         if (signature3) {
           SignatureImagePath = await saveSignatureToInternalStorage(
@@ -367,7 +367,7 @@ function Edit_Relation_Form(props) {
               'Error! Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } 
+          }
         }
         if (signature4) {
           SignatureImagePath = await saveSignatureToInternalStorage(
@@ -406,7 +406,7 @@ function Edit_Relation_Form(props) {
               'Error! Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } 
+          }
         }
         if (signature7) {
           SignatureImagePath = await saveSignatureToInternalStorage(
@@ -419,7 +419,7 @@ function Edit_Relation_Form(props) {
               'Error! Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } 
+          }
         }
         if (signature8) {
           SignatureImagePath = await saveSignatureToInternalStorage(
@@ -432,7 +432,7 @@ function Edit_Relation_Form(props) {
               'Error! Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } 
+          }
         }
         if (signature9) {
           SignatureImagePath = await saveSignatureToInternalStorage(
@@ -445,7 +445,7 @@ function Edit_Relation_Form(props) {
               'Error! Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } 
+          }
         }
         if (signature10) {
           SignatureImagePath = await saveSignatureToInternalStorage(
@@ -471,7 +471,7 @@ function Edit_Relation_Form(props) {
               'Error! Co-Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } 
+          }
         }
 
         if (show_coborrower_sign) {
@@ -485,7 +485,7 @@ function Edit_Relation_Form(props) {
               'Error! Co-Borrower Sign cannot save',
               ToastAndroid.SHORT,
             );
-          } 
+          }
         }
 
         if (!saveImageError) {
@@ -817,7 +817,7 @@ function Edit_Relation_Form(props) {
                 </View>
                 <View style={style.sub_list_container}>
                   <Field
-                    name={'application_amt'}
+                    name={'applicationAmt'}
                     title={t('Loan Apply Amount')}
                     component={TextInputFile}
                     cus_width

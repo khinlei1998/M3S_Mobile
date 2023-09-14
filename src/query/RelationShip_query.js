@@ -23,8 +23,8 @@ export const storeRelation = async data => {
     try {
       global.db.transaction(trans => {
         trans.executeSql(
-          `INSERT INTO Relation_info (serial_no,relation_no,status_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,application_no,transaction_date,borrower_name,addr,resident_rgst_id,co_brwer_name,co_brwer_rgst_id,grandparent_yn,parent_yn,brother_sister_yn,husband_wife_yn,son_daughter_yn,tablet_sync_sts,sync_sts,relation_name,err_msg)
- VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+          `INSERT INTO Relation_info (serial_no,relation_no,status_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,application_no,transaction_date,borrower_name,addr,resident_rgst_id,co_brwer_name,co_brwer_rgst_id,grandparent_yn,parent_yn,brother_sister_yn,husband_wife_yn,son_daughter_yn,tablet_sync_sts,sync_sts,relation_name,err_msg,applicationDate,applicationAmt)
+ VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
           [
             //25
             null, //serialNo
@@ -51,7 +51,9 @@ export const storeRelation = async data => {
             '00',
             data.sync_sts,
             data.relation_name,
-            data.err_msg
+            data.err_msg,
+            data.applicationDate,
+            data.applicationAmt,
           ],
           (trans, results) => {
             resolve('success');
@@ -98,7 +100,7 @@ export const UpdateRelation = async data => {
     try {
       global.db.transaction(trans => {
         trans.executeSql(
-          `UPDATE  Relation_info SET serial_no=?,relation_no=?,status_code=?,create_datetime=?,create_user_id=?,delete_datetime=?,delete_user_id=?,update_datetime=?,update_user_id=?,application_no=?,transaction_date=?,borrower_name=?,addr=?,resident_rgst_id=?,co_brwer_name=?,co_brwer_rgst_id=?,grandparent_yn=?,parent_yn=?,brother_sister_yn=?,husband_wife_yn=?,son_daughter_yn=?,tablet_sync_sts=?,sync_sts=?,relation_name=?,err_msg=? WHERE relation_no = ?
+          `UPDATE  Relation_info SET serial_no=?,relation_no=?,status_code=?,create_datetime=?,create_user_id=?,delete_datetime=?,delete_user_id=?,update_datetime=?,update_user_id=?,application_no=?,transaction_date=?,borrower_name=?,addr=?,resident_rgst_id=?,co_brwer_name=?,co_brwer_rgst_id=?,grandparent_yn=?,parent_yn=?,brother_sister_yn=?,husband_wife_yn=?,son_daughter_yn=?,tablet_sync_sts=?,sync_sts=?,relation_name=?,err_msg=?,applicationDate=?,applicationAmt=? WHERE relation_no = ?
 `,
           [
             //25
@@ -127,7 +129,9 @@ export const UpdateRelation = async data => {
             data.sync_sts,
             data.relation_name,
             data.err_msg,
-            data.relation_no
+            data.applicationDate,
+            data.applicationAmt,
+            data.relation_no,
           ],
           (trans, results) => {
             resolve('success');

@@ -24,8 +24,8 @@ export const storeGuarantor = async data => {
     try {
       global.db.transaction(trans => {
         trans.executeSql(
-          `INSERT INTO Guarantee (serial_no,organization_code,status_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,tablet_aplc_no,application_no,guarantee_no,tablet_guarantee_no,guarantee_date,guarantor_no,guarantor_nm,marital_status,gender,birth_date,resident_rgst_id,tel_no,addr,curr_resident_perd,borrower_rltn,relation_period,house_ocpn_type,business_own_type,workplace_name,workplace_type,workplace_period,employee_num,workplace_addr,curr_workplace_perd,land_scale,land_own_type,tablet_sync_sts,sync_sts,curr_resident_date,workplace_date,curr_workplace_date,relation_date,err_msg
-) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+          `INSERT INTO Guarantee (serial_no,organization_code,status_code,create_datetime,create_user_id,delete_datetime,delete_user_id,update_datetime,update_user_id,tablet_aplc_no,application_no,guarantee_no,tablet_guarantee_no,guarantee_date,guarantor_no,guarantor_nm,marital_status,gender,birth_date,resident_rgst_id,tel_no,addr,curr_resident_perd,borrower_rltn,relation_period,house_ocpn_type,business_own_type,workplace_name,workplace_type,workplace_period,employee_num,workplace_addr,curr_workplace_perd,land_scale,land_own_type,tablet_sync_sts,sync_sts,curr_resident_date,workplace_date,curr_workplace_date,relation_date,err_msg,brwerRgstId,borrowerName,applicationAmt
+) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
           [
             null, //serialNo
             null, //org code
@@ -69,6 +69,9 @@ export const storeGuarantor = async data => {
             data.curr_workplace_date,
             data.relation_date,
             data.err_msg, //42
+            data.brwerRgstId,
+            data.borrowerName,
+            data.applicationAmt
           ],
           (trans, results) => {
             resolve('success');
@@ -111,7 +114,7 @@ export const updateGuarantor = async data => {
     try {
       global.db.transaction(trans => {
         trans.executeSql(
-          `UPDATE  Guarantee SET serial_no=?,organization_code=?,status_code=?,create_datetime=?,create_user_id=?,delete_datetime=?,delete_user_id=?,update_datetime=?,update_user_id=?,tablet_aplc_no=?,application_no=?,guarantee_no=?,tablet_guarantee_no=?,guarantee_date=?,guarantor_no=?,guarantor_nm=?,marital_status=?,gender=?,birth_date=?,resident_rgst_id=?,tel_no=?,addr=?,curr_resident_perd=?,borrower_rltn=?,relation_period=?,house_ocpn_type=?,business_own_type=?,workplace_name=?,workplace_type=?,workplace_period=?,employee_num=?,workplace_addr=?,curr_workplace_perd=?,land_scale=?,land_own_type=?,tablet_sync_sts=?,sync_sts=?,curr_resident_date=?,workplace_date=?,curr_workplace_date=?,relation_date=?,err_msg=? WHERE guarantee_no = ?
+          `UPDATE  Guarantee SET serial_no=?,organization_code=?,status_code=?,create_datetime=?,create_user_id=?,delete_datetime=?,delete_user_id=?,update_datetime=?,update_user_id=?,tablet_aplc_no=?,application_no=?,guarantee_no=?,tablet_guarantee_no=?,guarantee_date=?,guarantor_no=?,guarantor_nm=?,marital_status=?,gender=?,birth_date=?,resident_rgst_id=?,tel_no=?,addr=?,curr_resident_perd=?,borrower_rltn=?,relation_period=?,house_ocpn_type=?,business_own_type=?,workplace_name=?,workplace_type=?,workplace_period=?,employee_num=?,workplace_addr=?,curr_workplace_perd=?,land_scale=?,land_own_type=?,tablet_sync_sts=?,sync_sts=?,curr_resident_date=?,workplace_date=?,curr_workplace_date=?,relation_date=?,err_msg=?,brwerRgstId=?,borrowerName=?,applicationAmt=? WHERE guarantee_no = ?
 `,
           [
             data.serial_no, //serialNo
@@ -156,7 +159,10 @@ export const updateGuarantor = async data => {
             data.curr_workplace_date,
             data.relation_date,
             data.err_msg, //42
-            data.guarantee_no
+            data.brwerRgstId,
+            data.borrowerName,
+            data.applicationAmt,
+            data.guarantee_no,
           ],
           (trans, results) => {
             resolve('success');

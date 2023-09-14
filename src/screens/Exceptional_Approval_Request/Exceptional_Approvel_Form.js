@@ -136,7 +136,7 @@ function Exceptional_Approvel_Form(props) {
 
                 <View style={style.sub_list_container}>
                   <Field
-                    name={'resident_rgst_id'}
+                    name={'excptAprvRsn1'}
                     title={'Borrower NRC'}
                     component={TextInputFile}
                     cus_width
@@ -168,7 +168,7 @@ function Exceptional_Approvel_Form(props) {
                   />
 
                   <Field
-                    name={'birth_date'}
+                    name={'birthDate'}
                     component={DatePicker}
                     label={'Date Of Birth'}
                     editable={true}

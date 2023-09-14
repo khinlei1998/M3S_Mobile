@@ -622,7 +622,7 @@ function Guarantor_Form(props) {
 
                 <View style={style.sub_list_container}>
                   <Field
-                    name={'borrower_nrc'}
+                    name={'brwerRgstId'}
                     title={'Borrower NRC'}
                     component={TextInputFile}
                     cus_width
@@ -631,7 +631,7 @@ function Guarantor_Form(props) {
                   />
 
                   <Field
-                    name={'borrower_name'}
+                    name={'borrowerName'}
                     title={t('Borrower Name')}
                     component={TextInputFile}
                     cus_width
@@ -641,7 +641,7 @@ function Guarantor_Form(props) {
                 </View>
                 <View style={style.sub_list_container}>
                   <Field
-                    name={'application_amt'}
+                    name={'applicationAmt'}
                     title={t('Loan Apply Amount')}
                     component={TextInputFile}
                     cus_width

@@ -182,7 +182,7 @@ function Edit_Exceptional_Approvel_Form(props) {
                   />
 
                   <Field
-                    name={'birth_date'}
+                    name={'birthDate'}
                     component={DatePicker}
                     label={t('Date Of Birth')}
                     editable={true}

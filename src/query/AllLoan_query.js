@@ -294,7 +294,7 @@ export async function deleteLoan_ByID(data) {
         } else {
           console.log('File does not exist');
         }
-       
+
       } catch (error) {
         // Display an alert indicating the error
         alert('Error deleting co-borrower image');
@@ -909,6 +909,15 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 landOwnType: item.land_own_type,
                 tabletSyncSts: item.tablet_sync_sts,
                 syncSts: '00',
+                curr_resident_date:item.curr_resident_date,
+                workplace_date:item.workplace_date, //ask
+                curr_workplace_date:item.curr_workplace_date,
+                relation_date:item.relation_date, //ask
+                err_msg:item.err_msg,
+                brwerRgstId:item.brwerRgstId,
+                borrowerName:item.borrowerName,
+                applicationAmt:item.applicationAmt
+
               };
             });
             guaranteeData.push(...gurantor_data);
@@ -1065,6 +1074,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 recommendNm: item.recommend_nm,
                 tabletSyncSts: item.tablet_sync_sts,
                 syncSts: '00',
+                excptAprvRsn1:item.excptAprvRsn1,
+                birthDate:item.birthDate
               };
             });
             approval_requestData.push(...approval_request_data);
@@ -1100,6 +1111,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 tabletSyncSts: item.tablet_sync_sts,
                 syncSts: '00',
                 relationName: relation_name,
+                applicationDate:item.applicationDate,
+                applicationAmt:item.applicationAmt
               };
             });
             relationData.push(...relation_datas);
@@ -1286,7 +1299,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
             };
             failedData.push(error);
           } else {
-          
+
             successCount++;
             global.db.transaction(tx => {
               tx.executeSql(
