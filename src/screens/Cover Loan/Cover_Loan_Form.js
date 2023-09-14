@@ -257,7 +257,7 @@ function Cover_Loan_Form(props) {
   const [modalVisible, setModalVisible] = useState(false);
   const [all_cus, setAllCus] = useState([]);
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
-  const [ setAllGroupLoanData] = useState([]);
+  const [ all_loandata,setAllGroupLoanData] = useState([]);
   const dispatch = useDispatch();
 
   const onSubmit = async values => {
