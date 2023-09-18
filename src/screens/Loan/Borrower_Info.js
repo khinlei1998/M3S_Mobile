@@ -368,8 +368,13 @@ function Borrower_Info(props) {
     </>
   );
 }
+function mapStateToProps(state) {
+  return {
+    // p_type: state.loan.p_type
+  };
+}
 
 export default reduxForm({
   form: 'Individual_Loan_Form',
   // validate,
-})(connect(null, {})(Borrower_Info));
+})(connect(mapStateToProps, {})(Borrower_Info));

@@ -43,7 +43,7 @@ function Synchronization_Screen(props) {
   const [checkedItems, setCheckedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [fetchName, setFetchName] = useState('');
- 
+
   const netInfo = useNetInfo();
 
   const btnUploadCustomer = async () => {

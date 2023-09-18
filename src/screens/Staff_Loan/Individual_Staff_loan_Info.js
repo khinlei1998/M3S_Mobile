@@ -58,7 +58,7 @@ import { filterWard } from '../../query/Ward_query';
 import Location_Modal from '../../components/Location_Modal';
 import { filterLocation, filterCity } from '../../query/CodeInfo_quey';
 import { useTranslation } from 'react-i18next';
-
+import { get_loged_branch_code } from '../../query/Employee_query';
 const Borrower_Sign_Modal = props => {
   const {
     show_canvas,
@@ -844,6 +844,7 @@ function Individual_Staff_loan_Info(props) {
   const [modal_location_visible, setLocationModalVisible] = useState(false);
   const [selectedLocationItemValue, setLocationSelectedItemValue] =
     useState('code_value');
+    const [branch_code, setBranchCode] = useState('');
   const [selected_locationvalue, setSelectedLocationValue] = useState(null);
   const [all_location, setAllLocation] = useState([]);
   const [location_text, setLocationText] = useState('');
@@ -884,6 +885,9 @@ function Individual_Staff_loan_Info(props) {
         ),
       );
     });
+    await get_loged_branch_code()
+    .then(data => setBranchCode(data[0].branch_code))
+    .catch(error => console.log(error));
   };
   const onChangeCityText = inputText => {
     set_cityText(inputText);
@@ -963,6 +967,7 @@ function Individual_Staff_loan_Info(props) {
           co_borrower_sign: coBorrowerImagePath,
           loan_limit_amt: loan_limit_amount,
           product_type: '20',
+          branch_code
         });
         await storeStaffLoanData(staff_loan).then(result => {
           if (result == 'success') {

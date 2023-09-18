@@ -79,7 +79,7 @@ export async function getAllLoanType() {
   });
 }
 
-export const storeLoanData = async loan_data => {
+export const storeLoanData = async (loan_data) => {
   const user_id = await AsyncStorage.getItem('user_id');
   const date = moment().format();
   return new Promise(async (resolve, reject) => {
@@ -94,7 +94,7 @@ export const storeLoanData = async loan_data => {
             loan_data.group_aplc_no, //group_aplc_no
             '01', //statusCode
             date, //create Date Time
-            user_id,
+            user_id, //create user id
             null, //deleteDatetime
             null, //delet usr id
             date, //updateDatetime
@@ -105,8 +105,8 @@ export const storeLoanData = async loan_data => {
             null, //contract no
             loan_data.product_type, // product type
             '001100', //Channel Device type
-            null, //open branch code
-            null, //Open user id
+            loan_data.branch_code, //open branch code
+            user_id, //Open user id
             null, //mngt_branch_code
             null, //mngt_user_id
             loan_data.loan_type, //20
@@ -508,12 +508,12 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
             const gp_individual_loan_data = {
               id: loan_data.id,
               statusCode: '01',
-              createUserId: user_id,
+              createUserId: loan_data.create_user_id,
               updateUserId: loan_data.update_user_id,
               productType: loan_data.product_type, //not null
               channelDeviceType: '00110',
-              openBranchCode: branch_code, //not null
-              openUserId: user_id, //not null
+              openBranchCode: loan_data.branch_code, //not null
+              openUserId: loan_data.open_user_id, //not null
               mngtBranchCode: branch_code, //not null
               mngtUserId: user_id,
               applicationNo: loan_data.application_no,
@@ -693,12 +693,12 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         const individual_loan_data = {
           id: data.id,
           statusCode: '01',
-          createUserId: user_id,
+          createUserId: data.create_user_id,
           updateUserId: data.update_user_id,
           productType: data.product_type, //not null
           channelDeviceType: '00110',
-          openBranchCode: branch_code, //not null
-          openUserId: user_id, //not null
+          openBranchCode: data.branch_code, //not null
+          openUserId: data.open_user_id, //not null
           mngtBranchCode: branch_code, //not null
           mngtUserId: user_id,
           applicationNo: data.application_no,
@@ -909,15 +909,15 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 landOwnType: item.land_own_type,
                 tabletSyncSts: item.tablet_sync_sts,
                 syncSts: '00',
-                curr_resident_date:item.curr_resident_date,
-                workplace_date:item.workplace_date, //ask
-                curr_workplace_date:item.curr_workplace_date,
-                relation_date:item.relation_date, //ask
-                err_msg:item.err_msg,
-                brwerRgstId:item.brwerRgstId,
-                borrowerName:item.borrowerName,
-                applicationAmt:item.applicationAmt,
-                applicationDate:item.applicationDate
+                curr_resident_date: item.curr_resident_date,
+                workplace_date: item.workplace_date, //ask
+                curr_workplace_date: item.curr_workplace_date,
+                relation_date: item.relation_date, //ask
+                err_msg: item.err_msg,
+                brwerRgstId: item.brwerRgstId,
+                borrowerName: item.borrowerName,
+                applicationAmt: item.applicationAmt,
+                applicationDate: item.applicationDate
 
               };
             });
@@ -1074,9 +1074,9 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 recommendNm: item.recommend_nm,
                 tabletSyncSts: item.tablet_sync_sts,
                 syncSts: '00',
-                birthDate:item.birthDate,
-                brwerRgstId:item.brwerRgstId,
-                applicationDate:item.applicationDate
+                birthDate: item.birthDate,
+                brwerRgstId: item.brwerRgstId,
+                applicationDate: item.applicationDate
               };
             });
             approval_requestData.push(...approval_request_data);
@@ -1112,8 +1112,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 tabletSyncSts: item.tablet_sync_sts,
                 syncSts: '00',
                 relationName: relation_name,
-                applicationDate:item.applicationDate,
-                applicationAmt:item.applicationAmt
+                applicationDate: item.applicationDate,
+                applicationAmt: item.applicationAmt
               };
             });
             relationData.push(...relation_datas);
