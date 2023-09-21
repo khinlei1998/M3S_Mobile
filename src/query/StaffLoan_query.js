@@ -15,7 +15,7 @@ export const storeStaffLoanData = async loan_data => {
             null, //group_aplc_no
             '01', //statusCode
             date, //create Date Time
-            user_id,
+            user_id, //create user id
             null, //deleteDatetime
             null, //delet usr id
             null, //updateDatetime
@@ -26,7 +26,7 @@ export const storeStaffLoanData = async loan_data => {
             null, //contract no
             20, //product type
             '001100', //Channel Device type
-            null, //open branch code
+            loan_data.branch_code, //open branch code
             null, //Open user id
             null, //mngt_branch_code
             null, //mngt_user_id

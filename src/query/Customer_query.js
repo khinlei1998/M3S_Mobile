@@ -183,7 +183,7 @@ export function getCustomer_info(tokensource) {
                         if (insertedRows === response.data.length) {
                           // resolve('success');
                           resolve({response:'success',sizeInBytes})
-                         
+
                         }
                       },
                       error => {
@@ -362,7 +362,7 @@ export function storeCustomerData(cus_data) {
                 cus_data.nrc_type,
                 cus_data.location_code, //location code
                 cus_data.location_name, //location name
-                user_id, //open_branch_code //108
+                cus_data.branch_code, //open_branch_code //108
                 //VillageName
               ],
               (trans, results) => {

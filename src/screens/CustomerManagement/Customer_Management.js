@@ -6,47 +6,45 @@ import {
   ScrollView,
   ToastAndroid,
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { Field, reduxForm, change, reset, formValueSelector } from 'redux-form';
-import { connect, useDispatch } from 'react-redux';
-import {
-  RadioButton,
-  List,
-} from 'react-native-paper';
+import React, {useState, useEffect} from 'react';
+import {Field, reduxForm, change, reset, formValueSelector} from 'redux-form';
+import {connect, useDispatch} from 'react-redux';
+import {RadioButton, List} from 'react-native-paper';
 import DividerLine from '../../components/DividerLine';
 import TextInputFile from '../../components/TextInputFile';
 import DropDownPicker from '../../components/DropDownPicker';
-import { fetchNRCinfo } from '../../query/NRCinfo_query';
+import {fetchNRCinfo} from '../../query/NRCinfo_query';
 import Customer_Base_Info from './Customer_Base_Info';
 import Property_Info from './Property_Info';
-import { salary_grade } from '../../common';
+import {salary_grade} from '../../common';
 import Monthly_Income from './Monthly_Income';
 import Busines_Info from './Busines_Info';
-import { style } from '../../style/Customer_Mang_style';
+import {style} from '../../style/Customer_Mang_style';
 import ShowNRC_Modal from './ShowNRC_Modal';
 import validate from './Validate';
 import moment from 'moment';
-import { setCusFormInitialValues } from '../../redux/CustomerReducer';
-import { filterEmp, fetchEmpName } from '../../query/Employee_query';
-import { addEmpFilter } from '../../redux/EmployeeReducer';
+import {setCusFormInitialValues} from '../../redux/CustomerReducer';
+import {filterEmp, fetchEmpName} from '../../query/Employee_query';
+import {addEmpFilter} from '../../redux/EmployeeReducer';
 import {
   storeCustomerData,
   fetchAllCustomerNum,
 } from '../../query/Customer_query';
-import { resetMonthlyIncome } from '../../redux/MonthlyReducer';
+import {resetMonthlyIncome} from '../../redux/MonthlyReducer';
 import DatePicker from '../../components/DatePicker';
 import Create_Operation from '../../components/Create_Operation';
-import { filterTownship } from '../../query/Township_query';
+import {filterTownship} from '../../query/Township_query';
 import City_Modal from '../../components/City_Modal';
 import Township_Modal from '../../components/Township_Modal';
 import Village_Modal from '../../components/Village_Modal';
-import { filterVillage } from '../../query/Village_query';
+import {filterVillage} from '../../query/Village_query';
 import Ward_Model from '../../components/Ward_Model';
-import { filterWard } from '../../query/Ward_query';
+import {filterWard} from '../../query/Ward_query';
 import Location_Modal from '../../components/Location_Modal';
-import { filterLocation, filterCity } from '../../query/CodeInfo_quey';
-import { useTranslation } from 'react-i18next';
+import {filterLocation, filterCity} from '../../query/CodeInfo_quey';
+import {useTranslation} from 'react-i18next';
 import Employee_Modal from '../../components/Employee_Modal';
+import { get_loged_branch_code } from '../../query/Employee_query';
 function Customer_Management(props) {
   const dispatch = useDispatch();
   const {
@@ -56,7 +54,7 @@ function Customer_Management(props) {
     nrcNo,
     nrc_prefix_code,
   } = props;
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   const [all_emp, setAllEmp] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
@@ -67,6 +65,8 @@ function Customer_Management(props) {
   const [show_businessdate, setBusiness] = useState('1');
   const [nrc_statecode, setNRCStateCode] = useState([]);
   const [empname, setEmpName] = useState('');
+  const [branch_code, setBranchCode] = useState('');
+
   // Villgae
   const [modal_village_visible, setVillageCodeModalVisible] = useState(false);
   const [all_village, setAllVillage] = useState([]);
@@ -127,6 +127,7 @@ function Customer_Management(props) {
       createUserId: empname,
       nrc_state_code: values.nrc_type == '2' ? prefix : '',
       start_living_date_status: show_businessdate,
+      branch_code
     });
     await storeCustomerData(data).then(result => {
       if (result == 'success') {
@@ -155,7 +156,7 @@ function Customer_Management(props) {
     set_cityText(inputText);
   };
 
-  const city_item = ({ item, index }) => {
+  const city_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -200,7 +201,7 @@ function Customer_Management(props) {
       </View>
     );
   };
-  const village_item = ({ item, index }) => {
+  const village_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -247,7 +248,7 @@ function Customer_Management(props) {
       </View>
     );
   };
-  const ward_item = ({ item, index }) => {
+  const ward_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -293,7 +294,7 @@ function Customer_Management(props) {
     );
   };
 
-  const township_item = ({ item, index }) => {
+  const township_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -339,7 +340,7 @@ function Customer_Management(props) {
     );
   };
 
-  const location_item = ({ item, index }) => {
+  const location_item = ({item, index}) => {
     return (
       <View
         style={{
@@ -403,9 +404,9 @@ function Customer_Management(props) {
         'Customer_ManagementForm',
         'resident_rgst_id',
         prefix &&
-        nrc_prefix_code &&
-        nrcNo &&
-        state_code + nrc_prefix_code + nrcNo,
+          nrc_prefix_code &&
+          nrcNo &&
+          state_code + nrc_prefix_code + nrcNo,
       ),
     );
   };
@@ -434,6 +435,10 @@ function Customer_Management(props) {
     await fetchEmpName().then(emp_name => {
       setEmpName(emp_name[0].employee_name);
     });
+
+    await get_loged_branch_code()
+    .then(data => setBranchCode(data[0].branch_code))
+    .catch(error => console.log(error));
   };
 
   useEffect(() => {
@@ -509,7 +514,7 @@ function Customer_Management(props) {
     );
   };
 
-  const item = ({ item, index }) => {
+  const item = ({item, index}) => {
     return (
       <View
         style={{
@@ -732,7 +737,7 @@ function Customer_Management(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{ flex: 1, backgroundColor: '#fff' }}>
+          <View style={{flex: 1, backgroundColor: '#fff'}}>
             <Text style={style.title_style}>
               {t('Customer Information Management')}
             </Text>
@@ -750,7 +755,7 @@ function Customer_Management(props) {
               onPress={handleEmpToggle}
               style={style.list_container}
               titleStyle={style.list_title}
-              title={t("Employee Information")}>
+              title={t('Employee Information')}>
               <View style={style.sub_container}>
                 <View style={style.sub_list_container}>
                   <Field
@@ -773,7 +778,7 @@ function Customer_Management(props) {
                     icon={'calendar'}
                   />
 
-                  <View style={{ marginRight: 10 }}>
+                  <View style={{marginRight: 10}}>
                     <Field
                       name={'positionTitleNm'}
                       title={t('Current Position')}
@@ -791,7 +796,7 @@ function Customer_Management(props) {
                     input_mode
                     editable
                   />
-                  <View style={{ marginRight: 10 }}>
+                  <View style={{marginRight: 10}}>
                     <Field
                       data={salary_grade}
                       name={'salaryRatingCode'}
@@ -835,12 +840,18 @@ function Customer_Management(props) {
         prefix={prefix}
         btnCancel={btnCancel}
       />
-      <Employee_Modal all_emp={all_emp} loading={loading}
-        btnCusSearch={btnCusSearch} modalVisible={modalVisible}
-        hideModal={hideModal} selectedItemValue={selectedItemValue}
+      <Employee_Modal
+        all_emp={all_emp}
+        loading={loading}
+        btnCusSearch={btnCusSearch}
+        modalVisible={modalVisible}
+        hideModal={hideModal}
+        selectedItemValue={selectedItemValue}
         handleItemValueChange={handleItemValueChange}
-        emp_text={emp_text} onChangeEmpText={onChangeEmpText} item={item} />
-
+        emp_text={emp_text}
+        onChangeEmpText={onChangeEmpText}
+        item={item}
+      />
 
       {/* City Modal */}
       <City_Modal

@@ -5,22 +5,18 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   FlatList,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import DividerLine from '../../components/DividerLine';
-import { operations, emp_filter_item } from '../../common';
-import { style } from '../../style/Group_Loan_style';
+import {operations, emp_filter_item} from '../../common';
+import {style} from '../../style/Group_Loan_style';
 import Group_Loan_Info from './Group_Loan_Info';
-import { connect, useDispatch } from 'react-redux';
-import { filterCustomer } from '../../query/Customer_query';
+import {connect, useDispatch} from 'react-redux';
+import {filterCustomer} from '../../query/Customer_query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import validate from './Validate';
-import {
-  RadioButton,
-  Button,
-  Modal,
-} from 'react-native-paper';
+import {RadioButton, Button, Modal} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import {Picker} from '@react-native-picker/picker';
 import {TextInput} from 'react-native-paper';
@@ -29,16 +25,16 @@ import Group_Borrower_Map from './Group_Borrower_Map';
 import {reduxForm, Field, change, reset} from 'redux-form';
 import moment from 'moment';
 import Group_Loan_List from './Group_Loan_List';
-import { getAllGroupLoan } from '../../query/GropuLon_query';
-import { storeGroupData } from '../../query/GropuLon_query';
-import { setBorrowerMap_Path } from '../../redux/LoanReducer';
-import { useTranslation } from 'react-i18next';
-
+import {getAllGroupLoan} from '../../query/GropuLon_query';
+import {storeGroupData} from '../../query/GropuLon_query';
+import {setBorrowerMap_Path} from '../../redux/LoanReducer';
+import {useTranslation} from 'react-i18next';
+import {get_loged_branch_code} from '../../query/Employee_query';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
   const [emp_data, setEmpData] = React.useState('');
-  const { t } = useTranslation();
+  const {t} = useTranslation();
 
   const {
     all_cus,
@@ -223,7 +219,7 @@ const Borrower_modal = props => {
               padding: 10,
               fontWeight: 'bold',
             }}>
-            {t("Phone Number")}
+            {t('Phone Number')}
           </Text>
         </View>
 
@@ -244,9 +240,9 @@ const Borrower_modal = props => {
               marginTop: 10,
               color: 'black',
               marginLeft: 5,
-              height:44
+              height: 44,
             }}>
-            {t("OK")}
+            {t('OK')}
           </Button>
         </View>
       </View>
@@ -254,13 +250,15 @@ const Borrower_modal = props => {
   );
 };
 function Group_Loan_Form(props) {
-  const { t } = useTranslation();
-  const { handleSubmit, navigation, setBorrowerMap_Path } = props;
+  const {t} = useTranslation();
+  const {handleSubmit, navigation, setBorrowerMap_Path} = props;
   const [show_operation, setOperation] = useState('1');
   const [modalVisible, setModalVisible] = useState(false);
   const [all_cus, setAllCus] = useState([]);
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
   const [all_loandata, setAllGroupLoanData] = useState([]);
+  const [branch_code, setBranchCode] = useState('');
+
   const dispatch = useDispatch();
 
   const handleItemValueChange = itemValue => {
@@ -285,6 +283,9 @@ function Group_Loan_Form(props) {
       );
       dispatch(change('Group_Form', 'product_type', `Group Loan`));
     });
+    await get_loged_branch_code()
+      .then(data => setBranchCode(data[0].branch_code))
+      .catch(error => console.log(error));
   };
   useEffect(() => {
     loadData();
@@ -292,12 +293,15 @@ function Group_Loan_Form(props) {
   const onSubmit = async values => {
     let data = Object.assign(values, {
       product_type: '30',
-
+      branch_code,
     });
     await storeGroupData(data).then(result => {
       if (result == 'success') {
         dispatch(setBorrowerMap_Path(''));
-        ToastAndroid.show('Group Loan Application added successfully.', ToastAndroid.SHORT);
+        ToastAndroid.show(
+          'Group Loan Application added successfully.',
+          ToastAndroid.SHORT,
+        );
         props.navigation.navigate('Home');
       }
     });
@@ -356,7 +360,7 @@ function Group_Loan_Form(props) {
                 mode="contained"
                 buttonColor={'#21316C'}
                 style={style.btnStyle}>
-                {t("OK")}
+                {t('OK')}
               </Button>
             </View>
             <DividerLine />
@@ -389,5 +393,5 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'Group_Form',
-  validate
-})(connect(mapStateToProps, { setBorrowerMap_Path })(Group_Loan_Form));
+  validate,
+})(connect(mapStateToProps, {setBorrowerMap_Path})(Group_Loan_Form));

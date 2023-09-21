@@ -5,7 +5,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   FlatList,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import DividerLine from '../../components/DividerLine';
@@ -26,13 +26,13 @@ import {storeGroupData} from '../../query/GropuLon_query';
 import Reloan_Info from './Reloan_Info';
 import Reloan_list from './Reloan_list';
 import validate from '../Group_Loan/Validate';
-import { useTranslation } from 'react-i18next';
-
+import {useTranslation} from 'react-i18next';
+import {get_loged_branch_code} from '../../query/Employee_query';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
   const [emp_data, setEmpData] = React.useState('');
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   const {
     all_cus,
     modalVisible,
@@ -216,7 +216,7 @@ const Borrower_modal = props => {
               padding: 10,
               fontWeight: 'bold',
             }}>
-            {t("Phone Number")}
+            {t('Phone Number')}
           </Text>
         </View>
 
@@ -237,35 +237,36 @@ const Borrower_modal = props => {
               marginTop: 10,
               color: 'black',
               marginLeft: 5,
-              height:44
+              height: 44,
             }}>
-            {t("OK")}
+            {t('OK')}
           </Button>
         </View>
       </View>
     </Modal>
   );
 };
- function Reloan_Form(props) {
+function Reloan_Form(props) {
   const {handleSubmit, navigation} = props;
-
+  const [branch_code, setBranchCode] = useState('');
   const [show_operation, setOperation] = useState('1');
   const [modalVisible, setModalVisible] = useState(false);
   const [all_cus, setAllCus] = useState([]);
   const [selectedItemValue, setSelectedItemValue] = useState('employee_name');
   const [all_loandata, setAllGroupLoanData] = useState([]);
   const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   const onSubmit = async values => {
     let data = Object.assign(values, {
       product_type: '50',
+      branch_code,
     });
     await storeGroupData(data).then(result => {
       if (result == 'success') {
         ToastAndroid.show(
           `Reloan Application added successfully.`,
           ToastAndroid.SHORT,
-        )
+        );
         props.navigation.navigate('Home');
       }
     });
@@ -293,6 +294,9 @@ const Borrower_modal = props => {
       );
       dispatch(change('Reloan_Form', 'product_type', `Reloan`));
     });
+    await get_loged_branch_code()
+      .then(data => setBranchCode(data[0].branch_code))
+      .catch(error => console.log(error));
   };
   useEffect(() => {
     loadData();
@@ -310,7 +314,7 @@ const Borrower_modal = props => {
                 color: '#273050',
                 fontWeight: 'bold',
               }}>
-               ReLoan Application
+              ReLoan Application
             </Text>
 
             <DividerLine />
@@ -351,7 +355,7 @@ const Borrower_modal = props => {
                 mode="contained"
                 buttonColor={'#21316C'}
                 style={style.btnStyle}>
-                {t("OK")}
+                {t('OK')}
               </Button>
             </View>
             <DividerLine />
@@ -374,10 +378,10 @@ const Borrower_modal = props => {
   );
 }
 function mapStateToProps(state) {
-    return {};
-  }
+  return {};
+}
 
-  export default reduxForm({
-    form: 'Reloan_Form',
-    validate
-  })(connect(mapStateToProps, {})(Reloan_Form));
+export default reduxForm({
+  form: 'Reloan_Form',
+  validate,
+})(connect(mapStateToProps, {})(Reloan_Form));

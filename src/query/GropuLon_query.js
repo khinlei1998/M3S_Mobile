@@ -37,13 +37,13 @@ export const storeGroupData = async data => {
             null, //updateDatetime
             user_id, //updateUserID
             //
-            data.open_branch_code,
+            data.branch_code,
             data.product_type,
-            data.open_user_id, //contract no
-            data.mngt_branch_code, // product type
-            data.mngt_user_id, //Channel Device type
-            data.application_date, //open branch code
-            data.in_charge, //Open user id
+            user_id, //open user id
+            '', // mng branch
+            '', //mngt user id
+            data.application_date,
+            data.in_charge,
             data.township_name, //mngt_branch_code
             data.customer_no, //mngt_user_id
             data.leader_name, //20
