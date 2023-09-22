@@ -33,6 +33,7 @@ import Survey from '../screens/Survey/Survey';
 import Passport from '../screens/Passport/Passport';
 import { useTranslation } from 'react-i18next';
 import LoginScreen from '../screens/Login/LoginScreen';
+import TestScreen from '../screens/Area Evaluation/TestScreen';
 const Stack = createNativeStackNavigator();
 
 export default function NavigatorView(props) {
@@ -50,7 +51,14 @@ export default function NavigatorView(props) {
     );
   };
   const StackNavigationData = [
-
+    {
+      name: t('Test'),
+      component: TestScreen,
+      headerTitleStyle: {
+        color: '#FFF',
+        fontSize: 18,
+      },
+    },
     {
       name: t('Home'),
       component: Home,
