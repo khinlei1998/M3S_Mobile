@@ -10,7 +10,6 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@baronha/react-native-photo-editor": "^1.1.6",
     "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-native-community/datetimepicker": "^7.1.0",
     "@react-native-community/netinfo": "^9.3.9",
@@ -31,10 +30,10 @@
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-image-picker": "^4.10.1",
-    "react-native-image-tools": "github:npomfret/react-native-image-tools",
     "react-native-loading-spinner-overlay": "^3.0.1",
     "react-native-modal-datetime-picker": "^15.0.1",
     "react-native-paper": "^5.0.0-rc.9",
+    "react-native-photo-editor": "^1.0.13",
     "react-native-reanimated": "^3.1.0",
     "react-native-safe-area-context": "^4.5.1",
     "react-native-screens": "^3.20.0",
