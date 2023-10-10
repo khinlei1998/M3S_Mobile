@@ -31,6 +31,7 @@ import Reloan_Form from '../screens/Relaon/Reloan_Form';
 import Survey from '../screens/Survey/Survey';
 import Edit_Reloan_Form from '../screens/Edit_Relaon/Edit_Reloan_Form';
 import Passport from '../screens/Passport/Passport';
+import TestScreen from '../screens/Test/TestScreen';
 // import Reloan_Form from '../screens/Relaon/Reloan_Form';
 export default function AuthNavigation(props) {
   const Stack = createNativeStackNavigator();
@@ -67,6 +68,11 @@ export default function AuthNavigation(props) {
         component={Synchronization_Screen}
         options={{ headerShown: false }}
       /> */}
+       <Stack.Screen
+        name="Test"
+        component={TestScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="Login"
         component={LoginScreen}
