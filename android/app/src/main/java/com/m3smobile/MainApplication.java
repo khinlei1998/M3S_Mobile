@@ -12,7 +12,7 @@ import com.facebook.soloader.SoLoader;
 import com.m3smobile.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
+import com.hieuvp.fingerprint.ReactNativeFingerprintScannerPackage;
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =

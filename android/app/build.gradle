@@ -264,6 +264,8 @@ android {
 }
 
 dependencies {
+implementation project(':react-native-fingerprint-scanner')
+
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation project(':react-native-vector-icons')
     //noinspection GradleDynamicVersion
