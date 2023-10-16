@@ -8,9 +8,11 @@ import {
   ImageProcessing,
   Image,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
-import {RNCamera, FaceDetector} from 'react-native-camera';
-import {Button} from 'react-native-paper';
+import React, { useRef, useState } from 'react';
+import { Canvas, Image as CanvasImage } from 'react-native-canvas';
+
+import { RNCamera, FaceDetector } from 'react-native-camera';
+import { Button } from 'react-native-paper';
 import RNFS from 'react-native-fs';
 import Icon from 'react-native-vector-icons/Feather';
 import BarcodeMask from 'react-native-barcode-mask';
@@ -90,24 +92,32 @@ export default function TestScreen() {
         // cameraSharpness: 9, // Adjust the sharpness according to your needs
       };
       const data = await cameraRef.current.takePictureAsync(options);
-        setImage(data.uri);
-    //   try {
-    //     const randomNumber = Math.floor(Math.random() * 1000); // Generate a random number between 0 and 999
-    //     const fileName = `random_image_${randomNumber}.jpg`;
-    //     const directory = `/storage/emulated/0/Pictures/Camera/`;
-    //     const filePath = directory + fileName;
-    //     await RNFS.mkdir(directory);
-    //     await RNFS.moveFile(data.uri, filePath);
-    //     ToastAndroid.show(`Image Save Successfully!`, ToastAndroid.SHORT);
-    //   } catch (error) {
-    //     console.log('Image saving error:', error);
-    //   }
+      setImage(data.uri);
+      //   try {
+      //     const randomNumber = Math.floor(Math.random() * 1000); // Generate a random number between 0 and 999
+      //     const fileName = `random_image_${randomNumber}.jpg`;
+      //     const directory = `/storage/emulated/0/Pictures/Camera/`;
+      //     const filePath = directory + fileName;
+      //     await RNFS.mkdir(directory);
+      //     await RNFS.moveFile(data.uri, filePath);
+      //     ToastAndroid.show(`Image Save Successfully!`, ToastAndroid.SHORT);
+      //   } catch (error) {
+      //     console.log('Image saving error:', error);
+      //   }
     }
   };
-  const uniqueNumber = '42'; // Replace with your unique number
+
+  const handleCanvas = (canvas) => {
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'purple';
+    ctx.fillRect(0, 0, 100, 100);
+  }
+  // const uniqueNumber = '42'; // Replace with your unique number
 
   return (
-    <FingerprintDesign uniqueNumber={uniqueNumber} />
+    <Text>hh</Text>
+    // <Canvas ref={handleCanvas} />
+    // <FingerprintDesign uniqueNumber={uniqueNumber} />
     // <View style={styles.container}>
     //   <RNCamera
     //     // autoFocus={RNCamera.Constants.AutoFocus.continuous}
