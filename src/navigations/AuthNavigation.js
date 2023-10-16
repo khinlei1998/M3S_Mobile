@@ -70,7 +70,7 @@ export default function AuthNavigation(props) {
         component={Synchronization_Screen}
         options={{ headerShown: false }}
       /> */}
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Finger"
         component={FingerTestScanner}
         options={{headerShown: false}}
@@ -80,7 +80,7 @@ export default function AuthNavigation(props) {
         name="Touch"
         component={TouchID}
         options={{headerShown: false}}
-      />
+      /> */}
 
       <Stack.Screen
         name="Test"
