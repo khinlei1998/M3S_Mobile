@@ -9,7 +9,7 @@ import {
   Image,
 } from 'react-native';
 import React, { useRef, useState } from 'react';
-import { Canvas, Image as CanvasImage } from 'react-native-canvas';
+// import { Canvas, Image as CanvasImage } from 'react-native-canvas';
 
 import { RNCamera, FaceDetector } from 'react-native-camera';
 import { Button } from 'react-native-paper';
@@ -107,11 +107,11 @@ export default function TestScreen() {
     }
   };
 
-  const handleCanvas = (canvas) => {
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'purple';
-    ctx.fillRect(0, 0, 100, 100);
-  }
+  // const handleCanvas = (canvas) => {
+  //   const ctx = canvas.getContext('2d');
+  //   ctx.fillStyle = 'purple';
+  //   ctx.fillRect(0, 0, 100, 100);
+  // }
   // const uniqueNumber = '42'; // Replace with your unique number
 
   return (
