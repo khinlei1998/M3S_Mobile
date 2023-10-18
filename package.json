@@ -29,6 +29,7 @@
     "react-native": "^0.69.0",
     "react-native-barcode-mask": "^1.2.4",
     "react-native-camera": "^4.2.1",
+    "react-native-canvas": "^0.1.39",
     "react-native-collapsible": "^1.6.1",
     "react-native-color-matrix-image-filters": "^6.0.3",
     "react-native-fs": "^2.20.0",
