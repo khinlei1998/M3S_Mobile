@@ -3,11 +3,20 @@ const validate = values => {
   // if (!values.employeeNo) {
   //     errors.employeeNo = "UserName is required.";
   // }
+  // if (!values.employeeName) {
+  //   errors.employeeName = 'CustomerName is required.';
+  // }
   if (!values.employeeName) {
-    errors.employeeName = 'CustomerName is required.';
+    errors.employeeName = 'Customer Name is required.';
+  } else if (/^\s+$/.test(values.employeeName)) {
+    errors.employeeName = 'Customer Name cannot be only spaces.';
   }
+
   if (!values.resident_rgst_id) {
     errors.resident_rgst_id = 'resident_rgst_id is required.';
+  }
+  else if (/^\s+$/.test(values.resident_rgst_id)) {
+    errors.resident_rgst_id = 'resident_rgst_id cannot be only spaces.';
   }
 
   if (!values.telNo) {
@@ -29,7 +38,6 @@ const validate = values => {
   if (!values.CustomerNo) {
     errors.CustomerNo = 'Customer Number is required.';
   }
-  
 
   return errors;
 };

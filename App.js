@@ -78,7 +78,7 @@ export default function App() {
       try {
         // await AsyncStorage.setItem(
         //   'ip',
-        //   'e53d-103-231-92-119.ngrok-free.app',
+        //   'ef7d-103-116-57-235.ngrok-free.app',
         // );
         await AsyncStorage.setItem('ip', '192.168.177.107');
         await AsyncStorage.setItem('port', '80');

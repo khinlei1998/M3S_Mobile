@@ -27,7 +27,7 @@ export const storeStaffLoanData = async loan_data => {
             20, //product type
             '001100', //Channel Device type
             loan_data.branch_code, //open branch code
-            null, //Open user id
+            user_id, //Open user id
             null, //mngt_branch_code
             null, //mngt_user_id
             //Loan App
