@@ -8,7 +8,6 @@ class FingerprintGenerator extends Component {
   componentDidMount() {
     this.generateFingerprint();
   }
-
   generateFingerprint() {
     const canvas = this.canvasRef.current;
     if (canvas) {
