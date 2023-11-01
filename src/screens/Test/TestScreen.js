@@ -19,7 +19,6 @@ class FingerprintGenerator extends Component {
       const centerX = canvasSize / 2;
       const centerY = canvasSize / 2;
       const radius = canvasSize / 2;
-
       // Clear the canvas
       ctx.clearRect(0, 0, canvasSize, canvasSize);
 
@@ -50,7 +49,7 @@ class FingerprintGenerator extends Component {
     return (
 
       <View style={{
-     marginTop:20,marginLeft:30 
+        marginTop: 20, marginLeft: 30
       }}>
         <Canvas
           ref={this.canvasRef}
@@ -58,7 +57,7 @@ class FingerprintGenerator extends Component {
         />
       </View>
     );
-  } 
+  }
 }
 
 export default FingerprintGenerator;
