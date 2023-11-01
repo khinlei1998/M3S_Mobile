@@ -79,7 +79,7 @@ export async function getAllLoanType() {
   });
 }
 
-export const storeLoanData = async (loan_data) => {
+export const storeLoanData = async loan_data => {
   const user_id = await AsyncStorage.getItem('user_id');
   const date = moment().format();
   return new Promise(async (resolve, reject) => {
@@ -277,7 +277,6 @@ export async function deleteLoan_ByID(data) {
           await RNFS.unlink(borrowerImagePath);
         } else {
         }
-
       } catch (error) {
         console.error('Error deleting borrower image:', error);
         // Display an alert indicating the error
@@ -294,7 +293,6 @@ export async function deleteLoan_ByID(data) {
         } else {
           console.log('File does not exist');
         }
-
       } catch (error) {
         // Display an alert indicating the error
         alert('Error deleting co-borrower image');
@@ -475,7 +473,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           updateUserId: data.update_user_id,
           tabletGroupAplcNo: '',
           groupAplcNo: data.group_aplc_no,
-          openBranchCode: branch_code,
+          openBranchCode: data.open_branch_code,
           openUserId: user_id,
           mngtBranchCode: branch_code,
           mngtUserId: user_id,
@@ -512,7 +510,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
               updateUserId: loan_data.update_user_id,
               productType: loan_data.product_type, //not null
               channelDeviceType: '00110',
-              openBranchCode: loan_data.branch_code, //not null
+              openBranchCode: loan_data.open_branch_code, //not null
               openUserId: loan_data.open_user_id, //not null
               mngtBranchCode: branch_code, //not null
               mngtUserId: user_id,
@@ -697,7 +695,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           updateUserId: data.update_user_id,
           productType: data.product_type, //not null
           channelDeviceType: '00110',
-          openBranchCode: data.branch_code, //not null
+          openBranchCode: data.open_branch_code, //not null
           openUserId: data.open_user_id, //not null
           mngtBranchCode: branch_code, //not null
           mngtUserId: user_id,
@@ -917,8 +915,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 brwerRgstId: item.brwerRgstId,
                 borrowerName: item.borrowerName,
                 applicationAmt: item.applicationAmt,
-                applicationDate: item.applicationDate
-
+                applicationDate: item.applicationDate,
               };
             });
             guaranteeData.push(...gurantor_data);
@@ -1027,7 +1024,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 brwerRgstId: item.brwerRgstId,
                 borrowerName: item.borrowerName,
                 applicationAmt: item.applicationAmt,
-                applicationDate: item.applicationDate
+                applicationDate: item.applicationDate,
               };
             });
             areaData.push(...area_data);
@@ -1076,7 +1073,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 syncSts: '00',
                 birthDate: item.birthDate,
                 brwerRgstId: item.brwerRgstId,
-                applicationDate: item.applicationDate
+                applicationDate: item.applicationDate,
               };
             });
             approval_requestData.push(...approval_request_data);
@@ -1113,7 +1110,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
                 syncSts: '00',
                 relationName: relation_name,
                 applicationDate: item.applicationDate,
-                applicationAmt: item.applicationAmt
+                applicationAmt: item.applicationAmt,
               };
             });
             relationData.push(...relation_datas);
@@ -1173,28 +1170,28 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
           //UPLOAD Evidence
 
           const data = [
-            { id: 1, value: '01F' },
-            { id: 2, value: '01B' },
-            { id: 3, value: '02F' },
-            { id: 4, value: '02B' },
-            { id: 5, value: '03F' },
-            { id: 6, value: '03B' },
-            { id: 7, value: '04F' },
-            { id: 8, value: '04B' },
-            { id: 9, value: '05F' },
-            { id: 10, value: '05B' },
-            { id: 11, value: '06F' },
-            { id: 12, value: '06B' },
-            { id: 13, value: '07F' },
-            { id: 14, value: '07B' },
-            { id: 15, value: '08F' },
-            { id: 16, value: '08B' },
-            { id: 17, value: '09F' },
-            { id: 18, value: '09B' },
-            { id: 19, value: '10F' },
-            { id: 20, value: '10B' },
-            { id: 21, value: '11F' },
-            { id: 22, value: '11B' },
+            {id: 1, value: '01F'},
+            {id: 2, value: '01B'},
+            {id: 3, value: '02F'},
+            {id: 4, value: '02B'},
+            {id: 5, value: '03F'},
+            {id: 6, value: '03B'},
+            {id: 7, value: '04F'},
+            {id: 8, value: '04B'},
+            {id: 9, value: '05F'},
+            {id: 10, value: '05B'},
+            {id: 11, value: '06F'},
+            {id: 12, value: '06B'},
+            {id: 13, value: '07F'},
+            {id: 14, value: '07B'},
+            {id: 15, value: '08F'},
+            {id: 16, value: '08B'},
+            {id: 17, value: '09F'},
+            {id: 18, value: '09B'},
+            {id: 19, value: '10F'},
+            {id: 20, value: '10B'},
+            {id: 21, value: '11F'},
+            {id: 22, value: '11B'},
 
             // Add more data as needed
           ];
@@ -1247,8 +1244,8 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
         maxBodyLength: Infinity,
         url:
           data.product_type == 30 ||
-            data.product_type == 40 ||
-            data.product_type == 50
+          data.product_type == 40 ||
+          data.product_type == 50
             ? `${connection_name}://${ip}:${port}/skylark-m3s/api/groupLoan.m3s`
             : `${connection_name}://${ip}:${port}/skylark-m3s/api/individualLoan.m3s`,
         data: formData,
@@ -1300,7 +1297,6 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
             };
             failedData.push(error);
           } else {
-
             successCount++;
             global.db.transaction(tx => {
               tx.executeSql(
@@ -1384,8 +1380,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
             tx.executeSql(
               'UPDATE Exception_aprv set tablet_sync_sts=? where application_no=?',
               ['01', response.data.approvalRequests[0].application_no],
-              (txObj, resultSet) => {
-              },
+              (txObj, resultSet) => {},
               (txObj, error) => {
                 reject(error);
               },
@@ -1410,8 +1405,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
             tx.executeSql(
               'UPDATE Area_evaluation set tablet_sync_sts=? where application_no=?',
               ['01', response.data.areaEvaluation[0].application_no],
-              (txObj, resultSet) => {
-              },
+              (txObj, resultSet) => {},
               (txObj, error) => {
                 reject(error);
               },
@@ -1435,8 +1429,7 @@ export const fetchDataForCheckedData = async (checkedItems, branch_code) => {
             tx.executeSql(
               'UPDATE Relation_info set tablet_sync_sts=? where application_no=?',
               ['01', response.data.relationInfo[0].application_no],
-              (txObj, resultSet) => {
-              },
+              (txObj, resultSet) => {},
               (txObj, error) => {
                 reject(error);
               },

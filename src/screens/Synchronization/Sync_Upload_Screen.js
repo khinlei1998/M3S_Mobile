@@ -1,13 +1,13 @@
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
 import DividerLine from '../../components/DividerLine';
-import { Button, Checkbox } from 'react-native-paper';
+import {Button, Checkbox} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
-import { loan_application_type } from '../../common';
+import {loan_application_type} from '../../common';
 import {connect} from 'react-redux';
 import {Field, reduxForm, reset, change} from 'redux-form';
-import { addInquiryLoanData } from '../../redux/LoanReducer';
- function Sync_Upload_Screen(props) {
+import {addInquiryLoanData} from '../../redux/LoanReducer';
+function Sync_Upload_Screen(props) {
   const {
     btnUploadCustomer,
     btnLoanUpload,
@@ -17,13 +17,17 @@ import { addInquiryLoanData } from '../../redux/LoanReducer';
     btn_cus_disabled,
     all_survey,
     addInquiryLoanData,
-    navigation
+    navigation,
   } = props;
   const [checkedItems, setCheckedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
-  setCheckedItems
+  setCheckedItems;
   const isChecked = item => {
-    return checkedItems.some(checkedItem => checkedItem.application_no?checkedItem.application_no === item.application_no:checkedItem.group_aplc_no === item.group_aplc_no);
+    return checkedItems.some(checkedItem =>
+      checkedItem.application_no
+        ? checkedItem.application_no === item.application_no
+        : checkedItem.group_aplc_no === item.group_aplc_no,
+    );
   };
 
   const handleSelectAllToggle = () => {
@@ -43,7 +47,11 @@ import { addInquiryLoanData } from '../../redux/LoanReducer';
   const handleCheckboxToggle = item => {
     if (isChecked(item)) {
       setCheckedItems(
-        checkedItems.filter(checkedItem => checkedItem.application_no?checkedItem.application_no !== item.application_no:checkedItem.group_aplc_no !== item.group_aplc_no),
+        checkedItems.filter(checkedItem =>
+          checkedItem.application_no
+            ? checkedItem.application_no !== item.application_no
+            : checkedItem.group_aplc_no !== item.group_aplc_no,
+        ),
       );
     } else {
       setCheckedItems([...checkedItems, item]);
@@ -52,22 +60,22 @@ import { addInquiryLoanData } from '../../redux/LoanReducer';
 
   const btn_inquiry_loan = item => {
     if (item.product_type == 20) {
-     navigation.navigate('Edit_Individual_Staff_loan_Info', item);
+      navigation.navigate('Edit_Individual_Staff_loan_Info', item);
       addInquiryLoanData(item);
     } else if (item.product_type == 10) {
       addInquiryLoanData(item);
 
-     navigation.navigate('Edit_Individual_Loan', item);
+      navigation.navigate('Edit_Individual_Loan', item);
     } else if (item.product_type == 30) {
-     navigation.navigate('Edit Group Loan', item);
+      navigation.navigate('Edit Group Loan', item);
     } else if (item.product_type == 40) {
-     navigation.navigate('Edit_Cover_Loan', item);
+      navigation.navigate('Edit_Cover_Loan', item);
     } else if (item.product_type == 50) {
-     navigation.navigate('Edit_Reloan', item);
+      navigation.navigate('Edit_Reloan', item);
     }
   };
 
-  const item = ({ item,index }) => {
+  const item = ({item, index}) => {
     const foundItem = loan_application_type.filter(
       data => data.value == item.product_type,
     );
@@ -82,7 +90,11 @@ import { addInquiryLoanData } from '../../redux/LoanReducer';
         <Checkbox
           key={item.id}
           status={
-            checkedItems.some(checkedItem => checkedItem.application_no?checkedItem.application_no === item.application_no:checkedItem.group_aplc_no === item.group_aplc_no)
+            checkedItems.some(checkedItem =>
+              checkedItem.application_no
+                ? checkedItem.application_no === item.application_no
+                : checkedItem.group_aplc_no === item.group_aplc_no,
+            )
               ? 'checked'
               : 'unchecked'
           }
@@ -93,7 +105,7 @@ import { addInquiryLoanData } from '../../redux/LoanReducer';
             padding: 10,
             flex: 1,
           }}>
-          {index+1}
+          {index + 1}
         </Text>
         <Text
           style={{
@@ -107,7 +119,7 @@ import { addInquiryLoanData } from '../../redux/LoanReducer';
             padding: 10,
             flex: 1,
           }}>
-           {item.application_no ?? item.group_aplc_no}
+          {item.application_no ?? item.group_aplc_no}
         </Text>
 
         <Text
@@ -137,7 +149,7 @@ import { addInquiryLoanData } from '../../redux/LoanReducer';
               name="chevron-right"
               size={30}
               color="#000"
-              style={{ marginLeft: 15 }}
+              style={{marginLeft: 15}}
             />
           </TouchableOpacity>
         </View>
@@ -145,11 +157,10 @@ import { addInquiryLoanData } from '../../redux/LoanReducer';
     );
   };
 
-
   return (
-    <View style={{ marginTop: 20, marginLeft: 10, marginRight: 10, flex: 1 }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={{ fontWeight: 'bold', fontSize: 18, marginLeft: 10 }}>
+    <View style={{marginTop: 20, marginLeft: 10, marginRight: 10, flex: 1}}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <Text style={{fontWeight: 'bold', fontSize: 18, marginLeft: 10}}>
           Upload Application
         </Text>
 
@@ -161,7 +172,7 @@ import { addInquiryLoanData } from '../../redux/LoanReducer';
               color: 'red',
             }}>
             {loan_data.length}
-            <Text style={{ color: '#c7c7c7', fontSize: 15 }}> PCS</Text>
+            <Text style={{color: '#c7c7c7', fontSize: 15}}> PCS</Text>
           </Text>
         </View>
       </View>
@@ -241,15 +252,15 @@ import { addInquiryLoanData } from '../../redux/LoanReducer';
         renderItem={item}
         keyExtractor={(item, index) => index.toString()}
       />
-      <View style={{ flexDirection: 'row', marginLeft: 15 }}>
-        <Text style={{ fontWeight: 'bold', fontSize: 17 }}>New Customer : </Text>
-        <Text style={{ fontWeight: 'bold', fontSize: 17 }}>
+      <View style={{flexDirection: 'row', marginLeft: 15}}>
+        <Text style={{fontWeight: 'bold', fontSize: 17}}>New Customer : </Text>
+        <Text style={{fontWeight: 'bold', fontSize: 17}}>
           {customer_data.length}
         </Text>
       </View>
-      <View style={{ flexDirection: 'row', marginLeft: 15 }}>
-        <Text style={{ fontWeight: 'bold', fontSize: 17 }}>New Survey : </Text>
-        <Text style={{ fontWeight: 'bold', fontSize: 17 }}>
+      <View style={{flexDirection: 'row', marginLeft: 15}}>
+        <Text style={{fontWeight: 'bold', fontSize: 17}}>New Survey : </Text>
+        <Text style={{fontWeight: 'bold', fontSize: 17}}>
           {all_survey.length}
         </Text>
       </View>
