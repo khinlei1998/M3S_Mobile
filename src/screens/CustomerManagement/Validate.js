@@ -38,7 +38,6 @@ const validate = values => {
   if (!values.CustomerNo) {
     errors.CustomerNo = 'Customer Number is required.';
   }
-
   return errors;
 };
 
