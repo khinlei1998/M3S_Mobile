@@ -82,11 +82,11 @@ export default function AuthNavigation(props) {
         options={{headerShown: false}}
       /> */}
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Test"
         component={TestScreen}
         options={{headerShown: false}}
-      />
+      /> */}
       <Stack.Screen
         name="Login"
         component={LoginScreen}
