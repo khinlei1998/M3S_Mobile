@@ -1,7 +1,7 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import moment from 'moment';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 export default function Borrower_Sign(props) {
   const {
@@ -14,12 +14,14 @@ export default function Borrower_Sign(props) {
     setCoBorrowerCanvas,
     show_co_borrower_canvas,
     borrower_name,
-    coborrower_name
+    coborrower_name,
+    setBorFgVisible,
+    boreower_fg_visible,
   } = props;
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   return (
     <>
-      <View style={{ flex: 1, padding: 5, margin: 20 }}>
+      <View style={{flex: 1, padding: 5, margin: 20}}>
         <View
           style={{
             flexDirection: 'row',
@@ -28,69 +30,75 @@ export default function Borrower_Sign(props) {
             margin: 10,
           }}>
           <View>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={{fontWeight: 'bold', fontSize: 15}}>
                 {t('Borrower Name')}
               </Text>
-              <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
+              <Text style={{color: '#A1B5DC', fontSize: 18, marginLeft: 10}}>
                 {borrower_name}
               </Text>
             </View>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={{fontWeight: 'bold', fontSize: 15}}>
                 {t('Date')}
               </Text>
-              <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
+              <Text style={{color: '#A1B5DC', fontSize: 18, marginLeft: 10}}>
                 <Text> {moment().format('YYYY-MM-DD')}</Text>
               </Text>
             </View>
           </View>
-
           <View>
-            <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Sign</Text>
+            <Text style={{fontWeight: 'bold', fontSize: 15}}>Sign</Text>
             {show_borrower_sign == '' && (
               <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
                 <Image
                   source={{
                     uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
                   }}
-                  style={{ width: 100, height: 50 }}
+                  style={{width: 100, height: 50}}
                 />
               </TouchableOpacity>
             )}
             {borrower_sign_path !== '' && (
-              <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
+              <TouchableOpacity onPress={() => setBorFgVisible(!show_canvas)}>
                 <Image
-                  source={{ uri: `data:image/png;base64,${show_borrower_sign}` }}
-                  style={{ width: 100, height: 50 }}
+                  source={{uri: `data:image/png;base64,${show_borrower_sign}`}}
+                  style={{width: 100, height: 50}}
                 />
               </TouchableOpacity>
             )}
           </View>
-         
         </View>
+        {/* fingerprint */}
 
-        <View style={{justifyContent:'flex-end',flexDirection:'row', padding: 5,
-            margin: 10,}}>
-            {show_borrower_sign == '' && (
-              <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
-                <Image
-                  source={{
-                    uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
-                  }}
-                  style={{ width: 100, height: 50 }}
-                />
-              </TouchableOpacity>
-            )}
-            {borrower_sign_path !== '' && (
-              <TouchableOpacity onPress={() => setCanvas(!show_canvas)}>
-                <Image
-                  source={{ uri: `data:image/png;base64,${show_borrower_sign}` }}
-                  style={{ width: 100, height: 50 }}
-                />
-              </TouchableOpacity>
-            )}
-          </View>
+        <View
+          style={{
+            justifyContent: 'flex-end',
+            flexDirection: 'row',
+            padding: 5,
+            margin: 10,
+          }}>
+          {show_borrower_sign == '' && (
+            <TouchableOpacity
+              onPress={() => setBorFgVisible(!boreower_fg_visible)}>
+              <Image
+                source={{
+                  uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
+                }}
+                style={{width: 100, height: 50}}
+              />
+            </TouchableOpacity>
+          )}
+          {borrower_sign_path !== '' && (
+            <TouchableOpacity
+              onPress={() => setBorFgVisible(!boreower_fg_visible)}>
+              <Image
+                source={{uri: `data:image/png;base64,${show_borrower_sign}`}}
+                style={{width: 100, height: 50}}
+              />
+            </TouchableOpacity>
+          )}
+        </View>
 
         <View
           style={{
@@ -100,27 +108,27 @@ export default function Borrower_Sign(props) {
             margin: 10,
           }}>
           <View>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-                {t("Co Borrower Name")}
+            <View style={{flexDirection: 'row'}}>
+              <Text style={{fontWeight: 'bold', fontSize: 15}}>
+                {t('Co Borrower Name')}
               </Text>
-              <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
+              <Text style={{color: '#A1B5DC', fontSize: 18, marginLeft: 10}}>
                 {coborrower_name}
               </Text>
             </View>
 
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={{fontWeight: 'bold', fontSize: 15}}>
                 {t('Date')}
               </Text>
-              <Text style={{ color: '#A1B5DC', fontSize: 18, marginLeft: 10 }}>
+              <Text style={{color: '#A1B5DC', fontSize: 18, marginLeft: 10}}>
                 <Text> {moment().format('YYYY-MM-DD')}</Text>
               </Text>
             </View>
           </View>
 
           <View>
-            <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Sign</Text>
+            <Text style={{fontWeight: 'bold', fontSize: 15}}>Sign</Text>
             {show_coborrower_sign == '' && (
               <TouchableOpacity
                 onPress={() => setCoBorrowerCanvas(!show_co_borrower_canvas)}>
@@ -128,7 +136,7 @@ export default function Borrower_Sign(props) {
                   source={{
                     uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
                   }}
-                  style={{ width: 100, height: 50 }}
+                  style={{width: 100, height: 50}}
                 />
               </TouchableOpacity>
             )}
@@ -139,7 +147,7 @@ export default function Borrower_Sign(props) {
                   source={{
                     uri: `data:image/png;base64,${show_coborrower_sign}`,
                   }}
-                  style={{ width: 100, height: 50 }}
+                  style={{width: 100, height: 50}}
                 />
               </TouchableOpacity>
             )}

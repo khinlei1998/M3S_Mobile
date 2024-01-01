@@ -31,6 +31,7 @@ import Reloan_Form from '../screens/Relaon/Reloan_Form';
 import Survey from '../screens/Survey/Survey';
 import Edit_Reloan_Form from '../screens/Edit_Relaon/Edit_Reloan_Form';
 import Passport from '../screens/Passport/Passport';
+import Indi_loan_fingerprint from '../screens/Loan/Indi_loan_fingerprint';
 // import Reloan_Form from '../screens/Relaon/Reloan_Form';
 export default function AuthNavigation(props) {
   const Stack = createNativeStackNavigator();
@@ -84,6 +85,16 @@ export default function AuthNavigation(props) {
         component={TestScreen}
         options={{headerShown: false}}
       /> */}
+       <Stack.Screen
+        name="Individual_loan"
+        component={Individual_Loan}
+        options={{headerShown: false}}
+      />
+       <Stack.Screen
+        name="Indiloan"
+        component={Indi_loan_fingerprint}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="Login"
         component={LoginScreen}
@@ -114,11 +125,7 @@ export default function AuthNavigation(props) {
 
       {/*
 
-      <Stack.Screen
-        name="Individual_loan"
-        component={Individual_Loan}
-        options={{headerShown: false}}
-      />
+
 
       <Stack.Screen
         name="Evidence"
