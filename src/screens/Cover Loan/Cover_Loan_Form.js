@@ -7,32 +7,32 @@ import {
   FlatList,
   ToastAndroid,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import DividerLine from '../../components/DividerLine';
-import {operations} from '../../common';
+import { operations } from '../../common';
 import Icon from 'react-native-vector-icons/Feather';
-import {Picker} from '@react-native-picker/picker';
-import {TextInput} from 'react-native-paper';
-import {reduxForm, change} from 'redux-form';
+import { Picker } from '@react-native-picker/picker';
+import { TextInput } from 'react-native-paper';
+import { reduxForm, change } from 'redux-form';
 import moment from 'moment';
-import {style} from '../../style/Cover_Loan_style';
-import {RadioButton, Button, Modal} from 'react-native-paper';
-import {connect, useDispatch} from 'react-redux';
+import { style } from '../../style/Cover_Loan_style';
+import { RadioButton, Button, Modal } from 'react-native-paper';
+import { connect, useDispatch } from 'react-redux';
 import Cover_Loan_Info from './Cover_Loan_Info';
 import Cover_Loan_list from './Cover_Loan_List';
-import {cus_filter_item} from '../../common';
-import {getAllGroupLoan} from '../../query/GropuLon_query';
+import { cus_filter_item } from '../../common';
+import { getAllGroupLoan } from '../../query/GropuLon_query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {filterCustomer} from '../../query/Customer_query';
-import {storeGroupData} from '../../query/GropuLon_query';
+import { filterCustomer } from '../../query/Customer_query';
+import { storeGroupData } from '../../query/GropuLon_query';
 import validate from '../Group_Loan/Validate';
-import {useTranslation} from 'react-i18next';
-import {get_loged_branch_code} from '../../query/Employee_query';
+import { useTranslation } from 'react-i18next';
+import { get_loged_branch_code } from '../../query/Employee_query';
 const Borrower_modal = props => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(null);
   const [emp_data, setEmpData] = React.useState('');
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const {
     all_cus,
     modalVisible,
@@ -59,7 +59,7 @@ const Borrower_modal = props => {
     dispatch(change('Cover_Form', 'customer_no', item.customer_no));
   };
 
-  const item = ({item, index}) => {
+  const item = ({ item, index }) => {
     return (
       <View
         style={{
@@ -132,8 +132,8 @@ const Borrower_modal = props => {
             flexDirection: 'row',
             justifyContent: 'space-around',
           }}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{marginRight: 10}}>Search Item:</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ marginRight: 10 }}>Search Item:</Text>
 
             <Picker
               selectedValue={selectedItemValue}
@@ -155,7 +155,7 @@ const Borrower_modal = props => {
             </Picker>
           </View>
 
-          <View style={{width: '40%'}}>
+          <View style={{ width: '40%' }}>
             <TextInput
               style={{
                 backgroundColor: '#fff',
@@ -226,7 +226,7 @@ const Borrower_modal = props => {
           keyExtractor={(item, index) => index.toString()}
         />
 
-        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <Button
             onPress={() => hideModal()}
             mode="contained"
@@ -246,8 +246,8 @@ const Borrower_modal = props => {
   );
 };
 function Cover_Loan_Form(props) {
-  const {handleSubmit} = props;
-  const {t} = useTranslation();
+  const { handleSubmit } = props;
+  const { t } = useTranslation();
   const [show_operation, setOperation] = useState('1');
   const [branch_code, setBranchCode] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -305,7 +305,7 @@ function Cover_Loan_Form(props) {
     <>
       <ScrollView nestedScrollEnabled={true}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{flex: 1, backgroundColor: '#fff'}}>
+          <View style={{ flex: 1, backgroundColor: '#fff' }}>
             <Text
               style={{
                 textAlign: 'center',
@@ -344,7 +344,7 @@ function Cover_Loan_Form(props) {
                         label={option.label}
                         value={option.value}
                         color="#000"
-                        labelStyle={{marginLeft: 5}}
+                        labelStyle={{ marginLeft: 5 }}
                       />
                     </View>
                   </RadioButton.Group>

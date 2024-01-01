@@ -31,9 +31,6 @@ import Reloan_Form from '../screens/Relaon/Reloan_Form';
 import Survey from '../screens/Survey/Survey';
 import Edit_Reloan_Form from '../screens/Edit_Relaon/Edit_Reloan_Form';
 import Passport from '../screens/Passport/Passport';
-import TestScreen from '../screens/Test/TestScreen';
-import TouchID from '../screens/Test/TouchID';
-import FingerTestScanner from '../screens/Test/FingerTestScanner';
 // import Reloan_Form from '../screens/Relaon/Reloan_Form';
 export default function AuthNavigation(props) {
   const Stack = createNativeStackNavigator();
@@ -82,11 +79,11 @@ export default function AuthNavigation(props) {
         options={{headerShown: false}}
       /> */}
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Test"
         component={TestScreen}
         options={{headerShown: false}}
-      />
+      /> */}
       <Stack.Screen
         name="Login"
         component={LoginScreen}
