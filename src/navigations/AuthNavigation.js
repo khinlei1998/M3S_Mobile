@@ -1,5 +1,5 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from '../screens/Login/LoginScreen';
 import SplashScreen from '../screens/SplashScreen';
 import SettingScreen from '../screens/Setting/SettingScreen';
@@ -31,6 +31,9 @@ import Reloan_Form from '../screens/Relaon/Reloan_Form';
 import Survey from '../screens/Survey/Survey';
 import Edit_Reloan_Form from '../screens/Edit_Relaon/Edit_Reloan_Form';
 import Passport from '../screens/Passport/Passport';
+import TestScreen from '../screens/Test/TestScreen';
+import TouchID from '../screens/Test/TouchID';
+import FingerTestScanner from '../screens/Test/FingerTestScanner';
 // import Reloan_Form from '../screens/Relaon/Reloan_Form';
 export default function AuthNavigation(props) {
   const Stack = createNativeStackNavigator();
@@ -67,10 +70,27 @@ export default function AuthNavigation(props) {
         component={Synchronization_Screen}
         options={{ headerShown: false }}
       /> */}
+      {/* <Stack.Screen
+        name="Finger"
+        component={FingerTestScanner}
+        options={{headerShown: false}}
+      />
+
+      <Stack.Screen
+        name="Touch"
+        component={TouchID}
+        options={{headerShown: false}}
+      /> */}
+
+      <Stack.Screen
+        name="Test"
+        component={TestScreen}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       {/* <Stack.Screen
         name="Indi_Staff_loan"
@@ -94,10 +114,6 @@ export default function AuthNavigation(props) {
         options={{headerShown: false}}
       />
  */}
-
-
-
-
 
       {/*
 
@@ -231,12 +247,12 @@ export default function AuthNavigation(props) {
       <Stack.Screen
         name="Setting"
         component={SettingScreen}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Splash"
         component={SplashScreen}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
     </Stack.Navigator>
   );

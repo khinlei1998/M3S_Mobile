@@ -50,7 +50,7 @@ export default function NavigatorView(props) {
     );
   };
   const StackNavigationData = [
-
+   
     {
       name: t('Home'),
       component: Home,
