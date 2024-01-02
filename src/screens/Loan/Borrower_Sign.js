@@ -17,6 +17,7 @@ export default function Borrower_Sign(props) {
     coborrower_name,
     setBorFgVisible,
     boreower_fg_visible,
+    showBorFigModal
   } = props;
   const {t} = useTranslation();
   return (
@@ -80,18 +81,20 @@ export default function Borrower_Sign(props) {
           }}>
           {show_borrower_sign == '' && (
             <TouchableOpacity
-              onPress={() => setBorFgVisible(!boreower_fg_visible)}>
+              // onPress={() => setBorFgVisible(!boreower_fg_visible)}
+              onPress={() => showBorFigModal()}
+
+              >
               <Image
-                source={{
-                  uri: `https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png`,
-                }}
-                style={{width: 100, height: 50}}
+                source={require('../../../assets/fingerprint/fingerprint.png')}
+                style={{width: 80, height: 70}}
               />
             </TouchableOpacity>
           )}
           {borrower_sign_path !== '' && (
             <TouchableOpacity
-              onPress={() => setBorFgVisible(!boreower_fg_visible)}>
+              onPress={() => setBorFgVisible(!boreower_fg_visible)}
+              >
               <Image
                 source={{uri: `data:image/png;base64,${show_borrower_sign}`}}
                 style={{width: 100, height: 50}}
