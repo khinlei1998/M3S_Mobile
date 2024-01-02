@@ -72,52 +72,52 @@ import { filterVillage } from '../../query/Village_query';
 import Location_Modal from '../../components/Location_Modal';
 import { filterWard } from '../../query/Ward_query';
 import { useTranslation } from 'react-i18next';
-import Indi_loan_fingerprint from './Indi_loan_fingerprint';
+import Indi_loan_fingerprint from './Borrower_Fg_Modal';
+import Borrower_Fg_Modal from './Borrower_Fg_Modal';
+// const Borrower_Fg_Modal = props => {
+//   const { boreower_fg_visible, hideBorrFigModal, timerCount, show_borrower_fig, imageSource } = props;
 
-const Borrower_Fg_Modal = props => {
-  const { boreower_fg_visible, hideBorrFigModal, timerCount, show_borrower_fig, imageSource } = props;
+//   return (
+//     <Modal
+//       useNativeDriver
+//       hideModalContentWhileAnimating
+//       dismissable={false}
+//       visible={boreower_fg_visible}
+//       onDismiss={hideBorrFigModal}
+//       contentContainerStyle={style.modal_container}>
+//       <View
+//         style={style.modal_header}
+//         onStartShouldSetResponder={() => hideBorrFigModal()}
+//       >
+//         <Icon
+//           name="x-circle"
+//           size={25}
+//           color="#fff"
+//           style={style.cancel_icon_style}
+//         />
+//       </View>
+//       <View style={{ padding: 10, height: 550, backgroundColor: '#fff' }}>
+//         <View
+//           style={{
+//             flexDirection: 'row',
+//             justifyContent: 'space-around',
+//           }}>
+//           <View style={{ alignItems: 'center' }}>
+//             <Text style={{ fontWeight: 'bold', fontSize: 30 }}>00:0{timerCount}</Text>
+//             {show_borrower_fig &&
+//               <Image
+//                 source={imageSource}
+//                 style={{marginVertical:20,height:300}}
 
-  return (
-    <Modal
-      useNativeDriver
-      hideModalContentWhileAnimating
-      dismissable={false}
-      visible={boreower_fg_visible}
-      onDismiss={hideBorrFigModal}
-      contentContainerStyle={style.modal_container}>
-      <View
-        style={style.modal_header}
-        onStartShouldSetResponder={() => hideBorrFigModal()}
-      >
-        <Icon
-          name="x-circle"
-          size={25}
-          color="#fff"
-          style={style.cancel_icon_style}
-        />
-      </View>
-      <View style={{ padding: 10, height: 550, backgroundColor: '#fff' }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-          }}>
-          <View style={{ alignItems: 'center' }}>
-            <Text style={{ fontWeight: 'bold', fontSize: 30 }}>00:0{timerCount}</Text>
-            {show_borrower_fig &&
-              <Image
-                source={imageSource}
-                style={{marginVertical:20,height:300}}
+//               />
 
-              />
-
-            }
-          </View>
-        </View>
-      </View>
-    </Modal>
-  );
-};
+//             }
+//           </View>
+//         </View>
+//       </View>
+//     </Modal>
+//   );
+// };
 
 const Borrower_modal = props => {
   const dispatch = useDispatch();
