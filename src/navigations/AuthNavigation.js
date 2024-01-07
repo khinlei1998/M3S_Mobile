@@ -85,7 +85,7 @@ export default function AuthNavigation(props) {
         component={TestScreen}
         options={{headerShown: false}}
       /> */}
-       <Stack.Screen
+       {/* <Stack.Screen
         name="Individual_loan"
         component={Individual_Loan}
         options={{headerShown: false}}
@@ -94,7 +94,7 @@ export default function AuthNavigation(props) {
         name="Indiloan"
         component={Indi_loan_fingerprint}
         options={{headerShown: false}}
-      />
+      /> */}
       <Stack.Screen
         name="Login"
         component={LoginScreen}

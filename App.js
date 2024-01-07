@@ -1,14 +1,14 @@
-import React, { useState, useEffect,  } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, {useState, useEffect} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
 import RootNavigation from './src/navigations/RootNavigation';
 import AuthNavigation from './src/navigations/AuthNavigation';
-import { Provider } from 'react-redux';
-import { AuthContext } from './src/components/context';
+import {Provider} from 'react-redux';
+import {AuthContext} from './src/components/context';
 import SQLite from 'react-native-sqlite-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './src/screens/SplashScreen';
 import store from './src/redux/store';
-import { StyleSheet, PermissionsAndroid,Text } from 'react-native';
+import {StyleSheet, PermissionsAndroid, Text} from 'react-native';
 export default function App() {
   const [show_splash, showSplash] = useState(true);
   const [userID, setUserID] = React.useState(null);
@@ -67,7 +67,7 @@ export default function App() {
       location: 'Library',
       readOnly: false,
     },
-    success => { },
+    success => {},
     error => {
       console.log('Error', error);
     },
@@ -76,10 +76,7 @@ export default function App() {
   useEffect(() => {
     const saveIp = async user_id => {
       try {
-        await AsyncStorage.setItem(
-          'ip',
-          '230d-103-231-92-57.ngrok-free.app',
-        );
+        await AsyncStorage.setItem('ip', 'bbda-103-231-92-41.ngrok-free.app');
         // await AsyncStorage.setItem('ip', '192.168.177.107');
         await AsyncStorage.setItem('port', '80');
       } catch (e) {
@@ -117,11 +114,11 @@ export default function App() {
         {show_splash ? (
           <SplashScreen />
         ) : userID == null ? (
-          <AuthContext.Provider value={{ saveUserID, userID }}>
+          <AuthContext.Provider value={{saveUserID, userID}}>
             <AuthNavigation />
           </AuthContext.Provider>
         ) : (
-          <AuthContext.Provider value={{ removeUserID }}>
+          <AuthContext.Provider value={{removeUserID}}>
             <RootNavigation />
           </AuthContext.Provider>
         )}
