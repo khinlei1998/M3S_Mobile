@@ -13,7 +13,8 @@ export default function Individual_Staff_Sign(props) {
     setCoBorrowerCanvas,
     show_co_borrower_canvas,
     borrower_name,
-    coborrower_name
+    coborrower_name,
+    showBorFigModal
   } = props;
   const { t } = useTranslation();
   return (
@@ -66,6 +67,25 @@ export default function Individual_Staff_Sign(props) {
             )}
           </View>
         </View>
+
+        {/* fingerprint */}
+
+        <View
+          style={{
+            justifyContent: 'flex-end',
+            flexDirection: 'row',
+            padding: 5,
+            margin: 10,
+          }}>
+
+          <TouchableOpacity onPress={() => alert('jj')}>
+            <Image
+              source={require('../../../assets/fingerprint/scan.png')}
+              style={{ width: 60, height: 50 }}
+            />
+          </TouchableOpacity>
+        </View>
+
 
         <View
           style={{

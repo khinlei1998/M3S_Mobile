@@ -1466,6 +1466,9 @@ function Individual_Staff_loan_Info(props) {
         setLoading(false);
       });
   };
+
+
+
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
