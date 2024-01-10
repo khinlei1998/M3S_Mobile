@@ -21,7 +21,7 @@ export default function Borrower_Sign(props) {
   const { t } = useTranslation();
   return (
     <>
-      <View style={{ flex: 1, padding: 5, margin: 20, }}>
+      <View style={{ flex: 1, padding: 5, marginTop: 10,marginLeft:20,marginRight:20,marginBottom:30 }}>
         <View
           style={{
             flexDirection: 'row',
@@ -151,21 +151,20 @@ export default function Borrower_Sign(props) {
             flexDirection: 'row',
             padding: 5,
             margin: 10,
-            
 
           }}>
           {capturedFiles.includes('02') ? (
             <TouchableOpacity onPress={() => showBorFigModal('02')}>
               <Image
                 source={require('../../../assets/fingerprint/scan.png')}
-                style={{ width: 50, height: 50 }}
+                style={{ width: 60, height: 60 }}
               />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity onPress={() => showBorFigModal('02')}>
               <Image
                 source={require('../../../assets/fingerprint/success_scan.png')}
-                style={{ width: 60, height: 50, }}
+                style={{ width: 60, height: 60, }}
               />
             </TouchableOpacity>
           )}

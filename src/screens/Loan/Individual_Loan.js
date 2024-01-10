@@ -1771,23 +1771,6 @@ function Individual_Loan(props) {
     }, 3000);
     // }
   };
-  const fingerprintImages = [
-    require('../../../assets/fingerprint/f1.jpeg'),
-    require('../../../assets/fingerprint/f2.jpeg'),
-    require('../../../assets/fingerprint/f3.jpeg'),
-    require('../../../assets/fingerprint/f4.jpeg'),
-    // require('../../../assets/fingerprint/f5.jpeg'),
-    require('../../../assets/fingerprint/f6.jpeg'),
-    require('../../../assets/fingerprint/f7.jpeg'),
-    // require('../../../assets/fingerprint/f8.jpeg'),
-    // require('../../../assets/fingerprint/f9.jpeg'),
-    require('../../../assets/fingerprint/f10.jpeg'),
-    require('../../../assets/fingerprint/f11.png'),
-  ];
-  const randomImageSource =
-    fingerprintImages[Math.floor(Math.random() * fingerprintImages.length)];
-
-
   return (
     <>
       <ScrollView nestedScrollEnabled={true}>
@@ -2016,7 +1999,6 @@ function Individual_Loan(props) {
         setBorFgImg={setBorFgImg}
         all_loandata={all_loandata}
         product_code='10'
-        randomImageSource={randomImageSource}
       />
 
       <Borrower_modal

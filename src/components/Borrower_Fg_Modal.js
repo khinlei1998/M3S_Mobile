@@ -62,18 +62,18 @@ export default function Borrower_Fg_Modal(props) {
     require('../../assets/fingerprint/f2.jpeg'),
     require('../../assets/fingerprint/f3.jpeg'),
     require('../../assets/fingerprint/f4.jpeg'),
-    // require('../../assets/fingerprint/f5.jpeg'),
+    require('../../assets/fingerprint/f5.jpeg'),
     require('../../assets/fingerprint/f6.jpeg'),
     require('../../assets/fingerprint/f7.jpeg'),
-    // require('../../assets/fingerprint/f8.jpeg'),
-    // require('../../assets/fingerprint/f9.jpeg'),
-    require('../../assets/fingerprint/f10.jpeg'),
-    require('../../assets/fingerprint/f11.png'),
+    require('../../assets/fingerprint/f8.jpeg'),
+    // require('../../assets/fingerprint/f9.jpg'),
+    // require('../../assets/fingerprint/f10.png'),
+    // require('../../assets/fingerprint/f11.png'),
   ];
   const randomImageSource =
     fingerprintImages[Math.floor(Math.random() * fingerprintImages.length)];
 
- 
+
   return (
     <Modal
       useNativeDriver
