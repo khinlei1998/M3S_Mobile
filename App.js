@@ -108,23 +108,21 @@ export default function App() {
     loadStoredUserID();
   }, []);
   return (
-       <Text>hh</Text>
-
-    // <Provider store={store}>
-    //   <NavigationContainer>
-    //     {show_splash ? (
-    //       <SplashScreen />
-    //     ) : userID == null ? (
-    //       <AuthContext.Provider value={{saveUserID, userID}}>
-    //         <AuthNavigation />
-    //       </AuthContext.Provider>
-    //     ) : (
-    //       <AuthContext.Provider value={{removeUserID}}>
-    //         <RootNavigation />
-    //       </AuthContext.Provider>
-    //     )}
-    //   </NavigationContainer>
-    // </Provider>
+    <Provider store={store}>
+      <NavigationContainer>
+        {show_splash ? (
+          <SplashScreen />
+        ) : userID == null ? (
+          <AuthContext.Provider value={{saveUserID, userID}}>
+            <AuthNavigation />
+          </AuthContext.Provider>
+        ) : (
+          <AuthContext.Provider value={{removeUserID}}>
+            <RootNavigation />
+          </AuthContext.Provider>
+        )}
+      </NavigationContainer>
+    </Provider>
   );
 }
 const styles = StyleSheet.create({

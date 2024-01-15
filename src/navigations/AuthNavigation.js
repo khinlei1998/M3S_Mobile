@@ -32,6 +32,7 @@ import Survey from '../screens/Survey/Survey';
 import Edit_Reloan_Form from '../screens/Edit_Relaon/Edit_Reloan_Form';
 import Passport from '../screens/Passport/Passport';
 // import Reloan_Form from '../screens/Relaon/Reloan_Form';
+import TestScreen from '../screens/Test/TestScreen';
 export default function AuthNavigation(props) {
   const Stack = createNativeStackNavigator();
   return (
@@ -67,23 +68,13 @@ export default function AuthNavigation(props) {
         component={Synchronization_Screen}
         options={{ headerShown: false }}
       /> */}
-      {/* <Stack.Screen
-        name="Finger"
-        component={FingerTestScanner}
-        options={{headerShown: false}}
-      />
+
 
       <Stack.Screen
-        name="Touch"
-        component={TouchID}
-        options={{headerShown: false}}
-      /> */}
-
-      {/* <Stack.Screen
         name="Test"
         component={TestScreen}
         options={{headerShown: false}}
-      /> */}
+      />
        {/* <Stack.Screen
         name="Individual_loan"
         component={Individual_Loan}
