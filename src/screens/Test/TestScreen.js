@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {DragTextEditor} from 'react-native-drag-text-editor';
+// import {DragTextEditor} from 'react-native-drag-text-editor';
 // import RNImageTools from 'react-native-image-tools';
 import {Button} from 'react-native-paper';
 
@@ -35,14 +35,15 @@ export function TestScreen() {
 
   const _resizerSnapPoints = ['right', 'left'];
   return (
-    <DragTextEditor
-      visible={true}
-      resizerSnapPoints={_resizerSnapPoints}
-      cornerComponents={_cornerComponent}
-      rotationComponent={_rotateComponent}
-      externalTextStyles={styles.textStyles}
-      externalBorderStyles={styles.borderStyles}
-    />
+    <Text>ff</Text>
+    // <DragTextEditor
+    //   visible={true}
+    //   resizerSnapPoints={_resizerSnapPoints}
+    //   cornerComponents={_cornerComponent}
+    //   rotationComponent={_rotateComponent}
+    //   externalTextStyles={styles.textStyles}
+    //   externalBorderStyles={styles.borderStyles}
+    // />
 
     // <Button
     //   onPress={() => test()}

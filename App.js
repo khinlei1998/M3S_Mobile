@@ -107,6 +107,8 @@ export default function App() {
 
     loadStoredUserID();
   }, []);
+
+
   return (
     <Provider store={store}>
       <NavigationContainer>
