@@ -1,57 +1,55 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-// import {DragTextEditor} from 'react-native-drag-text-editor';
-// import RNImageTools from 'react-native-image-tools';
-import {Button} from 'react-native-paper';
-
+import { View, Text, StyleSheet, Image } from 'react-native';
+import { Button } from 'react-native-paper';
+import PhotoEditor from 'react-native-photo-editor'
+import RNFS from 'react-native-fs';
 export function TestScreen() {
   const viewComponent = () => <View style={styles.cornerStyles} />;
 
-  const _cornerComponent = [
-    {
-      side: 'TR',
-      customCornerComponent: () => viewComponent(),
-    },
-  ];
+  const test = (path) => {
+    let editingCancelled = false;
+    PhotoEditor.Edit({
+      path: "/storage/emulated/0/Pictures/Camera/2.jpg",
+      onDone:async (image) => {
+        console.log('image', image);
+        const directory = '/storage/emulated/0/Pictures/Map/';
+        const newPath = `/storage/emulated/0/Pictures/Map/1.jpg`; // You don't really need the `'file://` prefix
+        console.log(newPath);
+        await RNFS.mkdir(directory);
+        // COPY the file
+        // RNFS.copyFile(image, newPath)
+        //   .then((success) => {
+        //     console.log('IMG COPIED!');
+        //     console.log(newPath);
+        //   })
+        //   .catch((err) => {
+        //     console.log(err.message);
+        //   });
+        await RNFS.writeFile(filePath, image_encode, 'base64');
 
-  const _rotateComponent = {
-    side: 'bottom',
-    customRotationComponent: () => viewComponent(),
-  };
+      },
+      onCancel: (cancel) => {
+        console.log('cancel', cancel);
 
-  // const test = async () => {
-  //   try {
-  //     const uri = await RNImageTools.openEditor({
-  //       imageUri,
-  //       outputFormat,
-  //       quality,
-  //       preserveMetadata,
-  //       saveTo,
-  //     });
-  //   } catch (e) {
-  //     console.warn('error', e);
-  //   }
-  // };
-
-  const _resizerSnapPoints = ['right', 'left'];
+      },
+      hiddenControls: ['share', 'sticker', 'crop', 'cancel']
+    });
+  }
   return (
-    <Text>ff</Text>
-    // <DragTextEditor
-    //   visible={true}
-    //   resizerSnapPoints={_resizerSnapPoints}
-    //   cornerComponents={_cornerComponent}
-    //   rotationComponent={_rotateComponent}
-    //   externalTextStyles={styles.textStyles}
-    //   externalBorderStyles={styles.borderStyles}
-    // />
 
-    // <Button
-    //   onPress={() => test()}
-    //   mode="contained"
-    //   buttonColor={'#21316C'}
-    //   style={{width: 150, height: 44}}>
-    //   Save
-    // </Button>
+    <>
+      <Button
+        onPress={() => test()}
+        mode="contained"
+        buttonColor={'#21316C'}
+        style={{ width: 150, height: 44 }}>
+        Save
+      </Button>
+      <Image
+        source={{ uri: `file:///storage/emulated/0/Pictures/PhotoEditorSDK/IMG_20240118_104913.jpg` }}
+        style={{ width: 100, height: 100 }}
+      />
+    </>
   );
 }
 const styles = StyleSheet.create({

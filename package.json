@@ -39,6 +39,7 @@
     "react-native-loading-spinner-overlay": "^3.0.1",
     "react-native-modal-datetime-picker": "^15.0.1",
     "react-native-paper": "^5.0.0-rc.9",
+    "react-native-photo-editor": "^1.0.13",
     "react-native-photo-manipulator": "^1.2.7",
     "react-native-reanimated": "^3.5.2",
     "react-native-safe-area-context": "^4.5.1",
