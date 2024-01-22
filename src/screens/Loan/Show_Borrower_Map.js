@@ -22,13 +22,6 @@ export default function Show_Borrower_Map(props) {
   const user_id = props.route.params.user_id;
   const p_type=props.route.params.p_type;
   const sketchRef = useRef(null);
-
-  useEffect(() => {
-    console.log('hello');
-  
- 
-  }, [])
-  
   return (
     <>
       <View style={styles.container}>

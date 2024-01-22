@@ -1,32 +1,34 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import React ,{useState}from 'react';
+import { View, Text, StyleSheet, Image, } from 'react-native';
 import { Button } from 'react-native-paper';
 import PhotoEditor from 'react-native-photo-editor'
 import RNFS from 'react-native-fs';
 export function TestScreen() {
   const viewComponent = () => <View style={styles.cornerStyles} />;
+  const [queryParam, setQueryTime] = useState()
 
   const test = (path) => {
-    let editingCancelled = false;
     PhotoEditor.Edit({
-      path: "/storage/emulated/0/Pictures/Camera/2.jpg",
-      onDone:async (image) => {
-        console.log('image', image);
-        const directory = '/storage/emulated/0/Pictures/Map/';
-        const newPath = `/storage/emulated/0/Pictures/Map/1.jpg`; // You don't really need the `'file://` prefix
-        console.log(newPath);
-        await RNFS.mkdir(directory);
-        // COPY the file
-        // RNFS.copyFile(image, newPath)
-        //   .then((success) => {
-        //     console.log('IMG COPIED!');
-        //     console.log(newPath);
-        //   })
-        //   .catch((err) => {
-        //     console.log(err.message);
-        //   });
-        await RNFS.writeFile(filePath, image_encode, 'base64');
+      path: "/storage/emulated/0/Pictures/Camera/1.jpg",
+      onDone: async (oldFilePath) => {
+        try {
+          const directoryPath = '/storage/emulated/0/Pictures/PhotoEditorSDK/';
+          const newFilePath = `${directoryPath}3.jpg`;
 
+          // Check if the destination directory exists, create it if not
+          await RNFS.mkdir(directoryPath);
+
+          // Copy the image file to the specified directory with the new file name
+          await RNFS.copyFile(oldFilePath, newFilePath);
+
+          // Remove the original file if the copy is successful
+          await RNFS.unlink(oldFilePath);
+          setQueryTime(`?timestamp=${Date.now()}`)
+
+          console.log(`Image file name overridden successfully`);
+        } catch (error) {
+          console.error('Error overriding image file name:', error);
+        }
       },
       onCancel: (cancel) => {
         console.log('cancel', cancel);
@@ -43,10 +45,10 @@ export function TestScreen() {
         mode="contained"
         buttonColor={'#21316C'}
         style={{ width: 150, height: 44 }}>
-        Save
+        Open
       </Button>
       <Image
-        source={{ uri: `file:///storage/emulated/0/Pictures/PhotoEditorSDK/IMG_20240118_104913.jpg` }}
+        source={{ uri: `file:///storage/emulated/0/Pictures/PhotoEditorSDK/3.jpg${queryParam}` }}
         style={{ width: 100, height: 100 }}
       />
     </>
